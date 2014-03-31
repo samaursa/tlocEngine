@@ -3,6 +3,8 @@
 #include <tlocGraphics/opengl/tlocAttribute.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
 namespace TestingAttributeVariable
 {
@@ -116,7 +118,7 @@ namespace TestingAttributeVariable
       a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(a.IsAttribArray());
 
-      Array<s32> array2(2, 2);
+      Array<f32> array2(2, 2);
       a.Reset();
       CHECK(a.GetName().length() == 0);
       CHECK_FALSE(a.IsValidType());
@@ -126,9 +128,8 @@ namespace TestingAttributeVariable
       CHECK( a.IsValidType() );
       CHECK( a.IsAttribArray() );
       CHECK( a.IsValidType() );
-      CHECK( a.GetValueAs<Array<s32> >()[0] == 2);
-      CHECK( a.GetValueAs<Array<s32> >()[1] == 2);
-
+      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(2));
+      CHECK( a.GetValueAs<Array<f32> >()[1] == Approx(2));
     }
   }
 

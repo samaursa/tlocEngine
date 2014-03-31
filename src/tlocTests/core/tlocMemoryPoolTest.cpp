@@ -164,7 +164,7 @@ namespace TestingMemoryPool
   }
 
   template <typename T_Elem1>
-  typename T_Elem1
+  T_Elem1
     GetValue(T_Elem1& a, p_on_heap, p_user)
   {
     return a;

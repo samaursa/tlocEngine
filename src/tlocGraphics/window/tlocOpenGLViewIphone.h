@@ -39,6 +39,11 @@
 - (void)SetAsCurrentContext;
 
 ///-------------------------------------------------------------------------
+/// Does the view have a valid context
+///-------------------------------------------------------------------------
+- (bool)HasValidContext;
+
+///-------------------------------------------------------------------------
 /// Allows us to update the render buffer dimensions. Especially useful if
 /// application supports screen rotation.
 ///-------------------------------------------------------------------------

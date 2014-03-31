@@ -192,6 +192,11 @@ typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
   [EAGLContext setCurrentContext:m_context];
 }
 
+- (bool)HasValidContext
+{
+  return m_context != nil;
+}
+
 - (void)UpdateRenderBufferDimensions
 {
 //  fbo_type::Bind(m_fbo);

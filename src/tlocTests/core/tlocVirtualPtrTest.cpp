@@ -40,9 +40,6 @@ namespace TestingVirtualPtr
   tl_int SharedStruct::m_numCtors;
   tl_int SharedStruct::m_numDtors;
 
-  TLOC_TYPEDEF_VIRTUAL_PTR(SharedStruct, shared_struct);
-  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(SharedStruct);
-
   // ///////////////////////////////////////////////////////////////////////
   // generic test functions for different builds (Debug/Release)
 
@@ -422,3 +419,7 @@ namespace TestingVirtualPtr
     DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
   }
 }
+
+
+TLOC_TYPEDEF_VIRTUAL_PTR(TestingVirtualPtr::SharedStruct, shared_struct);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(TestingVirtualPtr::SharedStruct);

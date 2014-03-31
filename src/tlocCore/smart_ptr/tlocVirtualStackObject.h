@@ -3,6 +3,7 @@
 #define _TLOC_CORE_SMART_PTR_VIRTUAL_STACK_OBJECT_H_
 
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
@@ -482,11 +483,11 @@ private:
           : m_toCompare(a_toCompare)
         { }
 
-        template <typename T, typename T_CopyCtor,
-                  typename T_DefCtor, typename T_BuildConfig>
+        template <typename U, typename U_CopyCtor,
+                  typename U_DefCtor, typename U_BuildConfig>
         bool operator()
-        (const VirtualStackObjectBase_TI<T, T_CopyCtor,
-                                         T_DefCtor, T_BuildConfig>& a_vso)
+        (const VirtualStackObjectBase_TI<U, U_CopyCtor,
+                                         U_DefCtor, U_BuildConfig>& a_vso)
         { return a_vso.get() == m_toCompare; }
 
       private:

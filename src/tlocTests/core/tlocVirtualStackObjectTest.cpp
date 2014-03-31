@@ -10,6 +10,7 @@
 #include <tlocCore/containers/tloc_containers.h>
 #include <tlocCore/containers/tloc_containers.inl.h>
 
+
 using namespace tloc;
 using namespace core_sptr;
 
@@ -21,6 +22,8 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(int);
 
 TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(int, int_nocopy_nodef);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(int);
+
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
 
 namespace TestingVirtualStackObject
 {
@@ -181,41 +184,44 @@ namespace TestingVirtualStackObject
     vsoContainer.resize(500);
     vsoContainer.resize(1000);
   }
+  
+};
 
-  TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
-  TLOC_EXPLICITLY_INSTANTIATE_ARRAY(int_vso);
+using namespace tloc;
 
-  class IntComponent
-  {
-  public:
-    typedef tl_int         value_type;
+class IntComponent
+{
+public:
+  typedef tl_int         value_type;
+  
+public:
+  IntComponent()
+  { m_ctorCount++; }
+  
+  IntComponent(const IntComponent& a_other)
+  : m_value(a_other.m_value)
+  { m_ctorCount++; }
+  
+  ~IntComponent()
+  { m_dtorCount++; }
+  
+  tl_int m_value;
+  static tl_int m_dtorCount;
+  static tl_int m_ctorCount;
+};
 
-  public:
-    IntComponent()
-    { m_ctorCount++; }
-
-    IntComponent(const IntComponent& a_other)
-      : m_value(a_other.m_value)
-    { m_ctorCount++; }
-
-    ~IntComponent()
-    { m_dtorCount++; }
-
-    tl_int m_value;
-    static tl_int m_dtorCount;
-    static tl_int m_ctorCount;
-  };
-
-  tl_int IntComponent::m_dtorCount;
-  tl_int IntComponent::m_ctorCount;
-
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(IntComponent, int_comp);
-  TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(IntComponent);
+tl_int IntComponent::m_dtorCount;
+tl_int IntComponent::m_ctorCount;
 
 #define RESET_CTOR_AND_DTOR_COUNT()\
     IntComponent::m_dtorCount = 0;\
     IntComponent::m_ctorCount = 0
 
+TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(IntComponent, int_comp);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(IntComponent);
+
+namespace TestingVirtualStackObject {
+  
   template <typename T_Ptr, typename T_BuildType>
   void CheckPointer(const T_Ptr& a_ptr, bool a_validity, T_BuildType)
   {

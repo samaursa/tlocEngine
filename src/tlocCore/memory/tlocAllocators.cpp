@@ -1,5 +1,7 @@
 #include "tlocAllocators.h"
 
+#include <stdlib.h>
+
 #ifdef TLOC_USE_CUSTOM_NEW_DELETE
 
 # if defined (_MSC_VER)

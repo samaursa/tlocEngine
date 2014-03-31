@@ -26,8 +26,13 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace {
 
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
     static bool g_platformInitialized = false;
-
+#else
+    // nothing needs to be done on other platforms
+    static bool g_platformInitialized = true;
+#endif
+    
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     template <typename T_Platform>
@@ -77,7 +82,10 @@ namespace tloc { namespace graphics { namespace gl {
       return ErrorSuccess;
     }
     else
-    { return err; }
+    {
+      g_platformInitialized = false;
+      return err;
+    }
   }
 
   bool

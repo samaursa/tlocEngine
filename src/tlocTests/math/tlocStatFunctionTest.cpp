@@ -7,6 +7,7 @@
 #include <tlocCore/containers/tlocArrayFixed.h>
 #include <tlocCore/containers/tlocArrayFixed.inl.h>
 #include <tlocCore/containers/tlocList.h>
+#include <tlocCore/containers/tlocList.inl.h>
 
 #include <tlocCore/utilities/tlocContainerUtils.h>
 

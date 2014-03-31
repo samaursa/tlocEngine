@@ -221,6 +221,7 @@ set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tlocSharedPtr.cpp
     smart_ptr/tlocSmartPtr.h
     smart_ptr/tlocSmartPtr.inl.h
+    smart_ptr/tlocSmartPtr.cpp
     smart_ptr/tlocUniquePtr.h
     smart_ptr/tlocUniquePtr.inl.h
     smart_ptr/tlocUniquePtr.cpp

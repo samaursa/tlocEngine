@@ -25,6 +25,7 @@ namespace tloc { namespace core { namespace assert {
   #include <intrin.h>
   #define TLOC_DEBUG_BREAK()  __debugbreak()
 #else
+  #include <stdlib.h>
   #define TLOC_DEBUG_BREAK()  abort()
 #endif
 
@@ -33,7 +34,7 @@ namespace tloc { namespace core { namespace assert {
   do {\
     if (!(_Expression))\
     {\
-      printf("\n[E] Assertion (%s) FAILED: %s | %s(%lu)", (#_Expression), _Msg, __FILE__, __LINE__);\
+      printf("\n[E] Assertion (%s) FAILED: %s | %s(%i)", (#_Expression), _Msg, __FILE__, __LINE__);\
       TLOC_DEBUG_BREAK();\
     }\
   } while((void)0, 0)

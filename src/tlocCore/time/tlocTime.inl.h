@@ -4,6 +4,8 @@
 #ifndef TLOC_TIME_H
 #error "Must include header before including the inline file"
 #endif
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/time/tlocTime.h>
 #include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 

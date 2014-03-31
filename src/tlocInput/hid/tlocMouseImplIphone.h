@@ -34,7 +34,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   public:
     MouseImpl(parent_type* a_parent, const mouse_param_type& a_params)
-      : base_type(a_parent, a_params) {}
+      : base_type(*a_parent, a_params) {}
 
     ~MouseImpl() {}
 

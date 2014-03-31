@@ -103,7 +103,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     graphics_mode::Properties modeProps = m_graphicsMode.GetProperties();
     
     CGRect viewFrame = m_handle.Cast<UIWindow*>().bounds;
-
+    
     m_view = [[OpenGLView alloc] initWithFrame:viewFrame
                                    screenScale:screenScale
                                  retainBacking:NO
@@ -180,6 +180,18 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         // LOG: Window is already inactive
       }
     }
+  }
+  
+  bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::HasValidContext() const
+  {
+    OpenGLView* view = GetOpenGLView(m_view);
+    
+    if (view != nil)
+    {
+      return [view HasValidContext];
+    }
+    
+    return false;
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::ProcessEvents()

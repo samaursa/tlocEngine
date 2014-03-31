@@ -4,12 +4,12 @@
 #include <tlocCore/containers/tlocArray.inl.h>
 
 #define private public
-#define protected public
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocList.inl.h>
-#undef private
-#undef protected
 
+// testing explicit instantiation macros
+TLOC_EXPLICITLY_INSTANTIATE_LIST(tloc::tl_int);
+TLOC_EXPLICITLY_INSTANTIATE_LIST_NO_DEDICATED_SIZE(tloc::tl_int);
 
 namespace TestingList
 {
@@ -51,10 +51,6 @@ namespace TestingList
     DECLARE_TYPEDEFS(s32, int);
     DECLARE_TYPEDEFS(CountedClass, myClass);
   };
-
-  // testing explicit instantiation macros
-  TLOC_EXPLICITLY_INSTANTIATE_LIST(tl_int);
-  TLOC_EXPLICITLY_INSTANTIATE_LIST_NO_DEDICATED_SIZE(tl_int);
 
   TEST_CASE_METHOD(ListFixture, "Core/Containers/List/Sizes", "")
   {

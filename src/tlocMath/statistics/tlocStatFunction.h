@@ -5,6 +5,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/utilities/tlocType.h>
 
 namespace tloc { namespace math { namespace statistics {
 
@@ -47,9 +48,9 @@ namespace tloc { namespace math { namespace statistics {
       {
         TLOC_ASSERT(a_array.size() > 0, "There is no data to work with");
 
-        typedef MethodTypes<T_ArrayType>::value_type      value_type;
-        typedef MethodTypes<T_ArrayType>::itr_type        itr_type;
-        typedef MethodTypes<T_ArrayType>::real_type       real_type;
+        typedef typename MethodTypes<T_ArrayType>::value_type   value_type;
+        typedef typename MethodTypes<T_ArrayType>::itr_type     itr_type;
+        typedef typename MethodTypes<T_ArrayType>::real_type    real_type;
 
         value_type mean = value_type(0);
 
@@ -85,9 +86,9 @@ namespace tloc { namespace math { namespace statistics {
       {
         TLOC_ASSERT(a_array.size() > 0, "There is no data to work with");
 
-        typedef MethodTypes<T_ArrayType>::value_type      value_type;
-        typedef MethodTypes<T_ArrayType>::itr_type        itr_type;
-        typedef MethodTypes<T_ArrayType>::real_type       real_type;
+        typedef typename MethodTypes<T_ArrayType>::value_type      value_type;
+        typedef typename MethodTypes<T_ArrayType>::itr_type        itr_type;
+        typedef typename MethodTypes<T_ArrayType>::real_type       real_type;
 
         const value_type multiplier = 1.0f / a_array.size();
 
@@ -118,9 +119,9 @@ namespace tloc { namespace math { namespace statistics {
       {
         TLOC_ASSERT(a_array.size() > 0, "There is no data to work with");
 
-        typedef MethodTypes<T_ArrayType>::value_type      value_type;
-        typedef MethodTypes<T_ArrayType>::itr_type        itr_type;
-        typedef MethodTypes<T_ArrayType>::real_type       real_type;
+        typedef typename MethodTypes<T_ArrayType>::value_type      value_type;
+        typedef typename MethodTypes<T_ArrayType>::itr_type        itr_type;
+        typedef typename MethodTypes<T_ArrayType>::real_type       real_type;
 
         const value_type multiplier = 1.0f / a_array.size();
 

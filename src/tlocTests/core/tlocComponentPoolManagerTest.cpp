@@ -167,7 +167,7 @@ namespace TestingComponentPoolManager
 
       REQUIRE( (distance(itr, itrEnd) == elementsToPool) );
 
-      value_type::value_type counter = 0;
+      typename value_type::value_type counter = 0;
       bool testPassed = true;
       for (; itr != itrEnd; ++itr)
       {

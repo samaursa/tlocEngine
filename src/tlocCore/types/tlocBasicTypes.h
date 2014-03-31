@@ -32,7 +32,7 @@ namespace tloc
   // OSX Types
 
 #if defined(TARGET_OS_MAC) || defined (__APPLE__) || defined (MACOSX) || defined (macintosh) || defined (Macintosh)
-
+  
 #define TLOC_INT8_TYPE  __int8_t
 #define TLOC_INT16_TYPE __int16_t
 #define TLOC_INT32_TYPE __int32_t
@@ -44,7 +44,7 @@ namespace tloc
 #define TLOC_U_INT64_TYPE __uint64_t
 
 #define TLOC_SIZE_TYPE      size_t
-#define TLOC_U_INT_PTR_TYPE uintptr_t
+#define TLOC_U_INT_PTR_TYPE size_t
 #define TLOC_PTR_DIFF_TYPE  ptrdiff_t
 #endif
 

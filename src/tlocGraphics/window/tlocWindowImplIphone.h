@@ -124,6 +124,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @param  a_active true to set this window as active.
     ///-------------------------------------------------------------------------
     void SetActive(bool a_active);
+    
+    bool HasValidContext() const;
 
     ///-------------------------------------------------------------------------
     /// Enable/disable vertical sync

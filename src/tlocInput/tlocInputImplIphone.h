@@ -48,8 +48,7 @@ namespace tloc { namespace input { namespace priv {
     // using declarations for access to base class
     using base_type::m_params;
 
-    InputManagerImpl(parent_type* a_parent,
-                     param_type a_params);
+    InputManagerImpl(parent_type& a_parent, param_type a_params);
 
     ~InputManagerImpl();
 

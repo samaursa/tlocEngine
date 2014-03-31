@@ -12,6 +12,7 @@
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+#include <tloCCore/utilities/tlocType.h>
 
 #include <tlocCore/memory/tlocMemoryPoolIndexedWrapper.inl.h>
 
@@ -46,7 +47,98 @@ namespace tloc { namespace core { namespace memory {
     typedef tl_int                            index_type;
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
+    
+    template <typename T_WrapperType>
+    index_type&
+      DoGetIndexRef(T_WrapperType& a_element, allocation_on_stack)
+    {
+      return (index_type&)a_element->DoGetIndexRef();
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_WrapperType>
+    index_type&
+      DoGetIndexRef(T_WrapperType a_element, allocation_on_heap)
+    {
+      return (index_type&)a_element->DoGetIndexRef();
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_WrapperType>
+    index_type
+      DoGetIndex(const T_WrapperType& a_element, allocation_on_stack)
+    {
+      return (index_type)a_element->GetIndex();
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_WrapperType>
+    index_type
+      DoGetIndex(const T_WrapperType& a_element, allocation_on_heap)
+    {
+      return (index_type)a_element->GetIndex();
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_Iterator, typename T_SelectedValueType>
+    void
+      DoNewElement(T_Iterator, allocation_on_stack, T_SelectedValueType)
+    {
+      // Intentionally empty
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_Iterator, typename T_SelectedValueType>
+    void
+      DoNewElement(T_Iterator& a_pos, allocation_on_heap, T_SelectedValueType)
+    {
+      a_pos->reset(new T_SelectedValueType());
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_Container>
+    void
+      DoCleanup(T_Container&, allocation_on_stack)
+    {
+      // Intentionally empty
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_Container>
+    void
+      DoCleanup(T_Container& m_allElements, allocation_on_heap)
+    {
+      for_each_all(m_allElements,
+                   core_sptr::algos::virtual_ptr::DeleteAndReset());
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+    template <typename T_Iterator, typename T_AllocationPolicy,
+              typename T_SelectedValueType>
+    void
+      DoInitializeRange(T_Iterator a_begin, T_Iterator a_end,
+                        index_type a_startingIndex,
+                        T_AllocationPolicy a_allocPolicy,
+                        T_SelectedValueType a_selValueType)
+    {
+      for ( ; a_begin != a_end; ++a_begin)
+      {
+        DoNewElement(a_begin, a_allocPolicy, a_selValueType);
+        DoGetIndexRef(*a_begin, a_allocPolicy) = a_startingIndex;
+        ++a_startingIndex;
+      }
+    }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
     template <typename T_Container, typename T_AllocationPolicy,
               typename T_SelectedValueType>
     bool
@@ -75,7 +167,9 @@ namespace tloc { namespace core { namespace memory {
 
       return false;
     }
-
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
     template <typename T_Container, typename T_AllocationPolicy,
               typename T_SelectedValueType>
     bool
@@ -96,79 +190,6 @@ namespace tloc { namespace core { namespace memory {
                         core_utils::CastNumber<index_type>(prevSize),
                         a_allocPolicy, a_selValueType);
       return true;
-    }
-
-    template <typename T_Iterator, typename T_AllocationPolicy,
-              typename T_SelectedValueType>
-    void
-      DoInitializeRange(T_Iterator a_begin, T_Iterator a_end,
-                        index_type a_startingIndex,
-                        T_AllocationPolicy a_allocPolicy,
-                        T_SelectedValueType a_selValueType)
-    {
-      for ( ; a_begin != a_end; ++a_begin)
-      {
-        DoNewElement(a_begin, a_allocPolicy, a_selValueType);
-        DoGetIndexRef(*a_begin, a_allocPolicy) = a_startingIndex;
-        ++a_startingIndex;
-      }
-    }
-
-    template <typename T_WrapperType>
-    index_type&
-      DoGetIndexRef(T_WrapperType& a_element, allocation_on_stack)
-    {
-      return (index_type&)a_element->DoGetIndexRef();
-    }
-
-    template <typename T_WrapperType>
-    index_type&
-      DoGetIndexRef(T_WrapperType a_element, allocation_on_heap)
-    {
-      return (index_type&)a_element->DoGetIndexRef();
-    }
-
-    template <typename T_WrapperType>
-    index_type
-      DoGetIndex(const T_WrapperType& a_element, allocation_on_stack)
-    {
-      return (index_type)a_element->GetIndex();
-    }
-
-    template <typename T_WrapperType>
-    index_type
-      DoGetIndex(const T_WrapperType& a_element, allocation_on_heap)
-    {
-      return (index_type)a_element->GetIndex();
-    }
-
-    template <typename T_Iterator, typename T_SelectedValueType>
-    void
-      DoNewElement(T_Iterator, allocation_on_stack, T_SelectedValueType)
-    {
-      // Intentionally empty
-    }
-
-    template <typename T_Iterator, typename T_SelectedValueType>
-    void
-      DoNewElement(T_Iterator& a_pos, allocation_on_heap, T_SelectedValueType)
-    {
-      a_pos->reset(new T_SelectedValueType());
-    }
-
-    template <typename T_Container>
-    void
-      DoCleanup(T_Container&, allocation_on_stack)
-    {
-      // Intentionally empty
-    }
-
-    template <typename T_Container>
-    void
-      DoCleanup(T_Container& m_allElements, allocation_on_heap)
-    {
-      for_each_all(m_allElements,
-                   core_sptr::algos::virtual_ptr::DeleteAndReset());
     }
   };
 

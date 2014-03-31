@@ -34,8 +34,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename base_type::joystick_event_type joystick_event_type;
     
   public:
-    JoystickImpl_T(parent_type* a_parent, const joystick_params_type& a_params)
-      : base_type(*a_parent, a_params)
+    JoystickImpl_T(parent_type& a_parent, const joystick_params_type& a_params)
+      : base_type(a_parent, a_params)
     { }
     
     ~JoystickImpl_T() { }

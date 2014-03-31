@@ -28,9 +28,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   
   template <TOUCH_SURFACE_IMPL_TEMP>
   TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
-    TouchSurfaceImpl(parent_type* a_parent,
+    TouchSurfaceImpl(parent_type& a_parent,
     const touch_surface_param_type& a_params)
-    : base_type(*a_parent, a_params)
+    : base_type(a_parent, a_params)
   {
     view_handle_type view = DoGetViewHandle();
     TLOC_ASSERT_NOT_NULL(DoExtractView(view));

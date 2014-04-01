@@ -34,7 +34,7 @@ void* operator new (std::size_t size, const std::nothrow_t&) throw();
 void  operator delete (void* ptr, const std::nothrow_t&) throw();
 # endif
 
-namespace tloc { namespace core { namespace memory { 
+namespace tloc { namespace core { namespace memory {
   namespace tracking { namespace priv {
 
   void DoTrackMemoryAddress(void* a_memAddress);

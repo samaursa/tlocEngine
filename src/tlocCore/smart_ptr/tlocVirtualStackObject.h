@@ -57,7 +57,7 @@ private:
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
-    this_type&                operator=(this_type a_other);
+    this_type&                operator=(const this_type& a_other);
     this_type&                operator=(const value_type& a_other);
     void                      swap(this_type& a_other);
 
@@ -167,7 +167,7 @@ private:
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
-    this_type&                operator=(this_type a_other);
+    this_type&                operator=(const this_type& a_other);
     this_type&                operator=(const value_type& a_other);
     void                      swap(this_type& a_other);
 

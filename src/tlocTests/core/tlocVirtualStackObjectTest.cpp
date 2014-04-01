@@ -40,6 +40,8 @@ namespace TestingVirtualStackObject
 
         int onStackCopy = *onStack;
         CHECK(onStackCopy == 10);
+        CHECK(onStackCopy == onStackCopy);
+        CHECK_FALSE(onStackCopy < onStackCopy);
 
         {
           int_vso::pointer ptrToVSO(onStack.get());
@@ -69,6 +71,8 @@ namespace TestingVirtualStackObject
 
         CHECK( (*onStack == 10) );
         CHECK( (*onStack.get() == 10) );
+        CHECK(onStack == onStack);
+        CHECK_FALSE(onStack < onStack);
       }
 
       SECTION("No copy no default", "")
@@ -76,6 +80,9 @@ namespace TestingVirtualStackObject
         int_nocopy_nodef_vso onStack(20);
         CHECK( (*onStack == 20) );
         CHECK( (*onStack.get() == 20) );
+
+        CHECK(onStack == onStack);
+        CHECK_FALSE(onStack < onStack);
       }
     }
 
@@ -184,7 +191,7 @@ namespace TestingVirtualStackObject
     vsoContainer.resize(500);
     vsoContainer.resize(1000);
   }
-  
+
 };
 
 using namespace tloc;
@@ -193,18 +200,18 @@ class IntComponent
 {
 public:
   typedef tl_int         value_type;
-  
+
 public:
   IntComponent()
   { m_ctorCount++; }
-  
+
   IntComponent(const IntComponent& a_other)
   : m_value(a_other.m_value)
   { m_ctorCount++; }
-  
+
   ~IntComponent()
   { m_dtorCount++; }
-  
+
   tl_int m_value;
   static tl_int m_dtorCount;
   static tl_int m_ctorCount;
@@ -221,7 +228,7 @@ TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(IntComponent, int_comp);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(IntComponent);
 
 namespace TestingVirtualStackObject {
-  
+
   template <typename T_Ptr, typename T_BuildType>
   void CheckPointer(const T_Ptr& a_ptr, bool a_validity, T_BuildType)
   {

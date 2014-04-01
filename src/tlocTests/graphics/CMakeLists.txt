@@ -6,6 +6,7 @@ set(TLOC_TESTS_GRAPHICS
   tlocGLGeneralTest.cpp
   tlocGLObjectTest.cpp
   tlocGraphicsModesTest.cpp
+  tlocImageTest.cpp
   tlocImageLoaderTest.cpp
   tlocQuadTest.cpp
   tlocObjLoaderTest.cpp
@@ -28,6 +29,14 @@ set(TLOC_TESTS_GRAPHICS_ASSETS
 # Project setup
 
 set(TLOC_CURRENT_EXEC_NAME tlocTestsGraphics)
+
+include_directories(
+  ${TLOC_DEP_PATH}/include/FreeType/
+  )
+
+link_directories(
+  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
+  )
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}
@@ -53,6 +62,7 @@ if(MSVC)
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   glu32.lib
   OpenGL32.lib
+  freetype.lib
   )
 endif()
 

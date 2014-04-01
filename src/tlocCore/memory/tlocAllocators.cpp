@@ -65,12 +65,25 @@ ALLOCATOR_DECL_NO_THROW()
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
-namespace tloc { namespace core { namespace memory { 
+namespace tloc { namespace core { namespace memory {
   namespace tracking { namespace priv {
 
   namespace {
 
-    template<typename T_BuildConfig = core_cfg::BuildConfig::build_config_type>
+    namespace p_memory_tracker
+    {
+      class EnableTracker   {};
+      class DisableTracker  {};
+    };
+
+#if defined(TLOC_ENABLE_MEMORY_TRACKING) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
+#define TLOC_MEMORY_TRACKING_SELECTION p_memory_tracker::EnableTracker
+#else
+#define TLOC_MEMORY_TRACKING_SELECTION p_memory_tracker::DisableTracker
+#endif
+
+
+    template<typename T_BuildConfig = TLOC_MEMORY_TRACKING_SELECTION>
     class MemoryTracker_T
     {
     public:
@@ -101,7 +114,7 @@ namespace tloc { namespace core { namespace memory {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
-        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(m_loggingEnabled) 
+        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(m_loggingEnabled)
           << "Tracking memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertAddressIsNotTracked(a_memAddress);
 
@@ -113,7 +126,7 @@ namespace tloc { namespace core { namespace memory {
       void TrackConnectedMemoryAddress(void* a_memAddress,
                                        void* a_connectedAddress)
       {
-        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled) 
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled)
           << "Tracking connected memory address (" << (tl_uintptr)a_memAddress
           << ") to (" << (tl_uintptr)a_memAddress << ")";
         TLOC_ASSERT_LOW_LEVEL(a_memAddress != a_connectedAddress,
@@ -151,7 +164,7 @@ namespace tloc { namespace core { namespace memory {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
-        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled) 
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled)
           << "Untracking memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertAddressIsTracked(a_memAddress);
 
@@ -184,7 +197,7 @@ namespace tloc { namespace core { namespace memory {
 
           for (; itrMem != itrMemEnd; ++itrMem)
           {
-            TLOC_LOG_CORE_INFO_IF( m_loggingEnabled ) << 
+            TLOC_LOG_CORE_INFO_IF( m_loggingEnabled ) <<
               "Attempting to untrack connected address ("
               << (tl_uintptr)*itrMem << ")...";
 
@@ -421,13 +434,13 @@ namespace tloc { namespace core { namespace memory {
     // Relase build
 
     template <>
-    class MemoryTracker_T<core_cfg::p_build_config::Release>
+    class MemoryTracker_T<p_memory_tracker::DisableTracker>
     {
     public:
       typedef void*                             mem_info_type;
       typedef void*                             ptr_info_type;
 
-      typedef core_cfg::p_build_config::Release build_config;
+      typedef p_memory_tracker::DisableTracker  build_config;
       typedef MemoryTracker_T<build_config>     this_type;
 
       typedef core_conts::Array<mem_info_type>  mem_array;
@@ -509,8 +522,8 @@ namespace tloc { namespace core { namespace memory {
       static this_type              s_tracker;
     };
 
-    MemoryTracker_T<core_cfg::p_build_config::Release>
-      MemoryTracker_T<core_cfg::p_build_config::Release>::s_tracker;
+    MemoryTracker_T<p_memory_tracker::DisableTracker>
+      MemoryTracker_T<p_memory_tracker::DisableTracker>::s_tracker;
 
     // -----------------------------------------------------------------------
     // typedefs

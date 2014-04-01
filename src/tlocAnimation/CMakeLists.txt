@@ -49,6 +49,8 @@ add_dependencies(tlocAnimation
   tlocMath
   )
 
+set_platform_specific_properties(tlocAnimation)
+
 # Filters to organize the source files
 source_group(component_system FILES ${TLOC_ANIMATION_COMPONENT_SYSTEM})
 source_group(error            FILES ${TLOC_ANIMATION_ERROR})

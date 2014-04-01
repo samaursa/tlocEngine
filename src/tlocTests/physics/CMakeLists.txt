@@ -44,4 +44,6 @@ if(APPLE)
       MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
 endif()
 
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
+
 # Filters to organize the source files

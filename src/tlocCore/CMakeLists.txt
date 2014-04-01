@@ -361,6 +361,8 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_UTILITIES}
 )
 
+set_platform_specific_properties(tlocCore)
+
 # Filters to organize the source files
 source_group(base_classes FILES ${TLOC_ENGINE_CORE_BASE_CLASSES})
 source_group(component_system FILES ${TLOC_ENGINE_CORE_COMPONENT_SYSTEM})

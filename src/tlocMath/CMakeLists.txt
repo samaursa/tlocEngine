@@ -123,6 +123,8 @@ add_dependencies(tlocMath
   tlocCore
   )
 
+set_platform_specific_properties(tlocMath)
+
 # Filters to organize the source files
 source_group(component_system FILES ${TLOC_MATH_COMPONENT_SYSTEM})
 source_group(statistics       FILES ${TLOC_MATH_STATISTICS})

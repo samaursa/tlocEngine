@@ -252,6 +252,8 @@ add_dependencies(tlocGraphics
   tlocMath
   )
 
+set_platform_specific_properties(tlocGraphics)
+
 # Filters to organize the source files
 source_group(application      FILES ${TLOC_GRAPHICS_APPLICATION})
 source_group(component_system FILES ${TLOC_GRAPHICS_COMPONENT_SYSTEM})

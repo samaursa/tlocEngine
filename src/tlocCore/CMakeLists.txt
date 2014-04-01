@@ -337,6 +337,10 @@ include_directories(
   ../3rdParty/
 )
 
+if (TLOC_ENABLE_MEMORY_TRACKING)
+  add_definitions(-DTLOC_ENABLE_MEMORY_TRACKING)
+endif()
+
 add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE}
   ${TLOC_ENGINE_CORE_BASE_CLASSES}

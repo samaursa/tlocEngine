@@ -18,13 +18,13 @@ namespace tloc { namespace math { namespace types {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    template <typename T_Real>
-    typename Rectangle_TI<T_Real>::point_type
-      DoGetCoord(const Rectangle_TI<T_Real>& a_rect,
-                 typename Rectangle_TI<T_Real>::top,
-                 typename Rectangle_TI<T_Real>::left)
+    template <typename T_Real, typename T_PositionPolicy>
+    typename Rectangle_TI<T_Real, T_PositionPolicy>::point_type
+      DoGetCoord(const Rectangle_TI<T_Real, T_PositionPolicy>& a_rect,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::top,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::left)
     {
-      typedef Rectangle_TI<T_Real>               rect_type;
+      typedef Rectangle_TI<T_Real, T_PositionPolicy>             rect_type;
 
       return MakeTuple(a_rect.template GetValue<typename rect_type::left>(),
                        a_rect.template GetValue<typename rect_type::top>());
@@ -32,13 +32,13 @@ namespace tloc { namespace math { namespace types {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    template <typename T_Real>
-    typename Rectangle_TI<T_Real>::point_type
-      DoGetCoord(const Rectangle_TI<T_Real>& a_rect,
-                 typename Rectangle_TI<T_Real>::top,
-                 typename Rectangle_TI<T_Real>::right)
+    template <typename T_Real, typename T_PositionPolicy>
+    typename Rectangle_TI<T_Real, T_PositionPolicy>::point_type
+      DoGetCoord(const Rectangle_TI<T_Real, T_PositionPolicy>& a_rect,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::top,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::right)
     {
-      typedef Rectangle_TI<T_Real>               rect_type;
+      typedef Rectangle_TI<T_Real, T_PositionPolicy>             rect_type;
 
       return MakeTuple(a_rect.template GetValue<typename rect_type::right>(),
                        a_rect.template GetValue<typename rect_type::top>());
@@ -46,14 +46,13 @@ namespace tloc { namespace math { namespace types {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    template <typename T_Real>
-    typename Rectangle_TI<T_Real>::point_type
-      DoGetCoord(const Rectangle_TI<T_Real>& a_rect,
-                 typename Rectangle_TI<T_Real>::bottom,
-                 typename Rectangle_TI<T_Real>::left)
+    template <typename T_Real, typename T_PositionPolicy>
+    typename Rectangle_TI<T_Real, T_PositionPolicy>::point_type
+      DoGetCoord(const Rectangle_TI<T_Real, T_PositionPolicy>& a_rect,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::bottom,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::left)
     {
-      typedef Rectangle_TI<T_Real>               rect_type;
-      typedef typename rect_type::point_type     point_type;
+      typedef Rectangle_TI<T_Real, T_PositionPolicy>             rect_type;
 
       return MakeTuple(a_rect.template GetValue<typename rect_type::left>(),
                        a_rect.template GetValue<typename rect_type::bottom>());
@@ -61,46 +60,49 @@ namespace tloc { namespace math { namespace types {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    template <typename T_Real>
-    typename Rectangle_TI<T_Real>::point_type
-      DoGetCoord(const Rectangle_TI<T_Real>& a_rect,
-                 typename Rectangle_TI<T_Real>::bottom,
-                 typename Rectangle_TI<T_Real>::right)
+    template <typename T_Real, typename T_PositionPolicy>
+    typename Rectangle_TI<T_Real, T_PositionPolicy>::point_type
+      DoGetCoord(const Rectangle_TI<T_Real, T_PositionPolicy>& a_rect,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::bottom,
+                 typename Rectangle_TI<T_Real, T_PositionPolicy>::right)
     {
-      typedef Rectangle_TI<T_Real>               rect_type;
+      typedef Rectangle_TI<T_Real, T_PositionPolicy>             rect_type;
 
       return MakeTuple(a_rect.template GetValue<typename rect_type::right>(),
                        a_rect.template GetValue<typename rect_type::bottom>());
     }
   };
 
-#define TLOC_RECTANGLE_TI_TEMP    typename T
-#define TLOC_RECTANGLE_TI_PARAMS  T
-#define TLOC_RECTANGLE_TI_TYPE    typename Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>
+  // ///////////////////////////////////////////////////////////////////////
+  // RectangleBase_TI<BottomLeft>
+
+#define TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP    typename T
+#define TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS  T, p_rectangle::position::BottomLeft
+#define TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TYPE    typename RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_RECTANGLE_TI_TEMP>
-  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Rectangle_TI()
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    RectangleBase_TI()
     : m_dimensions(0)
     , m_position(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_RECTANGLE_TI_TEMP>
-  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Rectangle_TI(width a_w, height a_h, position a_pos)
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    RectangleBase_TI(width a_w, height a_h, position a_pos)
     : m_dimensions( MakeTuple( a_w.m_value, a_h.m_value ) )
     , m_position(a_pos)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_RECTANGLE_TI_TEMP>
-  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Rectangle_TI(left a_l, right a_r, top a_t, bottom a_b)
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b)
     : m_dimensions( MakeTuple( a_r - a_l,
                                a_t - a_b ) )
     , m_position( MakeTuple( a_l.m_value, a_b.m_value) )
@@ -108,12 +110,148 @@ namespace tloc { namespace math { namespace types {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_RECTANGLE_TI_TEMP>
-  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Rectangle_TI(const point_type& a_start, const point_type& a_end)
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    RectangleBase_TI(const point_type& a_start, const point_type& a_end)
     : m_dimensions( MakeTuple( a_end[0] - a_start[0],
                                a_end[1] - a_start[1] ) )
     , m_position( a_start )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TYPE::value_type
+    RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    DoGetValue(tl_int a_index) const
+  {
+    TLOC_ASSERT_LOW_LEVEL
+      (a_index >= left::k_index && a_index <= bottom::k_index, "Out of bounds!");
+
+    switch (a_index)
+    {
+    case left::k_index:
+      return m_position[0];
+    case right::k_index:
+      return (m_dimensions[width::k_index] ) + m_position[0];
+    case top::k_index:
+      return (m_dimensions[height::k_index] ) + m_position[1];
+    case bottom::k_index:
+      return m_position[1];
+    default:
+      return 0;
+    }
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // RectangleBase_TI<Center>
+
+#define TLOC_RECTANGLE_BASE_CENTER_TEMP    typename T
+#define TLOC_RECTANGLE_BASE_CENTER_PARAMS  T, p_rectangle::position::Center
+#define TLOC_RECTANGLE_BASE_CENTER_TYPE    typename RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_CENTER_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>::
+    RectangleBase_TI()
+    : m_dimensions(0)
+    , m_position(0)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_CENTER_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>::
+    RectangleBase_TI(width a_w, height a_h, position a_pos)
+    : m_dimensions( MakeTuple( a_w.m_value, a_h.m_value ) )
+    , m_position(a_pos)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_CENTER_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>::
+    RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b)
+    : m_dimensions( MakeTuple( a_r - a_l,
+                               a_t - a_b ) )
+    , m_position( MakeTuple( (a_l + a_r) / 2,
+                             (a_t + a_b) / 2 ) )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_CENTER_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>::
+    RectangleBase_TI(const point_type& a_start, const point_type& a_end)
+    : m_dimensions( MakeTuple( a_end[0] - a_start[0],
+                               a_end[1] - a_start[1] ) )
+    , m_position( MakeTuple( (a_end[0] + a_start[0]) / 2,
+                             (a_end[1] + a_start[1]) / 2 ) )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_CENTER_TEMP>
+  TLOC_RECTANGLE_BASE_CENTER_TYPE::value_type
+    RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>::
+    DoGetValue(tl_int a_index) const
+  {
+    TLOC_ASSERT_LOW_LEVEL
+      (a_index >= left::k_index && a_index <= bottom::k_index, "Out of bounds!");
+
+    switch (a_index)
+    {
+    case left::k_index:
+      return -(m_dimensions[width::k_index] / 2) + m_position[0];
+    case right::k_index:
+      return (m_dimensions[width::k_index] / 2) + m_position[0];
+    case top::k_index:
+      return (m_dimensions[height::k_index] / 2) + m_position[1];
+    case bottom::k_index:
+      return -(m_dimensions[height::k_index] / 2) + m_position[1];
+    default:
+      return 0;
+    }
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Rectangle_TI<>
+
+#define TLOC_RECTANGLE_TI_TEMP    typename T, typename T_PositionPolicy
+#define TLOC_RECTANGLE_TI_PARAMS  T, T_PositionPolicy
+#define TLOC_RECTANGLE_TI_TYPE    typename Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Rectangle_TI()
+    : base_type()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Rectangle_TI(width a_w, height a_h, position a_pos)
+    : base_type(a_w, a_h, a_pos)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Rectangle_TI(left a_l, right a_r, top a_t, bottom a_b)
+    : base_type(a_l, a_r, a_t, a_b)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Rectangle_TI(const point_type& a_start, const point_type& a_end)
+    : base_type(a_start, a_end)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -129,7 +267,7 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TI_TEMP>
-  TLOC_RECTANGLE_TI_TYPE::real_type
+  TLOC_RECTANGLE_TI_TYPE::value_type
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     GetWidth() const
   { return m_dimensions[width::k_index]; }
@@ -137,7 +275,7 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TI_TEMP>
-  TLOC_RECTANGLE_TI_TYPE::real_type
+  TLOC_RECTANGLE_TI_TYPE::value_type
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     GetHeight() const
   { return m_dimensions[height::k_index]; }
@@ -147,7 +285,7 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    SetWidth(real_type a_value)
+    SetWidth(value_type a_value)
   { m_dimensions[width::k_index] = a_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -155,7 +293,7 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    SetHeight(real_type a_value)
+    SetHeight(value_type a_value)
   { m_dimensions[height::k_index] = a_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -195,14 +333,6 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    SetPosition(const point_type& a_bottomLeftCoord)
-  { m_position = a_bottomLeftCoord; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TI_TEMP>
-  void
-    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     ResetPosition()
   { m_position.Set(0); }
 
@@ -233,44 +363,12 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TI_TEMP>
-  TLOC_RECTANGLE_TI_TYPE::point_type
-    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    GetPosition() const
-  { return m_position; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TI_TEMP>
   bool
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     IsValid() const
   {
     return m_dimensions[width::k_index] > 0 &&
            m_dimensions[height::k_index] > 0;
-  }
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TI_TEMP>
-  TLOC_RECTANGLE_TI_TYPE::real_type
-    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    DoGetValue(tl_int a_index) const
-  {
-    TLOC_ASSERT_LOW_LEVEL
-      (a_index >= left::k_index && a_index <= bottom::k_index, "Out of bounds!");
-
-    switch (a_index)
-    {
-    case left::k_index:
-      return m_position[0];
-    case right::k_index:
-      return (m_dimensions[width::k_index] ) + m_position[0];
-    case top::k_index:
-      return (m_dimensions[height::k_index] ) + m_position[1];
-    case bottom::k_index:
-      return m_position[1];
-    default:
-      return 0;
-    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -281,15 +379,15 @@ namespace tloc { namespace math { namespace types {
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     DoGetCoord() const
   {
-    return priv::DoGetCoord<real_type>(*this, T_Side1(0), T_Side2(0));
+    return priv::DoGetCoord<value_type>(*this, T_Side1(0), T_Side2(0));
   }
 
   // ///////////////////////////////////////////////////////////////////////
   // Rectangle_T<>
 
-#define TLOC_RECTANGLE_TEMP typename T
-#define TLOC_RECTANGLE_PARAMS T
-#define TLOC_RECTANGLE_TYPE typename Rectangle_T<TLOC_RECTANGLE_PARAMS>
+#define TLOC_RECTANGLE_TEMP   typename T, typename T_PositionPolicy
+#define TLOC_RECTANGLE_PARAMS T, T_PositionPolicy
+#define TLOC_RECTANGLE_TYPE   typename Rectangle_T<TLOC_RECTANGLE_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -461,26 +559,43 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Explicit initialization
 
-#define TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(_type_)\
-  template class Rectangle_TI<_type_>;\
-  template Rectangle_TI<_type_>::point_type \
-  Rectangle_TI<_type_>::DoGetCoord<Rectangle_TI<_type_>::top, Rectangle_TI<_type_>::left>() const;\
-  template Rectangle_TI<_type_>::point_type \
-  Rectangle_TI<_type_>::DoGetCoord<Rectangle_TI<_type_>::top, Rectangle_TI<_type_>::right>() const;\
-  template Rectangle_TI<_type_>::point_type \
-  Rectangle_TI<_type_>::DoGetCoord<Rectangle_TI<_type_>::bottom, Rectangle_TI<_type_>::left>() const;\
-  template Rectangle_TI<_type_>::point_type \
-  Rectangle_TI<_type_>::DoGetCoord<Rectangle_TI<_type_>::bottom, Rectangle_TI<_type_>::right>() const;\
-  TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(Rectangle_TI<_type_>::point_type, 0)
+#define TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(_type_, _positionPolicy_)\
+  template class Rectangle_TI<_type_, _positionPolicy_>;\
+  template Rectangle_TI<_type_, _positionPolicy_>::point_type \
+  Rectangle_TI<_type_, _positionPolicy_>::\
+  DoGetCoord<Rectangle_TI<_type_, _positionPolicy_>::top,\
+             Rectangle_TI<_type_, _positionPolicy_>::left>() const;\
+  \
+  template Rectangle_TI<_type_, _positionPolicy_>::point_type \
+  Rectangle_TI<_type_, _positionPolicy_>::\
+  DoGetCoord<Rectangle_TI<_type_, _positionPolicy_>::top,\
+             Rectangle_TI<_type_, _positionPolicy_>::right>() const;\
+  \
+  template Rectangle_TI<_type_, _positionPolicy_>::point_type \
+  Rectangle_TI<_type_, _positionPolicy_>::\
+  DoGetCoord<Rectangle_TI<_type_, _positionPolicy_>::bottom,\
+             Rectangle_TI<_type_, _positionPolicy_>::left>() const;\
+  \
+  template Rectangle_TI<_type_, _positionPolicy_>::point_type \
+  Rectangle_TI<_type_, _positionPolicy_>::\
+  DoGetCoord<Rectangle_TI<_type_, _positionPolicy_>::bottom,\
+             Rectangle_TI<_type_, _positionPolicy_>::right>() const;\
+  TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE( Rectangle_TI<_type_ TLOC_COMMA() _positionPolicy_>::point_type, 0)
 
-  //TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s32);
-  //TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s64);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s32, p_rectangle::position::BottomLeft);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s64, p_rectangle::position::BottomLeft);
 
-#define TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(_type_)\
-  template class Rectangle_T<_type_>;\
-  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(_type_)
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s32, p_rectangle::position::Center);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s64, p_rectangle::position::Center);
 
-  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f32);
-  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64);
+#define TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(_type_, _positionPolicy_)\
+  template class Rectangle_T<_type_, _positionPolicy_>;\
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(_type_, _positionPolicy_)
+
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f32, p_rectangle::position::BottomLeft);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64, p_rectangle::position::BottomLeft);
+
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f32, p_rectangle::position::Center);
+  TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64, p_rectangle::position::Center);
 
 };};};

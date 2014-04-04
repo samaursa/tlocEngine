@@ -13,26 +13,138 @@
 
 namespace tloc { namespace math { namespace types {
 
+  namespace p_rectangle
+  {
+    namespace position
+    {
+      struct Center       {};
+      struct BottomLeft   {};
+    };
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // RectangleBase_TI<position::BottomLeft>
+
+  template <typename T, typename T_PositionPolicy>
+  class RectangleBase_TI;
+
+  // -----------------------------------------------------------------------
+  // RectangleBase_TI<BottomLeft>
+
+  template <typename T>
+  class RectangleBase_TI<T, p_rectangle::position::BottomLeft>
+  {
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
+    typedef tl_size                                     size_type;
+    typedef T                                           value_type;
+    typedef p_rectangle::position::BottomLeft           position_policy;
+    typedef RectangleBase_TI<value_type,
+                             position_policy>           this_type;
+
+    typedef core_ds::Tuple<value_type, 2>               point_type;
+
+    typedef core::types::StrongType_T<value_type, 0>    width;
+    typedef core::types::StrongType_T<value_type, 1>    height;
+    typedef core::types::StrongType_T<value_type, 2>    left;
+    typedef core::types::StrongType_T<value_type, 3>    right;
+    typedef core::types::StrongType_T<value_type, 4>    top;
+    typedef core::types::StrongType_T<value_type, 5>    bottom;
+
+    typedef core::types::StrongType_T<point_type, 0>    position;
+
+  protected:
+    RectangleBase_TI();
+    RectangleBase_TI( width a_w, height a_h,
+                      position a_pos = position( point_type( 0 ) ) );
+    RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b);
+    RectangleBase_TI(const point_type& a_start, const point_type& a_end);
+
+    TLOC_DECL_AND_DEF_GETTER(point_type, GetPosition, m_position);
+    TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, SetPosition, m_position);
+
+  protected:
+    value_type   DoGetValue(tl_int a_index) const;
+
+  protected:
+    point_type    m_dimensions;
+    point_type    m_position;
+  };
+
+  // -----------------------------------------------------------------------
+  // RectangleBase_TI<Center>
+
+  template <typename T>
+  class RectangleBase_TI<T, p_rectangle::position::Center>
+  {
+    TLOC_STATIC_ASSERT_IS_ARITH(T);
+
+  public:
+    typedef tl_size                                     size_type;
+    typedef T                                           value_type;
+    typedef p_rectangle::position::Center               position_policy;
+    typedef RectangleBase_TI<value_type,
+                             position_policy>           this_type;
+    typedef core_ds::Tuple<value_type, 2>               point_type;
+
+    typedef core::types::StrongType_T<value_type, 0>    width;
+    typedef core::types::StrongType_T<value_type, 1>    height;
+    typedef core::types::StrongType_T<value_type, 2>    left;
+    typedef core::types::StrongType_T<value_type, 3>    right;
+    typedef core::types::StrongType_T<value_type, 4>    top;
+    typedef core::types::StrongType_T<value_type, 5>    bottom;
+
+    typedef core::types::StrongType_T<point_type, 0>    position;
+
+  protected:
+    RectangleBase_TI();
+    RectangleBase_TI( width a_w, height a_h,
+                      position a_pos = position( point_type( 0 ) ) );
+    RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b);
+    RectangleBase_TI(const point_type& a_start, const point_type& a_end);
+
+    TLOC_DECL_AND_DEF_GETTER(point_type, GetPosition, m_position);
+    TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, SetPosition, m_position);
+
+  protected:
+    value_type   DoGetValue(tl_int a_index) const;
+
+  protected:
+    point_type    m_dimensions;
+    point_type    m_position;
+  };
+
   // ///////////////////////////////////////////////////////////////////////
   // Rectangle_TI<T>
 
-  template <typename T>
+  template <typename T, typename T_PositionPolicy>
   class Rectangle_TI
+    : public RectangleBase_TI<T, T_PositionPolicy>
   {
     TLOC_STATIC_ASSERT_IS_ARITH(T);
 
   public:
     typedef tl_size                                 size_type;
-    typedef T                                       real_type;
-    typedef Rectangle_TI<real_type>                 this_type;
-    typedef core_ds::Tuple<real_type, 2>            point_type;
+    typedef T                                       value_type;
+    typedef T_PositionPolicy                        position_policy;
+    typedef Rectangle_TI<value_type,
+                         position_policy>           this_type;
+    typedef RectangleBase_TI<value_type,
+                             position_policy>       base_type;
 
-    typedef core::types::StrongType_T<real_type, 0>   width;
-    typedef core::types::StrongType_T<real_type, 1>   height;
-    typedef core::types::StrongType_T<real_type, 2>   left;
-    typedef core::types::StrongType_T<real_type, 3>   right;
-    typedef core::types::StrongType_T<real_type, 4>   top;
-    typedef core::types::StrongType_T<real_type, 5>   bottom;
+    typedef core_ds::Tuple<value_type, 2>           point_type;
+
+    typedef core::types::StrongType_T<value_type, 0>   width;
+    typedef core::types::StrongType_T<value_type, 1>   height;
+    typedef core::types::StrongType_T<value_type, 2>   left;
+    typedef core::types::StrongType_T<value_type, 3>   right;
+    typedef core::types::StrongType_T<value_type, 4>   top;
+    typedef core::types::StrongType_T<value_type, 5>   bottom;
 
     typedef core::types::StrongType_T<point_type, 0>  position;
 
@@ -43,19 +155,19 @@ namespace tloc { namespace math { namespace types {
     Rectangle_TI(left a_l, right a_r, top a_t, bottom a_b);
     Rectangle_TI(const point_type& a_start, const point_type& a_end);
 
-    template <typename T_Real>
-    Rectangle_TI(const Rectangle_TI<T_Real>& a_other);
+    template <typename U, typename U_PositionPolicy>
+    Rectangle_TI(const Rectangle_TI<U, U_PositionPolicy>& a_other);
 
     bool operator == (const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
-    real_type   GetWidth() const;
-    real_type   GetHeight() const;
-    void        SetWidth(real_type a_value);
-    void        SetHeight(real_type a_value);
+    value_type  GetWidth() const;
+    value_type  GetHeight() const;
+    void        SetWidth(value_type a_value);
+    void        SetHeight(value_type a_value);
 
     template <typename T_Side>
-    real_type   GetValue() const;
+    value_type  GetValue() const;
     template <typename T_Side1, typename T_Side2>
     point_type  GetCoord() const;
 
@@ -64,12 +176,12 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCoord_BottomLeft() const;
     point_type  GetCoord_BottomRight() const;
 
-    void        SetPosition(const point_type& a_bottomLeftCoord);
     void        ResetPosition();
     void        Offset(const point_type& a_offsetBy);
-    point_type  GetPosition() const;
 
-    TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+    using base_type::GetPosition;
+    using base_type::SetPosition;
+    using base_type::GetDimensions;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -83,7 +195,8 @@ namespace tloc { namespace math { namespace types {
     bool        Contains(const point_type& a_xyPoint);
 
   private:
-    real_type   DoGetValue(tl_int a_index) const;
+    using base_type::DoGetValue;
+
     template <typename T_Side1, typename T_Side2>
     point_type  DoGetCoord() const;
 
@@ -92,31 +205,30 @@ namespace tloc { namespace math { namespace types {
     point_type    m_position;
   };
 
-
   //------------------------------------------------------------------------
   // Template definitions Rectangle_TI<>
 
-  template <typename T>
-  template <typename T_Real>
-  Rectangle_TI<T>::
-    Rectangle_TI(const Rectangle_TI<T_Real>& a_other)
-    : m_dimensions(a_other.GetDimensions())
-    , m_position(a_other.GetPosition())
+  template <typename T, typename T_PositionPolicy>
+  template <typename U, typename U_PositionPolicy>
+  Rectangle_TI<T, T_PositionPolicy>::
+    Rectangle_TI(const Rectangle_TI<U, U_PositionPolicy>& a_other)
+    : base_type(a_other.GetValue<left>(), a_other.GetValue<right>(),
+                a_other.GetValue<top>(), a_other.GetValue<bottom>())
   { }
 
-  template <typename T>
+  template <typename T, typename T_PositionPolicy>
   template <typename T_Side>
-  typename Rectangle_TI<T>::real_type
-    Rectangle_TI<T>::GetValue() const
+  typename Rectangle_TI<T, T_PositionPolicy>::value_type
+    Rectangle_TI<T, T_PositionPolicy>::GetValue() const
   {
     tloc::type_traits::AssertTypeIsSupported<T_Side, left, right, top, bottom>();
     return DoGetValue(T_Side::k_index);
   }
 
-  template <typename T>
+  template <typename T, typename T_PositionPolicy>
   template <typename T_Side1, typename T_Side2>
-  typename Rectangle_TI<T>::point_type
-    Rectangle_TI<T>::GetCoord() const
+  typename Rectangle_TI<T, T_PositionPolicy>::point_type
+    Rectangle_TI<T, T_PositionPolicy>::GetCoord() const
   {
     tloc::type_traits::AssertTypeIsSupported<T_Side1, top, bottom>();
     tloc::type_traits::AssertTypeIsSupported<T_Side2, left, right>();
@@ -126,17 +238,18 @@ namespace tloc { namespace math { namespace types {
   // ///////////////////////////////////////////////////////////////////////
   // Rectangle_T<T>
 
-  template <typename T>
+  template <typename T, typename T_PositionPolicy>
   class Rectangle_T
-    : public Rectangle_TI<T>
+    : public Rectangle_TI<T, T_PositionPolicy>
   {
-    TLOC_STATIC_ASSERT_IS_ARITH(T);
+    TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
   public:
-    typedef T                                       value_type;
-    typedef value_type                              real_type;
-    typedef Rectangle_T<real_type>                  this_type;
-    typedef Rectangle_TI<value_type>                base_type;
+    typedef T                                         value_type;
+    typedef value_type                                real_type;
+    typedef T_PositionPolicy                          position_policy;
+    typedef Rectangle_T<real_type, position_policy>   this_type;
+    typedef Rectangle_TI<real_type, position_policy>  base_type;
 
     typedef typename base_type::size_type           size_type;
 
@@ -171,8 +284,8 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T(const point_type& a_start, const point_type& a_end,
                 make_center_origin = make_center_origin(false));
 
-    template <typename T_Real>
-    Rectangle_T(const Rectangle_T<T_Real>& a_other);
+    template <typename U, typename U_PositionPolicy>
+    Rectangle_T(const Rectangle_T<U, U_PositionPolicy>& a_other);
 
     using base_type::operator==;
     using base_type::operator!=;
@@ -218,31 +331,40 @@ namespace tloc { namespace math { namespace types {
     static const dir_vec_type s_normal;
   };
 
-  template <typename T>
-  typename Rectangle_T<T>::dir_vec_type
-    const Rectangle_T<T>::s_normal = typename Rectangle_T<T>::
+  template <typename T, typename T_PositionPolicy>
+  typename Rectangle_T<T, T_PositionPolicy>::dir_vec_type
+    const Rectangle_T<T, T_PositionPolicy>::s_normal =
+    typename Rectangle_T<T, T_PositionPolicy>::
     dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------
   // Template definitions Rectangle_T<>
 
-  template <typename T>
-  template <typename T_Real>
-  Rectangle_T<T>::
-    Rectangle_T(const Rectangle_T<T_Real>& a_other)
+  template <typename T, typename T_PositionPolicy>
+  template <typename U, typename U_PositionPolicy>
+  Rectangle_T<T, T_PositionPolicy>::
+    Rectangle_T(const Rectangle_T<U, U_PositionPolicy>& a_other)
     : base_type(a_other)
   { }
 
   //------------------------------------------------------------------------
   // Typedefs
 
-  typedef Rectangle_TI<tl_int>    Rects;
-  typedef Rectangle_TI<s32>       Rects32;
-  typedef Rectangle_TI<s64>       Rects64;
+  typedef Rectangle_TI<tl_int, p_rectangle::position::BottomLeft>   Rects_bl;
+  typedef Rectangle_TI<s32, p_rectangle::position::BottomLeft>      Rects32_bl;
+  typedef Rectangle_TI<s64, p_rectangle::position::BottomLeft>      Rects64_bl;
 
-  typedef Rectangle_T<tl_float>   Rectf;
-  typedef Rectangle_T<f32>        Rectf32;
-  typedef Rectangle_T<f64>        Rectf64;
+  typedef Rectangle_TI<tl_int, p_rectangle::position::Center>       Rects_c;
+  typedef Rectangle_TI<s32, p_rectangle::position::Center>          Rects32_c;
+  typedef Rectangle_TI<s64, p_rectangle::position::Center>          Rects64_c;
+
+  typedef Rectangle_T<tl_float, p_rectangle::position::BottomLeft>  Rectf_bl;
+  typedef Rectangle_T<f32, p_rectangle::position::BottomLeft>       Rectf32_bl;
+  typedef Rectangle_T<f64, p_rectangle::position::BottomLeft>       Rectf64_bl;
+
+  typedef Rectangle_T<tl_float, p_rectangle::position::Center>      Rectf_c;
+  typedef Rectangle_T<f32, p_rectangle::position::Center>           Rectf32_c;
+  typedef Rectangle_T<f64, p_rectangle::position::Center>           Rectf64_c;
 
 };};};
 

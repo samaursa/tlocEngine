@@ -37,6 +37,13 @@ set(TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG
     ${3RD_PARTY_PATH}/lodepng/lodepng.c
     )
 
+set(TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK
+    ${3RD_PARTY_PATH}/RectangleBinPack/Rect.h
+    ${3RD_PARTY_PATH}/RectangleBinPack/Rect.cpp
+    ${3RD_PARTY_PATH}/RectangleBinPack/GuillotineBinPack.h
+    ${3RD_PARTY_PATH}/RectangleBinPack/GuillotineBinPack.cpp
+    )
+
 set(TLOC_GRAPHICS_APPLICATION 
   )
 
@@ -113,6 +120,8 @@ set(TLOC_GRAPHICS_MEDIA
   media/tlocImageLoader.h 
   media/tlocObjLoader.h
   media/tlocObjLoader.cpp
+  media/tlocSprite.h
+  media/tlocSprite.cpp
   media/tlocSpriteInfo.h
   media/tlocSpriteInfo.cpp
   media/tlocSpriteLoader.h
@@ -258,6 +267,7 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_GLEW}
   ${TLOC_GRAPHICS_3RD_PARTY_GLEXT}
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
+  ${TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK}
   )
 
 add_dependencies(tlocGraphics
@@ -282,4 +292,5 @@ source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSIO
 source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
 source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
 source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
+source_group(3rd_party/RectBinPacking FILES ${TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK})
 

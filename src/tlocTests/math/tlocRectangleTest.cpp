@@ -23,15 +23,22 @@ namespace TestingRectangle
     CHECK(r.IsValid());
     CHECK(r.GetWidth() == Approx(1));
     CHECK(r.GetHeight() == Approx(1));
-    CHECK(r.GetPosition() == Vec2f(-0.5f, -0.5f));
+    CHECK(r.GetCenter() == Vec2f(-0.5f, -0.5f));
     CHECK(r.GetWidth() == Approx(1));
     CHECK(r.GetHeight() == Approx(1));
 
     r = Rectf();
     r.SetWidth(0.5f);
     r.SetHeight(5.0f);
+    CHECK(r.GetCenter() == Vec2f(0.25f, 2.5f));
     CHECK(r.GetWidth() == 0.5f);
     CHECK(r.GetHeight() == 5.0f);
+    CHECK(r.GetValue<Rectf::left>()   == Approx(0.0f));
+    CHECK(r.GetValue<Rectf::right>()  == Approx(0.5f));
+    CHECK(r.GetValue<Rectf::top>()    == Approx(5.0f));
+    CHECK(r.GetValue<Rectf::bottom>() == Approx(0.0f));
+
+    r.MakeOriginCenter();
     CHECK(r.GetValue<Rectf::left>()   == Approx(-0.25f));
     CHECK(r.GetValue<Rectf::right>()  == Approx(0.25f));
     CHECK(r.GetValue<Rectf::top>()    == Approx(2.5f));
@@ -41,10 +48,18 @@ namespace TestingRectangle
               Rectf::position(Vec2f(0.5f, 0.5f)) );
     CHECK(r.GetWidth() == 1.0f);
     CHECK(r.GetHeight() == 1.0f);
-    CHECK(r.GetValue<Rectf::left>()   == Approx(0.0f));
-    CHECK(r.GetValue<Rectf::right>()  == Approx(1.0f));
-    CHECK(r.GetValue<Rectf::top>()    == Approx(1.0f));
-    CHECK(r.GetValue<Rectf::bottom>() == Approx(0.0f));
+    CHECK(r.GetCenter() == Vec2f(1.0f, 1.0f));
+    CHECK(r.GetValue<Rectf::left>()   == Approx(0.5f));
+    CHECK(r.GetValue<Rectf::right>()  == Approx(1.5f));
+    CHECK(r.GetValue<Rectf::top>()    == Approx(1.5f));
+    CHECK(r.GetValue<Rectf::bottom>() == Approx(0.5f));
+
+    r.MakeOriginCenter();
+    CHECK(r.GetCenter() == Vec2f(0.0f, 0.0f));
+    CHECK(r.GetValue<Rectf::left>()   == Approx(-0.5f));
+    CHECK(r.GetValue<Rectf::right>()  == Approx(0.5f));
+    CHECK(r.GetValue<Rectf::top>()    == Approx(0.5f));
+    CHECK(r.GetValue<Rectf::bottom>() == Approx(-0.5f));
 
     r = Rectf(Rectf::point_type(1.0f, 2.0f),
               Rectf::point_type(2.0f, 4.0f));
@@ -54,6 +69,12 @@ namespace TestingRectangle
     CHECK(r.GetValue<Rectf::right>()  == Approx(2.0f));
     CHECK(r.GetValue<Rectf::top>()    == Approx(4.0f));
     CHECK(r.GetValue<Rectf::bottom>() == Approx(2.0f));
+
+    r.MakeOriginCenter();
+    CHECK(r.GetValue<Rectf::left>()   == Approx(-0.5f));
+    CHECK(r.GetValue<Rectf::right>()  == Approx(0.5f));
+    CHECK(r.GetValue<Rectf::top>()    == Approx(1.0f));
+    CHECK(r.GetValue<Rectf::bottom>() == Approx(-1.0f));
 
     r = Rectf();
     CHECK(r.GetValue<Rectf::left>()    == 0);
@@ -68,7 +89,7 @@ namespace TestingRectangle
     Rectf::point_type center;
     center[0] = 0;
     center[1] = 0;
-    CHECK((r.GetPosition() == center));
+    CHECK((r.GetCenter() == center));
 
     r = Rectf(Rectf::left(0), Rectf::right(2), Rectf::top(5), Rectf::bottom(0));
     CHECK(r.GetValue<Rectf::left>()    == 0);
@@ -86,7 +107,7 @@ namespace TestingRectangle
 
     center[0] = 1.0f;
     center[1] = 2.5f;
-    CHECK((r.GetPosition() == center));
+    CHECK((r.GetCenter() == center));
 
     CHECK(r.IsValid() == true);
 
@@ -102,7 +123,7 @@ namespace TestingRectangle
 
     center[0] = 4.5f;
     center[1] = 3.0f;
-    CHECK((r.GetPosition() == center));
+    CHECK((r.GetCenter() == center));
 
     r = Rectf(Rectf::left(0), Rectf::right(2), Rectf::top(5), Rectf::bottom(0) );
     CHECK(r.Contains(Vec2f(1, 1)) );
@@ -132,9 +153,9 @@ namespace TestingRectangle
     CHECK(r.GetWidth() == Approx(1));
     CHECK(r.GetHeight() == Approx(2));
 
-    center[0] = 0;
-    center[1] = 0;
-    CHECK((r.GetPosition() == center));
+    center[0] = 0.5f;
+    center[1] = 1.0f;
+    CHECK((r.GetCenter() == center));
 
     // assignemnt operator and swap
     Rectf s = Rectf(Rectf::width(5), Rectf::height(10));
@@ -142,29 +163,31 @@ namespace TestingRectangle
     r = s;
     CHECK(r.GetWidth() == Approx(5));
     CHECK(r.GetHeight() == Approx(10));
-    CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+    CHECK(r.GetCenter() == Rectf::point_type(7.5f, 14.0f));
 
     s = Rectf(Rectf::width(2), Rectf::height(3));
     s.SetPosition(Rectf::point_type(1, 8));
-    s.swap(r);
+    core::swap(s, r);
 
+    CHECK(s.GetPosition() == Vec2f(5, 9));
     CHECK(s.GetWidth() == Approx(5));
     CHECK(s.GetHeight() == Approx(10));
-    CHECK(s.GetPosition() == Rectf::point_type(5, 9));
+
+    CHECK(s.GetCenter() == Rectf::point_type(7.5f, 14.0f));
 
     CHECK(r.GetWidth() == Approx(2));
     CHECK(r.GetHeight() == Approx(3));
-    CHECK(r.GetPosition() == Rectf::point_type(1, 8));
+    CHECK(r.GetCenter() == Rectf::point_type(2.0f, 9.5));
 
-    swap(s, r);
+    core::swap(s, r);
 
     CHECK(r.GetWidth() == Approx(5));
     CHECK(r.GetHeight() == Approx(10));
-    CHECK(r.GetPosition() == Rectf::point_type(5, 9));
+    CHECK(r.GetCenter() == Rectf::point_type(7.5f, 14.0f));
 
     CHECK(s.GetWidth() == Approx(2));
     CHECK(s.GetHeight() == Approx(3));
-    CHECK(s.GetPosition() == Rectf::point_type(1, 8));
+    CHECK(s.GetCenter() == Rectf::point_type(2.0f, 9.5f));
 
     // different types
     Rectf32 r32;

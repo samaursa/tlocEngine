@@ -51,6 +51,14 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   Image::error_type
+    Image::
+    DoLoadFromImages(const image_ptr_cont& a_arrayOfImages)
+  {
+    TLOC_UNUSED(a_arrayOfImages);
+    return ErrorSuccess;
+  }
+
+  Image::error_type
     Image::Create(dimension_type a_dim, const color_type& a_color)
   {
     m_dim = a_dim;
@@ -76,10 +84,10 @@ namespace tloc { namespace graphics { namespace media {
 //------------------------------------------------------------------------
 // Explicitly instantiate the container
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 
 using namespace tloc::gfx_med;
 using namespace tloc::gfx_t;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Image);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Color);

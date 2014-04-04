@@ -13,6 +13,7 @@ set(TLOC_TESTS_GRAPHICS
   tlocShaderComponentTest.cpp
   tlocShaderOperatorTest.cpp
   tlocShaderProgramTest.cpp
+  tlocSpriteTest.cpp
   tlocSpriteLoaderTest.cpp
   tlocTestCommon.cpp
   tlocTextureCoordsTest.cpp

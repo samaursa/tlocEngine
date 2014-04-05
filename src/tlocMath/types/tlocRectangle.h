@@ -61,6 +61,8 @@ namespace tloc { namespace math { namespace types {
     RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b);
     RectangleBase_TI(const point_type& a_start, const point_type& a_end);
 
+    point_type  GetCenter() const;
+
     TLOC_DECL_AND_DEF_GETTER(point_type, GetPosition, m_position);
     TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
 
@@ -105,6 +107,8 @@ namespace tloc { namespace math { namespace types {
                       position a_pos = position( point_type( 0 ) ) );
     RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b);
     RectangleBase_TI(const point_type& a_start, const point_type& a_end);
+
+    point_type  GetCenter() const;
 
     TLOC_DECL_AND_DEF_GETTER(point_type, GetPosition, m_position);
     TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
@@ -179,6 +183,7 @@ namespace tloc { namespace math { namespace types {
     void        ResetPosition();
     void        Offset(const point_type& a_offsetBy);
 
+    using base_type::GetCenter;
     using base_type::GetPosition;
     using base_type::SetPosition;
     using base_type::GetDimensions;
@@ -199,10 +204,6 @@ namespace tloc { namespace math { namespace types {
 
     template <typename T_Side1, typename T_Side2>
     point_type  DoGetCoord() const;
-
-  private:
-    point_type    m_dimensions;
-    point_type    m_position;
   };
 
   //------------------------------------------------------------------------
@@ -212,8 +213,10 @@ namespace tloc { namespace math { namespace types {
   template <typename U, typename U_PositionPolicy>
   Rectangle_TI<T, T_PositionPolicy>::
     Rectangle_TI(const Rectangle_TI<U, U_PositionPolicy>& a_other)
-    : base_type(a_other.GetValue<left>(), a_other.GetValue<right>(),
-                a_other.GetValue<top>(), a_other.GetValue<bottom>())
+    : base_type( left( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::left>() ), 
+                 right( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::right>() ),
+                 top( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::top>() ), 
+                 bottom( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::bottom>() ) )
   { }
 
   template <typename T, typename T_PositionPolicy>
@@ -276,13 +279,10 @@ namespace tloc { namespace math { namespace types {
 
   public:
     Rectangle_T();
-    Rectangle_T(width a_w, height a_h,
-                position a_pos = position(point_type(0)),
-                make_center_origin = make_center_origin(false));
-    Rectangle_T(left a_l, right a_r, top a_t, bottom a_b,
-                make_center_origin = make_center_origin(false));
-    Rectangle_T(const point_type& a_start, const point_type& a_end,
-                make_center_origin = make_center_origin(false));
+    Rectangle_T( width a_w, height a_h,
+                 position a_pos = position( point_type(0) ) );
+    Rectangle_T( left a_l, right a_r, top a_t, bottom a_b );
+    Rectangle_T( const point_type& a_start, const point_type& a_end );
 
     template <typename U, typename U_PositionPolicy>
     Rectangle_T(const Rectangle_T<U, U_PositionPolicy>& a_other);
@@ -303,13 +303,11 @@ namespace tloc { namespace math { namespace types {
     using base_type::GetCoord_BottomLeft;
     using base_type::GetCoord_BottomRight;
 
+    using base_type::GetCenter;
     using base_type::SetPosition;
     using base_type::ResetPosition;
     using base_type::Offset;
     using base_type::GetPosition;
-
-    void        MakeOriginCenter();
-    point_type  GetCenter() const;
 
     using base_type::GetDimensions;
 

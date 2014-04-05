@@ -121,6 +121,18 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TYPE::point_type
+    RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    GetCenter() const
+  {
+    point_type dim = GetDimensions();
+    point_type pos = GetPosition();
+    return MakeTuple(dim[0] / 2 + pos[0], dim[1] / 2 + pos[1]);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
   TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TYPE::value_type
     RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
     DoGetValue(tl_int a_index) const
@@ -189,6 +201,16 @@ namespace tloc { namespace math { namespace types {
     , m_position( MakeTuple( (a_end[0] + a_start[0]) / 2,
                              (a_end[1] + a_start[1]) / 2 ) )
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_CENTER_TEMP>
+  TLOC_RECTANGLE_BASE_CENTER_TYPE::point_type
+    RectangleBase_TI<TLOC_RECTANGLE_BASE_CENTER_PARAMS>::
+    GetCenter() const
+  {
+    return GetPosition();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -401,60 +423,25 @@ namespace tloc { namespace math { namespace types {
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Rectangle_T(width a_w, height a_h, position a_pos, make_center_origin a_co)
+    Rectangle_T(width a_w, height a_h, position a_pos)
     : base_type(a_w, a_h, a_pos)
-  {
-    if (a_co) { MakeOriginCenter(); }
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Rectangle_T(left a_l, right a_r, top a_t, bottom a_b, make_center_origin a_co)
+    Rectangle_T(left a_l, right a_r, top a_t, bottom a_b)
     : base_type(a_l, a_r, a_t, a_b)
-  {
-    if (a_co) { MakeOriginCenter(); }
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TEMP>
   Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Rectangle_T(const point_type& a_start, const point_type& a_end,
-                make_center_origin a_co)
+    Rectangle_T(const point_type& a_start, const point_type& a_end)
     : base_type(a_start, a_end)
-  {
-    if (a_co) { MakeOriginCenter(); }
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TEMP>
-  void
-    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    MakeOriginCenter()
-  {
-    point_type pos = GetPosition();
-    point_type currCenter = GetCenter();
-
-    pos[0] -= currCenter[0];
-    pos[1] -= currCenter[1];
-
-    SetPosition(pos);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TEMP>
-  TLOC_RECTANGLE_TYPE::point_type
-    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    GetCenter() const
-  {
-    point_type dim = GetDimensions();
-    point_type pos = GetPosition();
-    return MakeTuple(dim[0] * 0.5f + pos[0], dim[1] * 0.5f + pos[1]);
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -560,6 +547,7 @@ namespace tloc { namespace math { namespace types {
   // Explicit initialization
 
 #define TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(_type_, _positionPolicy_)\
+  template class RectangleBase_TI<_type_, _positionPolicy_>;\
   template class Rectangle_TI<_type_, _positionPolicy_>;\
   template Rectangle_TI<_type_, _positionPolicy_>::point_type \
   Rectangle_TI<_type_, _positionPolicy_>::\

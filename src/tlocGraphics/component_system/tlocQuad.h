@@ -21,7 +21,9 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef Quad                                      this_type;
     typedef Component_T<this_type, components::quad>  base_type;
     typedef f32                                       real_type;
-    typedef math::types::Rectangle_T<real_type>       rect_type;
+    typedef math_t::Rectangle_T
+      <real_type, 
+       math_t::p_rectangle::position::Center>         rect_type;
 
   public:
     Quad();

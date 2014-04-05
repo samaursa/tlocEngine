@@ -40,7 +40,7 @@ namespace TestingRigidBodySystem
     typedef core_cs::entity_manager_vso         entity_manager_vso;
     typedef core_cs::Entity                     entity_type;
 
-    typedef math_t::Rectf32                     rect_shape_type;
+    typedef math_t::Rectf32_c                   rect_shape_type;
     typedef math_t::Circlef32                   circle_shape_type;
     typedef math_cs::Transform                  transform_type;
 

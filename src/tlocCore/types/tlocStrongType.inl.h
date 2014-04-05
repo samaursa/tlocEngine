@@ -119,4 +119,7 @@ namespace tloc { namespace core { namespace types {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(_type_, _index_)\
+  template class tloc::core_t::StrongType_T<_type_, _index_>
+
 #endif

@@ -15,8 +15,8 @@ namespace tloc { namespace prefab { namespace graphics {
     : public Prefab_I
   {
   public:
-    typedef Quad                  this_type;
-    typedef math_t::Rectf32       rect_type;
+    typedef Quad                    this_type;
+    typedef math_t::Rectf32_c       rect_type;
 
   public:
     Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)

@@ -14,7 +14,7 @@ namespace tloc { namespace graphics { namespace media {
   class Glyph
   {
   public:
-    typedef math_t::Rectf             tcoord_type;
+    typedef math_t::Rectf_bl          tcoord_type;
     typedef core_ds::Tuple2l          pos_type;
     typedef tl_long                   length_type;
 

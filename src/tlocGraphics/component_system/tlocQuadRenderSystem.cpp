@@ -78,7 +78,7 @@ namespace tloc { namespace graphics { namespace component_system {
       //------------------------------------------------------------------------
       // Prepare the Quad
 
-      typedef math::types::Rectf32    rect_type;
+      typedef math::types::Rectf32_c    rect_type;
       using math::types::Mat4f32;
       using math::types::Vec4f32;
 

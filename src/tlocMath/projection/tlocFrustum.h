@@ -119,9 +119,13 @@ namespace tloc { namespace math { namespace proj {
 
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
-    typedef math::types::Rectangle_T<real_type>         rect_type;
+
+    typedef math_t::Rectangle_T
+      <real_type, 
+       math_t::p_rectangle::position::Center>           rect_type;
+
     typedef types::Ray_T<real_type, 3>                  ray_type;
-    typedef math::types::Matrix4<real_type>             matrix_type;
+    typedef math_t::Matrix4<real_type>                  matrix_type;
 
     typedef types::FOV_T<real_type>                     fov_type;
     typedef types::AspectRatio_T<real_type>             ar_type;
@@ -217,7 +221,11 @@ namespace tloc { namespace math { namespace proj {
 
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
-    typedef math::types::Rectangle_T<real_type>         rect_type;
+
+    typedef math_t::Rectangle_T
+      <real_type, 
+       math_t::p_rectangle::position::Center>           rect_type;
+
     typedef tl_size                                     size_type;
     typedef types::Ray_T<real_type, 3>                  ray_type;
     typedef math::types::Matrix4<real_type>             matrix_type;

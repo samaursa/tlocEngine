@@ -46,6 +46,12 @@ namespace tloc { namespace graphics { namespace types {
     Color();
 
     template <typename T_ValueType>
+    Color(T_ValueType a_monoColor);
+
+    template <typename T_ValueType>
+    Color(T_ValueType a_monoColor, T_ValueType a_alpha);
+
+    template <typename T_ValueType>
     Color(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B, T_ValueType a_A);
 
     template <typename T_ValueType>
@@ -89,15 +95,15 @@ namespace tloc { namespace graphics { namespace types {
     value_type&       operator[](tl_int a_index);
     const value_type& operator[](tl_int a_index) const;
 
-    Color   operator + (const Color& a_other);
+    Color   operator + (const Color& a_other) const;
     Color&  operator +=(const Color& a_other);
-    Color   operator * (const Color& a_other);
+    Color   operator * (const Color& a_other) const;
     Color&  operator *=(const Color& a_other);
-    Color   operator - (const Color& a_other);
+    Color   operator - (const Color& a_other) const;
     Color&  operator -=(const Color& a_other);
 
-    bool    operator ==(const Color& a_other);
-    bool    operator !=(const Color& a_other);
+    bool    operator ==(const Color& a_other) const;
+    bool    operator !=(const Color& a_other) const;
 
     TLOC_DECL_AND_DEF_GETTER(container_type, Get, m_rgba);
 
@@ -119,17 +125,58 @@ namespace tloc { namespace graphics { namespace types {
     container_type      m_rgba;
   };
 
-  //--
+  // -----------------------------------------------------------------------
   // Template definitions
+
+  template <typename T_ValueType>
+  Color::
+    Color(T_ValueType a_monoColor)
+  {
+    type_traits::AssertTypeIsSupported
+      <T_ValueType,
+      u8, s32, s64, f32, f64>();
+
+    SetAs(a_monoColor, a_monoColor, a_monoColor, a_monoColor);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_ValueType>
+  Color::
+    Color(T_ValueType a_monoColor, T_ValueType a_alpha)
+  {
+    type_traits::AssertTypeIsSupported
+      <T_ValueType,
+      u8, s32, s64, f32, f64>();
+
+    SetAs(a_monoColor, a_monoColor, a_monoColor, a_alpha);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_ValueType>
+  Color::
+    Color(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B, T_ValueType a_A)
+  {
+    type_traits::AssertTypeIsSupported
+      <T_ValueType,
+      u8, s32, s64, f32, f64>();
+
+    SetAs(a_R, a_G, a_B, a_A);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_ValueType>
   void Color::SetAs(T_ValueType a_R, T_ValueType a_G, T_ValueType a_B,
                     T_ValueType a_A)
   {
-    TLOC_STATIC_ASSERT_IS_ARITH(T_ValueType);
+    type_traits::AssertTypeIsSupported
+      <T_ValueType,
+      u8, s32, s64, f32, f64>();
+
     DoSetAs(a_R, a_G, a_B, a_A);
   }
-
 
 };};};
 

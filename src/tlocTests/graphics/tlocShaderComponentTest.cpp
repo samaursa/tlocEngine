@@ -65,7 +65,7 @@ namespace TestingShaderComponent
       WindowSettings("Atom & Eve"));
 
     // Initialize renderer
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     {
       gl::VertexShader vs;
@@ -95,7 +95,7 @@ namespace TestingShaderComponent
                WindowSettings("Atom & Eve"));
 
     // Initialize renderer
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     // Load the files
     io::FileIO_ReadA vsFile = io::FileIO_ReadA( core_io::Path(g_vShaderPath) );

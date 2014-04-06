@@ -280,47 +280,11 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// Assertions
-
-#define Setfram(x) #x
-#define S_(x) Setfram(x)
-#define S__LINE__ S_(__LINE__)
-
-//````````````````````````````````````````````````````````````````````````
-// Run-time
-
-//#if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
-//
-//// Sometimes VS gives the warning C4127: conditional expression is constant. To
-//// circumvent that, TLOC_ASSERT for VS is slightly different.
-//#if defined(_MSC_VER)
-//  #define TLOC_ASSERT(_Expression, _Msg) \
-//  assert( (_Msg, _Expression) )
-//#else
-//  #define TLOC_ASSERT(_Expression, _Msg) \
-//  assert(_Expression && _Msg)
-//#endif
-//
-//// Use this macro when warning the user of a potential problem that the user may
-//// have overlooked. These can be safely disabled, i.e. the function guarantees
-//// it will work properly with these asserts disabled
-//#   ifndef TLOC_DISABLE_ASSERT_WARNINGS
-//#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " #_Msg)
-//#   else
-//#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
-//#   endif
-//
-//#else
-//#define TLOC_ASSERT(_Expression, _Msg)
-//#define TLOC_ASSERT_WARN(_Expression, _Msg)
-//#endif
-//
-//// Other common asserts
-//#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != nullptr, #_Pointer_ " cannot be NULL")
-//#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == nullptr, #_Pointer_ " should be NULL")
-
-//////////////////////////////////////////////////////////////////////////
 // Miscellaneous
+
+// Sometimes we have to pass templates in macros where commas don't work.
+// There we'll have to use this macro
+#define TLOC_COMMA() ,
 
 // Idea taken from WildMagic5
 // Avoid warnings about unused variables.  This is designed for variables

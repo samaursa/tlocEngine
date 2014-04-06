@@ -177,6 +177,14 @@ namespace tloc { namespace core { namespace data_structs {
   typedef Tuple<bool,     3>    Tuple3b;
   typedef Tuple<bool,     4>    Tuple4b;
 
+  typedef Tuple<tl_long,	2>    Tuple2l;
+  typedef Tuple<tl_long,	3>    Tuple3l;
+  typedef Tuple<tl_long,	4>    Tuple4l;
+
+  typedef Tuple<tl_ulong,	2>    Tuple2ul;
+  typedef Tuple<tl_ulong,	3>    Tuple3ul;
+  typedef Tuple<tl_ulong,	4>    Tuple4ul;
+
   // ///////////////////////////////////////////////////////////////////////
   // MakeTuple
 

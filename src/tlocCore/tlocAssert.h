@@ -30,6 +30,8 @@ namespace tloc { namespace core { namespace assert {
 #endif
 
 #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBINFO_DLL)
+  #define TLOC_ASSERTS_DEFINED 1 
+
   #define TLOC_ASSERT(_Expression, _Msg) \
   do {\
     if (!(_Expression))\
@@ -43,6 +45,8 @@ namespace tloc { namespace core { namespace assert {
     TLOC_ASSERT(_Expression, _Msg)
 
 #else
+  #define TLOC_ASSERTS_DEFINED 0 
+
   #define TLOC_ASSERT(_Expression, _Msg) 
   #define TLOC_ASSERT_WARN(_Expression, _Msg) 
 

@@ -25,6 +25,13 @@ namespace tloc
 
     typedef T1 param_type_1;
 
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1)
+      : m_param1(p1)
+    { }
+
     param_type_1 m_param1;
   };
 
@@ -35,6 +42,14 @@ namespace tloc
 
     typedef T1 param_type_1;
     typedef T2 param_type_2;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2)
+      : m_param1(p1)
+      , m_param2(p2)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -48,6 +63,15 @@ namespace tloc
     typedef T1 param_type_1;
     typedef T2 param_type_2;
     typedef T3 param_type_3;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -63,6 +87,17 @@ namespace tloc
     typedef T2 param_type_2;
     typedef T3 param_type_3;
     typedef T4 param_type_4;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -80,6 +115,18 @@ namespace tloc
     typedef T3 param_type_3;
     typedef T4 param_type_4;
     typedef T5 param_type_5;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -99,6 +146,19 @@ namespace tloc
     typedef T4 param_type_4;
     typedef T5 param_type_5;
     typedef T6 param_type_6;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -121,6 +181,21 @@ namespace tloc
     typedef T5 param_type_5;
     typedef T6 param_type_6;
     typedef T7 param_type_7;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -145,6 +220,22 @@ namespace tloc
     typedef T6 param_type_6;
     typedef T7 param_type_7;
     typedef T8 param_type_8;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7, param_type_8 p8)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+      , m_param8(p8)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -171,6 +262,23 @@ namespace tloc
     typedef T7 param_type_7;
     typedef T8 param_type_8;
     typedef T9 param_type_9;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7, param_type_8 p8, param_type_9 p9)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+      , m_param8(p8)
+      , m_param9(p9)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -199,6 +307,25 @@ namespace tloc
     typedef T8  param_type_8;
     typedef T9  param_type_9;
     typedef T10 param_type_10;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7, param_type_8 p8, param_type_9 p9,
+              param_type_10 p10)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+      , m_param8(p8)
+      , m_param9(p9)
+      , m_param10(p10)
+    { }
 
     param_type_1    m_param1;
     param_type_2    m_param2;

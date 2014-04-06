@@ -396,6 +396,41 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TI_TEMP>
+  bool
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Intersects(const this_type& a_other) const
+  {
+    this_type temp;
+    return Intersects(a_other, temp);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  bool
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Intersects(const this_type& a_other, this_type& a_overlapOut) const
+  {
+    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
+
+    using namespace core;
+
+    left    overL(tlMax(GetValue<left>()  , a_other.GetValue<left>()));
+    right   overR(tlMin(GetValue<right>() , a_other.GetValue<right>()));
+    top     overT(tlMin(GetValue<top>()   , a_other.GetValue<top>()));
+    bottom  overB(tlMax(GetValue<bottom>(), a_other.GetValue<bottom>()));
+
+    a_overlapOut = this_type(overL, overR, overT, overB);
+
+    if (a_overlapOut.IsValid())
+    { return true; }
+    else
+    { return false; }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
   template <typename T_Side1, typename T_Side2>
   TLOC_RECTANGLE_TI_TYPE::point_type
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
@@ -442,41 +477,6 @@ namespace tloc { namespace math { namespace types {
     Rectangle_T(const point_type& a_start, const point_type& a_end)
     : base_type(a_start, a_end)
   { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TEMP>
-  bool
-    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Intersects(const this_type& a_other) const
-  {
-    this_type temp;
-    return Intersects(a_other, temp);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_RECTANGLE_TEMP>
-  bool
-    Rectangle_T<TLOC_RECTANGLE_PARAMS>::
-    Intersects(const this_type& a_other, this_type& a_overlapOut) const
-  {
-    TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
-
-    using namespace core;
-
-    left    overL(tlMax(GetValue<left>()  , a_other.GetValue<left>()));
-    right   overR(tlMin(GetValue<right>() , a_other.GetValue<right>()));
-    top     overT(tlMin(GetValue<top>()   , a_other.GetValue<top>()));
-    bottom  overB(tlMax(GetValue<bottom>(), a_other.GetValue<bottom>()));
-
-    a_overlapOut = Rectangle_T(overL, overR, overT, overB);
-
-    if (a_overlapOut.IsValid())
-    { return true; }
-    else
-    { return false; }
-  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

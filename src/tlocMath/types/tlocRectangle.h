@@ -180,6 +180,7 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCoord_BottomLeft() const;
     point_type  GetCoord_BottomRight() const;
 
+
     void        ResetPosition();
     void        Offset(const point_type& a_offsetBy);
 
@@ -198,6 +199,10 @@ namespace tloc { namespace math { namespace types {
     bool        IsValid() const;
 
     bool        Contains(const point_type& a_xyPoint);
+
+    bool        Intersects(const this_type& a_other) const;
+    bool        Intersects(const this_type& a_other,
+                           this_type& a_overlapOut) const;
 
   private:
     using base_type::DoGetValue;
@@ -315,10 +320,8 @@ namespace tloc { namespace math { namespace types {
 
     using base_type::IsValid;
     using base_type::Contains;
+    using base_type::Intersects;
 
-    bool        Intersects(const this_type& a_other) const;
-    bool        Intersects(const this_type& a_other,
-                           this_type& a_overlapOut) const;
     bool        Intersects(const ray_2d_type& a_ray) const;
     intersect_ret_type
                 Intersects(const ray_3d_type& a_ray,

@@ -111,20 +111,6 @@ namespace TestingRectangle
       CHECK_FALSE( r.Contains( Vec2f( -1, 2 ) ) );
       CHECK_FALSE( r.Contains( Vec2f( 1, -1 ) ) );
 
-      r = Rectf( Rectf::left( 0 ), Rectf::right( 2 ), Rectf::top( 5 ), Rectf::bottom( 0 ) );
-      {
-        Rectf inter( Rectf::left( 1 ), Rectf::right( 2 ), Rectf::top( 4 ), Rectf::bottom( 1 ) );
-        CHECK( r.Intersects( inter ) );
-
-        Rectf interRet;
-        CHECK( r.Intersects( inter, interRet ) );
-      }
-
-      {
-        Rectf inter( Rectf::left( -1 ), Rectf::right( 0 ), Rectf::top( 0 ), Rectf::bottom( -1 ) );
-        CHECK_FALSE( r.Intersects( inter ) );
-      }
-
       r = Rectf( Rectf::width( 1 ), Rectf::height( 2 ) );
       CHECK( r.GetWidth() == Approx( 1 ) );
       CHECK( r.GetHeight() == Approx( 2 ) );
@@ -316,20 +302,50 @@ namespace TestingRectangle
     }
   }
 
+  template <typename T_RectangleType>
+  void TestIntersection()
+  {
+    typedef T_RectangleType                        Rectf;
+
+    Rectf r = Rectf(Rectf::left(0), Rectf::right(2),
+                    Rectf::top(5), Rectf::bottom(0));
+    {
+      Rectf inter(Rectf::left(1), Rectf::right(2),
+                  Rectf::top(4), Rectf::bottom(1));
+      CHECK(r.Intersects(inter));
+
+      Rectf interRet;
+      CHECK(r.Intersects(inter, interRet));
+    }
+
+    {
+      Rectf inter(Rectf::left(-1), Rectf::right(0),
+                  Rectf::top(0), Rectf::bottom(-1));
+      CHECK_FALSE(r.Intersects(inter));
+    }
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/Intersects", "With other rectangles")
+  {
+    TestIntersection<Rects32_bl>();
+    TestIntersection<Rectf32_c>();
+    TestIntersection<Rectf32_bl>();
+  }
+
   TEST_CASE("Graphics/types/Rectangle/GetCoord", "")
   {
     typedef Rectf_c Rectf;
 
     Rectf r = Rectf(Rectf::width(1), Rectf::height(2));
-    CHECK_TUP( ( r.GetCoord<Rectf::top, Rectf::left>() ), Vec2f( -0.5f, 1.0f ) );
-    CHECK_TUP( ( r.GetCoord<Rectf::top, Rectf::right>() ), Vec2f( 0.5f, 1.0f ) );
-    CHECK_TUP( ( r.GetCoord<Rectf::bottom, Rectf::left>() ), Vec2f( -0.5f, -1.0f ) );
-    CHECK_TUP( ( r.GetCoord<Rectf::bottom, Rectf::right>() ), Vec2f( 0.5f, -1.0f ) );
+    CHECK_TUP(( r.GetCoord<Rectf::top, Rectf::left>() ), Vec2f(-0.5f, 1.0f));
+    CHECK_TUP(( r.GetCoord<Rectf::top, Rectf::right>() ), Vec2f(0.5f, 1.0f));
+    CHECK_TUP(( r.GetCoord<Rectf::bottom, Rectf::left>() ), Vec2f(-0.5f, -1.0f));
+    CHECK_TUP(( r.GetCoord<Rectf::bottom, Rectf::right>() ), Vec2f(0.5f, -1.0f));
 
-    CHECK_TUP( ( r.GetCoord_TopLeft() ), Vec2f( -0.5f, 1.0f ) );
-    CHECK_TUP( ( r.GetCoord_TopRight() ), Vec2f( 0.5f, 1.0f ) );
-    CHECK_TUP( ( r.GetCoord_BottomLeft() ), Vec2f( -0.5f, -1.0f ) );
-    CHECK_TUP( ( r.GetCoord_BottomRight() ), Vec2f( 0.5f, -1.0f ) );
+    CHECK_TUP(( r.GetCoord_TopLeft() ), Vec2f(-0.5f, 1.0f));
+    CHECK_TUP(( r.GetCoord_TopRight() ), Vec2f(0.5f, 1.0f));
+    CHECK_TUP(( r.GetCoord_BottomLeft() ), Vec2f(-0.5f, -1.0f));
+    CHECK_TUP(( r.GetCoord_BottomRight() ), Vec2f(0.5f, -1.0f));
   }
 
   TEST_CASE("Graphics/types/Rectangle/RayIntersection_2d", "")

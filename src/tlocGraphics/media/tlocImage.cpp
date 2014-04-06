@@ -2,7 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -21,7 +20,7 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   Image::error_type
-    Image::LoadFromMemory(const uchar8* a_buffer, dimension_type a_dim,
+    Image::LoadFromMemory(const_uchar8_ptr a_buffer, dimension_type a_dim,
                           size_type a_channels)
   {
     if ( (a_buffer == nullptr) || a_dim[0] == 0 || a_dim[1] == 0 ||
@@ -32,11 +31,30 @@ namespace tloc { namespace graphics { namespace media {
     TLOC_ASSERT( ((a_channels % sizeof(color_type)) == 0),
       "The buffer has an invalid size!");
 
-    const color_type* buffer = reinterpret_cast<const color_type*>(a_buffer);
+    const color_type* buffer = reinterpret_cast<const color_type*>(a_buffer.get());
     m_pixels.assign(buffer, buffer + (a_dim[0] * a_dim[1]));
 
     m_dim = a_dim;
 
+    return ErrorSuccess;
+  }
+
+  Image::error_type
+    Image::
+    LoadFromMemory(const pixel_container_type& a_buffer, dimension_type a_dim)
+  {
+    TLOC_ASSERT( (a_dim[0] * a_dim[1]) == a_buffer.size(),
+      "Invalid buffer size wrt image dimensions");
+    m_pixels = a_buffer;
+    m_dim = a_dim;
+    return ErrorSuccess;
+  }
+
+  Image::error_type
+    Image::
+    DoLoadFromImages(const image_ptr_cont& a_arrayOfImages)
+  {
+    TLOC_UNUSED(a_arrayOfImages);
     return ErrorSuccess;
   }
 
@@ -66,8 +84,10 @@ namespace tloc { namespace graphics { namespace media {
 //------------------------------------------------------------------------
 // Explicitly instantiate the container
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_med;
 using namespace tloc::gfx_t;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Image);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Image);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Color);

@@ -109,7 +109,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
@@ -424,7 +424,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr2) == ErrorSuccess);
@@ -657,7 +657,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr3) == ErrorSuccess);
@@ -911,7 +911,7 @@ namespace TestingShaderOperator
                WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader  vShader;
     REQUIRE(vShader.Load(vShaderStr4) == ErrorSuccess);

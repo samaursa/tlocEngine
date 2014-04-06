@@ -17,10 +17,12 @@ struct RectSize
 
 struct Rect
 {
-	int x;
-	int y;
-	int width;
-	int height;
+	int   x;
+	int   y;
+	int   width;
+	int   height;
+  int   index; // user-trackable index
+  bool  isFlipped;
 };
 
 /// Performs a lexicographic compare on (rect short side, rect long side).

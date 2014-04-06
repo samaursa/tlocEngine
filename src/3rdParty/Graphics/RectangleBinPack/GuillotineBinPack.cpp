@@ -125,9 +125,13 @@ void GuillotineBinPack::Insert(tloc::core_conts::Array<RectSize> &rects, bool me
 		newNode.y = freeRectangles[bestFreeRect].y;
 		newNode.width = rects[bestRect].width;
 		newNode.height = rects[bestRect].height;
+    newNode.isFlipped = false;
 
 		if (bestFlipped)
+    {
 			tloc::core::swap(newNode.width, newNode.height);
+      newNode.isFlipped = true;
+    }
 
 		// Remove the free space we lost in the bin.
 		SplitFreeRectByHeuristic(freeRectangles[bestFreeRect], newNode, splitMethod);

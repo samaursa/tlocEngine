@@ -338,7 +338,7 @@ namespace tloc { namespace math {
     value_type absDiff = math::Abs<value_type>(a_end - a_begin);
     value_type remainder = math::Remainder(absDiff, m_stepSize);
 
-    if (math::Approx(remainder, (value_type)0) == false)
+    if (math::IsEqual(remainder, (value_type)0) == false)
     { m_elementCount++; }
   }
 

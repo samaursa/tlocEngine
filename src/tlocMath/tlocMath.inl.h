@@ -251,8 +251,7 @@ namespace tloc {
 
         tl_size multi = 1;
         T num2Res = a_num2;
-        while (num2Res < a_num1 ||
-               Approx(num2Res, a_num1))
+        while (num2Res < a_num1 || IsEqual(num2Res, a_num1))
         {
           ++multi;
           num2Res = a_num2 * multi;
@@ -323,14 +322,17 @@ namespace tloc {
     }
 
     template <typename T>
-    bool Approx(T a_num1, T a_num2)
+    bool Approx(T a_num1, T a_num2, T eps)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
       typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
 
-      return priv::DoApprox(a_num1, a_num2, Epsilon<T>(), float_or_not());
+      return priv::DoApprox(a_num1, a_num2, eps, float_or_not());
     }
 
+    template <typename T>
+    bool IsEqual(T a_num1, T a_num2)
+    { return Approx(a_num1, a_num2, Epsilon<T>()); }
   };
 
 };

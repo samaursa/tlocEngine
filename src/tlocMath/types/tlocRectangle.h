@@ -71,6 +71,8 @@ namespace tloc { namespace math { namespace types {
   protected:
     value_type   DoGetValue(tl_int a_index) const;
 
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, DoSetDimensions, m_dimensions);
+
   protected:
     point_type    m_dimensions;
     point_type    m_position;
@@ -118,6 +120,8 @@ namespace tloc { namespace math { namespace types {
   protected:
     value_type   DoGetValue(tl_int a_index) const;
 
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, DoSetDimensions, m_dimensions);
+
   protected:
     point_type    m_dimensions;
     point_type    m_position;
@@ -143,14 +147,14 @@ namespace tloc { namespace math { namespace types {
 
     typedef core_ds::Tuple<value_type, 2>           point_type;
 
-    typedef core::types::StrongType_T<value_type, 0>   width;
-    typedef core::types::StrongType_T<value_type, 1>   height;
-    typedef core::types::StrongType_T<value_type, 2>   left;
-    typedef core::types::StrongType_T<value_type, 3>   right;
-    typedef core::types::StrongType_T<value_type, 4>   top;
-    typedef core::types::StrongType_T<value_type, 5>   bottom;
+    typedef core::types::StrongType_T<value_type, 0>    width;
+    typedef core::types::StrongType_T<value_type, 1>    height;
+    typedef core::types::StrongType_T<value_type, 2>    left;
+    typedef core::types::StrongType_T<value_type, 3>    right;
+    typedef core::types::StrongType_T<value_type, 4>    top;
+    typedef core::types::StrongType_T<value_type, 5>    bottom;
 
-    typedef core::types::StrongType_T<point_type, 0>  position;
+    typedef core::types::StrongType_T<point_type, 0>    position;
 
   public:
     Rectangle_TI();
@@ -180,9 +184,9 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCoord_BottomLeft() const;
     point_type  GetCoord_BottomRight() const;
 
-
     void        ResetPosition();
     void        Offset(const point_type& a_offsetBy);
+    void        Flip();
 
     using base_type::GetCenter;
     using base_type::GetPosition;
@@ -199,6 +203,8 @@ namespace tloc { namespace math { namespace types {
     bool        IsValid() const;
 
     bool        Contains(const point_type& a_xyPoint);
+    bool        Contains(const this_type& a_other) const;
+    bool        Fits(const this_type& a_other) const;
 
     bool        Intersects(const this_type& a_other) const;
     bool        Intersects(const this_type& a_other,

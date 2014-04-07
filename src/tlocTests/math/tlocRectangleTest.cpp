@@ -14,6 +14,8 @@ namespace TestingRectangle
   using namespace tloc;
   using namespace tloc::math::types;
 
+  using core_ds::MakeTuple;
+
   TEST_CASE("Graphics/types/Rectangle/Size", "")
   {
     CHECK(sizeof(Rectf32_bl) == sizeof(Rectf32_bl::point_type)*2 );
@@ -91,7 +93,7 @@ namespace TestingRectangle
       CHECK( r.IsValid() == true );
 
       r = Rectf( Rectf::left( 0 ), Rectf::right( 5 ), Rectf::top( 2 ), Rectf::bottom( 0 ) );
-      r.Offset( Vec2f( 2, 2 ) );
+      r.MakeOffset( Vec2f( 2, 2 ) );
       CHECK( r.GetValue<Rectf::left>() == 2 );
       CHECK( r.GetValue<Rectf::right>() == 7 );
       CHECK( r.GetValue<Rectf::top>() == 4 );
@@ -124,35 +126,35 @@ namespace TestingRectangle
 
       // assignment operator and swap
       Rectf s = Rectf( Rectf::width( 5 ), Rectf::height( 10 ) );
-      s.SetPosition( Rectf::point_type( 5, 9 ) );
+      s.SetPosition( MakeTuple( 5.0f, 9.0f ) );
       r = s;
       CHECK( r.GetWidth() == Approx( 5 ) );
       CHECK( r.GetHeight() == Approx( 10 ) );
-      CHECK( r.GetCenter() == Rectf::point_type( 7.5f, 14.0f ) );
+      CHECK( r.GetCenter() == MakeTuple( 7.5f, 14.0f ) );
 
       s = Rectf( Rectf::width( 2 ), Rectf::height( 3 ) );
-      s.SetPosition( Rectf::point_type( 1, 8 ) );
+      s.SetPosition( MakeTuple( 1.0f, 8.0f ) );
       core::swap( s, r );
 
       CHECK( s.GetPosition() == Vec2f( 5, 9 ) );
       CHECK( s.GetWidth() == Approx( 5 ) );
       CHECK( s.GetHeight() == Approx( 10 ) );
 
-      CHECK( s.GetCenter() == Rectf::point_type( 7.5f, 14.0f ) );
+      CHECK( s.GetCenter() == MakeTuple( 7.5f, 14.0f ) );
 
       CHECK( r.GetWidth() == Approx( 2 ) );
       CHECK( r.GetHeight() == Approx( 3 ) );
-      CHECK( r.GetCenter() == Rectf::point_type( 2.0f, 9.5 ) );
+      CHECK( r.GetCenter() == MakeTuple( 2.0f, 9.5f ) );
 
       core::swap( s, r );
 
       CHECK( r.GetWidth() == Approx( 5 ) );
       CHECK( r.GetHeight() == Approx( 10 ) );
-      CHECK( r.GetCenter() == Rectf::point_type( 7.5f, 14.0f ) );
+      CHECK( r.GetCenter() == MakeTuple( 7.5f, 14.0f ) );
 
       CHECK( s.GetWidth() == Approx( 2 ) );
       CHECK( s.GetHeight() == Approx( 3 ) );
-      CHECK( s.GetCenter() == Rectf::point_type( 2.0f, 9.5f ) );
+      CHECK( s.GetCenter() == MakeTuple( 2.0f, 9.5f ) );
 
       // different types
       Rectf32_bl r32;
@@ -222,7 +224,7 @@ namespace TestingRectangle
       CHECK( r.IsValid() == true );
 
       r = Rectf( Rectf::left( 0 ), Rectf::right( 5 ), Rectf::top( 2 ), Rectf::bottom( 0 ) );
-      r.Offset( Vec2f( 2, 2 ) );
+      r.MakeOffset( Vec2f( 2, 2 ) );
       CHECK( r.GetValue<Rectf::left>() == 2 );
       CHECK( r.GetValue<Rectf::right>() == 7 );
       CHECK( r.GetValue<Rectf::top>() == 4 );
@@ -269,35 +271,35 @@ namespace TestingRectangle
 
       // assignment operator and swap
       Rectf s = Rectf( Rectf::width( 5 ), Rectf::height( 10 ) );
-      s.SetPosition( Rectf::point_type( 5, 9 ) );
+      s.SetPosition( MakeTuple(5.0f, 9.0f) );
       r = s;
       CHECK( r.GetWidth() == Approx( 5 ) );
       CHECK( r.GetHeight() == Approx( 10 ) );
-      CHECK_TUP( r.GetCenter(), Rectf::point_type( 5.0f, 9.0f ) );
+      CHECK_TUP( r.GetCenter(), MakeTuple( 5.0f, 9.0f ) );
 
       s = Rectf( Rectf::width( 2 ), Rectf::height( 3 ) );
-      s.SetPosition( Rectf::point_type( 1, 8 ) );
+      s.SetPosition( MakeTuple( 1.0f, 8.0f) );
       core::swap( s, r );
 
       CHECK_TUP( s.GetPosition(), Vec2f( 5, 9 ) );
       CHECK( s.GetWidth() == Approx( 5 ) );
       CHECK( s.GetHeight() == Approx( 10 ) );
 
-      CHECK_TUP( s.GetCenter(), Rectf::point_type( 5.0f, 9.0f ) );
+      CHECK_TUP( s.GetCenter(), MakeTuple( 5.0f, 9.0f ) );
 
       CHECK( r.GetWidth() == Approx( 2 ) );
       CHECK( r.GetHeight() == Approx( 3 ) );
-      CHECK_TUP( r.GetCenter(), Rectf::point_type( 1.0f, 8.0f ) );
+      CHECK_TUP( r.GetCenter(), MakeTuple( 1.0f, 8.0f ) );
 
       core::swap( s, r );
 
       CHECK( r.GetWidth() == Approx( 5 ) );
       CHECK( r.GetHeight() == Approx( 10 ) );
-      CHECK_TUP( r.GetCenter(), Rectf::point_type( 5.0f, 9.0f ) );
+      CHECK_TUP( r.GetCenter(), MakeTuple( 5.0f, 9.0f ) );
 
       CHECK( s.GetWidth() == Approx( 2 ) );
       CHECK( s.GetHeight() == Approx( 3 ) );
-      CHECK_TUP( s.GetCenter(), Rectf::point_type( 1.0f, 8.0f ) );
+      CHECK_TUP( s.GetCenter(), MakeTuple( 1.0f, 8.0f ) );
 
       // different types
       Rectf32_c r32;
@@ -371,15 +373,15 @@ namespace TestingRectangle
     CHECK(r.Contains(r4));
     CHECK(r.Contains(r5));
 
-    r4.Offset(point_type( core_ds::MakeTuple(vt(-2), vt(-2)) ));
-    r5.Offset(point_type( core_ds::MakeTuple(vt(-1), vt(0)) ));
+    r4.MakeOffset(point_type( core_ds::MakeTuple(vt(-2), vt(-2)) ));
+    r5.MakeOffset(point_type( core_ds::MakeTuple(vt(-1), vt(0)) ));
     CHECK_FALSE(r.Contains(r4));
     CHECK_FALSE(r.Contains(r5));
 
-    r5.Offset(point_type( core_ds::MakeTuple(vt(1), vt(0)) ));
+    r5.MakeOffset(point_type( core_ds::MakeTuple(vt(1), vt(0)) ));
     CHECK(r.Contains(r5));
 
-    r5.Offset(point_type( core_ds::MakeTuple(vt(0), vt(1)) ));
+    r5.MakeOffset(point_type( core_ds::MakeTuple(vt(0), vt(1)) ));
     CHECK_FALSE(r.Contains(r5));
   }
 
@@ -388,6 +390,51 @@ namespace TestingRectangle
     TestContains<Rects32_bl>();
     TestContains<Rectf32_c>();
     TestContains<Rectf32_bl>();
+  }
+
+  template <typename T_RectangleType>
+  void TestFlipCenter()
+  {
+    typedef T_RectangleType                          rect_type;
+
+    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
+                            rect_type::top(6), rect_type::bottom(0));
+    r.MakeFlip();
+
+    CHECK_TUP(r.GetCoord_TopLeft(), MakeTuple(-1, 5));
+    CHECK_TUP(r.GetCoord_TopRight(), MakeTuple(5, 5));
+    CHECK_TUP(r.GetCoord_BottomRight(), MakeTuple(5, 1));
+    CHECK_TUP(r.GetCoord_BottomLeft(), MakeTuple(-1, 1));
+  }
+
+  template <typename T_RectangleType>
+  void TestFlipBottomLeft()
+  {
+    typedef T_RectangleType                          rect_type;
+
+    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
+                            rect_type::top(5), rect_type::bottom(0));
+    r.MakeFlip();
+
+    CHECK_TUP(r.GetCoord_TopLeft(), MakeTuple(0, 4));
+    CHECK_TUP(r.GetCoord_TopRight(), MakeTuple(5, 4));
+    CHECK_TUP(r.GetCoord_BottomRight(), MakeTuple(5, 0));
+    CHECK_TUP(r.GetCoord_BottomLeft(), MakeTuple(0, 0));
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/Flip", "Other rectangles")
+  {
+    SECTION("Rectangle int, center position", "")
+    {
+      TestFlipCenter<Rectf_c>();
+      TestFlipCenter<Rects_c>();
+    }
+
+    SECTION("Rectangle int, center position", "")
+    {
+      TestFlipBottomLeft<Rectf_bl>();
+      TestFlipBottomLeft<Rects_bl>();
+    }
   }
 
   template <typename T_RectangleType>

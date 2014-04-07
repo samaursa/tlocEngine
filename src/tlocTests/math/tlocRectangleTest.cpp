@@ -303,6 +303,91 @@ namespace TestingRectangle
   }
 
   template <typename T_RectangleType>
+  void TestFits()
+  {
+    typedef T_RectangleType                           rect_type;
+    typedef typename rect_type::point_type            point_type;
+    typedef typename point_type::value_type           vt;
+
+    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
+                            rect_type::top(5), rect_type::bottom(0));
+
+    rect_type r2 = rect_type(rect_type::left(-1), rect_type::right(2),
+                             rect_type::top(4), rect_type::bottom(1));
+
+    rect_type r3 = rect_type(rect_type::left(1), rect_type::right(2),
+                             rect_type::top(6), rect_type::bottom(3));
+
+    rect_type r4 = rect_type(rect_type::left(1), rect_type::right(2),
+                             rect_type::top(4), rect_type::bottom(1));
+
+    rect_type r5 = rect_type(rect_type::left(0), rect_type::right(5),
+                             rect_type::top(5), rect_type::bottom(0));
+
+    rect_type r6 = rect_type(rect_type::left(0), rect_type::right(4),
+                             rect_type::top(5), rect_type::bottom(-1));
+
+    CHECK(r.Fits(r));
+    CHECK(r.Fits(r2));
+    CHECK(r.Fits(r3));
+    CHECK(r.Fits(r4));
+    CHECK_FALSE(r.Fits(r5));
+    CHECK_FALSE(r.Fits(r6));
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/Fits", "Other rectangles")
+  {
+    TestFits<Rects32_bl>();
+    TestFits<Rectf32_c>();
+    TestFits<Rectf32_bl>();
+  }
+
+  template <typename T_RectangleType>
+  void TestContains()
+  {
+    typedef T_RectangleType                           rect_type;
+    typedef typename rect_type::point_type            point_type;
+    typedef typename point_type::value_type           vt;
+
+    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
+                            rect_type::top(5), rect_type::bottom(0));
+
+    rect_type r2 = rect_type(rect_type::left(-1), rect_type::right(2),
+                             rect_type::top(4), rect_type::bottom(1));
+
+    rect_type r3 = rect_type(rect_type::left(1), rect_type::right(2),
+                             rect_type::top(6), rect_type::bottom(3));
+
+    rect_type r4 = rect_type(rect_type::left(1), rect_type::right(2),
+                             rect_type::top(4), rect_type::bottom(1));
+
+    rect_type r5(r);
+
+    CHECK_FALSE(r.Contains(r2));
+    CHECK_FALSE(r.Contains(r3));
+    CHECK(r.Contains(r4));
+    CHECK(r.Contains(r5));
+
+    r4.Offset(point_type( core_ds::MakeTuple(vt(-2), vt(-2)) ));
+    r5.Offset(point_type( core_ds::MakeTuple(vt(-1), vt(0)) ));
+    CHECK_FALSE(r.Contains(r4));
+    CHECK_FALSE(r.Contains(r5));
+
+    r5.Offset(point_type( core_ds::MakeTuple(vt(1), vt(0)) ));
+    CHECK(r.Contains(r5));
+
+    r5.Offset(point_type( core_ds::MakeTuple(vt(0), vt(1)) ));
+    CHECK_FALSE(r.Contains(r5));
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/Contains", "Other rectangles")
+  {
+    TestContains<Rects32_bl>();
+    TestContains<Rectf32_c>();
+    TestContains<Rectf32_bl>();
+  }
+
+  template <typename T_RectangleType>
   void TestIntersection()
   {
     typedef T_RectangleType                        Rectf;

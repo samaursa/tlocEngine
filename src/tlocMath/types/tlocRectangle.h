@@ -3,6 +3,8 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypeTraits.h>
@@ -44,6 +46,7 @@ namespace tloc { namespace math { namespace types {
                              position_policy>           this_type;
 
     typedef core_ds::Tuple<value_type, 2>               point_type;
+    typedef point_type                                  dim_type;
 
     typedef core::types::StrongType_T<value_type, 0>    width;
     typedef core::types::StrongType_T<value_type, 1>    height;
@@ -64,17 +67,15 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCenter() const;
 
     TLOC_DECL_AND_DEF_GETTER(point_type, GetPosition, m_position);
-    TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+    TLOC_DECL_AND_DEF_GETTER(dim_type, GetDimensions, m_dimensions);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, SetPosition, m_position);
 
   protected:
     value_type   DoGetValue(tl_int a_index) const;
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, DoSetDimensions, m_dimensions);
-
   protected:
-    point_type    m_dimensions;
+    dim_type      m_dimensions;
     point_type    m_position;
   };
 
@@ -92,7 +93,9 @@ namespace tloc { namespace math { namespace types {
     typedef p_rectangle::position::Center               position_policy;
     typedef RectangleBase_TI<value_type,
                              position_policy>           this_type;
+
     typedef core_ds::Tuple<value_type, 2>               point_type;
+    typedef point_type                                  dim_type;
 
     typedef core::types::StrongType_T<value_type, 0>    width;
     typedef core::types::StrongType_T<value_type, 1>    height;
@@ -113,17 +116,15 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCenter() const;
 
     TLOC_DECL_AND_DEF_GETTER(point_type, GetPosition, m_position);
-    TLOC_DECL_AND_DEF_GETTER(point_type, GetDimensions, m_dimensions);
+    TLOC_DECL_AND_DEF_GETTER(dim_type, GetDimensions, m_dimensions);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, SetPosition, m_position);
 
   protected:
     value_type   DoGetValue(tl_int a_index) const;
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(point_type, DoSetDimensions, m_dimensions);
-
   protected:
-    point_type    m_dimensions;
+    dim_type      m_dimensions;
     point_type    m_position;
   };
 
@@ -186,8 +187,12 @@ namespace tloc { namespace math { namespace types {
     point_type  GetCoord_BottomRight() const;
 
     void        ResetPosition();
-    void        Offset(const point_type& a_offsetBy);
-    void        Flip();
+
+    void        MakeOffset(const point_type& a_offsetBy);
+    void        MakeFlip();
+
+    this_type   Offset(const point_type& a_offsetBy);
+    this_type   Flip();
 
     using base_type::GetCenter;
     using base_type::GetPosition;
@@ -275,8 +280,8 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::top                 top;
     typedef typename base_type::bottom              bottom;
     typedef typename base_type::position            position;
+    typedef typename base_type::point_type          point_type;
 
-    typedef Vector2<real_type>                      point_type;
     typedef Ray_T<real_type, 2>                     ray_2d_type;
     typedef Ray_T<real_type, 3>                     ray_3d_type;
 
@@ -373,6 +378,38 @@ namespace tloc { namespace math { namespace types {
   typedef Rectangle_T<tl_float, p_rectangle::position::Center>      Rectf_c;
   typedef Rectangle_T<f32, p_rectangle::position::Center>           Rectf32_c;
   typedef Rectangle_T<f64, p_rectangle::position::Center>           Rectf64_c;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rects_bl, rects_bl);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rects32_bl, rects32_bl);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rects64_bl, rects64_bl);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rects_c, rects_c);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rects32_c, rects32_c);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rects64_c, rects64_c);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rectf_bl, rectf_bl);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rectf32_bl, rectf32_bl);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rectf64_bl, rectf64_bl);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rectf_c, rectf_c);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rectf32_c, rectf32_c);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rectf64_c, rectf64_c);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rects_bl, rects_bl);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rects32_bl, rects32_bl);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rects64_bl, rects64_bl);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rects_c, rects_c);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rects32_c, rects32_c);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rects64_c, rects64_c);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf_bl, rectf_bl);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf32_bl, rectf32_bl);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf64_bl, rectf64_bl);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf_c, rectf_c);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf32_c, rectf32_c);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf64_c, rectf64_c);
 
   // -----------------------------------------------------------------------
   // algorithms

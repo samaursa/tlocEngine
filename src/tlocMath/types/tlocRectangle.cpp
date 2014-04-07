@@ -404,7 +404,7 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Offset(const point_type& a_offsetBy)
+    MakeOffset(const point_type& a_offsetBy)
   {
     m_position[0] += a_offsetBy[0];
     m_position[1] += a_offsetBy[1];
@@ -415,15 +415,39 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Flip()
+    MakeFlip()
   {
-    point_type newDim = GetDimensions();
+    dim_type newDim = GetDimensions();
     core::swap(newDim[0], newDim[1]);
 
-    point_type newPos = GetCoord_BottomLeft();
+    this_type temp = 
+      this_type(width(newDim[0]), height(newDim[1]), position(GetPosition()) );
 
-    DoSetDimensions(newDim);
-    SetPosition(newPos);
+    core::swap(*this, temp);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  TLOC_RECTANGLE_TI_TYPE::this_type
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Offset(const point_type& a_offsetBy)
+  {
+    this_type temp(*this);
+    temp.MakeOffset(a_offsetBy);
+    return temp;
+  }
+  
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  TLOC_RECTANGLE_TI_TYPE::this_type
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Flip()
+  {
+    this_type temp(*this);
+    temp.MakeFlip();
+    return temp;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -680,3 +704,39 @@ namespace tloc { namespace math { namespace types {
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64, p_rectangle::position::Center);
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::math_t;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects32_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects64_c);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf32_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf64_c);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects32_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects64_c);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf32_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf64_c);

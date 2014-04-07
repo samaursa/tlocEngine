@@ -171,6 +171,7 @@ namespace tloc { namespace math { namespace types {
 
     value_type  GetWidth() const;
     value_type  GetHeight() const;
+    value_type  GetArea() const;
     void        SetWidth(value_type a_value);
     void        SetHeight(value_type a_value);
 
@@ -372,6 +373,155 @@ namespace tloc { namespace math { namespace types {
   typedef Rectangle_T<tl_float, p_rectangle::position::Center>      Rectf_c;
   typedef Rectangle_T<f32, p_rectangle::position::Center>           Rectf32_c;
   typedef Rectangle_T<f64, p_rectangle::position::Center>           Rectf64_c;
+
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace rectangle { 
+
+    namespace compare {
+
+      struct Equal        {};
+      struct Less         {};
+      struct LessEqual    {};
+      struct Greater      {};
+      struct GreaterEqual {};
+
+      // ///////////////////////////////////////////////////////////////////////
+      // Width
+
+      template <typename T, typename T_PositionPolicy, typename T_Comparison>
+      struct Width
+      {
+        typedef math_t::Rectangle_TI<T, T_PositionPolicy>     value_type;
+        typedef T_Comparison                                  comparison;
+
+        Width(const value_type& a_rect)
+          : m_rect(&a_rect)
+        { }
+
+        bool Is(const value_type& a_other, Equal)
+        { return math::IsEqual(m_rect->GetWidth(), a_other.GetWidth()); }
+
+        bool Is(const value_type& a_other, Less)
+        { return m_rect->GetWidth() < a_other.GetWidth(); }
+
+        bool Is(const value_type& a_other, Greater)
+        { return m_rect->GetWidth() > a_other.GetWidth(); }
+
+        bool Is(const value_type& a_other, LessEqual)
+        { return m_rect->GetWidth() <= a_other.GetWidth(); }
+
+        bool Is(const value_type& a_other, GreaterEqual)
+        { return m_rect->GetWidth() >= a_other.GetWidth(); }
+
+        bool operator()(const value_type& a_other)
+        { return Is(a_other, comparison()); }
+
+        const value_type* m_rect;
+      };
+
+      template <typename T, typename T_PositionPolicy, typename T_Comparison>
+      Width<T, T_PositionPolicy, T_Comparison>
+        MakeWidth(const math_t::Rectangle_TI<T, T_PositionPolicy>& a_rect, 
+                  T_Comparison)
+      { 
+        type_traits::AssertTypeIsSupported<T_Comparison, 
+          Equal, Less, Greater, LessEqual, GreaterEqual>();
+        return Width<T, T_PositionPolicy, T_Comparison>(a_rect);
+      }
+
+      // ///////////////////////////////////////////////////////////////////////
+      // Height
+
+      template <typename T, typename T_PositionPolicy, typename T_Comparison>
+      struct Height
+      {
+        typedef math_t::Rectangle_TI<T, T_PositionPolicy>     value_type;
+        typedef T_Comparison                                  comparison;
+
+        Height(const value_type& a_rect)
+          : m_rect(&a_rect)
+        { }
+
+        bool Is(const value_type& a_other, Equal)
+        { return math::IsEqual(m_rect->GetHeight(), a_other.GetHeight()); }
+
+        bool Is(const value_type& a_other, Less)
+        { return m_rect->GetHeight() < a_other.GetHeight(); }
+
+        bool Is(const value_type& a_other, Greater)
+        { return m_rect->GetHeight() > a_other.GetHeight(); }
+
+        bool Is(const value_type& a_other, LessEqual)
+        { return m_rect->GetHeight() <= a_other.GetHeight(); }
+
+        bool Is(const value_type& a_other, GreaterEqual)
+        { return m_rect->GetHeight() >= a_other.GetHeight(); }
+
+        bool operator()(const value_type& a_other)
+        { return Is(a_other, comparison()); }
+
+        const value_type* m_rect;
+      };
+
+      template <typename T, typename T_PositionPolicy, typename T_Comparison>
+      Height<T, T_PositionPolicy, T_Comparison>
+        MakeHeight(const math_t::Rectangle_TI<T, T_PositionPolicy>& a_rect, 
+                   T_Comparison)
+      { 
+        type_traits::AssertTypeIsSupported<T_Comparison, 
+          Equal, Less, Greater, LessEqual, GreaterEqual>();
+        return Height<T, T_PositionPolicy, T_Comparison>(a_rect);
+      }
+
+      // ///////////////////////////////////////////////////////////////////////
+      // Area
+
+      template <typename T, typename T_PositionPolicy, typename T_Comparison>
+      struct Area
+      {
+        typedef math_t::Rectangle_TI<T, T_PositionPolicy>     value_type;
+        typedef T_Comparison                                  comparison;
+
+        Area(const value_type& a_rect)
+          : m_rect(&a_rect)
+        { }
+
+        bool Is(const value_type& a_other, Equal)
+        { return math::IsEqual(m_rect->GetArea(), a_other.GetArea()); }
+
+        bool Is(const value_type& a_other, Less)
+        { return m_rect->GetArea() < a_other.GetArea(); }
+
+        bool Is(const value_type& a_other, Greater)
+        { return m_rect->GetArea() > a_other.GetArea(); }
+
+        bool Is(const value_type& a_other, LessEqual)
+        { return m_rect->GetArea() <= a_other.GetArea(); }
+
+        bool Is(const value_type& a_other, GreaterEqual)
+        { return m_rect->GetArea() >= a_other.GetArea(); }
+
+        bool operator()(const value_type& a_other)
+        { return Is(a_other, comparison()); }
+
+        const value_type* m_rect;
+      };
+
+      template <typename T, typename T_PositionPolicy, typename T_Comparison>
+      Area<T, T_PositionPolicy, T_Comparison>
+        MakeArea(const math_t::Rectangle_TI<T, T_PositionPolicy>& a_rect, 
+                 T_Comparison)
+      { 
+        type_traits::AssertTypeIsSupported<T_Comparison, 
+          Equal, Less, Greater, LessEqual, GreaterEqual>();
+        return Area<T, T_PositionPolicy, T_Comparison>(a_rect);
+      }
+
+    };
+
+  };};
 
 };};};
 

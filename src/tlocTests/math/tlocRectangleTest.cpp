@@ -32,16 +32,18 @@ namespace TestingRectangle
       Rectf r = Rectf( Rectf::left( -1 ), Rectf::right( 0 ),
                        Rectf::top( 0 ), Rectf::bottom( -1 ) );
       CHECK( r.IsValid() );
-      CHECK( r.GetWidth() == Approx( 1 ) );
-      CHECK( r.GetHeight() == Approx( 1 ) );
-      CHECK( r.GetWidth() == Approx( 1 ) );
-      CHECK( r.GetHeight() == Approx( 1 ) );
+      CHECK( r.GetWidth() == Approx(1) );
+      CHECK( r.GetHeight() == Approx(1) );
+      CHECK( r.GetWidth() == Approx(1) );
+      CHECK( r.GetHeight() == Approx(1) );
+      CHECK( r.GetArea() == Approx(1) );
 
       CHECK_TUP( r.GetCenter(), Vec2f( -0.5f, -0.5f ) );
       CHECK_TUP( r.GetPosition(), Vec2f( -1.0f, -1.0f ) );
 
       r.SetWidth( 0.5f );
       r.SetHeight( 5.0f );
+      CHECK( r.GetArea() == Approx(2.5f) );
       CHECK_TUP( r.GetCenter(), Vec2f( -0.75f, 1.5f ) );
       CHECK_TUP( r.GetPosition(), Vec2f( -1.0f, -1.0f ) );
 
@@ -53,14 +55,15 @@ namespace TestingRectangle
       CHECK( r.GetValue<Rectf::bottom>() == Approx( -1.0f ) );
 
       r = Rectf();
-      CHECK( r.GetValue<Rectf::left>() == 0 );
-      CHECK( r.GetValue<Rectf::right>() == 0 );
-      CHECK( r.GetValue<Rectf::top>() == 0 );
-      CHECK( r.GetValue<Rectf::bottom>() == 0 );
+      CHECK( r.GetValue<Rectf::left>() == Approx(0) );
+      CHECK( r.GetValue<Rectf::right>() == Approx(0) );
+      CHECK( r.GetValue<Rectf::top>() == Approx(0) );
+      CHECK( r.GetValue<Rectf::bottom>() == Approx(0) );
+      CHECK( r.GetArea() == Approx(0) );
 
       CHECK_FALSE( r.IsValid() );
-      CHECK( r.GetWidth() == Approx( 0 ) );
-      CHECK( r.GetHeight() == Approx( 0 ) );
+      CHECK( r.GetWidth() == Approx(0) );
+      CHECK( r.GetHeight() == Approx(0) );
 
       Rectf::point_type center;
       center[0] = 0;
@@ -163,10 +166,10 @@ namespace TestingRectangle
       Rectf r = Rectf( Rectf::left( -1 ), Rectf::right( 0 ),
                        Rectf::top( 0 ), Rectf::bottom( -1 ) );
       CHECK( r.IsValid() );
-      CHECK( r.GetWidth() == Approx( 1 ) );
-      CHECK( r.GetHeight() == Approx( 1 ) );
-      CHECK( r.GetWidth() == Approx( 1 ) );
-      CHECK( r.GetHeight() == Approx( 1 ) );
+      CHECK( r.GetWidth() == Approx(1) );
+      CHECK( r.GetHeight() == Approx(1) );
+      CHECK( r.GetWidth() == Approx(1) );
+      CHECK( r.GetHeight() == Approx(1) );
 
       CHECK_TUP( r.GetCenter(), Vec2f( -0.5f, -0.5f ) );
       CHECK_TUP( r.GetPosition(), Vec2f( -0.5f, -0.5f ) );
@@ -190,8 +193,8 @@ namespace TestingRectangle
       CHECK( r.GetValue<Rectf::bottom>() == 0 );
 
       CHECK_FALSE( r.IsValid() );
-      CHECK( r.GetWidth() == Approx( 0 ) );
-      CHECK( r.GetHeight() == Approx( 0 ) );
+      CHECK( r.GetWidth() == Approx(0) );
+      CHECK( r.GetHeight() == Approx(0) );
 
       Rectf::point_type center;
       center[0] = 0;
@@ -232,28 +235,28 @@ namespace TestingRectangle
       center[1] = 3.0f;
       CHECK( ( r.GetCenter() == center ) );
 
-      r = Rectf( Rectf::left( 0 ), Rectf::right( 2 ), Rectf::top( 5 ), Rectf::bottom( 0 ) );
-      CHECK( r.Contains( Vec2f( 1, 1 ) ) );
-      CHECK( r.Contains( Vec2f( 0, 0 ) ) );
-      CHECK( r.Contains( Vec2f( 2, 2 ) ) );
+      r = Rectf( Rectf::left(0), Rectf::right(2), Rectf::top(5), Rectf::bottom(0) );
+      CHECK( r.Contains( Vec2f(1, 1) ) );
+      CHECK( r.Contains( Vec2f(0, 0) ) );
+      CHECK( r.Contains( Vec2f(2, 2) ) );
 
-      CHECK_FALSE( r.Contains( Vec2f( 3, 2 ) ) );
-      CHECK_FALSE( r.Contains( Vec2f( 1, 6 ) ) );
-      CHECK_FALSE( r.Contains( Vec2f( -1, 2 ) ) );
-      CHECK_FALSE( r.Contains( Vec2f( 1, -1 ) ) );
+      CHECK_FALSE( r.Contains( Vec2f(3, 2) ) );
+      CHECK_FALSE( r.Contains( Vec2f(1, 6) ) );
+      CHECK_FALSE( r.Contains( Vec2f(-1, 2) ) );
+      CHECK_FALSE( r.Contains( Vec2f(1, -1) ) );
 
-      r = Rectf( Rectf::left( 0 ), Rectf::right( 2 ), Rectf::top( 5 ), Rectf::bottom( 0 ) );
+      r = Rectf( Rectf::left(0), Rectf::right(2), Rectf::top(5), Rectf::bottom(0) );
       {
-        Rectf inter( Rectf::left( 1 ), Rectf::right( 2 ), Rectf::top( 4 ), Rectf::bottom( 1 ) );
-        CHECK( r.Intersects( inter ) );
+        Rectf inter( Rectf::left(1), Rectf::right(2), Rectf::top(4), Rectf::bottom(1) );
+        CHECK( r.Intersects(inter) );
 
         Rectf interRet;
-        CHECK( r.Intersects( inter, interRet ) );
+        CHECK( r.Intersects(inter, interRet) );
       }
 
       {
-        Rectf inter( Rectf::left( -1 ), Rectf::right( 0 ), Rectf::top( 0 ), Rectf::bottom( -1 ) );
-        CHECK_FALSE( r.Intersects( inter ) );
+        Rectf inter( Rectf::left(-1), Rectf::right(0), Rectf::top(0), Rectf::bottom(-1) );
+        CHECK_FALSE( r.Intersects(inter) );
       }
 
       r = Rectf( Rectf::width( 1 ), Rectf::height( 2 ) );
@@ -502,5 +505,54 @@ namespace TestingRectangle
     CHECK(r.Intersects(ray,
                        Rectf::from_origin(false),
                        Rectf::double_sided(true)).first);
+  }
+
+  TEST_CASE("Graphics/types/Rectangle/algos", "")
+  {
+    typedef Rectf_c  Rectf;
+
+    Rectf r1 = Rectf(Rectf::width(5.0f), Rectf::height(10.0f));
+    Rectf r2 = Rectf(Rectf::width(4.0f), Rectf::height(15.0f));
+
+    using namespace math_t::algos::rectangle;
+
+    SECTION("compare/Width", "")
+    {
+      CHECK(compare::MakeWidth(r1, compare::Equal())(r1));
+      CHECK(compare::MakeWidth(r1, compare::GreaterEqual())(r1));
+      CHECK(compare::MakeWidth(r1, compare::LessEqual())(r1));
+
+      CHECK_FALSE(compare::MakeWidth(r1, compare::Equal())(r2));
+      CHECK_FALSE(compare::MakeWidth(r1, compare::Less())(r2));
+      CHECK(compare::MakeWidth(r1, compare::Greater())(r2));
+      CHECK_FALSE(compare::MakeWidth(r1, compare::LessEqual())(r2));
+      CHECK(compare::MakeWidth(r1, compare::GreaterEqual())(r2));
+    }
+
+    SECTION("compare/Height", "")
+    {
+      CHECK(compare::MakeHeight(r1, compare::Equal())(r1));
+      CHECK(compare::MakeHeight(r1, compare::GreaterEqual())(r1));
+      CHECK(compare::MakeHeight(r1, compare::LessEqual())(r1));
+
+      CHECK_FALSE(compare::MakeHeight(r1, compare::Equal())(r2));
+      CHECK(compare::MakeHeight(r1, compare::Less())(r2));
+      CHECK_FALSE(compare::MakeHeight(r1, compare::Greater())(r2));
+      CHECK(compare::MakeHeight(r1, compare::LessEqual())(r2));
+      CHECK_FALSE(compare::MakeHeight(r1, compare::GreaterEqual())(r2));
+    }
+
+    SECTION("compare/Area", "")
+    {
+      CHECK(compare::MakeArea(r1, compare::Equal())(r1));
+      CHECK(compare::MakeArea(r1, compare::GreaterEqual())(r1));
+      CHECK(compare::MakeArea(r1, compare::LessEqual())(r1));
+
+      CHECK_FALSE(compare::MakeArea(r1, compare::Equal())(r2));
+      CHECK(compare::MakeArea(r1, compare::Less())(r2));
+      CHECK_FALSE(compare::MakeArea(r1, compare::Greater())(r2));
+      CHECK(compare::MakeArea(r1, compare::LessEqual())(r2));
+      CHECK_FALSE(compare::MakeArea(r1, compare::GreaterEqual())(r2));
+    }
   }
 };

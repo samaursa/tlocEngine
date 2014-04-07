@@ -338,6 +338,14 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_RECTANGLE_TI_TEMP>
+  TLOC_RECTANGLE_TI_TYPE::value_type
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    GetArea() const
+  { return GetWidth() * GetHeight(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     SetWidth(value_type a_value)

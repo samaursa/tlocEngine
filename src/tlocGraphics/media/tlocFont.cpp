@@ -1,5 +1,8 @@
 #include "tlocFont.h"
 
+#include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
+
 #include <tlocGraphics/media/tlocFreeType.h>
 
 namespace tloc { namespace graphics { namespace media {
@@ -70,16 +73,54 @@ namespace tloc { namespace graphics { namespace media {
       }
     }
 
-    Image::dimension_type dim = core_ds::MakeTuple(numRows, numCols);
+    core_conts::Array<image_sptr>    charImages;
+    charImages.reserve(strLength);
 
-    for (size_type cols = 0; cols < dim[1]; ++cols)
+    Image::dimension_type maxDim(0);
+
+    for (size_type i = 0; i < strLength; ++i)
     {
-      for (size_type rows = 0; rows < dim[0]; ++rows)
-      {
-      }
+      charImages.push_back(GetCharImage(str.at(i), a_size) );
+      charImages.back()->AddPadding(core_ds::MakeTuple(1, 1), gfx_t::Color::COLOR_BLACK);
+      Image::dimension_type currDim = charImages.back()->GetDimensions();
+
+      maxDim[0] = core::tlMax(maxDim[0], currDim[0]);
+      maxDim[1] = core::tlMax(maxDim[1], currDim[1]);
     }
 
-    return sprite_sheet_ul_sptr();
+    TLOC_ASSERT(charImages.size() <= numRows * numCols,
+      "Number of character images must not exceed number of rows/cols available");
+
+    image_sptr spriteSheet(new Image());
+    spriteSheet->
+      Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
+             gfx_t::Color::COLOR_BLACK);
+
+    for (size_type i = 0; i < charImages.size(); ++i)
+    {
+      core_ds::Tuple2u coord =
+        core_utils::GetCoord(core_ds::MakeTuple(numCols, numRows), i);
+
+      spriteSheet->SetImage(maxDim[0] * coord[0], maxDim[1] * coord[1], *charImages[i]);
+    }
+
+    //for (size_type cols = 0; cols < numCols; ++cols)
+    //{
+    //  for (size_type rows = 0; rows < numRows; ++rows)
+    //  {
+    //    tl_int index = core_utils::GetIndex(core_ds::MakeTuple(numRows, numCols),
+    //                                        core_ds::MakeTuple(rows, cols));
+
+    //    spriteSheet->SetImage(rows * maxDim[0], cols * maxDim[1],
+    //                          *charImages[index]);
+    //  }
+    //}
+
+    sprite_sheet_ul_sptr::value_type::sprite_info_cont empty;
+
+    sprite_sheet_ul_sptr ss(new sprite_sheet_ul_sptr::value_type(spriteSheet, empty));
+
+    return ss;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -32,7 +32,7 @@ namespace tloc { namespace graphics { namespace media {
     SpriteSheet_T<TLOC_SPRITE_SHEET_PARAMS>::
     begin() const
   {
-    TLOC_ASSERT(m_spriteSheet.IsValid(), "SpriteSheet image is not valid");
+    TLOC_ASSERT(m_spriteSheet->IsValid(), "SpriteSheet image is not valid");
     return m_spriteSheetInfo.begin();
   }
 
@@ -43,13 +43,20 @@ namespace tloc { namespace graphics { namespace media {
     SpriteSheet_T<TLOC_SPRITE_SHEET_PARAMS>::
     end() const
   {
-    TLOC_ASSERT(m_spriteSheet.IsValid(), "SpriteSheet image is not valid");
+    TLOC_ASSERT(m_spriteSheet->IsValid(), "SpriteSheet image is not valid");
     return m_spriteSheetInfo.end();
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template class SpriteSheet_T<core_str::String>;
+  template class SpriteSheet_T<tl_ulong>;
 
 };};};
 
 using namespace tloc::gfx_med;
+
 
 #include <tlocCore/containers/tlocArray.h>
 

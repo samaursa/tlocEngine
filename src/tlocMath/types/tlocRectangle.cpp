@@ -6,6 +6,8 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/types/tlocStrongType.inl.h>
 
+#include <tlocMath/tlocMath.inl.h>
+
 #define TLOC_CHECK_RECTANGLE_EXTENTS(_left_, _right_, _top_, _bottom_)\
   TLOC_ASSERT_LOW_LEVEL( (_left <= _right) && (_bottom_ <= _top_),\
   "Rectangle extents are incorrect!");
@@ -13,6 +15,9 @@
 namespace tloc { namespace math { namespace types {
 
   using core_ds::MakeTuple;
+
+  typedef type_true                   IsFloat;
+  typedef type_false                  IsNotFloat;
 
   namespace priv {
 
@@ -71,6 +76,23 @@ namespace tloc { namespace math { namespace types {
       return MakeTuple(a_rect.template GetValue<typename rect_type::right>(),
                        a_rect.template GetValue<typename rect_type::bottom>());
     }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T>
+    void
+      AssertCenterPositionIsNotRounded(core_ds::Tuple<T, 2> a_dim, IsNotFloat)
+    {
+      TLOC_UNUSED(a_dim);
+      TLOC_ASSERT_LOW_LEVEL(a_dim[0] % 2 == 0, "Center position will be rounded");
+      TLOC_ASSERT_LOW_LEVEL(a_dim[1] % 2 == 0, "Center position will be rounded");
+    }
+
+    template <typename T>
+    void
+      AssertCenterPositionIsNotRounded(core_ds::Tuple<T, 2>, IsFloat)
+    { /* Intentionally empty */ }
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -178,7 +200,10 @@ namespace tloc { namespace math { namespace types {
     RectangleBase_TI(width a_w, height a_h, position a_pos)
     : m_dimensions( MakeTuple( a_w.m_value, a_h.m_value ) )
     , m_position(a_pos)
-  { }
+  { 
+    typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+    priv::AssertCenterPositionIsNotRounded(m_dimensions, float_or_not());
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -189,7 +214,10 @@ namespace tloc { namespace math { namespace types {
                                a_t - a_b ) )
     , m_position( MakeTuple( (a_l + a_r) / 2,
                              (a_t + a_b) / 2 ) )
-  { }
+  { 
+    typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+    priv::AssertCenterPositionIsNotRounded(m_dimensions, float_or_not());
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -200,7 +228,10 @@ namespace tloc { namespace math { namespace types {
                                a_end[1] - a_start[1] ) )
     , m_position( MakeTuple( (a_end[0] + a_start[0]) / 2,
                              (a_end[1] + a_start[1]) / 2 ) )
-  { }
+  { 
+    typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
+    priv::AssertCenterPositionIsNotRounded(m_dimensions, float_or_not());
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -283,7 +314,10 @@ namespace tloc { namespace math { namespace types {
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     operator ==( const this_type& a_other ) const
   {
-      return m_dimensions == a_other.m_dimensions && m_position == a_other.m_position;
+    return math::IsEqual(m_dimensions[0], a_other.m_dimensions[0]) && 
+           math::IsEqual(m_dimensions[1], a_other.m_dimensions[1]) && 
+           math::IsEqual(m_position[0], a_other.m_position[0]) && 
+           math::IsEqual(m_position[1], a_other.m_position[1]);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -301,6 +335,14 @@ namespace tloc { namespace math { namespace types {
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
     GetHeight() const
   { return m_dimensions[height::k_index]; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  TLOC_RECTANGLE_TI_TYPE::value_type
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    GetArea() const
+  { return GetWidth() * GetHeight(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -363,10 +405,61 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   void
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Offset(const point_type& a_offsetBy)
+    MakeOffset(const point_type& a_offsetBy)
   {
     m_position[0] += a_offsetBy[0];
     m_position[1] += a_offsetBy[1];
+  }
+  
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  void
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    MakeFlip()
+  {
+    dim_type newDim = GetDimensions();
+    core::swap(newDim[0], newDim[1]);
+
+    this_type temp = 
+      this_type(width(newDim[0]), height(newDim[1]), position(GetPosition()) );
+
+    core::swap(*this, temp);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  TLOC_RECTANGLE_TI_TYPE::this_type
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Offset(const point_type& a_offsetBy)
+  {
+    this_type temp(*this);
+    temp.MakeOffset(a_offsetBy);
+    return temp;
+  }
+  
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  TLOC_RECTANGLE_TI_TYPE::this_type
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Flip()
+  {
+    this_type temp(*this);
+    temp.MakeFlip();
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  bool
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    IsValid() const
+  {
+    return m_dimensions[width::k_index] > 0 &&
+           m_dimensions[height::k_index] > 0;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -387,10 +480,35 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   bool
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    IsValid() const
+    Contains(const this_type& a_other) const
   {
-    return m_dimensions[width::k_index] > 0 &&
-           m_dimensions[height::k_index] > 0;
+    if (Fits(a_other))
+    {
+      this_type overlap;
+      Intersects(a_other, overlap);
+
+      point_type otherDim   = a_other.GetDimensions();
+      point_type overlapDim = overlap.GetDimensions();
+
+      if ( math::IsEqual(otherDim[0], overlapDim[0]) &&
+           math::IsEqual(otherDim[1], overlapDim[1]) )
+      { return true; }
+    }
+
+    return false;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_TI_TEMP>
+  bool
+    Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
+    Fits(const this_type& a_other) const
+  {
+    point_type dim      = GetDimensions();
+    point_type otherDim = a_other.GetDimensions();
+
+    return dim[0] >= otherDim[0] && dim[1] >= otherDim[1];
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -587,3 +705,39 @@ namespace tloc { namespace math { namespace types {
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE(f64, p_rectangle::position::Center);
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::math_t;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects32_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects64_c);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf32_c);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf64_c);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects32_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects64_c);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf32_bl);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf64_bl);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf32_c);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf64_c);

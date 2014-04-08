@@ -34,6 +34,14 @@ set(TLOC_MATH_COMPONENT_SYSTEM
   component_system/tloc_component_system.inl.h
   )
 
+set(TLOC_MATH_OPTIMIZE
+  optimize/tloc_optimize.h
+  optimize/tloc_optimize.inl.h
+  optimize/tloc_optimize.cpp
+  optimize/tlocBinPacker2D.h
+  optimize/tlocBinPacker2D.cpp
+)
+
 set(TLOC_MATH_TYPES 
   types/tlocAngle.cpp 
   types/tlocAngle.h 
@@ -114,6 +122,7 @@ add_library(tlocMath STATIC
   ${TLOC_MATH}
   ${TLOC_MATH_COMPONENT_SYSTEM}
   ${TLOC_MATH_STATISTICS}
+  ${TLOC_MATH_OPTIMIZE}
   ${TLOC_MATH_TYPES}
   ${TLOC_MATH_UTILITIES}
   ${TLOC_MATH_PROJECTION}
@@ -128,6 +137,7 @@ set_platform_specific_properties(tlocMath)
 # Filters to organize the source files
 source_group(component_system FILES ${TLOC_MATH_COMPONENT_SYSTEM})
 source_group(statistics       FILES ${TLOC_MATH_STATISTICS})
+source_group(optimize         FILES ${TLOC_MATH_OPTIMIZE})
 source_group(types            FILES ${TLOC_MATH_TYPES})
 source_group(utilities        FILES ${TLOC_MATH_UTILITIES})
 source_group(projection       FILES ${TLOC_MATH_PROJECTION})

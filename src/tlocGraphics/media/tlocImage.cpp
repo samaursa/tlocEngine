@@ -77,6 +77,24 @@ namespace tloc { namespace graphics { namespace media {
     m_pixels[index] = a_color;
   }
 
+  void
+    Image::
+    SetImage(size_type a_x, size_type a_y, const this_type& a_image)
+  {
+    const dimension_type imgDim = a_image.GetDimensions();
+
+    TLOC_ASSERT(imgDim[0] + a_x <= m_dim[0], "Incoming image does not fit in X");
+    TLOC_ASSERT(imgDim[1] + a_y <= m_dim[1], "Incoming image does not fit in Y");
+
+    for (size_type y = 0; y < imgDim[1]; ++y)
+    {
+      for (size_type x = 0; x < imgDim[0]; ++x)
+      {
+        SetPixel(x + a_x, y + a_y, a_image.GetPixel(x, y));
+      }
+    }
+  }
+
   Image::error_type
     Image::
     AddPadding(dimension_type a_padding, const color_type& a_color)
@@ -123,6 +141,27 @@ namespace tloc { namespace graphics { namespace media {
   {
     tl_int index = core_utils::GetIndex(m_dim, core_ds::MakeTuple(a_X, a_Y));
     return m_pixels[index];
+  }
+
+  Image::image_sptr
+    Image::
+    GetImage(size_type a_x, size_type a_y, dimension_type a_dimToGet) const
+  {
+    TLOC_ASSERT(a_x + a_dimToGet[0] <= m_dim[0], "Dimensions out of range");
+    TLOC_ASSERT(a_y + a_dimToGet[1] <= m_dim[1], "Dimensions out of range");
+
+    image_sptr img(new this_type());
+    img->Create(a_dimToGet, gfx_t::Color::COLOR_BLACK);
+
+    for (size_type y = 0; y < a_dimToGet[1]; ++y)
+    {
+      for (size_type x = 0; x < a_dimToGet[0]; ++x)
+      {
+        img->SetPixel(x, y, GetPixel(x + a_x, y + a_x));
+      }
+    }
+
+    return img;
   }
 
   bool

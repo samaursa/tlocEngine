@@ -27,6 +27,7 @@ namespace tloc { namespace graphics { namespace media {
 
     typedef Image                                         this_type;
     typedef core_sptr::VirtualPtr<this_type>              image_ptr;
+    typedef core_sptr::SharedPtr<this_type>               image_sptr;
     typedef core_conts::Array<image_ptr>                  image_ptr_cont;
 
   public:
@@ -50,10 +51,16 @@ namespace tloc { namespace graphics { namespace media {
     void              SetPixel(size_type a_X, size_type a_Y,
                                const color_type& a_color);
 
+    void              SetImage(size_type a_x, size_type a_y,
+                               const this_type& a_image);
+
     error_type        AddPadding(dimension_type a_padding,
                                  const color_type& a_color);
 
     const color_type& GetPixel(size_type a_X, size_type a_Y) const;
+
+    image_sptr        GetImage(size_type a_x, size_type a_y,
+                               dimension_type a_dimToGet) const;
 
     bool              IsValid() const;
 

@@ -4,8 +4,10 @@
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocGraphics/media/tlocImage.h>
+#include <tlocGraphics/media/tlocSprite.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -34,12 +36,15 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_str::String                              data_type;
 
     typedef image_sptr                                    image_ptr;
+    typedef sprite_sheet_ul_sptr                          sprite_sheet_ul_sptr;
 
   public:
     Font();
     ~Font();
 
-    image_ptr     GetCharImage(tl_ulong a_char);
+    image_ptr             GetCharImage(tl_ulong a_char, ushort a_size) const;
+    sprite_sheet_ul_sptr  GenerateSpriteSheet(BufferArgW a_characters,
+                                              ushort a_size) const;
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 

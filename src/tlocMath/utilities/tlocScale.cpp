@@ -35,7 +35,7 @@ namespace tloc { namespace math { namespace utils {
     r1Size = m_smallRange.back() - m_smallRange.front();
     r2Size = m_largeRange.back() - m_largeRange.front();
 
-    TLOC_ASSERT(Approx<small_value_type>(r1Size, 0) != true,
+    TLOC_ASSERT(IsEqual<small_value_type>(r1Size, 0) != true,
       "Divide by zero!");
 
     a_valueToScale -= m_smallRange.front();
@@ -63,7 +63,7 @@ namespace tloc { namespace math { namespace utils {
     r1Size = m_smallRange.back() - m_smallRange.front();
     r2Size = m_largeRange.back() - m_largeRange.front();
 
-    TLOC_ASSERT(Approx<large_value_type>(r2Size, 0) != true,
+    TLOC_ASSERT(IsEqual<large_value_type>(r2Size, 0) != true,
       "Divide by zero!");
 
     a_valueToScale -= m_largeRange.front();

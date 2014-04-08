@@ -427,6 +427,36 @@ namespace tloc { namespace math { namespace types {
       // ///////////////////////////////////////////////////////////////////////
       // Width
 
+      template <typename T_Comparison>
+      struct WidthBinary
+      {
+        typedef T_Comparison                                  comparison;
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Equal)
+        { return math::IsEqual(a.GetWidth(), b.GetWidth()); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Less)
+        { return a.GetWidth() < b.GetWidth(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Greater)
+        { return a.GetWidth() < b.GetWidth(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, LessEqual)
+        { return a.GetWidth() <= b.GetWidth(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, GreaterEqual)
+        { return a.GetWidth() >= b.GetWidth(); }
+
+        template <typename T, typename U>
+        bool operator()(const T& a, const U& b)
+        { return Is(a, b, comparison()); }
+      };
+
       template <typename T, typename T_PositionPolicy, typename T_Comparison>
       struct Width
       {
@@ -471,6 +501,36 @@ namespace tloc { namespace math { namespace types {
       // ///////////////////////////////////////////////////////////////////////
       // Height
 
+      template <typename T_Comparison>
+      struct HeightBinary
+      {
+        typedef T_Comparison                                  comparison;
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Equal)
+        { return math::IsEqual(a.GetHeight(), b.GetHeight()); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Less)
+        { return a.GetHeight() < b.GetHeight(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Greater)
+        { return a.GetHeight() < b.GetHeight(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, LessEqual)
+        { return a.GetHeight() <= b.GetHeight(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, GreaterEqual)
+        { return a.GetHeight() >= b.GetHeight(); }
+
+        template <typename T, typename U>
+        bool operator()(const T& a, const U& b)
+        { return Is(a, b, comparison()); }
+      };
+
       template <typename T, typename T_PositionPolicy, typename T_Comparison>
       struct Height
       {
@@ -514,6 +574,36 @@ namespace tloc { namespace math { namespace types {
 
       // ///////////////////////////////////////////////////////////////////////
       // Area
+
+      template <typename T_Comparison>
+      struct AreaBinary
+      {
+        typedef T_Comparison                                  comparison;
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Equal)
+        { return math::IsEqual(a.GetArea(), b.GetArea()); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Less)
+        { return a.GetArea() < b.GetArea(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, Greater)
+        { return a.GetArea() < b.GetArea(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, LessEqual)
+        { return a.GetArea() <= b.GetArea(); }
+
+        template <typename T, typename U>
+        bool Is(const T& a, const U& b, GreaterEqual)
+        { return a.GetArea() >= b.GetArea(); }
+
+        template <typename T, typename U>
+        bool operator()(const T& a, const U& b)
+        { return Is(a, b, comparison()); }
+      };
 
       template <typename T, typename T_PositionPolicy, typename T_Comparison>
       struct Area

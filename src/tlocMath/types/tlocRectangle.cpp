@@ -83,6 +83,7 @@ namespace tloc { namespace math { namespace types {
     void
       AssertCenterPositionIsNotRounded(core_ds::Tuple<T, 2> a_dim, IsNotFloat)
     {
+      TLOC_UNUSED(a_dim);
       TLOC_ASSERT_LOW_LEVEL(a_dim[0] % 2 == 0, "Center position will be rounded");
       TLOC_ASSERT_LOW_LEVEL(a_dim[1] % 2 == 0, "Center position will be rounded");
     }

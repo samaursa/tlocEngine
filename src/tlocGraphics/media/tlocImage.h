@@ -50,6 +50,9 @@ namespace tloc { namespace graphics { namespace media {
     void              SetPixel(size_type a_X, size_type a_Y,
                                const color_type& a_color);
 
+    error_type        AddPadding(dimension_type a_padding,
+                                 const color_type& a_color);
+
     const color_type& GetPixel(size_type a_X, size_type a_Y) const;
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
@@ -59,7 +62,7 @@ namespace tloc { namespace graphics { namespace media {
                                           GetPixels, m_pixels);
 
   private:
-    error_type        DoLoadFromImages(const image_ptr_cont& a_arrayOfImages); 
+    error_type        DoLoadFromImages(const image_ptr_cont& a_arrayOfImages);
 
   private:
     dimension_type          m_dim;

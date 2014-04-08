@@ -186,6 +186,35 @@ namespace tloc { namespace core { namespace data_structs {
   typedef Tuple<tl_ulong,	4>    Tuple4ul;
 
   // ///////////////////////////////////////////////////////////////////////
+  // Basic arithmetic operations
+
+  template <typename T, tl_int T_Size>
+  Tuple<T, T_Size>
+    Add(const Tuple<T, T_Size>& a,
+        const Tuple<T, T_Size>& b)
+  {
+    Tuple<T, T_Size> result;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { result[i] = a[i] + b[i]; }
+
+    return result;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_int T_Size>
+  Tuple<T, T_Size>
+    Subtract(const Tuple<T, T_Size>& a,
+             const Tuple<T, T_Size>& b)
+  {
+    Tuple<T, T_Size> result;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { result[i] = a[i] - b[i]; }
+
+    return result;
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // MakeTuple
 
   template <typename T>

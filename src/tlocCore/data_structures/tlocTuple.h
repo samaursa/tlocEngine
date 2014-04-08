@@ -214,6 +214,32 @@ namespace tloc { namespace core { namespace data_structs {
     return result;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_int T_Size>
+  Tuple<T, T_Size>
+    Multiply(T a, const Tuple<T, T_Size>& b)
+  {
+    Tuple<T, T_Size> result;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { result[i] = b[i] * a; }
+
+    return result;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_int T_Size>
+  Tuple<T, T_Size>
+    Divide(T a, const Tuple<T, T_Size>& b)
+  {
+    Tuple<T, T_Size> result;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { result[i] = b[i] / a; }
+
+    return result;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // MakeTuple
 

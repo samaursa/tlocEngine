@@ -177,15 +177,21 @@ namespace TestingTuple
     CHECK(tup4[3] == 4);
   }
 
-  TEST_CASE("Core/DataStructures/Tuple/Add and Subtract", "")
+  TEST_CASE("Core/DataStructures/Tuple/Simple Arithmetic", "")
   {
     Tuple4f tup   = core_ds::MakeTuple(1.0f, 3.0f, 5.0f, 1.0f);
     Tuple4f tup2  = core_ds::MakeTuple(5.0f, -2.0f, 8.0f, 2.0f);
 
-    Tuple4f resAdd = Add(tup, tup2);
-    Tuple4f resSub = Subtract(tup, tup2);
+    Tuple4f resAdd  = Add(tup, tup2);
+    Tuple4f resSub  = Subtract(tup, tup2);
+    Tuple4f resMul  = Multiply(3.0f, tup);
+    Tuple4f resDiv  = Divide(1.0f, tup);
+    Tuple4f resDiv2 = Divide(2.0f, tup2);
 
     CHECK_TUP(resAdd, 6.0f, 1.0f, 13.0f, 3.0f);
     CHECK_TUP(resSub, -4.0f, 5.0f, -3.0f, -1.0f);
+    CHECK_TUP(resMul, 3.0f, 9.0f, 15.0f, 3.0f);
+    CHECK_TUP(resDiv, 1.0f, 3.0f, 5.0f, 1.0f);
+    CHECK_TUP(resDiv2, 5.0f / 2.0f, -2.0f / 2.0f, 8.0f / 2.0f, 2.0f / 2.0f);
   }
 };

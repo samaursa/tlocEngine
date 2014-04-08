@@ -114,10 +114,20 @@ namespace tloc { namespace core { namespace memory {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
-        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(m_loggingEnabled)
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled)
           << "Tracking memory address (" << (tl_uintptr)a_memAddress << ")";
-        DoAssertAddressIsNotTracked(a_memAddress);
 
+        memAddress_map_type::iterator itr = m_memAddresses.find(a_memAddress);
+        if (itr != m_memAddresses.end())
+        {
+          // is it a memory address that was tracked directly by VirtualPtrs?
+          if (itr->second.size() > 0 && itr->second[0] == nullptr)
+          {
+            UntrackMemoryAddress(a_memAddress);
+          }
+        }
+
+        DoAssertAddressIsNotTracked(a_memAddress);
         m_memAddresses[a_memAddress] = ptr_array();
       }
 
@@ -176,7 +186,8 @@ namespace tloc { namespace core { namespace memory {
         for (ptr_array::iterator itr = ptrArray.begin(), itrEnd = ptrArray.end();
              itr != itrEnd; ++itr)
         {
-          DoAssertPtrIsTracked(*itr);
+          if (*itr != nullptr)
+          { DoAssertPtrIsTracked(*itr); }
 
           TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF( m_loggingEnabled )
             << "Invalidating vptr (" << (tl_uintptr) *itr << ")";
@@ -226,11 +237,16 @@ namespace tloc { namespace core { namespace memory {
         memAddress_map_type::iterator itrMemAddress =
           m_memAddresses.find(a_memAddress);
 
-        // this should only happen when a 'naked new' is used
+        // this should only happen when a 'naked new' is used or vptr is
+        // pointing to an object allocated on the stack without using a VSO
         if (itrMemAddress == m_memAddresses.end())
         {
           TrackMemoryAddress(a_memAddress);
           itrMemAddress = m_memAddresses.find(a_memAddress);
+
+          // mark this memory address as a non-tracked address (i.e. this is
+          // tracked here only because our vptrs are pointing to it)
+          itrMemAddress->second.push_back(nullptr);
         }
 
         TLOC_ASSERT_LOW_LEVEL(itrMemAddress != m_memAddresses.end(),
@@ -248,7 +264,7 @@ namespace tloc { namespace core { namespace memory {
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
-        TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF( m_loggingEnabled )
+        TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF( m_loggingEnabled )
           << "Untracking pointer (" << (tl_uintptr)a_ptrAddress << ") to "
           << "memory address (" << (tl_uintptr)a_memAddress << ")";
         DoAssertPtrIsTracked(a_ptrAddress);
@@ -269,7 +285,7 @@ namespace tloc { namespace core { namespace memory {
           ptr_array::iterator itr =
             core::find_all(itrMemAddress->second, a_ptrAddress);
 
-          TLOC_ASSERT(itr != itrMemAddress->second.end(),
+          TLOC_ASSERT_LOW_LEVEL(itr != itrMemAddress->second.end(),
             "Unable to find a_ptrAddress assigned to memAddress it is tracking");
 
           itrMemAddress->second.erase(itr);
@@ -356,7 +372,7 @@ namespace tloc { namespace core { namespace memory {
           << "TrackAddress() OR trying to remove memory address of an upcasted "
           << "pointer.";
 
-        TLOC_ASSERT(isAddressTracked,
+        TLOC_ASSERT_LOW_LEVEL(isAddressTracked,
           "Memory address is not tracked. Possibly cause includes no calls "
           "to TrackAddress() OR trying to remove memory address of an upcasted "
           "pointer.");
@@ -373,7 +389,7 @@ namespace tloc { namespace core { namespace memory {
           << ") is already tracked. Possible causes include delete not calling "
           << "UntrackAddress() OR multiple calls to TrackAddress()";
 
-        TLOC_ASSERT(isAddressTracked == false,
+        TLOC_ASSERT_LOW_LEVEL(isAddressTracked == false,
           "Memory address is already tracked. Possibly causes include delete "
           "not calling UntrackAddress() properly OR multiple calls to "
           "TrackAddress()");
@@ -383,7 +399,7 @@ namespace tloc { namespace core { namespace memory {
 
       void DoAssertPtrIsTracked(void* a_ptrAddress)
       {
-        TLOC_ASSERT(IsPointerTracked(a_ptrAddress) == true,
+        TLOC_ASSERT_LOW_LEVEL(IsPointerTracked(a_ptrAddress) == true,
           "Memory address is already tracked. Possibly causes include no calls "
           "to TrackPointerToAddress()");
       }
@@ -392,7 +408,7 @@ namespace tloc { namespace core { namespace memory {
 
       void DoAssertPtrIsNotTracked(void* a_ptrAddress)
       {
-        TLOC_ASSERT(IsPointerTracked(a_ptrAddress) == false,
+        TLOC_ASSERT_LOW_LEVEL(IsPointerTracked(a_ptrAddress) == false,
           "Pointer address is already tracked. Possibly causes include dtor "
           "of tracking class not calling UntrackPointerToAddress OR multiple "
           "calls to TrackPointerToAddress");

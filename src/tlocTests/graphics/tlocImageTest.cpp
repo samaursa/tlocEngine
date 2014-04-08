@@ -71,6 +71,130 @@ namespace TestingImage
     CHECK(img.GetPixels()[3] == c1);
   }
 
+  TEST_CASE("tloc/graphics/Image/AddPadding", "")
+  {
+    const gfx_t::Color c1 = gfx_t::Color::COLOR_BLACK;
+    const gfx_t::Color c2 = gfx_t::Color::COLOR_WHITE;
+
+    SECTION("1x1 Padding", "")
+    {
+      Image img;
+      img.Create(core_ds::MakeTuple(2, 2), c1);
+
+      CHECK(img.GetWidth() == 2);
+      CHECK(img.GetHeight() == 2);
+
+      const Image::dimension_type padding = core_ds::MakeTuple(1, 1);
+      img.AddPadding(padding, c2);
+
+      CHECK(img.GetWidth() == 4);
+      CHECK(img.GetHeight() == 4);
+
+      CHECK(img.GetPixels()[0] == c2);
+      CHECK(img.GetPixels()[1] == c2);
+      CHECK(img.GetPixels()[2] == c2);
+      CHECK(img.GetPixels()[3] == c2);
+
+      CHECK(img.GetPixels()[4] == c2);
+      CHECK(img.GetPixels()[5] == c1);
+      CHECK(img.GetPixels()[6] == c1);
+      CHECK(img.GetPixels()[7] == c2);
+
+      CHECK(img.GetPixels()[8] == c2);
+      CHECK(img.GetPixels()[9] == c1);
+      CHECK(img.GetPixels()[10] == c1);
+      CHECK(img.GetPixels()[11] == c2);
+
+      CHECK(img.GetPixels()[12] == c2);
+      CHECK(img.GetPixels()[13] == c2);
+      CHECK(img.GetPixels()[14] == c2);
+      CHECK(img.GetPixels()[15] == c2);
+    }
+
+    SECTION("0x1 Padding", "")
+    {
+      Image img;
+      img.Create(core_ds::MakeTuple(2, 2), c1);
+
+      CHECK(img.GetWidth() == 2);
+      CHECK(img.GetHeight() == 2);
+
+      const Image::dimension_type padding = core_ds::MakeTuple(0, 1);
+      img.AddPadding(padding, c2);
+
+      CHECK(img.GetWidth() == 2);
+      CHECK(img.GetHeight() == 4);
+
+      CHECK(img.GetPixels()[0] == c2);
+      CHECK(img.GetPixels()[1] == c2);
+
+      CHECK(img.GetPixels()[2] == c1);
+      CHECK(img.GetPixels()[3] == c1);
+
+      CHECK(img.GetPixels()[4] == c1);
+      CHECK(img.GetPixels()[5] == c1);
+
+      CHECK(img.GetPixels()[6] == c2);
+      CHECK(img.GetPixels()[7] == c2);
+    }
+
+    SECTION("1x0 Padding", "")
+    {
+      Image img;
+      img.Create(core_ds::MakeTuple(2, 2), c1);
+
+      CHECK(img.GetWidth() == 2);
+      CHECK(img.GetHeight() == 2);
+
+      const Image::dimension_type padding = core_ds::MakeTuple(1, 0);
+      img.AddPadding(padding, c2);
+
+      CHECK(img.GetWidth() == 4);
+      CHECK(img.GetHeight() == 2);
+
+      CHECK(img.GetPixels()[0] == c2);
+      CHECK(img.GetPixels()[1] == c1);
+      CHECK(img.GetPixels()[2] == c1);
+      CHECK(img.GetPixels()[3] == c2);
+
+      CHECK(img.GetPixels()[4] == c2);
+      CHECK(img.GetPixels()[5] == c1);
+      CHECK(img.GetPixels()[6] == c1);
+      CHECK(img.GetPixels()[7] == c2);
+    }
+
+    SECTION("2x2 Padding", "")
+    {
+      Image img;
+      img.Create(core_ds::MakeTuple(2, 2), c1);
+
+      CHECK(img.GetWidth() == 2);
+      CHECK(img.GetHeight() == 2);
+
+      const Image::dimension_type padding = core_ds::MakeTuple(2, 2);
+      img.AddPadding(padding, c2);
+
+      CHECK(img.GetWidth() == 6);
+      CHECK(img.GetHeight() == 6);
+
+      for (tl_size x = 0; x < img.GetWidth(); ++x)
+      {
+        for (tl_size y = 0; y < img.GetHeight(); ++y)
+        {
+          if (x < padding[0] || x > 2 ||
+              y < padding[1] || y > 2)
+          {
+            CHECK(img.GetPixel(x, y) == c2);
+          }
+          else
+          {
+            CHECK(img.GetPixel(x, y) == c1);
+          }
+        }
+      }
+    }
+  }
+
   TEST_CASE("tloc/graphics/Image/GetSet", "")
   {
     gfx_t::Color c1(0, 16, 32, 255);

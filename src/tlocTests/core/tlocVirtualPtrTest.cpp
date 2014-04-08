@@ -336,20 +336,20 @@ namespace TestingVirtualPtr
   // -----------------------------------------------------------------------
 
   class Foo1
-  { 
+  {
   public:
     virtual ~Foo1() {}
   };
 
   class Foo2
-  { 
+  {
   public:
     virtual ~Foo2() {}
   };
 
   class Base
     : public Foo1
-  { 
+  {
   public:
     virtual ~Base() {}
     int c;
@@ -358,7 +358,7 @@ namespace TestingVirtualPtr
   class Base2
     : public Foo2
     , public Base
-  { 
+  {
   public:
     virtual ~Base2() {}
     int d;
@@ -366,7 +366,7 @@ namespace TestingVirtualPtr
 
   class Derived
     : public Base2
-  { 
+  {
   public:
     virtual ~Derived() {}
     int e;
@@ -380,6 +380,15 @@ namespace TestingVirtualPtr
   }
 
   void DoCheckVPtrCount(void* , tl_size , core_cfg::p_build_config::Release)
+  { }
+
+  template <typename T_BuildConfig>
+  void DoCheckMemoryAddressIsTracked(void* a_pointer, bool a_expected, T_BuildConfig)
+  {
+    CHECK( core_mem::tracking::priv::DoIsMemoryAddressTracked(a_pointer) == a_expected);
+  }
+
+  void DoCheckMemoryAddressIsTracked(void* , bool , core_cfg::p_build_config::Release)
   { }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/MultipleInheritance",
@@ -417,6 +426,31 @@ namespace TestingVirtualPtr
     bb.reset();
 
     DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
+  }
+
+  TEST_CASE("core/smart_ptr/VirtualPtr/force tracking", "Bug fix in d5d52a045a35")
+  {
+    /*
+    A VirtualPtr may track an address that is not already tracked but then it
+    has no mechanism to untrack that address. This is now fixed by untracking
+    the memory address if it is marked as such.
+    */
+
+    tl_int varOnStack;
+    DoCheckMemoryAddressIsTracked((void*)&varOnStack, false,
+      core_cfg::BuildConfig::build_config_type());
+
+    {
+      core_sptr::VirtualPtr<tl_int> vptr(&varOnStack);
+      DoCheckMemoryAddressIsTracked((void*)&varOnStack, true,
+        core_cfg::BuildConfig::build_config_type());
+    }
+
+    // now we force track the address, this should not crash
+    core_mem::tracking::priv::DoTrackMemoryAddress(&varOnStack);
+
+    // and then untrack
+    core_mem::tracking::priv::DoUntrackMemoryAddress(&varOnStack);
   }
 }
 

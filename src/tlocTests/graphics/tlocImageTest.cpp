@@ -22,7 +22,9 @@ namespace TestingImage
       Image::const_uchar8_ptr pixelsPtr(pixels);
 
       Image img;
+      CHECK_FALSE(img.IsValid());
       img.LoadFromMemory(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
+      CHECK(img.IsValid());
 
       CHECK(img.GetDimensions()[0] == 2);
       CHECK(img.GetDimensions()[1] == 1);

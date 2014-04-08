@@ -125,6 +125,15 @@ namespace tloc { namespace graphics { namespace media {
     return m_pixels[index];
   }
 
+  bool
+    Image::
+    IsValid() const
+  {
+    return m_dim[0] > 0 &&
+           m_dim[1] > 0 &&
+           (m_pixels.size() == m_dim[0] * m_dim[1]);
+  }
+
 };};};
 
 //------------------------------------------------------------------------

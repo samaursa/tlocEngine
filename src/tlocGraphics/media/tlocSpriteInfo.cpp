@@ -7,7 +7,7 @@ namespace tloc { namespace graphics { namespace media {
 
   // ///////////////////////////////////////////////////////////////////////
   // SpriteInfoBase_I
-  
+
   SpriteInfoBase_I::
     SpriteInfoBase_I()
   { }
@@ -26,11 +26,11 @@ namespace tloc { namespace graphics { namespace media {
     ~SpriteInfoBase_I()
   { }
 
-  void 
+  void
     SpriteInfoBase_I::
     ComputeTexCoords( dim_type a_imgDimensions,
                       p_sprite_info::FlipYCoords a_flip)
-  { 
+  {
     using math::range_tl_size;
     using math::Rangef;
 
@@ -41,11 +41,11 @@ namespace tloc { namespace graphics { namespace media {
 
     Rangef texRange(0.0f, 2.0f);
 
-    range_type  texToSpriteX = 
+    range_type  texToSpriteX =
       range_type( range_type::range_small(texRange),
                   range_type::range_large(spriteRangeX) );
 
-    range_type  texToSpriteY = 
+    range_type  texToSpriteY =
       range_type( range_type::range_small( texRange ),
                   range_type::range_large( spriteRangeY ) );
 
@@ -112,3 +112,13 @@ namespace tloc { namespace graphics { namespace media {
   };};
 
 };};};
+
+using namespace tloc::gfx_med;
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(sprite_info_str);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(sprite_info_str);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(sprite_info_ul);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(sprite_info_ul);

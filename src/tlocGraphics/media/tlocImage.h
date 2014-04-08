@@ -55,6 +55,8 @@ namespace tloc { namespace graphics { namespace media {
 
     const color_type& GetPixel(size_type a_X, size_type a_Y) const;
 
+    bool              IsValid() const;
+
     TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
     TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);

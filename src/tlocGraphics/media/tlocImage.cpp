@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace media {
     {
       for (size_type x = 0; x < a_dimToGet[0]; ++x)
       {
-        img->SetPixel(x, y, GetPixel(x + a_x, y + a_x));
+        img->SetPixel(x, y, GetPixel(x + a_x, y + a_y));
       }
     }
 

@@ -225,49 +225,69 @@ namespace TestingImage
     {
       const gfx_t::Color c1 = gfx_t::Color::COLOR_BLACK;
       const gfx_t::Color c2 = gfx_t::Color::COLOR_WHITE;
+      const gfx_t::Color c3 = gfx_t::Color(255, 0, 0, 255);
 
       Image img;
       img.Create(core_ds::MakeTuple(2, 2), c1);
+      img.SetPixel(0, 0, c3);
+      img.SetPixel(1, 1, c3);
       img.AddPadding(core_ds::MakeTuple(1, 1), c2);
 
       image_sptr img2 = img.GetImage(0, 0, core_ds::MakeTuple(1, 1));
       CHECK(img2->GetPixel(0, 0) == c2);
 
-      img2 = img.GetImage(0, 0, core_ds::MakeTuple(2, 2));
-      CHECK(img2->GetPixel(0, 0) == c2);
-      CHECK(img2->GetPixel(1, 0) == c2);
-      CHECK(img2->GetPixel(0, 1) == c2);
-      CHECK(img2->GetPixel(1, 1) == c1);
-
-      img2 = img.GetImage(1, 1, core_ds::MakeTuple(2, 2));
-      CHECK(img2->GetPixel(0, 0) == c1);
-      CHECK(img2->GetPixel(1, 0) == c1);
-      CHECK(img2->GetPixel(0, 1) == c1);
-      CHECK(img2->GetPixel(1, 1) == c1);
-
-      img2 = img.GetImage(0, 0, core_ds::MakeTuple(4, 4));
-      REQUIRE(img2->GetDimensions() == img.GetDimensions());
-      for (tl_size i = 0; i < img.GetWidth() * img.GetHeight(); ++i)
+      SECTION("Square sections", "")
       {
-        CHECK(img2->GetPixels()[i] == img.GetPixels()[i]);
+        img2 = img.GetImage(0, 0, core_ds::MakeTuple(2, 2));
+        CHECK(img2->GetPixel(0, 0) == c2);
+        CHECK(img2->GetPixel(1, 0) == c2);
+        CHECK(img2->GetPixel(0, 1) == c2);
+        CHECK(img2->GetPixel(1, 1) == c3);
+
+        img2 = img.GetImage(1, 1, core_ds::MakeTuple(2, 2));
+        CHECK(img2->GetPixel(0, 0) == c3);
+        CHECK(img2->GetPixel(1, 0) == c1);
+        CHECK(img2->GetPixel(0, 1) == c1);
+        CHECK(img2->GetPixel(1, 1) == c3);
       }
 
-      const gfx_t::Color c3(255, 0, 0, 0);
+      SECTION("Non square sections", "")
+      {
+        img2 = img.GetImage(1, 1, core_ds::MakeTuple(1, 2));
+        CHECK(img2->GetPixel(0, 0) == c3);
+        CHECK(img2->GetPixel(0, 1) == c1);
 
-      img2->Create(core_ds::MakeTuple(2, 2), c3);
+        img2 = img.GetImage(1, 1, core_ds::MakeTuple(2, 1));
+        CHECK(img2->GetPixel(0, 0) == c3);
+        CHECK(img2->GetPixel(1, 0) == c1);
+      }
+
+      SECTION("Getting the whole image - aka copy", "")
+      {
+        img2 = img.GetImage(0, 0, core_ds::MakeTuple(4, 4));
+        REQUIRE(img2->GetDimensions() == img.GetDimensions());
+        for (tl_size i = 0; i < img.GetWidth() * img.GetHeight(); ++i)
+        {
+          CHECK(img2->GetPixels()[i] == img.GetPixels()[i]);
+        }
+      }
+
+      const gfx_t::Color c4(255, 0, 0, 0);
+
+      img2->Create(core_ds::MakeTuple(2, 2), c4);
       img.SetImage(1, 1, *img2);
 
-      CHECK(img.GetPixel(1, 1) == c3);
-      CHECK(img.GetPixel(2, 1) == c3);
-      CHECK(img.GetPixel(1, 2) == c3);
-      CHECK(img.GetPixel(2, 2) == c3);
+      CHECK(img.GetPixel(1, 1) == c4);
+      CHECK(img.GetPixel(2, 1) == c4);
+      CHECK(img.GetPixel(1, 2) == c4);
+      CHECK(img.GetPixel(2, 2) == c4);
 
-      img2->Create(core_ds::MakeTuple(4, 4), c3);
+      img2->Create(core_ds::MakeTuple(4, 4), c4);
       img.SetImage(0, 0, *img2);
 
       for (tl_size i = 0; i < img.GetWidth() * img.GetHeight(); ++i)
       {
-        CHECK(img.GetPixels()[i] == c3);
+        CHECK(img.GetPixels()[i] == c4);
       }
     }
   }

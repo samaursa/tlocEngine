@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------
 # Functions
 
-# -----------------------------------------------------------------------------
 function(add_common_libraries EXEC_NAME)
   target_link_libraries(${EXEC_NAME}
     tlocCore
@@ -45,7 +44,6 @@ function(add_common_libraries EXEC_NAME)
 
 endfunction()
 
-# -----------------------------------------------------------------------------
 function(add_apple_plist EXEC_NAME ASSETS_PATH)
   if(TLOC_PLATFORM_IOS)
     # Check if a PLIST file was specified. If not, then go with default.
@@ -66,6 +64,9 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
 endfunction()
 
 # -----------------------------------------------------------------------------
+# compiler flags
+
+tloc_add_definitions_strict()
 
 # common includes
 include_directories(
@@ -101,9 +102,6 @@ foreach(lib ${USER_LIBRARY_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_LIB})
   set(USER_CURRENT_PROJECT_NAME ${lib})
 
-  # strict definitions
-  tloc_add_definitions_strict()
-
   add_subdirectory(${lib})
 
   # put the libraries in the "Libraries" folder
@@ -121,9 +119,6 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${exec})
   
-  # strict definitions
-  tloc_add_definitions_strict()
-
   add_subdirectory(${exec})
 
   # put the executable in the "Projects" folder
@@ -141,8 +136,12 @@ foreach(test ${USER_TEST_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${test})
 
-  # non-strict definitions
-  tloc_add_definitions()
+# test projects require exceptions and rtti to be enabled - build fails in xcode only
+if(TLOC_COMPILER_XCODE)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+endif()
   
   add_subdirectory(${test})
 

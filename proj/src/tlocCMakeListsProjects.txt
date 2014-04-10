@@ -47,6 +47,10 @@ elseif(${USER_CURRENT_PROJECT_NAME} STREQUAL ${USER_PROJECT_TYPE_LIB})
 
 endif()
 
+#------------------------------------------------------------------------------
+# Add platform specific properties
+set_platform_specific_properties(${USER_CURRENT_PROJECT_NAME})
+
 # Add dependencies (if any)
 if(USER_PROJECT_DEPENDENCIES)
   add_dependencies(${USER_CURRENT_PROJECT_NAME}

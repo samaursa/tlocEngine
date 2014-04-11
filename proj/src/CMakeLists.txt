@@ -129,19 +129,23 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
 endforeach()
 message(STATUS "-- Executables -- DONE")
 
+# -----------------------------------------------------------------------------
+# compiler flags
+#
+# NOTE: For tests we need regular compiler flags which enable RTTI and 
+#       exceptions
+
+tloc_add_definitions()
+
+# -----------------------------------------------------------------------------
+# Add all test executables
+
 message("")
 message(STATUS "-- Tests --")
 foreach(test ${USER_TEST_PROJECTS})
   message(STATUS "Adding ${test} executable project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${test})
-
-# test projects require exceptions and rtti to be enabled - build fails in xcode only
-if(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
-endif()
   
   add_subdirectory(${test})
 

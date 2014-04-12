@@ -5,6 +5,9 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 
+#include <tlocMath/tlocRange.h>
+#include <tlocMath/utilities/tlocScale.h>
+
 namespace tloc { namespace graphics { namespace types {
 
   namespace
@@ -287,6 +290,52 @@ namespace tloc { namespace graphics { namespace types {
     m_rgba[2] -= a_other[2];
     m_rgba[3] -= a_other[3];
 
+    return *this;
+  }
+
+  Color
+    Color::
+    operator * (real_type a_other) const
+  {
+    math_t::Vector4<real_type>  col;
+    GetAs<p_color::format::RGBA>(col);
+
+    col *= a_other;
+
+    this_type newCol(col[0], col[1], col[2], col[3]);
+    return newCol;
+  }
+
+  Color&
+    Color::
+    operator *=(real_type a_other)
+  {
+    this_type temp = *this * a_other;
+    
+    core::swap(temp, *this);
+    return *this;
+  }
+
+  Color
+    Color::
+    operator / (real_type a_other) const
+  {
+    math_t::Vector4<real_type>  col;
+    GetAs<p_color::format::RGBA>(col);
+
+    col /= a_other;
+
+    this_type newCol(col[0], col[1], col[2], col[3]);
+    return newCol;
+  }
+
+  Color&
+    Color::
+    operator /=(real_type a_other)
+  {
+    this_type temp = *this / a_other;
+
+    core::swap(temp, *this);
     return *this;
   }
 

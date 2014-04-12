@@ -12,6 +12,18 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   // ///////////////////////////////////////////////////////////////////////
+  // Params_Font
+
+  Font::Params_Font::
+    Params_Font(font_size_type a_fontSize) 
+    : m_fontSize(a_fontSize)
+    , m_fontColor(gfx_t::Color::COLOR_WHITE)
+    , m_bgColor(gfx_t::Color::COLOR_BLACK)
+    , m_paddingDim(core_ds::MakeTuple(2, 2))
+    , m_paddingColor(gfx_t::Color::COLOR_BLACK)
+  { }
+
+  // ///////////////////////////////////////////////////////////////////////
   // Font
 
   Font::
@@ -31,20 +43,19 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::image_ptr
     Font::
-    GetCharImage(tl_ulong a_char, ushort a_size) const
+    GetCharImage(tl_ulong a_char, Params_Font a_params) const
   {
     AssertIsInitialized();
-    m_ft->SetCurrentSize(a_size);
-    return m_ft->GetGlyphImage(a_char);
+    m_ft->SetCurrentSize(a_params.m_fontSize);
+    return m_ft->GetGlyphImage(a_char, a_params.m_fontColor, a_params.m_bgColor);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Font::sprite_sheet_ul_sptr
     Font::
-    GenerateSpriteSheet(BufferArgW a_characters, ushort a_size) const
+    GenerateSpriteSheet(BufferArgW a_characters, Params_Font a_params) const
   {
-    TLOC_UNUSED(a_size);
     using core_str::StringW;
 
     typedef Image::size_type        size_type;
@@ -80,8 +91,8 @@ namespace tloc { namespace graphics { namespace media {
 
     for (size_type i = 0; i < strLength; ++i)
     {
-      charImages.push_back(GetCharImage(str.at(i), a_size) );
-      charImages.back()->AddPadding(core_ds::MakeTuple(1, 1), gfx_t::Color::COLOR_BLACK);
+      charImages.push_back(GetCharImage(str.at(i), a_params) );
+      charImages.back()->AddPadding(a_params.m_paddingDim, a_params.m_paddingColor);
       Image::dimension_type currDim = charImages.back()->GetDimensions();
 
       maxDim[0] = core::tlMax(maxDim[0], currDim[0]);
@@ -94,31 +105,22 @@ namespace tloc { namespace graphics { namespace media {
     image_sptr spriteSheet(new Image());
     spriteSheet->
       Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
-             gfx_t::Color::COLOR_BLACK);
+             a_params.m_bgColor);
+
+    sprite_sheet_ul_sptr::value_type::sprite_info_cont spriteInfo;
 
     for (size_type i = 0; i < charImages.size(); ++i)
     {
       core_ds::Tuple2u coord =
         core_utils::GetCoord(core_ds::MakeTuple(numCols, numRows), i);
 
-      spriteSheet->SetImage(maxDim[0] * coord[0], maxDim[1] * coord[1], *charImages[i]);
+      spriteSheet->SetImage(maxDim[0] * coord[0], 
+                            maxDim[1] * coord[1], 
+                            *charImages[i]);
     }
 
-    //for (size_type cols = 0; cols < numCols; ++cols)
-    //{
-    //  for (size_type rows = 0; rows < numRows; ++rows)
-    //  {
-    //    tl_int index = core_utils::GetIndex(core_ds::MakeTuple(numRows, numCols),
-    //                                        core_ds::MakeTuple(rows, cols));
-
-    //    spriteSheet->SetImage(rows * maxDim[0], cols * maxDim[1],
-    //                          *charImages[index]);
-    //  }
-    //}
-
-    sprite_sheet_ul_sptr::value_type::sprite_info_cont empty;
-
-    sprite_sheet_ul_sptr ss(new sprite_sheet_ul_sptr::value_type(spriteSheet, empty));
+    sprite_sheet_ul_sptr 
+      ss(new sprite_sheet_ul_sptr::value_type(spriteSheet, spriteInfo));
 
     return ss;
   }

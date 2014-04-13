@@ -4,8 +4,11 @@
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/memory/tlocBufferArg.h>
+#include <tlocCore/types/tlocStrongType.h>
 
 #include <tlocGraphics/media/tlocImage.h>
+#include <tlocGraphics/media/tlocSprite.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -34,12 +37,30 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_str::String                              data_type;
 
     typedef image_sptr                                    image_ptr;
+    typedef sprite_sheet_ul_sptr                          sprite_sheet_ul_sptr;
+    typedef ushort                                        font_size_type;
+
+  public:
+    struct Params_Font
+    {
+      typedef Params_Font                                 this_type;
+
+      explicit Params_Font(font_size_type a_fontSize);
+
+      TLOC_DECL_PARAM_VAR(font_size_type, FontSize, m_fontSize);
+      TLOC_DECL_PARAM_VAR(gfx_t::Color, FontColor, m_fontColor);
+      TLOC_DECL_PARAM_VAR(gfx_t::Color, BgColor, m_bgColor);
+      TLOC_DECL_PARAM_VAR(Image::dimension_type, PaddingDim, m_paddingDim);
+      TLOC_DECL_PARAM_VAR(gfx_t::Color, PaddingColor, m_paddingColor);
+    };
 
   public:
     Font();
     ~Font();
 
-    image_ptr     GetCharImage(tl_ulong a_char);
+    image_ptr             GetCharImage(tl_ulong a_char, Params_Font a_params) const;
+    sprite_sheet_ul_sptr  GenerateSpriteSheet(BufferArgW a_characters,
+                                              Params_Font a_params) const;
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 

@@ -4,6 +4,9 @@
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/tlocAlgorithms.h>
 
+#include <tlocMath/tlocRange.h>
+#include <tlocMath/utilities/tlocScale.h>
+
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
 namespace tloc { namespace graphics { namespace media { namespace free_type {
@@ -106,9 +109,16 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   FreeType::image_ptr
     FreeType::
-    GetGlyphImage(ft_ulong a_charCode) const
+    GetGlyphImage(ft_ulong a_charCode, 
+                  gfx_t::Color a_fontColor,
+                  gfx_t::Color a_backgroundColor) const
   {
     AssertIsInitialized();
+
+    // scaling setup
+    math::range_s32 r0to256 = math::Range0to256<s32, math::p_range::Inclusive>().Get();
+    math::range_f32 r0to1 = math::Range0to1<f32, math::p_range::Inclusive>().Get();
+    math_utils::scale_f32_s32 scale(r0to1, r0to256);
 
     FreeTypeGlyph g = LoadGlyph(a_charCode);
 
@@ -119,8 +129,16 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)
     {
       uchar8 gc = bmpBuff.get()[i];
-      gfx_t::Color c(gc, gc, gc, gc);
-      pixelCont.push_back(c);
+
+      const f32 fontMulti = scale.ScaleDown(gc);
+      const f32 bgMulti = 1 - fontMulti;
+
+      const gfx_t::Color finalFontColor = a_fontColor * fontMulti;
+      const gfx_t::Color finalBgColor = a_backgroundColor * bgMulti;
+
+      const gfx_t::Color finalColor = finalFontColor + finalBgColor;
+
+      pixelCont.push_back(finalColor);
     }
 
     image_ptr fontImg(new image_ptr::value_type());

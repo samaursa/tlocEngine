@@ -65,7 +65,9 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     bool          SetCurrentSize(ft_ushort a_charSize) const;
     FreeTypeGlyph LoadGlyph(ft_ulong a_charCode) const;
 
-    image_ptr     GetGlyphImage(ft_ulong a_charCode) const;
+    image_ptr     GetGlyphImage(ft_ulong a_charCode, 
+                                gfx_t::Color a_fontColor = gfx_t::Color::COLOR_WHITE, 
+                                gfx_t::Color a_backgroundColor = gfx_t::Color::COLOR_BLACK) const;
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 

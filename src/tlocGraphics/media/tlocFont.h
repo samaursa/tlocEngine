@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_str::String                              data_type;
 
     typedef image_sptr                                    image_ptr;
-    typedef sprite_sheet_ul_sptr                          sprite_sheet_ul_sptr;
+    typedef sprite_sheet_ul_vso                           sprite_sheet_ul_vso;
     typedef ushort                                        font_size_type;
 
   public:
@@ -59,7 +59,7 @@ namespace tloc { namespace graphics { namespace media {
     ~Font();
 
     image_ptr             GetCharImage(tl_ulong a_char, Params_Font a_params) const;
-    sprite_sheet_ul_sptr  GenerateSpriteSheet(BufferArgW a_characters,
+    sprite_sheet_ul_vso   GenerateSpriteSheet(BufferArgW a_characters,
                                               Params_Font a_params) const;
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();

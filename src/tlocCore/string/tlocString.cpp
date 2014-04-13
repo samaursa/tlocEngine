@@ -174,6 +174,40 @@ namespace tloc { namespace core { namespace string {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  char32
+    CharAsciiToWide(const char8 a_in)
+  {
+    char32 out[2] = {0, 0};
+    char8 in[] = {a_in, '\0'};
+
+    if (CharAsciiToWide(out, in, 1) > 0)
+    { 
+      TLOC_ASSERT_LOW_LEVEL(out[1] == 0, "More than 1 character written to buffer");
+      return out[0];
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  char8
+    CharWideToAscii(const char32 a_in)
+  {
+    char8 out[2] = {0, 0};
+    char32 in[] = {a_in, L'\0'};
+
+    if (CharWideToAscii(out, in, 1) > 0)
+    { 
+      TLOC_ASSERT_LOW_LEVEL(out[1] == 0, "More than 1 character written to buffer");
+      return out[0];
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
     CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
   {

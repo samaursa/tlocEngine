@@ -188,7 +188,7 @@ namespace tloc { namespace core { namespace data_structs {
   // ///////////////////////////////////////////////////////////////////////
   // Basic arithmetic operations
 
-  template <typename T, tl_int T_Size>
+  template <typename T, tl_size T_Size>
   Tuple<T, T_Size>
     Add(const Tuple<T, T_Size>& a,
         const Tuple<T, T_Size>& b)
@@ -202,7 +202,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_int T_Size>
+  template <typename T, tl_size T_Size>
   Tuple<T, T_Size>
     Subtract(const Tuple<T, T_Size>& a,
              const Tuple<T, T_Size>& b)
@@ -216,7 +216,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_int T_Size>
+  template <typename T, tl_size T_Size>
   Tuple<T, T_Size>
     Multiply(T a, const Tuple<T, T_Size>& b)
   {
@@ -229,7 +229,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_int T_Size>
+  template <typename T, tl_size T_Size>
   Tuple<T, T_Size>
     Divide(T a, const Tuple<T, T_Size>& b)
   {

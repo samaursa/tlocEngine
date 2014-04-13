@@ -153,16 +153,20 @@ namespace tloc { namespace core { namespace base_classes {
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
   public:
-    typedef typename InitializeAndDestroyBase_TI<T_DerivedClass>  base_type;
-    typedef base_type::error_type                                 error_type;
+    typedef InitializeAndDestroyBase_TI<T_DerivedClass>   base_type;
+    typedef typename base_type::derived_type              derived_type;
+    typedef typename base_type::error_type                error_type;
 
     error_type  Initialize();
 
     using base_type::Destroy;
     using base_type::AssertIsInitialized;
     using base_type::AssertIsDestroyed;
+    using base_type::AssertIsNotInitialized;
+    using base_type::AssertIsNotDestroyed;
     using base_type::IsInitialized;
     using base_type::IsDestroyed;
+    using base_type::m_flags;
   };
 
   // -----------------------------------------------------------------------
@@ -179,7 +183,7 @@ namespace tloc { namespace core { namespace base_classes {
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize();
     if (err == ErrorSuccess)
-    { m_flags.Mark(k_initialized); }
+    { m_flags.Mark(base_type::k_initialized); }
 
     return err;
   }
@@ -193,8 +197,9 @@ namespace tloc { namespace core { namespace base_classes {
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
   public:
-    typedef InitializeAndDestroyBase_TI<T_DerivedClass>     base_type;
-    typedef base_type::error_type                           error_type;
+    typedef InitializeAndDestroyBase_TI<T_DerivedClass>   base_type;
+    typedef typename base_type::derived_type              derived_type;
+    typedef typename base_type::error_type                error_type;
 
     template <typename T>
     error_type  Initialize( const T& a_p1 );
@@ -202,8 +207,11 @@ namespace tloc { namespace core { namespace base_classes {
     using base_type::Destroy;
     using base_type::AssertIsInitialized;
     using base_type::AssertIsDestroyed;
+    using base_type::AssertIsNotInitialized;
+    using base_type::AssertIsNotDestroyed;
     using base_type::IsInitialized;
     using base_type::IsDestroyed;
+    using base_type::m_flags;
   };
 
   // -----------------------------------------------------------------------
@@ -221,7 +229,7 @@ namespace tloc { namespace core { namespace base_classes {
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize(a_p1);
     if (err == ErrorSuccess)
-    { m_flags.Mark(k_initialized); }
+    { m_flags.Mark(base_type::k_initialized); }
 
     return err;
   }
@@ -235,8 +243,9 @@ namespace tloc { namespace core { namespace base_classes {
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
   public:
-    typedef InitializeAndDestroyBase_TI<T_DerivedClass>     base_type;
-    typedef base_type::error_type                           error_type;
+    typedef InitializeAndDestroyBase_TI<T_DerivedClass>   base_type;
+    typedef typename base_type::derived_type              derived_type;
+    typedef typename base_type::error_type                error_type;
 
     template <typename T, typename U>
     error_type  Initialize( const T& a_p1, const U& a_p2 );
@@ -244,8 +253,11 @@ namespace tloc { namespace core { namespace base_classes {
     using base_type::Destroy;
     using base_type::AssertIsInitialized;
     using base_type::AssertIsDestroyed;
+    using base_type::AssertIsNotInitialized;
+    using base_type::AssertIsNotDestroyed;
     using base_type::IsInitialized;
     using base_type::IsDestroyed;
+    using base_type::m_flags;
   };
 
   // -----------------------------------------------------------------------
@@ -263,7 +275,7 @@ namespace tloc { namespace core { namespace base_classes {
 
     error_type err = static_cast<derived_type*>(this)->DoInitialize(a_p1, a_p2);
     if (err == ErrorSuccess)
-    { m_flags.Mark(k_initialized); }
+    { m_flags.Mark(base_type::k_initialized); }
 
     return err;
   }
@@ -277,8 +289,9 @@ namespace tloc { namespace core { namespace base_classes {
     : public InitializeAndDestroyBase_TI<T_DerivedClass>
   {
   public:
-    typedef InitializeAndDestroyBase_TI<T_DerivedClass>     base_type;
-    typedef base_type::error_type                           error_type;
+    typedef InitializeAndDestroyBase_TI<T_DerivedClass>   base_type;
+    typedef typename base_type::derived_type              derived_type;
+    typedef typename base_type::error_type                error_type;
 
     template <typename T, typename U, typename V>
     error_type  Initialize( const T& a_p1, const U& a_p2, const V& a_p3 );
@@ -286,8 +299,11 @@ namespace tloc { namespace core { namespace base_classes {
     using base_type::Destroy;
     using base_type::AssertIsInitialized;
     using base_type::AssertIsDestroyed;
+    using base_type::AssertIsNotInitialized;
+    using base_type::AssertIsNotDestroyed;
     using base_type::IsInitialized;
     using base_type::IsDestroyed;
+    using base_type::m_flags;
   };
 
   // -----------------------------------------------------------------------
@@ -307,7 +323,7 @@ namespace tloc { namespace core { namespace base_classes {
       DoInitialize( a_p1, a_p2, a_p3 );
 
     if (err == ErrorSuccess)
-    { m_flags.Mark(k_initialized); }
+    { m_flags.Mark(base_type::k_initialized); }
 
     return err;
   }

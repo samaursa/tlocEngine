@@ -314,23 +314,35 @@ namespace TestingRectangle
     typedef typename rect_type::point_type            point_type;
     typedef typename point_type::value_type           vt;
 
-    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
-                            rect_type::top(5), rect_type::bottom(0));
+    rect_type r = rect_type(typename rect_type::left(0),
+                            typename rect_type::right(4),
+                            typename rect_type::top(5),
+                            typename rect_type::bottom(0));
 
-    rect_type r2 = rect_type(rect_type::left(-1), rect_type::right(2),
-                             rect_type::top(4), rect_type::bottom(1));
+    rect_type r2 = rect_type(typename rect_type::left(-1),
+                             typename rect_type::right(2),
+                             typename rect_type::top(4),
+                             typename  rect_type::bottom(1));
 
-    rect_type r3 = rect_type(rect_type::left(1), rect_type::right(2),
-                             rect_type::top(6), rect_type::bottom(3));
+    rect_type r3 = rect_type(typename rect_type::left(1),
+                             typename rect_type::right(2),
+                             typename rect_type::top(6),
+                             typename rect_type::bottom(3));
 
-    rect_type r4 = rect_type(rect_type::left(1), rect_type::right(2),
-                             rect_type::top(4), rect_type::bottom(1));
+    rect_type r4 = rect_type(typename rect_type::left(1),
+                             typename rect_type::right(2),
+                             typename rect_type::top(4),
+                             typename rect_type::bottom(1));
 
-    rect_type r5 = rect_type(rect_type::left(0), rect_type::right(5),
-                             rect_type::top(5), rect_type::bottom(0));
+    rect_type r5 = rect_type(typename rect_type::left(0),
+                             typename rect_type::right(5),
+                             typename rect_type::top(5),
+                             typename rect_type::bottom(0));
 
-    rect_type r6 = rect_type(rect_type::left(0), rect_type::right(4),
-                             rect_type::top(5), rect_type::bottom(-1));
+    rect_type r6 = rect_type(typename rect_type::left(0),
+                             typename rect_type::right(4),
+                             typename rect_type::top(5),
+                             typename rect_type::bottom(-1));
 
     CHECK(r.Fits(r));
     CHECK(r.Fits(r2));
@@ -354,17 +366,25 @@ namespace TestingRectangle
     typedef typename rect_type::point_type            point_type;
     typedef typename point_type::value_type           vt;
 
-    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
-                            rect_type::top(5), rect_type::bottom(0));
+    rect_type r = rect_type(typename rect_type::left(0),
+                            typename rect_type::right(4),
+                            typename rect_type::top(5),
+                            typename rect_type::bottom(0));
 
-    rect_type r2 = rect_type(rect_type::left(-1), rect_type::right(2),
-                             rect_type::top(4), rect_type::bottom(1));
+    rect_type r2 = rect_type(typename rect_type::left(-1),
+                             typename rect_type::right(2),
+                             typename rect_type::top(4),
+                             typename rect_type::bottom(1));
 
-    rect_type r3 = rect_type(rect_type::left(1), rect_type::right(2),
-                             rect_type::top(6), rect_type::bottom(3));
+    rect_type r3 = rect_type(typename rect_type::left(1),
+                             typename rect_type::right(2),
+                             typename rect_type::top(6),
+                             typename rect_type::bottom(3));
 
-    rect_type r4 = rect_type(rect_type::left(1), rect_type::right(2),
-                             rect_type::top(4), rect_type::bottom(1));
+    rect_type r4 = rect_type(typename rect_type::left(1),
+                             typename rect_type::right(2),
+                             typename rect_type::top(4),
+                             typename rect_type::bottom(1));
 
     rect_type r5(r);
 
@@ -397,8 +417,10 @@ namespace TestingRectangle
   {
     typedef T_RectangleType                          rect_type;
 
-    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
-                            rect_type::top(6), rect_type::bottom(0));
+    rect_type r = rect_type(typename rect_type::left(0),
+                            typename rect_type::right(4),
+                            typename rect_type::top(6),
+                            typename rect_type::bottom(0));
     r.MakeFlip();
 
     CHECK_TUP(r.GetCoord_TopLeft(), MakeTuple(-1, 5));
@@ -412,8 +434,10 @@ namespace TestingRectangle
   {
     typedef T_RectangleType                          rect_type;
 
-    rect_type r = rect_type(rect_type::left(0), rect_type::right(4),
-                            rect_type::top(5), rect_type::bottom(0));
+    rect_type r = rect_type(typename rect_type::left(0),
+                            typename rect_type::right(4),
+                            typename rect_type::top(5),
+                            typename rect_type::bottom(0));
     r.MakeFlip();
 
     CHECK_TUP(r.GetCoord_TopLeft(), MakeTuple(0, 4));
@@ -442,11 +466,16 @@ namespace TestingRectangle
   {
     typedef T_RectangleType                        Rectf;
 
-    Rectf r = Rectf(Rectf::left(0), Rectf::right(2),
-                    Rectf::top(5), Rectf::bottom(0));
+    Rectf r = Rectf(typename Rectf::left(0),
+                    typename Rectf::right(2),
+                    typename Rectf::top(5),
+                    typename Rectf::bottom(0));
     {
-      Rectf inter(Rectf::left(1), Rectf::right(2),
-                  Rectf::top(4), Rectf::bottom(1));
+      Rectf inter(typename Rectf::left(1),
+                  typename Rectf::right(2),
+                  typename Rectf::top(4),
+                  typename Rectf::bottom(1));
+
       CHECK(r.Intersects(inter));
 
       Rectf interRet;
@@ -454,8 +483,11 @@ namespace TestingRectangle
     }
 
     {
-      Rectf inter(Rectf::left(-1), Rectf::right(0),
-                  Rectf::top(0), Rectf::bottom(-1));
+      Rectf inter(typename Rectf::left(-1),
+                  typename Rectf::right(0),
+                  typename Rectf::top(0),
+                  typename Rectf::bottom(-1));
+
       CHECK_FALSE(r.Intersects(inter));
     }
   }

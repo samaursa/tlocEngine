@@ -32,6 +32,13 @@ namespace tloc { namespace graphics { namespace gl {
     // nothing needs to be done on other platforms
     static bool g_platformInitialized = true;
 #endif
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Platform>
+    bool
+      DoIsPlatformInitialized(T_Platform)
+    { return g_platformInitialized; }
     
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -41,9 +48,15 @@ namespace tloc { namespace graphics { namespace gl {
     { return ErrorSuccess; }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    // DoInitializePlatform() - Windows Implementation
 
 #if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+
+    bool
+      DoIsPlatformInitialized(core_plat::p_platform_info::win)
+    { return gl::OpenGLExt::IsInitialized(); }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     core_err::Error
       DoInitializePlatform(core_plat::p_platform_info::win)
     {
@@ -59,6 +72,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       return TLOC_ERROR(common_error_types::error_already_initialized);
     }
+
 #endif
 
   };
@@ -68,7 +82,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     AssertOpenGLContextExists();
 
-    if (gl::OpenGLExt::IsInitialized())
+    if ( DoIsPlatformInitialized( core_plat::PlatformInfo::platform_type() ) )
     { return ErrorSuccess; }
 
     core_err::Error err =

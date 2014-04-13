@@ -93,8 +93,9 @@ namespace tloc { namespace graphics { namespace media {
 
     Image::image_ptr_cont imagePtrs;
 
-    core::transform_all( a_arrayOfImages, imagePtrs,
-                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
+    //NOTE:: Commented out temporarily since ToVPtr does not appear to be implemented yet
+//    core::transform_all( a_arrayOfImages, imagePtrs,
+//                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
 
     DoLoadFromImages(imagePtrs);
   }

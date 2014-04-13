@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/data_structures/tlocTuple.h>
 
 namespace tloc { namespace math { namespace optimize {
 
@@ -149,11 +150,11 @@ namespace tloc { namespace math { namespace optimize {
     bool rtfWidthGreater = rtfWidth > rtfHeight;
 
     {// top-left free rect (if possible)
-      rect_type::value_type height = rectHeight - rtfHeight; 
-      rect_type::value_type width = rtfWidthGreater ? rectWidth : rtfWidth;
-      rect_type::point_type pos = 
+      const rect_type::value_type height = rectHeight - rtfHeight;
+      const rect_type::value_type width = rtfWidthGreater ? rectWidth : rtfWidth;
+      const rect_type::point_type pos =
         core_ds::Add(a_rect.GetPosition(), a_rectToFit.GetCoord_TopLeft());
-                                              
+
       r1 = rect_type(rect_type::width(width), rect_type::height(height),
                      rect_type::position(pos));
     }

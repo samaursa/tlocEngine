@@ -51,7 +51,7 @@ namespace tloc { namespace graphics { namespace media {
 
   protected:
     SpriteInfoBase_I();
-    SpriteInfoBase_I( pos_type a_startingPos, pos_type a_dimensions );
+    SpriteInfoBase_I(pos_type a_startingPos, pos_type a_dimensions);
     ~SpriteInfoBase_I();
 
   private:

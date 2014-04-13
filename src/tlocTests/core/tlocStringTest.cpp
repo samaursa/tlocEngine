@@ -686,6 +686,8 @@ namespace TestingStrings
       tl_size retIndex = CharWideToAscii(s1, sentence1, 256);
       CHECK(StrCmp(sentence2, s1) == 0);
       CHECK(retIndex == 19);
+
+      CHECK(CharWideToAscii(L'A') == 'A');
     }
 
     {
@@ -693,6 +695,8 @@ namespace TestingStrings
       tl_size retIndex = CharAsciiToWide(s2, sentence2, 256);
       CHECK(StrCmp(sentence1, s2) == 0);
       CHECK(retIndex == 19);
+
+      CHECK(CharAsciiToWide('B') == L'B');
     }
   }
 

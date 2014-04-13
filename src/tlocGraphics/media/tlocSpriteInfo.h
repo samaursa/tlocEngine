@@ -6,6 +6,8 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/string/tlocString.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocGraphics/types/tlocDimension.h>
 
@@ -38,7 +40,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef p_sprite_info::FlipYCoords                    flip_coords;
 
   public:
-    void ComputeTexCoords( dim_type a_imgDimensions, 
+    void ComputeTexCoords( dim_type a_imgDimensions,
                            flip_coords a_flip = flip_coords());
 
     TLOC_DECL_AND_DEF_GETTER( pos_type, GetStartingPos, m_startingPos );
@@ -46,7 +48,7 @@ namespace tloc { namespace graphics { namespace media {
 
     TLOC_DECL_AND_DEF_GETTER( coord_type, GetTexCoordStart, m_texCoordStart );
     TLOC_DECL_AND_DEF_GETTER( coord_type, GetTexCoordEnd, m_texCoordEnd );
-    
+
   protected:
     SpriteInfoBase_I();
     SpriteInfoBase_I( pos_type a_startingPos, pos_type a_dimensions );
@@ -73,7 +75,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef base_type::dim_type                             dim_type;
 
     typedef T_NameType                                      name_type;
-    typedef typename 
+    typedef typename
       type_traits::CallTraits<name_type>::param_type        name_param;
 
   public:
@@ -89,7 +91,7 @@ namespace tloc { namespace graphics { namespace media {
 
   // -----------------------------------------------------------------------
   // template definitions
-  
+
   template <typename T_NameType>
   SpriteInfo_T<T_NameType>::
     SpriteInfo_T()
@@ -109,6 +111,12 @@ namespace tloc { namespace graphics { namespace media {
 
   typedef SpriteInfo_T<core_str::String>                    sprite_info_str;
   typedef SpriteInfo_T<tl_ulong>                            sprite_info_ul;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(sprite_info_str, sprite_infor_str);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(sprite_info_str, sprite_info_str);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(sprite_info_ul, sprite_info_ul);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(sprite_info_ul, sprite_info_ul);
 
   // -----------------------------------------------------------------------
   // algorithms
@@ -153,7 +161,7 @@ namespace tloc { namespace graphics { namespace media {
       {
       public:
         typedef T_NameType                                      name_type;
-        typedef typename 
+        typedef typename
           type_traits::CallTraits<name_type>::param_type        name_param;
 
         typedef SpriteInfo_T<name_type>                         value_type;
@@ -179,7 +187,7 @@ namespace tloc { namespace graphics { namespace media {
       Name<T_NameType>
         MakeName( typename type_traits::CallTraits<T_NameType>::param_type
                   a_name)
-      { 
+      {
         return Name<T_NameType>(a_name);
       }
 
@@ -207,7 +215,7 @@ namespace tloc { namespace graphics { namespace media {
 
         BufferArg  m_name;
       };
-      
+
     };
   };};
 

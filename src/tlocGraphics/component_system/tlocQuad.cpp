@@ -1,7 +1,6 @@
 #include "tlocQuad.h"
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -19,6 +18,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
+
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 using namespace tloc::gfx_cs;
 

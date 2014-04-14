@@ -185,8 +185,7 @@ namespace tloc { namespace graphics { namespace media {
 
       template <typename T_NameType>
       Name<T_NameType>
-        MakeName( typename type_traits::CallTraits<T_NameType>::param_type
-                  a_name)
+        MakeName( T_NameType a_name)
       {
         return Name<T_NameType>(a_name);
       }

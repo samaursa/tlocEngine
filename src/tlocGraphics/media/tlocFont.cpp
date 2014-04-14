@@ -10,6 +10,12 @@ namespace tloc { namespace graphics { namespace media {
 
   namespace {
     const tl_int g_maxCharactersCache = 512;
+
+    enum
+    {
+      k_font_cache_generated = 0,
+      k_count
+    };
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -29,22 +35,20 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::
     Font()
-    : m_ft(new ft_ptr::value_type())
+    : m_flags(k_count)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Font::
     ~Font()
-  {
-    core_sptr::algos::virtual_ptr::DeleteAndReset()(m_ft);
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Font::image_ptr
     Font::
-    GetCharImage(tl_ulong a_char, Params_Font a_params) const
+    GetCharImage(tl_ulong a_char, const Params_Font& a_params) const
   {
     AssertIsInitialized();
     m_ft->SetCurrentSize(a_params.m_fontSize);
@@ -53,10 +57,13 @@ namespace tloc { namespace graphics { namespace media {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Font::sprite_sheet_ul_vso
+  Font::const_sprite_sheet_ptr
     Font::
-    GenerateSpriteSheet(BufferArgW a_characters, Params_Font a_params) const
+    GenerateFontCache(BufferArgW a_characters, const Params_Font& a_params)
   {
+    TLOC_ASSERT(m_flags.IsUnMarked(k_font_cache_generated), 
+                "Font cache already generated for this Font");
+
     using core_str::StringW;
 
     typedef Image::size_type          size_type;
@@ -97,6 +104,7 @@ namespace tloc { namespace graphics { namespace media {
 
     for (size_type i = 0; i < strLength; ++i)
     {
+      DoCacheGlyphMetrics(str.at(i), a_params);
       charImages.push_back(GetCharImage(str.at(i), a_params) );
       charImages.back()->AddPadding(a_params.m_paddingDim, a_params.m_paddingColor);
       dim_type currDim = charImages.back()->GetDimensions();
@@ -105,8 +113,9 @@ namespace tloc { namespace graphics { namespace media {
       maxDim[1] = core::tlMax(maxDim[1], currDim[1]);
     }
 
-    TLOC_ASSERT(charImages.size() == strLength, 
-                "Unexpected size of the charImages container");
+    TLOC_ASSERT(charImages.size() == strLength && 
+                charImages.size() == m_metrics.size(), 
+                "Expected container sizes to match");
     TLOC_ASSERT(charImages.size() <= numRows * numCols, 
                 "Number of character images must not exceed number of rows/cols "
                 "available");
@@ -140,8 +149,37 @@ namespace tloc { namespace graphics { namespace media {
                 "same");
 
     sprite_sheet_ul_vso ss(sprite_sheet_ul_vso::value_type(spriteSheet, spriteInfo));
+    m_spriteSheet = ss;
 
-    return ss;
+    m_flags.Mark(k_font_cache_generated);
+
+    return m_spriteSheet.get();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Font::const_glyph_metrics_iterator
+    Font::
+    GetGlyphMetric(tl_ulong a_char) const
+  {
+    return core::find_if_all(m_metrics, 
+                             algos::compare::glyph_metrics::CharCode(a_char));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Font::const_glyph_metrics_iterator
+    Font::begin_glyph_metrics() const
+  {
+    return m_metrics.begin();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Font::const_glyph_metrics_iterator
+    Font::end_glyph_metrics() const
+  {
+    return m_metrics.end();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -150,6 +188,7 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoInitialize(const data_type& a_data)
   {
+    m_ft.reset(new ft_ptr::value_type());
     return m_ft->Initialize(a_data);
   }
 
@@ -159,10 +198,38 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoDestroy()
   {
+    core_sptr::algos::virtual_ptr::DeleteAndReset()(m_ft);
     return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Font::
+    DoCacheGlyphMetrics(tl_ulong a_char, const Params_Font& a_params)
+  {
+    m_ft->SetCurrentSize(a_params.m_fontSize);
+    free_type::FreeTypeGlyph ftg = m_ft->LoadGlyph(a_char);
+    FT_Glyph_Metrics ftMetrics = ftg.GetGlyphSlot()->metrics;
+    GlyphMetrics metrics;
+    metrics.CharCode(a_char)
+           .Dimensions(core_ds::MakeTuple(ftMetrics.width, ftMetrics.height))
+           .HoriBearing(core_ds::MakeTuple(ftMetrics.horiBearingX, ftMetrics.horiBearingY))
+           .VertBearing(core_ds::MakeTuple(ftMetrics.vertBearingX, ftMetrics.vertBearingY))
+           .HoriAdvance(ftMetrics.horiAdvance)
+           .VertAdvance(ftMetrics.vertAdvance);
+
+    m_metrics.push_back(metrics);
   }
 
 };};};
 
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::graphics::media::free_type::FreeType);
+using namespace tloc::gfx_med;
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(free_type::FreeType);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Font);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Font);
+
+#include <tlocCore/containers/tlocArray.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Font::glyph_metrics);

@@ -96,6 +96,10 @@ namespace tloc { namespace graphics { namespace media {
     //NOTE:: Commented out temporarily since ToVPtr does not appear to be implemented yet
 //    core::transform_all( a_arrayOfImages, imagePtrs,
 //                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
+    // TODO: extract VirtualPtrs from array of images, push into container, and
+    //       send it to DoLoadFromImages for packing. We don't have a binpacker
+    //       yet, which is needed for this operation
+    TLOC_ASSERT_WIP();
 
     DoLoadFromImages(imagePtrs);
   }

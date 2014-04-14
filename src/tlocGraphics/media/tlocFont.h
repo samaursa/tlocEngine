@@ -2,10 +2,11 @@
 #define _TLOC_GRAPHICS_MEDIA_FONT_H_
 
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/types/tlocStrongType.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocGraphics/media/tlocImage.h>
 #include <tlocGraphics/media/tlocSprite.h>
@@ -17,6 +18,44 @@ namespace tloc { namespace graphics { namespace media {
 
   namespace free_type
   { class FreeType; };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // GlyphMetrics
+
+  struct GlyphMetrics
+  {
+    typedef GlyphMetrics                            this_type;
+    typedef tl_int                                  value_type;
+    typedef tl_ulong                                char_code;
+    typedef core_ds::Tuple<value_type, 2>           dim_type;
+
+    TLOC_DECL_PARAM_VAR(char_code, CharCode, m_charCode);
+    TLOC_DECL_PARAM_VAR(dim_type, Dimensions, m_dim);
+
+    TLOC_DECL_PARAM_VAR(dim_type, HoriBearing, m_horizontalBearing);
+    TLOC_DECL_PARAM_VAR(dim_type, VertBearing, m_verticalBearing);
+
+    TLOC_DECL_PARAM_VAR(value_type, HoriAdvance, m_horizontalAdvance);
+    TLOC_DECL_PARAM_VAR(value_type, VertAdvance, m_verticalAdvance);
+  };
+
+  namespace algos { namespace compare { namespace glyph_metrics {
+
+    struct CharCode
+    {
+      typedef GlyphMetrics::char_code                 value_type;
+
+      CharCode(value_type a_charCode)
+        : m_charCode(a_charCode)
+      { }
+
+      bool operator()(const GlyphMetrics& a_other)
+      { return m_charCode == a_other.m_charCode; }
+
+      value_type m_charCode;
+    };
+
+  };};};
 
   // ///////////////////////////////////////////////////////////////////////
   // Font
@@ -37,8 +76,14 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_str::String                              data_type;
 
     typedef image_sptr                                    image_ptr;
-    typedef sprite_sheet_ul_vso                           sprite_sheet_ul_vso;
+    typedef sprite_sheet_ul_vso                           sprite_sheet_type;
+    typedef const_sprite_sheet_ul_vptr                    const_sprite_sheet_ptr;
     typedef ushort                                        font_size_type;
+
+    typedef GlyphMetrics                                  glyph_metrics;
+    typedef core_conts::Array<glyph_metrics>              glyph_metrics_cont;
+    typedef glyph_metrics_cont::iterator                  glyph_metrics_iterator;
+    typedef glyph_metrics_cont::const_iterator            const_glyph_metrics_iterator;
 
   public:
     struct Params_Font
@@ -58,9 +103,17 @@ namespace tloc { namespace graphics { namespace media {
     Font();
     ~Font();
 
-    image_ptr             GetCharImage(tl_ulong a_char, Params_Font a_params) const;
-    sprite_sheet_ul_vso   GenerateSpriteSheet(BufferArgW a_characters,
-                                              Params_Font a_params) const;
+    image_ptr               GetCharImage(tl_ulong a_char, 
+                                         const Params_Font& a_params) const;
+    const_sprite_sheet_ptr  GenerateFontCache(BufferArgW a_characters,
+                                              const Params_Font& a_params);
+
+    const_glyph_metrics_iterator  GetGlyphMetric(tl_ulong a_char) const;
+    const_glyph_metrics_iterator  begin_glyph_metrics() const;
+    const_glyph_metrics_iterator  end_glyph_metrics() const;
+
+    TLOC_DECL_AND_DEF_GETTER(const_sprite_sheet_ptr, GetSpriteSheetPtr, 
+                             m_spriteSheet.get());
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 
@@ -72,10 +125,21 @@ namespace tloc { namespace graphics { namespace media {
   private:
     error_type    Destroy(); // intentionally not defined
 
-  private:
-    ft_ptr        m_ft;
+    void          DoCacheGlyphMetrics(tl_ulong a_char, 
+                                      const Params_Font& a_params);
 
+  private:
+    ft_ptr                    m_ft;
+    glyph_metrics_cont        m_metrics;
+    sprite_sheet_ul_vso       m_spriteSheet;
+    core_utils::Checkpoints   m_flags;
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Font, font);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Font, font);
 
 };};};
 

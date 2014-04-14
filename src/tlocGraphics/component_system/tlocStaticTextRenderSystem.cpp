@@ -16,6 +16,7 @@
 
 #include <tlocPrefab/graphics/tlocQuad.h>
 #include <tlocPrefab/graphics/tlocMaterial.h>
+#include <tlocPrefab/graphics/tlocSprite.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -41,7 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
   StaticTextRenderSystem::
     StaticTextRenderSystem(event_manager_ptr a_eventMgr, 
                            entity_manager_ptr a_entityMgr,
-                           font_vso a_initializedFont,
+                           const font_type& a_initializedFont,
                            scale_type a_globalScale)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::static_text))
@@ -56,6 +57,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_fontQuadRenderSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
     , m_fontSceneGraphSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
     , m_fontMaterialSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
+    , m_fontAnimSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
   {
     TLOC_ASSERT(m_font->IsInitialized(), 
                 "Font must already be initialized - Font::Initialize()");
@@ -68,6 +70,16 @@ namespace tloc { namespace graphics { namespace component_system {
   StaticTextRenderSystem::
     ~StaticTextRenderSystem()
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    StaticTextRenderSystem::
+    SetShaders(core_io::Path a_vertexShader, core_io::Path a_fragmentShader)
+  {
+    m_vertexShader = a_vertexShader;
+    m_fragmentShader = a_fragmentShader;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -99,9 +111,9 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // go through all the characters and build the text quads
 
-    core_str::StringW text = staticText->GetText();
+    core_str::StringW text = staticText->Get();
 
-    gfx_med::Font::Params::font_size_type advance = 0;
+    gfx_med::GlyphMetrics::value_type advance = 0;
 
     for (tl_size i = 0; i < text.length(); ++i)
     {
@@ -130,11 +142,35 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // add sprite animation to quad with one texture coordinate only
 
+      using gfx_med::algos::compare::sprite_info::MakeName;
+
+      gfx_med::sprite_sheet_ul::const_iterator itrSs, itrEndSs;
+      itrSs = core::find_if(m_font->GetSpriteSheetPtr()->begin(),
+                            m_font->GetSpriteSheetPtr()->end(),
+                            gfx_med::algos::compare::sprite_info::MakeName((tl_ulong)text[i]));
+
+      itrEndSs = itrSs;
+      core::advance(itrEndSs, 1);
+
+      pref_gfx::SpriteAnimation(m_fontEntityMgr.get(), m_fontCompMgr.get())
+        .Paused(false).Add(q, itrSs, itrEndSs);
+
+      // -----------------------------------------------------------------------
+      // set the quad position
 
       using math_cs::transform_f32_vptr;
       transform_f32_vptr textPos = q->GetComponent<math_cs::Transformf32>();
       textPos->SetPosition
-        (math_t::Vec3f32(core_utils::CastNumber<f32>(advance), 0, 0));
+        (math_t::Vec3f32(core_utils::CastNumber<f32>(advance) * m_globalScale[0], 0, 0));
+      textPos->SetPosition
+        (textPos->GetPosition() + 
+        math_t::Vec3f32(core_utils::CastNumber<f32>(itr->m_horizontalBearing[0])* m_globalScale[0], 
+                        core_utils::CastNumber<f32>(itr->m_horizontalBearing[1])* m_globalScale[3] - rect.GetHeight(),
+                        0) );
+
+
+      // advance pen's position
+      advance += itr->m_horizontalAdvance;
     }
 
     return ErrorSuccess;
@@ -146,9 +182,12 @@ namespace tloc { namespace graphics { namespace component_system {
     StaticTextRenderSystem::
     Post_Initialize()
   {
+    m_fontQuadRenderSys.SetRenderer(GetRenderer());
+    
     m_fontQuadRenderSys.Initialize();
     m_fontSceneGraphSys.Initialize();
     m_fontMaterialSys.Initialize();
+    m_fontAnimSys.Initialize();
 
     return ErrorSuccess;
   }
@@ -167,6 +206,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Pre_ProcessActiveEntities(f64 a_deltaT)
   {
     m_fontSceneGraphSys.ProcessActiveEntities(a_deltaT);
+    m_fontAnimSys.ProcessActiveEntities(a_deltaT);
     m_fontQuadRenderSys.ProcessActiveEntities(a_deltaT);
   }
 

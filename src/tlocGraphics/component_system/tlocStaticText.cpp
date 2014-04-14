@@ -2,12 +2,16 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  const StaticText::font_size_type
+    StaticText::s_defaultFontSize = 18;
+
   // ///////////////////////////////////////////////////////////////////////
   // StaticText
 
   StaticText::
     StaticText()
     : base_type(k_component_type)
+    , m_fontSize(s_defaultFontSize)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

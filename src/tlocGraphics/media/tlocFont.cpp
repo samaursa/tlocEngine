@@ -21,8 +21,8 @@ namespace tloc { namespace graphics { namespace media {
   // ///////////////////////////////////////////////////////////////////////
   // Params_Font
 
-  Font::Params_Font::
-    Params_Font(font_size_type a_fontSize) 
+  Font::Params::
+    Params(font_size_type a_fontSize) 
     : m_fontSize(a_fontSize)
     , m_fontColor(gfx_t::Color::COLOR_WHITE)
     , m_bgColor(gfx_t::Color::COLOR_BLACK)
@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::image_ptr
     Font::
-    GetCharImage(tl_ulong a_char, const Params_Font& a_params) const
+    GetCharImage(tl_ulong a_char, const Params& a_params) const
   {
     AssertIsInitialized();
     m_ft->SetCurrentSize(a_params.m_fontSize);
@@ -59,7 +59,7 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::const_sprite_sheet_ptr
     Font::
-    GenerateFontCache(BufferArgW a_characters, const Params_Font& a_params)
+    GenerateGlyphCache(BufferArgW a_characters, const Params& a_params)
   {
     TLOC_ASSERT(m_flags.IsUnMarked(k_font_cache_generated), 
                 "Font cache already generated for this Font");
@@ -184,6 +184,15 @@ namespace tloc { namespace graphics { namespace media {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  bool
+    Font::
+    IsCached() const
+  {
+    return m_flags.IsMarked(k_font_cache_generated);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   Font::error_type
     Font::
     DoInitialize(const data_type& a_data)
@@ -206,7 +215,7 @@ namespace tloc { namespace graphics { namespace media {
 
   void
     Font::
-    DoCacheGlyphMetrics(tl_ulong a_char, const Params_Font& a_params)
+    DoCacheGlyphMetrics(tl_ulong a_char, const Params& a_params)
   {
     m_ft->SetCurrentSize(a_params.m_fontSize);
     free_type::FreeTypeGlyph ftg = m_ft->LoadGlyph(a_char);

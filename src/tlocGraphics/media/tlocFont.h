@@ -78,7 +78,6 @@ namespace tloc { namespace graphics { namespace media {
     typedef image_sptr                                    image_ptr;
     typedef sprite_sheet_ul_vso                           sprite_sheet_type;
     typedef const_sprite_sheet_ul_vptr                    const_sprite_sheet_ptr;
-    typedef ushort                                        font_size_type;
 
     typedef GlyphMetrics                                  glyph_metrics;
     typedef core_conts::Array<glyph_metrics>              glyph_metrics_cont;
@@ -86,11 +85,12 @@ namespace tloc { namespace graphics { namespace media {
     typedef glyph_metrics_cont::const_iterator            const_glyph_metrics_iterator;
 
   public:
-    struct Params_Font
+    struct Params
     {
-      typedef Params_Font                                 this_type;
+      typedef Params                                      this_type;
+      typedef ushort                                      font_size_type;
 
-      explicit Params_Font(font_size_type a_fontSize);
+      explicit Params(font_size_type a_fontSize);
 
       TLOC_DECL_PARAM_VAR(font_size_type, FontSize, m_fontSize);
       TLOC_DECL_PARAM_VAR(gfx_t::Color, FontColor, m_fontColor);
@@ -104,13 +104,15 @@ namespace tloc { namespace graphics { namespace media {
     ~Font();
 
     image_ptr               GetCharImage(tl_ulong a_char, 
-                                         const Params_Font& a_params) const;
-    const_sprite_sheet_ptr  GenerateFontCache(BufferArgW a_characters,
-                                              const Params_Font& a_params);
+                                         const Params& a_params) const;
+    const_sprite_sheet_ptr  GenerateGlyphCache(BufferArgW a_characters,
+                                               const Params& a_params);
 
     const_glyph_metrics_iterator  GetGlyphMetric(tl_ulong a_char) const;
     const_glyph_metrics_iterator  begin_glyph_metrics() const;
     const_glyph_metrics_iterator  end_glyph_metrics() const;
+
+    bool                          IsCached() const;
 
     TLOC_DECL_AND_DEF_GETTER(const_sprite_sheet_ptr, GetSpriteSheetPtr, 
                              m_spriteSheet.get());
@@ -126,7 +128,7 @@ namespace tloc { namespace graphics { namespace media {
     error_type    Destroy(); // intentionally not defined
 
     void          DoCacheGlyphMetrics(tl_ulong a_char, 
-                                      const Params_Font& a_params);
+                                      const Params& a_params);
 
   private:
     ft_ptr                    m_ft;

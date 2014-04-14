@@ -35,6 +35,7 @@ namespace tloc { namespace graphics { namespace win {
       lost_focus,
       gained_focus,
       destroy,
+      open_url,
 
       events_count
     };
@@ -42,6 +43,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef tl_size                           size_type;
     typedef core_ds::Tuple<size_type, 2>      dim_type;
     typedef core_ds::Variadic<size_type, 2>   variadic_type;
+    typedef core_str::String                  string_type;
 
     WindowEvent()
       : m_type(none)
@@ -49,9 +51,13 @@ namespace tloc { namespace graphics { namespace win {
     { }
 
     WindowEvent(const EventType& a_event,
-                tl_size a_sizeX, tl_size a_sizeY)
+                tl_size a_sizeX, tl_size a_sizeY,
+                const string_type& a_url = string_type(),
+                const string_type& a_urlSourceApplication = string_type())
       : m_type(a_event)
       , m_dim(variadic_type(a_sizeX, a_sizeY))
+      , m_url(a_url)
+      , m_urlSourceApplication(a_urlSourceApplication)
     { }
 
     size_type GetWidth() const
@@ -62,6 +68,9 @@ namespace tloc { namespace graphics { namespace win {
 
     EventType m_type;
     dim_type  m_dim;
+
+    string_type m_url;
+    string_type m_urlSourceApplication;
   };
 
   struct WindowCallbacks

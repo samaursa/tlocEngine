@@ -16,13 +16,9 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class StaticTextRenderSystem;
-
   class StaticText
     : public core_cs::Component_T<StaticText, components::static_text>
   {
-    friend class StaticTextRenderSystem;
-
   public:
     typedef StaticText                                      this_type;
     typedef Component_T<this_type, components::static_text> base_type;
@@ -34,12 +30,20 @@ namespace tloc { namespace graphics { namespace component_system {
     StaticText();
     explicit StaticText(BufferArgW a_text, font_size_type a_size);
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(BufferArgW, SetText, m_text);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetText, m_text);
+    TLOC_DECL_AND_DEF_GETTER(font_size_type, GetSize, m_fontSize);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(font_size_type, SetSize, m_fontSize);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(BufferArgW, Set, m_text);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, Get, m_text);
+
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (font_size_type, GetDefaultFontSize, s_defaultFontSize);
 
   private:
-    str_type              m_text;
-    font_size_type        m_fontSize;
+    str_type                m_text;
+    font_size_type          m_fontSize;
+
+    static const font_size_type   s_defaultFontSize;
 
   };
 

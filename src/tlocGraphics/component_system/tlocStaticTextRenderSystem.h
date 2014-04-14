@@ -15,6 +15,7 @@
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
+#include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -32,7 +33,7 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     StaticTextRenderSystem(event_manager_ptr a_eventMgr,
                            entity_manager_ptr a_entityMgr,
-                           font_vso a_initializedFont, 
+                           const font_type& a_initializedFont, 
                            scale_type a_globalScale = scale_type::IDENTITY);
     
     ~StaticTextRenderSystem();
@@ -67,6 +68,7 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::QuadRenderSystem            m_fontQuadRenderSys;
     gfx_cs::SceneGraphSystem            m_fontSceneGraphSys;
     gfx_cs::MaterialSystem              m_fontMaterialSys;
+    gfx_cs::TextureAnimatorSystem       m_fontAnimSys;
   };
 
   //------------------------------------------------------------------------

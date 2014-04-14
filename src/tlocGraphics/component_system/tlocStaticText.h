@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
@@ -20,12 +21,12 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef StaticText                                      this_type;
-    typedef Component_T<this_type, components::static_text  base_type;
+    typedef Component_T<this_type, components::static_text> base_type;
     typedef f32                                             real_type;
     typedef core_str::String                                str_type;
 
     typedef char8                                       symbol_type;
-    typedef core::Pair<symbol_type, math_t::Rectf32>    symbol_tcoord_pair_type;
+    typedef core::Pair<symbol_type, math_t::Rectf32_c>  symbol_tcoord_pair_type;
     typedef core_conts::Array<symbol_tcoord_pair_type>  text_cont;
 
   public:

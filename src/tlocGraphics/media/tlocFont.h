@@ -38,6 +38,8 @@ namespace tloc { namespace graphics { namespace media {
 
     TLOC_DECL_PARAM_VAR(value_type, HoriAdvance, m_horizontalAdvance);
     TLOC_DECL_PARAM_VAR(value_type, VertAdvance, m_verticalAdvance);
+
+    static const value_type s_pointToPixelScale;
   };
 
   namespace algos { namespace compare { namespace glyph_metrics {

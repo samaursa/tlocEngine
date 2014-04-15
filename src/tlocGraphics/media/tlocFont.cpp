@@ -19,6 +19,12 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   // ///////////////////////////////////////////////////////////////////////
+  // GlyphMetrics
+
+  const GlyphMetrics::value_type
+    GlyphMetrics::s_pointToPixelScale = 1.0f / 64.0f;
+
+  // ///////////////////////////////////////////////////////////////////////
   // Params_Font
 
   Font::Params::
@@ -163,9 +169,10 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     GetKerning(tl_ulong a_leftChar, tl_ulong a_char) const
   {
+    glyph_metrics::value_type s = glyph_metrics::s_pointToPixelScale;
+
     free_type::FreeType::ft_vec delta = m_ft->GetKerning(a_leftChar, a_char);
-    f32 s = 1.0f / 64.0f;
-    return core_ds::MakeTuple( (f32)delta.x * s, (f32)delta.y * s);
+    return core_ds::MakeTuple( delta.x * s, delta.y * s);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -226,13 +233,6 @@ namespace tloc { namespace graphics { namespace media {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  f32 
-    GetCoordScale(Font::Params::font_size_type a_fontSize)
-  {
-      f32 coord_scale = 1.0f / ((f32)(a_fontSize) * 64.0f);
-      return coord_scale;
-  }
-
   void
     Font::
     DoCacheGlyphMetrics(tl_ulong a_char, const Params& a_params)
@@ -242,16 +242,15 @@ namespace tloc { namespace graphics { namespace media {
 
     FT_Glyph_Metrics ftMetrics = ftg.GetGlyphSlot()->metrics;
 
-    //f32 s = GetCoordScale(a_params.m_fontSize);
-    f32 s = 1.0f / 64.0f;
+    glyph_metrics::value_type s = glyph_metrics::s_pointToPixelScale;
 
     GlyphMetrics metrics;
     metrics.CharCode(a_char)
-           .Dimensions(core_ds::MakeTuple( (f32)ftMetrics.width * s, (f32)ftMetrics.height * s))
-           .HoriBearing(core_ds::MakeTuple( (f32)ftMetrics.horiBearingX * s, (f32)ftMetrics.horiBearingY * s))
-           .VertBearing(core_ds::MakeTuple( (f32)ftMetrics.vertBearingX * s, (f32)ftMetrics.vertBearingY * s))
-           .HoriAdvance( (f32)ftMetrics.horiAdvance * s )
-           .VertAdvance( (f32)ftMetrics.vertAdvance * s );
+           .Dimensions(core_ds::MakeTuple( ftMetrics.width * s, ftMetrics.height * s))
+           .HoriBearing(core_ds::MakeTuple( ftMetrics.horiBearingX * s, ftMetrics.horiBearingY * s))
+           .VertBearing(core_ds::MakeTuple( ftMetrics.vertBearingX * s, ftMetrics.vertBearingY * s))
+           .HoriAdvance( ftMetrics.horiAdvance * s )
+           .VertAdvance( ftMetrics.vertAdvance * s );
 
     m_metrics.push_back(metrics);
   }

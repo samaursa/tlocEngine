@@ -68,8 +68,9 @@ namespace tloc { namespace core { namespace base_classes {
   InitializeAndDestroyBase_TI<T_DerivedClass>::
     ~InitializeAndDestroyBase_TI()
   {
-    if (IsDestroyed() == false)
-    { Destroy(); }
+    // To avoid getting the user to call Destroy(), you may want the derived
+    // classes to call Destroy() in their destructor
+    AssertIsDestroyed();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

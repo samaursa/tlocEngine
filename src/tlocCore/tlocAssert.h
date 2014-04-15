@@ -17,16 +17,42 @@
 
 namespace tloc { namespace core { namespace assert {
 
-  bool AlwaysReturnFalse();
+  namespace exception {
+    struct Assert { };
+  };
+
+  void  SetAssertThrow();
+  void  SetAssertNoThrow();
+
+  bool  NoThrowBreak();
+  bool  AlwaysReturnFalse();
 
 };};};
 
+#define TLOC_ASSERT_DOES_NOT_THROW() \
+  tloc::core::assert::SetAssertNoThrow()
+
+#define TLOC_ASSERT_THROWS() \
+  tloc::core::assert::SetAssertThrow()
+
 #if defined(_MSC_VER)
   #include <intrin.h>
-  #define TLOC_DEBUG_BREAK()  __debugbreak()
+  #define TLOC_DEBUG_BREAK()  \
+  do { \
+    if(tloc::core::assert::NoThrowBreak())\
+    { __debugbreak(); } \
+    else\
+    { throw tloc::core::assert::exception::Assert{}; } \
+  } while((void)0, 0)
 #else
   #include <stdlib.h>
-  #define TLOC_DEBUG_BREAK()  abort()
+  #define TLOC_DEBUG_BREAK()  \
+  do { \
+    if(tloc::core::assert::NoThrowBreak())\
+    { abort(); } \
+    else\
+    { throw tloc::core::assert::exception::Assert{}; } \
+  } while((void)0, 0)
 #endif
 
 #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBINFO_DLL)

@@ -5,6 +5,7 @@ set(TLOC_TESTS_CORE
   tlocAnyTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
+  tlocAssertTest.cpp
   tlocBaseClassesTest.cpp
   tlocBufferArgTest.cpp
   tlocCheckPointsTest.cpp
@@ -20,6 +21,7 @@ set(TLOC_TESTS_CORE
   tlocGroupIDTest.cpp
   tlocHashMapTest.cpp
   tlocHashtableTest.cpp
+  tlocInitializeAndDestroyTest.cpp
   tlocIteratorTest.cpp
   tlocListTest.cpp
   tlocLoggerTest.cpp

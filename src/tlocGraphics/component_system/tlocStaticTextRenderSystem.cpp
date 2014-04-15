@@ -17,6 +17,7 @@
 #include <tlocPrefab/graphics/tlocQuad.h>
 #include <tlocPrefab/graphics/tlocMaterial.h>
 #include <tlocPrefab/graphics/tlocSprite.h>
+#include <tlocPrefab/graphics/tlocSceneNode.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -42,7 +43,7 @@ namespace tloc { namespace graphics { namespace component_system {
   StaticTextRenderSystem::
     StaticTextRenderSystem(event_manager_ptr a_eventMgr, 
                            entity_manager_ptr a_entityMgr,
-                           const font_type& a_initializedFont,
+                           const font_ptr& a_initializedFont,
                            scale_type a_globalScale)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::static_text))
@@ -99,6 +100,9 @@ namespace tloc { namespace graphics { namespace component_system {
     // prepare the shader operator
 
     gfx_gl::texture_object_vso to;
+    gfx_gl::TextureObject::Params toParams;
+    to->SetParams(toParams);
+
     to->Initialize(*m_font->GetSpriteSheetPtr()->GetSpriteSheet());
     to->Activate();
 
@@ -124,6 +128,22 @@ namespace tloc { namespace graphics { namespace component_system {
         << "Glyph metrics not found for (" << text[i] << ")"
         << " - symbol does not exist in the glyph cache";
 
+      // -----------------------------------------------------------------------
+      // grab the sprite info
+
+      using gfx_med::algos::compare::sprite_info::MakeName;
+
+      gfx_med::sprite_sheet_ul::const_iterator itrSs, itrEndSs;
+      itrSs = core::find_if(m_font->GetSpriteSheetPtr()->begin(),
+                            m_font->GetSpriteSheetPtr()->end(),
+                            gfx_med::algos::compare::sprite_info::MakeName((tl_ulong)text[i]));
+
+      itrEndSs = itrSs;
+      core::advance(itrEndSs, 1);
+
+      // -----------------------------------------------------------------------
+      // create the quad
+
       math_t::Vec2f32 dim = itr->m_dim.Cast<math_t::Vec2f32>();
       dim = m_globalScale * dim;
 
@@ -140,17 +160,13 @@ namespace tloc { namespace graphics { namespace component_system {
         .Add(q, m_vertexShader, m_fragmentShader);
 
       // -----------------------------------------------------------------------
+      // make it a node
+
+      pref_gfx::SceneNode(m_fontEntityMgr.get(), m_fontCompMgr.get())
+        .Parent(sceneNode).Add(q);
+
+      // -----------------------------------------------------------------------
       // add sprite animation to quad with one texture coordinate only
-
-      using gfx_med::algos::compare::sprite_info::MakeName;
-
-      gfx_med::sprite_sheet_ul::const_iterator itrSs, itrEndSs;
-      itrSs = core::find_if(m_font->GetSpriteSheetPtr()->begin(),
-                            m_font->GetSpriteSheetPtr()->end(),
-                            gfx_med::algos::compare::sprite_info::MakeName((tl_ulong)text[i]));
-
-      itrEndSs = itrSs;
-      core::advance(itrEndSs, 1);
 
       pref_gfx::SpriteAnimation(m_fontEntityMgr.get(), m_fontCompMgr.get())
         .Paused(false).Add(q, itrSs, itrEndSs);
@@ -158,16 +174,35 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // set the quad position
 
+      math_t::Vec2f32 horBearing = 
+        itr->m_horizontalBearing.Cast<math_t::Vec2f32>();
+      f32 advancef32 = core_utils::CastNumber<f32>(advance);
+
       using math_cs::transform_f32_vptr;
       transform_f32_vptr textPos = q->GetComponent<math_cs::Transformf32>();
-      textPos->SetPosition
-        (math_t::Vec3f32(core_utils::CastNumber<f32>(advance) * m_globalScale[0], 0, 0));
-      textPos->SetPosition
-        (textPos->GetPosition() + 
-        math_t::Vec3f32(core_utils::CastNumber<f32>(itr->m_horizontalBearing[0])* m_globalScale[0], 
-                        core_utils::CastNumber<f32>(itr->m_horizontalBearing[1])* m_globalScale[3] - rect.GetHeight(),
-                        0) );
 
+      textPos->SetPosition
+        (math_t::Vec3f32(advancef32 * m_globalScale[0], 0, 0));
+
+      // kerning
+      if (i > 0)
+      {
+        math_t::Vec2f32 kerning = m_font->GetKerning(text[i - 1], text[i]);
+        kerning = m_globalScale * kerning;
+
+        advance += kerning[0];
+        
+        math_t::Vec3f32 kerning3 = kerning
+          .ConvertTo<math_t::Vec3f32, core_ds::p_tuple::overflow_zero>();
+
+        textPos->SetPosition(textPos->GetPosition() + kerning3);
+      }
+
+      textPos->
+        SetPosition(textPos->GetPosition() + 
+        math_t::Vec3f32(0, 
+                        (horBearing[1] * m_globalScale[3]) - rect.GetHeight(),
+                        0) );
 
       // advance pen's position
       advance += itr->m_horizontalAdvance;
@@ -183,6 +218,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_Initialize()
   {
     m_fontQuadRenderSys.SetRenderer(GetRenderer());
+    m_fontQuadRenderSys.SetCamera(GetCamera());
     
     m_fontQuadRenderSys.Initialize();
     m_fontSceneGraphSys.Initialize();

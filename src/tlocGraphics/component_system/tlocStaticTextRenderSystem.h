@@ -25,15 +25,14 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
 
-    typedef gfx_med::Font                                     font_type;
-    typedef gfx_med::font_vso                                 font_vso;
+    typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
     typedef math_t::Mat2f32                                   scale_type;
 
   public:
     StaticTextRenderSystem(event_manager_ptr a_eventMgr,
                            entity_manager_ptr a_entityMgr,
-                           const font_type& a_initializedFont, 
+                           const font_ptr& a_initializedFont, 
                            scale_type a_globalScale = scale_type::IDENTITY);
     
     ~StaticTextRenderSystem();
@@ -56,7 +55,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&);
 
   private:
-    font_vso                            m_font;
+    font_ptr                            m_font;
     scale_type                          m_globalScale;
 
     core_io::Path                       m_vertexShader;

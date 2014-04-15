@@ -31,6 +31,16 @@ namespace tloc { namespace graphics { namespace media {
     ComputeTexCoords( dim_type a_imgDimensions,
                       p_sprite_info::FlipYCoords a_flip)
   {
+    if (m_dimensions[0] == 0 || m_dimensions[1] == 0)
+    { 
+      m_texCoordStart.Set(0);
+      m_texCoordEnd.Set(0);
+      return;
+    }
+
+    TLOC_ASSERT(m_dimensions[0] > 0 && m_dimensions[1] > 0,
+                "Invalid dimensions - dimensions cannot be 0");
+
     using math::range_tl_size;
     using math::Rangef;
 

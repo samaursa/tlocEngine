@@ -121,6 +121,7 @@ namespace tloc { namespace graphics { namespace media {
                 "available");
 
     image_sptr spriteSheet(new Image());
+
     spriteSheet->
       Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
              a_params.m_bgColor);
@@ -154,6 +155,17 @@ namespace tloc { namespace graphics { namespace media {
     m_flags.Mark(k_font_cache_generated);
 
     return m_spriteSheet.get();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Font::pos_type
+    Font::
+    GetKerning(tl_ulong a_leftChar, tl_ulong a_char) const
+  {
+    free_type::FreeType::ft_vec delta = m_ft->GetKerning(a_leftChar, a_char);
+    f32 s = 1.0f / 64.0f;
+    return core_ds::MakeTuple( (f32)delta.x * s, (f32)delta.y * s);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -207,11 +219,19 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoDestroy()
   {
-    core_sptr::algos::virtual_ptr::DeleteAndReset()(m_ft);
+    if (m_ft)
+    { core_sptr::algos::virtual_ptr::DeleteAndReset()(m_ft); }
     return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  f32 
+    GetCoordScale(Font::Params::font_size_type a_fontSize)
+  {
+      f32 coord_scale = 1.0f / ((f32)(a_fontSize) * 64.0f);
+      return coord_scale;
+  }
 
   void
     Font::
@@ -219,14 +239,19 @@ namespace tloc { namespace graphics { namespace media {
   {
     m_ft->SetCurrentSize(a_params.m_fontSize);
     free_type::FreeTypeGlyph ftg = m_ft->LoadGlyph(a_char);
+
     FT_Glyph_Metrics ftMetrics = ftg.GetGlyphSlot()->metrics;
+
+    //f32 s = GetCoordScale(a_params.m_fontSize);
+    f32 s = 1.0f / 64.0f;
+
     GlyphMetrics metrics;
     metrics.CharCode(a_char)
-           .Dimensions(core_ds::MakeTuple(ftMetrics.width, ftMetrics.height))
-           .HoriBearing(core_ds::MakeTuple(ftMetrics.horiBearingX, ftMetrics.horiBearingY))
-           .VertBearing(core_ds::MakeTuple(ftMetrics.vertBearingX, ftMetrics.vertBearingY))
-           .HoriAdvance(ftMetrics.horiAdvance)
-           .VertAdvance(ftMetrics.vertAdvance);
+           .Dimensions(core_ds::MakeTuple( (f32)ftMetrics.width * s, (f32)ftMetrics.height * s))
+           .HoriBearing(core_ds::MakeTuple( (f32)ftMetrics.horiBearingX * s, (f32)ftMetrics.horiBearingY * s))
+           .VertBearing(core_ds::MakeTuple( (f32)ftMetrics.vertBearingX * s, (f32)ftMetrics.vertBearingY * s))
+           .HoriAdvance( (f32)ftMetrics.horiAdvance * s )
+           .VertAdvance( (f32)ftMetrics.vertAdvance * s );
 
     m_metrics.push_back(metrics);
   }
@@ -238,7 +263,7 @@ using namespace tloc::gfx_med;
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(free_type::FreeType);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Font);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Font);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(Font);
 
 #include <tlocCore/containers/tlocArray.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Font::glyph_metrics);

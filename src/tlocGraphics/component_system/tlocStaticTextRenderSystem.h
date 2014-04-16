@@ -12,6 +12,7 @@
 #include <tlocCore/io/tlocPath.h>
 
 #include <tlocGraphics/media/tlocFont.h>
+#include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
@@ -28,6 +29,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
     typedef math_t::Mat2f32                                   scale_type;
+    typedef tl_float                                          real_type;
 
   public:
     typedef core::Pair<const_entity_ptr, 
@@ -45,6 +47,7 @@ namespace tloc { namespace graphics { namespace component_system {
     void               SetShaders(core_io::Path a_vertexShader, 
                                   core_io::Path a_fragmentShader);
 
+    virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type Post_Initialize();
     virtual error_type ShutdownEntity(entity_ptr a_ent);
@@ -61,17 +64,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
   protected:
     void         DoAlignText(const text_quads_pair& a_pair);
-    f32          DoSetTextQuadPosition(const_entity_ptr a_ent,
+    real_type    DoSetTextQuadPosition(const_entity_ptr a_ent,
                                        gfx_med::Font::glyph_metrics::
                                        char_code a_charCode,
-                                       f32 a_startingPosX);
+                                       real_type a_startingPosX);
 
-    f32          DoSetTextQuadPosition(const_entity_ptr a_ent,
+    real_type    DoSetTextQuadPosition(const_entity_ptr a_ent,
                                        gfx_med::Font::glyph_metrics::
                                        char_code a_prevCode,
                                        gfx_med::Font::glyph_metrics::
                                        char_code a_charCode,
-                                       f32 a_startingPosX);
+                                       real_type a_startingPosX);
 
 
   private:
@@ -81,6 +84,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     core_io::Path                       m_vertexShader;
     core_io::Path                       m_fragmentShader;
+
+    core_str::String                    m_vertexShaderContents;
+    core_str::String                    m_fragmentShaderContents;
+
+    gfx_cs::material_vptr               m_sharedMat;
 
     core_cs::component_pool_mgr_vso     m_fontCompMgr;
     core_cs::event_manager_vso          m_fontEventMgr;

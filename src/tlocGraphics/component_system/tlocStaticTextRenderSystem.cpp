@@ -83,29 +83,42 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
     static_text_vptr staticText = a_pair.first->GetComponent<StaticText>();
-    math_cs::transform_f32_vptr staticTextTrans = 
-      a_pair.first->GetComponent<math_cs::Transformf32>();
+    math_cs::transform_vptr staticTextTrans = 
+      a_pair.first->GetComponent<math_cs::Transform>();
 
-    f32 totalTextWidth = 0;
+    real_type totalTextWidth = 0;
+
+    if (a_pair.second.size() == 0)
+    { return; }
 
     {
       core_cs::const_entity_vptr itrFirstChar = a_pair.second.front();
-      math_cs::transform_f32_vptr firstCharTrans =
-        itrFirstChar->GetComponent<math_cs::Transformf32>();
+      math_cs::transform_vptr firstCharTrans =
+        itrFirstChar->GetComponent<math_cs::Transform>();
 
-      core_cs::const_entity_vptr itrSecondChar = a_pair.second.back();
-      math_cs::transform_f32_vptr secondCharTrans =
-        itrSecondChar->GetComponent<math_cs::Transformf32>();
+      if (a_pair.second.size() > 1)
+      {
+        core_cs::const_entity_vptr itrSecondChar = a_pair.second.back();
+        math_cs::transform_vptr secondCharTrans =
+          itrSecondChar->GetComponent<math_cs::Transform>();
 
-      gfx_cs::quad_vptr secondQuad =
-        itrSecondChar->GetComponent<gfx_cs::Quad>();
+        gfx_cs::quad_vptr secondQuad =
+          itrSecondChar->GetComponent<gfx_cs::Quad>();
 
-      totalTextWidth = secondCharTrans->GetPosition()[0] - 
-        firstCharTrans->GetPosition()[0] + 
-        secondQuad->GetRectangleRef().GetCoord_BottomRight()[0];
+        totalTextWidth = secondCharTrans->GetPosition()[0] -
+          firstCharTrans->GetPosition()[0] +
+          secondQuad->GetRectangleRef().GetCoord_BottomRight()[0];
+      }
+      else
+      {
+        gfx_cs::quad_vptr firstQuad =
+          itrFirstChar->GetComponent<gfx_cs::Quad>();
+
+        totalTextWidth = firstQuad->GetRectangleRef().GetWidth();
+      }
     }
 
-    f32 advance = 0;
+    real_type advance = 0;
 
     if (staticText->GetAlignment() == StaticText::k_align_center)
     { advance = totalTextWidth * 0.5f * -1.0f; }
@@ -129,8 +142,8 @@ namespace tloc { namespace graphics { namespace component_system {
         DoSetTextQuadPosition(*itr, staticText->Get()[count], advance);
       }
 
-      math_cs::transform_f32_vptr t =
-        (*itr)->GetComponent<math_cs::Transformf32>();
+      math_cs::transform_vptr t =
+        (*itr)->GetComponent<math_cs::Transform>();
 
       ++count;
     }
@@ -144,6 +157,59 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     m_vertexShader = a_vertexShader;
     m_fragmentShader = a_fragmentShader;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    StaticTextRenderSystem::
+    Pre_Initialize()
+  {
+    {
+      core_io::FileIO_ReadA f(m_vertexShader);
+      TLOC_ERROR_RETURN_IF_FAILED(f.Open());
+      TLOC_ERROR_RETURN_IF_FAILED(f.GetContents(m_vertexShaderContents));
+    }
+
+    {
+      core_io::FileIO_ReadA f(m_fragmentShader);
+      TLOC_ERROR_RETURN_IF_FAILED(f.Open());
+      TLOC_ERROR_RETURN_IF_FAILED(f.GetContents(m_fragmentShaderContents));
+    }
+
+
+    // -----------------------------------------------------------------------
+    // prepare the shader operator
+    gfx_gl::texture_object_vso to;
+    gfx_gl::TextureObject::Params toParams;
+    
+    // we would like text to be as sharp as possible
+    toParams.MinFilter<gfx_gl::p_texture_object::filter::Nearest>();
+    toParams.MagFilter<gfx_gl::p_texture_object::filter::Nearest>();
+
+    to->SetParams(toParams);
+
+    to->Initialize(*m_font->GetSpriteSheetPtr()->GetSpriteSheet());
+    to->Activate();
+
+    gfx_gl::uniform_vso u_to;
+    u_to->SetName("s_texture").SetValueAs(*to);
+
+    gfx_gl::shader_operator_vso so;
+    so->AddUniform(*u_to);
+
+    // -----------------------------------------------------------------------
+    // Create the material
+
+    entity_ptr dummyEnt = m_fontEntityMgr->CreateEntity();
+
+    pref_gfx::Material(m_fontEntityMgr.get(), m_fontCompMgr.get())
+      .AddUniform(u_to.get())
+      .Add(dummyEnt, m_vertexShaderContents, m_fragmentShaderContents);
+
+    m_sharedMat = dummyEnt->GetComponent<gfx_cs::Material>();
+    
+    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -164,22 +230,6 @@ namespace tloc { namespace graphics { namespace component_system {
     // text quad pair
 
     text_quads_pair tqp(a_ent);
-
-    // -----------------------------------------------------------------------
-    // prepare the shader operator
-
-    gfx_gl::texture_object_vso to;
-    gfx_gl::TextureObject::Params toParams;
-    to->SetParams(toParams);
-
-    to->Initialize(*m_font->GetSpriteSheetPtr()->GetSpriteSheet());
-    to->Activate();
-
-    gfx_gl::uniform_vso u_to;
-    u_to->SetName("s_texture").SetValueAs(*to);
-
-    gfx_gl::shader_operator_vso so;
-    so->AddUniform(*u_to);
 
     // -----------------------------------------------------------------------
     // go through all the characters and build the text quads
@@ -213,20 +263,18 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // create the quad
 
-      math_t::Vec2f32 dim = itr->m_dim.Cast<math_t::Vec2f32>();
+      math_t::Vec2f dim = itr->m_dim.Cast<math_t::Vec2f>();
       dim = m_globalScale * dim;
 
-      using math_t::Rectf32_bl;
-      Rectf32_bl rect = 
-        Rectf32_bl(Rectf32_bl::width(dim[0]), Rectf32_bl::height(dim[1]));
+      using math_t::Rectf_bl;
+      Rectf_bl rect = 
+        Rectf_bl(Rectf_bl::width(dim[0]), Rectf_bl::height(dim[1]));
 
       entity_ptr q = 
         pref_gfx::Quad(m_fontEntityMgr.get(), m_fontCompMgr.get()).
         TexCoords(true).Dimensions(rect).Create();
 
-      pref_gfx::Material(m_fontEntityMgr.get(), m_fontCompMgr.get())
-        .AddUniform(u_to.get())
-        .Add(q, m_vertexShader, m_fragmentShader);
+      m_fontEntityMgr->InsertComponent(q, m_sharedMat);
 
       // we need the quad later for other operations
       tqp.second.push_back(q);
@@ -264,13 +312,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  f32
+  StaticTextRenderSystem::real_type
     StaticTextRenderSystem::
     DoSetTextQuadPosition(const_entity_ptr a_ent, 
                           gfx_med::Font::glyph_metrics:: char_code a_charCode, 
-                          f32 a_startingPosX)
+                          real_type a_startingPosX)
   {
-    f32 advanceToRet = a_startingPosX;
+    real_type advanceToRet = a_startingPosX;
 
     gfx_med::Font::const_glyph_metrics_iterator 
       itr = m_font->GetGlyphMetric(a_charCode);
@@ -278,19 +326,19 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // set the quad position
 
-    math_t::Vec2f32 horBearing =
-      itr->m_horizontalBearing.Cast<math_t::Vec2f32>();
+    math_t::Vec2f horBearing =
+      itr->m_horizontalBearing.Cast<math_t::Vec2f>();
 
-    using math_cs::transform_f32_vptr;
-    transform_f32_vptr textPos = a_ent->GetComponent<math_cs::Transformf32>();
-    math_t::Rectf32_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
+    using math_cs::transform_vptr;
+    transform_vptr textPos = a_ent->GetComponent<math_cs::Transform>();
+    math_t::Rectf_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
 
     textPos->SetPosition
-      (math_t::Vec3f32(advanceToRet, 0, 0));
+      (math_t::Vec3f(advanceToRet, 0, 0));
 
     textPos->
       SetPosition(textPos->GetPosition() +
-      math_t::Vec3f32(0, 
+      math_t::Vec3f(0, 
                       ( horBearing[1] * m_globalScale[3] ) - rect.GetHeight(), 
                       0));
 
@@ -302,31 +350,32 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  f32
+  StaticTextRenderSystem::real_type
     StaticTextRenderSystem::
     DoSetTextQuadPosition(const_entity_ptr a_ent, 
                           gfx_med::Font::glyph_metrics:: char_code a_prevCode, 
                           gfx_med::Font::glyph_metrics:: char_code a_charCode, 
-                          f32 a_startingPosX)
+                          real_type a_startingPosX)
   {
-    f32 advanceToRet = DoSetTextQuadPosition(a_ent, a_charCode, a_startingPosX);
+    real_type advanceToRet = 
+      DoSetTextQuadPosition(a_ent, a_charCode, a_startingPosX);
 
     // -----------------------------------------------------------------------
     // set the quad position
 
-    using math_cs::transform_f32_vptr;
-    transform_f32_vptr textPos = a_ent->GetComponent<math_cs::Transformf32>();
-    math_t::Rectf32_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
+    using math_cs::transform_vptr;
+    transform_vptr textPos = a_ent->GetComponent<math_cs::Transform>();
+    math_t::Rectf_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
 
     // kerning
     {
-      math_t::Vec2f32 kerning = m_font->GetKerning(a_prevCode, a_charCode);
+      math_t::Vec2f kerning = m_font->GetKerning(a_prevCode, a_charCode);
       kerning = m_globalScale * kerning;
 
       advanceToRet += kerning[0];
 
-      math_t::Vec3f32 kerning3 = kerning
-        .ConvertTo<math_t::Vec3f32, core_ds::p_tuple::overflow_zero>();
+      math_t::Vec3f kerning3 = kerning
+        .ConvertTo<math_t::Vec3f, core_ds::p_tuple::overflow_zero>();
 
       textPos->SetPosition(textPos->GetPosition() + kerning3);
     }

@@ -15,6 +15,14 @@ namespace TestingPair
     return TLOC_ERROR(common_error_types::error_already_initialized);
   }
 
+  error::Error
+    ReturnErrorIfFailed(error::Error a_errToCheck)
+  {
+    TLOC_ERROR_RETURN_IF_FAILED(a_errToCheck);
+
+    return ErrorSuccess;
+  }
+
   template <typename T_Config>
   void CheckExtraInfo(const error::Error& a_error, tl_int a_line,
                       const char* a_file)
@@ -43,8 +51,12 @@ namespace TestingPair
       TLOC_UNUSED_2(err, result);
       // Should not crash on destruction
 
-      // Should crash if uncommented
-      // err = common_error_types::error_failure;
+      TLOC_TEST_ASSERT
+      {
+        error::Error errThrow = 
+          TLOC_ERROR(common_error_types::error_failure);
+      }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
     {
@@ -90,6 +102,18 @@ namespace TestingPair
       const char* file = nullptr;
       error::Error err = ErrorSuccess; line = __LINE__; file = __FILE__;
       CheckExtraInfo<core_cfg::BuildConfig::build_config_type>(err, line, file);
+    }
+
+    SECTION("Error check and return macro", "")
+    {
+      error::Error err = ReturnErrorIfFailed
+        (TLOC_ERROR(common_error_types::error_already_initialized));
+
+      CHECK(err == common_error_types::error_already_initialized);
+
+      err = ReturnErrorIfFailed(ErrorSuccess);
+
+      CHECK(err == ErrorSuccess);
     }
   }
 }

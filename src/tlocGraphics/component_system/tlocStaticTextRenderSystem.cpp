@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocRectangle.h>
@@ -12,6 +13,7 @@
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/component_system/tlocStaticText.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
+#include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/media/tlocFont.h>
 
 #include <tlocPrefab/graphics/tlocQuad.h>
@@ -74,6 +76,68 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  void
+    StaticTextRenderSystem::
+    DoAlignText(const text_quads_pair& a_pair)
+  {
+    typedef core_cs::const_entity_ptr_array       ent_cont;
+
+    static_text_vptr staticText = a_pair.first->GetComponent<StaticText>();
+    math_cs::transform_f32_vptr staticTextTrans = 
+      a_pair.first->GetComponent<math_cs::Transformf32>();
+
+    f32 totalTextWidth = 0;
+
+    {
+      core_cs::const_entity_vptr itrFirstChar = a_pair.second.front();
+      math_cs::transform_f32_vptr firstCharTrans =
+        itrFirstChar->GetComponent<math_cs::Transformf32>();
+
+      core_cs::const_entity_vptr itrSecondChar = a_pair.second.back();
+      math_cs::transform_f32_vptr secondCharTrans =
+        itrSecondChar->GetComponent<math_cs::Transformf32>();
+
+      gfx_cs::quad_vptr secondQuad =
+        itrSecondChar->GetComponent<gfx_cs::Quad>();
+
+      totalTextWidth = secondCharTrans->GetPosition()[0] - 
+        firstCharTrans->GetPosition()[0] + 
+        secondQuad->GetRectangleRef().GetCoord_BottomRight()[0];
+    }
+
+    f32 advance = 0;
+
+    if (staticText->GetAlignment() == StaticText::k_align_center)
+    { advance = totalTextWidth * 0.5f * -1.0f; }
+    else if (staticText->GetAlignment() == StaticText::k_align_right)
+    { advance = totalTextWidth * -1.0f; }
+
+    tl_int count = 0;
+    for (ent_cont::const_iterator 
+         itr = a_pair.second.begin(), itrEnd = a_pair.second.end(); 
+         itr != itrEnd; ++itr)
+    {
+      if (count != 0)
+      {
+        advance = 
+        DoSetTextQuadPosition(*itr, staticText->Get()[count - 1], 
+                              staticText->Get()[count], advance);
+      }
+      else
+      {
+        advance = 
+        DoSetTextQuadPosition(*itr, staticText->Get()[count], advance);
+      }
+
+      math_cs::transform_f32_vptr t =
+        (*itr)->GetComponent<math_cs::Transformf32>();
+
+      ++count;
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void 
     StaticTextRenderSystem::
     SetShaders(core_io::Path a_vertexShader, core_io::Path a_fragmentShader)
@@ -95,6 +159,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     scene_node_vptr sceneNode   = a_ent->GetComponent<SceneNode>();
     static_text_vptr staticText = a_ent->GetComponent<StaticText>();
+
+    // -----------------------------------------------------------------------
+    // text quad pair
+
+    text_quads_pair tqp(a_ent);
 
     // -----------------------------------------------------------------------
     // prepare the shader operator
@@ -159,6 +228,9 @@ namespace tloc { namespace graphics { namespace component_system {
         .AddUniform(u_to.get())
         .Add(q, m_vertexShader, m_fragmentShader);
 
+      // we need the quad later for other operations
+      tqp.second.push_back(q);
+
       // -----------------------------------------------------------------------
       // make it a node
 
@@ -174,41 +246,92 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // set the quad position
 
-      math_t::Vec2f32 horBearing = 
-        itr->m_horizontalBearing.Cast<math_t::Vec2f32>();
-      f32 advancef32 = core_utils::CastNumber<f32>(advance);
-
-      using math_cs::transform_f32_vptr;
-      transform_f32_vptr textPos = q->GetComponent<math_cs::Transformf32>();
-
-      textPos->SetPosition
-        (math_t::Vec3f32(advancef32 * m_globalScale[0], 0, 0));
-
-      // kerning
       if (i > 0)
       {
-        math_t::Vec2f32 kerning = m_font->GetKerning(text[i - 1], text[i]);
-        kerning = m_globalScale * kerning;
-
-        advance += kerning[0];
-        
-        math_t::Vec3f32 kerning3 = kerning
-          .ConvertTo<math_t::Vec3f32, core_ds::p_tuple::overflow_zero>();
-
-        textPos->SetPosition(textPos->GetPosition() + kerning3);
+        advance = DoSetTextQuadPosition(q, text[i - 1], text[i], advance);
       }
-
-      textPos->
-        SetPosition(textPos->GetPosition() + 
-        math_t::Vec3f32(0, 
-                        (horBearing[1] * m_globalScale[3]) - rect.GetHeight(),
-                        0) );
-
-      // advance pen's position
-      advance += itr->m_horizontalAdvance;
+      else
+      {
+        advance = DoSetTextQuadPosition(q, text[i], advance);
+      }
     }
 
+    DoAlignText(tqp);
+    m_allText.push_back(tqp);
+
     return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  f32
+    StaticTextRenderSystem::
+    DoSetTextQuadPosition(const_entity_ptr a_ent, 
+                          gfx_med::Font::glyph_metrics:: char_code a_charCode, 
+                          f32 a_startingPosX)
+  {
+    f32 advanceToRet = a_startingPosX;
+
+    gfx_med::Font::const_glyph_metrics_iterator 
+      itr = m_font->GetGlyphMetric(a_charCode);
+
+    // -----------------------------------------------------------------------
+    // set the quad position
+
+    math_t::Vec2f32 horBearing =
+      itr->m_horizontalBearing.Cast<math_t::Vec2f32>();
+
+    using math_cs::transform_f32_vptr;
+    transform_f32_vptr textPos = a_ent->GetComponent<math_cs::Transformf32>();
+    math_t::Rectf32_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
+
+    textPos->SetPosition
+      (math_t::Vec3f32(advanceToRet, 0, 0));
+
+    textPos->
+      SetPosition(textPos->GetPosition() +
+      math_t::Vec3f32(0, 
+                      ( horBearing[1] * m_globalScale[3] ) - rect.GetHeight(), 
+                      0));
+
+    // advance pen's position
+    advanceToRet += itr->m_horizontalAdvance;
+
+    return advanceToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  f32
+    StaticTextRenderSystem::
+    DoSetTextQuadPosition(const_entity_ptr a_ent, 
+                          gfx_med::Font::glyph_metrics:: char_code a_prevCode, 
+                          gfx_med::Font::glyph_metrics:: char_code a_charCode, 
+                          f32 a_startingPosX)
+  {
+    f32 advanceToRet = DoSetTextQuadPosition(a_ent, a_charCode, a_startingPosX);
+
+    // -----------------------------------------------------------------------
+    // set the quad position
+
+    using math_cs::transform_f32_vptr;
+    transform_f32_vptr textPos = a_ent->GetComponent<math_cs::Transformf32>();
+    math_t::Rectf32_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
+
+    // kerning
+    {
+      math_t::Vec2f32 kerning = m_font->GetKerning(a_prevCode, a_charCode);
+      kerning = m_globalScale * kerning;
+
+      advanceToRet += kerning[0];
+
+      math_t::Vec3f32 kerning3 = kerning
+        .ConvertTo<math_t::Vec3f32, core_ds::p_tuple::overflow_zero>();
+
+      textPos->SetPosition(textPos->GetPosition() + kerning3);
+    }
+
+    return advanceToRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -250,8 +373,23 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     StaticTextRenderSystem::
-    ProcessEntity(entity_ptr , f64 )
-  { }
+    ProcessEntity(entity_ptr a_ent, f64 )
+  { 
+    static_text_vptr staticText = a_ent->GetComponent<StaticText>();
+
+    if (staticText->IsUpdateRequired())
+    {
+      text_quads_cont::const_iterator itr = core::find_if_all
+        (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
+
+      TLOC_ASSERT(itr != m_allText.end(), 
+                  "StaticText should be stored in m_allText container");
+
+      DoAlignText(*itr);
+
+      staticText->SetUpdateRequired(false);
+    }
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

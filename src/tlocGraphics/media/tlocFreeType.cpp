@@ -63,6 +63,14 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  FreeType::
+    ~FreeType()
+  {
+    base_type::Destroy();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     FreeType::
     SetCurrentSize(ft_ushort a_charSize) const

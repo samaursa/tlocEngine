@@ -48,7 +48,9 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::
     ~Font()
-  { }
+  { 
+    base_type::Destroy();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

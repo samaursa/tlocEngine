@@ -64,6 +64,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   public:
     FreeType();
+    ~FreeType();
 
     bool          SetCurrentSize(ft_ushort a_charSize) const;
     FreeTypeGlyph LoadGlyph(ft_ulong a_charCode) const;

@@ -20,6 +20,15 @@ namespace tloc { namespace graphics { namespace component_system {
     : public core_cs::Component_T<StaticText, components::static_text>
   {
   public:
+    enum 
+    {
+      k_align_left = 0,
+      k_align_center,
+      k_align_right,
+      k_align_count
+    }; typedef tl_int                                       align_type;
+
+  public:
     typedef StaticText                                      this_type;
     typedef Component_T<this_type, components::static_text> base_type;
     typedef f32                                             real_type;
@@ -28,13 +37,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     StaticText();
-    explicit StaticText(BufferArgW a_text);
+    explicit StaticText(BufferArgW a_text, 
+                        align_type a_alignment = k_align_left);
+
+    void Align(align_type a_alignment);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(BufferArgW, Set, m_text);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, Get, m_text);
+    TLOC_DECL_AND_DEF_GETTER(align_type, GetAlignment, m_alignment);
 
   private:
     str_type                m_text;
+    align_type              m_alignment;
   };
 
   // -----------------------------------------------------------------------

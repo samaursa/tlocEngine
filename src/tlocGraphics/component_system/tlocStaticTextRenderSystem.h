@@ -30,6 +30,11 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math_t::Mat2f32                                   scale_type;
 
   public:
+    typedef core::Pair<const_entity_ptr, 
+                       core_cs::const_entity_ptr_array>       text_quads_pair;
+    typedef core_conts::Array<text_quads_pair>                text_quads_cont;
+
+  public:
     StaticTextRenderSystem(event_manager_ptr a_eventMgr,
                            entity_manager_ptr a_entityMgr,
                            const font_ptr& a_initializedFont, 
@@ -54,9 +59,25 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&);
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&);
 
+  protected:
+    void         DoAlignText(const text_quads_pair& a_pair);
+    f32          DoSetTextQuadPosition(const_entity_ptr a_ent,
+                                       gfx_med::Font::glyph_metrics::
+                                       char_code a_charCode,
+                                       f32 a_startingPosX);
+
+    f32          DoSetTextQuadPosition(const_entity_ptr a_ent,
+                                       gfx_med::Font::glyph_metrics::
+                                       char_code a_prevCode,
+                                       gfx_med::Font::glyph_metrics::
+                                       char_code a_charCode,
+                                       f32 a_startingPosX);
+
+
   private:
     font_ptr                            m_font;
     scale_type                          m_globalScale;
+    text_quads_cont                     m_allText;
 
     core_io::Path                       m_vertexShader;
     core_io::Path                       m_fragmentShader;

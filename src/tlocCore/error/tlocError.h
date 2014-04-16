@@ -214,4 +214,15 @@ namespace tloc { namespace core {
 #define TLOC_ERROR(_errorCode_)\
   tloc::core::error::Error(_errorCode_, __LINE__, __FILE__)
 
+// ///////////////////////////////////////////////////////////////////////
+// Helper macro for common error reporting tasks
+
+// if the user expression returns an error, then that error is returned
+#define TLOC_ERROR_RETURN_IF_FAILED(_expr_)\
+  do {\
+    tloc::core_err::Error errToReturn = (_expr_);\
+    if (errToReturn.Failed())\
+    { return errToReturn; }\
+  } while((void)0, 0)
+
 #endif

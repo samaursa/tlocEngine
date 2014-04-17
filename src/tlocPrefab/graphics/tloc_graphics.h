@@ -6,6 +6,7 @@
 #include <tlocPrefab/graphics/tlocArcBall.h>
 #include <tlocPrefab/graphics/tlocCamera.h>
 #include <tlocPrefab/graphics/tlocCuboid.h>
+#include <tlocPrefab/graphics/tlocDynamicText.h>
 #include <tlocPrefab/graphics/tlocFan.h>
 #include <tlocPrefab/graphics/tlocMaterial.h>
 #include <tlocPrefab/graphics/tlocMesh.h>

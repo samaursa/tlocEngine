@@ -4,20 +4,11 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
-#include <tlocCore/memory/tlocBufferArg.h>
-#include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
-#include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/io/tlocPath.h>
 
 #include <tlocGraphics/media/tlocFont.h>
-#include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocStaticText.h>
-#include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
-#include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
-#include <tlocGraphics/component_system/tlocMaterialSystem.h>
-#include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
 #include <tlocGraphics/component_system/tlocTextRenderSystem_TI.h>
 
 namespace tloc { namespace graphics { namespace component_system {
@@ -62,6 +53,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(StaticTextRenderSystem, static_text_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR
+    (StaticTextRenderSystem, static_text_render_system);
 
 };};};
 

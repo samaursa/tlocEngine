@@ -46,7 +46,7 @@ namespace TestingEntity
 
   TEST_CASE("Core/component_system/entity/entity", "")
   {
-    entity_vso e(0);
+    entity_vso e( MakeArgs(0) );
 
     CHECK(e->GetID() == 0);
     CHECK(e->GetComponentsList().size() == (tl_size)components_group::count);

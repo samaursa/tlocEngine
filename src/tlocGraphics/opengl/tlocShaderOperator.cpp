@@ -1286,7 +1286,8 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_uniform.GetType() != GL_NONE,
       "Uniform missing OpenGL type - ShaderVariable not initialized properly?");
     TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
-    m_uniforms.push_back(core::MakePair(uniform_vso(a_uniform), index_type(-1)) );
+    m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)), 
+                                        index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
   }
 
@@ -1298,7 +1299,8 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_attribute.GetType() != GL_NONE,
       "Attribute missing OpenGL type - ShaderVariable not initialized properly?");
     TLOC_ASSERT(a_attribute.GetName().size() > 0, "Attribute name is empty");
-    m_attributes.push_back(core::MakePair(attribute_vso(a_attribute), index_type(-1)) );
+    m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)), 
+                                          index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
   }
 

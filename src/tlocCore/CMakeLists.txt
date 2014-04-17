@@ -7,6 +7,8 @@ set(TLOC_ENGINE_CORE
     tlocAlgorithms.inl.h
     tlocAssert.h
     tlocAssert.cpp
+    tlocArgs.h
+    tlocArgs.cpp
     tlocCoreBase.h
     tlocCoreBase.cpp
     tlocCoreIncludes.h

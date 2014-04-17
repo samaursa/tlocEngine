@@ -52,7 +52,7 @@ namespace TestingVirtualStackObject
           CHECK(*onStack == 30);
         } // if ptrToVSO is not destroyed, line 51 will throw an assertion
 
-        int_vso onStack2(*onStack);
+        int_vso onStack2(MakeArgs(*onStack));
         CHECK( (*onStack2 == 30) );
 
         onStack2 = 10;
@@ -77,7 +77,7 @@ namespace TestingVirtualStackObject
 
       SECTION("No copy no default", "")
       {
-        int_nocopy_nodef_vso onStack(20);
+        int_nocopy_nodef_vso onStack(MakeArgs(20));
         CHECK( (*onStack == 20) );
         CHECK( (*onStack.get() == 20) );
 
@@ -89,13 +89,13 @@ namespace TestingVirtualStackObject
     SECTION("No default ctor", "")
     {
       VirtualStackObjectBase_TI<int, p_virtual_stack_object::default_ctor::NotAvail>
-        onStack(20);
+        onStack(MakeArgs(20));
       CHECK( (*onStack == 20) );
     }
 
     SECTION("Memory address check", "")
     {
-      int_vso onStack(10);
+      int_vso onStack(MakeArgs(10));
       tl_uintptr  memAddress = core_utils::GetMemoryAddress(onStack.get());
 
       int_vso::pointer ptrToVSO = onStack.get();
@@ -157,16 +157,16 @@ namespace TestingVirtualStackObject
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/ctor_types", "")
   {
-    no_def_ctor_vso         ndc(no_def_ctor_vso(10));
+    no_def_ctor_vso         ndc( no_def_ctor_vso(MakeArgs(10)) );
     no_copy_ctor_vso        ncc;
-    no_copy_no_def_vso      ncnd(10);
+    no_copy_no_def_vso      ncnd(MakeArgs(10));
   }
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/operators", "")
   {
     SECTION("comparison", "")
     {
-      int_vso s1(10), s2(20), s3(10);
+      int_vso s1(MakeArgs(10)), s2(MakeArgs(20)), s3(MakeArgs(10));
       CHECK( (*s1 == *s3) );
       CHECK( (*s1 != *s2) );
       CHECK_FALSE( (*s1 == *s2) );
@@ -174,7 +174,7 @@ namespace TestingVirtualStackObject
 
     SECTION("No equality", "")
     {
-      no_def_ctor_vso onStack(50);
+      no_def_ctor_vso onStack(MakeArgs(50));
       CHECK(onStack->a == 50);
 
       // CHECK( (onStack == 20) ); // should be a compiler error
@@ -306,7 +306,7 @@ namespace TestingVirtualStackObject {
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/ToVirtualPtr", "")
   {
-    int_vso a(10);
+    int_vso a(MakeArgs(10));
     int_vso::pointer aVptr = ToVirtualPtr(a);
     CHECK( (aVptr == a.get()) );
   }
@@ -320,9 +320,9 @@ namespace TestingVirtualStackObject {
       typedef core_conts::Array<int_vso>      int_vso_cont;
 
       int_vso_cont intArray;
-      intArray.push_back(int_vso(0));
-      intArray.push_back(int_vso(1));
-      intArray.push_back(int_vso(2));
+      intArray.push_back( int_vso(MakeArgs(0)) );
+      intArray.push_back( int_vso(MakeArgs(1)) );
+      intArray.push_back( int_vso(MakeArgs(2)) );
 
       int_vso_cont::iterator itr =
         core::find_if_all(intArray,
@@ -331,7 +331,7 @@ namespace TestingVirtualStackObject {
 
       CHECK(*(*itr) == 1);
 
-      int_vso temp(2);
+      int_vso temp( MakeArgs(2) );
       // even the number 2 exists in the container of VSOs, we are matching
       // against the VSO pointers and NOT the values
       itr =

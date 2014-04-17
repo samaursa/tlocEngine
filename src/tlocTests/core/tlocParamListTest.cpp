@@ -13,28 +13,28 @@ namespace TestingTemplateParams
     SECTION("OneParam", "")
     {
       ParamList<tl_int> 
-        p = MakeArgs(1);
+        p = MakeParams(1);
       CHECK(p.m_param1 == 1);
     }
 
     SECTION("TwoParams", "")
     {
       ParamList<tl_int, tl_int> 
-        p = MakeArgs(1, 2);
+        p = MakeParams(1, 2);
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2);
     }
 
     SECTION("ThreeParams", "")
     {
       ParamList<tl_int, tl_int, tl_int> 
-        p = MakeArgs(1, 2, 3);
+        p = MakeParams(1, 2, 3);
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
     }
 
     SECTION("FourParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int> 
-        p = MakeArgs(1, 2, 3, 4);
+        p = MakeParams(1, 2, 3, 4);
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); 
     }
@@ -43,7 +43,7 @@ namespace TestingTemplateParams
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int> 
-                p = MakeArgs(1, 2, 3, 4, 5);
+                p = MakeParams(1, 2, 3, 4, 5);
 
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5);
@@ -53,7 +53,7 @@ namespace TestingTemplateParams
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int> 
-        p = MakeArgs(1, 2, 3, 4, 5, 6);
+        p = MakeParams(1, 2, 3, 4, 5, 6);
 
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5); CHECK(p.m_param6 == 6);
@@ -63,7 +63,7 @@ namespace TestingTemplateParams
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int> 
-        p = MakeArgs(1, 2, 3, 4, 5, 6, 7);
+        p = MakeParams(1, 2, 3, 4, 5, 6, 7);
 
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5); CHECK(p.m_param6 == 6);
@@ -74,7 +74,7 @@ namespace TestingTemplateParams
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int, tl_int> 
-        p = MakeArgs(1, 2, 3, 4, 5, 6, 7, 8);
+        p = MakeParams(1, 2, 3, 4, 5, 6, 7, 8);
 
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5); CHECK(p.m_param6 == 6);
@@ -86,7 +86,7 @@ namespace TestingTemplateParams
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int, tl_int,
                 tl_int>
-        p = MakeArgs(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        p = MakeParams(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5); CHECK(p.m_param6 == 6);
@@ -98,7 +98,7 @@ namespace TestingTemplateParams
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int>
-        p = MakeArgs(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        p = MakeParams(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5); CHECK(p.m_param6 == 6);

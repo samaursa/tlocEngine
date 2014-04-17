@@ -3,8 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/memory/tlocBufferArg.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -27,7 +27,8 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
     typedef T_TextOrStaticTextComponent                       text_type;
-    typedef TextRenderSystem_TI<text_type>                     this_type;
+    typedef core_sptr::VirtualPtr<text_type>                  text_ptr;
+    typedef TextRenderSystem_TI<text_type>                    this_type;
 
     typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
@@ -69,7 +70,7 @@ namespace tloc { namespace graphics { namespace component_system {
                                        gfx_med::Font::glyph_metrics::
                                        char_code a_charCode,
                                        real_type a_startingPosX);
-  private:
+  protected:
     font_ptr                            m_font;
     text_quads_cont                     m_allText;
 

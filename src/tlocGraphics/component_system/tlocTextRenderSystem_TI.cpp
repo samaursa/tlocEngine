@@ -11,7 +11,6 @@
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
-#include <tlocGraphics/component_system/tlocStaticText.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/media/tlocFont.h>
@@ -20,6 +19,9 @@
 #include <tlocPrefab/graphics/tlocMaterial.h>
 #include <tlocPrefab/graphics/tlocSprite.h>
 #include <tlocPrefab/graphics/tlocSceneNode.h>
+
+#include <tlocGraphics/component_system/tlocStaticText.h>
+#include <tlocGraphics/component_system/tlocText.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -47,7 +49,7 @@ namespace tloc { namespace graphics { namespace component_system {
                         entity_manager_ptr a_entityMgr,
                         const font_ptr& a_initializedFont)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::static_text))
+                Variadic<component_type, 1>(text_type::k_component_type))
 
     , m_font(a_initializedFont)
 
@@ -82,8 +84,8 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
-    static_text_vptr staticText = a_pair.first->GetComponent<StaticText>();
-    math_cs::transform_vptr staticTextTrans = 
+    text_ptr text = a_pair.first->GetComponent<text_type>();
+    math_cs::transform_vptr textTrans = 
       a_pair.first->GetComponent<math_cs::Transform>();
 
     real_type totalTextWidth = 0;
@@ -120,9 +122,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     real_type advance = 0;
 
-    if (staticText->GetAlignment() == alignment::k_align_center)
+    if (text->GetAlignment() == alignment::k_align_center)
     { advance = totalTextWidth * 0.5f * -1.0f; }
-    else if (staticText->GetAlignment() == alignment::k_align_right)
+    else if (text->GetAlignment() == alignment::k_align_right)
     { advance = totalTextWidth * -1.0f; }
 
     tl_int count = 0;
@@ -133,13 +135,13 @@ namespace tloc { namespace graphics { namespace component_system {
       if (count != 0)
       {
         advance = 
-        DoSetTextQuadPosition(*itr, staticText->Get()[count - 1], 
-                              staticText->Get()[count], advance);
+        DoSetTextQuadPosition(*itr, text->Get()[count - 1], 
+                              text->Get()[count], advance);
       }
       else
       {
         advance = 
-        DoSetTextQuadPosition(*itr, staticText->Get()[count], advance);
+        DoSetTextQuadPosition(*itr, text->Get()[count], advance);
       }
 
       math_cs::transform_vptr t =
@@ -224,10 +226,10 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_ASSERT(a_ent->HasComponent<math_cs::Transform>(),
                 "Entity must have a transform node");
     TLOC_ASSERT(a_ent->HasComponent<SceneNode>(),
-                "The static text entity must have a scene node entity");
+                "The text entity must have a scene node entity");
 
     scene_node_vptr sceneNode   = a_ent->GetComponent<SceneNode>();
-    static_text_vptr staticText = a_ent->GetComponent<StaticText>();
+    text_ptr textPtr = a_ent->GetComponent<text_type>();
 
     // -----------------------------------------------------------------------
     // text quad pair
@@ -237,7 +239,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // go through all the characters and build the text quads
 
-    core_str::StringW text = staticText->Get();
+    core_str::StringW text = textPtr->Get();
 
     gfx_med::GlyphMetrics::value_type advance = 0;
 
@@ -413,5 +415,11 @@ namespace tloc { namespace graphics { namespace component_system {
     m_fontAnimSys.ProcessActiveEntities(a_deltaT);
     m_fontQuadRenderSys.ProcessActiveEntities(a_deltaT);
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template class TextRenderSystem_TI<StaticText>;
+  template class TextRenderSystem_TI<Text>;
 
 };};};

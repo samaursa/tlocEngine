@@ -120,9 +120,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     real_type advance = 0;
 
-    if (staticText->GetAlignment() == StaticText::k_align_center)
+    if (staticText->GetAlignment() == alignment::k_align_center)
     { advance = totalTextWidth * 0.5f * -1.0f; }
-    else if (staticText->GetAlignment() == StaticText::k_align_right)
+    else if (staticText->GetAlignment() == alignment::k_align_right)
     { advance = totalTextWidth * -1.0f; }
 
     tl_int count = 0;

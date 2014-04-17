@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace media {
                 "Container size mismatch - expected container sizes to be the "
                 "same");
 
-    sprite_sheet_ul_vso ss(sprite_sheet_ul_vso::value_type(spriteSheet, spriteInfo));
+    sprite_sheet_ul_vso ss( MakeArgs(spriteSheet, spriteInfo) );
     m_spriteSheet = ss;
 
     m_flags.Mark(k_font_cache_generated);

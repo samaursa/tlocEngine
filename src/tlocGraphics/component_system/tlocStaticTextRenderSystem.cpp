@@ -56,7 +56,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_vertexShader("Invalid Path")
     , m_fragmentShader("Invalid Path")
 
-    , m_fontEntityMgr(m_fontEventMgr.get())
+    , m_fontEntityMgr( MakeArgs(m_fontEventMgr.get()) )
     , m_fontQuadRenderSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
     , m_fontSceneGraphSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
     , m_fontMaterialSys(m_fontEventMgr.get(), m_fontEntityMgr.get())

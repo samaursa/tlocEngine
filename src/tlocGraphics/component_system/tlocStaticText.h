@@ -11,6 +11,7 @@
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/component_system/tlocTextAlignment.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 
@@ -20,25 +21,17 @@ namespace tloc { namespace graphics { namespace component_system {
     : public core_cs::Component_T<StaticText, components::static_text>
   {
   public:
-    enum 
-    {
-      k_align_left = 0,
-      k_align_center,
-      k_align_right,
-      k_align_count
-    }; typedef tl_int                                       align_type;
-
-  public:
     typedef StaticText                                      this_type;
     typedef Component_T<this_type, components::static_text> base_type;
     typedef f32                                             real_type;
     typedef core_str::StringW                               str_type;
     typedef ushort                                          font_size_type;
+    typedef alignment::align_type                           align_type;
 
   public:
     StaticText();
     explicit StaticText(BufferArgW a_text, 
-                        align_type a_alignment = k_align_left);
+                        align_type a_alignment = alignment::k_align_left);
 
     void Align(align_type a_alignment);
 

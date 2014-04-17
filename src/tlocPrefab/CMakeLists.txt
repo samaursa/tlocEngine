@@ -31,6 +31,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
+  graphics/tlocStaticText.h
+  graphics/tlocStaticText.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
   graphics/tloc_graphics.inl.h 

@@ -8,7 +8,7 @@ namespace tloc { namespace graphics { namespace component_system {
   StaticText::
     StaticText()
     : base_type(k_component_type)
-    , m_alignment(k_align_left)
+    , m_alignment(alignment::k_align_left)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

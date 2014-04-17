@@ -5,12 +5,11 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/io/tlocFileIO.h>
 #include <tlocCore/logging/tlocLogger.h>
 
-#include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
-#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/media/tlocFont.h>

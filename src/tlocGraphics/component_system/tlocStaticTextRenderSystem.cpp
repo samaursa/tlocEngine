@@ -5,21 +5,8 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
-#include <tlocCore/logging/tlocLogger.h>
 
-#include <tlocMath/types/tlocRectangle.h>
-#include <tlocMath/component_system/tlocTransform.h>
-
-#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/component_system/tlocStaticText.h>
-#include <tlocGraphics/component_system/tlocSceneNode.h>
-#include <tlocGraphics/component_system/tlocQuad.h>
-#include <tlocGraphics/media/tlocFont.h>
-
-#include <tlocPrefab/graphics/tlocQuad.h>
-#include <tlocPrefab/graphics/tlocMaterial.h>
-#include <tlocPrefab/graphics/tlocSprite.h>
-#include <tlocPrefab/graphics/tlocSceneNode.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -120,3 +107,10 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
 };};};
+
+using namespace tloc::gfx_cs;
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(StaticTextRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(StaticTextRenderSystem);

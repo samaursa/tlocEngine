@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -54,6 +55,7 @@ namespace tloc { namespace graphics { namespace media {
     Image::
     DoLoadFromImages(const image_ptr_cont& a_arrayOfImages)
   {
+    TLOC_ASSERT_WIP();
     TLOC_UNUSED(a_arrayOfImages);
     return ErrorSuccess;
   }
@@ -71,12 +73,104 @@ namespace tloc { namespace graphics { namespace media {
 
   void Image::SetPixel(size_type a_X, size_type a_Y, const color_type& a_color)
   {
-    m_pixels[a_X + (a_Y * m_dim[width])] = a_color;
+    tl_int index = core_utils::GetIndex(m_dim, core_ds::MakeTuple(a_X, a_Y));
+    m_pixels[index] = a_color;
+  }
+
+  void
+    Image::
+    SetImage(size_type a_x, size_type a_y, const this_type& a_image)
+  {
+    const dimension_type imgDim = a_image.GetDimensions();
+
+    TLOC_ASSERT(imgDim[0] + a_x <= m_dim[0], "Incoming image does not fit in X");
+    TLOC_ASSERT(imgDim[1] + a_y <= m_dim[1], "Incoming image does not fit in Y");
+
+    for (size_type y = 0; y < imgDim[1]; ++y)
+    {
+      for (size_type x = 0; x < imgDim[0]; ++x)
+      {
+        SetPixel(x + a_x, y + a_y, a_image.GetPixel(x, y));
+      }
+    }
+  }
+
+  Image::error_type
+    Image::
+    AddPadding(dimension_type a_padding, const color_type& a_color)
+  {
+    dimension_type a_paddingTotal = core_ds::Add(a_padding, a_padding);
+    dimension_type newDim = core_ds::MakeTuple
+      (m_dim[0] + a_paddingTotal[0], m_dim[1] + a_paddingTotal[1]);
+
+    pixel_container_type newImg(newDim[0] * newDim[1]);
+
+    for (size_type y = 0; y < newDim[1]; ++y)
+    {
+      for (size_type x = 0; x < newDim[0]; ++x)
+      {
+        tl_int index = core_utils::GetIndex(newDim, core_ds::MakeTuple(x, y));
+
+        if (x < a_padding[0] || x > m_dim[0] ||
+            y < a_padding[1] || y > m_dim[1])
+        {
+          newImg[index] = a_color;
+        }
+        else
+        {
+          tl_int currImgIndex = core_utils::GetIndex
+            (m_dim, core_ds::MakeTuple(x - a_padding[0],
+                                       y - a_padding[1]));
+
+          newImg[index] = m_pixels[currImgIndex];
+        }
+      }
+    }
+
+    this_type temp;
+    error_type err = temp.LoadFromMemory(newImg, newDim);
+
+    if (err.Failed())
+    { return err; }
+
+    core::swap(temp, *this);
+    return ErrorSuccess;
   }
 
   const Image::color_type&  Image::GetPixel(size_type a_X, size_type a_Y) const
   {
-    return m_pixels[a_X + (a_Y * m_dim[width])];
+    tl_int index = core_utils::GetIndex(m_dim, core_ds::MakeTuple(a_X, a_Y));
+    return m_pixels[index];
+  }
+
+  Image::image_sptr
+    Image::
+    GetImage(size_type a_x, size_type a_y, dimension_type a_dimToGet) const
+  {
+    TLOC_ASSERT(a_x + a_dimToGet[0] <= m_dim[0], "Dimensions out of range");
+    TLOC_ASSERT(a_y + a_dimToGet[1] <= m_dim[1], "Dimensions out of range");
+
+    image_sptr img(new this_type());
+    img->Create(a_dimToGet, gfx_t::Color::COLOR_BLACK);
+
+    for (size_type y = 0; y < a_dimToGet[1]; ++y)
+    {
+      for (size_type x = 0; x < a_dimToGet[0]; ++x)
+      {
+        img->SetPixel(x, y, GetPixel(x + a_x, y + a_y));
+      }
+    }
+
+    return img;
+  }
+
+  bool
+    Image::
+    IsValid() const
+  {
+    return m_dim[0] > 0 &&
+           m_dim[1] > 0 &&
+           (m_pixels.size() == m_dim[0] * m_dim[1]);
   }
 
 };};};

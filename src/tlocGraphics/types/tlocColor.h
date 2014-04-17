@@ -37,6 +37,7 @@ namespace tloc { namespace graphics { namespace types {
       channel_count
     }; typedef tl_size              channel_type;
 
+    typedef Color                             this_type;
     typedef u8                                value_type;
     typedef core::data_structs::Tuple<u8, 4>  container_type;
     typedef u32                               int_type;
@@ -101,6 +102,11 @@ namespace tloc { namespace graphics { namespace types {
     Color&  operator *=(const Color& a_other);
     Color   operator - (const Color& a_other) const;
     Color&  operator -=(const Color& a_other);
+
+    Color   operator * (real_type a_multi) const;
+    Color&  operator *=(real_type a_multi);
+    Color   operator / (real_type a_multi) const;
+    Color&  operator /=(real_type a_multi);
 
     bool    operator ==(const Color& a_other) const;
     bool    operator !=(const Color& a_other) const;

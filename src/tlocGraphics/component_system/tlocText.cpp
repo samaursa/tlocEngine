@@ -15,7 +15,7 @@ namespace tloc { namespace graphics { namespace component_system {
   Text::
     Text()
     : base_type(k_component_type)
-    , m_alignment(alignment::k_align_left)
+    , Text_I()
     , m_flags(k_count)
   { }
 
@@ -24,8 +24,7 @@ namespace tloc { namespace graphics { namespace component_system {
   Text::
     Text(BufferArgW a_text, align_type a_alignment)
     : base_type(k_component_type)
-    , m_text(a_text)
-    , m_alignment(a_alignment)
+    , Text_I(a_text, a_alignment)
     , m_flags(k_count)
   { }
 
@@ -33,11 +32,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void 
     Text::
-    Align(align_type a_alignment)
+    SetAlignment(align_type a_alignment)
   { 
     base_type::SetUpdateRequired(true);
     m_flags.Mark(k_alignment_updated);
-    m_alignment = a_alignment;
+    Text_I::SetAlignment(a_alignment);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -48,14 +47,14 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     base_type::SetUpdateRequired(true);
     m_flags.Mark(k_text_updated);
-    m_text = a_text;
+    Text_I::Set(a_text);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     Text::
-    TextUpdated() const
+    IsTextUpdated() const
   {
     return m_flags.ReturnAndUnmark(k_text_updated);
   }
@@ -64,7 +63,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   bool
     Text::
-    AlignmentUpdated() const
+    IsAlignmentUpdated() const
   {
     return m_flags.ReturnAndUnmark(k_alignment_updated);
   }

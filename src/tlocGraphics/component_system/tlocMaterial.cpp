@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void Material::
     AddShaderOperator(const shader_op& a_shaderOp)
   {
-    m_shaderOperators.push_back(shader_op_vso(a_shaderOp));
+    m_shaderOperators.push_back(shader_op_vso(MakeArgs(a_shaderOp)));
     SetUpdateRequired(true);
   }
 

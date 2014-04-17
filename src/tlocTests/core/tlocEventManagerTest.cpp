@@ -107,9 +107,9 @@ namespace TestingEventManager
     EventTracker globalTracker;
     EventTracker tracker;
 
-    entity_vso        dummyEnt(0);
+    entity_vso        dummyEnt( MakeArgs(0) );
     comp_to_test_vso  transComp;
-    component_vso     dummyComp(*transComp);
+    component_vso     dummyComp( MakeArgs(*transComp) );
 
     EventManager mgr;
     mgr.AddGlobalListener(&globalTracker);

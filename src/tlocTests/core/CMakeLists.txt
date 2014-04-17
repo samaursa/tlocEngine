@@ -3,6 +3,7 @@ set(TLOC_TESTS_CORE
   tlocAlgorithmsTest.cpp
   tlocAllocatorsTest.cpp
   tlocAnyTest.cpp
+  tlocArgsTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
   tlocAssertTest.cpp
@@ -29,6 +30,7 @@ set(TLOC_TESTS_CORE
   tlocMemoryTest.cpp
   tlocObjectCounterTest.cpp
   tlocPair.cpp
+  tlocParamListTest.cpp
   tlocPathTest.cpp
   tlocProtectedBufferTest.cpp
   tlocQueueTest.cpp

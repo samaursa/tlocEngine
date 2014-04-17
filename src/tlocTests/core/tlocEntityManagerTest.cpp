@@ -148,11 +148,11 @@ namespace TestingEntityManager
       CHECK(entTrack.m_entEventCounter == 1);
       CHECK(entTrack.m_compEventCounter == 0);
 
-      component_vso testComp = component_vso(Component(components::listener));
+      component_vso testComp( MakeArgs(Component(components::listener)) );
       eMgr.InsertComponent(newEnt, testComp.get());
       CHECK(entTrack.m_compEventCounter == 1);
 
-      component_vso invalidComp = component_vso( Component(components::listener + 1) );
+      component_vso invalidComp( MakeArgs(Component(components::listener + 1)) );
 
       CHECK_FALSE(eMgr.RemoveComponent(newEnt, invalidComp.get()));
       eMgr.Update();

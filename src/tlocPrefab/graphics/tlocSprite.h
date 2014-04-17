@@ -56,9 +56,11 @@ namespace tloc { namespace prefab { namespace graphics {
       using namespace p_sprite_loader::parser;
 
       type_traits::AssertTypeIsSupported
-        <SpriteLoaderIterator,
-        SpriteLoader_SpriteSheetPacker::iterator,
-        SpriteLoader_SpriteSheetPacker::const_iterator>();
+        <SpriteLoaderIterator, 
+         sprite_sheet_str::iterator,
+         sprite_sheet_str::const_iterator,
+         sprite_sheet_ul::iterator,
+         sprite_sheet_ul::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
                                  a_begin, a_end, m_loop, m_fps, m_setIndex,
@@ -82,13 +84,17 @@ namespace tloc { namespace prefab { namespace graphics {
 
       type_traits::AssertTypeIsSupported
         <pair_type_first,
-         SpriteLoader_SpriteSheetPacker::iterator,
-         SpriteLoader_SpriteSheetPacker::const_iterator>();
+         sprite_sheet_str::iterator,
+         sprite_sheet_str::const_iterator,
+         sprite_sheet_ul::iterator,
+         sprite_sheet_ul::const_iterator>();
 
       type_traits::AssertTypeIsSupported
-        <pair_type_second,
-         SpriteLoader_SpriteSheetPacker::iterator,
-         SpriteLoader_SpriteSheetPacker::const_iterator>();
+        <pair_type_second, 
+         sprite_sheet_str::iterator,
+         sprite_sheet_str::const_iterator,
+         sprite_sheet_ul::iterator,
+         sprite_sheet_ul::const_iterator>();
 
       for (itr_type itr = a_spriteLoaderIterators.begin(),
                     itrEnd = a_spriteLoaderIterators.end();

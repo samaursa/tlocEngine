@@ -27,6 +27,7 @@ namespace tloc { namespace graphics { namespace media {
 
     typedef Image                                         this_type;
     typedef core_sptr::VirtualPtr<this_type>              image_ptr;
+    typedef core_sptr::SharedPtr<this_type>               image_sptr;
     typedef core_conts::Array<image_ptr>                  image_ptr_cont;
 
   public:
@@ -50,7 +51,18 @@ namespace tloc { namespace graphics { namespace media {
     void              SetPixel(size_type a_X, size_type a_Y,
                                const color_type& a_color);
 
+    void              SetImage(size_type a_x, size_type a_y,
+                               const this_type& a_image);
+
+    error_type        AddPadding(dimension_type a_padding,
+                                 const color_type& a_color);
+
     const color_type& GetPixel(size_type a_X, size_type a_Y) const;
+
+    image_sptr        GetImage(size_type a_x, size_type a_y,
+                               dimension_type a_dimToGet) const;
+
+    bool              IsValid() const;
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
     TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
@@ -59,7 +71,7 @@ namespace tloc { namespace graphics { namespace media {
                                           GetPixels, m_pixels);
 
   private:
-    error_type        DoLoadFromImages(const image_ptr_cont& a_arrayOfImages); 
+    error_type        DoLoadFromImages(const image_ptr_cont& a_arrayOfImages);
 
   private:
     dimension_type          m_dim;
@@ -84,6 +96,10 @@ namespace tloc { namespace graphics { namespace media {
     //NOTE:: Commented out temporarily since ToVPtr does not appear to be implemented yet
 //    core::transform_all( a_arrayOfImages, imagePtrs,
 //                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
+    // TODO: extract VirtualPtrs from array of images, push into container, and
+    //       send it to DoLoadFromImages for packing. We don't have a binpacker
+    //       yet, which is needed for this operation
+    TLOC_ASSERT_WIP();
 
     DoLoadFromImages(imagePtrs);
   }

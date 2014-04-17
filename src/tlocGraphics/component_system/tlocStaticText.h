@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
@@ -19,27 +20,43 @@ namespace tloc { namespace graphics { namespace component_system {
     : public core_cs::Component_T<StaticText, components::static_text>
   {
   public:
-    typedef StaticText                                      this_type;
-    typedef Component_T<this_type, components::static_text  base_type;
-    typedef f32                                             real_type;
-    typedef core_str::String                                str_type;
+    enum 
+    {
+      k_align_left = 0,
+      k_align_center,
+      k_align_right,
+      k_align_count
+    }; typedef tl_int                                       align_type;
 
-    typedef char8                                       symbol_type;
-    typedef core::Pair<symbol_type, math_t::Rectf32>    symbol_tcoord_pair_type;
-    typedef core_conts::Array<symbol_tcoord_pair_type>  text_cont;
+  public:
+    typedef StaticText                                      this_type;
+    typedef Component_T<this_type, components::static_text> base_type;
+    typedef f32                                             real_type;
+    typedef core_str::StringW                               str_type;
+    typedef ushort                                          font_size_type;
 
   public:
     StaticText();
-    explicit StaticText(BufferArg a_text);
+    explicit StaticText(BufferArgW a_text, 
+                        align_type a_alignment = k_align_left);
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(BufferArg, Set, m_text);
+    void Align(align_type a_alignment);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(BufferArgW, Set, m_text);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, Get, m_text);
+    TLOC_DECL_AND_DEF_GETTER(align_type, GetAlignment, m_alignment);
 
   private:
-    str_type              m_text;
-    text_cont             m_symbols;
-
+    str_type                m_text;
+    align_type              m_alignment;
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(StaticText, static_text);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(StaticText, static_text);
+  TLOC_TYPEDEF_COMPONENT_POOL(StaticText, static_text);
 
 };};};
 

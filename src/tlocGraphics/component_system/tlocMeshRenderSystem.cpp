@@ -88,8 +88,8 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_ent->HasComponent(components::material) == false)
     { return; }
 
-    gfx_cs::material_vptr   matPtr = a_ent->GetComponent<gfx_cs::Material>();
-    math_cs::transform_vptr posPtr = a_ent->GetComponent<math_cs::Transform>();
+    gfx_cs::material_sptr   matPtr = a_ent->GetComponent<gfx_cs::Material>();
+    math_cs::transform_sptr posPtr = a_ent->GetComponent<math_cs::Transform>();
     mesh_ptr                meshPtr = a_ent->GetComponent<Mesh_T>();
 
     Mat4f32 tMatrix;

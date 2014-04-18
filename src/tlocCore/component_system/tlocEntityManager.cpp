@@ -72,7 +72,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   void EntityManager::
-    InsertComponent(entity_ptr_type a_entity, component_vptr a_component)
+    InsertComponent(entity_ptr_type a_entity, component_ptr_type a_component)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
                 "Entity not found!");
@@ -82,9 +82,9 @@ namespace tloc { namespace core { namespace component_system {
     entities.push_back(a_entity);
     a_entity->InsertComponent(a_component);
 
-    m_eventMgr->DispatchNow(
-      EntityComponentEvent(entity_events::insert_component, a_entity,
-                           a_component) );
+    EntityComponentEvent evt(entity_events::insert_component, a_entity,
+                             a_component);
+    m_eventMgr->DispatchNow(evt);
   }
 
   bool EntityManager::

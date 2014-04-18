@@ -80,6 +80,7 @@ namespace tloc { namespace core { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Component, component);
 
   typedef containers::tl_array<component_vptr>::type  component_ptr_array;
+  typedef containers::tl_array<component_sptr>::type  component_sptr_array;
 
   //////////////////////////////////////////////////////////////////////////
   // Component_T<>

@@ -67,7 +67,7 @@ namespace tloc { namespace core { namespace component_system {
 
     typedef components::value_type                      component_type;
     typedef core::component_system::
-                  component_ptr_array                   component_list;
+                  component_sptr_array                  component_list;
     typedef containers::tl_array<component_list>::type  component_list_list;
     typedef tl_size                                     entity_id;
     typedef tl_size                                     size_type;
@@ -82,7 +82,7 @@ namespace tloc { namespace core { namespace component_system {
     const component_list&       GetComponents(component_type a_type) const;
 
     template <typename T_ComponentType>
-    core_sptr::VirtualPtr<T_ComponentType>
+    core_sptr::SharedPtr<T_ComponentType>
                                 GetComponent(size_type a_index = 0) const;
 
     template <typename T_ComponentType>
@@ -102,7 +102,7 @@ namespace tloc { namespace core { namespace component_system {
     void                        SetIndex(size_type a_index);
 
     component_list&             DoGetComponents(component_type a_type);
-    void                        InsertComponent(component_vptr a_type);
+    void                        InsertComponent(component_sptr a_type);
 
     component_list_list&        GetComponentsList();
 
@@ -118,7 +118,7 @@ namespace tloc { namespace core { namespace component_system {
   // template definitions
 
   template <typename T_ComponentType>
-  core_sptr::VirtualPtr<T_ComponentType>
+  core_sptr::SharedPtr<T_ComponentType>
     Entity::GetComponent(size_type a_index) const
   {
     TLOC_ASSERT(HasComponent(T_ComponentType::k_component_type),

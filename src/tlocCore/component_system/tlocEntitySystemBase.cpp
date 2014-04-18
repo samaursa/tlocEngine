@@ -156,7 +156,7 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::enable_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        component_vptr comp = entEvent.GetComponent();
+        component_sptr comp = entEvent.GetComponent();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
              itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)

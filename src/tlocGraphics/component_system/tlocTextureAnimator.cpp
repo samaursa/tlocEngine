@@ -243,6 +243,5 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureAnimator);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(TextureAnimator);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureAnimator);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TextureAnimator);

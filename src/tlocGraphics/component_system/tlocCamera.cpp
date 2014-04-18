@@ -60,6 +60,5 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Camera);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Camera);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Camera);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Camera);

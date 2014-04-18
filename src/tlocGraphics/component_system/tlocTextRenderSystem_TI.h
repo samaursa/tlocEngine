@@ -39,6 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core::Pair<const_entity_ptr, 
                        core_cs::const_entity_ptr_array>       text_quads_pair;
     typedef core_conts::Array<text_quads_pair>                text_quads_cont;
+    typedef text_quads_cont::iterator                         text_quads_iterator;
 
   public:
 
@@ -49,6 +50,9 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type Post_Initialize();
 
+    void               MarkForReinit(const entity_ptr a_ent);
+
+    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
   protected:
@@ -70,9 +74,15 @@ namespace tloc { namespace graphics { namespace component_system {
                                        gfx_med::Font::glyph_metrics::
                                        char_code a_charCode,
                                        real_type a_startingPosX);
+
+  private:
+    error_type   DoReInitializeEntity(entity_ptr a_ent);
+    void         DoRemoveText(const const_entity_ptr a_ent);
+
   protected:
     font_ptr                            m_font;
     text_quads_cont                     m_allText;
+    core_cs::entity_ptr_array           m_entsToReinit;
 
     core_io::Path                       m_vertexShader;
     core_io::Path                       m_fragmentShader;

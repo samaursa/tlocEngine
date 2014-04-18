@@ -45,9 +45,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicText, text);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(DynamicText, text);
-  TLOC_TYPEDEF_COMPONENT_POOL(DynamicText, text);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicText, dynamic_text);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(DynamicText, dynamic_text);
+  TLOC_TYPEDEF_COMPONENT_POOL(DynamicText, dynamic_text);
 
 };};};
 

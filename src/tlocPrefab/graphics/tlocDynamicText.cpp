@@ -37,8 +37,8 @@ namespace tloc { namespace prefab { namespace graphics {
     if (a_ent->HasComponent<gfx_cs::SceneNode>() == false)
     { SceneNode(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
-    typedef gfx_cs::text_pool              st_pool;
-    gfx_cs::text_pool_vptr                 stPool;
+    typedef gfx_cs::dynamic_text_pool              st_pool;
+    gfx_cs::dynamic_text_pool_vptr                 stPool;
 
     if (m_compPoolMgr->Exists(gfx_cs::components::dynamic_text) == false)
     { stPool = m_compPoolMgr->CreateNewPool<gfx_cs::DynamicText>(); }

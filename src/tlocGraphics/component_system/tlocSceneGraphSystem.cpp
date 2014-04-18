@@ -26,19 +26,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   struct NodeCompareFromEntity
   {
-    typedef scene_node_vptr                       node_ptr_type;
-    typedef core_cs::entity_vptr                  entity_ptr_type;
+    typedef scene_node_vptr                               node_ptr_type;
+    typedef core_cs::EntitySystemBase::entity_count_pair  entity_ptr_type;
 
     bool
-      operator()(entity_ptr_type a_first, entity_ptr_type a_second)
+      operator()(entity_ptr_type a, entity_ptr_type b)
     {
-      TLOC_ASSERT(a_first->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(a.first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
-      TLOC_ASSERT(a_second->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(b.first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
 
-      scene_node_vptr firstNode = a_first->GetComponent<SceneNode>();
-      scene_node_vptr secondNode = a_second->GetComponent<SceneNode>();
+      scene_node_vptr firstNode = a.first->GetComponent<SceneNode>();
+      scene_node_vptr secondNode = b.first->GetComponent<SceneNode>();
 
       return firstNode->GetLevel() < secondNode->GetLevel();
     }

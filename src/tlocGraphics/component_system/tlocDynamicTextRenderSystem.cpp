@@ -54,49 +54,39 @@ namespace tloc { namespace graphics { namespace component_system {
     DynamicTextRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   { 
-    text_sptr dynamicText = a_ent->GetComponent<DynamicText>();
+    dynamic_text_sptr dynamicText = a_ent->GetComponent<DynamicText>();
 
     if (dynamicText->IsUpdateRequired())
     {
       if (dynamicText->IsTextUpdated())
       {
-        using gfx_cs::SceneNode;
-        gfx_cs::scene_node_sptr sn = a_ent->GetComponent<SceneNode>();
-
-        for (SceneNode::node_cont_iterator itr = sn->begin(), itrEnd = sn->end();
-             itr != itrEnd; ++itr)
-        {
-          m_fontEntityMgr->DestroyEntity( (*itr)->GetEntity() );
-        }
-
-        while (sn->size() > 0)
-        { sn->RemoveChild(*sn->begin()); }
-
-        m_fontEntityMgr->Update();
-
-        // remove the cached entity
-        text_quads_cont::iterator itr = 
-          find_if_all(m_allText, 
-          core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
-
-        if (itr != m_allText.end())
-        { m_allText.erase(itr); }
-
-        m_fontCompMgr->RecycleAllUnused();
-        InitializeEntity(a_ent);
+        // -----------------------------------------------------------------------
+        // destroy all the text quads under this node
+        MarkForReinit(a_ent);
       }
-
-      if (dynamicText->IsAlignmentUpdated())
+      else if (dynamicText->IsAlignmentUpdated())
       {
-      text_quads_cont::const_iterator itr = core::find_if_all
-        (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
+        text_quads_cont::const_iterator itr = core::find_if_all
+          (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
 
-      TLOC_ASSERT(itr != m_allText.end(), 
-                  "Text should be stored in m_allText container");
+        TLOC_ASSERT(itr != m_allText.end(), 
+                    "Text should be stored in m_allText container");
 
-      DoAlignText(*itr);
+        DoAlignText(*itr);
       }
     }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DynamicTextRenderSystem::
+    Post_ProcessActiveEntities(f64 a_deltaT)
+  { 
+    m_fontEntityMgr->Update();
+    m_fontCompMgr->RecycleAllUnused();
+
+    base_type::Post_ProcessActiveEntities(a_deltaT);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

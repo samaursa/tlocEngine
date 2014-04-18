@@ -316,6 +316,16 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    MarkForReinit(const entity_ptr a_ent)
+  {
+    m_entsToReinit.push_back(a_ent);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   TLOC_TEXT_RENDER_SYSTEM_TYPE::real_type
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     DoSetTextQuadPosition(const_entity_ptr a_ent, 
@@ -388,6 +398,33 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    DoRemoveText(const const_entity_ptr a_ent)
+  {
+    using gfx_cs::SceneNode;
+    gfx_cs::scene_node_sptr sn = a_ent->GetComponent<SceneNode>();
+
+    for (SceneNode::node_cont_iterator itr = sn->begin(), itrEnd = sn->end();
+         itr != itrEnd; ++itr)
+    {
+      m_fontEntityMgr->DestroyEntity( (*itr)->GetEntity() );
+    }
+
+    while (sn->size() > 0)
+    { sn->RemoveChild(*sn->begin()); }
+
+    // remove the cached entity
+    text_quads_cont::iterator itr = 
+      find_if_all(m_allText, core::algos::compare::pair::MakeFirst(a_ent));
+
+    if (itr != m_allText.end())
+    { m_allText.erase(itr); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   TLOC_TEXT_RENDER_SYSTEM_TYPE::error_type
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_Initialize()
@@ -401,6 +438,34 @@ namespace tloc { namespace graphics { namespace component_system {
     m_fontAnimSys.Initialize();
 
     return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  TLOC_TEXT_RENDER_SYSTEM_TYPE::error_type
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    DoReInitializeEntity(entity_ptr a_ent)
+  {
+    DoRemoveText(a_ent);
+    return InitializeEntity(a_ent);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    Pre_ProcessActiveEntities(f64 )
+  {
+    typedef core_cs::entity_ptr_array::iterator     itr_type;
+
+    for (itr_type itr = m_entsToReinit.begin(), itrEnd = m_entsToReinit.end();
+         itr != itrEnd; ++itr)
+    {
+      DoReInitializeEntity(*itr);
+    }
+    m_entsToReinit.clear();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

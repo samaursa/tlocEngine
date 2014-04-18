@@ -24,6 +24,7 @@ namespace tloc { namespace graphics { namespace component_system {
       camera,
       arcball,
 
+      text,
       static_text,
 
       count

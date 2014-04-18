@@ -57,6 +57,24 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_ASSERT(a_ent->HasComponent(gfx_cs::SceneNode::k_component_type) == false,
       "Entity already has a SceneNode");
 
+    if (a_ent->HasComponent<math_cs::Transformf32>() == false)
+    {
+      using namespace math_cs::components;
+      // Create the transform component (and the transform pool if necessary)
+      typedef math_cs::transform_f32_pool         t_pool;
+      math_cs::transform_f32_pool_vptr            tPool;
+
+      if ( m_compPoolMgr->Exists(transform) == false )
+      { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
+      else
+      { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
+
+      t_pool::iterator itrTransform = tPool->GetNext();
+      ( *itrTransform )->SetValue(Transform());
+
+      m_entMgr->InsertComponent(a_ent, ( *itrTransform )->GetValue());
+    }
+
     using namespace gfx_cs::components;
 
     typedef gfx_cs::scene_node_pool             scene_node_pool;

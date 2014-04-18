@@ -1,5 +1,5 @@
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_STATIC_TEXT_RENDER_SYSTEM_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_STATIC_TEXT_RENDER_SYSTEM_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_TEXT_RENDER_SYSTEM_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_TEXT_RENDER_SYSTEM_H_
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
@@ -8,16 +8,16 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocGraphics/media/tlocFont.h>
-#include <tlocGraphics/component_system/tlocStaticText.h>
+#include <tlocGraphics/component_system/tlocText.h>
 #include <tlocGraphics/component_system/tlocTextRenderSystem_TI.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class StaticTextRenderSystem
-    : public gfx_cs::TextRenderSystem_TI<gfx_cs::StaticText>
+  class TextRenderSystem
+    : public gfx_cs::TextRenderSystem_TI<gfx_cs::Text>
   {
   public:
-    typedef gfx_cs::StaticText                                text_type;
+    typedef gfx_cs::Text                                      text_type;
     typedef gfx_cs::TextRenderSystem_TI<text_type>            base_type;
 
     typedef gfx_med::font_sptr                                font_ptr;
@@ -31,11 +31,11 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_conts::Array<text_quads_pair>                text_quads_cont;
 
   public:
-    StaticTextRenderSystem(event_manager_ptr a_eventMgr,
-                           entity_manager_ptr a_entityMgr,
-                           const font_ptr& a_initializedFont);
+    TextRenderSystem(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr,
+                     const font_ptr& a_initializedFont);
     
-    ~StaticTextRenderSystem();
+    ~TextRenderSystem();
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
@@ -52,9 +52,9 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(StaticTextRenderSystem, static_text_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextRenderSystem, text_render_system);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR
-    (StaticTextRenderSystem, static_text_render_system);
+    (TextRenderSystem, text_render_system);
 
 };};};
 

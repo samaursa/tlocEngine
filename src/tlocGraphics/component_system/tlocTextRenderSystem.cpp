@@ -1,4 +1,4 @@
-#include "tlocStaticTextRenderSystem.h"
+#include "tlocTextRenderSystem.h"
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
@@ -6,7 +6,7 @@
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 
-#include <tlocGraphics/component_system/tlocStaticText.h>
+#include <tlocGraphics/component_system/tlocText.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -24,31 +24,31 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
-  typedef StaticTextRenderSystem::error_type    error_type;
+  typedef TextRenderSystem::error_type    error_type;
 
   // ///////////////////////////////////////////////////////////////////////
-  // StaticTextRenderSystem
+  // TextRenderSystem
 
-  StaticTextRenderSystem::
-    StaticTextRenderSystem(event_manager_ptr a_eventMgr, 
-                           entity_manager_ptr a_entityMgr,
-                           const font_ptr& a_initializedFont)
+  TextRenderSystem::
+    TextRenderSystem(event_manager_ptr a_eventMgr, 
+                     entity_manager_ptr a_entityMgr,
+                     const font_ptr& a_initializedFont)
     : base_type(a_eventMgr, a_entityMgr, a_initializedFont)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  StaticTextRenderSystem::
-    ~StaticTextRenderSystem()
+  TextRenderSystem::
+    ~TextRenderSystem()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    StaticTextRenderSystem::
+    TextRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   { 
-    static_text_vptr staticText = a_ent->GetComponent<StaticText>();
+    text_vptr staticText = a_ent->GetComponent<Text>();
 
     if (staticText->IsUpdateRequired())
     {
@@ -56,7 +56,7 @@ namespace tloc { namespace graphics { namespace component_system {
         (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
 
       TLOC_ASSERT(itr != m_allText.end(), 
-                  "StaticText should be stored in m_allText container");
+                  "Text should be stored in m_allText container");
 
       DoAlignText(*itr);
 
@@ -67,42 +67,42 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    StaticTextRenderSystem::
+    TextRenderSystem::
     Post_ProcessActiveEntities(f64 )
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type
-    StaticTextRenderSystem::
+    TextRenderSystem::
     ShutdownEntity(entity_ptr a_ent)
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    StaticTextRenderSystem::
+    TextRenderSystem::
     OnComponentInsert(const core_cs::EntityComponentEvent&)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    StaticTextRenderSystem::
+    TextRenderSystem::
     OnComponentRemove(const core_cs::EntityComponentEvent&)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    StaticTextRenderSystem::
+    TextRenderSystem::
     OnComponentDisable(const core_cs::EntityComponentEvent&)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    StaticTextRenderSystem::
+    TextRenderSystem::
     OnComponentEnable(const core_cs::EntityComponentEvent&)
   { }
 
@@ -112,5 +112,5 @@ using namespace tloc::gfx_cs;
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(StaticTextRenderSystem);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(StaticTextRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(TextRenderSystem);

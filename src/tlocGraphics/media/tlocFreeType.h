@@ -10,6 +10,7 @@
 
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocGraphics/media/tlocImage.h>
 
 namespace tloc { namespace graphics { namespace media { namespace free_type {
@@ -38,6 +39,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
   class FreeType
     : core_bclass::InitializeAndDestroy_TI<FreeType,
         core_bclass::p_initialize_and_destroy::OneParam>
+    , core_bclass::NonCopyable_I
   {
     TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(FreeType);
 
@@ -55,17 +57,22 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     typedef FT_UInt                               ft_index_type;
     typedef FT_UShort                             ft_ushort;
     typedef FT_ULong                              ft_ulong;
+    typedef FT_Vector                             ft_vec;
 
     typedef core_str::String                      data_type;
     typedef image_sptr                            image_ptr;
 
   public:
     FreeType();
+    ~FreeType();
 
     bool          SetCurrentSize(ft_ushort a_charSize) const;
     FreeTypeGlyph LoadGlyph(ft_ulong a_charCode) const;
+    ft_vec        GetKerning(ft_ulong a_leftCharCode, ft_ulong a_charCode);
 
-    image_ptr     GetGlyphImage(ft_ulong a_charCode) const;
+    image_ptr     GetGlyphImage(ft_ulong a_charCode, 
+                                gfx_t::Color a_fontColor = gfx_t::Color::COLOR_WHITE, 
+                                gfx_t::Color a_backgroundColor = gfx_t::Color::COLOR_BLACK) const;
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 

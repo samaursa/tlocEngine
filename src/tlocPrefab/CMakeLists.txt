@@ -19,6 +19,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocCamera.h 
   graphics/tlocCuboid.h
   graphics/tlocCuboid.cpp
+  graphics/tlocDynamicText.h
+  graphics/tlocDynamicText.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
   graphics/tlocMaterial.h
@@ -31,6 +33,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
+  graphics/tlocStaticText.h
+  graphics/tlocStaticText.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
   graphics/tloc_graphics.inl.h 

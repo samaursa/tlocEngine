@@ -16,63 +16,6 @@
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/opengl/tlocFramebufferObject.h>
 
-namespace tloc { namespace core { namespace base_classes {
-
-  // ///////////////////////////////////////////////////////////////////////
-  // TODO: InitializeAndDestroyOnce_TI (should go into core's base classes)
-
-  template <typename T_Derived>
-  class InitializeAndDestroyOnce_TI
-  {
-  public:
-    enum
-    {
-      k_initialized,
-      k_destroyed,
-
-      k_count
-    };
-
-  public:
-    typedef T_Derived                                   derived_type;
-    typedef InitializeAndDestroyOnce_TI<derived_type>   this_type;
-    typedef core::error::Error                          error_type;
-    typedef core::utils::Checkpoints                    flags_type;
-
-    error_type  Initialize()
-    {
-      TLOC_ASSERT(m_flags.IsUnMarked(k_initialized), "Already initialized");
-      return static_cast<derived_type*>(this)->DoInitialize();
-    }
-
-    error_type  Destroy()
-    {
-      TLOC_ASSERT(m_flags.IsUnMarked(k_destroyed), "Already destroyed");
-      return static_cast<derived_type*>(this)->DoDestroy();
-    }
-
-    bool        IsInitialized() const
-    { return m_flags.IsMarked(k_initialized); }
-
-    bool        IsDestroyed() const
-    { return m_flags.IsMarked(k_destroyed); }
-
-  protected:
-    InitializeAndDestroyOnce_TI()
-      : m_flags(k_count)
-    { }
-
-    ~InitializeAndDestroyOnce_TI()
-    {
-      TLOC_ASSERT(m_flags.IsMarked(k_destroyed), "Destroy was not called");
-    }
-
-  private:
-     flags_type         m_flags;
-  };
-
-};};};
-
 namespace tloc { namespace graphics { namespace renderer {
 
   // ///////////////////////////////////////////////////////////////////////

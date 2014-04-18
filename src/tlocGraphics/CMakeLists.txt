@@ -59,6 +59,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocCameraSystem.h
   component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
+  component_system/tlocDynamicText.h
+  component_system/tlocDynamicText.cpp
+  component_system/tlocDynamicTextRenderSystem.h
+  component_system/tlocDynamicTextRenderSystem.cpp
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
   component_system/tlocFanRenderSystem.cpp 
@@ -84,6 +88,11 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocStaticText.cpp
   component_system/tlocStaticTextRenderSystem.h
   component_system/tlocStaticTextRenderSystem.cpp
+  component_system/tlocText_I.h
+  component_system/tlocText_I.cpp
+  component_system/tlocTextAlignment.h
+  component_system/tlocTextRenderSystem_TI.h
+  component_system/tlocTextRenderSystem_TI.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h

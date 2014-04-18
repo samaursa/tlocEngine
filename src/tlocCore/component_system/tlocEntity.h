@@ -142,6 +142,7 @@ namespace tloc { namespace core { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Entity, entity);
 
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
+  typedef containers::tl_array<const_entity_vptr>::type      const_entity_ptr_array;
 };};};
 
 ///-------------------------------------------------------------------------

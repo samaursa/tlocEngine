@@ -1,5 +1,5 @@
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_STATIC_TEXT_RENDER_SYSTEM_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_STATIC_TEXT_RENDER_SYSTEM_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_DYNAMIC_TEXT_RENDER_SYSTEM_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_DYNAMIC_TEXT_RENDER_SYSTEM_H_
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
@@ -8,17 +8,20 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocGraphics/media/tlocFont.h>
-#include <tlocGraphics/component_system/tlocStaticText.h>
+#include <tlocGraphics/component_system/tlocDynamicText.h>
 #include <tlocGraphics/component_system/tlocTextRenderSystem_TI.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class StaticTextRenderSystem
-    : public gfx_cs::TextRenderSystem_TI<gfx_cs::StaticText>
+  class DynamicTextRenderSystem
+    : public gfx_cs::TextRenderSystem_TI<gfx_cs::DynamicText>
   {
   public:
-    typedef gfx_cs::StaticText                                text_type;
+    typedef gfx_cs::DynamicText                                      text_type;
     typedef gfx_cs::TextRenderSystem_TI<text_type>            base_type;
+
+    typedef base_type::text_quads_pair                        text_quads_pair;
+    typedef base_type::text_quads_cont                        text_quads_cont;
 
     typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
@@ -31,11 +34,11 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_conts::Array<text_quads_pair>                text_quads_cont;
 
   public:
-    StaticTextRenderSystem(event_manager_ptr a_eventMgr,
-                           entity_manager_ptr a_entityMgr,
-                           const font_ptr& a_initializedFont);
+    DynamicTextRenderSystem(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr,
+                     const font_ptr& a_initializedFont);
     
-    ~StaticTextRenderSystem();
+    ~DynamicTextRenderSystem();
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
 
@@ -46,13 +49,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&);
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&);
+
+  private:
+    using base_type::m_fontEntityMgr;
+    using base_type::m_fontCompMgr;
+    using base_type::m_allText;
   };
 
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(StaticTextRenderSystem, static_text_render_system);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(StaticTextRenderSystem, static_text_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicTextRenderSystem, text_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(DynamicTextRenderSystem, text_render_system);
 
 };};};
 

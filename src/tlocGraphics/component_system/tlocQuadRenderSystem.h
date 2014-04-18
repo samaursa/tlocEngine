@@ -60,9 +60,6 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
-    using base_type::GetCamera;
-    using base_type::GetViewProjectionMatrix;
-
   private:
     const_shader_prog_ptr     m_shaderPtr;
 
@@ -80,6 +77,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(QuadRenderSystem, quad_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(QuadRenderSystem, quad_render_system);
 
 };};};
 

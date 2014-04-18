@@ -4,6 +4,9 @@
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/tlocAlgorithms.h>
 
+#include <tlocMath/tlocRange.h>
+#include <tlocMath/utilities/tlocScale.h>
+
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
 namespace tloc { namespace graphics { namespace media { namespace free_type {
@@ -60,6 +63,14 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  FreeType::
+    ~FreeType()
+  {
+    base_type::Destroy();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     FreeType::
     SetCurrentSize(ft_ushort a_charSize) const
@@ -71,6 +82,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     if (currentSize != a_charSize)
     {
       FT_Error err = FT_Set_Pixel_Sizes(m_face, 0, a_charSize);
+      //FT_Error err = FT_Set_Char_Size(m_face, 0, a_charSize * 64, 500, 500);
 
       TLOC_LOG_GFX_WARN_IF(err != 0)
         << "Unable to set current font size to: " << a_charSize;
@@ -79,6 +91,34 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     }
     else
     { return true; }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  FreeType::ft_vec
+    FreeType::
+    GetKerning(ft_ulong a_leftCharCode, ft_ulong a_charCode)
+  {
+    ft_vec delta;
+    delta.x = 0;
+    delta.y = 0;
+
+    if (FT_HAS_KERNING(m_face))
+    {
+      LoadGlyph(a_leftCharCode);
+
+      ft_ulong leftIndex = FT_Get_Char_Index(m_face, a_leftCharCode);
+      ft_ulong index = FT_Get_Char_Index(m_face, a_charCode);
+
+      FT_Error err = FT_Get_Kerning(m_face, leftIndex, index,
+                                    FT_KERNING_UNFITTED, &delta);
+
+      TLOC_LOG_GFX_ERR_IF(err != 0)
+        << "Could not get kerning for characters (" << a_leftCharCode
+        << ", " << a_charCode << ")";
+    }
+
+    return delta;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -106,9 +146,16 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   FreeType::image_ptr
     FreeType::
-    GetGlyphImage(ft_ulong a_charCode) const
+    GetGlyphImage(ft_ulong a_charCode, 
+                  gfx_t::Color a_fontColor,
+                  gfx_t::Color a_backgroundColor) const
   {
     AssertIsInitialized();
+
+    // scaling setup
+    math::range_s32 r0to256 = math::Range0to256<s32, math::p_range::Inclusive>().Get();
+    math::range_f32 r0to1 = math::Range0to1<f32, math::p_range::Inclusive>().Get();
+    math_utils::scale_f32_s32 scale(r0to1, r0to256);
 
     FreeTypeGlyph g = LoadGlyph(a_charCode);
 
@@ -119,8 +166,16 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)
     {
       uchar8 gc = bmpBuff.get()[i];
-      gfx_t::Color c(gc, gc, gc, gc);
-      pixelCont.push_back(c);
+
+      const f32 fontMulti = scale.ScaleDown(gc);
+      const f32 bgMulti = 1 - fontMulti;
+
+      const gfx_t::Color finalFontColor = a_fontColor * fontMulti;
+      const gfx_t::Color finalBgColor = a_backgroundColor * bgMulti;
+
+      const gfx_t::Color finalColor = finalFontColor + finalBgColor;
+
+      pixelCont.push_back(finalColor);
     }
 
     image_ptr fontImg(new image_ptr::value_type());

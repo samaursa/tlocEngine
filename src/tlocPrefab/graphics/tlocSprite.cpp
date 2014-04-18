@@ -49,7 +49,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
       ta_pool::iterator itrTa = taPool->GetNext();
       (*itrTa)->SetValue(core_sptr::MakeShared<TextureAnimator>() );
 
-      ta = *(*itrTa)->GetValue();
+      ta = *(*itrTa)->GetValuePtr();
 
       a_mgr->InsertComponent(a_entity, ta);
     }

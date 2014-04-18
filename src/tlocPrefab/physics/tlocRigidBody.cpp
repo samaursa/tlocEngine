@@ -43,7 +43,7 @@ namespace tloc { namespace prefab { namespace physics {
     (*itrTransform)->SetValue(core_sptr::MakeShared<Transform>());
 
     entity_ptr ent = m_entMgr->CreateEntity();
-    m_entMgr->InsertComponent(ent, *(*itrTransform)->GetValue() );
+    m_entMgr->InsertComponent(ent, *(*itrTransform)->GetValuePtr() );
 
     Add(ent, a_rbDef);
 
@@ -73,7 +73,7 @@ namespace tloc { namespace prefab { namespace physics {
     rb_pool::iterator itrRb = rbPool->GetNext();
     (*itrRb)->SetValue(core_sptr::MakeShared<phys_cs::RigidBody>(a_rbDef) );
 
-    m_entMgr->InsertComponent(a_ent, *(*itrRb)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrRb)->GetValuePtr() );
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ namespace tloc { namespace prefab { namespace physics {
       (core_sptr::MakeShared<phys_cs::RigidBodyShape>(a_rbShape) );
 
     m_entMgr->
-      InsertComponent(a_ent, *(*itrRbShape)->GetValue() );
+      InsertComponent(a_ent, *(*itrRbShape)->GetValuePtr() );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -151,7 +151,7 @@ namespace tloc { namespace prefab { namespace physics {
     (*itrRbListener)->SetValue
       ( core_sptr::MakeShared<phys_cs::RigidBodyListener>(a_listener) );
 
-    m_entMgr->InsertComponent(a_ent, *(*itrRbListener)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrRbListener)->GetValuePtr() );
   }
 
 };};};

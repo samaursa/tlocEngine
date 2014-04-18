@@ -51,7 +51,7 @@ namespace tloc { namespace prefab { namespace graphics {
     mesh_pool::iterator itrMesh = meshPool->GetNext();
     (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
 
-    gfx_cs::mesh_sptr meshPtr = *(*itrMesh)->GetValue();
+    gfx_cs::mesh_sptr meshPtr = *(*itrMesh)->GetValuePtr();
 
     for (vert_cont_itr itr = a_vertices.begin(), itrEnd = a_vertices.end();
          itr != itrEnd; ++itr)
@@ -72,8 +72,8 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // -----------------------------------------------------------------------
 
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValue() );
-    m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr() );
+    m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValuePtr() );
   }
 
 };};};

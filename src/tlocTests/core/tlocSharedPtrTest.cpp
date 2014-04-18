@@ -296,9 +296,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if ( (*(*itr)->GetValue())->x != counter &&
-          (*(*itr)->GetValue())->y != counter + 1 &&
-          (*(*itr)->GetValue())->z != counter + 2)
+        if ( (*(*itr)->GetValuePtr())->x != counter &&
+          (*(*itr)->GetValuePtr())->y != counter + 1 &&
+          (*(*itr)->GetValuePtr())->z != counter + 2)
         {
           testPassed = false;
           break;

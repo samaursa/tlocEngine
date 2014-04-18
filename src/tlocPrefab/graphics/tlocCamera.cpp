@@ -63,8 +63,8 @@ namespace tloc { namespace prefab { namespace graphics {
     (*itrProjection)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
 
     // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValue() );
-    m_entMgr->InsertComponent(a_ent, *(*itrProjection)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr() );
+    m_entMgr->InsertComponent(a_ent, *(*itrProjection)->GetValuePtr() );
   }
 
 };};};

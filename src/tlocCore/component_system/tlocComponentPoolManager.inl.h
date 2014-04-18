@@ -70,7 +70,7 @@ namespace tloc { namespace core { namespace component_system {
 
     for (; itr != itrEnd; )
     {
-      pointer ptr = *(*itr)->GetValue();
+      pointer ptr = *(*itr)->GetValuePtr();
       // count of 2 == 1 above + 1 in memory pool == unused
       if ( ptr.use_count() == 2)
       {

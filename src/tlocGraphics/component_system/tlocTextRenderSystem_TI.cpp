@@ -84,7 +84,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
     text_ptr text = a_pair.first->GetComponent<text_type>();
-    math_cs::transform_vptr textTrans = 
+    math_cs::transform_sptr textTrans = 
       a_pair.first->GetComponent<math_cs::Transform>();
 
     real_type totalTextWidth = 0;
@@ -94,16 +94,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
     {
       core_cs::const_entity_vptr itrFirstChar = a_pair.second.front();
-      math_cs::transform_vptr firstCharTrans =
+      math_cs::transform_sptr firstCharTrans =
         itrFirstChar->GetComponent<math_cs::Transform>();
 
       if (a_pair.second.size() > 1)
       {
         core_cs::const_entity_vptr itrSecondChar = a_pair.second.back();
-        math_cs::transform_vptr secondCharTrans =
+        math_cs::transform_sptr secondCharTrans =
           itrSecondChar->GetComponent<math_cs::Transform>();
 
-        gfx_cs::quad_vptr secondQuad =
+        gfx_cs::quad_sptr secondQuad =
           itrSecondChar->GetComponent<gfx_cs::Quad>();
 
         totalTextWidth = secondCharTrans->GetPosition()[0] -
@@ -112,7 +112,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
       else
       {
-        gfx_cs::quad_vptr firstQuad =
+        gfx_cs::quad_sptr firstQuad =
           itrFirstChar->GetComponent<gfx_cs::Quad>();
 
         totalTextWidth = firstQuad->GetRectangleRef().GetWidth();
@@ -143,7 +143,7 @@ namespace tloc { namespace graphics { namespace component_system {
         DoSetTextQuadPosition(*itr, text->Get()[count], advance);
       }
 
-      math_cs::transform_vptr t =
+      math_cs::transform_sptr t =
         (*itr)->GetComponent<math_cs::Transform>();
 
       ++count;
@@ -227,7 +227,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_ASSERT(a_ent->HasComponent<SceneNode>(),
                 "The text entity must have a scene node entity");
 
-    scene_node_vptr sceneNode   = a_ent->GetComponent<SceneNode>();
+    scene_node_sptr sceneNode   = a_ent->GetComponent<SceneNode>();
     text_ptr textPtr = a_ent->GetComponent<text_type>();
 
     // -----------------------------------------------------------------------
@@ -286,7 +286,7 @@ namespace tloc { namespace graphics { namespace component_system {
       // make it a node
 
       pref_gfx::SceneNode(m_fontEntityMgr.get(), m_fontCompMgr.get())
-        .Parent(sceneNode).Add(q);
+        .Parent(core_sptr::ToVirtualPtr(sceneNode)).Add(q);
 
       // -----------------------------------------------------------------------
       // add sprite animation to quad with one texture coordinate only
@@ -333,8 +333,8 @@ namespace tloc { namespace graphics { namespace component_system {
     math_t::Vec2f horBearing =
       itr->m_horizontalBearing.Cast<math_t::Vec2f>();
 
-    using math_cs::transform_vptr;
-    transform_vptr textPos = a_ent->GetComponent<math_cs::Transform>();
+    using math_cs::transform_sptr;
+    transform_sptr textPos = a_ent->GetComponent<math_cs::Transform>();
     math_t::Rectf_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
 
     textPos->SetPosition
@@ -366,8 +366,8 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // set the quad position
 
-    using math_cs::transform_vptr;
-    transform_vptr textPos = a_ent->GetComponent<math_cs::Transform>();
+    using math_cs::transform_sptr;
+    transform_sptr textPos = a_ent->GetComponent<math_cs::Transform>();
     math_t::Rectf_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
 
     // kerning
@@ -408,7 +408,7 @@ namespace tloc { namespace graphics { namespace component_system {
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   void
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
-    Pre_ProcessActiveEntities(f64 a_deltaT)
+    Post_ProcessActiveEntities(f64 a_deltaT)
   {
     m_fontSceneGraphSys.ProcessActiveEntities(a_deltaT);
     m_fontAnimSys.ProcessActiveEntities(a_deltaT);

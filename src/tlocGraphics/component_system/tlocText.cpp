@@ -47,6 +47,12 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     base_type::SetUpdateRequired(true);
     m_flags.Mark(k_text_updated);
+
+    // if left aligned already, then don't mark alignment to be updated
+    if (m_flags.IsUnMarked(k_alignment_updated) && GetAlignment() != 
+        alignment::k_align_left)
+    { m_flags.Mark(k_alignment_updated); }
+
     Text_I::Set(a_text);
   }
 

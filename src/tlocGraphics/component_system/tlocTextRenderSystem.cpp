@@ -7,6 +7,12 @@
 #include <tlocCore/containers/tlocArray.inl.h>
 
 #include <tlocGraphics/component_system/tlocText.h>
+#include <tlocGraphics/component_system/tlocSceneNode.h>
+#include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/component_system/tlocTextureAnimator.h>
+
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -48,10 +54,40 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   { 
-    text_vptr staticText = a_ent->GetComponent<Text>();
+    text_sptr dynamicText = a_ent->GetComponent<Text>();
 
-    if (staticText->IsUpdateRequired())
+    if (dynamicText->IsUpdateRequired())
     {
+      if (dynamicText->IsTextUpdated())
+      {
+        using gfx_cs::SceneNode;
+        gfx_cs::scene_node_sptr sn = a_ent->GetComponent<SceneNode>();
+
+        for (SceneNode::node_cont_iterator itr = sn->begin(), itrEnd = sn->end();
+             itr != itrEnd; ++itr)
+        {
+          m_fontEntityMgr->DestroyEntity( (*itr)->GetEntity() );
+        }
+
+        while (sn->size() > 0)
+        { sn->RemoveChild(*sn->begin()); }
+
+        m_fontEntityMgr->Update();
+
+        // remove the cached entity
+        text_quads_cont::iterator itr = 
+          find_if_all(m_allText, 
+          core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
+
+        if (itr != m_allText.end())
+        { m_allText.erase(itr); }
+
+        m_fontCompMgr->RecycleAllUnused();
+        InitializeEntity(a_ent);
+      }
+
+      if (dynamicText->IsAlignmentUpdated())
+      {
       text_quads_cont::const_iterator itr = core::find_if_all
         (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
 
@@ -59,17 +95,9 @@ namespace tloc { namespace graphics { namespace component_system {
                   "Text should be stored in m_allText container");
 
       DoAlignText(*itr);
-
-      staticText->SetUpdateRequired(false);
+      }
     }
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    TextRenderSystem::
-    Post_ProcessActiveEntities(f64 )
-  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

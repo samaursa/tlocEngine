@@ -20,6 +20,9 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gfx_cs::Text                                      text_type;
     typedef gfx_cs::TextRenderSystem_TI<text_type>            base_type;
 
+    typedef base_type::text_quads_pair                        text_quads_pair;
+    typedef base_type::text_quads_cont                        text_quads_cont;
+
     typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
     typedef math_t::Mat2f32                                   scale_type;
@@ -38,7 +41,6 @@ namespace tloc { namespace graphics { namespace component_system {
     ~TextRenderSystem();
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
-    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
@@ -47,6 +49,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&);
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&);
+
+  private:
+    using base_type::m_fontEntityMgr;
+    using base_type::m_fontCompMgr;
+    using base_type::m_allText;
   };
 
   //------------------------------------------------------------------------

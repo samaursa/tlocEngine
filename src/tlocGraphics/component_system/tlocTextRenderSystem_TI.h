@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
     typedef T_TextOrStaticTextComponent                       text_type;
-    typedef core_sptr::VirtualPtr<text_type>                  text_ptr;
+    typedef core_sptr::SharedPtr<text_type>                   text_ptr;
     typedef TextRenderSystem_TI<text_type>                    this_type;
 
     typedef gfx_med::font_sptr                                font_ptr;
@@ -49,7 +49,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type Post_Initialize();
 
-    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace component_system {
     core_str::String                    m_vertexShaderContents;
     core_str::String                    m_fragmentShaderContents;
 
-    gfx_cs::material_vptr               m_sharedMat;
+    gfx_cs::material_sptr               m_sharedMat;
 
     core_cs::component_pool_mgr_vso     m_fontCompMgr;
     core_cs::event_manager_vso          m_fontEventMgr;

@@ -113,7 +113,8 @@ namespace TestingComponentPoolManager
     typedef T_PoolType                                pool_type;
     typedef ComponentPoolManager::component_pool_ptr  comp_pool_ptr;
     // iterator of ComponentPool
-    typedef typename pool_type::value_type          value_type;
+    typedef typename pool_type::value_type            value_type;
+    typedef typename pool_type::pointer               pointer;
 
     RESET_CTOR_AND_DTOR_COUNT();
     {
@@ -127,7 +128,7 @@ namespace TestingComponentPoolManager
         tpool->GetNext();
       }
 
-      tpool->GetNextValue()->SetValue(value_type()); // do nothing with it
+      tpool->GetNextValue()->SetValue( pointer(new value_type()) ); // do nothing with it
     }
 
     CHECK(value_type::m_dtorCount == value_type::m_ctorCount);
@@ -137,11 +138,10 @@ namespace TestingComponentPoolManager
       core_sptr::VirtualPtr<T_PoolType> tpool =
         a_mgr.CreateNewPool<value_type>();
       typename pool_type::iterator itr = tpool->GetNext();
-      TLOC_UNUSED(itr);
 
       {
-        (*itr)->SetValue(value_type());
-        (*itr)->GetValue()->m_value = 0;
+        (*itr)->SetValue( pointer(new value_type()) );
+        (*(*itr)->GetValue())->m_value = 0;
       }
 
       // one original use count, and one for the returned vptr. In release,
@@ -152,8 +152,8 @@ namespace TestingComponentPoolManager
       for (tl_int i = 1; i < elementsToPool; ++i)
       {
         itr = tpool->GetNext();
-        (*itr)->SetValue(value_type());
-        (*itr)->GetValue()->m_value = i;
+        (*itr)->SetValue( pointer(new value_type()) );
+        (*(*itr)->GetValue())->m_value = i;
       }
     }
 
@@ -171,12 +171,21 @@ namespace TestingComponentPoolManager
       bool testPassed = true;
       for (; itr != itrEnd; ++itr)
       {
-        if( (*itr)->GetValue()->m_value != counter)
+        if( (*(*itr)->GetValue())->m_value != counter)
         { testPassed = false; break; }
 
         ++counter;
       }
       CHECK(testPassed);
+
+      {
+        // hold onto one component to avoid it getting recycled
+        itr = intCompPool->begin();
+        typename pool_type::pointer ptr = *(*itr)->GetValue();
+        CHECK(a_mgr.RecycleAllUnused() == elementsToPool - 1);
+      }
+
+      CHECK(a_mgr.RecycleAllUnused() == 1);
     }
   }
 

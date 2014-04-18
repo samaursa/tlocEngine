@@ -50,7 +50,7 @@ namespace tloc { namespace physics { namespace component_system {
       ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rigid_body_listener_vptr rbListenerComponent =
+      rigid_body_listener_sptr rbListenerComponent =
         rbListenerComponentsMapped[0];
 
       return rbListenerComponent->GetRigidBodyListener();

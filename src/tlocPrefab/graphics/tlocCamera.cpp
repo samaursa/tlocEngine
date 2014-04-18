@@ -10,6 +10,8 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
+  using core_sptr::MakeShared;
+
   Camera::entity_ptr
     Camera::
     Create(const frustum_type& a_frustum, const vec_type& a_position)
@@ -45,7 +47,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(Transformf32(a_position) );
+    (*itrTransform)->SetValue(MakeShared<Transformf32>(a_position) );
 
     typedef gfx_cs::camera_pool                     p_pool;
 
@@ -58,11 +60,11 @@ namespace tloc { namespace prefab { namespace graphics {
     { pPool = m_compPoolMgr->GetPool<gfx_cs::Camera>(); }
 
     p_pool::iterator itrProjection = pPool->GetNext();
-    (*itrProjection)->SetValue(gfx_cs::Camera(a_frustum) );
+    (*itrProjection)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
 
     // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, (*itrTransform)->GetValue() );
-    m_entMgr->InsertComponent(a_ent, (*itrProjection)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrProjection)->GetValue() );
   }
 
 };};};

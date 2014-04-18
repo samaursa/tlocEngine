@@ -13,6 +13,7 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::Entity;
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
+  using core_sptr::MakeShared;
 
   using gfx_cs::mesh_sptr;
 
@@ -57,9 +58,9 @@ namespace tloc { namespace prefab { namespace graphics {
     { meshPool = m_compPoolMgr->GetPool<gfx_cs::Mesh>(); }
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
-    (*itrMesh)->SetValue(gfx_cs::Mesh() );
+    (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
 
-    gfx_cs::mesh_vptr meshPtr = (*itrMesh)->GetValue();
+    gfx_cs::mesh_sptr meshPtr = *(*itrMesh)->GetValue();
 
     // -----------------------------------------------------------------------
     // Generate cuboid vertices
@@ -280,12 +281,12 @@ namespace tloc { namespace prefab { namespace graphics {
     { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
 
     t_pool::iterator  itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(Transform());
+    (*itrTransform)->SetValue(MakeShared<Transform>());
 
     // -----------------------------------------------------------------------
 
-    m_entMgr->InsertComponent(a_ent, (*itrTransform)->GetValue() );
-    m_entMgr->InsertComponent(a_ent, (*itrMesh)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValue() );
 
   }
 };};};

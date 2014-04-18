@@ -9,6 +9,7 @@ namespace tloc { namespace prefab { namespace animation {
   using core_cs::Entity;
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
+  using core_sptr::MakeShared;
 
   using anim_cs::transform_animation_sptr;
 
@@ -42,7 +43,7 @@ namespace tloc { namespace prefab { namespace animation {
     typedef anim_cs::transform_animation_pool             ta_pool;
     anim_cs::transform_animation_pool_vptr                taPool;
 
-    anim_cs::transform_animation_vptr ta = nullptr;
+    anim_cs::transform_animation_sptr ta = nullptr;
 
     if (a_ent->HasComponent(transform_animation))
     {
@@ -56,11 +57,11 @@ namespace tloc { namespace prefab { namespace animation {
       { taPool =  m_compPoolMgr->GetPool<anim_cs::TransformAnimation>(); }
 
       ta_pool::iterator itrTransformAnim = taPool->GetNext();
-      (*itrTransformAnim)->SetValue(anim_cs::TransformAnimation());
+      (*itrTransformAnim)->SetValue(MakeShared<anim_cs::TransformAnimation>());
 
-      m_entMgr->InsertComponent(a_ent, (*itrTransformAnim)->GetValue());
+      m_entMgr->InsertComponent(a_ent, *(*itrTransformAnim)->GetValue());
 
-      ta = (*itrTransformAnim)->GetValue();
+      ta = *(*itrTransformAnim)->GetValue();
     }
 
     const TransformAnimation::size_type
@@ -92,7 +93,8 @@ namespace tloc { namespace prefab { namespace animation {
     TLOC_ASSERT(a_ent->HasComponent(transform_animation),
       "No TransformAnimation component to modify");
 
-    anim_cs::transform_animation_vptr ta = a_ent->GetComponent<TransformAnimation>();
+    anim_cs::transform_animation_sptr ta = 
+      a_ent->GetComponent<TransformAnimation>();
 
     const TransformAnimation::size_type
       currSeqIndex = ta->GetCurrentKeyframeSequenceIndex();

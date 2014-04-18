@@ -142,8 +142,18 @@ namespace TestingEntitySystemBase
 
   TEST_CASE("core/component_system/EntitySystemBase", "")
   {
-    empty_comp1_vso e1_a, e1_b, e1_c;
-    empty_comp2_vso e2_a, e2_b, e2_c;
+    using core_sptr::MakeShared;
+
+    empty_comp1_sptr e1_a, e1_b, e1_c;
+    empty_comp2_sptr e2_a, e2_b, e2_c;
+
+    e1_a = MakeShared<EmptyComponent1>();
+    e1_b = MakeShared<EmptyComponent1>();
+    e1_c = MakeShared<EmptyComponent1>();
+
+    e2_a = MakeShared<EmptyComponent2>();
+    e2_b = MakeShared<EmptyComponent2>();
+    e2_c = MakeShared<EmptyComponent2>();
 
     core_cs::event_manager_vso      evtMgr;
     core_cs::entity_manager_vso     entMgr( MakeArgs(evtMgr.get()) );
@@ -153,39 +163,39 @@ namespace TestingEntitySystemBase
 
     core_cs::entity_vptr ent = entMgr->CreateEntity();
 
-    entMgr->InsertComponent(ent, e2_a.get());
+    entMgr->InsertComponent(ent, e2_a);
     // adding unrelated components does not add entities to the system
     CHECK(e.DoGetActiveEntities().size() == 0);
 
-    entMgr->InsertComponent(ent, e1_a.get());
+    entMgr->InsertComponent(ent, e1_a);
     // we have one active entity due to the above component
     CHECK(e.DoGetActiveEntities().size() == 1);
 
-    entMgr->InsertComponent(ent, e1_b.get());
+    entMgr->InsertComponent(ent, e1_b);
     // we still have one active entity because the component belongs to the 
     // same entity
     CHECK(e.DoGetActiveEntities().size() == 1);
 
-    entMgr->RemoveComponent(ent, e1_a.get());
+    entMgr->RemoveComponent(ent, e1_a);
     entMgr->Update();
 
-    entMgr->InsertComponent(ent, e1_a.get());
+    entMgr->InsertComponent(ent, e1_a);
     CHECK(e.DoGetActiveEntities().size() == 1);
 
-    entMgr->RemoveComponent(ent, e1_a.get());
+    entMgr->RemoveComponent(ent, e1_a);
     CHECK(e.DoGetActiveEntities().size() == 1);
-    entMgr->RemoveComponent(ent, e1_b.get());
+    entMgr->RemoveComponent(ent, e1_b);
     CHECK(e.DoGetActiveEntities().size() == 0);
 
     entMgr->Update();
 
-    entMgr->InsertComponent(ent, e1_a.get());
-    entMgr->InsertComponent(ent, e1_b.get());
+    entMgr->InsertComponent(ent, e1_a);
+    entMgr->InsertComponent(ent, e1_b);
 
     core_cs::entity_vptr ent2 = entMgr->CreateEntity();
 
-    entMgr->InsertComponent(ent2, e1_a.get());
-    entMgr->InsertComponent(ent2, e1_b.get());
+    entMgr->InsertComponent(ent2, e1_a);
+    entMgr->InsertComponent(ent2, e1_b);
     CHECK(e.DoGetActiveEntities().size() == 2);
 
     entMgr->DestroyEntity(ent2);

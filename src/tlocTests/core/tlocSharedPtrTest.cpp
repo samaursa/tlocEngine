@@ -571,12 +571,12 @@ namespace TestingSharedPtr
   {
     {
       SharedPtr<SharedStruct> sp =
-        core_sptr::MakeShared<SharedStruct>(MakeArgs(13));
+        core_sptr::MakeShared<SharedStruct>(13);
       CHECK(sp->m_value == 13);
     }
     {
       SharedPtr<FiveParams> sp =
-        core_sptr::MakeShared<FiveParams>(MakeArgs(1, 2, 3, 4, 5));
+        core_sptr::MakeShared<FiveParams>(1, 2, 3, 4, 5);
       CHECK(sp->m_a == 1);
       CHECK(sp->m_b == 2);
       CHECK(sp->m_c == 3);

@@ -101,15 +101,18 @@ namespace TestingEventManager
   };
 
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(CompToTest, comp_to_test);
+  TLOC_TYPEDEF_SHARED_PTR(CompToTest, comp_to_test);
+
+  using core_sptr::MakeShared;
 
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
     EventTracker globalTracker;
     EventTracker tracker;
 
-    entity_vso        dummyEnt( MakeArgs(0) );
-    comp_to_test_vso  transComp;
-    component_vso     dummyComp( MakeArgs(*transComp) );
+    entity_vso         dummyEnt( MakeArgs(0) );
+    comp_to_test_sptr  transComp = MakeShared<CompToTest>();
+    component_sptr     dummyComp = MakeShared<component_sptr::value_type>(*transComp);
 
     EventManager mgr;
     mgr.AddGlobalListener(&globalTracker);
@@ -133,13 +136,13 @@ namespace TestingEventManager
 
     currentEvent = entity_events::insert_component;
     mgr.AddListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp.get()));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 1);
     CHECK(tracker.GetEventCount(currentEvent) == 1);
 
     mgr.RemoveListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp.get()));
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 1); // no change

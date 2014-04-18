@@ -31,7 +31,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     typedef gfx_cs::texture_animator_pool           ta_pool;
     gfx_cs::texture_animator_pool_vptr              taPool;
 
-    gfx_cs::texture_animator_vptr ta = nullptr;
+    gfx_cs::texture_animator_sptr ta = nullptr;
 
     const tl_size size = a_entity->GetComponents(texture_animator).size();
 
@@ -47,9 +47,9 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
       { taPool = a_poolMgr->GetPool<gfx_cs::TextureAnimator>(); }
 
       ta_pool::iterator itrTa = taPool->GetNext();
-      (*itrTa)->SetValue(TextureAnimator() );
+      (*itrTa)->SetValue(core_sptr::MakeShared<TextureAnimator>() );
 
-      ta = (*itrTa)->GetValue();
+      ta = *(*itrTa)->GetValue();
 
       a_mgr->InsertComponent(a_entity, ta);
     }

@@ -10,6 +10,7 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::Entity;
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
+  using core_sptr::MakeShared;
 
   using gfx_cs::material_sptr;
 
@@ -88,9 +89,9 @@ namespace tloc { namespace prefab { namespace graphics {
     { matPool = m_compPoolMgr->GetPool<gfx_cs::Material>(); }
 
     mat_pool::iterator  itrMat = matPool->GetNext();
-    (*itrMat)->SetValue(gfx_cs::Material() );
+    (*itrMat)->SetValue(MakeShared<gfx_cs::Material>() );
 
-    gfx_cs::material_vptr mat = (*itrMat)->GetValue();
+    gfx_cs::material_sptr mat = *(*itrMat)->GetValue();
 
     mat->SetVertexSource(a_vertexShader);
     mat->SetFragmentSource(a_fragmentShader);

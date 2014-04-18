@@ -45,7 +45,7 @@ namespace tloc { namespace animation { namespace component_system {
 
     for (tl_size i = 0; i < size; ++i)
     {
-      transform_animation_vptr texAnim =
+      transform_animation_sptr texAnim =
         a_ent->GetComponent<anim_cs::TransformAnimation>(i);
       texAnim->SetStartTime(0);
     }
@@ -76,7 +76,7 @@ namespace tloc { namespace animation { namespace component_system {
   {
     using namespace core::component_system;
 
-    transform_animation_vptr transAnim =
+    transform_animation_sptr transAnim =
       a_ent->GetComponent<anim_cs::TransformAnimation>(0);
 
     transAnim->SetTotalTime(transAnim->GetTotalTime() + a_deltaT);
@@ -99,7 +99,7 @@ namespace tloc { namespace animation { namespace component_system {
     if (a_ent->HasComponent(components::transform_animation) &&
         transAnim->IsKFSequenceChanged())
     {
-      math_cs::transform_vptr transPtr =
+      math_cs::transform_sptr transPtr =
         a_ent->GetComponent<math_cs::Transform>(0);
 
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;

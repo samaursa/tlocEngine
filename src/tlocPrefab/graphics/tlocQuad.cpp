@@ -12,6 +12,7 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::ComponentPoolManager;
 
   using gfx_cs::quad_sptr;
+  using core_sptr::MakeShared;
 
   using gfx_cs::TextureCoords;
   using gfx_cs::texture_coords_sptr;
@@ -49,7 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
     { quadPool = m_compPoolMgr->GetPool<gfx_cs::Quad>(); }
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
-    (*itrQuad)->SetValue(gfx_cs::Quad(m_rect));
+    (*itrQuad)->SetValue(MakeShared<gfx_cs::Quad>(m_rect) );
 
     // Create the transform component (and the transform pool if necessary)
     typedef math_cs::transform_pool           t_pool;
@@ -61,11 +62,11 @@ namespace tloc { namespace prefab { namespace graphics {
     { tPool = m_compPoolMgr->GetPool<math_cs::Transform>(); }
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(Transform());
+    (*itrTransform)->SetValue(MakeShared<Transform>());
 
     // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, (*itrTransform)->GetValue());
-    m_entMgr->InsertComponent(a_ent, (*itrQuad)->GetValue());
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValue());
+    m_entMgr->InsertComponent(a_ent, *(*itrQuad)->GetValue());
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)
@@ -84,8 +85,9 @@ namespace tloc { namespace prefab { namespace graphics {
       tc.AddCoord(math_t::Vec2f32(0.0f, 1.0f));
       tc.AddCoord(math_t::Vec2f32(1.0f, 0.0f));
       tc.AddCoord(math_t::Vec2f32(0.0f, 0.0f));
-      (*itrTCoord)->SetValue(tc);
-      m_entMgr->InsertComponent(a_ent, (*itrTCoord)->GetValue() );
+
+      (*itrTCoord)->SetValue(MakeShared<TextureCoords>(tc));
+      m_entMgr->InsertComponent(a_ent, *(*itrTCoord)->GetValue() );
     }
   }
 

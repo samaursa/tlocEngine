@@ -104,11 +104,18 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
-            entity_ptr_array::iterator entItr = core::find_all(m_activeEntities, ent);
+            entity_count_cont::iterator entItr = 
+              core::find_if_all(m_activeEntities, 
+              algos::compare::pair::MakeFirst(ent));
+
             if (entItr == m_activeEntities.end())
             {
               OnComponentInsert(entEvent);
-              m_activeEntities.push_back(ent);
+              m_activeEntities.push_back(MakePair(ent, 1));
+            }
+            else
+            {
+              entItr->second++;
             }
           }
         }
@@ -124,11 +131,21 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
-            entity_ptr_array::iterator itr = find_all(m_activeEntities, ent);
-            if (itr != m_activeEntities.end())
+            entity_count_cont::iterator entItr = 
+              core::find_if_all(m_activeEntities, 
+              algos::compare::pair::MakeFirst(ent));
+
+            if (entItr != m_activeEntities.end())
             {
               OnComponentRemove(entEvent);
-              m_activeEntities.erase(itr);
+              if (entItr->second == 1)
+              {
+                m_activeEntities.erase(entItr);
+              }
+              else
+              {
+                entItr->second--;
+              }
             }
           }
         }

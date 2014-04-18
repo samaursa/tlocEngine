@@ -41,7 +41,7 @@ namespace tloc { namespace core { namespace component_system {
   class EntityComponentEvent : public EventBase
   {
   public:
-    typedef component_vptr             component_ptr_type;
+    typedef component_sptr             component_ptr_type;
 
     using EventBase::event_type;
 

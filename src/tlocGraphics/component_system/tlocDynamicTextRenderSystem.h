@@ -41,6 +41,7 @@ namespace tloc { namespace graphics { namespace component_system {
     ~DynamicTextRenderSystem();
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
+    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
@@ -49,6 +50,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&);
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&);
+
+    using base_type::MarkForReinit;
 
   private:
     using base_type::m_fontEntityMgr;

@@ -76,7 +76,7 @@ namespace TestingEntitySystemBase
       return ErrorSuccess;
     }
 
-    virtual error_type DoInitialize(const entity_ptr_array& )
+    virtual error_type DoInitialize(const entity_count_cont& )
     {
       return ErrorSuccess;
     }
@@ -91,7 +91,7 @@ namespace TestingEntitySystemBase
       return ErrorSuccess;
     }
 
-    virtual error_type DoShutdown(const entity_ptr_array& )
+    virtual error_type DoShutdown(const entity_count_cont& )
     {
       return ErrorSuccess;
     }
@@ -110,7 +110,7 @@ namespace TestingEntitySystemBase
     {
     }
 
-    virtual void DoProcessActiveEntities(const entity_ptr_array& ,
+    virtual void DoProcessActiveEntities(const entity_count_cont& ,
                                          f64 )
     { }
 
@@ -175,7 +175,7 @@ namespace TestingEntitySystemBase
     entMgr->RemoveComponent(ent, e1_a.get());
     CHECK(e.DoGetActiveEntities().size() == 1);
     entMgr->RemoveComponent(ent, e1_b.get());
-    CHECK(e.DoGetActiveEntities().size() == 1);
+    CHECK(e.DoGetActiveEntities().size() == 0);
 
     entMgr->Update();
 

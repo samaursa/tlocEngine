@@ -232,3 +232,4 @@ namespace tloc { namespace animation { namespace component_system {
 using namespace tloc::anim_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimationSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(TransformAnimationSystem);

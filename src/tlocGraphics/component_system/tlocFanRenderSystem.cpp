@@ -207,5 +207,7 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FanRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(FanRenderSystem);
+
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec2_cont_type);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec3_cont_type);

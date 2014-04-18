@@ -84,6 +84,15 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocStaticText.cpp
   component_system/tlocStaticTextRenderSystem.h
   component_system/tlocStaticTextRenderSystem.cpp
+  component_system/tlocText.h
+  component_system/tlocText.cpp
+  component_system/tlocText_I.h
+  component_system/tlocText_I.cpp
+  component_system/tlocTextAlignment.h
+  component_system/tlocTextRenderSystem.h
+  component_system/tlocTextRenderSystem.cpp
+  component_system/tlocTextRenderSystem_TI.h
+  component_system/tlocTextRenderSystem_TI.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h

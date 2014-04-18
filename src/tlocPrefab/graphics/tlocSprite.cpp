@@ -1,8 +1,10 @@
 #include "tlocSprite.h"
 
 #include <tlocCore/tlocAssert.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>
+#include <tlocGraphics/media/tlocSprite.h>
 
 namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
@@ -24,6 +26,8 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
     TLOC_ASSERT(a_begin != a_end, "No sprite info available");
+
+    typedef typename PointeeType<SpriteLoaderIterator>::value_type     sprite_info;
 
     using namespace gfx_cs;
     using namespace gfx_cs::components;
@@ -57,7 +61,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     TextureCoords tcoord;
     for (int i = 0; a_begin != a_end; ++i, ++a_begin)
     {
-      sprite_info_str si = *a_begin;
+      sprite_info si = *a_begin;
 
       tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordEnd()[0],
                                               si.GetTexCoordStart()[1]),
@@ -89,22 +93,22 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template void
-    DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::iterator>
-    (core_cs::entity_vptr a_entity,
-     core_cs::entity_manager_vptr,
-     core_cs::component_pool_mgr_vptr,
-     SpriteLoader_SpriteSheetPacker::iterator,
-     SpriteLoader_SpriteSheetPacker::iterator,
-     bool, tl_size, tl_size, tl_size, bool);
+  using gfx_med::sprite_sheet_ul;
 
-  template void
-    DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
-    (core_cs::entity_vptr a_entity,
-     core_cs::entity_manager_vptr,
-     core_cs::component_pool_mgr_vptr,
-     SpriteLoader_SpriteSheetPacker::const_iterator,
-     SpriteLoader_SpriteSheetPacker::const_iterator,
-     bool, tl_size, tl_size, tl_size, bool);
+#define TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(_type_)\
+  template void\
+    DoAddSpriteAnimation<_type_>\
+    (core_cs::entity_vptr a_entity,\
+     core_cs::entity_manager_vptr,\
+     core_cs::component_pool_mgr_vptr,\
+     _type_,\
+     _type_,\
+     bool, tl_size, tl_size, tl_size, bool)
+
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_ul::iterator);
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_ul::const_iterator);
+
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_str::iterator);
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_str::const_iterator);
 
 };};};};

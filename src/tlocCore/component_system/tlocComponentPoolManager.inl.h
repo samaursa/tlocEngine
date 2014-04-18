@@ -99,7 +99,7 @@ namespace tloc { namespace core { namespace component_system {
 
 #define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
 template class tloc::core_cs::ComponentPool_TI<_type_>;\
-TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USING_WRAPPER(_type_);\
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::ComponentPool_TI<_type_>)
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USING_WRAPPER(tloc::core_sptr::SharedPtr<_type_>);\
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::ComponentPool_TI<_type_>);\
 
 #endif

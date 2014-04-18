@@ -96,6 +96,8 @@ namespace TestingEntityManager
     tl_int  m_totalEvents;
   };
 
+  using core_sptr::MakeShared;
+
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")
   {
     SECTION("CreateEntity() and DestroyEntity()", "")
@@ -148,17 +150,17 @@ namespace TestingEntityManager
       CHECK(entTrack.m_entEventCounter == 1);
       CHECK(entTrack.m_compEventCounter == 0);
 
-      component_vso testComp( MakeArgs(Component(components::listener)) );
-      eMgr.InsertComponent(newEnt, testComp.get());
+      component_sptr testComp = MakeShared<Component>(Component(components::listener));
+      eMgr.InsertComponent(newEnt, testComp);
       CHECK(entTrack.m_compEventCounter == 1);
 
-      component_vso invalidComp( MakeArgs(Component(components::listener + 1)) );
+      component_sptr invalidComp = MakeShared<Component>(Component(components::listener + 1));
 
-      CHECK_FALSE(eMgr.RemoveComponent(newEnt, invalidComp.get()));
+      CHECK_FALSE(eMgr.RemoveComponent(newEnt, invalidComp));
       eMgr.Update();
       CHECK(entTrack.m_compEventCounter == 1);
 
-      CHECK(eMgr.RemoveComponent(newEnt, testComp.get()));
+      CHECK(eMgr.RemoveComponent(newEnt, testComp));
       eMgr.Update();
       CHECK(entTrack.m_compEventCounter == 0);
 
@@ -182,8 +184,16 @@ namespace TestingEntityManager
       {
         // component VSOs come first because they cannot be destroyed before
         // EntityManager has a chance to clean up its VirtualPtrs to the VSOs
-        empty_comp1_vso c1, c2, c3;
-        empty_comp2_vso c4, c5, c6;
+        empty_comp1_sptr c1, c2, c3;
+        empty_comp2_sptr c4, c5, c6;
+
+        c1 = MakeShared<EmptyComponent1>();
+        c2 = MakeShared<EmptyComponent1>();
+        c3 = MakeShared<EmptyComponent1>();
+
+        c4 = MakeShared<EmptyComponent2>();
+        c5 = MakeShared<EmptyComponent2>();
+        c6 = MakeShared<EmptyComponent2>();
 
         // VSO creates some temps, so we start from that count
         c1dtorCount = EmptyComponent1::m_dtor;
@@ -201,17 +211,17 @@ namespace TestingEntityManager
         for (tl_uint i = 0; i < entityCount / 2; ++i)
         {
           EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
-          eMgr.InsertComponent(ent, c1.get());
-          eMgr.InsertComponent(ent, c2.get());
-          eMgr.InsertComponent(ent, c3.get());
+          eMgr.InsertComponent(ent, c1);
+          eMgr.InsertComponent(ent, c2);
+          eMgr.InsertComponent(ent, c3);
         }
 
         for (tl_uint i = entityCount / 2; i < entityCount; ++i)
         {
           EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
-          eMgr.InsertComponent(ent, c4.get());
-          eMgr.InsertComponent(ent, c5.get());
-          eMgr.InsertComponent(ent, c6.get());
+          eMgr.InsertComponent(ent, c4);
+          eMgr.InsertComponent(ent, c5);
+          eMgr.InsertComponent(ent, c6);
         }
       }
 

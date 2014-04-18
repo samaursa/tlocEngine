@@ -40,7 +40,7 @@ namespace tloc { namespace prefab { namespace graphics {
     t_pool::iterator itrTransform = tPool->GetNext();
     (*itrTransform)->SetValue(core_sptr::MakeShared<Transform>() );
 
-    m_entMgr->InsertComponent(ent, *(*itrTransform)->GetValue() );
+    m_entMgr->InsertComponent(ent, *(*itrTransform)->GetValuePtr() );
 
     // Add the SceneNode component
     Add(ent);
@@ -72,9 +72,9 @@ namespace tloc { namespace prefab { namespace graphics {
       (core_sptr::MakeShared<gfx_cs::SceneNode>(a_ent) );
 
     if (m_parent)
-    { m_parent->AddChild( core_sptr::ToVirtualPtr(*(*itrSceneNode)->GetValue()) ); }
+    { m_parent->AddChild( core_sptr::ToVirtualPtr(*(*itrSceneNode)->GetValuePtr()) ); }
 
-    m_entMgr->InsertComponent(a_ent, *(*itrSceneNode)->GetValue() );
+    m_entMgr->InsertComponent(a_ent, *(*itrSceneNode)->GetValuePtr() );
 
     return *this;
   }

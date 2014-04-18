@@ -141,19 +141,19 @@ namespace TestingComponentPoolManager
 
       {
         (*itr)->SetValue( pointer(new value_type()) );
-        (*(*itr)->GetValue())->m_value = 0;
+        (*(*itr)->GetValuePtr())->m_value = 0;
       }
 
       // one original use count, and one for the returned vptr. In release,
       // the count will be 1
-      CHECK( core_sptr::GetUseCount((*itr)->GetValue()) > 0); // release
-      CHECK( core_sptr::GetUseCount((*itr)->GetValue()) <= 2); // debug
+      CHECK( core_sptr::GetUseCount((*itr)->GetValuePtr()) > 0); // release
+      CHECK( core_sptr::GetUseCount((*itr)->GetValuePtr()) <= 2); // debug
 
       for (tl_int i = 1; i < elementsToPool; ++i)
       {
         itr = tpool->GetNext();
         (*itr)->SetValue( pointer(new value_type()) );
-        (*(*itr)->GetValue())->m_value = i;
+        (*(*itr)->GetValuePtr())->m_value = i;
       }
     }
 
@@ -171,7 +171,7 @@ namespace TestingComponentPoolManager
       bool testPassed = true;
       for (; itr != itrEnd; ++itr)
       {
-        if( (*(*itr)->GetValue())->m_value != counter)
+        if( (*(*itr)->GetValuePtr())->m_value != counter)
         { testPassed = false; break; }
 
         ++counter;
@@ -181,7 +181,7 @@ namespace TestingComponentPoolManager
       {
         // hold onto one component to avoid it getting recycled
         itr = intCompPool->begin();
-        typename pool_type::pointer ptr = *(*itr)->GetValue();
+        typename pool_type::pointer ptr = *(*itr)->GetValuePtr();
         CHECK(a_mgr.RecycleAllUnused() == elementsToPool - 1);
       }
 

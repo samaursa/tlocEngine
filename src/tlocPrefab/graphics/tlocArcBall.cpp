@@ -41,7 +41,7 @@ namespace tloc { namespace prefab { namespace graphics {
     ab_pool::iterator itrArcBall = arcPool->GetNext();
     (*itrArcBall)->SetValue(MakeShared<gfx_cs::ArcBall>(m_focusPoint) );
 
-    m_entMgr->InsertComponent(a_ent, *(*itrArcBall)->GetValue());
+    m_entMgr->InsertComponent(a_ent, *(*itrArcBall)->GetValuePtr());
   }
 
 };};};

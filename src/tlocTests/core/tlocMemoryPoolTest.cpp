@@ -146,14 +146,14 @@ namespace TestingMemoryPool
   typename T_Elem1::value_type::pointer
     GetValue(T_Elem1& a, p_on_stack, p_wrapper)
   {
-    return a->GetValue();
+    return a->GetValuePtr();
   }
 
   template <typename T_Elem1>
   typename T_Elem1::value_type::pointer
     GetValue(T_Elem1& a, p_on_heap, p_wrapper)
   {
-    return a->GetValue();
+    return a->GetValuePtr();
   }
 
   template <typename T_Elem1>

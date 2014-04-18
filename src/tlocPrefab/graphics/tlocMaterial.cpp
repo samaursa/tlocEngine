@@ -91,7 +91,7 @@ namespace tloc { namespace prefab { namespace graphics {
     mat_pool::iterator  itrMat = matPool->GetNext();
     (*itrMat)->SetValue(MakeShared<gfx_cs::Material>() );
 
-    gfx_cs::material_sptr mat = *(*itrMat)->GetValue();
+    gfx_cs::material_sptr mat = *(*itrMat)->GetValuePtr();
 
     mat->SetVertexSource(a_vertexShader);
     mat->SetFragmentSource(a_fragmentShader);

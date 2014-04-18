@@ -65,8 +65,8 @@ namespace tloc { namespace prefab { namespace graphics {
     (*itrTransform)->SetValue(MakeShared<Transform>());
 
     // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValue());
-    m_entMgr->InsertComponent(a_ent, *(*itrQuad)->GetValue());
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr());
+    m_entMgr->InsertComponent(a_ent, *(*itrQuad)->GetValuePtr());
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)
@@ -87,7 +87,7 @@ namespace tloc { namespace prefab { namespace graphics {
       tc.AddCoord(math_t::Vec2f32(0.0f, 0.0f));
 
       (*itrTCoord)->SetValue(MakeShared<TextureCoords>(tc));
-      m_entMgr->InsertComponent(a_ent, *(*itrTCoord)->GetValue() );
+      m_entMgr->InsertComponent(a_ent, *(*itrTCoord)->GetValuePtr() );
     }
   }
 

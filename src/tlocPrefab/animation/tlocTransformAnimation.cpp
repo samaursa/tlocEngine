@@ -59,9 +59,9 @@ namespace tloc { namespace prefab { namespace animation {
       ta_pool::iterator itrTransformAnim = taPool->GetNext();
       (*itrTransformAnim)->SetValue(MakeShared<anim_cs::TransformAnimation>());
 
-      m_entMgr->InsertComponent(a_ent, *(*itrTransformAnim)->GetValue());
+      m_entMgr->InsertComponent(a_ent, *(*itrTransformAnim)->GetValuePtr());
 
-      ta = *(*itrTransformAnim)->GetValue();
+      ta = *(*itrTransformAnim)->GetValuePtr();
     }
 
     const TransformAnimation::size_type

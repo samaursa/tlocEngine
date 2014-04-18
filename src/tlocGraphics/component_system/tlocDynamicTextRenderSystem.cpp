@@ -1,4 +1,4 @@
-#include "tlocTextRenderSystem.h"
+#include "tlocDynamicTextRenderSystem.h"
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
@@ -6,7 +6,7 @@
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 
-#include <tlocGraphics/component_system/tlocText.h>
+#include <tlocGraphics/component_system/tlocDynamicText.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
@@ -30,13 +30,13 @@ namespace tloc { namespace graphics { namespace component_system {
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
-  typedef TextRenderSystem::error_type    error_type;
+  typedef DynamicTextRenderSystem::error_type    error_type;
 
   // ///////////////////////////////////////////////////////////////////////
   // TextRenderSystem
 
-  TextRenderSystem::
-    TextRenderSystem(event_manager_ptr a_eventMgr, 
+  DynamicTextRenderSystem::
+    DynamicTextRenderSystem(event_manager_ptr a_eventMgr, 
                      entity_manager_ptr a_entityMgr,
                      const font_ptr& a_initializedFont)
     : base_type(a_eventMgr, a_entityMgr, a_initializedFont)
@@ -44,17 +44,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TextRenderSystem::
-    ~TextRenderSystem()
+  DynamicTextRenderSystem::
+    ~DynamicTextRenderSystem()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    TextRenderSystem::
+    DynamicTextRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   { 
-    text_sptr dynamicText = a_ent->GetComponent<Text>();
+    text_sptr dynamicText = a_ent->GetComponent<DynamicText>();
 
     if (dynamicText->IsUpdateRequired())
     {
@@ -102,35 +102,35 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type
-    TextRenderSystem::
+    DynamicTextRenderSystem::
     ShutdownEntity(entity_ptr a_ent)
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    TextRenderSystem::
+    DynamicTextRenderSystem::
     OnComponentInsert(const core_cs::EntityComponentEvent&)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    TextRenderSystem::
+    DynamicTextRenderSystem::
     OnComponentRemove(const core_cs::EntityComponentEvent&)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    TextRenderSystem::
+    DynamicTextRenderSystem::
     OnComponentDisable(const core_cs::EntityComponentEvent&)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    TextRenderSystem::
+    DynamicTextRenderSystem::
     OnComponentEnable(const core_cs::EntityComponentEvent&)
   { }
 
@@ -140,5 +140,5 @@ using namespace tloc::gfx_cs;
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextRenderSystem);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(TextRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(DynamicTextRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(DynamicTextRenderSystem);

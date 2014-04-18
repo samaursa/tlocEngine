@@ -1,4 +1,4 @@
-#include "tlocText.h"
+#include "tlocDynamicText.h"
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -12,8 +12,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // Text
 
-  Text::
-    Text()
+  DynamicText::
+    DynamicText()
     : base_type(k_component_type)
     , Text_I()
     , m_flags(k_count)
@@ -21,8 +21,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Text::
-    Text(BufferArgW a_text, align_type a_alignment)
+  DynamicText::
+    DynamicText(BufferArgW a_text, align_type a_alignment)
     : base_type(k_component_type)
     , Text_I(a_text, a_alignment)
     , m_flags(k_count)
@@ -31,7 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void 
-    Text::
+    DynamicText::
     SetAlignment(align_type a_alignment)
   { 
     base_type::SetUpdateRequired(true);
@@ -42,7 +42,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    Text::
+    DynamicText::
     Set(BufferArgW a_text)
   {
     base_type::SetUpdateRequired(true);
@@ -59,7 +59,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Text::
+    DynamicText::
     IsTextUpdated() const
   {
     return m_flags.ReturnAndUnmark(k_text_updated);
@@ -68,7 +68,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Text::
+    DynamicText::
     IsAlignmentUpdated() const
   {
     return m_flags.ReturnAndUnmark(k_alignment_updated);
@@ -84,6 +84,6 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Text);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Text);
-TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Text);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(DynamicText);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(DynamicText);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(DynamicText);

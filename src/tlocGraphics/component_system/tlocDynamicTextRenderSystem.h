@@ -1,5 +1,5 @@
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_TEXT_RENDER_SYSTEM_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_TEXT_RENDER_SYSTEM_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_DYNAMIC_TEXT_RENDER_SYSTEM_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_DYNAMIC_TEXT_RENDER_SYSTEM_H_
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
@@ -8,16 +8,16 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocGraphics/media/tlocFont.h>
-#include <tlocGraphics/component_system/tlocText.h>
+#include <tlocGraphics/component_system/tlocDynamicText.h>
 #include <tlocGraphics/component_system/tlocTextRenderSystem_TI.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class TextRenderSystem
-    : public gfx_cs::TextRenderSystem_TI<gfx_cs::Text>
+  class DynamicTextRenderSystem
+    : public gfx_cs::TextRenderSystem_TI<gfx_cs::DynamicText>
   {
   public:
-    typedef gfx_cs::Text                                      text_type;
+    typedef gfx_cs::DynamicText                                      text_type;
     typedef gfx_cs::TextRenderSystem_TI<text_type>            base_type;
 
     typedef base_type::text_quads_pair                        text_quads_pair;
@@ -34,11 +34,11 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_conts::Array<text_quads_pair>                text_quads_cont;
 
   public:
-    TextRenderSystem(event_manager_ptr a_eventMgr,
+    DynamicTextRenderSystem(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
                      const font_ptr& a_initializedFont);
     
-    ~TextRenderSystem();
+    ~DynamicTextRenderSystem();
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
 
@@ -59,8 +59,8 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(TextRenderSystem, text_render_system);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(TextRenderSystem, text_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicTextRenderSystem, text_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(DynamicTextRenderSystem, text_render_system);
 
 };};};
 

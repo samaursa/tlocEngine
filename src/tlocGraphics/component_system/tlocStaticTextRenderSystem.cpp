@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace component_system {
     StaticTextRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   { 
-    static_text_vptr staticText = a_ent->GetComponent<StaticText>();
+    static_text_sptr staticText = a_ent->GetComponent<StaticText>();
 
     if (staticText->IsUpdateRequired())
     {
@@ -59,17 +59,8 @@ namespace tloc { namespace graphics { namespace component_system {
                   "StaticText should be stored in m_allText container");
 
       DoAlignText(*itr);
-
-      staticText->SetUpdateRequired(false);
     }
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    StaticTextRenderSystem::
-    Post_ProcessActiveEntities(f64 )
-  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

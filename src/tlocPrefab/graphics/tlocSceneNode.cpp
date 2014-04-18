@@ -9,6 +9,7 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::Entity;
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
+  using core_sptr::MakeShared;
 
   using gfx_cs::scene_node_sptr;
   using gfx_cs::scene_node_vptr;
@@ -70,9 +71,9 @@ namespace tloc { namespace prefab { namespace graphics {
       { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
 
       t_pool::iterator itrTransform = tPool->GetNext();
-      ( *itrTransform )->SetValue(Transform());
+      ( *itrTransform )->SetValue(MakeShared<Transform>());
 
-      m_entMgr->InsertComponent(a_ent, ( *itrTransform )->GetValue());
+      m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr());
     }
 
     using namespace gfx_cs::components;

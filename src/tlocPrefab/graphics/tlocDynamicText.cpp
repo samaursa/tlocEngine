@@ -9,6 +9,7 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::Entity;
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
+  using core_sptr::MakeShared;
 
   // ///////////////////////////////////////////////////////////////////////
   // Text
@@ -45,9 +46,9 @@ namespace tloc { namespace prefab { namespace graphics {
     { stPool = m_compPoolMgr->GetPool<gfx_cs::Text>(); }
 
     st_pool::iterator itrSt = stPool->GetNext();
-    (*itrSt)->SetValue(gfx_cs::Text(a_text, m_alignment));
+    (*itrSt)->SetValue(MakeShared<gfx_cs::Text>(a_text, m_alignment));
 
-    m_entMgr->InsertComponent(a_ent, (*itrSt)->GetValue());
+    m_entMgr->InsertComponent(a_ent, *(*itrSt)->GetValuePtr());
   }
 
 };};};

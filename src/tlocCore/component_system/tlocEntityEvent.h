@@ -32,6 +32,9 @@ namespace tloc { namespace core { namespace component_system {
     EntityEvent(event_type a_eventType, entity_vptr a_entity)
       : EventBase(a_eventType), m_entity(a_entity) {}
 
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(entity_vptr, GetEntity, m_entity);
+
+  private:
     entity_vptr m_entity;
   };
 

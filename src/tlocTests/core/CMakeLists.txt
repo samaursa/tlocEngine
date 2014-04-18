@@ -14,6 +14,7 @@ set(TLOC_TESTS_CORE
   tlocContainerTraitsTest.cpp
   tlocContainerUtilsTest.cpp
   tlocEntityManagerTest.cpp
+  tlocEntitySystemBaseTest.cpp
   tlocEntityTest.cpp
   tlocErrorTest.cpp
   tlocEventManagerTest.cpp

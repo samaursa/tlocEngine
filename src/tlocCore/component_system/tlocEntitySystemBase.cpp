@@ -95,7 +95,6 @@ namespace tloc { namespace core { namespace component_system {
     switch(type)
     {
     case entity_events::insert_component:
-    case entity_events::remove_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
         entity_vptr ent = entEvent.GetEntity();
@@ -112,7 +111,18 @@ namespace tloc { namespace core { namespace component_system {
               m_activeEntities.push_back(ent);
             }
           }
-          else
+        }
+        break;
+      }
+    case entity_events::remove_component:
+      {
+        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        entity_vptr ent = entEvent.GetEntity();
+
+        for (component_type_array::iterator itr = m_typeFlags.begin(),
+             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        {
+          if (ent->HasComponent(*itr) )
           {
             entity_ptr_array::iterator itr = find_all(m_activeEntities, ent);
             if (itr != m_activeEntities.end())
@@ -124,6 +134,7 @@ namespace tloc { namespace core { namespace component_system {
         }
         break;
       }
+
     case entity_events::disable_component:
     case entity_events::enable_component:
       {

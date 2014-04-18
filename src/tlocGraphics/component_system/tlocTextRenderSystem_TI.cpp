@@ -20,7 +20,7 @@
 #include <tlocPrefab/graphics/tlocSceneNode.h>
 
 #include <tlocGraphics/component_system/tlocStaticText.h>
-#include <tlocGraphics/component_system/tlocText.h>
+#include <tlocGraphics/component_system/tlocDynamicText.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -419,6 +419,6 @@ namespace tloc { namespace graphics { namespace component_system {
   // explicit instantiations
 
   template class TextRenderSystem_TI<StaticText>;
-  template class TextRenderSystem_TI<Text>;
+  template class TextRenderSystem_TI<DynamicText>;
 
 };};};

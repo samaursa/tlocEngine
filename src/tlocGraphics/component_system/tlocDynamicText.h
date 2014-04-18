@@ -1,5 +1,5 @@
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_TEXT_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_TEXT_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_DYNAMIC_TEXT_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_DYNAMIC_TEXT_H_
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
@@ -18,17 +18,17 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class Text
-    : public core_cs::Component_T<Text, components::text>
+  class DynamicText
+    : public core_cs::Component_T<DynamicText, components::dynamic_text>
     , public Text_I
   {
   public:
-    typedef Text                                            this_type;
-    typedef Component_T<this_type, components::text>        base_type;
+    typedef DynamicText                                            this_type;
+    typedef Component_T<this_type, components::dynamic_text>       base_type;
 
   public:
-    Text();
-    explicit Text(BufferArgW a_text, 
+    DynamicText();
+    explicit DynamicText(BufferArgW a_text, 
                   align_type a_alignment = alignment::k_align_left);
 
     void SetAlignment(align_type a_alignment);
@@ -45,9 +45,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(Text, text);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Text, text);
-  TLOC_TYPEDEF_COMPONENT_POOL(Text, text);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicText, text);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(DynamicText, text);
+  TLOC_TYPEDEF_COMPONENT_POOL(DynamicText, text);
 
 };};};
 

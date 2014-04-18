@@ -6,6 +6,7 @@
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/tlocArgs.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 
@@ -275,6 +276,19 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T, typename T_NullCopyPolicy>
   tl_size GetUseCount(const SharedPtr<T, T_NullCopyPolicy>& a_sptr)
   { return a_sptr.use_count(); }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MakeShared
+
+  template <typename T>
+  SharedPtr<T>
+    MakeShared()
+  { return SharedPtr<T>(new T()); }
+
+  template <typename T, typename T_Args>
+  SharedPtr<T>
+    MakeShared(const T_Args& a_args)
+  { return SharedPtr<T>(New<T>(a_args)); }
 
 };};};
 

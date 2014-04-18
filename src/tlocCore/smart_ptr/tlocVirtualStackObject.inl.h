@@ -656,6 +656,14 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(const this_type& a_other)
+    : m_value(a_other.m_value)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
     ~VirtualStackObjectBase_TI()
   { }
 

@@ -543,27 +543,28 @@ private:
   public:
     template <typename T1>
     explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+      : m_value(a_param.Arg1())
     { }
 
     template <typename T1, typename T2>
     explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+      : m_value(a_param.Arg1(), a_param.Arg2())
     { }
 
     template <typename T1, typename T2, typename T3>
     explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+      : m_value(a_param.Arg1(), a_param.Arg2(), a_param.Arg3())
     { }
 
     template <typename T1, typename T2, typename T3, typename T4>
     explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+      : m_value(a_param.Arg1(), a_param.Arg2(), a_param.Arg3(), a_param.Arg4())
     { }
 
     template <typename T1, typename T2, typename T3, typename T4, typename T5>
     explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+      : m_value(a_param.Arg1(), a_param.Arg2(), a_param.Arg3(), 
+                a_param.Arg4(), a_param.Arg5())
     { }
 
     ~VirtualStackObjectBase_TI();

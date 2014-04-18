@@ -60,6 +60,7 @@ namespace tloc { namespace core { namespace component_system {
                              m_removedEntities.size());
 
   private:
+    EntityManager(const EntityManager&);
 
     void DoUpdateAndCleanComponents();
     void DoUpdateAndCleanEntities();
@@ -77,6 +78,7 @@ namespace tloc { namespace core { namespace component_system {
     ent_comp_pair_cont      m_compToRemove;
     entity_cont             m_entitiesToRemove;
   };
+
 
   //------------------------------------------------------------------------
   // typedefs

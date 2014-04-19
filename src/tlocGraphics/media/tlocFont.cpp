@@ -134,10 +134,11 @@ namespace tloc { namespace graphics { namespace media {
       Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
              a_params.m_bgColor);
 
-    for (size_type i = 0; i < charImages.size(); ++i)
+    for (tl_int i = 0; i < charImages.size(); ++i)
     {
       core_ds::Tuple2u coord =
-        core_utils::GetCoord(core_ds::MakeTuple(numCols, numRows), i);
+        core_utils::GetCoord(core_ds::MakeTuple(numCols, numRows),
+                             core_utils::CastNumber<size_type>(i));
 
       const pos_type imgCoord = 
         core_ds::MakeTuple(maxDim[0] * coord[0], maxDim[1] * coord[1]);

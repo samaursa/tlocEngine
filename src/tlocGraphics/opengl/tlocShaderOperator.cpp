@@ -66,12 +66,6 @@ namespace tloc { namespace graphics { namespace gl {
     };
 
     //------------------------------------------------------------------------
-    // Variables
-
-    // u32 because of OpenGL's types
-    const u32 g_buffSize = ShaderVariableInfo::g_buffSize;
-
-    //------------------------------------------------------------------------
     // Enums
 
     enum flags

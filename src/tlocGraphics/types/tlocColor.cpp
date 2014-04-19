@@ -12,7 +12,6 @@ namespace tloc { namespace graphics { namespace types {
 
   namespace
   {
-    const Color::value_type g_minValue = 0;
     const Color::value_type g_maxValue = 255;
 
     //------------------------------------------------------------------------

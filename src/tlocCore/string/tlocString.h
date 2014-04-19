@@ -437,9 +437,9 @@ namespace tloc { namespace core { namespace string {
   char8
     CharWideToAscii(const char32 a_in);
   tl_size
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize);
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_size a_inSize);
   tl_size
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_size a_inSize);
   StringW
     CharAsciiToWide(const String a_in);
   String

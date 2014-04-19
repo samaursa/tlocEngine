@@ -139,10 +139,13 @@ namespace tloc { namespace graphics { namespace media {
         dimensions[1]                  = atoi(eachLine[5].c_str());
 
         sprite_info_str si(m_name, startingPos, dimensions);
+        
+        sprite_info_str::dim_type startingPosCasted =
+          startingPos.Cast<sprite_info_str::dim_type>();
 
-        dim_type dim(core_ds::Variadic2u32
-          (startingPos[0] + dimensions[0],
-           startingPos[1] + dimensions[1]) );
+        dim_type dim(core_ds::MakeTuple
+          (startingPosCasted[0] + dimensions[0],
+           startingPosCasted[1] + dimensions[1]) );
         maxDim.ModifyMaxDimension(dim);
 
         a_out.push_back(si);

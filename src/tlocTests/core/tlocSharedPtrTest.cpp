@@ -42,7 +42,7 @@ namespace TestingSharedPtr
 
   void PassSharedPtr(const SharedPtr<SharedStruct>& a_other)
   {
-    tl_int currCount = a_other.use_count();
+    tl_size currCount = a_other.use_count();
     SharedPtr<SharedStruct> localPtr = a_other;
     CHECK(localPtr.use_count() == currCount + 1);
   }

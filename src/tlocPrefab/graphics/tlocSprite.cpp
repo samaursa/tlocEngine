@@ -9,7 +9,6 @@
 namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
   using namespace gfx_med;
-  using namespace p_sprite_loader::parser;
 
   template <typename SpriteLoaderIterator>
   void

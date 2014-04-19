@@ -6,6 +6,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/utilities/tlocType.h>
 
 namespace tloc { namespace core { namespace utils {
 
@@ -62,7 +63,8 @@ namespace tloc { namespace core { namespace utils {
     TLOC_ASSERT(a_coord[0] < a_gridSize[0], "Index x is out of bounds");
     TLOC_ASSERT(a_coord[1] < a_gridSize[1], "Index y is out of bounds");
 
-    return a_coord[0] + a_gridSize[0] * a_coord[1];
+    return core_utils::CastNumber<tl_int>
+      (a_coord[0] + a_gridSize[0] * a_coord[1]);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -101,9 +103,10 @@ namespace tloc { namespace core { namespace utils {
     TLOC_ASSERT(a_coord[1] < a_gridSize[1], "Index y is out of bounds");
     TLOC_ASSERT(a_coord[2] < a_gridSize[2], "Index y is out of bounds");
 
-    return a_coord[0] +
-           a_gridSize[0] * a_coord[1] +
-           a_gridSize[0] * a_gridSize[1] * a_coord[2];
+    return core_utils::
+      CastNumber<tl_int>(a_coord[0] +
+                         a_gridSize[0] * a_coord[1] +
+                         a_gridSize[0] * a_gridSize[1] * a_coord[2]);
   }
 
   // ///////////////////////////////////////////////////////////////////////

@@ -58,8 +58,8 @@ namespace tloc { namespace input { namespace hid {
     }; typedef s32 modifier_type;
 
     KeyboardEvent(KeyCode a_code = none, modifier_type a_mod = NoModifier) 
-      : m_keyCode(a_code) 
-      , m_modifier(a_mod)
+      : m_modifier(a_mod)
+      , m_keyCode(a_code)
     { }
 
     char8 ToChar() const

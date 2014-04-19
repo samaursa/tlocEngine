@@ -29,11 +29,6 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef tl_float                                          real_type;
 
   public:
-    typedef core::Pair<const_entity_ptr, 
-                       core_cs::const_entity_ptr_array>       text_quads_pair;
-    typedef core_conts::Array<text_quads_pair>                text_quads_cont;
-
-  public:
     DynamicTextRenderSystem(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
                      const font_ptr& a_initializedFont);

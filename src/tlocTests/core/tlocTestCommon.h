@@ -25,6 +25,8 @@ namespace tloc { namespace tests {
     : public tloc::core::assert::CustomBreak
   {
   public:
+    ThrowOnBreak();
+    
     void Break() const;
   };
 

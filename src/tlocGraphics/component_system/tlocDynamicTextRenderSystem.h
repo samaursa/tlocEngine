@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : public gfx_cs::TextRenderSystem_TI<gfx_cs::DynamicText>
   {
   public:
-    typedef gfx_cs::DynamicText                                      text_type;
+    typedef gfx_cs::DynamicText                               text_type;
     typedef gfx_cs::TextRenderSystem_TI<text_type>            base_type;
 
     typedef base_type::text_quads_pair                        text_quads_pair;
@@ -57,8 +57,8 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicTextRenderSystem, text_render_system);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(DynamicTextRenderSystem, text_render_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(DynamicTextRenderSystem, dyn_text_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(DynamicTextRenderSystem, dyn_text_render_system);
 
 };};};
 

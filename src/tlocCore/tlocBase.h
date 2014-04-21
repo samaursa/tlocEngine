@@ -110,6 +110,9 @@
   // Check for exception handling
 # if defined(_CPPUNWIND)
 #   define TLOC_CPPUNWIND_ENABLED
+#   define TLOC_THROW() throw
+# else
+#   define TLOC_THROW()
 # endif
   //------------------------------------------------------------------------
   // Check for RTTI

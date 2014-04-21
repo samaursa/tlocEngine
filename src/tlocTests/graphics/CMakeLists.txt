@@ -57,13 +57,13 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocGraphics
   tlocMath
   tlocInput
+  FreeType
   )
 
 if(MSVC)
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   glu32.lib
   OpenGL32.lib
-  freetype.lib
   )
 endif()
 

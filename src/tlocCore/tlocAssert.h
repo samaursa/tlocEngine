@@ -5,6 +5,8 @@
 #include <3rdParty/loki/TypeTraits.h>
 #include <stdio.h>
 
+#include <tlocCore/tlocAssertCustomBreak.h>
+
 // ///////////////////////////////////////////////////////////////////////
 // Runtime assert
 //
@@ -17,42 +19,28 @@
 
 namespace tloc { namespace core { namespace assert {
 
-  namespace exception {
-    struct Assert { };
-  };
-
-  void  SetAssertThrow();
-  void  SetAssertNoThrow();
-
-  bool  NoThrowBreak();
   bool  AlwaysReturnFalse();
 
 };};};
 
-#define TLOC_ASSERT_DOES_NOT_THROW() \
-  tloc::core::assert::SetAssertNoThrow()
-
-#define TLOC_ASSERT_THROWS() \
-  tloc::core::assert::SetAssertThrow()
-
 #if defined(_MSC_VER)
   #include <intrin.h>
-  #define TLOC_DEBUG_BREAK()  \
-  do { \
-    if(tloc::core::assert::NoThrowBreak())\
-    { __debugbreak(); } \
-    else\
-    { throw tloc::core::assert::exception::Assert{}; } \
-  } while((void)0, 0)
+    #define TLOC_DEBUG_BREAK() \
+    do { \
+      if(tloc::core::assert::IsDefaultBreak())\
+      { __debugbreak(); } \
+      else\
+      { tloc::core::assert::GetCustomBreak()->Break(); } \
+    } while((void)0, 0)
 #else
   #include <stdlib.h>
-  #define TLOC_DEBUG_BREAK()  \
-  do { \
-    if(tloc::core::assert::NoThrowBreak())\
-    { abort(); } \
-    else\
-    { throw tloc::core::assert::exception::Assert{}; } \
-  } while((void)0, 0)
+    #define TLOC_DEBUG_BREAK()  \
+    do { \
+      if(tloc::core::assert::IsDefaultBreak())\
+      { abort(); } \
+      else\
+      { tloc::core::assert::GetCustomBreak()->Break(); } \
+    } while((void)0, 0)
 #endif
 
 #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBINFO_DLL)

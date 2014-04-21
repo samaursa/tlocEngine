@@ -267,7 +267,7 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // create the quad
 
-      math_t::Vec2f dim = itr->m_dim.Cast<math_t::Vec2f>();
+      math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
 
       using math_t::Rectf_bl;
       Rectf_bl rect = 
@@ -341,7 +341,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // set the quad position
 
     math_t::Vec2f horBearing =
-      itr->m_horizontalBearing.Cast<math_t::Vec2f>();
+      itr->m_horizontalBearing.ConvertTo<math_t::Vec2f>();
 
     using math_cs::transform_sptr;
     transform_sptr textPos = a_ent->GetComponent<math_cs::Transform>();
@@ -378,12 +378,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     using math_cs::transform_sptr;
     transform_sptr textPos = a_ent->GetComponent<math_cs::Transform>();
-    math_t::Rectf_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
 
     // kerning
     {
-      math_t::Vec2f kerning = m_font->GetKerning(a_prevCode, a_charCode);
-
+      math_t::Vec2f kerning = m_font->GetKerning(a_prevCode, a_charCode)
+        .ConvertTo<math_t::Vec2f>();
       advanceToRet += kerning[0];
 
       math_t::Vec3f kerning3 = kerning

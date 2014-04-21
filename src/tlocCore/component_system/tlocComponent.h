@@ -53,6 +53,8 @@ namespace tloc { namespace core { namespace component_system {
              m_enabled == a_other.m_enabled;
     }
 
+    virtual ~Component() { }
+
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
     TLOC_DECL_AND_DEF_GETTER(component_type, GetType, m_type);

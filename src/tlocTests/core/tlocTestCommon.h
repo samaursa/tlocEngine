@@ -9,21 +9,57 @@
 #include <catch.hpp>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/tlocAssertCustomBreak.h>
 
 #include "tlocAssetsPath.h"
 
+namespace tloc { namespace tests {
+
+  namespace exception {
+
+    class Assert {};
+
+  };
+
+  class ThrowOnBreak
+    : public tloc::core::assert::CustomBreak
+  {
+  public:
+    void Break() const;
+  };
+
+  const core::assert::CustomBreak* GetThrowOnBreak();
+
+};};
+
+// -----------------------------------------------------------------------
+// TLOC_TEST_ASSERT and TLOC_TEST_ASSERT_CHECK are used to test firing
+// of assertions without invoking the debugger. In Release, we do not
+// want such code to run because it will result in undefined behavior.
+
+#if TLOC_ASSERTS_DEFINED == 1
 #define TLOC_TEST_ASSERT\
-  TLOC_ASSERT_THROWS();\
+  tloc::core::assert::SetAssertCustomBreak(tloc::tests::GetThrowOnBreak());\
   bool exceptionThrown = false;\
   try
 
 #define TLOC_TEST_ASSERT_CHECK()\
-  catch(const tloc::core::assert::exception::Assert&)\
+  catch(const tloc::tests::exception::Assert&)\
   {\
     exceptionThrown = true;\
   }\
   CHECK(exceptionThrown);\
-  TLOC_ASSERT_DOES_NOT_THROW()
+  tloc::core::assert::SetAssertDefaultBreak()
+#else
+
+#define TLOC_TEST_ASSERT\
+  bool alwaysFalse = tloc::core::assert::AlwaysReturnFalse();\
+  if (alwaysFalse)
+
+#define TLOC_TEST_ASSERT_CHECK()
+
+#endif
+
 
 
 #endif

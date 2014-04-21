@@ -413,7 +413,7 @@ namespace tloc { namespace core { namespace data_structs {
     DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
   {
     ITERATE_TUPLE
-    { m_values[i] = aTuple[i]; }
+    { m_values[i] = core_utils::CastNumber<value_type>(aTuple[i]); }
   }
 
 };};};

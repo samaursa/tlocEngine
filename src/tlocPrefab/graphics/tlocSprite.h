@@ -8,7 +8,7 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
-#include <tlocGraphics/media/tlocSpriteLoader.h>
+#include <tlocGraphics/media/tlocSprite.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -53,7 +53,6 @@ namespace tloc { namespace prefab { namespace graphics {
           SpriteLoaderIterator a_end)
     {
       using namespace gfx_med;
-      using namespace p_sprite_loader::parser;
 
       type_traits::AssertTypeIsSupported
         <SpriteLoaderIterator, 
@@ -73,7 +72,6 @@ namespace tloc { namespace prefab { namespace graphics {
           T_ContOfSpriteLoaderItrBeginEndPair a_spriteLoaderIterators)
     {
       using namespace gfx_med;
-      using namespace p_sprite_loader::parser;
 
       typedef T_ContOfSpriteLoaderItrBeginEndPair           cont_type;
       typedef typename cont_type::value_type                pair_type;

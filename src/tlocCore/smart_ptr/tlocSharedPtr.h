@@ -6,6 +6,7 @@
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/memory/tlocAllocators.h>
 #include <tlocCore/tlocArgs.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
@@ -131,6 +132,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr  (a_other.get() )
     , m_refCount(a_other.DoExposeCounter() )
   {
+    using namespace core_mem::tracking::priv;
+
+    // add the connected address only if it is not already added from other casts
+    if (DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    { 
+      DoTrackConnectedMemoryAddress( (void*) a_other.get(), (void*) m_rawPtr);
+    }
+
     // Mainly for containers
     DoAddRef();
   }

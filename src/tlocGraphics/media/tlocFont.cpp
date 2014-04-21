@@ -136,6 +136,8 @@ namespace tloc { namespace graphics { namespace media {
 
     for (size_type i = 0; i < charImages.size(); ++i)
     {
+      tl_int intI = core_utils::CastNumber<tl_int>(i);
+
       core_ds::Tuple2u coord =
         core_utils::GetCoord(core_ds::MakeTuple(numCols, numRows), i);
 
@@ -143,10 +145,10 @@ namespace tloc { namespace graphics { namespace media {
         core_ds::MakeTuple(maxDim[0] * coord[0], maxDim[1] * coord[1]);
 
       sprite_info_ul si
-        (a_characters[i], imgCoord, charImages[i]->GetDimensions());
+        (a_characters[intI], imgCoord, charImages[intI]->GetDimensions());
       spriteInfo.push_back(si);
 
-      spriteSheet->SetImage(imgCoord[0], imgCoord[1], *charImages[i]);
+      spriteSheet->SetImage(imgCoord[0], imgCoord[1], *charImages[intI]);
     }
 
     core::for_each_all(spriteInfo, 

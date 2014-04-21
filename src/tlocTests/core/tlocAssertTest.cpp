@@ -8,7 +8,7 @@ namespace TestingAssert
   {
     TLOC_TEST_ASSERT
     {
-      throw tloc::core::assert::exception::Assert();
+      throw tloc::tests::exception::Assert();
     }
     TLOC_TEST_ASSERT_CHECK();
   }

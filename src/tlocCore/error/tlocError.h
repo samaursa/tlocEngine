@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace error {
   public:
     Error_T(code_type a_errorType, tl_int a_line, const char* a_file);
     Error_T(const this_type& a_other);
-    ~Error_T();
+    ~Error_T() TLOC_DTOR_ASSERT;
 
     this_type& operator=(const this_type& a_other);
 

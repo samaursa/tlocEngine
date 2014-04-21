@@ -124,6 +124,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef renderer_type::Params                        renderer_params_type;
     typedef gfx_rend::renderer_sptr                      renderer_sptr;
     typedef priv::WindowImpl<this_type>                  impl_type;
+    typedef WindowEvent::dim_type                        dim_type;
 
   public:
 
@@ -191,6 +192,13 @@ namespace tloc { namespace graphics { namespace win {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets the width and height.
+    ///
+    /// @return The window dimensions
+    ///-------------------------------------------------------------------------
+    dim_type GetDimensions() const;
 
     ///-------------------------------------------------------------------------
     /// @brief

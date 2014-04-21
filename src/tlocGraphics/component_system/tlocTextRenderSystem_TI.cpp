@@ -52,9 +52,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     , m_font(a_initializedFont)
 
-    , m_vertexShader("Invalid Path")
-    , m_fragmentShader("Invalid Path")
-
     , m_fontEntityMgr( MakeArgs(m_fontEventMgr.get()) )
     , m_fontQuadRenderSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
     , m_fontSceneGraphSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
@@ -155,10 +152,11 @@ namespace tloc { namespace graphics { namespace component_system {
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   void 
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
-    SetShaders(core_io::Path a_vertexShader, core_io::Path a_fragmentShader)
+    SetShaders(BufferArg a_vertexShaderContents, 
+               BufferArg a_fragmentShaderContents)
   {
-    m_vertexShader = a_vertexShader;
-    m_fragmentShader = a_fragmentShader;
+    m_vertexShaderContents = a_vertexShaderContents;
+    m_fragmentShaderContents = a_fragmentShaderContents;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -168,19 +166,6 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
   {
-    {
-      core_io::FileIO_ReadA f(m_vertexShader);
-      TLOC_ERROR_RETURN_IF_FAILED(f.Open());
-      TLOC_ERROR_RETURN_IF_FAILED(f.GetContents(m_vertexShaderContents));
-    }
-
-    {
-      core_io::FileIO_ReadA f(m_fragmentShader);
-      TLOC_ERROR_RETURN_IF_FAILED(f.Open());
-      TLOC_ERROR_RETURN_IF_FAILED(f.GetContents(m_fragmentShaderContents));
-    }
-
-
     // -----------------------------------------------------------------------
     // prepare the shader operator
     gfx_gl::texture_object_vso to;

@@ -14,18 +14,70 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Camera::entity_ptr
     Camera::
-    Create(const frustum_type& a_frustum, const vec_type& a_position)
+    Create(dim_type a_windowDimensions)
   {
     entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent, a_frustum, a_position);
+    Add(ent, a_windowDimensions);
 
     return ent;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void
     Camera::
-    Add(entity_ptr a_ent, const frustum_type& a_frustum,
-        const vec_type& a_position)
+    Add(entity_ptr a_ent, dim_type a_windowDimensions)
+  {
+    using namespace math_t;
+    using namespace math_proj;
+
+    core_ds::Tuple2f dim = a_windowDimensions.Cast<core_ds::Tuple2f>();
+
+    if (m_perspective)
+    {
+      AspectRatio ar = AspectRatio (AspectRatio::width(dim[0]), 
+                                    AspectRatio::height(dim[1]));
+
+      FOV fov(m_vertFOV, ar, p_FOV::vertical());
+
+      FrustumPersp::Params params(fov);
+      params.SetNear(m_near)
+            .SetFar(m_far);
+
+      FrustumPersp frPersp(params);
+      frPersp.BuildFrustum();
+
+      Add(a_ent, frPersp);
+    }
+    else
+    {
+      Rectf_c fRect =
+        Rectf_c(Rectf_c::width(dim[0]), Rectf_c::height(dim[1]));
+
+      FrustumOrtho frOrtho = FrustumOrtho(fRect, m_near, m_far);
+      frOrtho.BuildFrustum();
+
+      Add(a_ent, frOrtho);
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Camera::entity_ptr
+    Camera::
+    Create(const frustum_type& a_frustum)
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_frustum);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Camera::
+    Add(entity_ptr a_ent, const frustum_type& a_frustum)
   {
     using math_cs::components::transform;
     using gfx_cs::components::camera;
@@ -47,7 +99,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
 
     t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(MakeShared<Transformf32>(a_position) );
+    (*itrTransform)->SetValue(MakeShared<Transformf32>(m_position) );
 
     typedef gfx_cs::camera_pool                     p_pool;
 

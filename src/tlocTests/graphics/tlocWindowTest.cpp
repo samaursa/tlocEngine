@@ -90,6 +90,8 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == g_windowSizeX);
       CHECK(win2.GetHeight() == g_windowSizeY);
+      CHECK(win2.GetDimensions()[0] == g_windowSizeX);
+      CHECK(win2.GetDimensions()[1] == g_windowSizeY);
       CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);

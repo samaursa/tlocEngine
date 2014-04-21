@@ -43,8 +43,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
 
-    void               SetShaders(core_io::Path a_vertexShader, 
-                                  core_io::Path a_fragmentShader);
+    void               SetShaders(BufferArg a_vertexShaderContents, 
+                                  BufferArg a_fragmentShaderContents);
 
     virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr a_ent);
@@ -84,11 +84,8 @@ namespace tloc { namespace graphics { namespace component_system {
     text_quads_cont                     m_allText;
     core_cs::entity_ptr_array           m_entsToReinit;
 
-    core_io::Path                       m_vertexShader;
-    core_io::Path                       m_fragmentShader;
-
-    core_str::String                    m_vertexShaderContents;
-    core_str::String                    m_fragmentShaderContents;
+    string_type                         m_vertexShaderContents;
+    string_type                         m_fragmentShaderContents;
 
     gfx_cs::material_sptr               m_sharedMat;
 

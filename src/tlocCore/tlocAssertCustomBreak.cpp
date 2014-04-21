@@ -11,6 +11,9 @@ namespace tloc { namespace core { namespace assert {
       : public CustomBreak
     {
     public:
+      DefaultBreak()
+      { }
+      
       void Break() const
       { /* intentionally empty */ }
     };

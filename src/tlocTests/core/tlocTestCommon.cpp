@@ -8,6 +8,10 @@ namespace tloc { namespace tests {
 
   // ///////////////////////////////////////////////////////////////////////
   // ThrowOnBreak
+  
+  ThrowOnBreak::
+    ThrowOnBreak()
+  { }
 
   void
     ThrowOnBreak::

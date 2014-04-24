@@ -55,3 +55,13 @@ namespace TestingLogging
     TLOC_LOG_ERR_NO_FILENAME_IF(i == 2, &lcfi) << "SHOULD NOT display";
   }
 };
+
+#include <tlocCore/logging/tlocDefaultLogger.h>
+
+namespace TestDefaultLogging
+{
+  TEST_CASE("tloc/default_logger", "")
+  {
+    TLOC_LOG_DEFAULT_INFO() << "Default Logger test";
+  }
+};

@@ -163,6 +163,8 @@ set(TLOC_ENGINE_CORE_LOGGER
     logging/tlocLog.cpp
     logging/tlocLogger.h
     logging/tlocLogger.cpp
+    logging/tlocDefaultLogger.h
+    logging/tlocDefaultLogger.cpp
     logging/tlocLoggerHelper.h
 )
 set(TLOC_ENGINE_CORE_MEMORY

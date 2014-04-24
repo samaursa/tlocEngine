@@ -77,7 +77,7 @@ namespace tloc { namespace core {\
   tloc::core::logging::LoggerConsoleImmediate&\
     _funcName_()\
   {\
-    static tloc::core::logging::LoggerConsoleImmediate s_coreDefaultLogger( (#_name_) );\
+    static tloc::core::logging::LoggerConsoleImmediate s_coreDefaultLogger( (_name_) );\
     return s_coreDefaultLogger;\
   }
 

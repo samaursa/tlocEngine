@@ -20,7 +20,6 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gfx_cs::StaticText                                text_type;
     typedef gfx_cs::TextRenderSystem_TI<text_type>            base_type;
 
-    typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
     typedef math_t::Mat2f32                                   scale_type;
     typedef tl_float                                          real_type;
@@ -32,8 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     StaticTextRenderSystem(event_manager_ptr a_eventMgr,
-                           entity_manager_ptr a_entityMgr,
-                           const font_ptr& a_initializedFont);
+                           entity_manager_ptr a_entityMgr);
     
     ~StaticTextRenderSystem();
 

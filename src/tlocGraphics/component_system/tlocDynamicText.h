@@ -29,7 +29,8 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     DynamicText();
     explicit DynamicText(BufferArgW a_text, 
-                  align_type a_alignment = alignment::k_align_left);
+                         font_ptr a_font,
+                         align_type a_alignment = alignment::k_align_left);
 
     void SetAlignment(align_type a_alignment);
 

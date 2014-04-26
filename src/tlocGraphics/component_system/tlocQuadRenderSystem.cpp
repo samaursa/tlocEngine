@@ -57,8 +57,11 @@ namespace tloc { namespace graphics { namespace component_system {
     ~QuadRenderSystem()
   { }
 
-  error_type QuadRenderSystem::InitializeEntity(entity_ptr)
-  { return ErrorSuccess; }
+  error_type QuadRenderSystem::InitializeEntity(entity_ptr a_ent)
+  { 
+    base_type::InitializeEntity(a_ent);
+    return ErrorSuccess;
+  }
 
   error_type QuadRenderSystem::ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }

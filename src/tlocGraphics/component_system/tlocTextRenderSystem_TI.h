@@ -11,7 +11,6 @@
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/io/tlocPath.h>
 
-#include <tlocGraphics/media/tlocFont.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
@@ -30,7 +29,6 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_sptr::SharedPtr<text_type>                   text_ptr;
     typedef TextRenderSystem_TI<text_type>                    this_type;
 
-    typedef gfx_med::font_sptr                                font_ptr;
     typedef core_str::String                                  string_type;
     typedef math_t::Mat2f32                                   scale_type;
     typedef tl_float                                          real_type;
@@ -43,9 +41,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
 
-    void               SetShaders(BufferArg a_vertexShaderContents, 
-                                  BufferArg a_fragmentShaderContents);
-
     virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type Post_Initialize();
@@ -57,44 +52,25 @@ namespace tloc { namespace graphics { namespace component_system {
 
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
-                       entity_manager_ptr a_entityMgr,
-                       const font_ptr& a_initializedFont);
+                        entity_manager_ptr a_entityMgr);
     
     ~TextRenderSystem_TI();
 
     void         DoAlignText(const text_quads_pair& a_pair);
-    real_type    DoSetTextQuadPosition(const_entity_ptr a_ent,
-                                       gfx_med::Font::glyph_metrics::
-                                       char_code a_charCode,
-                                       real_type a_startingPosX);
-
-    real_type    DoSetTextQuadPosition(const_entity_ptr a_ent,
-                                       gfx_med::Font::glyph_metrics::
-                                       char_code a_prevCode,
-                                       gfx_med::Font::glyph_metrics::
-                                       char_code a_charCode,
-                                       real_type a_startingPosX);
 
   private:
     error_type   DoReInitializeEntity(entity_ptr a_ent);
     void         DoRemoveText(const const_entity_ptr a_ent);
 
   protected:
-    font_ptr                            m_font;
     text_quads_cont                     m_allText;
     core_cs::entity_ptr_array           m_entsToReinit;
-
-    string_type                         m_vertexShaderContents;
-    string_type                         m_fragmentShaderContents;
-
-    gfx_cs::material_sptr               m_sharedMat;
 
     core_cs::component_pool_mgr_vso     m_fontCompMgr;
     core_cs::event_manager_vso          m_fontEventMgr;
     core_cs::entity_manager_vso         m_fontEntityMgr;
-    gfx_cs::QuadRenderSystem            m_fontQuadRenderSys;
     gfx_cs::SceneGraphSystem            m_fontSceneGraphSys;
-    gfx_cs::MaterialSystem              m_fontMaterialSys;
+    gfx_cs::QuadRenderSystem            m_fontQuadRenderSys;
     gfx_cs::TextureAnimatorSystem       m_fontAnimSys;
   };
 

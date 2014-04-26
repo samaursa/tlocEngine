@@ -50,6 +50,9 @@ namespace tloc { namespace graphics { namespace component_system {
                       <component_type, T_VarSize>&  a_typeFlags);
 
     void         SetCamera(const_entity_ptr a_cameraEntity);
+
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+
     virtual void Pre_ProcessActiveEntities(f64);
     virtual void Post_ProcessActiveEntities(f64);
 

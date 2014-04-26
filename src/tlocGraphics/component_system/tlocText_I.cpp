@@ -16,9 +16,10 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Text_I::
-    Text_I(BufferArgW a_text, align_type a_alignment)
+    Text_I(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
     : m_text(a_text)
     , m_alignment(a_alignment)
+    , m_font(a_font)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -28,3 +29,7 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
 };};};
+
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::gfx_cs::Text_I);

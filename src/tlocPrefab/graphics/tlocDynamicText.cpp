@@ -16,10 +16,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
   DynamicText::entity_ptr
     DynamicText::
-    Create(BufferArgW a_text)
+    Create(BufferArgW a_text, font_ptr a_font)
   {
     entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent, a_text);
+    Add(ent, a_text, a_font);
 
     return ent;
   }
@@ -28,7 +28,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     DynamicText::
-    Add(entity_ptr a_ent, BufferArgW a_text)
+    Add(entity_ptr a_ent, BufferArgW a_text, font_ptr a_font)
   {
     using namespace gfx_cs::components;
 
@@ -46,7 +46,7 @@ namespace tloc { namespace prefab { namespace graphics {
     { stPool = m_compPoolMgr->GetPool<gfx_cs::DynamicText>(); }
 
     st_pool::iterator itrSt = stPool->GetNext();
-    (*itrSt)->SetValue(MakeShared<gfx_cs::DynamicText>(a_text, m_alignment));
+    (*itrSt)->SetValue(MakeShared<gfx_cs::DynamicText>(a_text, a_font, m_alignment));
 
     m_entMgr->InsertComponent(a_ent, *(*itrSt)->GetValuePtr());
   }

@@ -46,8 +46,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type
     FanRenderSystem::
-    InitializeEntity(entity_ptr)
-  { return ErrorSuccess; }
+    InitializeEntity(entity_ptr a_ent)
+  { 
+    base_type::InitializeEntity(a_ent);
+    return ErrorSuccess;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

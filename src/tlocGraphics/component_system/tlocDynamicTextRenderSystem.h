@@ -30,8 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     DynamicTextRenderSystem(event_manager_ptr a_eventMgr,
-                     entity_manager_ptr a_entityMgr,
-                     const font_ptr& a_initializedFont);
+                     entity_manager_ptr a_entityMgr);
     
     ~DynamicTextRenderSystem();
 

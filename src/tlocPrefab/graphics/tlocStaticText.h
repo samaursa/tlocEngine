@@ -10,6 +10,7 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/component_system/tlocTextAlignment.h>
+#include <tlocGraphics/media/tlocFont.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -20,6 +21,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef StaticText                        this_type;
     typedef core_str::StringW                 string_type;
     typedef gfx_cs::alignment::align_type     align_type;
+    typedef gfx_med::font_sptr                font_ptr;
 
   public:
     StaticText(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
@@ -27,8 +29,8 @@ namespace tloc { namespace prefab { namespace graphics {
       , m_alignment(gfx_cs::alignment::k_align_left)
     { }
 
-    entity_ptr  Create(BufferArgW a_text);
-    void        Add(entity_ptr a_ent, BufferArgW a_text);
+    entity_ptr  Create(BufferArgW a_text, font_ptr a_font);
+    void        Add(entity_ptr a_ent, BufferArgW a_text, font_ptr a_font);
 
     TLOC_DECL_PARAM_VAR(align_type, Alignment, m_alignment);
   };

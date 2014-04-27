@@ -124,6 +124,7 @@ namespace tloc { namespace graphics { namespace media {
 
     TLOC_DECL_AND_DEF_GETTER(const_sprite_sheet_ptr, GetSpriteSheetPtr, 
                              m_spriteSheet.get());
+    TLOC_DECL_AND_DEF_GETTER(Params, GetCachedParams, m_cachedParams);
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 
@@ -140,6 +141,7 @@ namespace tloc { namespace graphics { namespace media {
 
   private:
     ft_ptr                    m_ft;
+    Params                    m_cachedParams;
     glyph_metrics_cont        m_metrics;
     sprite_sheet_ul_vso       m_spriteSheet;
     core_utils::Checkpoints   m_flags;

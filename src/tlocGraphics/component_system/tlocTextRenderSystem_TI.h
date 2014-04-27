@@ -66,12 +66,12 @@ namespace tloc { namespace graphics { namespace component_system {
     text_quads_cont                     m_allText;
     core_cs::entity_ptr_array           m_entsToReinit;
 
-    core_cs::component_pool_mgr_vso     m_fontCompMgr;
-    core_cs::event_manager_vso          m_fontEventMgr;
-    core_cs::entity_manager_vso         m_fontEntityMgr;
-    gfx_cs::SceneGraphSystem            m_fontSceneGraphSys;
-    gfx_cs::QuadRenderSystem            m_fontQuadRenderSys;
-    gfx_cs::TextureAnimatorSystem       m_fontAnimSys;
+    core_cs::component_pool_mgr_vso     m_textCompMgr;
+    core_cs::event_manager_vso          m_textEventMgr;
+    core_cs::entity_manager_vso         m_textEntityMgr;
+    gfx_cs::SceneGraphSystem            m_textSceneGraphSys;
+    gfx_cs::QuadRenderSystem            m_textQuadRenderSys;
+    gfx_cs::TextureAnimatorSystem       m_textAnimSys;
   };
 
 };};};

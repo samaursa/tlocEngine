@@ -111,8 +111,8 @@ namespace tloc { namespace graphics { namespace media {
       {
         tl_int index = core_utils::GetIndex(newDim, core_ds::MakeTuple(x, y));
 
-        if (x < a_padding[0] || x > m_dim[0] ||
-            y < a_padding[1] || y > m_dim[1])
+        if (x < a_padding[0] || (x >= m_dim[0] + a_padding[0]) ||
+            y < a_padding[1] || (y >= m_dim[1] + a_padding[1]) )
         {
           newImg[index] = a_color;
         }

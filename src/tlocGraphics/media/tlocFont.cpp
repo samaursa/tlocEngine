@@ -41,7 +41,8 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::
     Font()
-    : m_flags(k_count)
+    : m_cachedParams(0)
+    , m_flags(k_count)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -78,6 +79,8 @@ namespace tloc { namespace graphics { namespace media {
     typedef Image::dimension_type     dim_type;
     typedef sprite_info_ul::pos_type  pos_type;
 
+    m_cachedParams = a_params;
+
     StringW str = a_characters.GetPtr();
     const StringW::size_type strLength = str.length();
 
@@ -112,9 +115,10 @@ namespace tloc { namespace graphics { namespace media {
 
     for (size_type i = 0; i < strLength; ++i)
     {
-      DoCacheGlyphMetrics(str.at(i), a_params);
-      charImages.push_back(GetCharImage(str.at(i), a_params) );
-      charImages.back()->AddPadding(a_params.m_paddingDim, a_params.m_paddingColor);
+      DoCacheGlyphMetrics(str.at(i), m_cachedParams);
+      charImages.push_back(GetCharImage(str.at(i), m_cachedParams) );
+      charImages.back()->AddPadding(m_cachedParams.m_paddingDim, 
+                                    m_cachedParams.m_paddingColor);
       dim_type currDim = charImages.back()->GetDimensions();
 
       maxDim[0] = core::tlMax(maxDim[0], currDim[0]);
@@ -132,7 +136,7 @@ namespace tloc { namespace graphics { namespace media {
 
     spriteSheet->
       Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
-             a_params.m_bgColor);
+             m_cachedParams.m_bgColor);
 
     for (size_type i = 0; i < charImages.size(); ++i)
     {

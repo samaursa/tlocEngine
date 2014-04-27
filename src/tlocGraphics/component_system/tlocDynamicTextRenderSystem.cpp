@@ -82,8 +82,8 @@ namespace tloc { namespace graphics { namespace component_system {
     DynamicTextRenderSystem::
     Post_ProcessActiveEntities(f64 a_deltaT)
   { 
-    m_fontEntityMgr->Update();
-    m_fontCompMgr->RecycleAllUnused();
+    m_textEntityMgr->Update();
+    m_textCompMgr->RecycleAllUnused();
 
     base_type::Post_ProcessActiveEntities(a_deltaT);
   }

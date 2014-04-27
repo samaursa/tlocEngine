@@ -48,8 +48,8 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::MarkForReinit;
 
   private:
-    using base_type::m_fontEntityMgr;
-    using base_type::m_fontCompMgr;
+    using base_type::m_textEntityMgr;
+    using base_type::m_textCompMgr;
     using base_type::m_allText;
   };
 

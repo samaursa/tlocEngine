@@ -51,10 +51,10 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(text_type::k_component_type))
 
-    , m_fontEntityMgr( MakeArgs(m_fontEventMgr.get()) )
-    , m_fontQuadRenderSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
-    , m_fontSceneGraphSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
-    , m_fontAnimSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
+    , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
+    , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textAnimSys(m_textEventMgr.get(), m_textEntityMgr.get())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -237,20 +237,23 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // create the quad
 
-      math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
+      const math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
+      const math_t::Vec2f padDim = 
+        font->GetCachedParams().m_paddingDim.ConvertTo<math_t::Vec2f>();
+      const math_t::Vec2f finalDim = dim + padDim;
 
       using math_t::Rectf_bl;
       Rectf_bl rect = 
-        Rectf_bl(Rectf_bl::width(dim[0]), Rectf_bl::height(dim[1]));
+        Rectf_bl(Rectf_bl::width(finalDim[0]), Rectf_bl::height(finalDim[1]));
 
       entity_ptr q = 
-        pref_gfx::Quad(m_fontEntityMgr.get(), m_fontCompMgr.get()).
+        pref_gfx::Quad(m_textEntityMgr.get(), m_textCompMgr.get()).
         TexCoords(true).Dimensions(rect).Create();
 
       q->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
 
       if (matPtr)
-      { m_fontEntityMgr->InsertComponent(q, matPtr); }
+      { m_textEntityMgr->InsertComponent(q, matPtr); }
 
       // we need the quad later for other operations
       tqp.second.push_back(q);
@@ -258,13 +261,13 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // make it a node
 
-      pref_gfx::SceneNode(m_fontEntityMgr.get(), m_fontCompMgr.get())
+      pref_gfx::SceneNode(m_textEntityMgr.get(), m_textCompMgr.get())
         .Parent(core_sptr::ToVirtualPtr(sceneNode)).Add(q);
 
       // -----------------------------------------------------------------------
       // add sprite animation to quad with one texture coordinate only
 
-      pref_gfx::SpriteAnimation(m_fontEntityMgr.get(), m_fontCompMgr.get())
+      pref_gfx::SpriteAnimation(m_textEntityMgr.get(), m_textCompMgr.get())
         .Paused(false).Add(q, itrSs, itrEndSs);
 
       // -----------------------------------------------------------------------
@@ -321,6 +324,12 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // set the quad position
 
+    typedef gfx_med::Font::Params               Params;
+
+    Params fParams = a_entText->GetFont()->GetCachedParams();
+    math_t::Vec3f padDim = fParams.m_paddingDim
+      .ConvertTo<math_t::Vec3f, core_ds::p_tuple::overflow_zero>();
+
     math_t::Vec2f horBearing =
       itr->m_horizontalBearing.ConvertTo<math_t::Vec2f>();
 
@@ -332,7 +341,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     a_entPos->
       SetPosition(a_entPos->GetPosition() +
-      math_t::Vec3f(0, horBearing[1] - rect.GetHeight(), 0));
+      math_t::Vec3f(0 - padDim[0], 
+                    horBearing[1] - rect.GetHeight() - padDim[1], 
+                    0));
 
     // advance pen's position
     advanceToRet += itr->m_horizontalAdvance;
@@ -384,7 +395,7 @@ namespace tloc { namespace graphics { namespace component_system {
     for (SceneNode::node_cont_iterator itr = sn->begin(), itrEnd = sn->end();
          itr != itrEnd; ++itr)
     {
-      m_fontEntityMgr->DestroyEntity( (*itr)->GetEntity() );
+      m_textEntityMgr->DestroyEntity( (*itr)->GetEntity() );
     }
 
     while (sn->size() > 0)
@@ -405,12 +416,12 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_Initialize()
   {
-    m_fontQuadRenderSys.SetRenderer(GetRenderer());
-    m_fontQuadRenderSys.SetCamera(GetCamera());
+    m_textQuadRenderSys.SetRenderer(GetRenderer());
+    m_textQuadRenderSys.SetCamera(GetCamera());
     
-    m_fontQuadRenderSys.Initialize();
-    m_fontSceneGraphSys.Initialize();
-    m_fontAnimSys.Initialize();
+    m_textQuadRenderSys.Initialize();
+    m_textSceneGraphSys.Initialize();
+    m_textAnimSys.Initialize();
 
     return ErrorSuccess;
   }
@@ -450,9 +461,9 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64 a_deltaT)
   {
-    m_fontSceneGraphSys.ProcessActiveEntities(a_deltaT);
-    m_fontAnimSys.ProcessActiveEntities(a_deltaT);
-    m_fontQuadRenderSys.ProcessActiveEntities(a_deltaT);
+    m_textSceneGraphSys.ProcessActiveEntities(a_deltaT);
+    m_textAnimSys.ProcessActiveEntities(a_deltaT);
+    m_textQuadRenderSys.ProcessActiveEntities(a_deltaT);
   }
 
   // -----------------------------------------------------------------------

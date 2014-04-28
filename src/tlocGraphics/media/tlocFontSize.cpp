@@ -18,11 +18,14 @@ namespace tloc { namespace graphics { namespace media {
   FontSize::
     FontSize(fraction a_0to100, resolution a_resolution)
   {
-    TLOC_ASSERT(a_0to100 >= 0 && a_0to100 <= 100, "Fraction (a_0to1) out of range");
-    size_type resY = 
-      core_utils::CastNumber<size_type>(a_resolution.m_value->operator [](1));
+	  TLOC_ASSERT(a_0to100 >= 0 && a_0to100 <= 100, "Fraction (a_0to1) out of range");
+	  real_type resY = 
+		  core_utils::CastNumber<real_type>(a_resolution.m_value->operator [](1));
 
-    m_heightInPixels =  resY * a_0to100 / 100;
+	  real_type heightInPixels = 
+		  core_utils::CastNumber<real_type>(resY) * a_0to100 / 100.0f;
+
+    m_heightInPixels = (size_type)heightInPixels;
   }
 
   FontSize::

@@ -52,8 +52,8 @@ namespace tloc { namespace graphics { namespace component_system {
                 Variadic<component_type, 1>(text_type::k_component_type))
 
     , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
-    , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
     , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
     , m_textAnimSys(m_textEventMgr.get(), m_textEntityMgr.get())
   { }
 
@@ -177,7 +177,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // Do not assert on font errors, log them instead and return
 
-    text_type::font_ptr font = textPtr->GetFont();
+    typename text_type::font_ptr font = textPtr->GetFont();
 
     if (font == nullptr)
     {
@@ -239,7 +239,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
       const math_t::Vec2f padDim = 
-        font->GetCachedParams().m_paddingDim.ConvertTo<math_t::Vec2f>();
+        font->GetCachedParams().m_paddingDim.template ConvertTo<math_t::Vec2f>();
       const math_t::Vec2f finalDim = dim + padDim;
 
       using math_t::Rectf_bl;

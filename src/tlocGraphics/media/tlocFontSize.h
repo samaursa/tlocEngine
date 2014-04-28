@@ -19,9 +19,10 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_t::StrongType_T<dim_type, 0>         dpi;
     typedef core_t::StrongType_T<dim_type, 1>         resolution;
 
+    typedef core_t::StrongType_T<real_type, 0>        fraction;
+
     typedef core_t::StrongType_T<size_type, 0>        em;
     typedef core_t::StrongType_T<size_type, 1>        pixels;
-    typedef core_t::StrongType_T<size_type, 2>        fraction;
 
   public:
     FontSize(em a_size, dpi a_dpi);

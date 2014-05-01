@@ -1274,7 +1274,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  ShaderOperator::uniform_ptr 
+    ShaderOperator::
     AddUniform(const uniform_type& a_uniform)
   {
     TLOC_ASSERT(a_uniform.GetType() != GL_NONE,
@@ -1283,11 +1284,14 @@ namespace tloc { namespace graphics { namespace gl {
     m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)), 
                                         index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
+
+    return m_uniforms.back().first.get();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  ShaderOperator::attribute_ptr 
+    ShaderOperator::
     AddAttribute(const attribute_type& a_attribute)
   {
     TLOC_ASSERT(a_attribute.GetType() != GL_NONE,
@@ -1296,6 +1300,8 @@ namespace tloc { namespace graphics { namespace gl {
     m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)), 
                                           index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
+
+    return m_attributes.back().first.get();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1416,6 +1422,7 @@ namespace tloc { namespace graphics { namespace gl {
       // to attributes only
       retError = DoPrepareVariables(m_uniforms, uniCont).first;
     }
+
     return retError;
   }
 
@@ -1442,6 +1449,7 @@ namespace tloc { namespace graphics { namespace gl {
       if (errAndIndex.second >= 0)
       { m_enabledVertexAttrib.push_back(errAndIndex.second); }
     }
+
     return retError;
 
   }

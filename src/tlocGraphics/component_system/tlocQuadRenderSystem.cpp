@@ -176,11 +176,11 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       // Add the mvp
-      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+      if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
+      { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      m_so_quad->PrepareAllAttributes(*m_shaderPtr);
-      m_so_quad->EnableAllAttributes(*m_shaderPtr);
+      if (m_so_quad->PrepareAllAttributes(*m_shaderPtr).Succeeded())
+      { m_so_quad->EnableAllAttributes(*m_shaderPtr); }
 
       TLOC_UNUSED(numVertices);
       glDrawArrays(GL_TRIANGLE_STRIP, 0,

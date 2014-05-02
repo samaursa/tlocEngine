@@ -90,6 +90,22 @@ namespace tloc { namespace graphics { namespace gl {
     attribute_iterator begin_attributes();
     attribute_iterator end_attributes();
 
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Allows the operator to preallocate space for a number of 
+    /// uniforms/attributes. This is useful to ensure that the 
+    /// uniform_vptr/attribute_vptr returned are valid until a 
+    /// uniform/attribute is added (which may cause a reallocation) or any of
+    /// the remove methods are called
+    ///-------------------------------------------------------------------------
+    void reserve_uniforms(size_type a_capacity);
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// see reserve_uniforms()
+    ///-------------------------------------------------------------------------
+    void reserve_attributes(size_type a_capacity);
+
     // The following functions will destroy the uniform/attribute cache which
     // was setup when Prepare*() methods were called
     void ClearAttributesCache();

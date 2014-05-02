@@ -1192,7 +1192,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef T_ShaderVariableInfoContainer         svcInfo;
     typedef typename svc::iterator                svc_iterator;
     typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
-    typedef typename svc::value_type::first_type  shader_var_ptr_type;
+    typedef typename svc::value_type::
+            first_type::pointer                   shader_var_ptr;
 
     ShaderOperator::error_type retError = ErrorSuccess;
 
@@ -1202,7 +1203,20 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = a_shaderUserVars.begin(), itrEnd = a_shaderUserVars.end();
          itr != itrEnd; ++itr)
     {
-      shader_var_ptr_type shaderVarPtr = itr->first;
+      shader_var_ptr shaderVarPtr = itr->first.get();
+
+      if (shaderVarPtr->IsEnabled() == false)
+      { continue; }
+
+      if (shaderVarPtr->GetType() == GL_NONE)
+      {
+        TLOC_LOG_GFX_WARN() << "glUniform*/glAttribute* (" 
+          << shaderVarPtr->GetName() 
+          << ") Does not have a type. Did you forget to populate it with data?";
+        shaderVarPtr->SetEnabled(false);
+        continue;
+      }
+
       // this is over-ridden with the correct location if found
       itr->second = g_unableToFindIndex;
 
@@ -1278,8 +1292,6 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     AddUniform(const uniform_type& a_uniform)
   {
-    TLOC_ASSERT(a_uniform.GetType() != GL_NONE,
-      "Uniform missing OpenGL type - ShaderVariable not initialized properly?");
     TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
     m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)), 
                                         index_type(-1)) );
@@ -1294,8 +1306,6 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     AddAttribute(const attribute_type& a_attribute)
   {
-    TLOC_ASSERT(a_attribute.GetType() != GL_NONE,
-      "Attribute missing OpenGL type - ShaderVariable not initialized properly?");
     TLOC_ASSERT(a_attribute.GetName().size() > 0, "Attribute name is empty");
     m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)), 
                                           index_type(-1)) );
@@ -1485,6 +1495,20 @@ namespace tloc { namespace graphics { namespace gl {
   {
     return m_attributes.end();
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ShaderOperator::
+    reserve_uniforms(size_type a_capacity)
+  { m_uniforms.reserve(a_capacity); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ShaderOperator::
+    reserve_attributes(size_type a_capacity)
+  { m_attributes.reserve(a_capacity); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

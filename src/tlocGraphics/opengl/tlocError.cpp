@@ -200,7 +200,12 @@ const char8* GetErrorString(GLenum a_errorCode)
   template <typename T_BuildConfig>
   Error::value_type
     DoGetOpenGLError(T_BuildConfig)
-  { return glGetError(); }
+  { 
+    if (Error::IsIgnoreAllErrors())
+    { return GL_NO_ERROR; }
+    else
+    { return glGetError(); }
+  }
 
   Error::value_type
     DoGetOpenGLError(core_cfg::p_build_config::Release)
@@ -211,6 +216,7 @@ const char8* GetErrorString(GLenum a_errorCode)
 
   const char*       Error::s_lastErrorDesc = "None";
   Error::value_type Error::s_lastError     = GL_NO_ERROR;
+  bool              Error::s_ignoreAllErrors = false;
 
   bool Error::Succeeded()
   {
@@ -241,6 +247,11 @@ const char8* GetErrorString(GLenum a_errorCode)
     const char* myError = GetErrorString(m_lastError);
     if (myError) { a_out = myError; }
   }
+
+  void
+    Error::
+    IgnoreAllErrors(bool a_ignoreAllErrors)
+  { s_ignoreAllErrors = a_ignoreAllErrors; }
 
   //------------------------------------------------------------------------
   // Explicit Instantiation

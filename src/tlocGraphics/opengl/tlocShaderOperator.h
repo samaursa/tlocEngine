@@ -33,6 +33,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef const_attribute_vptr    const_attribute_ptr_type;
     typedef uniform_vso             uniform_vso;
     typedef attribute_vso           attribute_vso;
+    typedef uniform_vptr            uniform_ptr;
+    typedef attribute_vptr          attribute_ptr;
 
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
@@ -52,8 +54,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator();
     ~ShaderOperator();
 
-    void AddUniform(const uniform_type& a_uniform);
-    void AddAttribute(const attribute_type& a_attribute);
+    uniform_ptr   AddUniform(const uniform_type& a_uniform);
+    attribute_ptr AddAttribute(const attribute_type& a_attribute);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
     void RemoveAttribute(const attribute_iterator& a_attribute);
@@ -87,6 +89,22 @@ namespace tloc { namespace graphics { namespace gl {
 
     attribute_iterator begin_attributes();
     attribute_iterator end_attributes();
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// Allows the operator to preallocate space for a number of 
+    /// uniforms/attributes. This is useful to ensure that the 
+    /// uniform_vptr/attribute_vptr returned are valid until a 
+    /// uniform/attribute is added (which may cause a reallocation) or any of
+    /// the remove methods are called
+    ///-------------------------------------------------------------------------
+    void reserve_uniforms(size_type a_capacity);
+
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// see reserve_uniforms()
+    ///-------------------------------------------------------------------------
+    void reserve_attributes(size_type a_capacity);
 
     // The following functions will destroy the uniform/attribute cache which
     // was setup when Prepare*() methods were called

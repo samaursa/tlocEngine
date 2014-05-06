@@ -72,7 +72,10 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isArrayPtr);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, SetEnabled, m_enabled);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
+
 
   protected:
     ShaderVariable_TI();
@@ -107,6 +110,7 @@ namespace tloc { namespace graphics { namespace gl {
     string_type   m_name;
     bool          m_isArray;
     bool          m_isArrayPtr;
+    bool          m_enabled;
   };
 
   //------------------------------------------------------------------------

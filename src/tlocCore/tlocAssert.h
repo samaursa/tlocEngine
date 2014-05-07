@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include <tlocCore/tlocAssertCustomBreak.h>
+#include <tlocCore/tlocConsole.h>
 
 // ///////////////////////////////////////////////////////////////////////
 // Runtime assert
@@ -50,7 +51,9 @@ namespace tloc { namespace core { namespace assert {
   do {\
     if (!(_Expression))\
     {\
+      tloc::console::SetConsoleColor(tloc::console::p_color::red, tloc::console::p_color::black);\
       printf("\n[E] Assertion (%s) FAILED: %s | %s(%i)", (#_Expression), _Msg, __FILE__, __LINE__);\
+      tloc::console::SetConsoleColor(tloc::console::p_color::dark_white, tloc::console::p_color::black);\
       TLOC_DEBUG_BREAK();\
     }\
   } while((void)0, 0)

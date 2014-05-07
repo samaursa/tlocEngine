@@ -1,7 +1,6 @@
 #ifndef _TLOC_CORE_LOGGER_LOGGER_H_
 #define _TLOC_CORE_LOGGER_LOGGER_H_
 
-#include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
@@ -12,37 +11,6 @@
 #include <tlocCore/tlocStaticAssert.h>
 
 namespace tloc { namespace core { namespace logging {
-
-  // -----------------------------------------------------------------------
-  // write to console helper function
-  // the console color code referenced from: http://www.cplusplus.com/articles/2ywTURfi/ 
-
-  namespace p_console_color
-  {
-    enum 
-    {
-      black=0,
-      dark_blue=1,
-      dark_green=2,
-      dark_aqua,dark_cyan=3,
-      dark_red=4,
-      dark_purple=5,dark_pink=5,dark_magenta=5,
-      dark_yellow=6,
-      dark_white=7,
-      gray=8,
-      blue=9,
-      green=10,
-      aqua=11,cyan=11,
-      red=12,
-      purple=13,pink=13,magenta=13,
-      yellow=14,
-      white=15
-    };
-  };
-
-  void SetConsoleColor(tl_int a_textCol, tl_int a_bgColor);
-  void WriteToConsole(tloc::BufferArg a_formattedLog, 
-                      Log_I::severity_type a_severity);
 
   // -----------------------------------------------------------------------
   // Logger classes

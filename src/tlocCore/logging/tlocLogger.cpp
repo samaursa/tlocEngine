@@ -4,77 +4,49 @@
 #include <tlocCore/time/tlocTime.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
+#include <tlocCore/tlocConsole.h>
 
 namespace {
+  // -----------------------------------------------------------------------
+
   using namespace tloc::core_log;
 
   typedef Log_I::severity_type                          severity_type;
 
-  // -----------------------------------------------------------------------
-  // platform specific console output
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T_Platform>
-  void DoWrite(tloc::BufferArg a_formattedLog, severity_type, T_Platform)
-  { printf("%s", a_formattedLog.GetPtr()); }
-
-#if defined(TLOC_OS_WIN)
-
-  void DoWrite(tloc::BufferArg a_formattedLog, severity_type a_severity,
-                     tloc::core_plat::p_platform_info::win)
+  void DoWrite(tloc::BufferArg a_formattedLog, severity_type a_severity)
   {
+    using namespace tloc::console;
+
     static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     switch(a_severity)
     {
     case Log_I::k_info:
-      SetConsoleColor(p_console_color::gray, p_console_color::black);
+      SetConsoleColor(p_color::gray, p_color::black);
       break;
     case Log_I::k_success:
-      SetConsoleColor(p_console_color::green, p_console_color::black);
+      SetConsoleColor(p_color::green, p_color::black);
       break;
     case Log_I::k_debug:
-      SetConsoleColor(p_console_color::white, p_console_color::black);
+      SetConsoleColor(p_color::white, p_color::black);
       break;
     case Log_I::k_warning:
-      SetConsoleColor(p_console_color::yellow, p_console_color::black);
+      SetConsoleColor(p_color::yellow, p_color::black);
       break;
     case Log_I::k_error:
-      SetConsoleColor(p_console_color::red, p_console_color::black);
+      SetConsoleColor(p_color::red, p_color::black);
       break;
     default:
-      SetConsoleColor(p_console_color::gray, p_console_color::black);
+      SetConsoleColor(p_color::dark_white, p_color::black);
       break;
     }
 
-    printf(a_formattedLog);
+    WriteToConsole(a_formattedLog);
 
     // reset the color (although we don't know what the original colors were)
-      SetConsoleColor(p_console_color::gray, p_console_color::black);
+    SetConsoleColor(p_color::dark_white, p_color::black);
   }
-
-#endif
-
-  // -----------------------------------------------------------------------
-  // platform specific fast console output
-
-  template <typename T_Platform>
-  void DoWriteOutput(tloc::BufferArg a_formattedLog, severity_type a_severity, 
-                     T_Platform a_plat)
-  { WriteToConsole(a_formattedLog, a_severity); }
-
-#if defined(TLOC_OS_WIN)
-
-  void DoWriteOutput(tloc::BufferArg a_formattedLog, severity_type a_severity,
-                     tloc::core_plat::p_platform_info::win)
-  {
-    bool idp = IsDebuggerPresent() != 0;
-    if (idp)
-    { OutputDebugString(a_formattedLog); }
-    else
-    { 
-      WriteToConsole(a_formattedLog, a_severity);
-    }
-  }
-#endif
   
 };
 
@@ -106,7 +78,7 @@ namespace tloc { namespace core { namespace logging {
 
   void
     WriteToConsole(tloc::BufferArg a_formattedLog, severity_type a_severity)
-  { DoWrite(a_formattedLog, a_severity, core_plat::PlatformInfo::platform_type()); }
+  { DoWrite(a_formattedLog, a_severity); }
 
   // ///////////////////////////////////////////////////////////////////////
   // Log
@@ -251,8 +223,7 @@ namespace tloc { namespace core { namespace logging {
         Console::
         DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
       {
-        ::DoWrite(a_formattedLog, a_severity, 
-                  core_plat::PlatformInfo::platform_type());
+        ::DoWrite(a_formattedLog, a_severity);
       }
 
       // ///////////////////////////////////////////////////////////////////////
@@ -266,8 +237,8 @@ namespace tloc { namespace core { namespace logging {
         Output::
         DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
       {
-        DoWriteOutput(a_formattedLog, a_severity, 
-                      core_plat::PlatformInfo::platform_type());
+        if (console::WriteToIDEConsole(a_formattedLog) == false)
+        { ::DoWrite(a_formattedLog, a_severity); }
       }
 
       // ///////////////////////////////////////////////////////////////////////

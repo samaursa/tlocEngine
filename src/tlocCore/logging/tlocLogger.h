@@ -13,6 +13,40 @@
 
 namespace tloc { namespace core { namespace logging {
 
+  // -----------------------------------------------------------------------
+  // write to console helper function
+  // the console color code referenced from: http://www.cplusplus.com/articles/2ywTURfi/ 
+
+  namespace p_console_color
+  {
+    enum 
+    {
+      black=0,
+      dark_blue=1,
+      dark_green=2,
+      dark_aqua,dark_cyan=3,
+      dark_red=4,
+      dark_purple=5,dark_pink=5,dark_magenta=5,
+      dark_yellow=6,
+      dark_white=7,
+      gray=8,
+      blue=9,
+      green=10,
+      aqua=11,cyan=11,
+      red=12,
+      purple=13,pink=13,magenta=13,
+      yellow=14,
+      white=15
+    };
+  };
+
+  void SetConsoleColor(tl_int a_textCol, tl_int a_bgColor);
+  void WriteToConsole(tloc::BufferArg a_formattedLog, 
+                      Log_I::severity_type a_severity);
+
+  // -----------------------------------------------------------------------
+  // Logger classes
+
   namespace p_logger
   {
     namespace update_policy
@@ -25,29 +59,38 @@ namespace tloc { namespace core { namespace logging {
     {
       class Console
       {
-      protected:
+      public:
+        typedef Log_I::severity_type                      severity_type;
+
+      public:
         Console(BufferArg a_loggerName);
 
-        void DoWrite(BufferArg a_formattedLog);
+        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
       };
 
       // usually for outputting to a window other than the console
       class Output
       {
-      protected:
+      public:
+        typedef Log_I::severity_type                      severity_type;
+
+      public:
         Output(BufferArg a_loggerName);
 
-        void DoWrite(BufferArg a_formattedLog);
+        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
       };
 
       class File
       {
-      protected:
+      public:
+        typedef Log_I::severity_type                      severity_type;
+
+      public:
         File(BufferArg a_fileName);
 
-        void DoWrite(BufferArg a_formattedLog);
+        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
 
-        core_io::FileIO_AppendA m_file;
+        mutable core_io::FileIO_AppendA m_file;
       };
     };
 
@@ -58,7 +101,7 @@ namespace tloc { namespace core { namespace logging {
       public:
         typedef core_str::String                      str_type;
 
-      protected:
+      public:
         Default(BufferArg a_loggerName);
 
         str_type DoFormat(const Log_I& a_log) const;
@@ -238,6 +281,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO(_logger_)\
   TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS(_logger_)\
+  TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG(_logger_)\
   TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN(_logger_)\
@@ -247,6 +292,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_IF(_expr_, _logger_)\
   TLOC_LOG_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_IF(_expr_, _logger_)\
+  TLOC_LOG_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_IF(_expr_, _logger_)\
   TLOC_LOG_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_IF(_expr_, _logger_)\
@@ -256,6 +303,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_FILENAME_ONLY(_logger_)\
   TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_FILENAME_ONLY(_logger_)\
+  TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_FILENAME_ONLY(_logger_)\
   TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_FILENAME_ONLY(_logger_)\
@@ -265,6 +314,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_FILENAME_ONLY_IF(_expr_, _logger_)\
+  TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, _logger_)\
@@ -274,6 +325,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_NO_FILENAME(_logger_)\
   TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_NO_FILENAME(_logger_)\
+  TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_NO_FILENAME(_logger_)\
   TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_NO_FILENAME(_logger_)\
@@ -283,6 +336,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, _logger_)\
   TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_NO_FILENAME_IF(_expr_, _logger_)\
+  TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, _logger_)\
   TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, _logger_)\

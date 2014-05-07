@@ -16,6 +16,7 @@ namespace tloc { namespace core { namespace logging {
   const char* Log_I::s_severityStr[Log_I::k_count] =
   {
     "Info",
+    "Success",
     "Debug",
     "Warning",
     "Error"
@@ -24,6 +25,7 @@ namespace tloc { namespace core { namespace logging {
   const char* Log_I::s_severityStrShort[Log_I::k_count] =
   {
     "I",
+    "S",
     "D",
     "W",
     "E"

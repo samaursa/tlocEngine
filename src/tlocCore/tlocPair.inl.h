@@ -5,6 +5,8 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocPair.h>
+
 namespace tloc { namespace core {
 
   template <typename T_First, typename T_Second>

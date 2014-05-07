@@ -69,31 +69,37 @@ namespace tloc { namespace prefab {
 };};
 
 #define TLOC_LOG_PREF_INFO()    TLOC_LOG_INFO(&tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_SUCCESS() TLOC_LOG_SUCCESS(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_DEBUG()   TLOC_LOG_DEBUG(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_WARN()    TLOC_LOG_WARN(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_ERR()     TLOC_LOG_ERR(&tloc::prefab::GetLogger())
 
 #define TLOC_LOG_PREF_INFO_IF(_expr_)    TLOC_LOG_INFO_IF(_expr_, &tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_SUCCESS_IF(_expr_) TLOC_LOG_SUCCESS_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_DEBUG_IF(_expr_)   TLOC_LOG_DEBUG_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_WARN_IF(_expr_)    TLOC_LOG_WARN_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_ERR_IF(_expr_)     TLOC_LOG_ERR_IF(_expr_, &tloc::prefab::GetLogger())
 
 #define TLOC_LOG_PREF_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_SUCCESS_FILENAME_ONLY() TLOC_LOG_SUCCESS_FILENAME_ONLY(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::prefab::GetLogger())
 
 #define TLOC_LOG_PREF_INFO_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, &tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_SUCCESS_FILENAME_ONLY_IF(_expr_) TLOC_LOG_SUCCESS_FILENAME_ONLY_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_DEBUG_FILENAME_ONLY_IF(_expr_)   TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_WARN_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_ERR_FILENAME_ONLY_IF(_expr_)     TLOC_LOG_ERR_FILENAME_ONLY_IF(_expr_, &tloc::prefab::GetLogger())
 
 #define TLOC_LOG_PREF_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_SUCCESS_NO_FILENAME() TLOC_LOG_SUCCESS_NO_FILENAME(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::prefab::GetLogger())
 
 #define TLOC_LOG_PREF_INFO_NO_FILENAME_IF(_expr_)    TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, &tloc::prefab::GetLogger())
+#define TLOC_LOG_PREF_SUCCESS_NO_FILENAME_IF(_expr_) TLOC_LOG_SUCCESS_NO_FILENAME_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_DEBUG_NO_FILENAME_IF(_expr_)   TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_WARN_NO_FILENAME_IF(_expr_)    TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, &tloc::prefab::GetLogger())
 #define TLOC_LOG_PREF_ERR_NO_FILENAME_IF(_expr_)     TLOC_LOG_ERR_NO_FILENAME_IF(_expr_, &tloc::prefab::GetLogger())

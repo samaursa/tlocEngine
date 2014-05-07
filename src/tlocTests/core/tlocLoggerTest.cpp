@@ -14,6 +14,7 @@ namespace TestingLogging
   TEST_CASE("core/logger", "")
   {
     TLOC_LOG_INFO(&lcfi) << "Info log";
+    TLOC_LOG_SUCCESS(&lcfi) << "Success log";
     TLOC_LOG_DEBUG(&lcfi) << "Debug log";
     TLOC_LOG_WARN(&lcfi) << "Warning log";
     TLOC_LOG_ERR(&lcfi) << "Error log";
@@ -36,6 +37,9 @@ namespace TestingLogging
     TLOC_LOG_WARN_FILENAME_ONLY(&lcfi) << "only filename displayed";
 
     s32 i = 1;
+
+    TLOC_LOG_SUCCESS_IF(i == 1, &lcfi) << "Should display";
+    TLOC_LOG_SUCCESS_IF(i == 2, &lcfi) << "Should NOT display";
 
     TLOC_LOG_WARN_IF(i == 1, &lcfi) << "Should display";
     TLOC_LOG_WARN_IF(i == 2, &lcfi) << "SHOULD NOT display";

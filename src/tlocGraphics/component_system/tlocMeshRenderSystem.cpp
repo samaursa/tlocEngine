@@ -39,7 +39,9 @@ namespace tloc { namespace graphics { namespace component_system {
   MESH_RENDER_SYSTEM_TYPE::error_type
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     InitializeEntity(entity_ptr a_ent)
-  {
+  { 
+    base_type::InitializeEntity(a_ent);
+
     mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
 
     gl::attribute_vso posAttr, normAttr, tcoordAttr;

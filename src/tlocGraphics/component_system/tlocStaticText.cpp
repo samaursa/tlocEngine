@@ -14,9 +14,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   StaticText::
-    StaticText(BufferArgW a_text, align_type a_alignment)
+    StaticText(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
     : base_type(k_component_type)
-    , Text_I(a_text, a_alignment)
+    , Text_I(a_text, a_font, a_alignment)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -30,8 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     DynamicTextRenderSystem(event_manager_ptr a_eventMgr,
-                     entity_manager_ptr a_entityMgr,
-                     const font_ptr& a_initializedFont);
+                     entity_manager_ptr a_entityMgr);
     
     ~DynamicTextRenderSystem();
 
@@ -49,8 +48,8 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::MarkForReinit;
 
   private:
-    using base_type::m_fontEntityMgr;
-    using base_type::m_fontCompMgr;
+    using base_type::m_textEntityMgr;
+    using base_type::m_textCompMgr;
     using base_type::m_allText;
   };
 

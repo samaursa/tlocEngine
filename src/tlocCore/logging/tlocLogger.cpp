@@ -6,28 +6,107 @@
 #include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 
 namespace {
+  using namespace tloc::core_log;
+
+  typedef Log_I::severity_type                          severity_type;
+
+  // -----------------------------------------------------------------------
+  // platform specific console output
+
+  template <typename T_Platform>
+  void DoWrite(tloc::BufferArg a_formattedLog, severity_type, T_Platform)
+  { printf("%s", a_formattedLog.GetPtr()); }
+
+#if defined(TLOC_OS_WIN)
+
+  void DoWrite(tloc::BufferArg a_formattedLog, severity_type a_severity,
+                     tloc::core_plat::p_platform_info::win)
+  {
+    static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    switch(a_severity)
+    {
+    case Log_I::k_info:
+      SetConsoleColor(p_console_color::gray, p_console_color::black);
+      break;
+    case Log_I::k_success:
+      SetConsoleColor(p_console_color::green, p_console_color::black);
+      break;
+    case Log_I::k_debug:
+      SetConsoleColor(p_console_color::white, p_console_color::black);
+      break;
+    case Log_I::k_warning:
+      SetConsoleColor(p_console_color::yellow, p_console_color::black);
+      break;
+    case Log_I::k_error:
+      SetConsoleColor(p_console_color::red, p_console_color::black);
+      break;
+    default:
+      SetConsoleColor(p_console_color::gray, p_console_color::black);
+      break;
+    }
+
+    printf(a_formattedLog);
+
+    // reset the color (although we don't know what the original colors were)
+      SetConsoleColor(p_console_color::gray, p_console_color::black);
+  }
+
+#endif
+
   // -----------------------------------------------------------------------
   // platform specific fast console output
 
   template <typename T_Platform>
-  void DoWriteOutput(tloc::BufferArg a_formattedLog, T_Platform)
-  { printf("%s", a_formattedLog.GetPtr()); }
+  void DoWriteOutput(tloc::BufferArg a_formattedLog, severity_type a_severity, 
+                     T_Platform a_plat)
+  { WriteToConsole(a_formattedLog, a_severity); }
 
 #if defined(TLOC_OS_WIN)
-  void DoWriteOutput(tloc::BufferArg a_formattedLog,
+
+  void DoWriteOutput(tloc::BufferArg a_formattedLog, severity_type a_severity,
                      tloc::core_plat::p_platform_info::win)
   {
-    static bool idp = IsDebuggerPresent() != 0;
+    bool idp = IsDebuggerPresent() != 0;
     if (idp)
     { OutputDebugString(a_formattedLog); }
     else
-    { printf(a_formattedLog); }
+    { 
+      WriteToConsole(a_formattedLog, a_severity);
+    }
   }
 #endif
   
 };
 
 namespace tloc { namespace core { namespace logging {
+
+  // -----------------------------------------------------------------------
+  // Console helper functions
+
+  // -----------------------------------------------------------------------
+  
+#ifdef TLOC_OS_WIN
+  void
+    SetConsoleColor(tl_int a_textCol, tl_int a_bgColor)
+  {
+    WORD col = 0;
+    col |= a_textCol;
+    col |= (a_bgColor << 4);
+
+    static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, col);
+  }
+#else
+  void
+    SetConsoleColor(tl_int , tl_int )
+  { }
+#endif
+
+  // -----------------------------------------------------------------------
+
+  void
+    WriteToConsole(tloc::BufferArg a_formattedLog, severity_type a_severity)
+  { DoWrite(a_formattedLog, a_severity, core_plat::PlatformInfo::platform_type()); }
 
   // ///////////////////////////////////////////////////////////////////////
   // Log
@@ -170,9 +249,10 @@ namespace tloc { namespace core { namespace logging {
 
       void
         Console::
-        DoWrite(BufferArg a_formattedLog)
+        DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
       {
-        printf("%s", a_formattedLog.GetPtr());
+        ::DoWrite(a_formattedLog, a_severity, 
+                  core_plat::PlatformInfo::platform_type());
       }
 
       // ///////////////////////////////////////////////////////////////////////
@@ -184,9 +264,10 @@ namespace tloc { namespace core { namespace logging {
 
       void
         Output::
-        DoWrite(BufferArg a_formattedLog)
+        DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
       {
-        DoWriteOutput(a_formattedLog, core_plat::PlatformInfo::platform_type());
+        DoWriteOutput(a_formattedLog, a_severity, 
+                      core_plat::PlatformInfo::platform_type());
       }
 
       // ///////////////////////////////////////////////////////////////////////
@@ -202,7 +283,7 @@ namespace tloc { namespace core { namespace logging {
 
       void
         File::
-        DoWrite(BufferArg a_formattedLog)
+        DoWrite(BufferArg a_formattedLog, severity_type ) const
       {
         m_file.Open();
         m_file.Write(a_formattedLog);
@@ -329,7 +410,7 @@ namespace tloc { namespace core { namespace logging {
     DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate)
   {
     str_type log = format_base_type::DoFormat(a_log);
-    write_base_type::DoWrite(log);
+    write_base_type::DoWrite(log, a_log.GetSeverity());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -363,7 +444,9 @@ namespace tloc { namespace core { namespace logging {
       allLogs += format_base_type::DoFormat(*itr);
     }
 
-    write_base_type::DoWrite(allLogs);
+    // the logs are already formatted - not possible to clarify severity so 
+    // it is going to be 'info'
+    write_base_type::DoWrite(allLogs, log_type::k_info);
   }
 
   // -----------------------------------------------------------------------

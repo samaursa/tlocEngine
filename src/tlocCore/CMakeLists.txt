@@ -11,6 +11,8 @@ set(TLOC_ENGINE_CORE
     tlocAssertCustomBreak.cpp
     tlocArgs.h
     tlocArgs.cpp
+    tlocConsole.h
+    tlocConsole.cpp
     tlocCoreBase.h
     tlocCoreBase.cpp
     tlocCoreIncludes.h

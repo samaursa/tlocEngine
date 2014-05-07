@@ -50,6 +50,7 @@ add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocGraphics
   tlocMath
   tlocInput
+  tlocPrefab
   )
 
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
@@ -57,6 +58,7 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocGraphics
   tlocMath
   tlocInput
+  tlocPrefab
   FreeType
   )
 

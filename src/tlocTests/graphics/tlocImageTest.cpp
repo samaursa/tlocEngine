@@ -183,8 +183,8 @@ namespace TestingImage
       {
         for (tl_size y = 0; y < img.GetHeight(); ++y)
         {
-          if (x < padding[0] || x > 2 ||
-              y < padding[1] || y > 2)
+          if (x < padding[0] || x >= 2 + padding[0] ||
+              y < padding[1] || y >= 2 + padding[1])
           {
             CHECK(img.GetPixel(x, y) == c2);
           }

@@ -7,11 +7,13 @@
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/io/tlocFileIO.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocText_I.h>
 #include <tlocGraphics/media/tlocFont.h>
 
 #include <tlocPrefab/graphics/tlocQuad.h>
@@ -45,24 +47,15 @@ namespace tloc { namespace graphics { namespace component_system {
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     TextRenderSystem_TI(event_manager_ptr a_eventMgr, 
-                        entity_manager_ptr a_entityMgr,
-                        const font_ptr& a_initializedFont)
+                        entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(text_type::k_component_type))
 
-    , m_font(a_initializedFont)
-
-    , m_fontEntityMgr( MakeArgs(m_fontEventMgr.get()) )
-    , m_fontQuadRenderSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
-    , m_fontSceneGraphSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
-    , m_fontMaterialSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
-    , m_fontAnimSys(m_fontEventMgr.get(), m_fontEntityMgr.get())
-  {
-    TLOC_ASSERT(m_font->IsInitialized(), 
-                "Font must already be initialized - Font::Initialize()");
-    TLOC_ASSERT(m_font->IsCached(),
-                "Font must already be cached - Font::GenerateGlyphCache()");
-  }
+    , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
+    , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textAnimSys(m_textEventMgr.get(), m_textEntityMgr.get())
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -75,12 +68,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   void
-  TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     DoAlignText(const text_quads_pair& a_pair)
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
     text_ptr text = a_pair.first->GetComponent<text_type>();
+
     math_cs::transform_sptr textTrans = 
       a_pair.first->GetComponent<math_cs::Transform>();
 
@@ -128,35 +122,27 @@ namespace tloc { namespace graphics { namespace component_system {
          itr = a_pair.second.begin(), itrEnd = a_pair.second.end(); 
          itr != itrEnd; ++itr)
     {
+      using core_sptr::ToVirtualPtr;
+
+      math_cs::transform_sptr t = (*itr)->GetComponent<math_cs::Transform>();
+      gfx_cs::quad_sptr       q = (*itr)->GetComponent<gfx_cs::Quad>();
+
       if (count != 0)
       {
         advance = 
-        DoSetTextQuadPosition(*itr, text->Get()[count - 1], 
-                              text->Get()[count], advance);
+          DoSetTextQuadPosition(t, q, ToVirtualPtr(text), 
+                                text->Get()[count - 1], 
+                                text->Get()[count], advance);
       }
       else
       {
         advance = 
-        DoSetTextQuadPosition(*itr, text->Get()[count], advance);
+          DoSetTextQuadPosition(t, q, ToVirtualPtr(text), 
+                                text->Get()[count], advance);
       }
-
-      math_cs::transform_sptr t =
-        (*itr)->GetComponent<math_cs::Transform>();
 
       ++count;
     }
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
-  void 
-    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
-    SetShaders(BufferArg a_vertexShaderContents, 
-               BufferArg a_fragmentShaderContents)
-  {
-    m_vertexShaderContents = a_vertexShaderContents;
-    m_fragmentShaderContents = a_fragmentShaderContents;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -166,37 +152,6 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
   {
-    // -----------------------------------------------------------------------
-    // prepare the shader operator
-    gfx_gl::texture_object_vso to;
-    gfx_gl::TextureObject::Params toParams;
-    
-    // we would like text to be as sharp as possible
-    toParams.MinFilter<gfx_gl::p_texture_object::filter::Nearest>();
-    toParams.MagFilter<gfx_gl::p_texture_object::filter::Nearest>();
-
-    to->SetParams(toParams);
-
-    to->Initialize(*m_font->GetSpriteSheetPtr()->GetSpriteSheet());
-    to->Activate();
-
-    gfx_gl::uniform_vso u_to;
-    u_to->SetName("s_texture").SetValueAs(*to);
-
-    gfx_gl::shader_operator_vso so;
-    so->AddUniform(*u_to);
-
-    // -----------------------------------------------------------------------
-    // Create the material
-
-    entity_ptr dummyEnt = m_fontEntityMgr->CreateEntity();
-
-    pref_gfx::Material(m_fontEntityMgr.get(), m_fontCompMgr.get())
-      .AddUniform(u_to.get())
-      .Add(dummyEnt, m_vertexShaderContents, m_fragmentShaderContents);
-
-    m_sharedMat = dummyEnt->GetComponent<gfx_cs::Material>();
-    
     return ErrorSuccess;
   }
 
@@ -215,6 +170,36 @@ namespace tloc { namespace graphics { namespace component_system {
     scene_node_sptr sceneNode   = a_ent->GetComponent<SceneNode>();
     text_ptr textPtr = a_ent->GetComponent<text_type>();
 
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+
+    // -----------------------------------------------------------------------
+    // Do not assert on font errors, log them instead and return
+
+    typename text_type::font_ptr font = textPtr->GetFont();
+
+    if (font == nullptr)
+    {
+      TLOC_LOG_GFX_WARN() << "Text entity (" << a_ent->GetDebugName() << ") "
+        << "does not have a font assigned";
+      return TLOC_ERROR(common_error_types::error_null_pointer);
+    }
+
+    if (font->IsInitialized() == false)
+    {
+      TLOC_LOG_GFX_WARN() << "Text entity (" << a_ent->GetDebugName() << ") "
+        << "font is not initialized";
+      return TLOC_ERROR(common_error_types::error_initialize);
+    }
+
+    if (font->IsCached() == false)
+    {
+      TLOC_LOG_GFX_WARN() << "Text entity (" << a_ent->GetDebugName() << ") "
+        << "font does not have glyphs cached";
+      return TLOC_ERROR(common_error_types::error_initialize);
+    }
+
     // -----------------------------------------------------------------------
     // text quad pair
 
@@ -230,9 +215,9 @@ namespace tloc { namespace graphics { namespace component_system {
     for (tl_size i = 0; i < text.length(); ++i)
     {
       gfx_med::Font::const_glyph_metrics_iterator 
-        itr = m_font->GetGlyphMetric(text[i]);
+        itr = font->GetGlyphMetric(text[i]);
 
-      TLOC_LOG_GFX_WARN_IF(itr == m_font->end_glyph_metrics())
+      TLOC_LOG_GFX_WARN_IF(itr == font->end_glyph_metrics())
         << "Glyph metrics not found for (" << text[i] << ")"
         << " - symbol does not exist in the glyph cache";
 
@@ -242,8 +227,8 @@ namespace tloc { namespace graphics { namespace component_system {
       using gfx_med::algos::compare::sprite_info::MakeName;
 
       gfx_med::sprite_sheet_ul::const_iterator itrSs, itrEndSs;
-      itrSs = core::find_if(m_font->GetSpriteSheetPtr()->begin(),
-                            m_font->GetSpriteSheetPtr()->end(),
+      itrSs = core::find_if(font->GetSpriteSheetPtr()->begin(),
+                            font->GetSpriteSheetPtr()->end(),
                             gfx_med::algos::compare::sprite_info::MakeName((tl_ulong)text[i]));
 
       itrEndSs = itrSs;
@@ -252,17 +237,23 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // create the quad
 
-      math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
+      const math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
+      const math_t::Vec2f padDim = 
+        font->GetCachedParams().m_paddingDim.template ConvertTo<math_t::Vec2f>();
+      const math_t::Vec2f finalDim = dim + padDim;
 
       using math_t::Rectf_bl;
       Rectf_bl rect = 
-        Rectf_bl(Rectf_bl::width(dim[0]), Rectf_bl::height(dim[1]));
+        Rectf_bl(Rectf_bl::width(finalDim[0]), Rectf_bl::height(finalDim[1]));
 
       entity_ptr q = 
-        pref_gfx::Quad(m_fontEntityMgr.get(), m_fontCompMgr.get()).
+        pref_gfx::Quad(m_textEntityMgr.get(), m_textCompMgr.get()).
         TexCoords(true).Dimensions(rect).Create();
 
-      m_fontEntityMgr->InsertComponent(q, m_sharedMat);
+      q->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
+
+      if (matPtr)
+      { m_textEntityMgr->InsertComponent(q, matPtr); }
 
       // we need the quad later for other operations
       tqp.second.push_back(q);
@@ -270,13 +261,13 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // make it a node
 
-      pref_gfx::SceneNode(m_fontEntityMgr.get(), m_fontCompMgr.get())
+      pref_gfx::SceneNode(m_textEntityMgr.get(), m_textCompMgr.get())
         .Parent(core_sptr::ToVirtualPtr(sceneNode)).Add(q);
 
       // -----------------------------------------------------------------------
       // add sprite animation to quad with one texture coordinate only
 
-      pref_gfx::SpriteAnimation(m_fontEntityMgr.get(), m_fontCompMgr.get())
+      pref_gfx::SpriteAnimation(m_textEntityMgr.get(), m_textCompMgr.get())
         .Paused(false).Add(q, itrSs, itrEndSs);
 
       // -----------------------------------------------------------------------
@@ -284,11 +275,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (i > 0)
       {
-        advance = DoSetTextQuadPosition(q, text[i - 1], text[i], advance);
+        advance = DoSetTextQuadPosition(q->GetComponent<math_cs::Transform>(), 
+                                        q->GetComponent<gfx_cs::Quad>(),
+                                        core_sptr::ToVirtualPtr(textPtr),
+                                        text[i - 1], text[i], advance);
       }
       else
       {
-        advance = DoSetTextQuadPosition(q, text[i], advance);
+        advance = DoSetTextQuadPosition(q->GetComponent<math_cs::Transform>(), 
+                                        q->GetComponent<gfx_cs::Quad>(),
+                                        core_sptr::ToVirtualPtr(textPtr),
+                                        text[i], advance);
       }
     }
 
@@ -309,35 +306,44 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  
+  typedef tl_float            real_type;
 
-  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
-  TLOC_TEXT_RENDER_SYSTEM_TYPE::real_type
-    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
-    DoSetTextQuadPosition(const_entity_ptr a_ent, 
-                          gfx_med::Font::glyph_metrics:: char_code a_charCode, 
-                          real_type a_startingPosX)
+  real_type
+    DoSetTextQuadPosition(math_cs::transform_sptr                 a_entPos, 
+                          gfx_cs::quad_sptr                       a_entQuad,
+                          gfx_cs::text_i_vptr                     a_entText,
+                          gfx_med::Font::glyph_metrics::char_code a_charCode, 
+                          real_type                               a_startingPosX)
   {
     real_type advanceToRet = a_startingPosX;
 
     gfx_med::Font::const_glyph_metrics_iterator 
-      itr = m_font->GetGlyphMetric(a_charCode);
+      itr = a_entText->GetFont()->GetGlyphMetric(a_charCode);
 
     // -----------------------------------------------------------------------
     // set the quad position
+
+    typedef gfx_med::Font::Params               Params;
+
+    Params fParams = a_entText->GetFont()->GetCachedParams();
+    math_t::Vec3f padDim = fParams.m_paddingDim
+      .ConvertTo<math_t::Vec3f, core_ds::p_tuple::overflow_zero>();
 
     math_t::Vec2f horBearing =
       itr->m_horizontalBearing.ConvertTo<math_t::Vec2f>();
 
     using math_cs::transform_sptr;
-    transform_sptr textPos = a_ent->GetComponent<math_cs::Transform>();
-    math_t::Rectf_bl rect = a_ent->GetComponent<gfx_cs::Quad>()->GetRectangleRef();
+    math_t::Rectf_bl rect = a_entQuad->GetRectangleRef();
 
-    textPos->SetPosition
+    a_entPos->SetPosition
       (math_t::Vec3f(advanceToRet, 0, 0));
 
-    textPos->
-      SetPosition(textPos->GetPosition() +
-      math_t::Vec3f(0, horBearing[1] - rect.GetHeight(), 0));
+    a_entPos->
+      SetPosition(a_entPos->GetPosition() +
+      math_t::Vec3f(0 - padDim[0], 
+                    horBearing[1] - rect.GetHeight() - padDim[1], 
+                    0));
 
     // advance pen's position
     advanceToRet += itr->m_horizontalAdvance;
@@ -347,33 +353,30 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
-  TLOC_TEXT_RENDER_SYSTEM_TYPE::real_type
-    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
-    DoSetTextQuadPosition(const_entity_ptr a_ent, 
-                          gfx_med::Font::glyph_metrics:: char_code a_prevCode, 
-                          gfx_med::Font::glyph_metrics:: char_code a_charCode, 
-                          real_type a_startingPosX)
+  real_type
+    DoSetTextQuadPosition(math_cs::transform_sptr                   a_entPos, 
+                          gfx_cs::quad_sptr                         a_entQuad,
+                          gfx_cs::text_i_vptr                       a_entText,
+                          gfx_med::Font::glyph_metrics:: char_code  a_prevCode, 
+                          gfx_med::Font::glyph_metrics:: char_code  a_charCode, 
+                          real_type                                 a_startingPosX)
   {
     real_type advanceToRet = 
-      DoSetTextQuadPosition(a_ent, a_charCode, a_startingPosX);
+      DoSetTextQuadPosition(a_entPos, a_entQuad, a_entText, a_charCode, a_startingPosX);
 
     // -----------------------------------------------------------------------
     // set the quad position
 
-    using math_cs::transform_sptr;
-    transform_sptr textPos = a_ent->GetComponent<math_cs::Transform>();
-
     // kerning
     {
-      math_t::Vec2f kerning = m_font->GetKerning(a_prevCode, a_charCode)
+      math_t::Vec2f kerning = a_entText->GetFont()->GetKerning(a_prevCode, a_charCode)
         .ConvertTo<math_t::Vec2f>();
       advanceToRet += kerning[0];
 
       math_t::Vec3f kerning3 = kerning
         .ConvertTo<math_t::Vec3f, core_ds::p_tuple::overflow_zero>();
 
-      textPos->SetPosition(textPos->GetPosition() + kerning3);
+      a_entPos->SetPosition(a_entPos->GetPosition() + kerning3);
     }
 
     return advanceToRet;
@@ -392,7 +395,7 @@ namespace tloc { namespace graphics { namespace component_system {
     for (SceneNode::node_cont_iterator itr = sn->begin(), itrEnd = sn->end();
          itr != itrEnd; ++itr)
     {
-      m_fontEntityMgr->DestroyEntity( (*itr)->GetEntity() );
+      m_textEntityMgr->DestroyEntity( (*itr)->GetEntity() );
     }
 
     while (sn->size() > 0)
@@ -413,13 +416,12 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_Initialize()
   {
-    m_fontQuadRenderSys.SetRenderer(GetRenderer());
-    m_fontQuadRenderSys.SetCamera(GetCamera());
+    m_textQuadRenderSys.SetRenderer(GetRenderer());
+    m_textQuadRenderSys.SetCamera(GetCamera());
     
-    m_fontQuadRenderSys.Initialize();
-    m_fontSceneGraphSys.Initialize();
-    m_fontMaterialSys.Initialize();
-    m_fontAnimSys.Initialize();
+    m_textQuadRenderSys.Initialize();
+    m_textSceneGraphSys.Initialize();
+    m_textAnimSys.Initialize();
 
     return ErrorSuccess;
   }
@@ -459,9 +461,9 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64 a_deltaT)
   {
-    m_fontSceneGraphSys.ProcessActiveEntities(a_deltaT);
-    m_fontAnimSys.ProcessActiveEntities(a_deltaT);
-    m_fontQuadRenderSys.ProcessActiveEntities(a_deltaT);
+    m_textSceneGraphSys.ProcessActiveEntities(a_deltaT);
+    m_textAnimSys.ProcessActiveEntities(a_deltaT);
+    m_textQuadRenderSys.ProcessActiveEntities(a_deltaT);
   }
 
   // -----------------------------------------------------------------------

@@ -8,14 +8,14 @@ namespace tloc { namespace physics { namespace component_system{
 
   RigidBody::
     RigidBody()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "RigidBody")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBody::
     RigidBody(rigid_body_def_sptr a_rigidBodyDef)
-    : base_type(k_component_type)
+    : base_type(k_component_type, "RigidBody")
     , m_rigidBodyDef(a_rigidBodyDef)
   {
   }

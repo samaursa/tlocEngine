@@ -19,7 +19,7 @@ namespace TestingEntitySystemBase
     typedef Component_T<EmptyComponent1, components::listener>    base_type;
 
     EmptyComponent1()
-      : base_type(k_component_type)
+      : base_type(k_component_type, "EntityComponent1")
     { }
 
     ~EmptyComponent1()
@@ -38,7 +38,7 @@ namespace TestingEntitySystemBase
     typedef Component_T<EmptyComponent2, components::listener + 1>    base_type;
 
     EmptyComponent2()
-      : base_type(k_component_type)
+      : base_type(k_component_type, "EntityComponent2")
     { }
 
     ~EmptyComponent2()
@@ -163,7 +163,9 @@ namespace TestingEntitySystemBase
 
     core_cs::entity_vptr ent = entMgr->CreateEntity();
 
-    entMgr->InsertComponent(ent, e2_a);
+    typedef core_cs::EntityManager::orphan          orphan;
+
+    entMgr->InsertComponent(ent, e2_a, orphan(true));
     // adding unrelated components does not add entities to the system
     CHECK(e.DoGetActiveEntities().size() == 0);
 

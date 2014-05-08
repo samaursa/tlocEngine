@@ -21,7 +21,7 @@ namespace TestingEntityManager
   struct EmptyComponent1 : public Component
   {
     EmptyComponent1()
-      : Component(components::listener)
+      : Component(components::listener, "EmptyComponent1")
     { }
 
     ~EmptyComponent1()
@@ -37,7 +37,7 @@ namespace TestingEntityManager
   struct EmptyComponent2 : public Component
   {
     EmptyComponent2()
-      : Component(components::listener + 1)
+      : Component(components::listener + 1, "EmptyComponent2")
     { }
 
     ~EmptyComponent2()
@@ -57,7 +57,7 @@ namespace TestingEntityManager
                     , m_totalEvents(0)
     {}
 
-    virtual bool OnEvent(const EventBase& a_event)
+    virtual EventReturn OnEvent(const EventBase& a_event)
     {
       m_totalEvents++;
 
@@ -67,26 +67,26 @@ namespace TestingEntityManager
       case entity_events::create_entity:
         {
           m_entEventCounter++;
-          return true;
+          return EventReturn(true, false);
         }
       case entity_events::destroy_entity:
         {
           m_entEventCounter--;
-          return true;
+          return EventReturn(true, false);
         }
       case entity_events::insert_component:
         {
           m_compEventCounter++;
-          return true;
+          return EventReturn(true, true);
         }
       case entity_events::remove_component:
         {
           m_compEventCounter--;
-          return true;
+          return EventReturn(true, false);
         }
       default:
         {
-          return false;
+          return EventReturn(false, false);
         }
       }
     }
@@ -150,11 +150,11 @@ namespace TestingEntityManager
       CHECK(entTrack.m_entEventCounter == 1);
       CHECK(entTrack.m_compEventCounter == 0);
 
-      component_sptr testComp = MakeShared<Component>(Component(components::listener));
-      eMgr.InsertComponent(newEnt, testComp);
+      component_sptr testComp = MakeShared<Component>(Component(components::listener, "temp"));
+      eMgr.InsertComponent(newEnt, testComp, EntityManager::orphan(true));
       CHECK(entTrack.m_compEventCounter == 1);
 
-      component_sptr invalidComp = MakeShared<Component>(Component(components::listener + 1));
+      component_sptr invalidComp = MakeShared<Component>(Component(components::listener + 1, "temp"));
 
       CHECK_FALSE(eMgr.RemoveComponent(newEnt, invalidComp));
       eMgr.Update();
@@ -211,17 +211,17 @@ namespace TestingEntityManager
         for (tl_uint i = 0; i < entityCount / 2; ++i)
         {
           EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
-          eMgr.InsertComponent(ent, c1);
-          eMgr.InsertComponent(ent, c2);
-          eMgr.InsertComponent(ent, c3);
+          eMgr.InsertComponent(ent, c1, EntityManager::orphan(true));
+          eMgr.InsertComponent(ent, c2, EntityManager::orphan(true));
+          eMgr.InsertComponent(ent, c3, EntityManager::orphan(true));
         }
 
         for (tl_uint i = entityCount / 2; i < entityCount; ++i)
         {
           EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
-          eMgr.InsertComponent(ent, c4);
-          eMgr.InsertComponent(ent, c5);
-          eMgr.InsertComponent(ent, c6);
+          eMgr.InsertComponent(ent, c4, EntityManager::orphan(true));
+          eMgr.InsertComponent(ent, c5, EntityManager::orphan(true));
+          eMgr.InsertComponent(ent, c6, EntityManager::orphan(true));
         }
       }
 

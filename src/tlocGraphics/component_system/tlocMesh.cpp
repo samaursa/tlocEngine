@@ -11,7 +11,7 @@ namespace tloc { namespace graphics { namespace component_system {
   template <MESH_TEMPS>
   Mesh_T<MESH_PARAMS>::
     Mesh_T()
-    : base_type(vertex_storage_policy::k_component_id)
+    : base_type(vertex_storage_policy::k_component_id, "Mesh")
   {
     m_posAttr->SetName("a_vPos");
     m_normAttr->SetName("a_vNorm");

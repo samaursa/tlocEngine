@@ -30,6 +30,7 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.h
     base_classes/tloc_base_classes.inl.h
     base_classes/tloc_base_classes.cpp
+    base_classes/tlocDebugName.h
     base_classes/tlocInitializeAndDestroy.h
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h

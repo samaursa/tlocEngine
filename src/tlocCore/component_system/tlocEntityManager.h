@@ -5,6 +5,7 @@
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
@@ -38,6 +39,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef Entity::component_list                component_cont;
     typedef Entity::entity_id                     entity_id_type;
 
+    typedef core_t::StrongType_T<bool, 0>         orphan;
+
   public:
     EntityManager(event_manager_vptr a_eventManager);
     virtual ~EntityManager();
@@ -46,8 +49,12 @@ namespace tloc { namespace core { namespace component_system {
     void              DestroyEntity(entity_ptr_type a_entity);
     entity_ptr_type   GetEntity(tl_int a_index);
 
+    // A component is an orphan if there is no system present to receive it/
+    // This will suppress the warning that a component was added without a 
+    // system
     void              InsertComponent(entity_ptr_type a_entity,
-                                      component_ptr_type a_component);
+                                      component_ptr_type a_component,
+                                      orphan = orphan(false));
     bool              RemoveComponent(entity_ptr_type a_entity,
                                       component_ptr_type a_component);
 

@@ -37,11 +37,12 @@ namespace TestingComponentPoolManager
     typedef tl_int         value_type;
 
   public:
-    IntComponent() : base_type(k_component_type)
+    IntComponent() 
+      : base_type(k_component_type, "IntComponent")
     { m_ctorCount++; }
 
     IntComponent(const IntComponent& a_other)
-      : base_type(k_component_type)
+      : base_type(k_component_type, "IntComponent")
       , m_value(a_other.m_value)
     { m_ctorCount++; }
 
@@ -75,11 +76,12 @@ namespace TestingComponentPoolManager
     typedef tl_uint         value_type;
 
   public:
-    UIntComponent() : base_type(k_component_type)
+    UIntComponent() 
+      : base_type(k_component_type, "UIntComponent")
     { m_ctorCount++; }
 
     UIntComponent(const UIntComponent& a_other)
-      : base_type(k_component_type)
+      : base_type(k_component_type, "UIntComponent")
       , m_value(a_other.m_value)
     { m_ctorCount++; }
 

@@ -31,12 +31,12 @@ namespace tloc { namespace math { namespace component_system {
   };
 
   Projection::Projection()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "Projection")
     , m_frustum(GetDefaultFrustum())
   { }
 
   Projection::Projection(const frustum_type& a_frustum)
-    : base_type(components::projection)
+    : base_type(k_component_type, "Projection")
     , m_frustum(a_frustum)
   { }
 

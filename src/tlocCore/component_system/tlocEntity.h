@@ -8,6 +8,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
+#include <tlocCore/base_classes/tlocDebugName.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
@@ -16,53 +17,18 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  namespace p_entity
-  {
-    template <typename T_BuildConfig>
-    class Entity_I
-    {
-    public:
-      Entity_I(BufferArg a_name)
-        : m_name(a_name)
-      { }
-
-      void        SetDebugName(BufferArg a_name)
-      { m_name = a_name; }
-
-      const char* GetDebugName() const
-      { return m_name.c_str(); }
-
-    private:
-      core_str::String m_name;
-    };
-
-    template <>
-    class Entity_I<core_cfg::p_build_config::Release>
-    {
-    public:
-      Entity_I(BufferArg )
-      { }
-
-      void        SetDebugName(BufferArg )
-      { }
-
-      const char* GetDebugName() const
-      { return "No name assigned - RELEASE CONFIG"; }
-    };
-  };
-
   class EntityWorld;
   class EntityManager;
 
   class Entity
-    : public p_entity::Entity_I<core_cfg::BuildConfig::build_config_type>
+    : public base_classes::DebugName
     , public core_bclass::NonCopyable_I
   {
   public:
     friend class EntityManager;
 
     typedef Entity                                      this_type;
-    typedef p_entity::Entity_I
+    typedef base_classes::DebugName_TI
       <core_cfg::BuildConfig::build_config_type>        base_type;
 
     typedef components::value_type                      component_type;
@@ -95,6 +61,9 @@ namespace tloc { namespace core { namespace component_system {
     void                        Activate() const;
     void                        Deactivate() const;
     TLOC_DECL_AND_DEF_GETTER(bool,  IsActive, m_active);
+
+    using base_type::GetDebugName;
+    using base_type::SetDebugName;
 
   protected:
 

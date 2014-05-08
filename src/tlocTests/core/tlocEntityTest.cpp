@@ -27,7 +27,7 @@ namespace TestingEntity
     typedef Component_T<Component1, g_component>   base_type;
 
     Component1()
-      : base_type(g_component)
+      : base_type(g_component, "Component1")
       , m_value(0)
     { }
 
@@ -41,7 +41,7 @@ namespace TestingEntity
     typedef Component_T<Component1, g_component + 1>   base_type;
 
     Component2()
-      : Component_T(g_component + 1)
+      : Component_T(g_component + 1, "Component2")
       , m_value()
     { }
 

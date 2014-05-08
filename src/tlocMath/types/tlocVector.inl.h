@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocMath/tlocMath.inl.h>
@@ -360,7 +361,7 @@ namespace tloc { namespace math { namespace types {
   {
     value_type dblLength = a_vector.LengthSquared();
 
-    TLOC_ASSERT_VEC(Math<value_type>::IsEqual(dblLength, 0) == false,
+    TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(dblLength, 0) == false,
       "Divide by zero!");
 
     value_type invLength = GetInvSqrt(dblLength, T_Accuracy() );

@@ -5,6 +5,7 @@
 #include <tlocInput/hid/tlocKeyboardImplIphone.h>
 #include <tlocInput/hid/tlocMouseImplIphone.h>
 #include <tlocInput/hid/tlocTouchSurfaceImplIphone.h>
+#include <tlocinput/hid/tlocJoystickImplIphone.h>
 
 #import <UIKit/UIkit.h>
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
@@ -56,11 +57,11 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Joystick::m_index>
     {
-      T_InputObject* Create(param_options::value_type,
+      T_InputObject* Create(param_options::value_type a_params,
                             input_param_type)
       {
-        TLOC_ASSERT_WIP();
-        return nullptr;
+        iphone_joystick_param_type params;
+        return new T_InputObject(params);
       }
     };
 
@@ -75,10 +76,10 @@ namespace tloc { namespace input { namespace priv {
         TLOC_ASSERT([[window subviews] count] != 0,
                     "Window has no views attached");
 
-        core_t::Any viewHandle([[window subviews] lastObject]);
+        OpenGLView* viewHandle([[window subviews] lastObject]);
 
         iphone_touch_surface_param_type params;
-        params.m_param1 = viewHandle.template Cast<OpenGLView*>();
+        params.m_param1 = viewHandle;
 
         T_InputObject* newInput = new T_InputObject(params);
         return newInput;
@@ -107,7 +108,7 @@ namespace tloc { namespace input { namespace priv {
 
   template <INPUT_MANAGER_IMPL_TEMP>
   InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
-    InputManagerImpl(parent_type* a_parent,
+    InputManagerImpl(parent_type& a_parent,
                      param_type a_params)
                      : base_type(a_parent, a_params)
   {
@@ -136,6 +137,11 @@ namespace tloc { namespace input { namespace priv {
             delete
               static_cast<hid::TouchSurface<policy_type>*>(m_iphoneHIDs[i].m_devicePtr);
             break;
+          }
+          case p_hid::Joystick::m_index:
+          {
+            delete
+              static_cast<hid::Joystick_T<policy_type>*>(m_iphoneHIDs[i].m_devicePtr);
           }
 
           default: break;
@@ -205,6 +211,20 @@ namespace tloc { namespace input { namespace priv {
 
           ts->Update();
         }
+        break;
+      }
+      case p_hid::Joystick::m_index:
+      {
+        typedef hid::Joystick_T<policy_type> joystick_type;
+
+        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
+        {
+          joystick_type* js = static_cast<joystick_type*>
+              (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
+
+          js->Update();
+        }
+        
         break;
       }
       default:
@@ -278,6 +298,11 @@ namespace tloc { namespace input { namespace priv {
         return (size_type)m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available;
         break;
       }
+      case p_hid::Joystick::m_index:
+      {
+        return (size_type)m_iphoneHIDs[p_hid::Keyboard::m_index].m_available;
+        break;
+      }
 
       default:
       {
@@ -339,4 +364,5 @@ namespace tloc { namespace input { namespace priv {
   INSTANTIATE_HID(hid::Keyboard);
   INSTANTIATE_HID(hid::TouchSurface);
   INSTANTIATE_HID(hid::Mouse);
+  INSTANTIATE_HID(hid::Joystick_T);
 };};};

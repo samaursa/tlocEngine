@@ -13,8 +13,7 @@
 #include <tlocInput/hid/tlocMouse.h>
 #include <tlocInput/hid/tlocTouchSurface.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
 
@@ -165,7 +164,8 @@ namespace TestingInput
     memset(inp, 0, sizeof(INPUT));
     inp[0].type = INPUT_KEYBOARD;
     inp[0].ki.wScan = input_code_set;
-    SendInput(1, inp, sizeof(INPUT));
+    while (SendInput(1, inp, sizeof(INPUT)) == 0)
+    { }
   }
 
   static void SendButtonRelease(WORD input_code_set)
@@ -175,7 +175,8 @@ namespace TestingInput
     inp[0].type = INPUT_KEYBOARD;
     inp[0].ki.dwFlags |= KEYEVENTF_KEYUP;
     inp[0].ki.wScan = input_code_set;
-    SendInput(1, inp, sizeof(INPUT));
+    while (SendInput(1, inp, sizeof(INPUT)) == 0)
+    { }
   }
 
   template <typename T_InputManagerType, typename T_KeyboardType>
@@ -267,7 +268,8 @@ namespace TestingInput
     inp.mi.mouseData = mouse_data;
     inp.mi.dx = coordX;
     inp.mi.dy = coordY;
-    SendInput(1, &inp, sizeof(INPUT));
+    while (SendInput(1, &inp, sizeof(INPUT)) == 0)
+    { }
   }
 
   template <typename T_InputManagerType, typename T_MouseType>

@@ -3,7 +3,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/component_system/tlocCamera.h>
 
@@ -21,8 +20,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // CameraSystem
 
   CameraSystem::
-    CameraSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
+    CameraSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::camera))
   { }
@@ -31,8 +29,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     CameraSystem::
-    ProcessEntity(const entity_manager* ,
-                  const entity_type* a_ent, f64 )
+    ProcessEntity(entity_ptr a_ent, f64)
   {
     using namespace core::component_system;
     using namespace math::component_system::components;
@@ -40,7 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef Camera::matrix_type         matrix_type;
 
-    Camera* cam = a_ent->GetComponent<Camera>();
+    camera_sptr cam = a_ent->GetComponent<Camera>();
 
     matrix_type viewMat;
     matrix_type m_vpMatrix;
@@ -54,7 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (a_ent->HasComponent(transform))
     {
-      math_cs::Transform* vMat = a_ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_sptr vMat = a_ent->GetComponent<math_cs::Transform>();
       math_cs::Transform vMatInv = vMat->Invert();
       viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
     }
@@ -65,3 +62,13 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(CameraSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(CameraSystem);

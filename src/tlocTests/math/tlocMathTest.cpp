@@ -115,4 +115,50 @@ namespace TestingTlocMath
       CHECK(rem == 1);
     }
   }
+
+  TEST_CASE("math/Abs", "")
+  {
+    SECTION("floats", "")
+    {
+      CHECK(math::Abs(-5.0f) == Approx(5.0f));
+      CHECK(math::Abs(5.0f) == Approx(5.0f));
+    }
+
+    SECTION("non floats", "")
+    {
+      CHECK(math::Abs(-5) == 5);
+      CHECK(math::Abs(5) == 5);
+    }
+  }
+
+  TEST_CASE("math/Approx", "")
+  {
+    SECTION("floats", "")
+    {
+      CHECK(math::Approx(1.0f, 1.0f, math::Epsilon<tl_float>()) );
+      CHECK_FALSE(math::Approx(1.0f, 1.0001f, math::Epsilon<tl_float>()) );
+    }
+
+    SECTION("non floats", "")
+    {
+      CHECK(math::Approx(1, 1, math::Epsilon<tl_int>()) );
+      CHECK(math::Approx(1, 2, 1) );
+      CHECK_FALSE(math::Approx(1, 2, math::Epsilon<tl_int>()) );
+    }
+  }
+
+  TEST_CASE("math/IsEqual", "")
+  {
+    SECTION("floats", "")
+    {
+      CHECK(math::IsEqual(1.0f, 1.0f) );
+      CHECK_FALSE(math::IsEqual(1.0f, 1.0001f) );
+    }
+
+    SECTION("non floats", "")
+    {
+      CHECK(math::IsEqual(1, 1) );
+      CHECK_FALSE(math::IsEqual(1, 2) );
+    }
+  }
 };

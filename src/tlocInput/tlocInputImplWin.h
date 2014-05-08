@@ -14,8 +14,7 @@
 #include <tlocInput/tlocInputImpl.h>
 #include <tlocInput/tlocInputTypes.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #include <InitGuid.h> // Required to circumvent linking errors for dxguid.lib
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
@@ -54,9 +53,7 @@ namespace tloc { namespace input { namespace priv {
     typedef typename parent_type::size_type           size_type;
     typedef typename parent_type::input_type          input_type;
 
-    InputManagerImpl(parent_type* a_parent,
-                     param_type a_params);
-
+    InputManagerImpl(parent_type& a_parent, param_type a_params);
     ~InputManagerImpl();
 
     ///-------------------------------------------------------------------------

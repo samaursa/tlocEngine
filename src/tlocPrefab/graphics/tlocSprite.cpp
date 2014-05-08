@@ -1,106 +1,113 @@
 #include "tlocSprite.h"
 
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>
+#include <tlocGraphics/media/tlocSprite.h>
 
 namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
   using namespace gfx_med;
-  using namespace p_sprite_loader::parser;
 
   template <typename SpriteLoaderIterator>
   void
-    DoAddSpriteAnimation(core_cs::Entity* a_entity,
-                         core_cs::EntityManager* a_mgr,
-                         core_cs::ComponentPoolManager* a_poolMgr,
+    DoAddSpriteAnimation(core_cs::entity_vptr a_entity,
+                         core_cs::entity_manager_vptr a_mgr,
+                         core_cs::component_pool_mgr_vptr a_poolMgr,
                          SpriteLoaderIterator a_begin,
                          SpriteLoaderIterator a_end,
                          bool a_loop,
                          tl_size a_fps,
-                         bool a_append,
+                         tl_size a_setIndex,
                          tl_size a_startingFrame,
                          bool a_paused)
   {
     TLOC_ASSERT_NOT_NULL(a_entity);
+    TLOC_ASSERT(a_begin != a_end, "No sprite info available");
+
+    typedef typename PointeeType<SpriteLoaderIterator>::value_type     sprite_info;
 
     using namespace gfx_cs;
     using namespace gfx_cs::components;
 
-    typedef gfx_cs::texture_animator_sptr_pool      ta_pool;
-    gfx_cs::texture_animator_sptr_pool_sptr         taPool;
+    typedef gfx_cs::texture_animator_pool           ta_pool;
+    gfx_cs::texture_animator_pool_vptr              taPool;
 
-    gfx_cs::TextureAnimator* ta = nullptr;
+    gfx_cs::texture_animator_sptr ta = nullptr;
 
-    if (a_entity->HasComponent(texture_animator) && a_append)
+    const tl_size size = a_entity->GetComponents(texture_animator).size();
+
+    if (size && a_setIndex < size)
     {
-      ta = a_entity->GetComponent<TextureAnimator>();
+      ta = a_entity->GetComponent<gfx_cs::TextureAnimator>(a_setIndex);
     }
     else
     {
       if (a_poolMgr->Exists(texture_animator) == false)
-      { taPool = a_poolMgr->CreateNewPool<texture_animator_sptr>(); }
+      { taPool = a_poolMgr->CreateNewPool<gfx_cs::TextureAnimator>(); }
       else
-      { taPool = a_poolMgr->GetPool<texture_animator_sptr>(); }
+      { taPool = a_poolMgr->GetPool<gfx_cs::TextureAnimator>(); }
 
       ta_pool::iterator itrTa = taPool->GetNext();
-      itrTa->SetValue(texture_animator_sptr(new TextureAnimator()) );
+      (*itrTa)->SetValue(core_sptr::MakeShared<TextureAnimator>() );
 
-      texture_animator_sptr taPtr = itrTa->GetValue();
-      ta = taPtr.get();
+      ta = *(*itrTa)->GetValuePtr();
+
+      a_mgr->InsertComponent(a_entity, ta);
     }
 
     TextureCoords tcoord;
     for (int i = 0; a_begin != a_end; ++i, ++a_begin)
     {
-      SpriteInfo si = *a_begin;
+      sprite_info si = *a_begin;
 
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd[0],
-                                              si.m_texCoordStart[1]),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordEnd()[0],
+                                              si.GetTexCoordStart()[1]),
                                               TextureCoords::set_index(i));
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordStart()),
                                               TextureCoords::set_index(i));
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordEnd),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordEnd()),
                                               TextureCoords::set_index(i));
-      tcoord.AddCoord(TextureCoords::vec_type(si.m_texCoordStart[0],
-                                              si.m_texCoordEnd[1]),
+      tcoord.AddCoord(TextureCoords::vec_type(si.GetTexCoordStart()[0],
+                                              si.GetTexCoordEnd()[1]),
                                               TextureCoords::set_index(i));
     }
 
     TLOC_ASSERT_NOT_NULL(ta);
 
     const TextureAnimator::size_type currSetIndex =
-      ta->GetCurrentSpriteSetIndex();
+      ta->GetCurrentSpriteSeqIndex();
 
     ta->AddSpriteSet(tcoord);
-    ta->SetCurrentSpriteSet(ta->GetNumSpriteSets() - 1);
+    ta->SetCurrentSpriteSequence(ta->GetNumSpriteSequences() - 1);
     ta->SetLooping(a_loop);
     ta->SetFPS(a_fps);
     ta->SetFrame(a_startingFrame);
     ta->SetPaused(a_paused);
 
-    ta->SetCurrentSpriteSet(currSetIndex);
-
-    a_mgr->InsertComponent(a_entity, ta);
+    ta->SetCurrentSpriteSequence(currSetIndex);
   }
 
   //------------------------------------------------------------------------
   // Explicit instantiations
 
-  template void
-    DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::iterator>
-    (core_cs::Entity* a_entity,
-     core_cs::EntityManager*,
-     core_cs::ComponentPoolManager*,
-     SpriteLoader_SpriteSheetPacker::iterator,
-     SpriteLoader_SpriteSheetPacker::iterator,
-     bool, tl_size, bool, tl_size, bool);
+  using gfx_med::sprite_sheet_ul;
 
-  template void
-    DoAddSpriteAnimation<SpriteLoader_SpriteSheetPacker::const_iterator>
-    (core_cs::Entity* a_entity,
-     core_cs::EntityManager*,
-     core_cs::ComponentPoolManager*,
-     SpriteLoader_SpriteSheetPacker::const_iterator,
-     SpriteLoader_SpriteSheetPacker::const_iterator,
-     bool, tl_size, bool, tl_size, bool);
+#define TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(_type_)\
+  template void\
+    DoAddSpriteAnimation<_type_>\
+    (core_cs::entity_vptr a_entity,\
+     core_cs::entity_manager_vptr,\
+     core_cs::component_pool_mgr_vptr,\
+     _type_,\
+     _type_,\
+     bool, tl_size, tl_size, tl_size, bool)
+
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_ul::iterator);
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_ul::const_iterator);
+
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_str::iterator);
+  TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_str::const_iterator);
 
 };};};};

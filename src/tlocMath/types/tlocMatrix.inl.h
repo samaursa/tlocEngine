@@ -6,6 +6,8 @@
 #endif
 
 #include "tlocMatrix.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTable.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 
@@ -24,8 +26,8 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Misc Macros
 
-#define ITERATE_MATRIX      for (tl_size i = 0; i < k_MatrixSize; ++i)
-#define ITERATE_MATRIX_HALF for (tl_size i = 0; i < T_Size; ++i)
+#define ITERATE_MATRIX      for (tl_int i = 0; i < k_MatrixSize; ++i)
+#define ITERATE_MATRIX_HALF for (tl_int i = 0; i < T_Size; ++i)
 
   //------------------------------------------------------------------------
   // Constructors
@@ -274,10 +276,7 @@ namespace tloc { namespace math { namespace types {
     Matrix<MATRIX_PARAMS>::
     operator+ (const this_type& a_matrix) const
   {
-    this_type returnMat(*this);
-
-    returnMat.Add(a_matrix);
-
+    this_type returnMat = Add(a_matrix);
     return returnMat;
   }
 

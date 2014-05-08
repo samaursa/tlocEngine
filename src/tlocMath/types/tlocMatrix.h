@@ -4,6 +4,7 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/data_structures/tlocTable.h>
 #include <tlocMath/types/tlocVector.h>
 

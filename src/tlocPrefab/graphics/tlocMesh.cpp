@@ -9,17 +9,18 @@ namespace tloc { namespace prefab { namespace graphics {
   using core_cs::Entity;
   using core_cs::EntityManager;
   using core_cs::ComponentPoolManager;
+  using core_sptr::MakeShared;
 
   using gfx_cs::mesh_sptr;
 
   using math_cs::Transform;
   using math_cs::transform_sptr;
 
-  Mesh::entity_type*
+  Mesh::entity_ptr
     Mesh::
     Create(const vert_cont_type& a_vertices)
   {
-    Entity* ent = m_entMgr->CreateEntity();
+    entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent, a_vertices);
 
     return ent;
@@ -27,7 +28,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     Mesh::
-    Add(entity_type* a_ent, const vert_cont_type& a_vertices)
+    Add(entity_ptr a_ent, const vert_cont_type& a_vertices)
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
@@ -39,18 +40,18 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // -----------------------------------------------------------------------
 
-    typedef gfx_cs::mesh_sptr_pool    mesh_pool;
-    gfx_cs::mesh_sptr_pool_sptr       meshPool;
+    typedef gfx_cs::mesh_pool                     mesh_pool;
+    gfx_cs::mesh_pool_vptr                        meshPool;
 
     if (m_compPoolMgr->Exists(mesh) == false)
-    { meshPool = m_compPoolMgr->CreateNewPool<mesh_sptr>(); }
+    { meshPool = m_compPoolMgr->CreateNewPool<gfx_cs::Mesh>(); }
     else
-    { meshPool = m_compPoolMgr->GetPool<mesh_sptr>(); }
+    { meshPool = m_compPoolMgr->GetPool<gfx_cs::Mesh>(); }
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
-    itrMesh->SetValue(mesh_sptr(new gfx_cs::Mesh()) );
+    (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
 
-    mesh_sptr meshPtr = itrMesh->GetValue();
+    gfx_cs::mesh_sptr meshPtr = *(*itrMesh)->GetValuePtr();
 
     for (vert_cont_itr itr = a_vertices.begin(), itrEnd = a_vertices.end();
          itr != itrEnd; ++itr)
@@ -58,21 +59,21 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // -----------------------------------------------------------------------
 
-    typedef math_cs::transform_f32_sptr_pool      t_pool;
-    math_cs::transform_f32_sptr_pool_sptr         tPool;
+    typedef math_cs::transform_f32_pool           t_pool;
+    math_cs::transform_f32_pool_vptr              tPool;
 
     if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
     else
-    { tPool = m_compPoolMgr->GetPool<transform_sptr>(); }
+    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
 
     t_pool::iterator  itrTransform = tPool->GetNext();
-    itrTransform->SetValue(transform_sptr(new Transform()) );
+    (*itrTransform)->SetValue(MakeShared<Transform>() );
 
     // -----------------------------------------------------------------------
 
-    m_entMgr->InsertComponent(a_ent, itrTransform->GetValue().get() );
-    m_entMgr->InsertComponent(a_ent, itrMesh->GetValue().get() );
+    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr() );
+    m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValuePtr() );
   }
 
 };};};

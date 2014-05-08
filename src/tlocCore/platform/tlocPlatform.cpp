@@ -1,15 +1,20 @@
 #include "tlocPlatform.h"
 
-namespace tloc { namespace core {
+#include <tlocCore/tlocAssert.h>
 
-  template class PlatformInfo<>;
+namespace tloc { namespace core { namespace platform {
 
   //////////////////////////////////////////////////////////////////////////
   // PlatformInfo
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::
-    platforms[PlatformInfo<T_Platform>::total_platforms] =
+#define TLOC_PLATFORM_INFO_TEMPS  typename T_Platform
+#define TLOC_PLATFORM_INFO_PARAMS T_Platform
+#define TLOC_PLATFORM_INFO_TYPE   typename PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>
+
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    platforms[PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::total_platforms] =
   {
     "Windows"
     "Windows 32-bit",
@@ -24,14 +29,18 @@ namespace tloc { namespace core {
     "Playstation 3",
   };
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::GetPlatformName()
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    GetPlatformName()
   {
     return DoGetPlatformName(platform_type());
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::GetPlatformName(platform_index aIndex)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    GetPlatformName(platform_index aIndex)
   {
     TLOC_ASSERT(aIndex < total_platforms,
       "Invalid platform index! Check tlocPlatform.h for supported platforms.");
@@ -39,9 +48,10 @@ namespace tloc { namespace core {
     return platforms[aIndex];
   }
 
-  template <typename T_Platform>
-  typename PlatformInfo<T_Platform>::platform_type
-    PlatformInfo<T_Platform>::GetPlatformType()
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  TLOC_PLATFORM_INFO_TYPE::platform_type
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    GetPlatformType()
   {
     return platform_type();
   }
@@ -49,52 +59,73 @@ namespace tloc { namespace core {
   //------------------------------------------------------------------------
   // Helper functions
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::win)
   {
     return platforms[windows];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win32)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::win32)
   {
     return platforms[win32];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_win64)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::win64)
   {
     return platforms[win64];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_xbox)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::xbox)
   {
     return platforms[xbox];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_mac)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::mac)
   {
     return platforms[osx];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_iphone)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::iphone)
   {
     return platforms[osx_iphone];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_linux)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::linux)
   {
     return platforms[linux];
   }
 
-  template <typename T_Platform>
-  const char* PlatformInfo<T_Platform>::DoGetPlatformName(Platform_ps3)
+  template <TLOC_PLATFORM_INFO_TEMPS>
+  const char*
+    PlatformInfo_T<TLOC_PLATFORM_INFO_PARAMS>::
+    DoGetPlatformName(p_platform_info::ps3)
   {
     return platforms[ps3];
   }
 
-};};
+  // -----------------------------------------------------------------------
+  // explicit instantiation
+
+  template class PlatformInfo_T<>;
+
+};};};

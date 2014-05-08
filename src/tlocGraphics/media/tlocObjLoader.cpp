@@ -3,6 +3,7 @@
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
 #include <tlocCore/string/tlocString.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -246,10 +247,6 @@ PUSH_NORM_INDEX:
           beforeBegin = begin;
           ++begin;
         }
-      }
-      else
-      {
-        // Log: Unsupported Obj tag
       }
 
       ++itr;

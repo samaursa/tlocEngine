@@ -1,10 +1,12 @@
 set(TLOC_INPUT 
   tlocDepVersionCheck.cpp 
   tlocInputBase.h 
+  tlocInputBase.cpp
   tlocInputImpl.h 
   tlocInputManager.cpp 
   tlocInputManager.h 
   tlocInputTypes.h 
+  tlocInputTypes.cpp
   tloc_input.cpp 
   tloc_input.h 
   tloc_input.inl.h
@@ -14,6 +16,7 @@ set(TLOC_INPUT_HID
   hid/tlocJoystick.cpp 
   hid/tlocJoystick.h 
   hid/tlocJoystickImpl.h 
+  hid/tlocJoystickImpl.cpp
   hid/tlocKeyboard.cpp 
   hid/tlocKeyboard.h 
   hid/tlocKeyboardImpl.h 
@@ -43,7 +46,8 @@ if(APPLE)
 
   set(TLOC_INPUT_HID
     ${TLOC_INPUT_HID}
-    hid/tlocJoystickIphone.h 
+    hid/tlocJoystickImplIphone.h 
+    hid/tlocJoystickImplIphone.mm
     hid/tlocTouchSurfaceImplIphone.h 
     hid/tlocTouchSurfaceImplIphone.mm 
     hid/tlocMouseImplIphone.h 
@@ -85,6 +89,8 @@ add_dependencies(tlocInput
   tlocGraphics
   tlocMath
   )
+
+set_platform_specific_properties(tlocInput)
 
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})

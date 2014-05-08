@@ -7,11 +7,29 @@
 namespace tloc { namespace core { namespace component_system {
 
   TL_I Entity::Entity(entity_id a_id)
-    : m_id(a_id)
+    : base_type("No name assigned")
+    , m_id(a_id)
     , m_index(size_type() - 1)
     , m_active(true)
   {
     m_allComponents.resize(components_group::count);
+  }
+
+  TL_I Entity::Entity(entity_id a_id, BufferArg a_debugName)
+    : base_type(a_debugName)
+    , m_id(a_id)
+    , m_index(size_type() - 1)
+    , m_active(true)
+  {
+    m_allComponents.resize(components_group::count);
+  }
+
+  TL_I bool
+    Entity::operator==(const this_type& a_other) const
+  {
+    return m_id == a_other.m_id &&
+           m_index == a_other.m_index &&
+           m_active == a_other.m_active;
   }
 
   TL_I bool Entity::HasComponent(component_type a_type) const
@@ -56,7 +74,7 @@ namespace tloc { namespace core { namespace component_system {
     m_index = a_index;
   }
 
-  TL_I void Entity::InsertComponent(Component* a_component)
+  TL_I void Entity::InsertComponent(component_sptr a_component)
   {
     component_type ctype = a_component->GetType();
 

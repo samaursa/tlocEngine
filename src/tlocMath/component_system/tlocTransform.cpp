@@ -1,6 +1,5 @@
 #include "tlocTransform.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 #include <tlocMath/types/tlocVector4.h>
@@ -16,7 +15,7 @@ namespace tloc { namespace math { namespace component_system {
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T()
-    : base_type(base_type::k_component_type)
+    : base_type(base_type::k_component_type, "Transform")
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
                        0, 0, 1, 0,
@@ -28,7 +27,7 @@ namespace tloc { namespace math { namespace component_system {
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T(const position_type& a_position,
                 const orientation_type& a_orientation)
-    : base_type(base_type::k_component_type)
+    : base_type(base_type::k_component_type, "Transform")
     , m_transformation(1, 0, 0, 0,
                        0, 1, 0, 0,
                        0, 0, 1, 0,
@@ -42,11 +41,10 @@ namespace tloc { namespace math { namespace component_system {
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
     Transform_T(const transform_type& a_tr)
-    : base_type(base_type::k_component_type)
+    : base_type(base_type::k_component_type, "Transform")
     , m_transformation(a_tr)
     , m_scale(scale_type::ONE)
-  {
-  }
+  { }
 
   template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::position_type
@@ -127,6 +125,15 @@ namespace tloc { namespace math { namespace component_system {
   }
 
   template <TRANSFORM_TEMPS>
+  void
+    Transform_T<TRANSFORM_PARAMS>
+    ::SetTransformation(const transform_type& a_tr, const scale_type& a_scale)
+  {
+    m_transformation = a_tr;
+    m_scale = a_scale;
+  }
+
+  template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::this_type
     Transform_T<TRANSFORM_PARAMS>
     ::Invert() const
@@ -150,11 +157,20 @@ namespace tloc { namespace math { namespace component_system {
   template class Transform_T<f32>;
   template class Transform_T<f64>;
 
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf32);
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Transformf64);
-
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f32_sptr);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(transform_f64_sptr);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+using namespace tloc;
+using namespace tloc::math_cs;
+
+// SmartPtr
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Transformf64);
+
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Transformf32);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Transformf64);

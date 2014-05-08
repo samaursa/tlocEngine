@@ -1,6 +1,9 @@
 set(TLOC_GRAPHICS 
+  tlocBinPacker2D.h
+  tlocBinPacker2D.cpp
   tlocDepVersionCheck.cpp 
   tlocGraphicsBase.h 
+  tlocGraphicsBase.cpp
   tloc_graphics.cpp 
   tloc_graphics.h 
   tloc_graphics.inl.h 
@@ -49,6 +52,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocCameraSystem.h
   component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
+  component_system/tlocDynamicText.h
+  component_system/tlocDynamicText.cpp
+  component_system/tlocDynamicTextRenderSystem.h
+  component_system/tlocDynamicTextRenderSystem.cpp
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
   component_system/tlocFanRenderSystem.cpp 
@@ -61,9 +68,24 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocMesh.h 
   component_system/tlocMeshRenderSystem.cpp 
   component_system/tlocMeshRenderSystem.h 
+  component_system/tlocSceneNode.h
+  component_system/tlocSceneNode.cpp
   component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocRenderSystem.h
+  component_system/tlocRenderSystem.cpp
+  component_system/tlocSceneGraphSystem.h
+  component_system/tlocSceneGraphSystem.cpp
+  component_system/tlocStaticText.h
+  component_system/tlocStaticText.cpp
+  component_system/tlocStaticTextRenderSystem.h
+  component_system/tlocStaticTextRenderSystem.cpp
+  component_system/tlocText_I.h
+  component_system/tlocText_I.cpp
+  component_system/tlocTextAlignment.h
+  component_system/tlocTextRenderSystem_TI.h
+  component_system/tlocTextRenderSystem_TI.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h
@@ -87,15 +109,25 @@ set(TLOC_GRAPHICS_ERROR
   )
 
 set(TLOC_GRAPHICS_MEDIA 
+  media/tloc_media.cpp 
+  media/tloc_media.h 
+  media/tloc_media.inl.h
+  media/tlocFont.h
+  media/tlocFont.cpp
+  media/tlocFreeType.h
+  media/tlocFreeType.cpp
+  media/tlocGlyph.h
+  media/tlocGlyph.cpp
   media/tlocImage.cpp 
   media/tlocImage.h 
   media/tlocImageLoader.cpp 
   media/tlocImageLoader.h 
-  media/tloc_media.cpp 
-  media/tloc_media.h 
-  media/tloc_media.inl.h
   media/tlocObjLoader.h
   media/tlocObjLoader.cpp
+  media/tlocSprite.h
+  media/tlocSprite.cpp
+  media/tlocSpriteInfo.h
+  media/tlocSpriteInfo.cpp
   media/tlocSpriteLoader.h
   media/tlocSpriteLoader.cpp
   )
@@ -105,10 +137,15 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocAttribute.h 
   opengl/tlocError.cpp 
   opengl/tlocError.h 
+  opengl/tlocFramebufferObject.h
+  opengl/tlocFramebufferObject.cpp
   opengl/tlocObject.cpp 
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
   opengl/tlocOpenGL.h 
+  opengl/tlocOpenGLIncludes.h
+  opengl/tlocRenderbufferObject.h
+  opengl/tlocRenderbufferObject.cpp
   opengl/tlocShader.cpp 
   opengl/tlocShader.h 
   opengl/tlocShaderOperator.cpp 
@@ -171,6 +208,7 @@ set(TLOC_GRAPHICS_WINDOW
   window/tlocWindowHandle.h 
   window/tlocWindowImpl.h 
   window/tlocWindowSettings.h 
+  window/tlocWindowSettings.cpp
   window/tloc_window.cpp 
   window/tloc_window.h 
   window/tloc_window.inl.h
@@ -213,6 +251,7 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
+  ${TLOC_DEP_PATH}/include/FreeType/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
@@ -232,12 +271,15 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_GLEW}
   ${TLOC_GRAPHICS_3RD_PARTY_GLEXT}
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
+  ${TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK}
   )
 
 add_dependencies(tlocGraphics
   tlocCore
   tlocMath
   )
+
+set_platform_specific_properties(tlocGraphics)
 
 # Filters to organize the source files
 source_group(application      FILES ${TLOC_GRAPHICS_APPLICATION})
@@ -254,4 +296,3 @@ source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSIO
 source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
 source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
 source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
-

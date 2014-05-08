@@ -32,7 +32,7 @@ namespace tloc
   // OSX Types
 
 #if defined(TARGET_OS_MAC) || defined (__APPLE__) || defined (MACOSX) || defined (macintosh) || defined (Macintosh)
-
+  
 #define TLOC_INT8_TYPE  __int8_t
 #define TLOC_INT16_TYPE __int16_t
 #define TLOC_INT32_TYPE __int32_t
@@ -44,7 +44,7 @@ namespace tloc
 #define TLOC_U_INT64_TYPE __uint64_t
 
 #define TLOC_SIZE_TYPE      size_t
-#define TLOC_U_INT_PTR_TYPE uintptr_t
+#define TLOC_U_INT_PTR_TYPE size_t
 #define TLOC_PTR_DIFF_TYPE  ptrdiff_t
 #endif
 
@@ -82,13 +82,15 @@ namespace tloc
   // on the platform itself
 
 #if defined(_WIN64) || defined(__LP64__)
-  typedef s64               tl_int;
-  typedef u64               tl_uint;
-  typedef f64               tl_float;
+  typedef int               tl_int;
+  typedef unsigned int      tl_uint;
+  typedef float             tl_float;
+  typedef double            tl_double;
 #elif defined(WIN32) || defined(_WIN32) || ( defined(__APPLE__) && !defined(__LP64__) )
-  typedef s32               tl_int;
-  typedef u32               tl_uint;
-  typedef f32               tl_float;
+  typedef int               tl_int;
+  typedef unsigned int      tl_uint;
+  typedef float             tl_float;
+  typedef double            tl_double;
 #else
 # error WIP
 #endif
@@ -125,6 +127,20 @@ namespace tloc
 #define TL_LLONG_MAX              LLONG_MAX
 #define TL_ULLONG_MIN             0
 #define TL_ULLONG_MAX             ULLONG_MAX
+
+  // ///////////////////////////////////////////////////////////////////////
+  // NumericLimits_T
+
+  template <typename T>
+  class NumericLimits_T
+  {
+  public:
+    typedef T                             value_type;
+
+  public:
+    static  value_type        min();
+    static  value_type        max();
+  };
 
 };
 

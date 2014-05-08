@@ -25,7 +25,7 @@ namespace tloc { namespace input {
   /// This manager follows the RAII principle.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
-            typename T_Platform = typename core::PlatformInfo<>::platform_type>
+            typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class InputManager
   {
   public:

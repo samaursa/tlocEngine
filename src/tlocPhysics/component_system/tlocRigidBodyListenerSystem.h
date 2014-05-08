@@ -4,7 +4,8 @@
 
 #include <tlocPhysics/tlocPhysicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/containers/tlocArray.h>
 
@@ -27,39 +28,27 @@ namespace tloc { namespace physics { namespace component_system {
     public core::component_system::EntityProcessingSystem
   {
   public:
-    typedef core::component_system::EntityProcessingSystem base_type;
-    typedef base_type::component_type   component_type;
-    typedef base_type::error_type       error_type;
+    typedef core_cs::EntityProcessingSystem           base_type;
 
-    typedef base_type::event_manager    event_manager;
-    typedef base_type::entity_manager   entity_manager;
-    typedef base_type::entity_type      entity_type;
-    typedef base_type::event_type       event_type;
-    typedef base_type::event_value_type event_value_type;
+    typedef box2d::ContactEvent                       contact_event_type;
+    typedef box2d::PhysicsManager                     physics_manager;
 
-    typedef box2d::ContactEvent             contact_event_type;
-    typedef box2d::PhysicsManager           physics_manager;
-
-    typedef core::containers::Array<contact_event_type> contact_event_list;
-    typedef core::containers::Array<contact_event_list> contact_event_list_list;
+    typedef core_conts::Array<contact_event_type>     contact_event_list;
+    typedef core_conts::Array<contact_event_list>     contact_event_list_list;
 
   public:
-    RigidBodyListenerSystem(event_manager_sptr a_eventMgr,
-                            entity_manager_sptr a_entityMgr,
+    RigidBodyListenerSystem(event_manager_ptr a_eventMgr,
+                            entity_manager_ptr a_entityMgr,
                             physics_manager* a_physicsMgr);
 
     virtual error_type Pre_Initialize();
     virtual error_type Post_Shutdown();
 
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
@@ -79,7 +68,8 @@ namespace tloc { namespace physics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(RigidBodyListenerSystem, rigid_body_listener_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(RigidBodyListenerSystem, rigid_body_listener_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(RigidBodyListenerSystem, rigid_body_listener_system);
 
 };};};
 

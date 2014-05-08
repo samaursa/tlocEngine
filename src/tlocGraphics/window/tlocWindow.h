@@ -16,6 +16,7 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 #include <tlocGraphics/window/tlocWindowHandle.h>
+#include <tlocGraphics/renderer/tlocRenderer.h>
 
 #include <tlocMath/types/tlocAspectRatio.h>
 
@@ -34,6 +35,7 @@ namespace tloc { namespace graphics { namespace win {
       lost_focus,
       gained_focus,
       destroy,
+      open_url,
 
       events_count
     };
@@ -41,6 +43,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef tl_size                           size_type;
     typedef core_ds::Tuple<size_type, 2>      dim_type;
     typedef core_ds::Variadic<size_type, 2>   variadic_type;
+    typedef core_str::String                  string_type;
 
     WindowEvent()
       : m_type(none)
@@ -48,9 +51,13 @@ namespace tloc { namespace graphics { namespace win {
     { }
 
     WindowEvent(const EventType& a_event,
-                tl_size a_sizeX, tl_size a_sizeY)
+                tl_size a_sizeX, tl_size a_sizeY,
+                const string_type& a_url = string_type(),
+                const string_type& a_urlSourceApplication = string_type())
       : m_type(a_event)
       , m_dim(variadic_type(a_sizeX, a_sizeY))
+      , m_url(a_url)
+      , m_urlSourceApplication(a_urlSourceApplication)
     { }
 
     size_type GetWidth() const
@@ -61,6 +68,9 @@ namespace tloc { namespace graphics { namespace win {
 
     EventType m_type;
     dim_type  m_dim;
+
+    string_type m_url;
+    string_type m_urlSourceApplication;
   };
 
   struct WindowCallbacks
@@ -95,11 +105,11 @@ namespace tloc { namespace graphics { namespace win {
   ///
   /// @sa tloc::core::NonCopyable
   ///-------------------------------------------------------------------------
-  template <typename T_Platform = typename core::PlatformInfo<>::platform_type>
+  template <typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Window_T
     : public core::base_classes::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
-    , public core::NonCopyable
+    , public core_bclass::NonCopyable_I
   {
   public:
 
@@ -110,6 +120,11 @@ namespace tloc { namespace graphics { namespace win {
     typedef typename WindowSettings::style_type          window_style_type;
     typedef tl_size                                      size_type;
     typedef math_t::AspectRatio                          aspect_ratio;
+    typedef gfx_rend::Renderer                           renderer_type;
+    typedef renderer_type::Params                        renderer_params_type;
+    typedef gfx_rend::renderer_sptr                      renderer_sptr;
+    typedef priv::WindowImpl<this_type>                  impl_type;
+    typedef WindowEvent::dim_type                        dim_type;
 
   public:
 
@@ -133,6 +148,7 @@ namespace tloc { namespace graphics { namespace win {
       typedef Loki::IsSameType<T_WindowHandleType, window_handle_type>
         win_handle_type;
       DoCreate(a_ptr, a_settings, Loki::Int2Type<win_handle_type::value>() );
+      DoSetupRenderer();
     }
 
     ///-------------------------------------------------------------------------
@@ -141,10 +157,7 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_mode The graphics mode
     /// @param  a_prop The window properties.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                window_style_type a_style = WindowSettings::style_titlebar |
-                                            WindowSettings::style_resize |
-                                            WindowSettings::style_close);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Closes the window and destroys internal implementations. Does NOT
@@ -179,6 +192,13 @@ namespace tloc { namespace graphics { namespace win {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets the width and height.
+    ///
+    /// @return The window dimensions
+    ///-------------------------------------------------------------------------
+    dim_type GetDimensions() const;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -243,6 +263,10 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     void SetActive(bool a_active = true) const;
 
+    bool IsActive() const;
+
+    bool HasValidContext() const;
+
     ///-------------------------------------------------------------------------
     /// Sets the visibility of the mouse cursor.
     ///
@@ -283,7 +307,7 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.
     ///-------------------------------------------------------------------------
-    void SwapBuffers();
+    void SwapBuffers() const;
 
     ///-------------------------------------------------------------------------
     /// Sends a WindowEvent to all registered objects
@@ -291,6 +315,13 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_event The WindowEvent
     ///-------------------------------------------------------------------------
     void SendEvent(const WindowEvent& a_event);
+
+    ///-------------------------------------------------------------------------
+    /// Get the window renderer
+    ///-------------------------------------------------------------------------
+    renderer_sptr GetRenderer() const;
+
+    TLOC_DECL_AND_DEF_GETTER(bool, IsMouseVisible, m_mouseVisible);
 
   private:
     typedef tloc::type_true   IsWindowHandle;
@@ -300,14 +331,15 @@ namespace tloc { namespace graphics { namespace win {
                   IsWindowHandle);
     void DoCreate(const graphics_mode& a_mode, const WindowSettings& a_settings,
                   IsNotWindowHandle);
-
+    void DoSetupRenderer();
   protected:
 
     void DoCreateImpl();
 
-    typedef priv::WindowImpl<this_type>     impl_type;
     impl_type*                              m_impl;
     core::containers::Queue<WindowEvent>    m_events;
+    bool                                    m_mouseVisible;
+    renderer_sptr                           m_renderer;
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -338,7 +370,6 @@ namespace tloc { namespace graphics { namespace win {
     /// @param  a_window The Window
     ///-------------------------------------------------------------------------
     void SetNonActiveWindow(Window_T<>* a_window);
-
   };
 
   //////////////////////////////////////////////////////////////////////////

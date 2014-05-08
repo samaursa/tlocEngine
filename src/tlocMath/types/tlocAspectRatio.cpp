@@ -1,5 +1,6 @@
 #include "tlocAspectRatio.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocMath/tlocMath.h>
 
 namespace tloc { namespace math { namespace types {

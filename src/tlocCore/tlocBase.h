@@ -16,13 +16,9 @@
 // Header files that will be included in almost every file in the engine.
 // Avoid including extra headers here
 
-#include <assert.h>
 #include <tlocCore/types/tlocNullptr.h>
-#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/platform/tlocPlatformDefines.h>
-
-#include <3rdParty/loki/TypeTraits.h>
 
 //////////////////////////////////////////////////////////////////////////
 // Make sure we are not using standard containers
@@ -37,14 +33,14 @@
 // Common macros
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
-# ifdef _SECURE_SCL
-# undef _SECURE_SCL
+# if defined (_MSC_VER)
+#   ifdef _SECURE_SCL
+#     undef _SECURE_SCL
+#   endif
+#   define _SECURE_SCL 0  // turn of checked iterators
+#   pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
+#   pragma inline_recursion( on )
 # endif
-
-# define _SECURE_SCL 0  // turn of checked iterators
-# pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
-# pragma inline_recursion( on )
-
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,6 +110,9 @@
   // Check for exception handling
 # if defined(_CPPUNWIND)
 #   define TLOC_CPPUNWIND_ENABLED
+#   define TLOC_THROW() throw
+# else
+#   define TLOC_THROW()
 # endif
   //------------------------------------------------------------------------
   // Check for RTTI
@@ -142,6 +141,7 @@
 # endif
 
 #else
+  // unsupported compiler
 # error WIP
 #endif
 
@@ -149,7 +149,8 @@
   //------------------------------------------------------------------------
   // Typedef fix for compilers
   // This fix is temporary until we can figure out a way to remove typename
-  // limitations from VS
+  // limitations from VS (i.e. adding typedef to VS fails to compile, while
+  // removing typedef fails to compile on LLVM)
 #if defined(_MSC_VER)
 # define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
   typedef _type_ _alias_
@@ -178,23 +179,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Memory
-//
-// Notes: The default memory allocator used is the nedmalloc which is a
-// derivation of doug lea malloc:
-//
-// http://www.nedprod.com/programs/portable/nedmalloc/
-//
-// If all of the following macros are commented out, the system defaults
-// to using the definitions contained in <memory.h>. To enable seamless
-// transitions, there are helper macros defined in <tlocMemory.h>
-//
-// Supported macros:
-// TLOC_USING_NED_MALLOC
-
-// Use nedmalloc
-#ifndef TLOC_USING_STD_ALLOC
-  //#define TLOC_USING_NED_MALLOC
-#endif
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)
@@ -299,115 +283,11 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// Assertions
-
-#define Setfram(x) #x
-#define S_(x) Setfram(x)
-#define S__LINE__ S_(__LINE__)
-
-//````````````````````````````````````````````````````````````````````````
-// Run-time
-
-#if defined(TLOC_DEBUG) || defined(TLOC_RELEASE_DEBUGINFO)
-
-// Sometimes VS gives the warning C4127: conditional expression is constant. To
-// circumvent that, TLOC_ASSERT for VS is slightly different.
-#if defined(_MSC_VER)
-  #define TLOC_ASSERT(_Expression, _Msg) \
-  assert( (_Msg, _Expression) )
-#else
-  #define TLOC_ASSERT(_Expression, _Msg) \
-  assert(_Expression && _Msg)
-#endif
-
-// Use this macro when warning the user of a potential problem that the user may
-// have overlooked. These can be safely disabled, i.e. the function guarantees
-// it will work properly with these asserts disabled
-#   ifndef TLOC_DISABLE_ASSERT_WARNINGS
-#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_ASSERT(_Expression, "[WARN] " #_Msg)
-#   else
-#     define TLOC_ASSERT_WARN(_Expression, _Msg) TLOC_UNUSED(_Expression); TLOC_UNUSED(_Msg)
-#   endif
-
-#else
-#define TLOC_ASSERT(_Expression, _Msg)
-#define TLOC_ASSERT_WARN(_Expression, _Msg)
-#endif
-
-// Other common asserts
-#define TLOC_ASSERT_NOT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ != nullptr, #_Pointer_ " cannot be NULL")
-#define TLOC_ASSERT_NULL(_Pointer_) TLOC_ASSERT(_Pointer_ == nullptr, #_Pointer_ " should be NULL")
-
-//````````````````````````````````````````````````````````````````````````
-// Compile time
-
-// TODO: solve static assert problems on LLVM
-#ifndef TLOC_DISABLE_STATIC_ASSERT
-# define TLOC_STATIC_ASSERT(_Expression, _Msg) STATIC_ASSERT(_Expression, _Msg##_xxxxxxxxxxxxx_)
-#else
-# define TLOC_STATIC_ASSERT(_Expression, _Msg)
-#endif
-
-# define TLOC_STATIC_ASSERT_FALSE(_type_, _Msg) \
-  TLOC_STATIC_ASSERT((Loki::IsSameType<_type_, UniqueDummyStruct>::value), _Msg)
-
-# define TLOC_STATIC_ASSERT_WIP() \
-  TLOC_STATIC_ASSERT(false, This_Function_Is_Unfinished)
-# define TLOC_ASSERT_WIP() \
-  TLOC_ASSERT(false, "This function is unfinished (Work in progress)!")
-
-# define TLOC_STATIC_ASSERT_IS_POINTER(_Type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_Type_>::isPointer, Type_must_be_a_POINTER);
-# define TLOC_STATIC_ASSERT_IS_NOT_POINTER(_Type_) \
-  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isPointer), Type_CANNOT_be_a_pointer);
-# define TLOC_STATIC_ASSERT_IS_REFERENCE(_Type_) \
-  TLOC_STATIC_ASSERT( (Loki::TypeTraits<_Type_>::isReference), Type_must_be_a_REFERENCE);
-# define TLOC_STATIC_ASSERT_IS_NOT_REFERENCE(_Type_) \
-  TLOC_STATIC_ASSERT( (!Loki::TypeTraits<_Type_>::isReference), Type_CANNOT_be_a_reference);
-
-# define TLOC_STATIC_ASSERT_IS_FLOAT(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isFloat, Type_must_be_a_FLOAT);
-# define TLOC_STATIC_ASSERT_IS_ARITH(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isArith, Type_must_be_an_ARITHMETIC);
-# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
-# define TLOC_STATIC_ASSERT_IS_INTEGRAL(_type_) \
-  TLOC_STATIC_ASSERT(Loki::TypeTraits<_type_>::isIntegral, Type_must_be_an_INTEGRAL);
-# define TLOC_STATIC_ASSERT_NOT_SUPPORTED(_type_, _toCompare_) \
-  TLOC_STATIC_ASSERT( !(Loki::IsSameType<_type_, _toCompare_>::value), Type_not_supported);
-
-//------------------------------------------------------------------------
-// Low level assertions
-// Define TLOC_ENABLE_ASSERT_LOW_LEVEL in your project to catch low level asserts
-// e.g. out of bounds access. These asserts are in areas that can be potentially
-// performance sensitive (e.g. vector/matrix accessors).
-
-#ifndef TLOC_DISABLE_ASSERT_LOW_LEVEL
-# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
-#endif
-
-//------------------------------------------------------------------------
-// Container assertions
-// Define TLOC_DISABLE_ASSERT_CONTAINERS in your project to disable assertions
-// for containers. These asserts are on by default in all configurations except
-// release WITHOUT debug info
-
-#if !defined(TLOC_DISABLE_ASSERT_CONTAINERS) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
-# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-// Logging
-
-#define TLOC_LOG_ERRORBOX ""
-#define TLOC_LOG_CHECKBOX ""
-
-//////////////////////////////////////////////////////////////////////////
 // Miscellaneous
+
+// Sometimes we have to pass templates in macros where commas don't work.
+// There we'll have to use this macro
+#define TLOC_COMMA() ,
 
 // Idea taken from WildMagic5
 // Avoid warnings about unused variables.  This is designed for variables
@@ -419,7 +299,7 @@
 #define TLOC_UNUSED_4(variable1, variable2, variable3, variable4) TLOC_UNUSED_3(variable1, variable2, variable3); TLOC_UNUSED(variable4)
 #define TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5) TLOC_UNUSED_4(variable1, variable2, variable3, variable4); TLOC_UNUSED(variable5)
 #define TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5); TLOC_UNUSED(variable6)
-#define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
+#define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
 
 // If a source file is empty (usually because of #ifdef) then the linker will
 // generate the LNK4221 warning complaining that no symbols were found and hence
@@ -436,6 +316,37 @@
 # define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE()
 # define TLOC_NOT_EMPTY_SOURCE_FILE()
 #endif
+
+// -----------------------------------------------------------------------
+// This macro returns the file instead of the full path from the macro
+// __FILE__
+
+#define TLOC_DEFINE_THIS_FILE_NAME() \
+  namespace {\
+  const char*\
+    LocalStrRChr(const char* a_string, char a_charToLocate)\
+  {\
+    const char* currChar = a_string;\
+    const char* charToRet = nullptr;\
+\
+    while(*currChar != 0)\
+    {\
+      if (*currChar == a_charToLocate)\
+      { charToRet = currChar; }\
+\
+      ++currChar;\
+    }\
+\
+    if (*currChar == a_charToLocate)\
+    { charToRet = currChar; }\
+\
+    return charToRet;\
+  }\
+\
+  static const char* const TLOC_THIS_FILE_NAME = \
+  LocalStrRChr(__FILE__, '/') ? LocalStrRChr(__FILE__, '/') + 1 : \
+  (LocalStrRChr(__FILE__, '\\') ? LocalStrRChr(__FILE__, '\\') + 1 : __FILE__);\
+  }
 
 ///-------------------------------------------------------------------------
 /// @brief This struct is used to diagnose template types.

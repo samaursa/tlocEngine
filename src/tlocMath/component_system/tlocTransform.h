@@ -3,8 +3,9 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
@@ -60,6 +61,9 @@ namespace tloc { namespace math { namespace component_system {
 
     void              SetPosition(const position_type& a_pos);
     void              SetOrientation(const orientation_type& a_ori);
+    void              SetTransformation(const transform_type& a_tr,
+                                        const scale_type& a_scale =
+                                        scale_type::ONE);
 
     this_type         Invert() const;
 
@@ -78,13 +82,17 @@ namespace tloc { namespace math { namespace component_system {
   typedef Transform_T<f32>        Transformf32;
   typedef Transform_T<f64>        Transformf64;
 
-  TLOC_TYPEDEF_SHARED_PTR(Transform, transform);
-  TLOC_TYPEDEF_SHARED_PTR(Transformf32, transform_f32);
-  TLOC_TYPEDEF_SHARED_PTR(Transformf64, transform_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transform, transform);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf32, transform_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf64, transform_f64);
 
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_sptr, transform_sptr);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_f32_sptr, transform_f32_sptr);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_f64_sptr, transform_f64_sptr);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transform, transform);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transformf32, transform_f32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transformf64, transform_f64);
+
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform_f32);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf64, transform_f64);
 
 };};};
 

@@ -4,39 +4,81 @@
 #include <tlocGraphics/tlocGraphicsBase.h>
 
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace graphics { namespace win {
+
+  namespace p_window_settings
+  {
+    namespace style
+    {
+      typedef tl_int                    value_type;
+
+      struct None       { static const value_type s_glParamName; };
+      struct TitleBar   { static const value_type s_glParamName; };
+      struct Resize     { static const value_type s_glParamName; };
+      struct Close      { static const value_type s_glParamName; };
+      struct FullScreen { static const value_type s_glParamName; };
+    };
+  };
 
   struct WindowSettings
   {
   public:
-    typedef core::string::String      string_type;
+    typedef WindowSettings                        this_type;
+    typedef core::string::String                  string_type;
+    typedef p_window_settings::style::value_type  style_type;
+    typedef u32                                   depth_bits_type;
+    typedef u32                                   stencil_bits_type;
+    typedef u32                                   anti_alias_type;
 
   public:
-    enum { style_none       = 0,
-           style_titlebar   = 1 << 0,
-           style_resize     = 1 << 1,
-           style_close      = 1 << 2,
-           style_fullscreen = 1 << 3}; typedef u32 style_type;
+    WindowSettings(string_type a_title);
 
-    WindowSettings
-      (string_type a_title,
-       style_type a_style = style_titlebar | style_resize | style_close,
-       u32 a_depthBits = 24, u32 a_stencilBits = 8,
-       u32 a_antiAlias = 0)
-       : m_title(a_title)
-       , m_style(a_style)
-       , m_depthBits(a_depthBits)
-       , m_stencilBits(a_stencilBits)
-       , m_antiAlias(a_antiAlias) {}
+    template <typename T_Style>
+    this_type& AddStyle();
+    this_type& ClearStyles();
+    TLOC_DECL_AND_DEF_GETTER(style_type, GetStyleBits, m_styleBits);
 
-    string_type   m_title;
-    style_type    m_style;
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetTitle, m_title);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetTitle, m_title);
 
-    u32           m_depthBits;
-    u32           m_stencilBits;
-    u32           m_antiAlias;
+    TLOC_DECL_AND_DEF_GETTER(depth_bits_type, GetDepthBits, m_depthBits);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(depth_bits_type, SetDepthBits, m_depthBits);
+
+    TLOC_DECL_AND_DEF_GETTER (stencil_bits_type, GetStencilBits, m_stencilBits);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN
+      (stencil_bits_type, SetStencilBits, m_stencilBits);
+
+    TLOC_DECL_AND_DEF_GETTER(anti_alias_type, GetAntiAlias, m_antiAlias);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(anti_alias_type, SetAntiAlias, m_antiAlias);
+
+  private:
+    string_type         m_title;
+    style_type          m_styleBits;
+
+    depth_bits_type     m_depthBits;
+    stencil_bits_type   m_stencilBits;
+    anti_alias_type     m_antiAlias;
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_Style>
+  WindowSettings::this_type&
+    WindowSettings::
+    AddStyle()
+  {
+    using namespace p_window_settings::style;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_Style, None, TitleBar, Resize, Close, FullScreen>();
+
+    m_styleBits |= T_Style::s_glParamName;
+    return *this;
+  }
 
 };};};
 

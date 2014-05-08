@@ -28,7 +28,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   
   template <TOUCH_SURFACE_IMPL_TEMP>
   TouchSurfaceImpl<TOUCH_SURFACE_IMPL_PARAMS>::
-    TouchSurfaceImpl(parent_type* a_parent,
+    TouchSurfaceImpl(parent_type& a_parent,
     const touch_surface_param_type& a_params)
     : base_type(a_parent, a_params)
   {
@@ -134,17 +134,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         case TouchSurfaceBufferedElement::begin:
         {
-          m_parent->SendOnTouchPress((*itr).m_event);
+          m_parent.SendOnTouchPress((*itr).m_event);
           break;
         }
         case TouchSurfaceBufferedElement::end:
         {
-          m_parent->SendOnTouchRelease((*itr).m_event);
+          m_parent.SendOnTouchRelease((*itr).m_event);
           break;
         }
         case TouchSurfaceBufferedElement::move:
         {
-          m_parent->SendOnTouchMove((*itr).m_event);
+          m_parent.SendOnTouchMove((*itr).m_event);
           break;
         }
 

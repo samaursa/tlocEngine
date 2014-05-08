@@ -7,6 +7,7 @@
 
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/iterators/tlocIterator.inl.h>
+#include <tlocCore/utilities/tlocType.h>
 
 namespace tloc { namespace core { namespace containers {
 
@@ -1135,7 +1136,7 @@ namespace tloc { namespace core { namespace containers {
                                        const T_Integer& aValueCopy, is_arith)
   {
     DoAssignValues(static_cast<size_type>(aNumTimes),
-                   static_cast<size_type>(aValueCopy));
+                   core_utils::CastNumber<value_type>(aValueCopy));
   }
 
   template <LIST_TEMP_TYPES>
@@ -1363,5 +1364,13 @@ namespace tloc { namespace core { namespace containers {
   }
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_LIST(_type_)\
+  template class tloc::core_conts::List<_type_, tloc::core_conts::ListNode<_type_, tloc::core::doubly_linked_tag> >;\
+  template class tloc::core_conts::List<_type_, tloc::core_conts::ListNode<_type_, tloc::core::singly_linked_tag> >
+
+#define TLOC_EXPLICITLY_INSTANTIATE_LIST_NO_DEDICATED_SIZE(_type_)\
+  template class tloc::core_conts::List<_type_, tloc::core_conts::ListNode<_type_, tloc::core::doubly_linked_tag>, tloc::core_conts::List_Dynamic, false>;\
+  template class tloc::core_conts::List<_type_, tloc::core_conts::ListNode<_type_, tloc::core::singly_linked_tag>, tloc::core_conts::List_Dynamic, false>
 
 #endif

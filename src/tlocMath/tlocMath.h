@@ -146,8 +146,10 @@ namespace tloc {
     T Epsilon();
 
     template <typename T>
-    bool Approx(T a_num1, T a_num2);
+    bool Approx(T a_num1, T a_num2, T eps);
 
+    template <typename T>
+    bool IsEqual(T a_num1, T a_num2);
   };
 
 };

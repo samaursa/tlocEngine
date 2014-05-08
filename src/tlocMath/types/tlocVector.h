@@ -4,25 +4,13 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include "tlocMath/tlocMath.h"
-
-// If defined, simple assertions will be enabled in this class. Enabled by
-// default in debug
-#ifdef TLOC_DEBUG
-#define TLOC_VECTOR_ENABLE_ASSERTS
-#endif
-
-// If assertions are not enabled, we do not want TLOC_ASSERT to work anymore
-#ifdef TLOC_VECTOR_ENABLE_ASSERTS
-#define TLOC_ASSERT_VEC(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-#define TLOC_ASSERT_VEC(_Expression, _Msg)
-#endif
 
 namespace tloc { namespace math { namespace types {
 

@@ -29,30 +29,34 @@ namespace tloc { namespace core { namespace component_system {
   public:
     using EventBase::event_type;
 
-    EntityEvent(event_type a_eventType, Entity* a_entity)
+    EntityEvent(event_type a_eventType, entity_vptr a_entity)
       : EventBase(a_eventType), m_entity(a_entity) {}
 
-    Entity* m_entity;
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(entity_vptr, GetEntity, m_entity);
+
+  private:
+    entity_vptr m_entity;
   };
 
   class EntityComponentEvent : public EventBase
   {
   public:
-    typedef Component             component_type;
+    typedef component_sptr             component_ptr_type;
+
     using EventBase::event_type;
 
-    EntityComponentEvent(event_type a_eventType, Entity* a_entity,
-                         component_type* a_type)
+    EntityComponentEvent(event_type a_eventType, entity_vptr a_entity,
+                         component_ptr_type a_type)
                          : EventBase(a_eventType)
                          , m_entity(a_entity)
                          , m_component(a_type) {}
 
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT(Entity*, GetEntity, m_entity);
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT(component_type*, GetComponent, m_component);
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(entity_vptr, GetEntity, m_entity);
+    TLOC_DECL_AND_DEF_GETTERS_DIRECT(component_ptr_type, GetComponent, m_component);
 
   private:
-    Entity*           m_entity;
-    component_type*   m_component;
+    entity_vptr         m_entity;
+    component_ptr_type  m_component;
   };
 
 };};};

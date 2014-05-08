@@ -5,11 +5,13 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 
+#include <tlocMath/tlocRange.h>
+#include <tlocMath/utilities/tlocScale.h>
+
 namespace tloc { namespace graphics { namespace types {
 
   namespace
   {
-    const Color::value_type g_minValue = 0;
     const Color::value_type g_maxValue = 255;
 
     //------------------------------------------------------------------------
@@ -167,19 +169,15 @@ namespace tloc { namespace graphics { namespace types {
   const Color Color::COLOR_BLACK = Color(0, 0, 0, 255);
   const Color Color::COLOR_WHITE = Color(255, 255, 255, 255);
 
-  Color::Color() : m_rgba(0)
+  Color::
+    Color() : m_rgba(0)
   { }
 
   template <typename T_ValueType>
-  Color::Color(T_ValueType a_R, T_ValueType a_G,
-               T_ValueType a_B, T_ValueType a_A)
-  {
-    SetAs(a_R, a_G, a_B, a_A);
-  }
-
-  template <typename T_ValueType>
-  void Color::DoSetAs(T_ValueType a_R, T_ValueType a_G,
-                      T_ValueType a_B, T_ValueType a_A)
+  void
+    Color::
+    DoSetAs(T_ValueType a_R, T_ValueType a_G,
+            T_ValueType a_B, T_ValueType a_A)
   {
     typedef typename Loki::Select <
                                    Loki::TypeTraits<T_ValueType>::isFloat,
@@ -190,28 +188,38 @@ namespace tloc { namespace graphics { namespace types {
   }
 
   template <typename T_ColorFormat>
-  Color::int_type Color::DoGetAs()
+  Color::int_type
+    Color::
+    DoGetAs() const
   {
     return priv::DoGetAs(m_rgba, T_ColorFormat());
   }
 
   template <typename T_ColorFormat, typename T_VectorType>
-  void Color::DoGetAs(T_VectorType& a_vec)
+  void
+    Color::
+    DoGetAs(T_VectorType& a_vec) const
   {
     priv::DoGetAs(m_rgba, a_vec, T_ColorFormat());
   }
 
-  Color::value_type& Color::operator[](tl_int a_index)
+  Color::value_type&
+    Color::
+    operator[](tl_int a_index)
   {
     return m_rgba[a_index];
   }
 
-  const Color::value_type& Color::operator[](tl_int a_index) const
+  const Color::value_type&
+    Color::
+    operator[](tl_int a_index) const
   {
     return m_rgba[a_index];
   }
 
-  Color Color::operator +(const Color &a_other)
+  Color
+    Color::
+    operator +(const Color &a_other) const
   {
     Color temp(*this);
     temp[0] += a_other[0];
@@ -222,7 +230,9 @@ namespace tloc { namespace graphics { namespace types {
     return temp;
   }
 
-  Color& Color::operator +=(const Color &a_other)
+  Color&
+    Color::
+    operator +=(const Color &a_other)
   {
     m_rgba[0] += a_other[0];
     m_rgba[1] += a_other[1];
@@ -232,7 +242,9 @@ namespace tloc { namespace graphics { namespace types {
     return *this;
   }
 
-  Color Color::operator *(const Color &a_other)
+  Color
+    Color::
+    operator *(const Color &a_other) const
   {
     Color temp(*this);
     temp[0] *= a_other[0];
@@ -243,7 +255,9 @@ namespace tloc { namespace graphics { namespace types {
     return temp;
   }
 
-  Color& Color::operator *=(const Color &a_other)
+  Color&
+    Color::
+    operator *=(const Color &a_other)
   {
     m_rgba[0] *= a_other[0];
     m_rgba[1] *= a_other[1];
@@ -253,7 +267,9 @@ namespace tloc { namespace graphics { namespace types {
     return *this;
   }
 
-  Color Color::operator -(const Color &a_other)
+  Color
+    Color::
+    operator -(const Color &a_other) const
   {
     Color temp(*this);
     temp[0] -= a_other[0];
@@ -264,7 +280,9 @@ namespace tloc { namespace graphics { namespace types {
     return temp;
   }
 
-  Color& Color::operator -=(const Color &a_other)
+  Color&
+    Color::
+    operator -=(const Color &a_other)
   {
     m_rgba[0] -= a_other[0];
     m_rgba[1] -= a_other[1];
@@ -274,7 +292,55 @@ namespace tloc { namespace graphics { namespace types {
     return *this;
   }
 
-  bool Color::operator ==(const Color &a_other)
+  Color
+    Color::
+    operator * (real_type a_other) const
+  {
+    math_t::Vector4<real_type>  col;
+    GetAs<p_color::format::RGBA>(col);
+
+    col *= a_other;
+
+    this_type newCol(col[0], col[1], col[2], col[3]);
+    return newCol;
+  }
+
+  Color&
+    Color::
+    operator *=(real_type a_other)
+  {
+    this_type temp = *this * a_other;
+    
+    core::swap(temp, *this);
+    return *this;
+  }
+
+  Color
+    Color::
+    operator / (real_type a_other) const
+  {
+    math_t::Vector4<real_type>  col;
+    GetAs<p_color::format::RGBA>(col);
+
+    col /= a_other;
+
+    this_type newCol(col[0], col[1], col[2], col[3]);
+    return newCol;
+  }
+
+  Color&
+    Color::
+    operator /=(real_type a_other)
+  {
+    this_type temp = *this / a_other;
+
+    core::swap(temp, *this);
+    return *this;
+  }
+
+  bool
+    Color::
+    operator ==(const Color &a_other) const
   {
     return ( m_rgba[0] == a_other[0] &&
              m_rgba[1] == a_other[1] &&
@@ -282,7 +348,9 @@ namespace tloc { namespace graphics { namespace types {
              m_rgba[3] == a_other[3] );
   }
 
-  bool Color::operator !=(const Color &a_other)
+  bool
+    Color::
+    operator !=(const Color &a_other) const
   {
     return !operator==(a_other);
   }
@@ -292,19 +360,10 @@ namespace tloc { namespace graphics { namespace types {
 
   using namespace tloc::math::types;
 
-  template int_color_type Color::DoGetAs<p_color::format::RGBA>();
-  template int_color_type Color::DoGetAs<p_color::format::ABGR>();
-  template int_color_type Color::DoGetAs<p_color::format::ARGB>();
-  template int_color_type Color::DoGetAs<p_color::format::BGRA>();
-
-  // The reason for template ctors is to avoid declaring the constructors for
-  // all of the following types. s32 and s64 are there to facilitate casting
-  // from an r-value constant.
-  template Color::Color(u8, u8, u8, u8);
-  template Color::Color(s32, s32, s32, s32);
-  template Color::Color(s64, s64, s64, s64);
-  template Color::Color(f32, f32, f32, f32);
-  template Color::Color(f64, f64, f64, f64);
+  template int_color_type Color::DoGetAs<p_color::format::RGBA>() const;
+  template int_color_type Color::DoGetAs<p_color::format::ABGR>() const;
+  template int_color_type Color::DoGetAs<p_color::format::ARGB>() const;
+  template int_color_type Color::DoGetAs<p_color::format::BGRA>() const;
 
   template void Color::DoSetAs(u8, u8, u8, u8);
   template void Color::DoSetAs(s32, s32, s32, s32);
@@ -313,10 +372,10 @@ namespace tloc { namespace graphics { namespace types {
   template void Color::DoSetAs(f64, f64, f64, f64);
 
 #define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
-  template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&);\
-  template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&);\
-  template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&);\
-  template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&)
+  template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&) const;\
+  template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&) const;\
+  template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&) const;\
+  template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&) const
 
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);
   TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f64);

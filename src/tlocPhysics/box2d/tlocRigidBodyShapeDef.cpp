@@ -22,7 +22,20 @@ namespace tloc { namespace physics { namespace box2d {
   //////////////////////////////////////////////////////////////////////////
   // RigidBodyShapeDef
 
-  void RigidBodyShapeDef::DoSetShape(const rect_type& a_rect)
+  RigidBodyShapeDef::
+    RigidBodyShapeDef()
+  {
+    SetFriction(0.2f);
+    SetRestitution(0.0f);
+    SetDensity(1.0f);
+    SetSensor(false);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RigidBodyShapeDef::
+    DoSetShape(const rect_type& a_rect)
   {
     using core::utils::CastTo32;
     typedef b2PolygonShape          polygon_shape_internal_type;
@@ -43,7 +56,11 @@ namespace tloc { namespace physics { namespace box2d {
     m_internalShape = shape_internal_type_sptr(rect);
   }
 
-  void RigidBodyShapeDef::DoSetShape(const circle_type& a_circle)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RigidBodyShapeDef::
+    DoSetShape(const circle_type& a_circle)
   {
     typedef b2CircleShape             circle_shape_internal_type;
     typedef circle_type::point_type   point_type;
@@ -61,14 +78,18 @@ namespace tloc { namespace physics { namespace box2d {
     m_internalShape = shape_internal_type_sptr(circle);
   }
 
-  void RigidBodyShapeDef::DoSetParent(const entity_type* a_parent)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RigidBodyShapeDef::
+    DoSetParent(const entity_type* a_parent)
   {
     m_fixtureDef.userData = const_cast<entity_type*>(a_parent);
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  template class core::smart_ptr::SharedPtr<b2Shape>;
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(b2Shape);

@@ -5,10 +5,10 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
-
 #include <tlocMath/component_system/tlocComponentType.h>
-
 #include <tlocPhysics/component_system/tlocComponentType.h>
+
+#include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace physics {
 
@@ -29,22 +29,7 @@ namespace tloc { namespace prefab { namespace physics {
     using namespace math_cs;
     using namespace math_cs::components;
 
-    typedef ComponentPoolManager                    pool_mgr;
-    typedef tloc::math_cs::transform_f32_pool       t_pool;
-
-    transform_f32_pool_vptr                         tPool;
-
-    if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<Transform>(); }
-    else
-    { tPool = m_compPoolMgr->GetPool<Transform>(); }
-
-    t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(core_sptr::MakeShared<Transform>());
-
     entity_ptr ent = m_entMgr->CreateEntity();
-    m_entMgr->InsertComponent(ent, *(*itrTransform)->GetValuePtr() );
-
     Add(ent, a_rbDef);
 
     return ent;
@@ -59,16 +44,20 @@ namespace tloc { namespace prefab { namespace physics {
     using namespace tloc::physics::component_system;
     using namespace tloc::physics::component_system::components;
 
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // RigidBody component
+
     typedef ComponentPoolManager      pool_mgr;
     typedef rigid_body_pool           rb_pool;
 
-    rigid_body_pool_vptr              rbPool;
-
-    // Create the RigidBody (and the RigidBody pool if necessary)
-    if (m_compPoolMgr->Exists(k_rigidBody) == false)
-    { rbPool = m_compPoolMgr->CreateNewPool<phys_cs::RigidBody>(); }
-    else
-    { rbPool = m_compPoolMgr->GetPool<phys_cs::RigidBody>(); }
+    rigid_body_pool_vptr rbPool
+      = m_compPoolMgr->GetOrCreatePool<phys_cs::RigidBody>();
 
     rb_pool::iterator itrRb = rbPool->GetNext();
     (*itrRb)->SetValue(core_sptr::MakeShared<phys_cs::RigidBody>(a_rbDef) );
@@ -89,14 +78,8 @@ namespace tloc { namespace prefab { namespace physics {
     typedef ComponentPoolManager        pool_mgr;
     typedef rigid_body_shape_pool       rb_shape_pool;
 
-    rigid_body_shape_pool_vptr          rbShapePool;
-
-    // Create the RigidBody (and the RigidBody pool if necessary)
-    if (m_compPoolMgr->Exists(k_rigidBodyShape) == false)
-    { rbShapePool = m_compPoolMgr->CreateNewPool<phys_cs::RigidBodyShape>(); }
-    else
-    { rbShapePool = m_compPoolMgr->GetPool<phys_cs::RigidBodyShape>(); }
-
+    rigid_body_shape_pool_vptr rbShapePool 
+      = m_compPoolMgr->GetOrCreatePool<phys_cs::RigidBodyShape>();
 
     rb_shape_pool::iterator itrRbShape = rbShapePool->GetNext();
     (*itrRbShape)->SetValue
@@ -139,13 +122,8 @@ namespace tloc { namespace prefab { namespace physics {
     typedef ComponentPoolManager                pool_mgr;
     typedef rigid_body_listener_pool            rb_listener_pool;
 
-    rigid_body_listener_pool_vptr               rbListenerPool;
-
-    // Create the RigidBody (and the RigidBody pool if necessary)
-    if (m_compPoolMgr->Exists(k_rigidBodyListener) == false)
-    { rbListenerPool = m_compPoolMgr->CreateNewPool<phys_cs::RigidBodyListener>(); }
-    else
-    { rbListenerPool = m_compPoolMgr->GetPool<phys_cs::RigidBodyListener>(); }
+    rigid_body_listener_pool_vptr rbListenerPool
+      = m_compPoolMgr->GetOrCreatePool<phys_cs::RigidBodyListener>();
 
     rb_listener_pool::iterator itrRbListener = rbListenerPool->GetNext();
     (*itrRbListener)->SetValue

@@ -1,12 +1,13 @@
 #include "tlocCuboid.h"
 
 #include <tlocCore/tlocAssert.h>
-
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/types/tlocCuboid.h>
 
 #include <tlocGraphics/component_system/tlocMesh.h>
+
+#include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -50,12 +51,9 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
 
     typedef gfx_cs::mesh_pool             mesh_pool;
-    gfx_cs::mesh_pool_vptr                meshPool;
 
-    if (m_compPoolMgr->Exists(mesh) == false)
-    { meshPool = m_compPoolMgr->CreateNewPool<gfx_cs::Mesh>(); }
-    else
-    { meshPool = m_compPoolMgr->GetPool<gfx_cs::Mesh>(); }
+    gfx_cs::mesh_pool_vptr  meshPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Mesh>();
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
     (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
@@ -271,21 +269,13 @@ namespace tloc { namespace prefab { namespace graphics {
     { meshPtr->AddVertex(*itr); }
 
     // -----------------------------------------------------------------------
+    // transform component
 
-    typedef math_cs::transform_f32_pool           t_pool;
-    math_cs::transform_f32_pool_vptr              tPool;
-
-    if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
-    else
-    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
-
-    t_pool::iterator  itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(MakeShared<Transform>());
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
 
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr() );
     m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValuePtr() );
 
   }

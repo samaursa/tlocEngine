@@ -152,6 +152,14 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
+  WINDOW_TYPE::dim_type Window_T<WINDOW_PARAMS>::
+    GetDPI() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetDPI();
+  }
+
+  template <WINDOW_TEMP>
   WINDOW_TYPE::size_type Window_T<WINDOW_PARAMS>::
     GetMaxWidth() const
   {

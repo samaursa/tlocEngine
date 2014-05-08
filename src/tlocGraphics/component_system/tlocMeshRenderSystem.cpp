@@ -137,11 +137,11 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-    m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+    if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
+    { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
 
-    so_mesh->PrepareAllAttributes(*m_shaderPtr);
-    so_mesh->EnableAllAttributes(*m_shaderPtr);
+    if (so_mesh->PrepareAllAttributes(*m_shaderPtr).Succeeded())
+    { so_mesh->EnableAllAttributes(*m_shaderPtr); }
 
     glDrawArrays(GL_TRIANGLES, 0,
                  core_utils::CastNumber<GLsizei, tl_size>(numVertices));

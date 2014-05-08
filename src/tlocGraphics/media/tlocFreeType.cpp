@@ -82,7 +82,6 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     if (currentSize != a_charSize)
     {
       FT_Error err = FT_Set_Pixel_Sizes(m_face, 0, a_charSize);
-      //FT_Error err = FT_Set_Char_Size(m_face, 0, a_charSize * 64, 500, 500);
 
       TLOC_LOG_GFX_WARN_IF(err != 0)
         << "Unable to set current font size to: " << a_charSize;
@@ -111,7 +110,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
       ft_ulong index = FT_Get_Char_Index(m_face, a_charCode);
 
       FT_Error err = FT_Get_Kerning(m_face, leftIndex, index,
-                                    FT_KERNING_UNFITTED, &delta);
+                                    FT_KERNING_DEFAULT, &delta);
 
       TLOC_LOG_GFX_ERR_IF(err != 0)
         << "Could not get kerning for characters (" << a_leftCharCode

@@ -178,6 +178,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   TextureObject::Params::
     Params()
+    : m_autoGenMipMaps(false)
   {
     using namespace p_texture_object;
     using namespace p_texture_object::wrap_technique;
@@ -191,6 +192,13 @@ namespace tloc { namespace graphics { namespace gl {
     InternalFormat<internal_format::RGBA>();
     Format<format::RGBA>();
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TextureObject::Params::
+    AutoGenerateMipMaps(bool a_autoGenMipMaps)
+  { m_autoGenMipMaps = a_autoGenMipMaps; }
 
   //////////////////////////////////////////////////////////////////////////
   // TextureObject
@@ -247,6 +255,9 @@ namespace tloc { namespace graphics { namespace gl {
       core_utils::CastNumber<GLsizei>(m_dim[1]),
       0, m_params.GetFormat(), GL_UNSIGNED_BYTE, &*a_image.GetPixels().begin() );
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glBindTexture()");
+
+    if (m_params.IsAutoGenMipMaps())
+    { glGenerateMipmap(m_params.GetTextureType()); }
 
     Update();
 

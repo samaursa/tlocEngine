@@ -59,6 +59,8 @@ namespace tloc { namespace math { namespace proj {
 
     ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
 
+    TLOC_DECL_AND_DEF_SETTER(matrix_type,
+                             SetProjectionMatrix, m_projMatrix);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(matrix_type,
                                           GetProjectionMatrix, m_projMatrix);
 

@@ -114,6 +114,8 @@ set(TLOC_GRAPHICS_MEDIA
   media/tloc_media.inl.h
   media/tlocFont.h
   media/tlocFont.cpp
+  media/tlocFontSize.h
+  media/tlocFontSize.cpp
   media/tlocFreeType.h
   media/tlocFreeType.cpp
   media/tlocGlyph.h

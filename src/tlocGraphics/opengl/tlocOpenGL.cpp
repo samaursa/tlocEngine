@@ -22,107 +22,6 @@ namespace tloc { namespace graphics { namespace gl {
   typedef core_err::Error           error_type;
 
   // ///////////////////////////////////////////////////////////////////////
-  // InitializePlatform
-
-  namespace {
-
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-    static bool g_platformInitialized = false;
-#else
-    // nothing needs to be done on other platforms
-    static bool g_platformInitialized = true;
-#endif
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    template <typename T_Platform>
-    bool
-      DoIsPlatformInitialized(T_Platform)
-    { return g_platformInitialized; }
-    
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    template <typename T_Platform>
-    core_err::Error
-      DoInitializePlatform(T_Platform)
-    { return ErrorSuccess; }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
-
-    bool
-      DoIsPlatformInitialized(core_plat::p_platform_info::win)
-    { return gl::OpenGLExt::IsInitialized(); }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    core_err::Error
-      DoInitializePlatform(core_plat::p_platform_info::win)
-    {
-      if (g_platformInitialized == false)
-      {
-        error_type res = gl::OpenGLExt::Initialize();
-        if (res != common_error_types::error_initialize)
-        { return res; }
-
-        g_platformInitialized = true;
-        return TLOC_ERROR(common_error_types::error_success);
-      }
-
-      return TLOC_ERROR(common_error_types::error_already_initialized);
-    }
-
-#endif
-
-  };
-
-  core_err::Error
-    InitializePlatform()
-  {
-    AssertOpenGLContextExists();
-
-    if ( DoIsPlatformInitialized( core_plat::PlatformInfo::platform_type() ) )
-    { return ErrorSuccess; }
-
-    core_err::Error err =
-      DoInitializePlatform(core_plat::PlatformInfo::platform_type());
-    if (err.Succeeded())
-    {
-      g_platformInitialized = true;
-
-      TLOC_LOG_GFX_INFO_NO_FILENAME() << "OpenGL Version: " << (const char*)glGetString(GL_VERSION);
-      TLOC_LOG_GFX_INFO_NO_FILENAME() << "GLSL Version: " << (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
-      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
-      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Renderer: " << (const char*)glGetString(GL_RENDERER);
-      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total VertexAttribArrays: " << Get<p_get::MaxVertexAttribs>();
-
-      return ErrorSuccess;
-    }
-    else
-    {
-      g_platformInitialized = false;
-      return err;
-    }
-  }
-
-  bool
-    IsPlatformInitialized()
-  {
-    return g_platformInitialized;
-  }
-
-  void
-    AssertOpenGLContextExists()
-  {
-    TLOC_ASSERT(gfx_win::GetCurrentActiveWindow() ?
-                gfx_win::GetCurrentActiveWindow()->HasValidContext() :
-                false,
-                "No OpenGL context exists (destroyed?) OR no existing context "
-                "has been set as active");
-  }
-
-  // ///////////////////////////////////////////////////////////////////////
   // OpenGL get functions
 
   namespace p_get
@@ -175,7 +74,100 @@ namespace tloc { namespace graphics { namespace gl {
 #endif
   };
 
-  //------------------------------------------------------------------------
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexAttribArrays
+
+  namespace vertex_attrib_array {
+
+    using namespace gfx_t;
+
+    // -----------------------------------------------------------------------
+
+    namespace {
+      core_conts::Array<gl_int, core_conts::Array_Unordered> g_enabledAttributes;
+    };
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    bool 
+      Enable(gl_int a_index)
+    {
+      if (IsEnabled(a_index) == false)
+      { 
+        g_enabledAttributes.push_back(a_index);
+        glEnableVertexAttribArray(a_index);
+        return true;
+      }
+      else
+      {
+        TLOC_LOG_GFX_WARN() << "VertexAttribArray(" << a_index << ")"
+          << " already enabled";
+        return false;
+      }
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    bool
+      EnableIfDisabled(gfx_t::gl_int a_index)
+    {
+      if (IsEnabled(a_index))
+      { return false; }
+      else
+      { return Enable(a_index); }
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    bool 
+      IsEnabled(gfx_t::gl_int a_index)
+    { 
+      return core::find_all(g_enabledAttributes, a_index) != 
+             g_enabledAttributes.end();
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    bool 
+      Disable(gfx_t::gl_int a_index)
+    {
+      if (IsEnabled(a_index))
+      { 
+        g_enabledAttributes.erase
+          (core::remove_all(g_enabledAttributes, a_index), 
+           g_enabledAttributes.end());
+
+        glDisableVertexAttribArray(a_index);
+        return true;
+      }
+      else
+      {
+        TLOC_LOG_GFX_WARN() << "VertexAttribArray(" << a_index << ")"
+          << " already disabled";
+        return false;
+      }
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      DisableAll()
+    { core::for_each_all(g_enabledAttributes, Disable); }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      ForceDisableAll()
+    {
+      gl_int maxAttribs = g_enabledAttributes.size();
+
+      for (gl_int i = 0; i < maxAttribs; ++i)
+      { glDisableVertexAttribArray(i); }
+    }
+
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
   // Texture units
 
   namespace
@@ -298,6 +290,123 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(IsValidTextureImageUnit(a_texImgUnit), "Invalid texture image unit");
 
     return a_texImgUnit - GL_TEXTURE0;
+  }
+  
+  // ///////////////////////////////////////////////////////////////////////
+  // InitializePlatform
+
+  namespace {
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+    static bool g_platformInitialized = false;
+#else
+    // nothing needs to be done on other platforms
+    static bool g_platformInitialized = true;
+#endif
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Platform>
+    bool
+      DoIsPlatformInitialized(T_Platform)
+    { return g_platformInitialized; }
+    
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Platform>
+    core_err::Error
+      DoInitializePlatform(T_Platform)
+    { return ErrorSuccess; }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#if defined(TLOC_WIN32) || defined(TLOC_WIN64)
+
+    bool
+      DoIsPlatformInitialized(core_plat::p_platform_info::win)
+    { return gl::OpenGLExt::IsInitialized(); }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    core_err::Error
+      DoInitializePlatform(core_plat::p_platform_info::win)
+    {
+      if (g_platformInitialized == false)
+      {
+        error_type res = gl::OpenGLExt::Initialize();
+        if (res != common_error_types::error_initialize)
+        { return res; }
+
+        g_platformInitialized = true;
+        return TLOC_ERROR(common_error_types::error_success);
+      }
+
+      return TLOC_ERROR(common_error_types::error_already_initialized);
+    }
+
+#endif
+
+  };
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void DoInitializeInternalVariables()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  core_err::Error
+    InitializePlatform()
+  {
+    AssertOpenGLContextExists();
+
+    if ( DoIsPlatformInitialized( core_plat::PlatformInfo::platform_type() ) )
+    { return ErrorSuccess; }
+
+    core_err::Error err =
+      DoInitializePlatform(core_plat::PlatformInfo::platform_type());
+    if (err.Succeeded())
+    {
+      g_platformInitialized = true;
+
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "-------------- GFX Platform Info --------------";
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "OpenGL Version: " << (const char*)glGetString(GL_VERSION);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "GLSL Version: " << (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Hardware: " << (const char*)glGetString(GL_RENDERER);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total VertexAttribArrays: " << Get<p_get::MaxVertexAttribs>();
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "-----------------------------------------------";
+
+      // internal variables that need a one time setup
+      DoInitializeInternalVariables();
+
+      return ErrorSuccess;
+    }
+    else
+    {
+      g_platformInitialized = false;
+      return err;
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    IsPlatformInitialized()
+  {
+    return g_platformInitialized;
+  }
+  
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    AssertOpenGLContextExists()
+  {
+    TLOC_ASSERT(gfx_win::GetCurrentActiveWindow() ?
+                gfx_win::GetCurrentActiveWindow()->HasValidContext() :
+                false,
+                "No OpenGL context exists (destroyed?) OR no existing context "
+                "has been set as active");
   }
 
 };};};

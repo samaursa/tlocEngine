@@ -269,6 +269,9 @@ namespace tloc { namespace graphics { namespace gl {
   ShaderProgram::error_type
     ShaderProgram::Enable() const
   {
+    // disable all previously enabled vertex attributes
+    gl::vertex_attrib_array::DisableAll();
+
     glUseProgram(GetHandle());
     gl::Error err;
     if (err.Failed())

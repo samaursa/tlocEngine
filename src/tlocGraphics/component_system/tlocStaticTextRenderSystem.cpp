@@ -58,6 +58,7 @@ namespace tloc { namespace graphics { namespace component_system {
                   "StaticText should be stored in m_allText container");
 
       DoAlignText(*itr);
+      staticText->SetUpdateRequired(false);
     }
   }
 

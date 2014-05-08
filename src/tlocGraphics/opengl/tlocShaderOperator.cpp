@@ -3,6 +3,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -75,10 +76,33 @@ namespace tloc { namespace graphics { namespace gl {
       k_count
     };
 
+    // -----------------------------------------------------------------------
+    // DoSetReturn
+
+    struct DoSetReturn
+    {
+    public:
+      typedef DoSetReturn                               this_type;
+
+
+    public:
+      DoSetReturn()
+        : m_vertexAttribArrayIndex(g_unableToFindIndex)
+        , m_location(g_unableToFindIndex)
+      { }
+
+      bool IsVertexAttribArrayEnabled()
+      { return m_vertexAttribArrayIndex == -1; }
+
+      TLOC_DECL_PARAM_VAR(GLint, VertexAttribArrayIndex, m_vertexAttribArrayIndex);
+      TLOC_DECL_PARAM_VAR(GLint, Location, m_location);
+    };
+
     //------------------------------------------------------------------------
     // Functions
 
-    GLint DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
+    DoSetReturn
+      DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
     {
       using namespace core;
 
@@ -549,12 +573,13 @@ namespace tloc { namespace graphics { namespace gl {
         }
       }
 
-      return -1;
+      return DoSetReturn();
     }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    GLint DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
+    DoSetReturn 
+      DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
 
@@ -562,7 +587,7 @@ namespace tloc { namespace graphics { namespace gl {
       bool isShared = a_attribute.IsArrayPtr();
       bool isVertexArray = a_attribute.IsAttribArray();
 
-      GLint enabledVertexAttribArray = -1; // -1 means no attrib array enabled
+      DoSetReturn toRet;
 
       switch(a_info.m_type)
       {
@@ -592,8 +617,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -642,8 +667,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -693,8 +718,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -743,8 +768,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -794,8 +819,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -844,8 +869,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -895,8 +920,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -946,8 +971,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -996,8 +1021,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -1045,8 +1070,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -1096,8 +1121,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -1147,8 +1172,8 @@ namespace tloc { namespace graphics { namespace gl {
               data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
               glVertexAttribPointer
                 (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              glEnableVertexAttribArray(a_info.m_location);
-              enabledVertexAttribArray = a_info.m_location;
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
             }
           }
           else
@@ -1178,7 +1203,7 @@ namespace tloc { namespace graphics { namespace gl {
         }
       }
 
-      return enabledVertexAttribArray;
+      return toRet;
     }
   }
 
@@ -1197,7 +1222,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     ShaderOperator::error_type retError = ErrorSuccess;
 
-    GLint variableLocation = g_unableToFindIndex;
+    DoSetReturn variableLocation;
 
     svc_iterator itr, itrEnd;
     for (itr = a_shaderUserVars.begin(), itrEnd = a_shaderUserVars.end();
@@ -1229,10 +1254,10 @@ namespace tloc { namespace graphics { namespace gl {
         if ( shaderVarPtr->GetName().compare(itrInfo->m_name.get()) == 0)
         {
           if ( shaderVarPtr->GetType() == itrInfo->m_type &&
-              itrInfo->m_location != -1)
+              itrInfo->m_location != g_unableToFindIndex)
           {
             itr->second = index;
-            variableLocation =
+            variableLocation = 
               DoSet(a_shaderVarsInfo[itr->second], *shaderVarPtr);
 
             TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
@@ -1241,7 +1266,6 @@ namespace tloc { namespace graphics { namespace gl {
           }
           else
           {
-            // TODO: Convert this assertion to a log
             TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
               << shaderVarPtr->GetName();
             retError = ErrorFailure;
@@ -1260,7 +1284,7 @@ namespace tloc { namespace graphics { namespace gl {
       }
     }
 
-    return core::MakePair(retError, variableLocation);
+    return core::MakePair(retError, variableLocation.m_location);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1402,7 +1426,9 @@ namespace tloc { namespace graphics { namespace gl {
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
       if (itr->second >= 0)
-      { DoSet(attrCont[itr->second], *attribPtr); }
+      { 
+        DoSet(attrCont[itr->second], *attribPtr);
+      }
       else if (itr->second == g_invalidIndex)
       {
         TLOC_LOG_GFX_WARN()

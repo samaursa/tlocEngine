@@ -148,7 +148,7 @@ namespace tloc { namespace core { namespace component_system {
     ///
     /// @return true if the message was processed, false if it was ignored.
     ///-------------------------------------------------------------------------
-    bool OnEvent(const event_type& a_event);
+    EventReturn OnEvent(const event_type& a_event);
 
     TLOC_DECL_AND_DEF_GETTER(entity_manager_vptr, DoGetEntityManager,
                              entity_manager_vptr(m_entityMgr));

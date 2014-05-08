@@ -6,6 +6,7 @@
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/component_system/tlocComponentType.h>
+#include <tlocCore/base_classes/tlocDebugName.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/utilities/tlocGroupID.h>
@@ -20,28 +21,34 @@ namespace tloc { namespace core { namespace component_system {
 #define TLOC_DECL_AND_DEF_COMPONENT_SETTER(_type_, _name_, _var_)\
   TLOC_DECL_SETTER(_type_, _name_) { SetUpdateRequired(true); _var_ = a_in; }
 
-  class Component : private utils::ObjectCounter<Component>
+  class Component 
+    : public base_classes::DebugName
+    , public utils::ObjectCounter<Component>
   {
   public:
     typedef Component                       this_type;
+    typedef base_classes::DebugName         base_type;
     typedef components::value_type          component_type;
     typedef utils::ObjectCounter<Component> counter_type;
     typedef counter_type::size_type         counter_size_type;
 
     Component()
-      : m_type(components_group::invalid)
+      : base_type("Invalid Component")
+      , m_type(components_group::invalid)
       , m_updateRequired()
       , m_enabled(false)
     { }
 
-    explicit Component(component_type a_type)
-      : m_type(a_type)
+    explicit Component(component_type a_type, BufferArg a_debugName)
+      : base_type(a_debugName)
+      , m_type(a_type)
       , m_updateRequired(true)
       , m_enabled(true)
     { }
 
     explicit Component(const this_type& a_other)
-      : m_type(a_other.m_type)
+      : base_type(a_other) 
+      , m_type(a_other.m_type)
       , m_updateRequired(a_other.m_updateRequired)
       , m_enabled(a_other.m_enabled)
     { }
@@ -64,6 +71,9 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
 
     TLOC_DECL_AND_DEF_SETTER(bool, SetUpdateRequired, m_updateRequired);
+
+    using base_type::GetDebugName;
+    using base_type::SetDebugName;
 
   protected:
     // Only EntityManager is allowed to change this
@@ -98,7 +108,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef Component                             base_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
-    Component_T(component_type a_type) : Component(a_type) {}
+    Component_T(component_type a_type, BufferArg a_debugName) 
+      : Component(a_type, a_debugName) {}
 
     using group_id_base_type::GetUniqueGroupID;
   };

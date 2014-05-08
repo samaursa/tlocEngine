@@ -52,7 +52,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TextureAnimator::
     TextureAnimator()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "TextureAnimator")
     , m_currentSet(0)
   { }
 

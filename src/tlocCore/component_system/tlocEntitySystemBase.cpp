@@ -86,11 +86,13 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool
+  EventReturn
     EntitySystemBase::
     OnEvent(const EventBase& a_event)
   {
     event_value_type type = a_event.GetType();
+
+    EventReturn evtRet(false, false);
 
     switch(type)
     {
@@ -104,6 +106,8 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
+            evtRet.m_componentInSystem = true;
+
             entity_count_cont::iterator entItr = 
               core::find_if_all(m_activeEntities, 
               algos::compare::pair::MakeFirst(ent));
@@ -173,7 +177,7 @@ namespace tloc { namespace core { namespace component_system {
       }
     }
 
-    return false;
+    return evtRet;
   }
 
 };};};

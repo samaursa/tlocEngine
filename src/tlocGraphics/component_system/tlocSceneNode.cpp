@@ -23,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   SceneNode::
     SceneNode()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "SceneNode")
     , m_entity(nullptr)
     , m_parent(nullptr)
     , m_level(0)
@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   SceneNode::
     SceneNode(entity_ptr a_entity)
-    : base_type(k_component_type)
+    : base_type(k_component_type, "SceneNode")
     , m_entity(a_entity)
     , m_parent(nullptr)
     , m_level(0)

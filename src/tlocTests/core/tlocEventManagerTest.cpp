@@ -65,23 +65,27 @@ namespace TestingEventManager
       WARN("Increment attemp on invalid event");
     }
 
-    virtual bool OnEvent(const EventBase& a_event)
+    virtual EventReturn OnEvent(const EventBase& a_event)
     {
       events::value_type eventType = a_event.GetType();
+
+      EventReturn evtRet(false, false);
+
       switch(eventType)
       {
       case entity_events::create_entity:
       case entity_events::destroy_entity:
       case entity_events::insert_component:
+        evtRet.m_componentInSystem = true;
       case entity_events::remove_component:
         {
           IncrementEventCount(eventType);
-          return false; // we do not want to veto the event just so that other
+          return evtRet; // we do not want to veto the event just so that other
                         // listeners get the chance to read the event
         }
       default:
         {
-          return false;
+          return evtRet;
         }
       }
     }
@@ -96,7 +100,7 @@ namespace TestingEventManager
     typedef core::component_system::Component_T
       <CompToTest, components::listener>            base_type;
   public:
-    CompToTest() : base_type(k_component_type)
+    CompToTest() : base_type(k_component_type, "CompToTest")
     {}
   };
 

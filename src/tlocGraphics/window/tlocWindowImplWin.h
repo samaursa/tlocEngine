@@ -40,6 +40,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef GraphicsMode<platform_type>                  graphics_mode;
     typedef base_type::parent_window_type                parent_window_type;
 
+    typedef parent_window_type::dim_type                 dim_type;
+
     typedef HWND                                         window_handle_type;
     typedef WindowSettings::style_type                   window_style_type;
     typedef tl_size                                      size_type;
@@ -90,6 +92,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets the height.
+    ///
+    /// @return The height.
+    ///-------------------------------------------------------------------------
+    dim_type GetDPI() const;
 
     ///-------------------------------------------------------------------------
     /// @brief

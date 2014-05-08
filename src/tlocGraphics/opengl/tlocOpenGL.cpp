@@ -95,6 +95,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "GLSL Version: " << (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Renderer: " << (const char*)glGetString(GL_RENDERER);
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total VertexAttribArrays: " << Get<p_get::MaxVertexAttribs>();
 
       return ErrorSuccess;
     }

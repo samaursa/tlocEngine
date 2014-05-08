@@ -11,6 +11,7 @@
 
 #include <tlocGraphics/media/tlocImage.h>
 #include <tlocGraphics/media/tlocSprite.h>
+#include <tlocGraphics/media/tlocFontSize.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -93,7 +94,7 @@ namespace tloc { namespace graphics { namespace media {
     struct Params
     {
       typedef Params                                      this_type;
-      typedef ushort                                      font_size_type;
+      typedef FontSize                                    font_size_type;
       typedef Image::dimension_type                       dim_type;
 
       explicit Params(font_size_type a_fontSize);

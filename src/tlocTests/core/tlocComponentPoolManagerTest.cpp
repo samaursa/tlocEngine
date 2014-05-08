@@ -141,6 +141,10 @@ namespace TestingComponentPoolManager
         a_mgr.CreateNewPool<value_type>();
       typename pool_type::iterator itr = tpool->GetNext();
 
+      core_sptr::VirtualPtr<T_PoolType> tpool2 =
+        a_mgr.GetOrCreatePool<value_type>();
+      CHECK( (tpool == tpool2) );
+
       {
         (*itr)->SetValue( pointer(new value_type()) );
         (*(*itr)->GetValuePtr())->m_value = 0;

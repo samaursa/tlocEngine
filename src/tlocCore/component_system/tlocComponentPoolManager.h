@@ -149,6 +149,10 @@ namespace tloc { namespace core { namespace component_system {
     component_pool_ptr  GetPool(component_type a_type);
 
     template <typename T_Component>
+    core_sptr::VirtualPtr<ComponentPool_TI<T_Component> >
+                        GetOrCreatePool();
+
+    template <typename T_Component>
     void                DestroyPool();
     void                DestroyPool(component_type a_type);
 
@@ -220,6 +224,24 @@ namespace tloc { namespace core { namespace component_system {
 
     component_pool_ptr cp = GetPool(compNumber);
     return core_sptr::static_pointer_cast<ComponentPool_TI<T_Component> >(cp);
+  }
+
+  template <typename T_Component>
+  core_sptr::VirtualPtr<ComponentPool_TI<T_Component> >
+    ComponentPoolManager::
+    GetOrCreatePool()
+  {
+    const tl_int compNumber =
+      p_component_pool_manager::ComponentID<T_Component>::k_value;
+
+    core_sptr::VirtualPtr<ComponentPool_TI<T_Component> > toRet;
+
+    if (Exists(compNumber))
+    { toRet = GetPool<T_Component>(); }
+    else
+    { toRet = CreateNewPool<T_Component>(); }
+
+    return toRet;
   }
 
   template <typename T_Component>

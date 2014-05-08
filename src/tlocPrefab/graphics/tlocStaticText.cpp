@@ -34,16 +34,18 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef ComponentPoolManager                  pool_mgr;
 
+    // -----------------------------------------------------------------------
+    // SceneNode component
+
     if (a_ent->HasComponent<gfx_cs::SceneNode>() == false)
     { SceneNode(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
-    typedef gfx_cs::static_text_pool              st_pool;
-    gfx_cs::static_text_pool_vptr                 stPool;
+    // -----------------------------------------------------------------------
+    // StaticText component
 
-    if (m_compPoolMgr->Exists(gfx_cs::components::static_text) == false)
-    { stPool = m_compPoolMgr->CreateNewPool<gfx_cs::StaticText>(); }
-    else
-    { stPool = m_compPoolMgr->GetPool<gfx_cs::StaticText>(); }
+    typedef gfx_cs::static_text_pool              st_pool;
+    gfx_cs::static_text_pool_vptr stPool 
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::StaticText>();
 
     st_pool::iterator itrSt = stPool->GetNext();
     (*itrSt)->SetValue(MakeShared<gfx_cs::StaticText>(a_text, a_font, m_alignment));

@@ -8,6 +8,8 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
 
+#include <tlocPrefab/math/tlocTransform.h>
+
 namespace tloc { namespace prefab { namespace graphics {
 
   using core_sptr::MakeShared;
@@ -86,36 +88,23 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace math_cs;
     using namespace gfx_cs;
 
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Position(m_position).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // camera component
+
     typedef ComponentPoolManager                    pool_mgr;
-    typedef tloc::math_cs::transform_f32_pool       t_pool;
-
-    transform_f32_pool_vptr                         tPool;
-
-    // Get or create the transform pool
-    if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
-    else
-    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
-
-
-    t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(MakeShared<Transformf32>(m_position) );
-
     typedef gfx_cs::camera_pool                     p_pool;
-
-    camera_pool_vptr                                pPool;
-
-    // Get or create the projection pool
-    if (m_compPoolMgr->Exists(camera) == false)
-    { pPool = m_compPoolMgr->CreateNewPool<gfx_cs::Camera>(); }
-    else
-    { pPool = m_compPoolMgr->GetPool<gfx_cs::Camera>(); }
+    camera_pool_vptr  pPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Camera>();
 
     p_pool::iterator itrProjection = pPool->GetNext();
     (*itrProjection)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
 
-    // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr() );
     m_entMgr->InsertComponent(a_ent, *(*itrProjection)->GetValuePtr() );
   }
 

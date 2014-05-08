@@ -4,6 +4,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -37,44 +38,32 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef ComponentPoolManager    pool_mgr;
     typedef gfx_cs::fan_pool        fan_pool;
 
-    gfx_cs::fan_pool_vptr           fanPool;
+    // -----------------------------------------------------------------------
+    // transform component
 
-    // Create the fan (and the fan pool if necessary)
-    if (m_compPoolMgr->Exists(fan) == false)
-    { fanPool = m_compPoolMgr->CreateNewPool<gfx_cs::Fan>(); }
-    else
-    { fanPool = m_compPoolMgr->GetPool<gfx_cs::Fan>(); }
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // fan component
+
+    gfx_cs::fan_pool_vptr fanPool 
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Fan>();
 
     fan_pool::iterator itr = fanPool->GetNext();
     (*itr)->SetValue(
       MakeShared<gfx_cs::Fan>(m_circle, gfx_cs::Fan::sides(m_numSides)
       ));
 
-    typedef math_cs::transform_f32_pool         t_pool;
-    math_cs::transform_f32_pool_vptr            tPool;
-
-    if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transformf32>(); }
-    else
-    { tPool = m_compPoolMgr->GetPool<math_cs::Transformf32>(); }
-
-    t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(MakeShared<Transform>());
-
-    // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr() );
     m_entMgr->InsertComponent(a_ent, *(*itr)->GetValuePtr() );
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)
     {
       typedef gfx_cs::texture_coords_pool         tcoord_pool;
-      gfx_cs::texture_coords_pool_vptr            tCoordPool;
 
-      if (m_compPoolMgr->Exists(texture_coords) == false)
-      { tCoordPool = m_compPoolMgr->CreateNewPool<gfx_cs::TextureCoords>(); }
-      else
-      { tCoordPool = m_compPoolMgr->GetPool<gfx_cs::TextureCoords>(); }
+      gfx_cs::texture_coords_pool_vptr tCoordPool
+        = m_compPoolMgr->GetOrCreatePool<gfx_cs::TextureCoords>();
 
       tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
       TextureCoords tc;

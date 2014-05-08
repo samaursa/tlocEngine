@@ -53,28 +53,6 @@ namespace {
 namespace tloc { namespace core { namespace logging {
 
   // -----------------------------------------------------------------------
-  // Console helper functions
-
-  // -----------------------------------------------------------------------
-  
-#ifdef TLOC_OS_WIN
-  void
-    SetConsoleColor(tl_int a_textCol, tl_int a_bgColor)
-  {
-    WORD col = 0;
-    col |= a_textCol;
-    col |= (a_bgColor << 4);
-
-    static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, col);
-  }
-#else
-  void
-    SetConsoleColor(tl_int , tl_int )
-  { }
-#endif
-
-  // -----------------------------------------------------------------------
 
   void
     WriteToConsole(tloc::BufferArg a_formattedLog, severity_type a_severity)

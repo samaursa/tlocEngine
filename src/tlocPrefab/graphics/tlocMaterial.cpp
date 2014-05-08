@@ -2,7 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/io/tlocFileIO.h>
-
 #include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -81,12 +80,8 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef ComponentPoolManager              pool_mgr;
     typedef gfx_cs::material_pool             mat_pool;
 
-    gfx_cs::material_pool_vptr                matPool;
-
-    if (m_compPoolMgr->Exists(material) == false)
-    { matPool = m_compPoolMgr->CreateNewPool<gfx_cs::Material>(); }
-    else
-    { matPool = m_compPoolMgr->GetPool<gfx_cs::Material>(); }
+    gfx_cs::material_pool_vptr matPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Material>();
 
     mat_pool::iterator  itrMat = matPool->GetNext();
     (*itrMat)->SetValue(MakeShared<gfx_cs::Material>() );

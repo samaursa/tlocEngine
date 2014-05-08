@@ -1,7 +1,6 @@
 #include "tlocDynamicText.h"
 
 #include <tlocGraphics/component_system/tlocDynamicText.h>
-
 #include <tlocPrefab/graphics/tlocSceneNode.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -34,16 +33,19 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef ComponentPoolManager                  pool_mgr;
 
+    // -----------------------------------------------------------------------
+    // SceneNode component
+
     if (a_ent->HasComponent<gfx_cs::SceneNode>() == false)
     { SceneNode(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
-    typedef gfx_cs::dynamic_text_pool              st_pool;
-    gfx_cs::dynamic_text_pool_vptr                 stPool;
+    // -----------------------------------------------------------------------
+    // DynamicText component
 
-    if (m_compPoolMgr->Exists(gfx_cs::components::dynamic_text) == false)
-    { stPool = m_compPoolMgr->CreateNewPool<gfx_cs::DynamicText>(); }
-    else
-    { stPool = m_compPoolMgr->GetPool<gfx_cs::DynamicText>(); }
+    typedef gfx_cs::dynamic_text_pool              st_pool;
+
+    gfx_cs::dynamic_text_pool_vptr stPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::DynamicText>();
 
     st_pool::iterator itrSt = stPool->GetNext();
     (*itrSt)->SetValue(MakeShared<gfx_cs::DynamicText>(a_text, a_font, m_alignment));

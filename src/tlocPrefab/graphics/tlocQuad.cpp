@@ -4,6 +4,7 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -38,46 +39,35 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
 
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // quad component
+
     typedef ComponentPoolManager      pool_mgr;
 
     // Create the quad (and the quad pool if necessary)
     typedef gfx_cs::quad_pool         quad_pool;
-    gfx_cs::quad_pool_vptr            quadPool;
 
-    if (m_compPoolMgr->Exists(quad) == false)
-    { quadPool = m_compPoolMgr->CreateNewPool<gfx_cs::Quad>(); }
-    else
-    { quadPool = m_compPoolMgr->GetPool<gfx_cs::Quad>(); }
+    gfx_cs::quad_pool_vptr quadPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Quad>();
 
     quad_pool::iterator itrQuad = quadPool->GetNext();
     (*itrQuad)->SetValue(MakeShared<gfx_cs::Quad>(m_rect) );
 
-    // Create the transform component (and the transform pool if necessary)
-    typedef math_cs::transform_pool           t_pool;
-    math_cs::transform_pool_vptr              tPool;
-
-    if (m_compPoolMgr->Exists(transform) == false)
-    { tPool = m_compPoolMgr->CreateNewPool<math_cs::Transform>(); }
-    else
-    { tPool = m_compPoolMgr->GetPool<math_cs::Transform>(); }
-
-    t_pool::iterator itrTransform = tPool->GetNext();
-    (*itrTransform)->SetValue(MakeShared<Transform>());
-
-    // Create an entity from the manager and return to user
-    m_entMgr->InsertComponent(a_ent, *(*itrTransform)->GetValuePtr());
     m_entMgr->InsertComponent(a_ent, *(*itrQuad)->GetValuePtr());
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)
     {
       typedef gfx_cs::texture_coords_pool       tcoord_pool;
-      gfx_cs::texture_coords_pool_vptr          tCoordPool;
 
-      if (m_compPoolMgr->Exists(texture_coords) == false)
-      { tCoordPool = m_compPoolMgr->CreateNewPool<gfx_cs::TextureCoords>(); }
-      else
-      { tCoordPool = m_compPoolMgr->GetPool<gfx_cs::TextureCoords>(); }
+      gfx_cs::texture_coords_pool_vptr tCoordPool
+        = m_compPoolMgr->GetOrCreatePool<gfx_cs::TextureCoords>();
 
       tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
       TextureCoords tc;

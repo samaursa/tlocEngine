@@ -1,8 +1,9 @@
 #include "tlocTransformAnimation.h"
 
 #include <tlocCore/tlocAssert.h>
-
 #include <tlocAnimation/component_system/tlocComponentType.h>
+#include <tlocMath/component_system/tlocTransform.h>
+#include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace animation {
 
@@ -37,6 +38,15 @@ namespace tloc { namespace prefab { namespace animation {
     using namespace anim_cs::components;
     using anim_cs::TransformAnimation;
 
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // TransformAnimation
+
     typedef ComponentPoolManager          pool_mgr;
 
     // Create the transform animation pool
@@ -51,10 +61,7 @@ namespace tloc { namespace prefab { namespace animation {
     }
     else
     {
-      if (m_compPoolMgr->Exists(transform_animation) == false)
-      { taPool = m_compPoolMgr->CreateNewPool<anim_cs::TransformAnimation>(); }
-      else
-      { taPool =  m_compPoolMgr->GetPool<anim_cs::TransformAnimation>(); }
+      taPool = m_compPoolMgr->GetOrCreatePool<anim_cs::TransformAnimation>();
 
       ta_pool::iterator itrTransformAnim = taPool->GetNext();
       (*itrTransformAnim)->SetValue(MakeShared<anim_cs::TransformAnimation>());

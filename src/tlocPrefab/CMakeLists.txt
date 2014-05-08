@@ -49,7 +49,9 @@ set(TLOC_PREFAB_INPUT
 set(TLOC_PREFAB_MATH
   math/tloc_math.cpp 
   math/tloc_math.h 
-  math/tloc_math.inl.h 
+  math/tloc_math.inl.h
+  math/tlocTransform.h
+  math/tlocTransform.cpp
   )
 
 set(TLOC_PREFAB_PHYSICS

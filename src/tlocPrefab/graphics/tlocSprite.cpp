@@ -44,10 +44,7 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     }
     else
     {
-      if (a_poolMgr->Exists(texture_animator) == false)
-      { taPool = a_poolMgr->CreateNewPool<gfx_cs::TextureAnimator>(); }
-      else
-      { taPool = a_poolMgr->GetPool<gfx_cs::TextureAnimator>(); }
+      taPool = a_poolMgr->GetOrCreatePool<gfx_cs::TextureAnimator>();
 
       ta_pool::iterator itrTa = taPool->GetNext();
       (*itrTa)->SetValue(core_sptr::MakeShared<TextureAnimator>() );

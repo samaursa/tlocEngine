@@ -6,6 +6,7 @@
 #include <tlocCore/iterators/tlocIterator.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/utilities/tlocType.h>
 
 // This class takes its design from https://bitbucket.org/AraK/range by Khaled
 // Alshaya.
@@ -132,6 +133,8 @@ namespace tloc { namespace math {
     Range_T(value_type a_begin, value_type a_end,
             step_size a_stepSize = step_size(1));
 
+    bool       IsInRange(value_type a_value) const;
+
     this_type& operator=(const this_type& a_other);
     bool       operator== (const this_type& a_other) const;
 
@@ -178,6 +181,7 @@ namespace tloc { namespace math {
   typedef Range_T<u64>            range_u64;
   typedef Range_T<f32>            range_f32;
   typedef Range_T<f64>            range_f64;
+  typedef Range_T<tl_size>        range_tl_size;
 
   //------------------------------------------------------------------------
   // global definitions
@@ -233,7 +237,9 @@ namespace tloc { namespace math {
     Range_T<T>
       Get()
     {
-      T endNum = T_Inclusive::k_value ? 129 : 128;
+      T endNum = T_Inclusive::k_value 
+        ? core_utils::CastNumber<T>(129) 
+        : core_utils::CastNumber<T>(128);
       return Range_T<T>(0, endNum);
     }
   };
@@ -244,7 +250,9 @@ namespace tloc { namespace math {
     Range_T<T>
       Get()
     {
-      T endNum = T_Inclusive::k_value ? 257 : 256;
+      T endNum = T_Inclusive::k_value 
+        ? core_utils::CastNumber<T>(257) 
+        : core_utils::CastNumber<T>(256);
       return Range_T<T>(0, endNum);
     }
   };

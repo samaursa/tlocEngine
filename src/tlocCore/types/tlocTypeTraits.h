@@ -5,6 +5,9 @@
 #include "3rdParty/loki/TypeTraits.h"
 
 #include <tlocCore/types/tlocTypeTraitsCommonType.h>
+#include <tlocCore/tlocStaticAssert.h>
+
+#include <3rdParty/loki/TypeTraits.h>
 
 namespace tloc
 {
@@ -212,13 +215,71 @@ namespace tloc
             Type_passed_is_explicitly_not_a_supported_type
             );
     };
-  }
+
+    template <typename T>
+    struct CallTraits
+    {
+
+      typedef T                                             value_type;
+      typedef T&                                            reference;
+      typedef const T&                                      const_reference;
+
+      typedef typename
+        Loki::Select<Loki::TypeTraits<T>::isFundamental,
+                     const T,
+                     const T&>::Result                      param_type;
+    };
+
+    template <typename T>
+    struct CallTraits<T&>
+    {
+      typedef T                                             value_type;
+      typedef T&                                            reference;
+      typedef const T&                                      const_reference;
+
+      typedef typename
+        Loki::Select<Loki::TypeTraits<T>::isFundamental,
+                     const T,
+                     const T&>::Result                      param_type;
+    };
+
+  };
 
   // This macro allows compile time selection of the correct iterator type
   // for a container. It is used extensively in tlocAlgorithms
 #define TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(_cont_)\
   typename Loki::Select<type_traits::IsConst<_cont_>::result, \
   typename _cont_::const_iterator, typename _cont_::iterator>::Result
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Pointee type
+
+  namespace priv {
+
+    template <typename T, bool>
+    struct PointeeType;
+
+    template <typename T>
+    struct PointeeType<T, false>
+    {
+      typedef typename T::value_type                      value_type;
+    };
+
+    template <typename T>
+    struct PointeeType<T, true>
+    {
+      typedef typename Loki::TypeTraits<T>::PointeeType   value_type;
+    };
+
+  };
+
+  template <typename T>
+  struct PointeeType
+  {
+    typedef typename priv::PointeeType
+      <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
+  };
+
 };
 
 //------------------------------------------------------------------------

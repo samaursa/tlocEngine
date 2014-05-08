@@ -1,11 +1,11 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocShader.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocMath/types/tlocVector4.h>
 
@@ -76,7 +76,6 @@ namespace TestingShaderProgram
   TEST_CASE("Graphics/ShaderProgram/HardCoded", "")
   {
     using namespace graphics::win;
-    using gfx_rend::Renderer;
 
     typedef win::Window::graphics_mode         graphics_mode;
 
@@ -85,7 +84,7 @@ namespace TestingShaderProgram
       WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader vShader;
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
@@ -115,14 +114,13 @@ namespace TestingShaderProgram
   TEST_CASE("Graphics/ShaderProgram/Get<>", "")
   {
     using namespace graphics::win;
-    using gfx_rend::Renderer;
     typedef Window::graphics_mode         graphics_mode;
 
     Window win;
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
-    REQUIRE(Renderer().Initialize() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader vShader;
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);

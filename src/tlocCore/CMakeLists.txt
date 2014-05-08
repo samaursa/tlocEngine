@@ -5,19 +5,33 @@ set(TLOC_ENGINE_CORE
     tloc_core.cpp
     tlocAlgorithms.h
     tlocAlgorithms.inl.h
+    tlocAssert.h
+    tlocAssert.cpp
+    tlocAssertCustomBreak.h
+    tlocAssertCustomBreak.cpp
+    tlocArgs.h
+    tlocArgs.cpp
+    tlocConsole.h
+    tlocConsole.cpp
     tlocCoreBase.h
+    tlocCoreBase.cpp
     tlocCoreIncludes.h
     tlocDepVersionCheck.cpp
     tlocFunctional.h
+    tlocFunctional.cpp
     tlocNoOpt.h
     tlocPair.h
     tlocPair.inl.h
     tlocStaticAssert.h
+    tlocUCID.h
+    tlocUCID.cpp
 )
 set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.h
     base_classes/tloc_base_classes.inl.h
     base_classes/tloc_base_classes.cpp
+    base_classes/tlocDebugName.h
+    base_classes/tlocInitializeAndDestroy.h
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h
     base_classes/tlocPlatformImplBase.h
@@ -144,6 +158,18 @@ set(TLOC_ENGINE_CORE_ITERATORS
     iterators/tlocIterator.h
     iterators/tlocIterator.inl.h
 )
+set(TLOC_ENGINE_CORE_LOGGER
+    logging/tloc_logging.h
+    logging/tloc_logging.inl.h
+    logging/tloc_logging.cpp
+    logging/tlocLog.h
+    logging/tlocLog.cpp
+    logging/tlocLogger.h
+    logging/tlocLogger.cpp
+    logging/tlocDefaultLogger.h
+    logging/tlocDefaultLogger.cpp
+    logging/tlocLoggerHelper.h
+)
 set(TLOC_ENGINE_CORE_MEMORY
     memory/tloc_memory.h
     memory/tloc_memory.inl.h
@@ -159,6 +185,7 @@ set(TLOC_ENGINE_CORE_MEMORY
     memory/tlocMemoryPool.h
     memory/tlocMemoryPool.inl.h
     memory/tlocMemoryPoolIndexedWrapper.h
+    memory/tlocMemoryPoolIndexedWrapper.inl.h
 )
 set(TLOC_ENGINE_CORE_PARSERS
     parsers/tloc_parsers.h
@@ -172,6 +199,17 @@ set(TLOC_ENGINE_CORE_PLATFORM
     platform/tlocPlatform.h
     platform/tlocPlatform.cpp
     platform/tlocPlatformDefines.h
+    platform/tlocPlatformSpecificIncludes.h
+)
+set(TLOC_ENGINE_CORE_RESOURCES
+    resources/tloc_resources.h
+    resources/tloc_resources.inl.h
+    resources/tloc_resources.cpp
+    resources/tlocResource.h
+    resources/tlocResource.cpp
+    resources/tlocResourceFactory.h
+    resources/tlocResourceFactory.inl.h
+    resources/tlocResourceFactory.cpp
 )
 set(TLOC_ENGINE_CORE_RNG
     rng/tloc_rng.h
@@ -189,12 +227,19 @@ set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tloc_smart_ptr.cpp
     smart_ptr/tlocSharedPtr.h
     smart_ptr/tlocSharedPtr.inl.h
+    smart_ptr/tlocSharedPtr.cpp
     smart_ptr/tlocSmartPtr.h
     smart_ptr/tlocSmartPtr.inl.h
-    smart_ptr/tlocSmartPtrTracker.h
-    smart_ptr/tlocSmartPtrTracker.cpp
+    smart_ptr/tlocSmartPtr.cpp
     smart_ptr/tlocUniquePtr.h
     smart_ptr/tlocUniquePtr.inl.h
+    smart_ptr/tlocUniquePtr.cpp
+    smart_ptr/tlocVirtualPtr.h
+    smart_ptr/tlocVirtualPtr.inl.h
+    smart_ptr/tlocVirtualPtr.cpp
+    smart_ptr/tlocVirtualStackObject.h
+    smart_ptr/tlocVirtualStackObject.inl.h
+    smart_ptr/tlocVirtualStackObject.cpp
 )
 set(TLOC_ENGINE_CORE_STRING
     string/tloc_string.h
@@ -204,6 +249,45 @@ set(TLOC_ENGINE_CORE_STRING
     string/tlocString.inl.h
     string/tlocString.cpp
 )
+set(TLOC_ENGINE_CORE_THREADS
+    threads/tloc_threads.h
+    threads/tloc_threads.inl.h
+    threads/tloc_threads.cpp
+    threads/tlocLock.h
+    threads/tlocLock.cpp
+    threads/tlocMutex.h
+    threads/tlocMutex.cpp
+    threads/tlocMutexImpl.h
+    threads/tlocSleep.h
+    threads/tlocSleep.cpp
+    threads/tlocSleepImpl.h
+    threads/tlocThread.h
+    threads/tlocThread.cpp
+    threads/tlocThreadImpl.h
+)
+
+if(WIN32)
+  set (TLOC_ENGINE_CORE_THREADS
+       ${TLOC_ENGINE_CORE_THREADS}
+       threads/tlocMutexImplWin.h
+       threads/tlocMutexImplWin.cpp
+       threads/tlocSleepImplWin.h
+       threads/tlocSleepImplWin.cpp
+       threads/tlocThreadImplWin.h
+       threads/tlocThreadImplWin.cpp
+  )
+elseif(APPLE)
+  set (TLOC_ENGINE_CORE_THREADS
+       ${TLOC_ENGINE_CORE_THREADS}
+       threads/tlocMutexImplApple.h
+       threads/tlocMutexImplApple.cpp
+       threads/tlocSleepImplApple.h
+       threads/tlocSleepImplApple.cpp
+       threads/tlocThreadImplApple.h
+       threads/tlocThreadImplApple.cpp
+  )
+endif()
+
 set(TLOC_ENGINE_CORE_TIME
     time/tloc_time.h
     time/tloc_time.inl.h
@@ -262,6 +346,10 @@ include_directories(
   ../3rdParty/
 )
 
+if (TLOC_ENABLE_MEMORY_TRACKING)
+  add_definitions(-DTLOC_ENABLE_MEMORY_TRACKING)
+endif()
+
 add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE}
   ${TLOC_ENGINE_CORE_BASE_CLASSES}
@@ -272,16 +360,21 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_ERROR}
   ${TLOC_ENGINE_CORE_IO}
   ${TLOC_ENGINE_CORE_ITERATORS}
+  ${TLOC_ENGINE_CORE_LOGGER}
   ${TLOC_ENGINE_CORE_MEMORY}
   ${TLOC_ENGINE_CORE_PARSERS}
   ${TLOC_ENGINE_CORE_PLATFORM}
+  ${TLOC_ENGINE_CORE_RESOURCES}
   ${TLOC_ENGINE_CORE_RNG}
   ${TLOC_ENGINE_CORE_SMART_PTR}
   ${TLOC_ENGINE_CORE_STRING}
+  ${TLOC_ENGINE_CORE_THREADS}
   ${TLOC_ENGINE_CORE_TIME}
   ${TLOC_ENGINE_CORE_TYPES}
   ${TLOC_ENGINE_CORE_UTILITIES}
 )
+
+set_platform_specific_properties(tlocCore)
 
 # Filters to organize the source files
 source_group(base_classes FILES ${TLOC_ENGINE_CORE_BASE_CLASSES})
@@ -292,12 +385,15 @@ source_group(data_structures FILES ${TLOC_ENGINE_CORE_DATA_STRUCTURES})
 source_group(error FILES ${TLOC_ENGINE_CORE_ERROR})
 source_group(io FILES ${TLOC_ENGINE_CORE_IO})
 source_group(iterators FILES ${TLOC_ENGINE_CORE_ITERATORS})
+source_group(logger FILES ${TLOC_ENGINE_CORE_LOGGER})
 source_group(memory FILES ${TLOC_ENGINE_CORE_MEMORY})
 source_group(parsers FILES ${TLOC_ENGINE_CORE_PARSERS})
 source_group(platform FILES ${TLOC_ENGINE_CORE_PLATFORM})
+source_group(resources FILES ${TLOC_ENGINE_CORE_RESOURCES})
 source_group(rng FILES ${TLOC_ENGINE_CORE_RNG})
 source_group(smart_ptr FILES ${TLOC_ENGINE_CORE_SMART_PTR})
 source_group(string FILES ${TLOC_ENGINE_CORE_STRING})
+source_group(threads FILES ${TLOC_ENGINE_CORE_THREADS})
 source_group(time FILES ${TLOC_ENGINE_CORE_TIME})
 source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})

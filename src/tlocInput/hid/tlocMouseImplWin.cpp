@@ -1,5 +1,8 @@
 #include "tlocMouseImplWin.h"
 
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/logging/tlocLogger.h>
+
 namespace tloc { namespace input { namespace hid { namespace priv {
 
   //------------------------------------------------------------------------
@@ -35,8 +38,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
   template <MOUSE_IMPL_TEMP>
   MouseImpl<MOUSE_IMPL_PARAMS>::
-    MouseImpl(parent_type* a_parent,
-    const mouse_param_type& a_params)
+    MouseImpl(parent_type& a_parent,
+              const mouse_param_type& a_params)
     : MouseImplBase(a_parent, a_params)
     , m_directInput(a_params.m_param2)
     , m_mouse(TLOC_NULL)
@@ -86,15 +89,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   {
     if (FAILED(m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, TLOC_NULL)))
     {
-      // LOG: Mouse failed to initialize
-      TLOC_ASSERT(false, "Unable to initialize the mouse");
+      TLOC_LOG_INPUT_ERR() << "Unable to initialize the mouse";
       return;
     }
 
     if ( FAILED(m_mouse->SetDataFormat(&c_dfDIMouse2)) )
     {
-      // LOG: Mouse format error
-      TLOC_ASSERT(false, "Unable to initialize the mouse");
+      TLOC_LOG_INPUT_ERR() << "Could not set mouse device format";
       return;
     }
 
@@ -113,20 +114,20 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (!DoInitializeExtra(policy_type()))
     {
-      // LOG: Unable to acquire a buffered mouse
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire a buffered mouse";
       return;
     }
 
     if (FAILED(m_mouse->SetCooperativeLevel(m_windowPtr, coop)))
     {
-      // LOG: Mouse cooperative level settings error
+      TLOC_LOG_INPUT_ERR() << "Mouse cooperative level settings error";
       return;
     }
 
     HRESULT hr = m_mouse->Acquire();
     if (FAILED(hr) && hr != DIERR_OTHERAPPHASPRIO)
     {
-      // LOG: Unable to acquire Win32 mouse
+      TLOC_LOG_INPUT_ERR() << "Unable to acquire Win32 mouse";
       return;
     }
 
@@ -135,8 +136,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     GetClientRect(m_windowPtr, &rect);
     parent_type::abs_value_type width  = rect.right - rect.left;
     parent_type::abs_value_type height = rect.bottom - rect.top;
-    m_parent->SetClampX(parent_type::abs_range_type(0, width));
-    m_parent->SetClampY(parent_type::abs_range_type(0, height));
+    m_parent.SetClampX(parent_type::abs_range_type(0, width));
+    m_parent.SetClampY(parent_type::abs_range_type(0, height));
   }
 
   template <MOUSE_IMPL_TEMP>
@@ -194,8 +195,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if (FAILED(hRes))
     {
-      // LOG: Could not get device data
-      TLOC_ASSERT(false, "Could not get device data!");
+      TLOC_LOG_INPUT_ERR() << "Could not get device data";
     }
 
     bool axesUpdated = false;
@@ -209,11 +209,11 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       if (code != MouseEvent::none)
       {
         if (diBuff[i].dwData & 0x80)
-        { m_parent->SendOnButtonPress(m_currentState, code); }
+        { m_parent.SendOnButtonPress(m_currentState, code); }
         else
         {
           m_currentState.m_buttonCode ^= code;
-          m_parent->SendOnButtonRelease(m_currentState, code);
+          m_parent.SendOnButtonRelease(m_currentState, code);
         }
       }
       else
@@ -263,10 +263,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
 
       // Clamp the values
-      if (m_parent->IsClamped())
-      { m_parent->Clamp(m_currentState); }
+      if (m_parent.IsClamped())
+      { m_parent.Clamp(m_currentState); }
 
-      m_parent->SendOnMouseMove(m_currentState);
+      m_parent.SendOnMouseMove(m_currentState);
     }
   }
 
@@ -325,8 +325,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttonCode |= MouseEvent::button8;
 
     // Clamp the values
-    if (m_parent->IsClamped())
-    { m_parent->Clamp(m_currentState); }
+    if (m_parent.IsClamped())
+    { m_parent.Clamp(m_currentState); }
   }
 
   template <MOUSE_IMPL_TEMP>

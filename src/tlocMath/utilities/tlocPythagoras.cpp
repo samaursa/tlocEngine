@@ -1,5 +1,6 @@
 #include "tlocPythagoras.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/tlocMath.inl.h>

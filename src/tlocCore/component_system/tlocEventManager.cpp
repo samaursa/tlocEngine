@@ -1,8 +1,10 @@
 #include "tlocEventManager.h"
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 #include <tlocCore/component_system/tlocEvent.inl.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -30,9 +32,8 @@ namespace tloc { namespace core { namespace component_system {
     }
     else
     {
-      TLOC_ASSERT(false,
-      "Trying to remove a listener that does not exist with event_type");
-      // LOG: Trying to remove a listener that does not exist with event_type
+      TLOC_LOG_CORE_WARN() <<
+        "Trying to remove a listener that does not exist with even_type";
     }
   }
 
@@ -59,13 +60,20 @@ namespace tloc { namespace core { namespace component_system {
 
   bool EventManager::DispatchNow(const EventBase& a_event) const
   {
+    bool componentAdded = false;
+
     typedef listeners_list::const_iterator lis_itr;
     for (lis_itr itr = m_globalListeners.begin(),
                  itrEnd = m_globalListeners.end();
                  itr != itrEnd; ++itr)
     {
       // If the event is being vetoed, then no need to go through the whole list
-      if ( (*itr)->OnEvent(a_event) ) { return true; }
+      EventReturn evt = (*itr)->OnEvent(a_event);
+      if (evt.m_componentInSystem)
+      { componentAdded = true; }
+
+      if (evt.m_veto)
+      { return componentAdded; }
     }
 
     typedef listener_map::const_iterator map_itr;
@@ -76,11 +84,16 @@ namespace tloc { namespace core { namespace component_system {
       for (lis_itr itr = list.begin(), itrEnd = list.end();
            itr != itrEnd; ++itr)
       {
-        if ( (*itr)->OnEvent(a_event) ) { return true; }
+        EventReturn evt = (*itr)->OnEvent(a_event);
+        if (evt.m_componentInSystem)
+        { componentAdded = true; }
+
+        if (evt.m_veto)
+        { return componentAdded; }
       }
     }
 
-    return false;
+    return componentAdded;
   }
 
   void EventManager::Dispatch(const EventBase& a_event)
@@ -102,11 +115,8 @@ namespace tloc { namespace core { namespace component_system {
                    itrEnd = m_globalListeners.end();
                    itr != itrEnd; ++itr)
       {
-        if ( (*itr)->OnEvent( *(*eventItr)) )
-        {
-          itr = m_globalListeners.erase(itr);
-          --itr; // because the for loop is going perform a ++
-        }
+        if ( (*itr)->OnEvent(*(*eventItr)).m_veto )
+        { break; }
       }
     }
 
@@ -121,7 +131,7 @@ namespace tloc { namespace core { namespace component_system {
         for (lis_itr itr = list.begin(), itrEnd = list.end();
                      itr != itrEnd; ++itr)
         {
-          if ( (*itr)->OnEvent( *(*eventItr) ) ) { break; }
+          if ( (*itr)->OnEvent(*(*eventItr)).m_veto ) { break; }
         }
       }
     }
@@ -130,9 +140,10 @@ namespace tloc { namespace core { namespace component_system {
     m_events.clear();
   }
 
-  //------------------------------------------------------------------------
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(EventManager);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit instantiations
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EventManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core_cs::EventManager);

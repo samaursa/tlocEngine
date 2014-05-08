@@ -12,30 +12,30 @@
 
 namespace tloc {
 
-  namespace {
+  namespace priv {
     template <typename T>
-    T GetAbs(T a_value)
+    T DoGetAbs(T a_value)
     {
       return std::abs(a_value);
     }
 
-    TL_I s64 GetAbs(s64 a_value)
+    TL_I s64 DoGetAbs(s64 a_value)
     {
       return (s64)std::abs((s32)a_value);
     }
 
     template <typename T>
-    T GetSqrt(T a_value)
+    T DoGetSqrt(T a_value)
     {
       return std::sqrt(a_value);
     }
 
-    TL_I s32 GetSqrt(s32 a_value)
+    TL_I s32 DoGetSqrt(s32 a_value)
     {
       return (s32)std::sqrt((tl_float)a_value);
     }
 
-    TL_I s64 GetSqrt(s64 a_value)
+    TL_I s64 DoGetSqrt(s64 a_value)
     {
       return (s64)std::sqrt((tl_float)a_value);
     }
@@ -62,7 +62,7 @@ namespace tloc {
   T Math<T>::
     Abs(T aValue)
   {
-    return GetAbs(aValue);
+    return priv::DoGetAbs(aValue);
   }
 
   template <typename T>
@@ -146,7 +146,7 @@ namespace tloc {
   T Math<T>::
     Sqrt(T aValue)
   {
-    return GetSqrt(aValue);
+    return priv::DoGetSqrt(aValue);
   }
 
   template <typename T>
@@ -251,8 +251,7 @@ namespace tloc {
 
         tl_size multi = 1;
         T num2Res = a_num2;
-        while (num2Res < a_num1 ||
-               Approx(num2Res, a_num1))
+        while (num2Res < a_num1 || IsEqual(num2Res, a_num1))
         {
           ++multi;
           num2Res = a_num2 * multi;
@@ -323,14 +322,17 @@ namespace tloc {
     }
 
     template <typename T>
-    bool Approx(T a_num1, T a_num2)
+    bool Approx(T a_num1, T a_num2, T eps)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
       typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
 
-      return priv::DoApprox(a_num1, a_num2, Epsilon<T>(), float_or_not());
+      return priv::DoApprox(a_num1, a_num2, eps, float_or_not());
     }
 
+    template <typename T>
+    bool IsEqual(T a_num1, T a_num2)
+    { return Approx(a_num1, a_num2, Epsilon<T>()); }
   };
 
 };

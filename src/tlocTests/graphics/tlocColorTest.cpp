@@ -153,4 +153,32 @@ namespace TestingColor
     c.SetAs(0.5f, 0.5f, 0.5f, 0.5f);
     CHECK_COLOR_4(c, 127, 127, 127, 127);
   }
+
+  TEST_CASE("Graphics/types/Color/operatos", "")
+  {
+    SECTION("Multiplication and division with scalars", "")
+    {
+      SECTION("Multiplication", "")
+      {
+        Color c(255, 255, 255, 255);
+        c = c * 0.5f;
+        CHECK_COLOR_4(c, 127, 127, 127, 127);
+
+        Color c2(1, 2, 3, 4);
+        c2 *= 1.0f;
+        CHECK_COLOR_4(c2, 1, 2, 3, 4);
+      }
+
+      SECTION("Division", "")
+      {
+        Color c(255, 255, 255, 255);
+        c = c / 2.0f;
+        CHECK_COLOR_4(c, 127, 127, 127, 127);
+
+        Color c2(1, 2, 3, 4);
+        c2 /= 1.0f;
+        CHECK_COLOR_4(c2, 1, 2, 3, 4);
+      }
+    }
+  }
 };

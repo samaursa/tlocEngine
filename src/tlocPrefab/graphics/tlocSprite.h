@@ -8,7 +8,7 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
-#include <tlocGraphics/media/tlocSpriteLoader.h>
+#include <tlocGraphics/media/tlocSprite.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -16,14 +16,14 @@ namespace tloc { namespace prefab { namespace graphics {
 
   template <typename SpriteLoaderIterator>
     void
-      DoAddSpriteAnimation(core_cs::Entity* a_entity,
-                           core_cs::EntityManager* a_mgr,
-                           core_cs::ComponentPoolManager* a_poolMgr,
+      DoAddSpriteAnimation(core_cs::entity_vptr a_entity,
+                           core_cs::entity_manager_vptr a_mgr,
+                           core_cs::component_pool_mgr_vptr a_poolMgr,
                            SpriteLoaderIterator a_begin,
                            SpriteLoaderIterator a_end,
                            bool a_loop,
                            tl_size a_fps,
-                           bool a_append,
+                           tl_size a_setIndex,
                            tl_size a_startingFrame,
                            bool a_paused);
 
@@ -37,42 +37,41 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef tl_size               size_type;
 
   public:
-    SpriteAnimation(core_cs::EntityManager*  a_entMgr,
-                    core_cs::ComponentPoolManager* a_poolMgr)
+    SpriteAnimation(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
                     : Prefab_I(a_entMgr, a_poolMgr)
                     , m_loop(true)
                     , m_fps(24)
-                    , m_append(true)
                     , m_startingFrame(0)
                     , m_paused(false)
+                    , m_setIndex(0)
     { }
 
     template <typename SpriteLoaderIterator>
     void
-      Add(entity_type* a_entity,
+      Add(entity_ptr a_entity,
           SpriteLoaderIterator a_begin,
           SpriteLoaderIterator a_end)
     {
       using namespace gfx_med;
-      using namespace p_sprite_loader::parser;
 
       type_traits::AssertTypeIsSupported
-        <SpriteLoaderIterator,
-        SpriteLoader_SpriteSheetPacker::iterator,
-        SpriteLoader_SpriteSheetPacker::const_iterator>();
+        <SpriteLoaderIterator, 
+         sprite_sheet_str::iterator,
+         sprite_sheet_str::const_iterator,
+         sprite_sheet_ul::iterator,
+         sprite_sheet_ul::const_iterator>();
 
       priv::DoAddSpriteAnimation(a_entity, m_entMgr, m_compPoolMgr,
-                                 a_begin, a_end, m_loop, m_fps, m_append,
+                                 a_begin, a_end, m_loop, m_fps, m_setIndex,
                                  m_startingFrame, m_paused);
     }
 
     template <typename T_ContOfSpriteLoaderItrBeginEndPair>
     void
-      Add(entity_type* a_entity,
+      Add(entity_ptr a_entity,
           T_ContOfSpriteLoaderItrBeginEndPair a_spriteLoaderIterators)
     {
       using namespace gfx_med;
-      using namespace p_sprite_loader::parser;
 
       typedef T_ContOfSpriteLoaderItrBeginEndPair           cont_type;
       typedef typename cont_type::value_type                pair_type;
@@ -83,18 +82,17 @@ namespace tloc { namespace prefab { namespace graphics {
 
       type_traits::AssertTypeIsSupported
         <pair_type_first,
-         SpriteLoader_SpriteSheetPacker::iterator,
-         SpriteLoader_SpriteSheetPacker::const_iterator>();
+         sprite_sheet_str::iterator,
+         sprite_sheet_str::const_iterator,
+         sprite_sheet_ul::iterator,
+         sprite_sheet_ul::const_iterator>();
 
       type_traits::AssertTypeIsSupported
-        <pair_type_second,
-         SpriteLoader_SpriteSheetPacker::iterator,
-         SpriteLoader_SpriteSheetPacker::const_iterator>();
-
-      // We cannot add multiple sprite sheets without append, let the user know
-      // LOG: convert following assert into a log
-      TLOC_ASSERT(m_append,
-        "Append is set to falsed, unable to generate multiple spritesheets");
+        <pair_type_second, 
+         sprite_sheet_str::iterator,
+         sprite_sheet_str::const_iterator,
+         sprite_sheet_ul::iterator,
+         sprite_sheet_ul::const_iterator>();
 
       for (itr_type itr = a_spriteLoaderIterators.begin(),
                     itrEnd = a_spriteLoaderIterators.end();
@@ -106,9 +104,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
     TLOC_DECL_PARAM_VAR(bool,       Loop, m_loop);
     TLOC_DECL_PARAM_VAR(tl_size,    Fps, m_fps);
-    TLOC_DECL_PARAM_VAR(bool,       Append, m_append);
     TLOC_DECL_PARAM_VAR(size_type,  StartingFrame, m_startingFrame);
     TLOC_DECL_PARAM_VAR(bool,       Paused, m_paused);
+    TLOC_DECL_PARAM_VAR(tl_size,    SetIndex, m_setIndex);
   };
 
 };};};

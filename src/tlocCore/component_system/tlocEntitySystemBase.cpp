@@ -1,5 +1,6 @@
 #include "tlocEntitySystemBase.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 
@@ -18,20 +19,27 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntitySystemBase::error_type      error_type;
 
-  EntitySystemBase::~EntitySystemBase()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  EntitySystemBase::
+    ~EntitySystemBase()
   {
     m_eventMgr->RemoveListener(this, entity_events::insert_component);
     m_eventMgr->RemoveListener(this, entity_events::remove_component);
   }
 
-  error_type EntitySystemBase::Initialize()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    EntitySystemBase::
+    Initialize()
   {
     m_flags.Mark(k_systemInitialized);
 
     if (Pre_Initialize() == ErrorSuccess)
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
-      if (DoInitialize(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
+      if (DoInitialize(m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
       }
@@ -40,7 +48,11 @@ namespace tloc { namespace core { namespace component_system {
     return ErrorFailure;
   }
 
-  void EntitySystemBase::ProcessActiveEntities(f64 a_deltaT)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    EntitySystemBase::
+    ProcessActiveEntities(f64 a_deltaT)
   {
     TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized),
       "Did you forget to call Initialize()?");
@@ -49,17 +61,21 @@ namespace tloc { namespace core { namespace component_system {
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
       Pre_ProcessActiveEntities(a_deltaT);
-      DoProcessActiveEntities(m_entityMgr.get(), m_activeEntities, a_deltaT);
+      DoProcessActiveEntities(m_activeEntities, a_deltaT);
       Post_ProcessActiveEntities(a_deltaT);
     }
   }
 
-  error_type EntitySystemBase::Shutdown()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    EntitySystemBase::
+    Shutdown()
   {
     if (Pre_Shutdown() == ErrorSuccess)
     {
       TLOC_ASSERT_NOT_NULL(m_entityMgr);
-      if (DoShutdown(m_entityMgr.get(), m_activeEntities) == ErrorSuccess)
+      if (DoShutdown(m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();
       }
@@ -68,47 +84,83 @@ namespace tloc { namespace core { namespace component_system {
     return ErrorFailure;
   }
 
-  bool EntitySystemBase::OnEvent(const EventBase& a_event)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  EventReturn
+    EntitySystemBase::
+    OnEvent(const EventBase& a_event)
   {
     event_value_type type = a_event.GetType();
+
+    EventReturn evtRet(false, false);
 
     switch(type)
     {
     case entity_events::insert_component:
-    case entity_events::remove_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        Entity* ent = entEvent.GetEntity();
+        entity_vptr ent = entEvent.GetEntity();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
              itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
         {
           if (ent->HasComponent(*itr) )
           {
-            entity_ptr_array::iterator entItr = core::find_all(m_activeEntities, ent);
+            evtRet.m_componentInSystem = true;
+
+            entity_count_cont::iterator entItr = 
+              core::find_if_all(m_activeEntities, 
+              algos::compare::pair::MakeFirst(ent));
+
             if (entItr == m_activeEntities.end())
             {
               OnComponentInsert(entEvent);
-              m_activeEntities.push_back(ent);
+              m_activeEntities.push_back(MakePair(ent, 1));
             }
-          }
-          else
-          {
-            entity_ptr_array::iterator itr = find_all(m_activeEntities, ent);
-            if (itr != m_activeEntities.end())
+            else
             {
-              OnComponentRemove(entEvent);
-              m_activeEntities.erase(itr);
+              entItr->second++;
             }
           }
         }
         break;
       }
+    case entity_events::remove_component:
+      {
+        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        entity_vptr ent = entEvent.GetEntity();
+
+        for (component_type_array::iterator itr = m_typeFlags.begin(),
+             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        {
+          if (ent->HasComponent(*itr) )
+          {
+            entity_count_cont::iterator entItr = 
+              core::find_if_all(m_activeEntities, 
+              algos::compare::pair::MakeFirst(ent));
+
+            if (entItr != m_activeEntities.end())
+            {
+              OnComponentRemove(entEvent);
+              if (entItr->second == 1)
+              {
+                m_activeEntities.erase(entItr);
+              }
+              else
+              {
+                entItr->second--;
+              }
+            }
+          }
+        }
+        break;
+      }
+
     case entity_events::disable_component:
     case entity_events::enable_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        Component* comp = entEvent.GetComponent();
+        component_sptr comp = entEvent.GetComponent();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
              itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
@@ -125,7 +177,7 @@ namespace tloc { namespace core { namespace component_system {
       }
     }
 
-    return false;
+    return evtRet;
   }
 
 };};};

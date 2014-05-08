@@ -37,112 +37,78 @@ int TLOC_MAIN(int argc, char *argv[])
   win.Create( gfx_win::Window::graphics_mode::Properties(1024, 768),
     gfx_win::WindowSettings("2LoC Engine") );
 
-  //------------------------------------------------------------------------
-  // Initialize renderer
-  gfx_rend::Renderer  renderer;
-  if (renderer.Initialize() != ErrorSuccess)
-  { printf("\nRenderer failed to initialize"); return 1; }
+  // -----------------------------------------------------------------------
+  // Initialize OpenGL for the current platform
 
-  //------------------------------------------------------------------------
-  // All systems in the engine require an event manager and an entity manager
-  core_cs::event_manager_sptr  eventMgr(new core_cs::EventManager());
-  core_cs::entity_manager_sptr entityMgr(new core_cs::EntityManager(eventMgr));
+  if (gfx_gl::InitializePlatform() != ErrorSuccess)
+  { printf("\nRenderer failed to initialize"); return 1; }
 
   //------------------------------------------------------------------------
   // A component pool manager manages all the components in a particular
   // session/level/section.
-  core_cs::ComponentPoolManager cpoolMgr;
+  core_cs::component_pool_mgr_vso cpoolMgr;
+
+  //------------------------------------------------------------------------
+  // All systems in the engine require an event manager and an entity manager
+  core_cs::event_manager_vso  eventMgr;
+  core_cs::entity_manager_vso entityMgr( MakeArgs(eventMgr.get()) );
 
   //------------------------------------------------------------------------
   // To render a fan, we need a fan render system - this is a specialized
   // system to render this primitive
-  gfx_cs::QuadRenderSystem quadSys(eventMgr, entityMgr);
+  gfx_cs::QuadRenderSystem quadSys(eventMgr.get(), entityMgr.get());
+  quadSys.SetRenderer(win.GetRenderer());
 
   //------------------------------------------------------------------------
   // We cannot render anything without materials and its system
-  gfx_cs::MaterialSystem    matSys(eventMgr, entityMgr);
+  gfx_cs::MaterialSystem    matSys(eventMgr.get(), entityMgr.get());
 
-  // We need a material to attach to our entity (which we have not yet created).
   // NOTE: The fan render system expects a few shader variables to be declared
   //       and used by the shader (i.e. not compiled out). See the listed
   //       vertex and fragment shaders for more info.
-  gfx_cs::Material  mat;
-  {
 #if defined (TLOC_OS_WIN)
-    core_str::String shaderPath("/shaders/tlocOneTextureVS.glsl");
+    core_str::String shaderPathVS("/shaders/tlocOneTextureVS.glsl");
 #elif defined (TLOC_OS_IPHONE)
-    core_str::String shaderPath("/shaders/tlocOneTextureVS_gl_es_2_0.glsl");
+    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_gl_es_2_0.glsl");
 #endif
 
-    shaderPath = GetAssetsPath() + shaderPath;
-    core_io::FileIO_ReadA shaderFile(shaderPath.c_str());
-
-    if (shaderFile.Open() != ErrorSuccess)
-    { printf("\nUnable to open the vertex shader"); return 1;}
-
-    core_str::String code;
-    shaderFile.GetContents(code);
-    mat.SetVertexSource(code);
-  }
-  {
 #if defined (TLOC_OS_WIN)
-    core_str::String shaderPath("/shaders/tlocOneTextureFS.glsl");
+    core_str::String shaderPathFS("/shaders/tlocOneTextureFS.glsl");
 #elif defined (TLOC_OS_IPHONE)
-    core_str::String shaderPath("/shaders/tlocOneTextureFS_gl_es_2_0.glsl");
+    core_str::String shaderPathFS("/shaders/tlocOneTextureFS_gl_es_2_0.glsl");
 #endif
-
-    shaderPath = GetAssetsPath() + shaderPath;
-    core_io::FileIO_ReadA shaderFile(shaderPath.c_str());
-
-    if (shaderFile.Open() != ErrorSuccess)
-    { printf("\nUnable to open the fragment shader"); return 1;}
-
-    core_str::String code;
-    shaderFile.GetContents(code);
-    mat.SetFragmentSource(code);
-  }
 
   //------------------------------------------------------------------------
-  // Add a texture to the material. We need:
-  //  * an image
-  //  * a TextureObject (preparing the image for OpenGL)
-  //  * a Uniform (all textures are uniforms in shaders)
-  //  * a ShaderOperator (this is what the material will take)
-  //
-  // The material takes in a 'MasterShaderOperator' which is the user defined
-  // shader operator and over-rides any shader operators that the systems
-  // may be setting. Any uniforms/shaders set in the 'MasterShaderOperator'
-  // that have the same name as the one in the system will be given preference.
+  // Prepare a texture for the material
 
   gfx_med::ImageLoaderPng png;
   core_io::Path path( (core_str::String(GetAssetsPath()) +
     "/images/engine_logo.png").c_str() );
 
   if (png.Load(path) != ErrorSuccess)
-  { TLOC_ASSERT(false, "Image did not load!"); }
+  { TLOC_ASSERT_FALSE("Image did not load!"); }
 
   // gl::Uniform supports quite a few types, including a TextureObject
-  gfx_gl::texture_object_sptr to(new gfx_gl::TextureObject());
+  gfx_gl::texture_object_vso to;
   to->Initialize(png.GetImage());
+  to->Activate();
 
-  gfx_gl::uniform_sptr  u_to(new gfx_gl::Uniform());
-  u_to->SetName("s_texture").SetValueAs(to);
-
-  gfx_gl::shader_operator_sptr so =
-    gfx_gl::shader_operator_sptr(new gfx_gl::ShaderOperator());
-  so->AddUniform(u_to);
-
-  // Finally, add this shader operator to the material
-  mat.AddShaderOperator(so);
+  gfx_gl::uniform_vso  u_to;
+  u_to->SetName("s_texture").SetValueAs(*to);
 
   //------------------------------------------------------------------------
   // The prefab library has some prefabricated entities for us
 
-  math_t::Rectf rect(math_t::Rectf::width(1.0f * 1.5f),
-                     math_t::Rectf::height(win.GetAspectRatio().Get() * 1.5f ) );
+  math_t::Rectf_c rect(math_t::Rectf_c::width(1.0f * 1.5f),
+                       math_t::Rectf_c::height(win.GetAspectRatio().Get() * 1.5f ) );
 
-  core_cs::Entity* q = prefab_gfx::CreateQuad(*entityMgr.get(), cpoolMgr, rect);
-  entityMgr->InsertComponent(q, &mat);
+  core_cs::entity_vptr q = pref_gfx::Quad(entityMgr.get(), cpoolMgr.get()).
+    Dimensions(rect).Create();
+
+  pref_gfx::Material(entityMgr.get(), cpoolMgr.get())
+    .AssetsPath(GetAssetsPath())
+    .AddUniform(u_to.get())
+    .Add(q, core_io::Path(shaderPathVS), core_io::Path(shaderPathFS));
 
   //------------------------------------------------------------------------
   // All systems need to be initialized once
@@ -159,6 +125,7 @@ int TLOC_MAIN(int argc, char *argv[])
     { }
 
     // Finally, process the fan
+    win.GetRenderer()->ApplyRenderSettings();
     quadSys.ProcessActiveEntities();
 
     win.SwapBuffers();

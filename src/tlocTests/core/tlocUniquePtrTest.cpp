@@ -206,7 +206,7 @@ namespace TestingUniquePtr
 
   TEST_CASE("core/smart_ptr/unique_ptr/with containers", "")
   {
-    TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
+    //TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_singly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_doubly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
   }
@@ -257,49 +257,111 @@ namespace TestingUniquePtr
 
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
+  using namespace core_mem::tracking::priv;
+
+  template <typename T_BuildConfig>
+  void DoDebugTest(T_BuildConfig)
   {
-    using namespace smart_ptr::priv;
+    derived* d1 = new derived();
+    derived* d2 = new derived();
+    derived* d3 = new derived();
 
-    {
-      derived* d1 = new derived();
-      derived* d2 = new derived();
-      derived* d3 = new derived();
+    UniquePtr<derived> derPtr(d1);
+    CHECK(DoIsMemoryAddressTracked( (void*)d1));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d3));
 
-      UniquePtr<derived> derPtr(d1);
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
-      CHECK(Unsafe_IsPtrTracked( (void*)d1));
-      CHECK_FALSE(Unsafe_IsPtrTracked( (void*)d2));
-      CHECK_FALSE(Unsafe_IsPtrTracked( (void*)d3));
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
+    UniquePtr<derived> derPtrS(derPtr);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
-      UniquePtr<derived> derPtrS(derPtr);
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
+    // This SHOULD fail
+    // TODO: Turn this into a real test once we have a throwing assertion
+    // UniquePtr<derived> derPtrSS(d1);
 
-      // This SHOULD fail
-      // TODO: Turn this into a real test once we have a throwing assertion
-      // UniquePtr<derived> derPtrSS(d1);
+    derPtr.swap(derPtrS);
+    derPtr.reset();
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
-      derPtr.swap(derPtrS);
-      derPtr.reset();
-      CHECK(Unsafe_GetPtrTrackedSize() == 0);
-
-      derPtr.reset(d2);
-      UniquePtr<derived> derPtr2(d3);
-      CHECK(Unsafe_IsPtrTracked( (void*)d2));
-      CHECK(Unsafe_IsPtrTracked( (void*)d3));
-
-      CHECK(Unsafe_GetPtrTrackedSize() == 2);
-    }
-
-    CHECK(Unsafe_GetPtrTrackedSize() == 0);
+    derPtr.reset(d2);
+    UniquePtr<derived> derPtr2(d3);
+    CHECK(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(DoIsMemoryAddressTracked( (void*)d3));
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
+  void DoDebugTest(core_cfg::p_build_config::Release)
   { /* intentionally empty */}
 
   TEST_CASE("core/smart_ptr/unique_ptr/debug test", "")
   {
-    DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
+    DoDebugTest(core_cfg::BuildConfig::build_config_type());
   }
+
+  TEST_CASE("core/smart_ptr/unique_ptr/GetUseCount", "")
+  {
+    UniquePtr<tl_int> up;
+    CHECK(GetUseCount(up) == 0);
+
+    up.reset(new tl_int(10));
+    CHECK(GetUseCount(up) == 1);
+  }
+
+  template <typename T_BuildConfig>
+  void CheckMemAddressIsTracked(void* a_memAddress, bool a_tracked, T_BuildConfig)
+  {
+    CHECK(DoIsMemoryAddressTracked(a_memAddress) == a_tracked);
+  }
+
+  void CheckMemAddressIsTracked(void* , bool , core_cfg::p_build_config::Release)
+  { /* intentionally empty */}
+
+  TEST_CASE("core/smart_ptr/unique_ptr/Release", "")
+  {
+    SECTION("Basic functionality", "")
+    {
+      UniquePtr<derived> up(new derived());
+      CHECK(up);
+
+      CheckMemAddressIsTracked( (void*) up.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+
+      UniquePtr<derived> up2(up);
+      CHECK_FALSE(up);
+      CHECK(up2);
+
+      CheckMemAddressIsTracked( (void*) up2.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+
+
+      UniquePtr<base> up3(up2);
+      CHECK_FALSE(up2);
+      CHECK(up3);
+
+      CheckMemAddressIsTracked( (void*) up3.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+    }
+
+    SECTION("Basic functionality", "Also tests whether release is untracking "
+             "the memory address it started tracking on construction.")
+    {
+      UniquePtr<tl_int> up(new tl_int(50));
+      CHECK(up);
+
+      CheckMemAddressIsTracked( (void*) up.get(), true,
+                                core_cfg::BuildConfig::build_config_type() );
+
+      tl_int* rawPtr = up.release();
+      CHECK_FALSE(up);
+
+      CheckMemAddressIsTracked( (void*) up.get(), false,
+                                core_cfg::BuildConfig::build_config_type() );
+
+      delete rawPtr;
+    }
+  }
+
+  struct LargeObject
+  {
+    int m_largeArray[100];
+  };
 }

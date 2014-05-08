@@ -6,6 +6,8 @@
 #endif
 
 #include "tlocTable.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 
@@ -16,7 +18,7 @@ namespace tloc { namespace core { namespace data_structs {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TABLE for (tl_int i = 0; i < k_TableSize; ++i)
+#define ITERATE_TABLE for (size_type i = 0; i < k_TableSize; ++i)
 
 #define TABLE_TEMPS  typename T, tl_size T_Rows, tl_size T_Cols
 #define TABLE_PARAMS T, T_Rows, T_Cols
@@ -81,7 +83,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   T& Table<TABLE_PARAMS>::
-    operator() (tl_int aRow, tl_int aCol)
+    operator() (size_type aRow, size_type aCol)
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -92,7 +94,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   const T& Table<TABLE_PARAMS>::
-    operator() (tl_int aRow, tl_int aCol) const
+    operator() (size_type aRow, size_type aCol) const
   {
     ASSERT_NUM_ROWS;
     ASSERT_NUM_COLS;
@@ -128,7 +130,7 @@ namespace tloc { namespace core { namespace data_structs {
   {
     ASSERT_NUM_ROWS;
 
-    for (tl_int i = 0; i < T_Cols; ++i)
+    for (size_type i = 0; i < T_Cols; ++i)
     { aRowOut[i] = m_values[(i * T_Cols) + aRow]; }
   }
 
@@ -146,7 +148,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   T& Table<TABLE_PARAMS>::
-    operator [](tl_int aIndex)
+    operator [](size_type aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < k_TableSize, "Index is out of bounds!");
 
@@ -157,7 +159,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   const T& Table<TABLE_PARAMS>::
-    operator [](tl_int aIndex) const
+    operator [](size_type aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < k_TableSize, "Index is out of bounds!");
     return m_values[aIndex];
@@ -199,7 +201,7 @@ namespace tloc { namespace core { namespace data_structs {
       DoCast(const Table<T_ValueType, T_Rows, T_Cols>& a_table, typesAreDifferent)
     {
       Table<T_OtherType, T_Rows, T_Cols> temp;
-      for(tl_int i = 0; i < T_Rows * T_Cols; ++i)
+      for(tl_size i = 0; i < T_Rows * T_Cols; ++i)
       {
         temp[i] = core_utils::
           CastNumber<T_OtherType, T_ValueType>(a_table[i]);
@@ -264,9 +266,9 @@ namespace tloc { namespace core { namespace data_structs {
     { memcpy(m_values, &a_vars, sizeof(T) * k_TableSize); }
     else
     {
-      for (tl_size currRow = 0; currRow < k_Rows; ++currRow)
+      for (size_type currRow = 0; currRow < k_Rows; ++currRow)
       {
-        for (tl_size currCol = 0; currCol < k_Cols; ++currCol)
+        for (size_type currCol = 0; currCol < k_Cols; ++currCol)
         {
           Set(currRow, currCol, a_vars.operator[]( (currRow * k_Cols) + currCol) );
         }
@@ -293,7 +295,7 @@ namespace tloc { namespace core { namespace data_structs {
   {
     ASSERT_NUM_ROWS;
 
-    for (tl_int i = 0; i < T_Cols; ++i)
+    for (size_type i = 0; i < T_Cols; ++i)
     { m_values[ ((i * T_Cols) + aRow) ] = aRowIn[i]; }
   }
 

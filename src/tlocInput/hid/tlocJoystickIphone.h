@@ -1,7 +1,0 @@
-#pragma once
-#ifndef _TLOC_INPUT_HID_PRIV_JOYSTICK_IMPL_IPHONE_H_
-#define _TLOC_INPUT_HID_PRIV_JOYSTICK_IMPL_IPHONE_H_
-
-
-
-#endif

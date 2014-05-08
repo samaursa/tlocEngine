@@ -1,10 +1,11 @@
 #include "tlocShader.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl.h>
 
 #include <tlocGraphics/opengl/tlocError.h>
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
@@ -44,7 +45,8 @@ namespace tloc { namespace graphics { namespace gl {
     count
   };
 
-  Shader_I::Shader_I() : m_flags(count)
+  Shader_I::Shader_I()
+    : m_flags(count)
   {
   }
 

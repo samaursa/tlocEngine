@@ -2,6 +2,8 @@
 #define TLOC_LIST_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/types/tlocTypeTraits.h>

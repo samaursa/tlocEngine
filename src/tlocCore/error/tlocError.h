@@ -24,7 +24,9 @@ namespace tloc { namespace core { namespace error {
 
     bool Succeeded() const;
     bool Failed() const;
+
     void Ignore() const;
+    void Check() const;
 
     tl_int      GetLineNumber() const;
     const char* GetFileName() const;
@@ -79,9 +81,9 @@ namespace tloc { namespace core { namespace error {
   public:
     Error_T(code_type a_errorType, tl_int a_line, const char* a_file);
     Error_T(const this_type& a_other);
-    ~Error_T();
+    ~Error_T() TLOC_DTOR_ASSERT;
 
-    void operator=(const this_type& a_other);
+    this_type& operator=(const this_type& a_other);
 
     void swap(this_type& a_other);
 
@@ -211,5 +213,16 @@ namespace tloc { namespace core {
 
 #define TLOC_ERROR(_errorCode_)\
   tloc::core::error::Error(_errorCode_, __LINE__, __FILE__)
+
+// ///////////////////////////////////////////////////////////////////////
+// Helper macro for common error reporting tasks
+
+// if the user expression returns an error, then that error is returned
+#define TLOC_ERROR_RETURN_IF_FAILED(_expr_)\
+  do {\
+    tloc::core_err::Error errToReturn = (_expr_);\
+    if (errToReturn.Failed())\
+    { return errToReturn; }\
+  } while((void)0, 0)
 
 #endif

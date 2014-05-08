@@ -18,11 +18,13 @@
 #include <tlocCore/error/tloc_error.inl.h>
 #include <tlocCore/io/tloc_io.inl.h>
 #include <tlocCore/iterators/tloc_iterators.inl.h>
+#include <tlocCore/logging/tloc_logging.inl.h>
 #include <tlocCore/memory/tloc_memory.inl.h>
 #include <tlocCore/platform/tloc_platform.inl.h>
 #include <tlocCore/rng/tloc_rng.inl.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 #include <tlocCore/string/tloc_string.inl.h>
+#include <tlocCore/threads/tloc_threads.inl.h>
 #include <tlocCore/time/tloc_time.inl.h>
 #include <tlocCore/types/tloc_types.inl.h>
 #include <tlocCore/utilities/tloc_utilities.inl.h>

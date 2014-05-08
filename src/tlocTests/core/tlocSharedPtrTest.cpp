@@ -3,8 +3,6 @@
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
-
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 
@@ -44,7 +42,7 @@ namespace TestingSharedPtr
 
   void PassSharedPtr(const SharedPtr<SharedStruct>& a_other)
   {
-    tl_int currCount = a_other.use_count();
+    tl_long currCount = a_other.use_count();
     SharedPtr<SharedStruct> localPtr = a_other;
     CHECK(localPtr.use_count() == currCount + 1);
   }
@@ -275,17 +273,17 @@ namespace TestingSharedPtr
   {
     const tl_int poolSize = 100;
     {
-      typedef SharedPtr<MyComponent>             my_comp_ptr;
+      typedef SharedPtr<MyComponent>                        my_comp_ptr;
       typedef memory::MemoryPoolIndexed<my_comp_ptr>        my_mem_pool;
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
-      memPool.GetNext()->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
+      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
-        memPool.GetNext()->SetValue(
+        (*memPool.GetNext())->SetValue(
           my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
       }
 
@@ -298,9 +296,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if (itr->GetValue()->x != counter &&
-          itr->GetValue()->y != counter + 1 &&
-          itr->GetValue()->z != counter + 2)
+        if ( (*(*itr)->GetValuePtr())->x != counter &&
+          (*(*itr)->GetValuePtr())->y != counter + 1 &&
+          (*(*itr)->GetValuePtr())->z != counter + 2)
         {
           testPassed = false;
           break;
@@ -381,9 +379,10 @@ namespace TestingSharedPtr
       CHECK(base::m_dtorCount == 2);
 
 
-      // TODO: Test with static_pointer_cast<>() when it is available
-      //convToDer.CastFrom(basePtr2);
-      //CHECK(convToDer->m_value == 10);
+      convToDer = core_sptr::static_pointer_cast<derived>(basePtr2);
+      CHECK(convToDer->m_value == 10);
+
+      //TODO: Do const_pointer_cast checks
     }
     CHECK(base::m_ctorCount == 3);
     CHECK(base::m_dtorCount == 3);
@@ -433,51 +432,54 @@ namespace TestingSharedPtr
 
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::Debug)
+  using namespace core_mem::tracking::priv;
+
+  template <typename T_BuildConfig>
+  void DoDebugTest(T_BuildConfig)
   {
-    using namespace smart_ptr::priv;
+    derived* d1 = new derived();
+    derived* d2 = new derived();
+    derived* d3 = new derived();
 
-    {
-      derived* d1 = new derived();
-      derived* d2 = new derived();
-      derived* d3 = new derived();
+    SharedPtr<derived> derPtr(d1);
+    SharedPtr<derived> derPtrS(derPtr);
 
-      SharedPtr<derived> derPtr(d1);
-      SharedPtr<derived> derPtrS(derPtr);
+    // This SHOULD fail
+    // TODO: Turn this into a real test once we have a throwing assertion
+    // SharedPtr<derived> derPtrSS(d1);
 
-      // This SHOULD fail
-      // TODO: Turn this into a real test once we have a throwing assertion
-      // SharedPtr<derived> derPtrSS(d1);
+    CHECK(DoIsMemoryAddressTracked( (void*)d1));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
 
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
-      CHECK(Unsafe_IsPtrTracked( (void*)d1));
-      CHECK_FALSE(Unsafe_IsPtrTracked( (void*)d2));
-      CHECK_FALSE(Unsafe_IsPtrTracked( (void*)d3));
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
+    CHECK(DoIsMemoryAddressTracked( (void*)d1));
 
-      derPtrS.reset();
-      CHECK(Unsafe_GetPtrTrackedSize() == 1);
+    // derPtrS and derPtr are the same SharedPtr essentially and count
+    // as one pointer reference
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d3));
 
-      derPtr.reset();
-      CHECK(Unsafe_GetPtrTrackedSize() == 0);
+    derPtrS.reset();
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
-      derPtr.reset(d2);
-      SharedPtr<derived> derPtr2(d3);
-      CHECK(Unsafe_IsPtrTracked( (void*)d2));
-      CHECK(Unsafe_IsPtrTracked( (void*)d3));
+    derPtr.reset();
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
-      CHECK(Unsafe_GetPtrTrackedSize() == 2);
-    }
-
-    CHECK(Unsafe_GetPtrTrackedSize() == 0);
+    derPtr.reset(d2);
+    SharedPtr<derived> derPtr2(d3);
+    CHECK(DoIsMemoryAddressTracked( (void*)d2));
+    CHECK(DoIsMemoryAddressTracked( (void*)d3));
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d2) == 0);
+    CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d3) == 0);
   }
 
-  void DoDebugTest(smart_ptr::priv::p_smart_ptr_tracker::NoDebug)
+  void DoDebugTest(core_cfg::p_build_config::Release)
   { /* intentionally empty */}
 
   TEST_CASE("core/smart_ptr/shared_ptr/debug test", "")
   {
-    DoDebugTest(smart_ptr::priv::current_smart_ptr_tracking_policy());
+    DoDebugTest(core_cfg::BuildConfig::build_config_type());
   }
 
   struct BaseClass
@@ -547,4 +549,39 @@ namespace TestingSharedPtr
     ConstTest<core_sptr::p_shared_ptr::null_copy::Disallow>();
   }
 
+  TEST_CASE("core/smart_ptr/shared_ptr/GetUseCount", "")
+  {
+    SharedPtr<tl_int> sp;
+    CHECK(GetUseCount(sp) == 0);
+
+    sp.reset(new tl_int(10));
+    CHECK(GetUseCount(sp) == 1);
+  }
+
+  struct FiveParams
+  {
+    FiveParams(tl_int a, tl_int b, tl_int c, tl_int d, tl_int e)
+      : m_a(a), m_b(b), m_c(c), m_d(d), m_e(e)
+    { }
+
+    tl_int m_a, m_b, m_c, m_d, m_e;
+  };
+
+  TEST_CASE("core/smart_ptr/shared_ptr/MakeShared", "")
+  {
+    {
+      SharedPtr<SharedStruct> sp =
+        core_sptr::MakeShared<SharedStruct>(13);
+      CHECK(sp->m_value == 13);
+    }
+    {
+      SharedPtr<FiveParams> sp =
+        core_sptr::MakeShared<FiveParams>(1, 2, 3, 4, 5);
+      CHECK(sp->m_a == 1);
+      CHECK(sp->m_b == 2);
+      CHECK(sp->m_c == 3);
+      CHECK(sp->m_d == 4);
+      CHECK(sp->m_e == 5);
+    }
+  }
 }

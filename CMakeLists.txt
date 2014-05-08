@@ -12,6 +12,8 @@ set(internal_FIXME "FIXME!")
 set(TLOC_ENGINE_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
 set(TLOC_DEP_PATH ${internal_FIXME} CACHE PATH "The tloc dependency REPOSITORY path goes here. Make sure that you have run CMake on the repository.")
 set(TLOC_DEP_BUILD_PATH ${internal_FIXME} CACHE PATH "The tloc dependency BUILD path goes here. Make sure that you have run CMake on the repository.")
+set(TLOC_INCLUDE_TESTS TRUE CACHE BOOL "Include tests in the project")
+set(TLOC_ENABLE_MEMORY_TRACKING TRUE CACHE BOOL "Disabling the tracker may increase performance. Tracker is ALWAYS DISABLED in Release.")
 
 # Variables to check for ${internal_FIXEM}
 set(TLOC_CHECK_PATHS

@@ -27,12 +27,18 @@ namespace tloc { namespace graphics { namespace error {
     error_invalid_texture_unit,
     error_no_texture_units_available,
     error_texture_unit_limit_reached,
+    error_texture_object_already_activated,
+    error_texture_object_never_activated,
 
     error_unsupported_sprite_sheet_format,
     error_sprite_sheet_parse_error,
 
     error_obj_file_parse_error,
-    error_obj_corrupt_or_invalid
+    error_obj_corrupt_or_invalid,
+
+    error_free_type_initialize,
+    error_free_type_error_loading_font,
+    error_free_type_error_setting_size
   };
 
 };};};

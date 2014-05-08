@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
@@ -20,7 +21,9 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef Quad                                      this_type;
     typedef Component_T<this_type, components::quad>  base_type;
     typedef f32                                       real_type;
-    typedef math::types::Rectangle_T<real_type>       rect_type;
+    typedef math_t::Rectangle_T
+      <real_type, 
+       math_t::p_rectangle::position::Center>         rect_type;
 
   public:
     Quad();
@@ -36,8 +39,9 @@ namespace tloc { namespace graphics { namespace component_system {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(Quad, quad);
-  TLOC_TYPEDEF_COMPONENT_POOL(quad_sptr, quad_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Quad, quad);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Quad, quad);
+  TLOC_TYPEDEF_COMPONENT_POOL(Quad, quad);
 
 };};};
 

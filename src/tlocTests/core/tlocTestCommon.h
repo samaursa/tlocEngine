@@ -39,7 +39,7 @@ namespace tloc { namespace tests {
 // of assertions without invoking the debugger. In Release, we do not
 // want such code to run because it will result in undefined behavior.
 
-#if TLOC_ASSERTS_DEFINED == 1
+#if TLOC_ASSERTS_DEFINED == 1 && defined(TLOC_CPPUNWIND_ENABLED)
 #define TLOC_TEST_ASSERT\
   tloc::core::assert::SetAssertCustomBreak(tloc::tests::GetThrowOnBreak());\
   bool exceptionThrown = false;\

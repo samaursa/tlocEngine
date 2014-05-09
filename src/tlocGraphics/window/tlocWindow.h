@@ -201,6 +201,13 @@ namespace tloc { namespace graphics { namespace win {
     dim_type GetDimensions() const;
 
     ///-------------------------------------------------------------------------
+    /// Returns the horizontal and vertical DPI for the device.
+    ///
+    /// @return The device DPI
+    ///-------------------------------------------------------------------------
+    dim_type GetDPI() const;
+
+    ///-------------------------------------------------------------------------
     /// @brief
     /// Gets the maximum width of the window that the system is capable
     /// of producing.

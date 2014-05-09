@@ -202,6 +202,10 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+      void AutoGenerateMipMaps(bool a_autoGenMipMaps = true);
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_S, m_wrap_s);
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_T, m_wrap_t);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMinFilter, m_minFilter);
@@ -209,6 +213,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
       TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
       TLOC_DECL_AND_DEF_GETTER (format_value_type, GetFormat, m_format);
+      TLOC_DECL_AND_DEF_GETTER (bool, IsAutoGenMipMaps, m_autoGenMipMaps);
 
     private:
       wrap_value_type             m_wrap_s;
@@ -218,6 +223,7 @@ namespace tloc { namespace graphics { namespace gl {
       texture_type                m_textureType;
       internal_format_value_type  m_internalFormat;
       format_value_type           m_format;
+      bool                        m_autoGenMipMaps;
     };
 
   public:

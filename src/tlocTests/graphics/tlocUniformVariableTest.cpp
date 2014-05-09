@@ -22,10 +22,17 @@ namespace TestingUniformVariable
 
       gl::Uniform u;
       u.SetValueAs(v);
+      u.SetEnabled(false);
 
       {
         gl::Uniform ucopy(u);
         CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+        CHECK_FALSE( ucopy.IsEnabled() );
+        CHECK_FALSE( u.IsEnabled() );
+
+        ucopy.SetEnabled(true);
+        CHECK( ucopy.IsEnabled() );
+        CHECK_FALSE( u.IsEnabled() );
       }
 
       {

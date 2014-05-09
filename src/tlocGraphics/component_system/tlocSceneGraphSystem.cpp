@@ -135,6 +135,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (parent)
     {
+      // check if the parent is disabled, if yes, disable us as well
+      if (parent->GetEntity()->IsActive() == false)
+      { a_ent->Deactivate(); }
+
       if (parent->IsHierarchyUpdateRequired())
       {
         SceneNode::index_type nodeLevel = 0;

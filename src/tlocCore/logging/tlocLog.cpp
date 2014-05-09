@@ -80,6 +80,36 @@ namespace tloc { namespace core { namespace logging {
 
   Log_I::this_type&
     Log_I::
+    operator<<(BufferArgW a_string)
+  {
+    m_finalString += core_str::CharWideToAscii(a_string.GetPtr());
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
+    operator<<(char8 a_char)
+  {
+    m_finalString += a_char;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
+    operator<<(char32 a_wchar)
+  {
+    m_finalString += core_str::CharWideToAscii(a_wchar);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
     operator<<(tl_int a_value)
   {
     m_finalString += core_str::Format("%i", a_value);

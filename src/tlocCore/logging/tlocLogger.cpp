@@ -103,6 +103,20 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOG_TEMPS>
   TLOC_LOG_TYPE::this_type&
     Log_T<TLOC_LOG_PARAMS>::
+    operator<<(BufferArgW a_string)
+  {
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_string); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_int a_value)
   {
     if (m_logger->IsDisabled() == false &&
@@ -118,6 +132,34 @@ namespace tloc { namespace core { namespace logging {
   TLOC_LOG_TYPE::this_type&
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_long a_value)
+  {
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(char8 a_value)
+  {
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(char32 a_value)
   {
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )

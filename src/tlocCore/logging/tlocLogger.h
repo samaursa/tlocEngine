@@ -198,7 +198,10 @@ namespace tloc { namespace core { namespace logging {
           BufferArg a_fileName, const tl_ulong a_lineNumber);
     ~Log_T();
 
-    this_type& operator << (BufferArg a_string);
+    this_type& operator << (BufferArg  a_string);
+    this_type& operator << (BufferArgW a_string);
+    this_type& operator << (char8     a_value);
+    this_type& operator << (char32    a_value);
     this_type& operator << (tl_int    a_value);
     this_type& operator << (tl_long   a_value);
     this_type& operator << (tl_uint   a_value);
@@ -226,8 +229,8 @@ namespace tloc { namespace core { namespace logging {
 
   typedef Log_T<LoggerConsoleImmediate>                 LogConsoleImmediate;
   typedef Log_T<LoggerConsoleOnFlush>                   LogConsoleOnFlush;
-  typedef Log_T<LoggerOutputImmediate>             LogOutputImmediate;
-  typedef Log_T<LoggerOutputOnFlush>               LogOutputOnFlush;
+  typedef Log_T<LoggerOutputImmediate>                  LogOutputImmediate;
+  typedef Log_T<LoggerOutputOnFlush>                    LogOutputOnFlush;
   typedef Log_T<LoggerFileImmediate>                    LogFileImmediate;
   typedef Log_T<LoggerFileOnFlush>                      LogFileOnFlush;
 

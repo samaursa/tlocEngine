@@ -47,7 +47,10 @@ namespace tloc { namespace core { namespace logging {
     Log_I();
     Log_I(const this_type& a_other);
 
-    this_type& operator << (BufferArg a_string);
+    this_type& operator << (BufferArg  a_string);
+    this_type& operator << (BufferArgW a_string);
+    this_type& operator << (char8     a_value);
+    this_type& operator << (char32    a_value);
     this_type& operator << (tl_int    a_value);
     this_type& operator << (tl_long   a_value);
     this_type& operator << (tl_uint   a_value);

@@ -35,6 +35,13 @@ namespace tloc {
   // explicit specializations
   
   template class NumericLimits_T<char8>;
+  template class NumericLimits_T<u8>;
+  template class NumericLimits_T<u16>;
+  template class NumericLimits_T<u32>;
+  template class NumericLimits_T<u64>;
+  template class NumericLimits_T<f32>;
+  template class NumericLimits_T<f64>;
+  template class NumericLimits_T<f128>;
   template class NumericLimits_T<tl_int>;
   template class NumericLimits_T<tl_uint>;
   template class NumericLimits_T<tl_size>;

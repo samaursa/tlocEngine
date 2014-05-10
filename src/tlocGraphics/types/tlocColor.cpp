@@ -12,301 +12,470 @@ namespace tloc { namespace graphics { namespace types {
 
   namespace
   {
-    const Color::value_type g_maxValue = 255;
-
     //------------------------------------------------------------------------
-    // Converting color to a packged integer. Assuming a_colArray is an array
+    // Converting color to a packed integer. Assuming a_colArray is an array
     // of four bytes in the order RGBA
 
-    typedef Color::int_type   int_color_type;
+    typedef u32               int_color_type;
 
     typedef type_true         byte_type_true;
     typedef type_false        real_type_true;
 
+    using namespace p_color::channel;
+
     namespace priv
     {
-      template <typename T_Real>
-      T_Real DoNormalizeColor(Color::value_type a_color)
+      tl_size bitShift[4] = {24, 16, 8, 0};
+
+      template <typename T_Real, typename T_ColorValueType>
+      T_Real DoNormalizeColor(T_ColorValueType a_color)
       {
+        TLOC_STATIC_ASSERT
+          (( Loki::IsSameType<T_ColorValueType, u8>::value || 
+             Loki::IsSameType<T_ColorValueType, u16>::value ), Unsupported_color_type);
+
         using namespace core::utils;
 
         static T_Real oneDivMax
-          = 1.0f / static_cast<T_Real>(g_maxValue);
+          = 1.0f / static_cast<T_Real>(NumericLimits_T<T_ColorValueType>::max());
 
         return static_cast<T_Real>(a_color) * oneDivMax;
       }
 
-      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType>
+      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
                               p_color::format::RGBA)
       {
         int_color_type  retVal = 0;
-        retVal |= a_colArray[Color::r] << 24;
-        retVal |= a_colArray[Color::g] << 16;
-        retVal |= a_colArray[Color::b] << 8;
-        retVal |= a_colArray[Color::a];
+
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          retVal |= a_colArray[r] << bitShift[r];
+          break;
+        case 2:
+          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          break;
+        case 3:
+          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= a_colArray[b] << bitShift[b];
+          break;
+        case 4:
+          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= a_colArray[b] << bitShift[b];
+          retVal |= a_colArray[a] << bitShift[a];
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
 
         return retVal;
       }
 
-      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType>
+      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
                               p_color::format::ABGR)
       {
         int_color_type  retVal = 0;
-        retVal |= a_colArray[Color::a] << 24;
-        retVal |= a_colArray[Color::b] << 16;
-        retVal |= a_colArray[Color::g] << 8;
-        retVal |= a_colArray[Color::r];
+
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          retVal |= a_colArray[r] << bitShift[r];
+          break;
+        case 2:
+          retVal |= a_colArray[g] << bitShift[r];
+          retVal |= a_colArray[r] << bitShift[g];
+          break;
+        case 3:
+          retVal |= a_colArray[b] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= a_colArray[r] << bitShift[b];
+          break;
+        case 4:
+          retVal |= a_colArray[a] << bitShift[r];
+          retVal |= a_colArray[b] << bitShift[g];
+          retVal |= a_colArray[g] << bitShift[b];
+          retVal |= a_colArray[r] << bitShift[a];
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
 
         return retVal;
       }
 
-      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType>
+      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
                               p_color::format::ARGB)
       {
         int_color_type  retVal = 0;
-        retVal |= a_colArray[Color::a] << 24;
-        retVal |= a_colArray[Color::r] << 16;
-        retVal |= a_colArray[Color::g] << 8;
-        retVal |= a_colArray[Color::b];
+
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          retVal |= a_colArray[r] << bitShift[r];
+          break;
+        case 2:
+          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          break;
+        case 3:
+          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= a_colArray[b] << bitShift[b];
+          break;
+        case 4:
+          retVal |= a_colArray[a] << bitShift[r];
+          retVal |= a_colArray[r] << bitShift[g];
+          retVal |= a_colArray[g] << bitShift[b];
+          retVal |= a_colArray[b] << bitShift[a];
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
 
         return retVal;
       }
 
-      Color::int_type DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType>
+      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
                               p_color::format::BGRA)
       {
         int_color_type  retVal = 0;
-        retVal |= a_colArray[Color::b] << 24;
-        retVal |= a_colArray[Color::g] << 16;
-        retVal |= a_colArray[Color::r] << 8;
-        retVal |= a_colArray[Color::a];
+
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          retVal |= a_colArray[r] << bitShift[r];
+          break;
+        case 2:
+          retVal |= a_colArray[g] << bitShift[r];
+          retVal |= a_colArray[r] << bitShift[g];
+          break;
+        case 3:
+          retVal |= a_colArray[b] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= a_colArray[r] << bitShift[b];
+          break;
+        case 4:
+          retVal |= a_colArray[b] << bitShift[r];
+          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= a_colArray[r] << bitShift[b];
+          retVal |= a_colArray[a] << bitShift[a];
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
 
         return retVal;
       }
 
-      template <typename T_VectorType>
-      void DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType, typename T_VectorType>
+      void DoGetAs(const T_ContainerType& a_colArray,
                    T_VectorType& a_vecOut, p_color::format::RGBA)
       {
         typedef typename T_VectorType::value_type value_type;
 
-        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        case 2:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          break;
+        case 3:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[b]);
+          break;
+        case 4:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[b]);
+          a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[a]);
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
       }
 
-      template <typename T_VectorType>
-      void DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType, typename T_VectorType>
+      void DoGetAs(const T_ContainerType& a_colArray,
                    T_VectorType& a_vecOut, p_color::format::ABGR)
       {
         typedef typename T_VectorType::value_type value_type;
 
-        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        case 2:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          break;
+        case 3:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[b]);
+          break;
+        case 4:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[a]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[b]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
       }
 
-      template <typename T_VectorType>
-      void DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType, typename T_VectorType>
+      void DoGetAs(const T_ContainerType& a_colArray,
                    T_VectorType& a_vecOut, p_color::format::ARGB)
       {
         typedef typename T_VectorType::value_type value_type;
 
-        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
+        {
+        case 1:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        case 2:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          break;
+        case 3:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[b]);
+          break;
+        case 4:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[a]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[b]);
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
       }
 
-      template <typename T_VectorType>
-      void DoGetAs(const Color::container_type& a_colArray,
+      template <typename T_ContainerType, typename T_VectorType>
+      void DoGetAs(const T_ContainerType& a_colArray,
                    T_VectorType& a_vecOut, p_color::format::BGRA)
       {
         typedef typename T_VectorType::value_type value_type;
 
-        a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[Color::b]);
-        a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[Color::g]);
-        a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[Color::r]);
-        a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[Color::a]);
-      }
-
-      template <typename T_Integer>
-      void DoSetAs(T_Integer a_R, T_Integer a_G, T_Integer a_B, T_Integer a_A,
-                   Color::container_type& a_out, byte_type_true)
-      {
-        a_out[0] = core::utils::CastNumber<Color::value_type>(a_R);
-        a_out[1] = core::utils::CastNumber<Color::value_type>(a_G);
-        a_out[2] = core::utils::CastNumber<Color::value_type>(a_B);
-        a_out[3] = core::utils::CastNumber<Color::value_type>(a_A);
-      }
-
-      template <typename T_Real>
-      void DoSetAs(T_Real a_R, T_Real a_G, T_Real a_B, T_Real a_A,
-        Color::container_type& a_out,
-        real_type_true)
-      {
-        typedef T_Real              real_type;
-        typedef Color::value_type   value_type;
-
-        real_type clamped[4] =
+        // put as many colors are you can in the int - the rest will be 0
+        switch(a_colArray.GetSize())
         {
-          core::Clamp<real_type>(a_R, 0.0f, 1.0f),
-          core::Clamp<real_type>(a_G, 0.0f, 1.0f),
-          core::Clamp<real_type>(a_B, 0.0f, 1.0f),
-          core::Clamp<real_type>(a_A, 0.0f, 1.0f),
-        };
+        case 1:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        case 2:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        case 3:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[b]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[r]);
+          break;
+        case 4:
+          a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[b]);
+          a_vecOut[1] = DoNormalizeColor<value_type>(a_colArray[g]);
+          a_vecOut[2] = DoNormalizeColor<value_type>(a_colArray[r]);
+          a_vecOut[3] = DoNormalizeColor<value_type>(a_colArray[a]);
+          break;
+        default:
+          TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
+        }
+      }
 
-        a_out[0] = static_cast<value_type>(g_maxValue * clamped[0]);
-        a_out[1] = static_cast<value_type>(g_maxValue * clamped[1]);
-        a_out[2] = static_cast<value_type>(g_maxValue * clamped[2]);
-        a_out[3] = static_cast<value_type>(g_maxValue * clamped[3]);
+      template <typename T_Integer, tl_int T_Size, typename T_ColorType>
+      void DoSetAs(core_ds::Tuple<T_Integer, T_Size> a_in,
+                   core_ds::Tuple<T_ColorType, T_Size> & a_out, byte_type_true)
+      {
+        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+
+        for (tl_int i = 0; i < T_Size; ++i)
+        { a_out[i] = core::utils::CastNumber<value_type>(a_in[i]); }
+      }
+
+      template <typename T_Real, tl_int T_Size, typename T_ColorType>
+      void DoSetAs(core_ds::Tuple<T_Real, T_Size> a_in,
+                   core_ds::Tuple<T_ColorType, T_Size>& a_out, real_type_true)
+      {
+        typedef T_Real                                              real_type;
+        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+
+        core_ds::Tuple<real_type, T_Size> clamped;
+        for (tl_int i = 0; i < T_Size; ++i)
+        { clamped[i] = core::Clamp<real_type>(a_in[i], 0.0f, 1.0f); }
+
+        for (tl_int i = 0; i < T_Size; ++i)
+        {
+          a_out[i] = static_cast<value_type>
+            (NumericLimits_T<value_type>::max() * clamped[i]);
+        }
       }
     };
   };
 
-  const Color Color::COLOR_BLACK = Color(0, 0, 0, 255);
-  const Color Color::COLOR_WHITE = Color(255, 255, 255, 255);
+  // ///////////////////////////////////////////////////////////////////////
+  // Color_TI
 
-  Color::
-    Color() : m_rgba(0)
+#define TLOC_COLOR_TEMPS    typename T, tl_int T_Size
+#define TLOC_COLOR_PARAMS   T, T_Size
+#define TLOC_COLOR_TYPE     typename Color_TI<TLOC_COLOR_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  Color_TI<TLOC_COLOR_PARAMS>::
+    Color_TI()
+    : m_color(0)
   { }
 
-  template <typename T_ValueType>
-  void
-    Color::
-    DoSetAs(T_ValueType a_R, T_ValueType a_G,
-            T_ValueType a_B, T_ValueType a_A)
-  {
-    typedef typename Loki::Select <
-                                   Loki::TypeTraits<T_ValueType>::isFloat,
-                                   real_type_true, byte_type_true
-                                  >::Result  selected_type;
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    priv::DoSetAs(a_R, a_G, a_B, a_A, m_rgba, selected_type() );
-  }
-
-  template <typename T_ColorFormat>
-  Color::int_type
-    Color::
-    DoGetAs() const
-  {
-    return priv::DoGetAs(m_rgba, T_ColorFormat());
-  }
-
-  template <typename T_ColorFormat, typename T_VectorType>
-  void
-    Color::
-    DoGetAs(T_VectorType& a_vec) const
-  {
-    priv::DoGetAs(m_rgba, a_vec, T_ColorFormat());
-  }
-
-  Color::value_type&
-    Color::
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::value_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
     operator[](tl_int a_index)
   {
-    return m_rgba[a_index];
+    return m_color[a_index];
   }
 
-  const Color::value_type&
-    Color::
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  const TLOC_COLOR_TYPE::value_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
     operator[](tl_int a_index) const
   {
-    return m_rgba[a_index];
+    return m_color[a_index];
   }
 
-  Color
-    Color::
-    operator +(const Color &a_other) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator +(const this_type &a_other) const
   {
-    Color temp(*this);
-    temp[0] += a_other[0];
-    temp[1] += a_other[1];
-    temp[2] += a_other[2];
-    temp[3] += a_other[3];
+    this_type temp(*this);
+
+    for (size_type i =0; i < m_color.GetSize(); ++i)
+    { temp[i] += a_other[i]; }
 
     return temp;
   }
 
-  Color&
-    Color::
-    operator +=(const Color &a_other)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator +=(const this_type &a_other)
   {
-    m_rgba[0] += a_other[0];
-    m_rgba[1] += a_other[1];
-    m_rgba[2] += a_other[2];
-    m_rgba[3] += a_other[3];
+    for (size_type i =0; i < m_color.GetSize(); ++i)
+    { m_color[i] += a_other[i]; }
 
     return *this;
   }
 
-  Color
-    Color::
-    operator *(const Color &a_other) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator *(const this_type &a_other) const
   {
-    Color temp(*this);
-    temp[0] *= a_other[0];
-    temp[1] *= a_other[1];
-    temp[2] *= a_other[2];
-    temp[3] *= a_other[3];
+    this_type temp(*this);
+
+    for (size_type i =0; i < m_color.GetSize(); ++i)
+    { temp[i] *= a_other[i]; }
 
     return temp;
   }
 
-  Color&
-    Color::
-    operator *=(const Color &a_other)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator *=(const this_type &a_other)
   {
-    m_rgba[0] *= a_other[0];
-    m_rgba[1] *= a_other[1];
-    m_rgba[2] *= a_other[2];
-    m_rgba[3] *= a_other[3];
+    for (size_type i =0; i < m_color.GetSize(); ++i)
+    { m_color[i] *= a_other[i]; }
 
     return *this;
   }
 
-  Color
-    Color::
-    operator -(const Color &a_other) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator -(const this_type &a_other) const
   {
-    Color temp(*this);
-    temp[0] -= a_other[0];
-    temp[1] -= a_other[1];
-    temp[2] -= a_other[2];
-    temp[3] -= a_other[3];
+    this_type temp(*this);
+
+    for (size_type i =0; i < m_color.GetSize(); ++i)
+    { temp[i] -= a_other[i]; }
 
     return temp;
   }
 
-  Color&
-    Color::
-    operator -=(const Color &a_other)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator -=(const this_type &a_other)
   {
-    m_rgba[0] -= a_other[0];
-    m_rgba[1] -= a_other[1];
-    m_rgba[2] -= a_other[2];
-    m_rgba[3] -= a_other[3];
+    for (size_type i =0; i < m_color.GetSize(); ++i)
+    { m_color[i] -= a_other[i]; }
 
     return *this;
   }
 
-  Color
-    Color::
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type
+    Color_TI<TLOC_COLOR_PARAMS>::
     operator * (real_type a_other) const
   {
-    math_t::Vector4<real_type>  col;
+    core_ds::Tuple<real_type, k_size>  col;
     GetAs<p_color::format::RGBA>(col);
 
-    col *= a_other;
+    col = core_ds::Multiply(a_other, col);
 
-    this_type newCol(col[0], col[1], col[2], col[3]);
+    this_type newCol(col);
     return newCol;
   }
 
-  Color&
-    Color::
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
     operator *=(real_type a_other)
   {
     this_type temp = *this * a_other;
@@ -315,21 +484,27 @@ namespace tloc { namespace graphics { namespace types {
     return *this;
   }
 
-  Color
-    Color::
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type
+    Color_TI<TLOC_COLOR_PARAMS>::
     operator / (real_type a_other) const
   {
-    math_t::Vector4<real_type>  col;
+    core_ds::Tuple<real_type, k_size>  col;
     GetAs<p_color::format::RGBA>(col);
 
-    col /= a_other;
+    col = core_ds::Divide(a_other, col);
 
-    this_type newCol(col[0], col[1], col[2], col[3]);
+    this_type newCol(col);
     return newCol;
   }
 
-  Color&
-    Color::
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::this_type&
+    Color_TI<TLOC_COLOR_PARAMS>::
     operator /=(real_type a_other)
   {
     this_type temp = *this / a_other;
@@ -338,21 +513,66 @@ namespace tloc { namespace graphics { namespace types {
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
   bool
-    Color::
-    operator ==(const Color &a_other) const
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator ==(const this_type& a_other) const
   {
-    return ( m_rgba[0] == a_other[0] &&
-             m_rgba[1] == a_other[1] &&
-             m_rgba[2] == a_other[2] &&
-             m_rgba[3] == a_other[3] );
+    return ( m_color[0] == a_other[0] &&
+             m_color[1] == a_other[1] &&
+             m_color[2] == a_other[2] &&
+             m_color[3] == a_other[3] );
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
   bool
-    Color::
-    operator !=(const Color &a_other) const
+    Color_TI<TLOC_COLOR_PARAMS>::
+    operator !=(const this_type& a_other) const
   {
     return !operator==(a_other);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  template <typename T_ColorFormat>
+  TLOC_COLOR_TYPE::int_type
+    Color_TI<TLOC_COLOR_PARAMS>::
+    DoGetAs() const
+  {
+    return priv::DoGetAs(m_color, T_ColorFormat());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  template <typename T_ColorFormat, typename T_VectorType>
+  void
+    Color_TI<TLOC_COLOR_PARAMS>::
+    DoGetAs(T_VectorType& a_vec) const
+  {
+    priv::DoGetAs(m_color, a_vec, T_ColorFormat());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  template <typename U>
+  void
+    Color_TI<TLOC_COLOR_PARAMS>::
+    DoSetAs(const core_ds::Tuple<U, k_size>& a_colorByChannels)
+  {
+    typedef typename Loki::Select 
+      < 
+        Loki::TypeTraits<U>::isFloat,
+        real_type_true, byte_type_true 
+      >::Result                                           selected_type;
+
+    priv::DoSetAs<U, k_size, value_type>(a_colorByChannels, m_color, selected_type() );
   }
 
   //------------------------------------------------------------------------
@@ -360,26 +580,85 @@ namespace tloc { namespace graphics { namespace types {
 
   using namespace tloc::math::types;
 
-  template int_color_type Color::DoGetAs<p_color::format::RGBA>() const;
-  template int_color_type Color::DoGetAs<p_color::format::ABGR>() const;
-  template int_color_type Color::DoGetAs<p_color::format::ARGB>() const;
-  template int_color_type Color::DoGetAs<p_color::format::BGRA>() const;
+#define TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, _colorFormat_, _vecType_)\
+  template void\
+    _colorType_::DoGetAs<_colorFormat_, _vecType_>(_vecType_&) const\
 
-  template void Color::DoSetAs(u8, u8, u8, u8);
-  template void Color::DoSetAs(s32, s32, s32, s32);
-  template void Color::DoSetAs(s64, s64, s64, s64);
-  template void Color::DoSetAs(f32, f32, f32, f32);
-  template void Color::DoSetAs(f64, f64, f64, f64);
+#define TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(_colorType_, _vecType_)\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::RGBA, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::ABGR, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::ARGB, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::BGRA, _vecType_)
 
-#define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
-  template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&) const;\
-  template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&) const;\
-  template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&) const;\
-  template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&) const
+#define TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, _colorFormat_)\
+  template _colorType_::int_type  \
+    _colorType_::DoGetAs<_colorFormat_>() const
 
-  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);
-  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f64);
+#define TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_colorType_)\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::RGBA);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::ABGR);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::ARGB);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::BGRA);\
 
-#undef TLOC_INSTANTIATE_COLOR_GET_AS
+#define TLOC_INSTANTIATE_COLOR_SET_AS(_colorType_, _size_)\
+  template void _colorType_::DoSetAs(const core_ds::Tuple<u8, _size_>&);\
+  template void _colorType_::DoSetAs(const core_ds::Tuple<s32, _size_>&);\
+  template void _colorType_::DoSetAs(const core_ds::Tuple<s64, _size_>&);\
+  template void _colorType_::DoSetAs(const core_ds::Tuple<f32, _size_>&);\
+  template void _colorType_::DoSetAs(const core_ds::Tuple<f64, _size_>&)
+
+
+#define TLOC_INSTANTIATE_COLOR(_type_, _size_, _vecType_)\
+  template class Color_TI<_type_, _size_>;\
+  TLOC_INSTANTIATE_COLOR_SET_AS(Color_TI<_type_ TLOC_COMMA _size_>, _size_);\
+  \
+  TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(Color_TI<_type_ TLOC_COMMA _size_>, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(Color_TI<_type_ TLOC_COMMA _size_>)
+
+#define TLOC_INSTANTIATE_COLOR_ALL_TYPES(_size_, _vecType_)\
+  TLOC_INSTANTIATE_COLOR(u8, _size_, _vecType_);\
+  TLOC_INSTANTIATE_COLOR(u16, _size_, _vecType_)
+
+
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f32);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Vec3f32);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Vec2f32);
+
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f64);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Vec3f64);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Vec2f64);
+
+  using namespace core_ds;
+
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Tuple4f32);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Tuple3f32);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Tuple2f32);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(1, Tuple<f32 TLOC_COMMA 1>);
+
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f64);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Vec3f64);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Vec2f64);
+
+//  template int_color_type Color::DoGetAs<p_color::format::RGBA>() const;
+//  template int_color_type Color::DoGetAs<p_color::format::ABGR>() const;
+//  template int_color_type Color::DoGetAs<p_color::format::ARGB>() const;
+//  template int_color_type Color::DoGetAs<p_color::format::BGRA>() const;
+//
+//  template void Color::DoSetAs(u8, u8, u8, u8);
+//  template void Color::DoSetAs(s32, s32, s32, s32);
+//  template void Color::DoSetAs(s64, s64, s64, s64);
+//  template void Color::DoSetAs(f32, f32, f32, f32);
+//  template void Color::DoSetAs(f64, f64, f64, f64);
+//
+//#define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
+//  template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&) const;\
+//  template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&) const;\
+//  template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&) const;\
+//  template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&) const
+//
+//  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);
+//  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f64);
+//
+//#undef TLOC_INSTANTIATE_COLOR_GET_AS
 
 };};};

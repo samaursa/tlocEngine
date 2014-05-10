@@ -22,6 +22,7 @@ namespace tloc { namespace core { namespace data_structs {
   {
   public:
     enum { k_TupleSize = T_Size};
+    enum { k_size = T_Size};
     T m_values[k_TupleSize];
 
   public:

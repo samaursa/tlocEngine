@@ -62,6 +62,9 @@ namespace TestingUniformVariable
       CHECK_FALSE( uCopy2.IsArrayPtr());
       CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( uCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+
+      Array<f32> arrayToGetBack;
+      u.GetValueAs(arrayToGetBack);
     }
 
     SECTION("Array pointers", "")

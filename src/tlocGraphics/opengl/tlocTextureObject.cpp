@@ -178,7 +178,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   TextureObject::Params::
     Params()
-    : m_autoGenMipMaps(false)
+    : m_autoGenMipMaps(true)
   {
     using namespace p_texture_object;
     using namespace p_texture_object::wrap_technique;

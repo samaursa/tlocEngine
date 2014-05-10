@@ -517,10 +517,10 @@ namespace tloc { namespace graphics { namespace types {
   // typedefs
 
   typedef Color_T<u8, 4>                                  Color;
-  typedef Color_T<u8, 4>                                  Color_rgba;
-  typedef Color_T<u8, 3>                                  Color_rgb;
-  typedef Color_T<u8, 2>                                  Color_rg;
-  typedef Color_T<u8, 1>                                  Color_r;
+  typedef Color_T<u8, 4>                                  color_rgba;
+  typedef Color_T<u8, 3>                                  color_rgb;
+  typedef Color_T<u8, 2>                                  color_rg;
+  typedef Color_T<u8, 1>                                  color_r;
 
   typedef Color_T<u8, 1>                                  color_u8_r;
   typedef Color_T<u8, 2>                                  color_u8_rg;

@@ -210,7 +210,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     FreeTypeGlyph g = LoadGlyph(a_charCode);
 
     FT_Bitmap bmp = g.GetGlyphSlot()->bitmap;
-    Image::const_uchar8_ptr bmpBuff(bmp.buffer);
+    Image::const_color_ptr bmpBuff(bmp.buffer);
 
     Image::pixel_container_type pixelCont;
     for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)

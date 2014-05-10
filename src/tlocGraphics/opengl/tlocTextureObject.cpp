@@ -85,6 +85,7 @@ namespace tloc { namespace graphics { namespace gl {
     const fvt NearestMipmapLinear::s_glParamName  = GL_NEAREST_MIPMAP_LINEAR;
     const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
+    const formvt format::Auto::s_glParamName           = GL_NONE;
     const formvt format::Red::s_glParamName            = GL_RED;
     const formvt format::RG::s_glParamName             = GL_RG;
     const formvt format::RGB::s_glParamName            = GL_RGB;
@@ -173,6 +174,40 @@ namespace tloc { namespace graphics { namespace gl {
 
   };
 
+  namespace {
+
+    // -----------------------------------------------------------------------
+    // Return the 'format' of image (see glTexImage2D doc)
+
+    gfx_t::gl_int
+      DoGetImageFormat(gfx_t::Color)
+    { return p_texture_object::format::RGBA::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetImageFormat(gfx_t::color_rgb)
+    { return p_texture_object::format::RGB::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetImageFormat(gfx_t::color_f32_r)
+    { return p_texture_object::format::DepthComponent::s_glParamName; }
+
+    // -----------------------------------------------------------------------
+    // Return the 'type' of image (see glTexImage2D doc)
+
+    gfx_t::gl_int
+      DoGetImageType(gfx_t::Color)
+    { return GL_UNSIGNED_BYTE; }
+
+    gfx_t::gl_int
+      DoGetImageType(gfx_t::color_rgb)
+    { return GL_UNSIGNED_BYTE; }
+
+    gfx_t::gl_int
+      DoGetImageType(gfx_t::color_f32_r)
+    { return GL_FLOAT; }
+
+  };
+
   // ///////////////////////////////////////////////////////////////////////
   // TextureObject::Params
 
@@ -190,7 +225,7 @@ namespace tloc { namespace graphics { namespace gl {
     MinFilter<Linear>().MagFilter<Linear>();
     TextureType<Tex2D>();
     InternalFormat<internal_format::RGBA>();
-    Format<format::RGBA>();
+    Format<format::Auto>();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -239,21 +274,31 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess;
   }
 
+  template <typename T_Image>
   error_type
     TextureObject::
-    Initialize(const image_type& a_image)
+    Initialize(const T_Image& a_image)
   {
-    image_type::pixel_container_type cont = a_image.GetPixels();
+    using gfx_t::gl_int;
+
+    typename T_Image::pixel_container_type cont = a_image.GetPixels();
 
     // We do NOT need the original image because glTexImage2D copies the image
     m_dim[0] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[0]);
     m_dim[1] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[1]);
 
+    gl_int format = DoGetImageFormat(T_Image::color_type());
+    // GL_NONE means Auto (see p_texture_object
+    gl_int type   = m_params.GetFormat() == GL_NONE ? 
+                    DoGetImageType(T_Image::color_type()) :
+                    m_params.GetFormat();
     Bind();
+
     glTexImage2D(m_params.GetTextureType(), 0, m_params.GetInternalFormat(),
-      core_utils::CastNumber<GLsizei>(m_dim[0]),
-      core_utils::CastNumber<GLsizei>(m_dim[1]),
-      0, m_params.GetFormat(), GL_UNSIGNED_BYTE, &*a_image.GetPixels().begin() );
+                 core_utils::CastNumber<GLsizei>(m_dim[0]),
+                 core_utils::CastNumber<GLsizei>(m_dim[1]),
+                 0, format, type, &*a_image.GetPixels().begin() );
+
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glBindTexture()");
 
     if (m_params.IsAutoGenMipMaps())
@@ -316,6 +361,14 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiations for 
+
+using namespace tloc::gfx_gl;
+using namespace tloc::gfx_med;
+
+template TextureObject::error_type TextureObject::Initialize(const Image&);
 
 
 //------------------------------------------------------------------------

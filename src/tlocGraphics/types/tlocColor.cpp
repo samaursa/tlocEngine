@@ -21,14 +21,17 @@ namespace tloc { namespace graphics { namespace types {
     typedef type_true         byte_type_true;
     typedef type_false        real_type_true;
 
+
     using namespace p_color::channel;
+    using core_utils::CastNumber;
 
     namespace priv
     {
       tl_size bitShift[4] = {24, 16, 8, 0};
 
       template <typename T_Real, typename T_ColorValueType>
-      T_Real DoNormalizeColor(T_ColorValueType a_color)
+      T_Real 
+        DoNormalizeColorValue(T_ColorValueType a_color, byte_type_true)
       {
         TLOC_STATIC_ASSERT
           (( Loki::IsSameType<T_ColorValueType, u8>::value || 
@@ -42,32 +45,74 @@ namespace tloc { namespace graphics { namespace types {
         return static_cast<T_Real>(a_color) * oneDivMax;
       }
 
+      template <typename T_Real>
+      T_Real 
+        DoNormalizeColorValue(T_Real a_color, real_type_true)
+      { return a_color; }
+
+      template <typename T_Real, typename T_ColorValueType>
+      T_Real DoNormalizeColor(T_ColorValueType a_color)
+      {
+        typedef typename Loki::Select 
+          < 
+            Loki::TypeTraits<T_ColorValueType>::isFloat,
+            real_type_true, byte_type_true 
+          >::Result                                           selected_type;
+
+        return DoNormalizeColorValue<T_Real>(a_color, selected_type());
+      }
+
+      template <typename T_RetVal, typename T_ColorValueType>
+      T_RetVal
+        DoNormalizeColorAndConvert(T_ColorValueType a_color)
+      {
+        f32 retValReal = DoNormalizeColor<f32>(a_color);
+
+        return static_cast<T_RetVal>(retValReal * NumericLimits_T<T_RetVal>::max());
+      }
+      
+      template <typename T_ColorValue>
+      u8
+        DoGetAsU8(T_ColorValue a_col)
+      { 
+        f32 norm = DoNormalizeColor<f32>(a_col);
+        return CastNumber<u8>(norm * NumericLimits_T<u8>::max());
+      }
+
+      u8
+        DoGetAsU8(f32 a_col)
+      { 
+        return CastNumber<u8>(a_col * NumericLimits_T<u8>::max());
+      }
+
       template <typename T_ContainerType>
-      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
-                              p_color::format::RGBA)
+      int_color_type  
+        DoGetAs(const T_ContainerType& a_colArray, p_color::format::RGBA)
       {
         int_color_type  retVal = 0;
 
         // put as many colors are you can in the int - the rest will be 0
+        // NOTE: We convert the color values to u8 because it may be u8, u16
+        //       or f32
         switch(a_colArray.GetSize())
         {
         case 1:
-          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
           break;
         case 2:
-          retVal |= a_colArray[r] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
           break;
         case 3:
-          retVal |= a_colArray[r] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
-          retVal |= a_colArray[b] << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[b];
           break;
         case 4:
-          retVal |= a_colArray[r] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
-          retVal |= a_colArray[b] << bitShift[b];
-          retVal |= a_colArray[a] << bitShift[a];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[a]) << bitShift[a];
           break;
         default:
           TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
@@ -77,8 +122,8 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType>
-      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
-                              p_color::format::ABGR)
+      int_color_type  
+        DoGetAs(const T_ContainerType& a_colArray, p_color::format::ABGR)
       {
         int_color_type  retVal = 0;
 
@@ -86,22 +131,22 @@ namespace tloc { namespace graphics { namespace types {
         switch(a_colArray.GetSize())
         {
         case 1:
-          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
           break;
         case 2:
-          retVal |= a_colArray[g] << bitShift[r];
-          retVal |= a_colArray[r] << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[g];
           break;
         case 3:
-          retVal |= a_colArray[b] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
-          retVal |= a_colArray[r] << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[b];
           break;
         case 4:
-          retVal |= a_colArray[a] << bitShift[r];
-          retVal |= a_colArray[b] << bitShift[g];
-          retVal |= a_colArray[g] << bitShift[b];
-          retVal |= a_colArray[r] << bitShift[a];
+          retVal |= DoGetAsU8(a_colArray[a]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[a];
           break;
         default:
           TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
@@ -111,8 +156,8 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType>
-      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
-                              p_color::format::ARGB)
+      int_color_type  
+        DoGetAs(const T_ContainerType& a_colArray, p_color::format::ARGB)
       {
         int_color_type  retVal = 0;
 
@@ -120,22 +165,22 @@ namespace tloc { namespace graphics { namespace types {
         switch(a_colArray.GetSize())
         {
         case 1:
-          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
           break;
         case 2:
-          retVal |= a_colArray[r] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
           break;
         case 3:
-          retVal |= a_colArray[r] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
-          retVal |= a_colArray[b] << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[b];
           break;
         case 4:
-          retVal |= a_colArray[a] << bitShift[r];
-          retVal |= a_colArray[r] << bitShift[g];
-          retVal |= a_colArray[g] << bitShift[b];
-          retVal |= a_colArray[b] << bitShift[a];
+          retVal |= DoGetAsU8(a_colArray[a]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[a];
           break;
         default:
           TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
@@ -145,8 +190,8 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType>
-      int_color_type  DoGetAs(const T_ContainerType& a_colArray,
-                              p_color::format::BGRA)
+      int_color_type  
+        DoGetAs(const T_ContainerType& a_colArray, p_color::format::BGRA)
       {
         int_color_type  retVal = 0;
 
@@ -154,22 +199,22 @@ namespace tloc { namespace graphics { namespace types {
         switch(a_colArray.GetSize())
         {
         case 1:
-          retVal |= a_colArray[r] << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
           break;
         case 2:
-          retVal |= a_colArray[g] << bitShift[r];
-          retVal |= a_colArray[r] << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[g];
           break;
         case 3:
-          retVal |= a_colArray[b] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
-          retVal |= a_colArray[r] << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[b];
           break;
         case 4:
-          retVal |= a_colArray[b] << bitShift[r];
-          retVal |= a_colArray[g] << bitShift[g];
-          retVal |= a_colArray[r] << bitShift[b];
-          retVal |= a_colArray[a] << bitShift[a];
+          retVal |= DoGetAsU8(a_colArray[b]) << bitShift[r];
+          retVal |= DoGetAsU8(a_colArray[g]) << bitShift[g];
+          retVal |= DoGetAsU8(a_colArray[r]) << bitShift[b];
+          retVal |= DoGetAsU8(a_colArray[a]) << bitShift[a];
           break;
         default:
           TLOC_ASSERT_FALSE("Logic error in tlocColor.cpp");
@@ -179,8 +224,9 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType, typename T_VectorType>
-      void DoGetAs(const T_ContainerType& a_colArray,
-                   T_VectorType& a_vecOut, p_color::format::RGBA)
+      void 
+        DoGetAs(const T_ContainerType& a_colArray, T_VectorType& a_vecOut, 
+                p_color::format::RGBA)
       {
         typedef typename T_VectorType::value_type value_type;
 
@@ -211,8 +257,9 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType, typename T_VectorType>
-      void DoGetAs(const T_ContainerType& a_colArray,
-                   T_VectorType& a_vecOut, p_color::format::ABGR)
+      void 
+        DoGetAs(const T_ContainerType& a_colArray, 
+                      T_VectorType& a_vecOut, p_color::format::ABGR)
       {
         typedef typename T_VectorType::value_type value_type;
 
@@ -243,8 +290,9 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType, typename T_VectorType>
-      void DoGetAs(const T_ContainerType& a_colArray,
-                   T_VectorType& a_vecOut, p_color::format::ARGB)
+      void 
+        DoGetAs(const T_ContainerType& a_colArray, 
+                      T_VectorType& a_vecOut, p_color::format::ARGB)
       {
         typedef typename T_VectorType::value_type value_type;
 
@@ -275,8 +323,9 @@ namespace tloc { namespace graphics { namespace types {
       }
 
       template <typename T_ContainerType, typename T_VectorType>
-      void DoGetAs(const T_ContainerType& a_colArray,
-                   T_VectorType& a_vecOut, p_color::format::BGRA)
+      void 
+        DoGetAs(const T_ContainerType& a_colArray, 
+                      T_VectorType& a_vecOut, p_color::format::BGRA)
       {
         typedef typename T_VectorType::value_type value_type;
 
@@ -306,9 +355,11 @@ namespace tloc { namespace graphics { namespace types {
         }
       }
 
+      // integer to integer conversion
       template <typename T_Integer, tl_int T_Size, typename T_ColorType>
-      void DoSetAs(core_ds::Tuple<T_Integer, T_Size> a_in,
-                   core_ds::Tuple<T_ColorType, T_Size> & a_out, byte_type_true)
+      void 
+        DoSetAs(core_ds::Tuple<T_Integer, T_Size> a_in, 
+                core_ds::Tuple<T_ColorType, T_Size> & a_out, byte_type_true, byte_type_true)
       {
         typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
 
@@ -316,9 +367,11 @@ namespace tloc { namespace graphics { namespace types {
         { a_out[i] = core::utils::CastNumber<value_type>(a_in[i]); }
       }
 
+      // float to integer conversion
       template <typename T_Real, tl_int T_Size, typename T_ColorType>
-      void DoSetAs(core_ds::Tuple<T_Real, T_Size> a_in,
-                   core_ds::Tuple<T_ColorType, T_Size>& a_out, real_type_true)
+      void 
+        DoSetAs(core_ds::Tuple<T_Real, T_Size> a_in, 
+                core_ds::Tuple<T_ColorType, T_Size>& a_out, real_type_true, byte_type_true)
       {
         typedef T_Real                                              real_type;
         typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
@@ -331,6 +384,37 @@ namespace tloc { namespace graphics { namespace types {
         {
           a_out[i] = static_cast<value_type>
             (NumericLimits_T<value_type>::max() * clamped[i]);
+        }
+      }
+
+      // float to float, no conversion
+      template <typename T_Real, tl_int T_Size, typename T_ColorType>
+      void 
+        DoSetAs(core_ds::Tuple<T_Real, T_Size> a_in, 
+                core_ds::Tuple<T_ColorType, T_Size> & a_out, real_type_true, real_type_true)
+      {
+        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+
+        for (tl_int i = 0; i < T_Size; ++i)
+        { a_out[i] = core::utils::CastNumber<value_type>(a_in[i]); }
+      }
+
+      // u8 to float conversion
+      template <typename T_Integer, tl_int T_Size, typename T_ColorType>
+      void 
+        DoSetAs(core_ds::Tuple<T_Integer, T_Size> a_in, 
+                core_ds::Tuple<T_ColorType, T_Size> & a_out, byte_type_true, real_type_true)
+      {
+        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+
+        const T_Integer min = 0;
+        const T_Integer max = NumericLimits_T<u8>::max();
+
+        for (tl_int i = 0; i < T_Size; ++i)
+        { 
+          T_Integer inValClamped = core::Clamp(a_in[i], min, max);
+          u8 inVal = core_utils::CastNumber<u8>(inValClamped);
+          a_out[i] = CastNumber<value_type>(inVal) / NumericLimits_T<u8>::max();
         }
       }
     };
@@ -572,7 +656,14 @@ namespace tloc { namespace graphics { namespace types {
         real_type_true, byte_type_true 
       >::Result                                           selected_type;
 
-    priv::DoSetAs<U, k_size, value_type>(a_colorByChannels, m_color, selected_type() );
+    typedef typename Loki::Select 
+      < 
+        Loki::TypeTraits<value_type>::isFloat,
+        real_type_true, byte_type_true 
+      >::Result                                           selected_value_type;
+
+    priv::DoSetAs<U, k_size, value_type>
+      (a_colorByChannels, m_color, selected_type(), selected_value_type() );
   }
 
   //------------------------------------------------------------------------
@@ -617,7 +708,8 @@ namespace tloc { namespace graphics { namespace types {
 
 #define TLOC_INSTANTIATE_COLOR_ALL_TYPES(_size_, _vecType_)\
   TLOC_INSTANTIATE_COLOR(u8, _size_, _vecType_);\
-  TLOC_INSTANTIATE_COLOR(u16, _size_, _vecType_)
+  TLOC_INSTANTIATE_COLOR(u16, _size_, _vecType_);\
+  TLOC_INSTANTIATE_COLOR(f32, _size_, _vecType_)
 
 
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f32);
@@ -638,27 +730,5 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f64);
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Vec3f64);
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Vec2f64);
-
-//  template int_color_type Color::DoGetAs<p_color::format::RGBA>() const;
-//  template int_color_type Color::DoGetAs<p_color::format::ABGR>() const;
-//  template int_color_type Color::DoGetAs<p_color::format::ARGB>() const;
-//  template int_color_type Color::DoGetAs<p_color::format::BGRA>() const;
-//
-//  template void Color::DoSetAs(u8, u8, u8, u8);
-//  template void Color::DoSetAs(s32, s32, s32, s32);
-//  template void Color::DoSetAs(s64, s64, s64, s64);
-//  template void Color::DoSetAs(f32, f32, f32, f32);
-//  template void Color::DoSetAs(f64, f64, f64, f64);
-//
-//#define TLOC_INSTANTIATE_COLOR_GET_AS(_type_)\
-//  template void Color::DoGetAs<p_color::format::RGBA, _type_>(_type_&) const;\
-//  template void Color::DoGetAs<p_color::format::ABGR, _type_>(_type_&) const;\
-//  template void Color::DoGetAs<p_color::format::ARGB, _type_>(_type_&) const;\
-//  template void Color::DoGetAs<p_color::format::BGRA, _type_>(_type_&) const
-//
-//  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f32);
-//  TLOC_INSTANTIATE_COLOR_GET_AS(Vec4f64);
-//
-//#undef TLOC_INSTANTIATE_COLOR_GET_AS
 
 };};};

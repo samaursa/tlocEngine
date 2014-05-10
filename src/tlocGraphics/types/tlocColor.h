@@ -54,7 +54,8 @@ namespace tloc { namespace graphics { namespace types {
   {
     TLOC_STATIC_ASSERT(T_Size >= 0 && T_Size <= 4, Unsupported_color_size_requested);
     TLOC_STATIC_ASSERT( (Loki::IsSameType<T, u8>::value ||
-                         Loki::IsSameType<T, u16>::value), Unsupported_color_type);
+                         Loki::IsSameType<T, u16>::value ||
+                         Loki::IsSameType<T, f32>::value), Unsupported_color_type);
 
   public:
     enum { k_size = T_Size };
@@ -174,7 +175,7 @@ namespace tloc { namespace graphics { namespace types {
 
     type_traits::AssertTypeIsSupported
       <T_VectorType, 
-
+      core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
       math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32>();
 
     T_VectorType v;
@@ -197,6 +198,7 @@ namespace tloc { namespace graphics { namespace types {
 
     type_traits::AssertTypeIsSupported
       <T_VectorType, 
+      core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>, 
       core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>, 
       math_t::Vector2<f32>, math_t::Vector2<f64>,
       math_t::Vector3<f32>, math_t::Vector3<f64>,
@@ -286,74 +288,254 @@ namespace tloc { namespace graphics { namespace types {
   const Color_T<T, 4> 
     Color_T<T, 4>::COLOR_WHITE = Color_T<T, 4>(255, 255, 255, 255);
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Color<T, 3>
+
+  template <typename T>
+  class Color_T<T, 3>
+    : public Color_TI<T, 3>
+  {
+  public:
+    typedef T                                             value_type;
+    typedef Color_T<value_type, k_size>                   this_type;
+    typedef Color_TI<value_type, 3>                       base_type;
+
+    typedef typename base_type::color_type                         color_type;
+    typedef typename base_type::size_type                          size_type;
+    typedef typename base_type::int_type                           int_type;
+    typedef typename base_type::real_type                          real_type;
+
+  public:
+    Color_T()
+      : base_type()
+    { }
+
+    Color_T(const base_type& a_other)
+      : base_type(a_other)
+    { }
+
+    template <typename U>
+    explicit Color_T(const core_ds::Tuple<U, k_size>& a_colorByChannels)
+      : base_type(a_colorByChannels)
+    { }
+
+    template <typename U>
+    explicit Color_T(U r, U g, U b)
+      : base_type(core_ds::MakeTuple(r, g, b))
+    { }
+
+    template <typename U>
+    void             SetAs(U r, U g, U b)
+    { base_type::SetAs(core_ds::MakeTuple(r, g, b)); }
+
+    using base_type::SetAs;
+    using base_type::GetAs;
+
+    using base_type::operator[];
+    using base_type::operator+;
+    using base_type::operator+=;
+    using base_type::operator*;
+    using base_type::operator*=;
+    using base_type::operator-;
+    using base_type::operator-=;
+
+    using base_type::operator/;
+    using base_type::operator/=;
+
+    using base_type::operator==;
+    using base_type::operator!=;
+
+    using base_type::Get;
+
+  public:
+    static const this_type COLOR_BLACK;
+    static const this_type COLOR_WHITE;
+  };
+
+  // -----------------------------------------------------------------------
+  // static variables
+
+  template <typename T>
+  const Color_T<T, 3> 
+    Color_T<T, 3>::COLOR_BLACK = Color_T<T, 3>(0, 0, 0);
+
+  template <typename T>
+  const Color_T<T, 3> 
+    Color_T<T, 3>::COLOR_WHITE = Color_T<T, 3>(255, 255, 255);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Color<T, 2>
+
+  template <typename T>
+  class Color_T<T, 2>
+    : public Color_TI<T, 2>
+  {
+  public:
+    typedef T                                             value_type;
+    typedef Color_T<value_type, k_size>                   this_type;
+    typedef Color_TI<value_type, 2>                       base_type;
+
+    typedef typename base_type::color_type                         color_type;
+    typedef typename base_type::size_type                          size_type;
+    typedef typename base_type::int_type                           int_type;
+    typedef typename base_type::real_type                          real_type;
+
+  public:
+    Color_T()
+      : base_type()
+    { }
+
+    Color_T(const base_type& a_other)
+      : base_type(a_other)
+    { }
+
+    template <typename U>
+    explicit Color_T(const core_ds::Tuple<U, k_size>& a_colorByChannels)
+      : base_type(a_colorByChannels)
+    { }
+
+    template <typename U>
+    explicit Color_T(U r, U g)
+      : base_type(core_ds::MakeTuple(r, g))
+    { }
+
+    template <typename U>
+    void             SetAs(U r, U g)
+    { base_type::SetAs(core_ds::MakeTuple(r, g)); }
+
+    using base_type::SetAs;
+    using base_type::GetAs;
+
+    using base_type::operator[];
+    using base_type::operator+;
+    using base_type::operator+=;
+    using base_type::operator*;
+    using base_type::operator*=;
+    using base_type::operator-;
+    using base_type::operator-=;
+
+    using base_type::operator/;
+    using base_type::operator/=;
+
+    using base_type::operator==;
+    using base_type::operator!=;
+
+    using base_type::Get;
+
+  public:
+    static const this_type COLOR_BLACK;
+    static const this_type COLOR_WHITE;
+  };
+
+  // -----------------------------------------------------------------------
+  // static variables
+
+  template <typename T>
+  const Color_T<T, 2> 
+    Color_T<T, 2>::COLOR_BLACK = Color_T<T, 2>(0, 0);
+
+  template <typename T>
+  const Color_T<T, 2> 
+    Color_T<T, 2>::COLOR_WHITE = Color_T<T, 2>(255, 255);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Color<T, 1>
+
+  template <typename T>
+  class Color_T<T, 1>
+    : public Color_TI<T, 1>
+  {
+  public:
+    typedef T                                             value_type;
+    typedef Color_T<value_type, k_size>                   this_type;
+    typedef Color_TI<value_type, 1>                       base_type;
+
+    typedef typename base_type::color_type                         color_type;
+    typedef typename base_type::size_type                          size_type;
+    typedef typename base_type::int_type                           int_type;
+    typedef typename base_type::real_type                          real_type;
+
+  public:
+    Color_T()
+      : base_type()
+    { }
+
+    Color_T(const base_type& a_other)
+      : base_type(a_other)
+    { }
+
+    template <typename U>
+    explicit Color_T(const core_ds::Tuple<U, k_size>& a_colorByChannels)
+      : base_type(a_colorByChannels)
+    { }
+
+    template <typename U>
+    explicit Color_T(U r)
+      : base_type(core_ds::Tuple<U, 1>(r))
+    { }
+
+    template <typename U>
+    void             SetAs(U r)
+    { base_type::SetAs(core_ds::Tuple<U, 1>(r)); }
+
+    using base_type::SetAs;
+    using base_type::GetAs;
+
+    using base_type::operator[];
+    using base_type::operator+;
+    using base_type::operator+=;
+    using base_type::operator*;
+    using base_type::operator*=;
+    using base_type::operator-;
+    using base_type::operator-=;
+
+    using base_type::operator/;
+    using base_type::operator/=;
+
+    using base_type::operator==;
+    using base_type::operator!=;
+
+    using base_type::Get;
+
+  public:
+    static const this_type COLOR_BLACK;
+    static const this_type COLOR_WHITE;
+  };
+
+  // -----------------------------------------------------------------------
+  // static variables
+
+  template <typename T>
+  const Color_T<T, 1> 
+    Color_T<T, 1>::COLOR_BLACK = Color_T<T, 1>(0);
+
+  template <typename T>
+  const Color_T<T, 1> 
+    Color_T<T, 1>::COLOR_WHITE = Color_T<T, 1>(255);
+
   // -----------------------------------------------------------------------
   // typedefs
 
-  typedef Color_T<u8, 4>                                   Color;
-  typedef Color_T<u8, 4>                                   Color_rgba;
-  typedef Color_TI<u8, 3>                                   Color_rgb;
-  typedef Color_TI<u8, 2>                                   Color_rg;
-  typedef Color_TI<u8, 1>                                   Color_r;
+  typedef Color_T<u8, 4>                                  Color;
+  typedef Color_T<u8, 4>                                  Color_rgba;
+  typedef Color_T<u8, 3>                                  Color_rgb;
+  typedef Color_T<u8, 2>                                  Color_rg;
+  typedef Color_T<u8, 1>                                  Color_r;
 
-  typedef Color_TI<u8, 1>                                   color_u8_r;
-  typedef Color_TI<u8, 2>                                   color_u8_rg;
-  typedef Color_TI<u8, 3>                                   color_u8_rgb;
-  typedef Color_T<u8, 4>                                   color_u8_rgba;
+  typedef Color_T<u8, 1>                                  color_u8_r;
+  typedef Color_T<u8, 2>                                  color_u8_rg;
+  typedef Color_T<u8, 3>                                  color_u8_rgb;
+  typedef Color_T<u8, 4>                                  color_u8_rgba;
 
-  typedef Color_TI<u16, 1>                                  color_u16_r;
-  typedef Color_TI<u16, 2>                                  color_u16_rg;
-  typedef Color_TI<u16, 3>                                  color_u16_rgb;
-  typedef Color_T<u16, 4>                                  color_u16_rgba;
-    
-  // ///////////////////////////////////////////////////////////////////////
-  // Helpers for color arguments
-  //
-  // Usage: Color c = ColorRGBA(0, 0, 0, 1);
+  typedef Color_T<u16, 1>                                 color_u16_r;
+  typedef Color_T<u16, 2>                                 color_u16_rg;
+  typedef Color_T<u16, 3>                                 color_u16_rgb;
+  typedef Color_T<u16, 4>                                 color_u16_rgba;
 
-  //template <typename T>
-  //Color_TI<u8, 4>
-  //  ColorRGBA(T r, T g, T b, T a)
-  //{ return Color_TI<u8, 4>(core_ds::MakeTuple(r, g, b, a)); }
-
-  //template <typename T>
-  //Color_TI<u16, 4>
-  //  ColorRGBA_16(T r, T g, T b, T a)
-  //{ return Color_TI<u16, 4>(core_ds::MakeTuple(r, g, b, a)); }
-
-  //template <typename T>
-  //Color_TI<u8, 3>
-  //  ColorRGB(T r, T g, T b)
-  //{ return Color_TI<u8, 3>(core_ds::MakeTuple(r, g, b)); }
-
-  //template <typename T>
-  //Color_TI<u16, 3>
-  //  ColorRGB_16(T r, T g, T b)
-  //{ return Color_TI<u16, 3>(core_ds::MakeTuple(r, g, b)); }
-
-  //template <typename T>
-  //Color_TI<u8, 2>
-  //  ColorRGB(T r, T g)
-  //{ return Color_TI<u8, 2>(core_ds::MakeTuple(r, g)); }
-
-  //template <typename T>
-  //Color_TI<u16, 2>
-  //  ColorRGB_16(T r, T g)
-  //{ return Color_TI<u16, 2>(core_ds::MakeTuple(r, g)); }
-
-  //template <typename T>
-  //Color_TI<u8, 1>
-  //  ColorRGB(T r)
-  //{ return Color_TI<u8, 1>(core_ds::MakeTuple(r)); }
-
-  //template <typename T>
-  //Color_TI<u16, 1>
-  //  ColorRGB_16(T r)
-  //{ return Color_TI<u16, 1>(core_ds::MakeTuple(r)); }
-
-  // -----------------------------------------------------------------------
-  // Make various colors
-
-
+  typedef Color_T<f32, 1>                                 color_f32_r;
+  typedef Color_T<f32, 2>                                 color_f32_rg;
+  typedef Color_T<f32, 3>                                 color_f32_rgb;
+  typedef Color_T<f32, 4>                                 color_f32_rgba;
 
 };};};
 

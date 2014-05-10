@@ -39,6 +39,9 @@ namespace tloc {
   template class NumericLimits_T<u16>;
   template class NumericLimits_T<u32>;
   template class NumericLimits_T<u64>;
+  template class NumericLimits_T<s16>;
+  template class NumericLimits_T<s32>;
+  template class NumericLimits_T<s64>;
   template class NumericLimits_T<f32>;
   template class NumericLimits_T<f64>;
   template class NumericLimits_T<f128>;

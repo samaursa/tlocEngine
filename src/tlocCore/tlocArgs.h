@@ -6,6 +6,22 @@
 
 namespace tloc
 {
+
+  // base type used to distinguish an Args type from other types
+  struct ArgsType { };
+
+  // -----------------------------------------------------------------------
+  // helper class to find out if a type is Args or not
+
+  template <typename T>
+  struct IsArgs
+  {
+    enum {k_value = Loki::Conversion<T, ArgsType>::exists };
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Args
+  
   template <class T1  = TLOC_DUMMY_PARAM,
             class T2  = TLOC_DUMMY_PARAM,
             class T3  = TLOC_DUMMY_PARAM,
@@ -21,6 +37,7 @@ namespace tloc
 
   template <class T1>
   struct Args<T1>
+    : public ArgsType
   {
     enum { size = 1 };
 
@@ -41,6 +58,7 @@ namespace tloc
 
   template <class T1, class T2>
   struct Args<T1, T2>
+    : public ArgsType
   {
     enum { size = 2 };
 
@@ -65,6 +83,7 @@ namespace tloc
 
   template <class T1, class T2, class T3>
   struct Args<T1, T2, T3>
+    : public ArgsType
   {
     enum { size = 3 };
 
@@ -94,6 +113,7 @@ namespace tloc
 
   template <class T1, class T2, class T3, class T4>
   struct Args<T1, T2, T3, T4>
+    : public ArgsType
   {
     enum { size = 4 };
 
@@ -127,6 +147,7 @@ namespace tloc
 
   template <class T1, class T2, class T3, class T4, class T5>
   struct Args<T1, T2, T3, T4, T5>
+    : public ArgsType
   {
     enum { size = 5 };
 
@@ -165,6 +186,7 @@ namespace tloc
 
   template <class T1, class T2, class T3, class T4, class T5, class T6>
   struct Args<T1, T2, T3, T4, T5, T6>
+    : public ArgsType
   {
     enum { size = 6 };
 
@@ -208,6 +230,7 @@ namespace tloc
   template <class T1, class T2, class T3, class T4, class T5, class T6,
             class T7>
   struct Args<T1, T2, T3, T4, T5, T6, T7>
+    : public ArgsType
   {
     enum { size = 7 };
 
@@ -256,6 +279,7 @@ namespace tloc
   template <class T1, class T2, class T3, class T4, class T5, class T6,
             class T7, class T8>
   struct Args<T1, T2, T3, T4, T5, T6, T7, T8>
+    : public ArgsType
   {
     enum { size = 8 };
 
@@ -308,6 +332,7 @@ namespace tloc
   template <class T1, class T2, class T3, class T4, class T5, class T6,
             class T7, class T8, class T9>
   struct Args<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+    : public ArgsType
   {
     enum { size = 9 };
 
@@ -365,6 +390,7 @@ namespace tloc
   template <class T1, class T2, class T3, class T4, class T5, class T6,
             class T7, class T8, class T9, class T10>
   struct Args<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+    : public ArgsType
   {
     enum { size = 10 };
 

@@ -116,8 +116,12 @@ namespace TestingTemplateArgs
   {
     SECTION("OneArg", "")
     {
+      TLOC_STATIC_ASSERT( IsArgs<Args<tl_int> >::k_value, 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
+
         OneArg* p = New<OneArg>( MakeArgs(1) );
         CHECK(p->m_a == 1);
         delete p;
@@ -129,8 +133,12 @@ namespace TestingTemplateArgs
 
     SECTION("TwoArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
+
         TwoArgs* p = New<TwoArgs>( MakeArgs(1, 2) );
         CHECK(p->m_a == 1); CHECK(p->m_b == 2);
         delete p;
@@ -142,8 +150,12 @@ namespace TestingTemplateArgs
 
     SECTION("ThreeArgs", "")
     {
+      TLOC_STATIC_ASSERT(( IsArgs<Args<tl_int, tl_int, tl_int> >::k_value ),
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
+
         ThreeArgs* p = New<ThreeArgs>( MakeArgs(1, 2, 3) );
         CHECK(p->m_a == 1); CHECK(p->m_b == 2); CHECK(p->m_c == 3);
         delete p;
@@ -155,8 +167,13 @@ namespace TestingTemplateArgs
 
     SECTION("FourArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
+
         FourArgs* p = New<FourArgs>( MakeArgs(1, 2, 3, 4) );
         CHECK(p->m_a == 1); CHECK(p->m_b == 2); CHECK(p->m_c == 3);
         CHECK(p->m_d == 4); 
@@ -170,8 +187,13 @@ namespace TestingTemplateArgs
 
     SECTION("FiveArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int, tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
+
         FiveArgs* p = New<FiveArgs>( 
           MakeArgs(1, 2, 3, 4, 5) );
 
@@ -189,6 +211,10 @@ namespace TestingTemplateArgs
 
     SECTION("SixArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
         SixArgs* p = New<SixArgs>( 
@@ -208,6 +234,11 @@ namespace TestingTemplateArgs
 
     SECTION("SevenArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int,
+                                       tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
         SevenArgs* p = New<SevenArgs>( 
@@ -229,6 +260,11 @@ namespace TestingTemplateArgs
     
     SECTION("EightArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int,
+                                       tl_int, tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
         EightArgs* p = New<EightArgs>( 
@@ -250,6 +286,11 @@ namespace TestingTemplateArgs
 
     SECTION("NineArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int> >::k_value), 
+                         Unable_to_determine_type);
+
       SECTION("New", "")
       {
         NineArgs* p = New<NineArgs>( 
@@ -271,6 +312,12 @@ namespace TestingTemplateArgs
 
     SECTION("TenArgs", "")
     {
+      TLOC_STATIC_ASSERT( (IsArgs<Args<tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int,
+                                       tl_int, tl_int, tl_int,
+                                       tl_int> >::k_value), 
+                         Unable_to_determine_type);
+     
       SECTION("New", "")
       {
         TenArgs* p = New<TenArgs>( 

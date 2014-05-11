@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/base_classes/tlocDebugName.h>
+#include <tlocCore/base_classes/tlocDebugFileAndLine.h>
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/base_classes/tlocNonNewable.h>

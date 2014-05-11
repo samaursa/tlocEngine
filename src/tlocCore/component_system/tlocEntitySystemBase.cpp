@@ -99,6 +99,13 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::insert_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+
+        // does the event have the component we are interested in?
+        component_type_array::iterator itr = 
+          core::find_all(m_typeFlags, entEvent.GetComponent()->GetType());
+        if (itr == m_typeFlags.end())
+        { break; }
+
         entity_vptr ent = entEvent.GetEntity();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),

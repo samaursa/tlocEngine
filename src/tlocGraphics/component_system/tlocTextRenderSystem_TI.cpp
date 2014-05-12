@@ -99,14 +99,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
         totalTextWidth = secondCharTrans->GetPosition()[0] -
           firstCharTrans->GetPosition()[0] +
-          secondQuad->GetRectangleRef().GetCoord_BottomRight()[0];
+          secondQuad->GetRectangleRef().GetCoord_BottomRight()[0] - 
+          text->GetFont()->GetCachedParams().m_paddingDim[0];
       }
       else
       {
         gfx_cs::quad_sptr firstQuad =
           itrFirstChar->GetComponent<gfx_cs::Quad>();
 
-        totalTextWidth = firstQuad->GetRectangleRef().GetWidth();
+        totalTextWidth = 
+          firstQuad->GetRectangleRef().GetWidth() - 
+          text->GetFont()->GetCachedParams().m_paddingDim[0];
       }
     }
 
@@ -240,7 +243,7 @@ namespace tloc { namespace graphics { namespace component_system {
       const math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
       const math_t::Vec2f padDim = 
         font->GetCachedParams().m_paddingDim.template ConvertTo<math_t::Vec2f>();
-      const math_t::Vec2f finalDim = dim + padDim;
+      const math_t::Vec2f finalDim = dim + (padDim * 2);
 
       using math_t::Rectf_bl;
       Rectf_bl rect = 
@@ -341,8 +344,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     a_entPos->
       SetPosition(a_entPos->GetPosition() +
-      math_t::Vec3f(0 - padDim[0], 
-                    horBearing[1] - rect.GetHeight() - padDim[1], 
+      math_t::Vec3f(horBearing[0] - padDim[0], 
+                    horBearing[1] - rect.GetHeight() + padDim[1], 
                     0));
 
     // advance pen's position

@@ -108,6 +108,7 @@ namespace tloc { namespace graphics { namespace gl {
     : m_type(GL_NONE)
     , m_isArray(false)
     , m_isArrayPtr(false)
+    , m_enabled(true)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -118,6 +119,7 @@ namespace tloc { namespace graphics { namespace gl {
     , m_name(a_other.m_name)
     , m_isArray(a_other.m_isArray)
     , m_isArrayPtr(a_other.m_isArrayPtr)
+    , m_enabled(a_other.m_enabled)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -135,6 +137,7 @@ namespace tloc { namespace graphics { namespace gl {
     swap(m_name, a_other.m_name);
     swap(m_isArray, a_other.m_isArray);
     swap(m_isArrayPtr, a_other.m_isArrayPtr);
+    swap(m_enabled, a_other.m_enabled);
   }
 
   template <SHADER_VARIABLE_TEMP>

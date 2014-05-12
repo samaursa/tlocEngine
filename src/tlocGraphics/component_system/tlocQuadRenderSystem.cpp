@@ -203,6 +203,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::Post_ProcessActiveEntities(f64)
   {
+    m_shaderPtr.reset();
+
     base_type::Post_ProcessActiveEntities(f64());
   }
 

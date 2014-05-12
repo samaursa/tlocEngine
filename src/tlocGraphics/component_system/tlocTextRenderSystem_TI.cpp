@@ -256,7 +256,7 @@ namespace tloc { namespace graphics { namespace component_system {
       q->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
 
       if (matPtr)
-      { m_textEntityMgr->InsertComponent(q, matPtr); }
+      { m_textEntityMgr->InsertComponent(q, matPtr, entity_manager::orphan(true)); }
 
       // we need the quad later for other operations
       tqp.second.push_back(q);

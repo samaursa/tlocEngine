@@ -163,6 +163,8 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64)
   {
+    m_shaderPtr.reset();
+
     base_type::Post_ProcessActiveEntities(f64());
   }
 

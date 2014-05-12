@@ -196,6 +196,8 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem::
     Post_ProcessActiveEntities(f64)
   {
+    m_shaderPtr.reset();
+
     base_type::Post_ProcessActiveEntities(f64());
   }
 

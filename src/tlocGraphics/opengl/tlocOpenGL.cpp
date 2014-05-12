@@ -123,7 +123,7 @@ namespace tloc { namespace graphics { namespace gl {
       IsEnabled(gfx_t::gl_int a_index)
     { 
       return core::find_all(g_enabledAttributes, a_index) != 
-             g_enabledAttributes.end();
+                            g_enabledAttributes.end();
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -135,7 +135,7 @@ namespace tloc { namespace graphics { namespace gl {
       { 
         g_enabledAttributes.erase
           (core::remove_all(g_enabledAttributes, a_index), 
-           g_enabledAttributes.end());
+                            g_enabledAttributes.end());
 
         glDisableVertexAttribArray(a_index);
         return true;
@@ -152,13 +152,19 @@ namespace tloc { namespace graphics { namespace gl {
 
     void
       DisableAll()
-    { core::for_each_all(g_enabledAttributes, Disable); }
+    { 
+      while(g_enabledAttributes.empty() == false)
+      { Disable(g_enabledAttributes.back()); }
+    }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
       ForceDisableAll()
     {
+      DisableAll();
+
+      // now disable ALL gl vertex attrib arrays
       gl_int maxAttribs = g_enabledAttributes.size();
 
       for (gl_int i = 0; i < maxAttribs; ++i)

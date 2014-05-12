@@ -201,11 +201,11 @@ namespace tloc { namespace graphics { namespace component_system {
     }
   }
 
-  void QuadRenderSystem::Post_ProcessActiveEntities(f64)
+  void QuadRenderSystem::Post_ProcessActiveEntities(f64 a_deltaT)
   {
     m_shaderPtr.reset();
 
-    base_type::Post_ProcessActiveEntities(f64());
+    base_type::Post_ProcessActiveEntities(a_deltaT);
   }
 
 };};};

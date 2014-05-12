@@ -52,6 +52,8 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocCameraSystem.h
   component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
+  component_system/tlocDebugTransformRenderSystem.h 
+  component_system/tlocDebugTransformRenderSystem.cpp
   component_system/tlocDynamicText.h
   component_system/tlocDynamicText.cpp
   component_system/tlocDynamicTextRenderSystem.h

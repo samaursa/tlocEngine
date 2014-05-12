@@ -14,5 +14,6 @@
 #include <tlocPrefab/graphics/tlocSceneNode.h>
 #include <tlocPrefab/graphics/tlocSprite.h>
 #include <tlocPrefab/graphics/tlocStaticText.h>
+#include <tlocPrefab/graphics/tlocTextureCoords.h>
 
 #endif

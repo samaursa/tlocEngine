@@ -172,11 +172,11 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       // Add the mvp
-      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+      if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
+      { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      m_so_fan->PrepareAllAttributes(*m_shaderPtr);
-      m_so_fan->EnableAllAttributes(*m_shaderPtr);
+      if (m_so_fan->PrepareAllAttributes(*m_shaderPtr).Succeeded())
+      { m_so_fan->EnableAllAttributes(*m_shaderPtr); }
 
       glDrawArrays(GL_TRIANGLE_FAN, 0,
                    core_utils::CastNumber<GLsizei, tl_size>(numVertices));

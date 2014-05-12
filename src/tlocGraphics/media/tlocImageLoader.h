@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core::io::Path            path_type;
     typedef tl_size                   size_type;
     typedef Image::dimension_type     dimention_type;
-    typedef Image::const_uchar8_ptr   const_uchar8_ptr;
+    typedef Image::const_color_ptr    const_color_ptr;
 
   public:
     error_type Load(const path_type& a_path);
@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace media {
 
   protected:
 
-    error_type DoLoadImageFromMemory(const_uchar8_ptr a_buffer,
+    error_type DoLoadImageFromMemory(const_color_ptr a_buffer,
                                      dimention_type a_dim,
                                      size_type a_channels);
 

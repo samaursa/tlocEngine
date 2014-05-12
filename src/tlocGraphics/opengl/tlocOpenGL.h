@@ -20,16 +20,6 @@ namespace tloc { namespace graphics { namespace types {
 namespace tloc { namespace graphics { namespace gl {
 
   // ///////////////////////////////////////////////////////////////////////
-  // InitializePlatform()
-
-  core_err::Error
-    InitializePlatform();
-  bool
-    IsPlatformInitialized();
-  void
-    AssertOpenGLContextExists();
-
-  // ///////////////////////////////////////////////////////////////////////
   // OpenGL get functions (safely wrapped)
 
   namespace p_get
@@ -94,6 +84,26 @@ namespace tloc { namespace graphics { namespace gl {
     return toRet;
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexAttribArrays
+
+  namespace vertex_attrib_array {
+
+    bool Enable(gfx_t::gl_int a_index);
+    bool EnableIfDisabled(gfx_t::gl_int a_index);
+    bool IsEnabled(gfx_t::gl_int a_index);
+    bool Disable(gfx_t::gl_int a_index);
+    void DisableAll();
+
+    // disables all attributes regardless of whether they were enabled or not
+    // in the engine (useful when mixing OpenGL code with 3rd party libraries)
+    void ForceDisableAll();
+
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Texture Units
+
   // Texture image units start from GL_TEXTURE0 and go all the way to
   // GL_TEXTURE0 + max_units - 1
   gfx_t::gl_int        GetActiveTextureImageUnit();
@@ -106,7 +116,15 @@ namespace tloc { namespace graphics { namespace gl {
   bool                 IsValidTextureUnit(gfx_t::gl_int a_texUnit);
  gfx_t::gl_int         GetTextureUnitFromTextureImageUnit(gfx_t::gl_int a_texImgUnit);
 
+  // ///////////////////////////////////////////////////////////////////////
+  // InitializePlatform()
 
+  core_err::Error
+    InitializePlatform();
+  bool
+    IsPlatformInitialized();
+  void
+    AssertOpenGLContextExists();
 
 };};};
 

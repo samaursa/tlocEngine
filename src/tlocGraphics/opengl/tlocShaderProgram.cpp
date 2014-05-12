@@ -146,6 +146,14 @@ namespace tloc { namespace graphics { namespace gl {
   //////////////////////////////////////////////////////////////////////////
   // Shader Program
 
+  // -----------------------------------------------------------------------
+  // static vars
+
+  ShaderProgram::object_handle
+    ShaderProgram::s_lastShaderHandle = 0;
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderProgram::ShaderProgram() : m_flags(k_count)
   {
     SetHandle(glCreateProgram());
@@ -267,8 +275,11 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   ShaderProgram::error_type
-    ShaderProgram::Enable() const
+    ShaderProgram::Enable(force_enable a_fe) const
   {
+    if (s_lastShaderHandle == GetHandle() && !a_fe)
+    { return ErrorSuccess; }
+
     // disable all previously enabled vertex attributes
     gl::vertex_attrib_array::DisableAll();
 
@@ -278,6 +289,8 @@ namespace tloc { namespace graphics { namespace gl {
     {
       return TLOC_ERROR(error::error_shader_program_enable);
     }
+
+    s_lastShaderHandle = GetHandle();
 
     return ErrorSuccess;
   }
@@ -298,6 +311,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::Disable() const
   {
     glUseProgram(0);
+    s_lastShaderHandle = 0;
 
     if (gl::Error().Failed())
     {

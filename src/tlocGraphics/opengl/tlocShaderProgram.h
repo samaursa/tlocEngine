@@ -8,6 +8,7 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
+#include <tlocCore/types/tlocStrongType.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
@@ -52,6 +53,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core::containers::tl_array
             <ShaderVariableInfo>::type                    glsl_var_info_cont_type;
 
+    typedef core_t::StrongType_T<bool, 0>                 force_enable;
+
   public:
     ShaderProgram();
     ~ShaderProgram();
@@ -75,9 +78,12 @@ namespace tloc { namespace graphics { namespace gl {
 
     template <typename T_ProgramIvParam>
     gl_result_type  Get() const;
-    error_type      Enable() const;
+    error_type      Enable(force_enable a_fe = force_enable(false)) const;
     bool            IsEnabled() const;
     error_type      Disable() const;
+
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (object_handle, GetLastShaderHandle, s_lastShaderHandle);
 
   private:
     template <typename T_ProgramIvParam>
@@ -87,8 +93,9 @@ namespace tloc { namespace graphics { namespace gl {
     glsl_var_info_cont_type          m_attributeInfo;
     glsl_var_info_cont_type          m_uniformInfo;
     core::utils::Checkpoints         m_flags;
-
     s32                              m_currTextureUnit;
+
+    static object_handle             s_lastShaderHandle;
 
   };
 

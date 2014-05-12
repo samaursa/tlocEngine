@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    const_shader_prog_ptr     m_shaderPtr;
+    const_shader_prog_ptr         m_shaderPtr;
 
     gl::shader_operator_vso       m_meshOperator;
     uniform_ptr                   m_uniVpMat;

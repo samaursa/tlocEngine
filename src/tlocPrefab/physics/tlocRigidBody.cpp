@@ -86,7 +86,8 @@ namespace tloc { namespace prefab { namespace physics {
       (core_sptr::MakeShared<phys_cs::RigidBodyShape>(a_rbShape) );
 
     m_entMgr->
-      InsertComponent(a_ent, *(*itrRbShape)->GetValuePtr() );
+      InsertComponent(a_ent, *(*itrRbShape)->GetValuePtr(), 
+                      EntityManager::orphan(true) );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

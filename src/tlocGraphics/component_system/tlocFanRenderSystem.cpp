@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -150,12 +151,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
       {
         if (m_shaderPtr)
         { m_shaderPtr->Disable(); }
 
-        sp->Enable();
+        if (sp->Enable().Failed())
+        { 
+          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+            << " could not be enabled.";
+          return;
+        }
+
         m_shaderPtr = sp;
 
         typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
@@ -189,14 +196,6 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem::
     Post_ProcessActiveEntities(f64)
   {
-    // No materials/entities may have been loaded initially
-    // (m_shaderPtr would have remained NULL)
-    if (m_shaderPtr)
-    {
-      m_shaderPtr->Disable();
-      m_shaderPtr.reset();
-    }
-
     base_type::Post_ProcessActiveEntities(f64());
   }
 

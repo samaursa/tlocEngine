@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -154,10 +155,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr == nullptr ||
-           m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
       {
-        sp->Enable();
+        if (m_shaderPtr)
+        { m_shaderPtr->Disable(); }
+
+        if (sp->Enable().Failed())
+        { 
+          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+            << " could not be enabled.";
+          return;
+        }
+
         m_shaderPtr = sp;
 
         typedef mat_type::shader_op_cont::const_iterator  shader_op_itr;
@@ -194,14 +203,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void QuadRenderSystem::Post_ProcessActiveEntities(f64)
   {
-    // No materials/entities may have been loaded initially
-    // (m_shaderPtr would have remained NULL)
-    if (m_shaderPtr)
-    {
-      m_shaderPtr->Disable();
-      m_shaderPtr.reset();
-    }
-
     base_type::Post_ProcessActiveEntities(f64());
   }
 

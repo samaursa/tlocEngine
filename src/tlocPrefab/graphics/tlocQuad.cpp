@@ -4,6 +4,7 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocPrefab/graphics/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -15,12 +16,9 @@ namespace tloc { namespace prefab { namespace graphics {
   using gfx_cs::quad_sptr;
   using core_sptr::MakeShared;
 
-  using gfx_cs::TextureCoords;
   using gfx_cs::texture_coords_sptr;
 
   using math_t::Rectangle_T;
-  using math_cs::Transform;
-  using math_cs::transform_sptr;
 
   Quad::entity_ptr
     Quad::
@@ -64,20 +62,12 @@ namespace tloc { namespace prefab { namespace graphics {
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)
     {
-      typedef gfx_cs::texture_coords_pool       tcoord_pool;
-
-      gfx_cs::texture_coords_pool_vptr tCoordPool
-        = m_compPoolMgr->GetOrCreatePool<gfx_cs::TextureCoords>();
-
-      tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
-      TextureCoords tc;
-      tc.AddCoord(math_t::Vec2f32(1.0f, 1.0f));
-      tc.AddCoord(math_t::Vec2f32(0.0f, 1.0f));
-      tc.AddCoord(math_t::Vec2f32(1.0f, 0.0f));
-      tc.AddCoord(math_t::Vec2f32(0.0f, 0.0f));
-
-      (*itrTCoord)->SetValue(MakeShared<TextureCoords>(tc));
-      m_entMgr->InsertComponent(a_ent, *(*itrTCoord)->GetValuePtr() );
+      pref_gfx::TextureCoords(m_entMgr, m_compPoolMgr)
+      .AddCoord(math_t::Vec2f32(1.0f, 1.0f))
+      .AddCoord(math_t::Vec2f32(0.0f, 1.0f))
+      .AddCoord(math_t::Vec2f32(1.0f, 0.0f))
+      .AddCoord(math_t::Vec2f32(0.0f, 0.0f))
+      .Add(a_ent);
     }
   }
 

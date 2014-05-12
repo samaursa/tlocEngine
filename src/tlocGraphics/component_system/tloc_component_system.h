@@ -22,6 +22,7 @@
 #include <tlocGraphics/component_system/tlocRenderSystem.h>
 #include <tlocGraphics/component_system/tlocArcBallSystem.h>
 #include <tlocGraphics/component_system/tlocCameraSystem.h>
+#include <tlocGraphics/component_system/tlocDebugTransformRenderSystem.h>
 #include <tlocGraphics/component_system/tlocDynamicTextRenderSystem.h>
 #include <tlocGraphics/component_system/tlocFanRenderSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>

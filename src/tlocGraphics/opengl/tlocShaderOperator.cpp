@@ -578,7 +578,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    DoSetReturn 
+    DoSetReturn
       DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
     {
       using namespace core;
@@ -1235,8 +1235,8 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (shaderVarPtr->GetType() == GL_NONE)
       {
-        TLOC_LOG_GFX_WARN() << "glUniform*/glAttribute* (" 
-          << shaderVarPtr->GetName() 
+        TLOC_LOG_GFX_WARN() << "glUniform*/glAttribute* ("
+          << shaderVarPtr->GetName()
           << ") Does not have a type. Did you forget to populate it with data?";
         shaderVarPtr->SetEnabled(false);
         continue;
@@ -1257,7 +1257,7 @@ namespace tloc { namespace graphics { namespace gl {
               itrInfo->m_location != g_unableToFindIndex)
           {
             itr->second = index;
-            variableLocation = 
+            variableLocation =
               DoSet(a_shaderVarsInfo[itr->second], *shaderVarPtr);
 
             TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
@@ -1312,12 +1312,12 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::uniform_ptr 
+  ShaderOperator::uniform_ptr
     ShaderOperator::
     AddUniform(const uniform_type& a_uniform)
   {
     TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
-    m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)), 
+    m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)),
                                         index_type(-1)) );
     m_flags.Unmark(k_uniformsCached);
 
@@ -1326,12 +1326,12 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::attribute_ptr 
+  ShaderOperator::attribute_ptr
     ShaderOperator::
     AddAttribute(const attribute_type& a_attribute)
   {
     TLOC_ASSERT(a_attribute.GetName().size() > 0, "Attribute name is empty");
-    m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)), 
+    m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)),
                                           index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
 
@@ -1374,6 +1374,20 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <typename T_ShaderVar, typename T_CachedVar>
+  void
+    DoAssertVariablesMatch(const T_ShaderVar& a_sVar, const T_CachedVar& a_cVar)
+  {
+    TLOC_ASSERT(a_cVar->GetName().compare(a_sVar.m_name.get()) == 0,
+      "Mismatched shader variable name - was variable name changed AFTER caching?"
+      " Requires reaching by calling PrepareAll*ShaderVariableType*() again");
+    TLOC_ASSERT(a_sVar.m_type == a_cVar->GetType(),
+      "Mismatched shader variable type - was variable type changed AFTER caching?"
+      " Requires reaching by calling PrepareAll*ShaderVariableType*() again");
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     void ShaderOperator::
     EnableAllUniforms(const ShaderProgram& a_shaderProgram) const
   {
@@ -1388,12 +1402,18 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     {
+      if (itr->first->IsEnabled() == false)
+      { continue; }
+
       const_uniform_ptr_type  uniformPtr = itr->first.get();
 
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
       if (itr->second >= 0)
-      { DoSet(uniCont[itr->second], *uniformPtr); }
+      {
+        DoAssertVariablesMatch(uniCont[itr->second], uniformPtr);
+        DoSet(uniCont[itr->second], *uniformPtr);
+      }
       else if (itr->second == g_invalidIndex)
       {
         TLOC_LOG_GFX_WARN()
@@ -1421,12 +1441,16 @@ namespace tloc { namespace graphics { namespace gl {
     for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
     {
+      if (itr->first->IsEnabled() == false)
+      { continue; }
+
       const_attribute_ptr_type attribPtr = itr->first.get();
 
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
       if (itr->second >= 0)
-      { 
+      {
+        DoAssertVariablesMatch(attrCont[itr->second], attribPtr);
         DoSet(attrCont[itr->second], *attribPtr);
       }
       else if (itr->second == g_invalidIndex)

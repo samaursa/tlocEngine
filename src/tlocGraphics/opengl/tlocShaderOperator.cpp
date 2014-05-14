@@ -1378,6 +1378,7 @@ namespace tloc { namespace graphics { namespace gl {
   void
     DoAssertVariablesMatch(const T_ShaderVar& a_sVar, const T_CachedVar& a_cVar)
   {
+    TLOC_UNUSED_2(a_sVar, a_cVar);
     TLOC_ASSERT(a_cVar->GetName().compare(a_sVar.m_name.get()) == 0,
       "Mismatched shader variable name - was variable name changed AFTER caching?"
       " Requires reaching by calling PrepareAll*ShaderVariableType*() again");

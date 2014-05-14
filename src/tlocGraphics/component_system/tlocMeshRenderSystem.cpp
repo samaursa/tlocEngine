@@ -40,28 +40,37 @@ namespace tloc { namespace graphics { namespace component_system {
   MESH_RENDER_SYSTEM_TYPE::error_type
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     InitializeEntity(entity_ptr a_ent)
-  { 
+  {
     base_type::InitializeEntity(a_ent);
 
     mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
 
     gl::attribute_vso posAttr, normAttr, tcoordAttr;
 
-    posAttr->SetVertexArray(meshType->GetPositions(),
-                            gl::p_shader_variable_ti::Pointer());
-    posAttr->SetName("a_vPos");
+    { // Positions
+      posAttr->SetVertexArray(meshType->GetPositions(),
+                              gl::p_shader_variable_ti::Pointer());
+      posAttr->SetName("a_vPos");
+      meshType->SetPosAttribute(*posAttr);
+    }
 
-    normAttr->SetVertexArray(meshType->GetNormals(),
-                            gl::p_shader_variable_ti::Pointer());
-    normAttr->SetName("a_vNorm");
+    // Normals
+    if (meshType->IsNormalsEnabled())
+    {
+      normAttr->SetVertexArray(meshType->GetNormals(),
+                              gl::p_shader_variable_ti::Pointer());
+      normAttr->SetName("a_vNorm");
+      meshType->SetNormAttribute(*normAttr);
+    }
 
-    tcoordAttr->SetVertexArray(meshType->GetTCoords(),
-                            gl::p_shader_variable_ti::Pointer());
-    tcoordAttr->SetName("a_tCoord");
-
-    meshType->SetPosAttribute(*posAttr);
-    meshType->SetNormAttribute(*normAttr);
-    meshType->SetTCoordAttribute(*tcoordAttr);
+    // TexCoords
+    if (meshType->IsTexCoordsEnabled())
+    {
+      tcoordAttr->SetVertexArray(meshType->GetTCoords(),
+                              gl::p_shader_variable_ti::Pointer());
+      tcoordAttr->SetName("a_tCoord");
+      meshType->SetTCoordAttribute(*tcoordAttr);
+    }
 
     return ErrorSuccess;
   }
@@ -113,8 +122,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
     so_mesh->RemoveAllAttributes();
     so_mesh->AddAttribute(*meshPtr->GetPosAttribute());
-    so_mesh->AddAttribute(*meshPtr->GetNormAttribute());
-    so_mesh->AddAttribute(*meshPtr->GetTCoordAttribute());
+
+    if (meshPtr->IsTexCoordsEnabled())
+    { so_mesh->AddAttribute(*meshPtr->GetTCoordAttribute()); }
+
+    if (meshPtr->IsNormalsEnabled())
+    { so_mesh->AddAttribute(*meshPtr->GetNormAttribute()); }
 
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
@@ -124,8 +137,8 @@ namespace tloc { namespace graphics { namespace component_system {
       { m_shaderPtr->Disable(); }
 
       if (sp->Enable().Failed())
-      { 
-        TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+      {
+        TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle()
           << " could not be enabled.";
         return;
       }

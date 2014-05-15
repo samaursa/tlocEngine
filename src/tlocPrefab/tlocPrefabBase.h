@@ -4,6 +4,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+#include <tlocCore/error/tlocError.h>
 
 // All major namespaces that prefab uses should go here
 
@@ -43,6 +44,7 @@ namespace tloc {
     typedef core_cs::component_pool_mgr_vptr  comp_pool_mgr_ptr;
     typedef core_cs::Entity                   entity_type;
     typedef core_cs::entity_vptr              entity_ptr;
+    typedef core_err::Error                   error_type;
 
   protected:
     Prefab_I(entity_mgr_ptr  a_entMgr, comp_pool_mgr_ptr a_poolMgr)

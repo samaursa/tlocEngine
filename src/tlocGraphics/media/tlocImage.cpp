@@ -31,7 +31,7 @@ namespace tloc { namespace graphics { namespace media {
   template <TLOC_IMAGE_TEMPS>
   TLOC_IMAGE_TYPE::error_type
     Image_T<TLOC_IMAGE_PARAMS>::
-    LoadFromMemory(const_color_ptr a_buffer, dimension_type a_dim, 
+    LoadFromMemory(const_color_ptr a_buffer, dimension_type a_dim,
                    size_type a_channels)
   {
     if ( (a_buffer == nullptr) || a_dim[0] == 0 || a_dim[1] == 0 ||
@@ -86,7 +86,7 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   template <TLOC_IMAGE_TEMPS>
-  void 
+  void
     Image_T<TLOC_IMAGE_PARAMS>::
     SetPixel(size_type a_X, size_type a_Y, const color_type& a_color)
   {
@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   template <TLOC_IMAGE_TEMPS>
-  const TLOC_IMAGE_TYPE::color_type&  
+  const TLOC_IMAGE_TYPE::color_type&
     Image_T<TLOC_IMAGE_PARAMS>::
     GetPixel(size_type a_X, size_type a_Y) const
   {
@@ -207,6 +207,12 @@ using namespace tloc::gfx_t;
 
 template class Image_T<Color>;
 template class Image_T<color_rgb>;
+template class Image_T<color_rg>;
+template class Image_T<color_r>;
+template class Image_T<color_u16_rgba>;
+template class Image_T<color_u16_rgb>;
+template class Image_T<color_u16_rg>;
+template class Image_T<color_u16_r>;
 template class Image_T<color_f32_r>;
 
 //------------------------------------------------------------------------
@@ -217,8 +223,28 @@ template class Image_T<color_f32_r>;
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Image);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Color);
 
+  // ```````````````````````````````````````````````````````````````````````
+  // u8 images
+
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_rg);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_r);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_rg);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_r);
+
+  // ```````````````````````````````````````````````````````````````````````
+  // u16 images
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_u16_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_u16_rg);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_u16_r);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_u16_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_u16_rg);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_u16_r);
+
+  // ```````````````````````````````````````````````````````````````````````
+  // special images
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_f32_r);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_f32_r);

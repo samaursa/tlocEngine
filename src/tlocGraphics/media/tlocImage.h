@@ -22,13 +22,17 @@ namespace tloc { namespace graphics { namespace media {
   class Image_T
     : public Image_I
   {
+    TLOC_STATIC_ASSERT
+      ( (Loki::Conversion<T_ColorType, gfx_t::priv::ColorType>::exists),
+      Unsupported_color_type_selected);
+
   public:
     typedef T_ColorType                                   value_type;
     typedef Image_T<value_type>                           this_type;
 
     typedef value_type                                    color_type;
     typedef typename color_type::value_type               color_value_type;
-    typedef typename 
+    typedef typename
       core::containers::tl_array<color_type>::type        pixel_container_type;
 
     typedef core_sptr::VirtualPtr<color_value_type>       color_ptr;
@@ -125,14 +129,53 @@ namespace tloc { namespace graphics { namespace media {
   // default image type
   typedef Image_T<gfx_t::Color>                             Image;
 
+  typedef Image_T<gfx_t::color_rgba>                        image_rgba;
   typedef Image_T<gfx_t::color_rgb>                         image_rgb;
+  typedef Image_T<gfx_t::color_rg>                          image_rg;
+  typedef Image_T<gfx_t::color_r>                           image_r;
+
+  typedef Image_T<gfx_t::color_u16_rgba>                    image_u16_rgba;
+  typedef Image_T<gfx_t::color_u16_rgb>                     image_u16_rgb;
+  typedef Image_T<gfx_t::color_u16_rg>                      image_u16_rg;
+  typedef Image_T<gfx_t::color_u16_r>                       image_u16_r;
+
   typedef Image_T<gfx_t::color_f32_r>                       image_f32_r;
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Image, image);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Image, image);
 
+  // ```````````````````````````````````````````````````````````````````````
+  // u8 images
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgba, image_rgba);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgba, image_rgba);
+
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgb, image_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgb, image_rgb);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_rg, image_rg);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rg, image_rg);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_r, image_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_r, image_r);
+
+  // ```````````````````````````````````````````````````````````````````````
+  // u16 images
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rgba, image_u16_rgba);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rgba, image_u16_rgba);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rgb, image_u16_rgb);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rgb, image_u16_rgb);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rg, image_u16_rg);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rg, image_u16_rg);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_r, image_u16_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_r, image_u16_r);
+
+  // ```````````````````````````````````````````````````````````````````````
+  // special images
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_f32_r, image_f32_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_f32_r, image_f32_r);

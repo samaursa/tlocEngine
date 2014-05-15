@@ -150,6 +150,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef filter::value_type          fvt;
     typedef format::value_type          formvt;
     typedef internal_format::value_type ifvt;
+    typedef type::value_type            tvt;
+    typedef alignment::value_type       avt;
 
     const wvt ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
     const wvt MirroredRepeat::s_glParamName    = GL_CLAMP_TO_EDGE;

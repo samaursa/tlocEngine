@@ -244,6 +244,8 @@ namespace tloc { namespace graphics { namespace types {
     typedef typename base_type::size_type                          size_type;
     typedef typename base_type::int_type                           int_type;
     typedef typename base_type::real_type                          real_type;
+    
+    enum { k_size = base_type::k_size };
 
   public:
     Color_T()
@@ -312,13 +314,16 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T                                             value_type;
-    typedef Color_T<value_type, k_size>                   this_type;
     typedef Color_TI<value_type, 3>                       base_type;
-
-    typedef typename base_type::color_type                         color_type;
-    typedef typename base_type::size_type                          size_type;
-    typedef typename base_type::int_type                           int_type;
-    typedef typename base_type::real_type                          real_type;
+    
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::int_type                  int_type;
+    typedef typename base_type::real_type                 real_type;
+    
+    enum { k_size = base_type::k_size };
+    
+    typedef Color_T<value_type, k_size>                   this_type;
 
   public:
     Color_T()
@@ -371,11 +376,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_BLACK = Color_T<T, 3>(0, 0, 0);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_WHITE = Color_T<T, 3>(255, 255, 255);
 
   // ///////////////////////////////////////////////////////////////////////
@@ -387,13 +392,16 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T                                             value_type;
-    typedef Color_T<value_type, k_size>                   this_type;
     typedef Color_TI<value_type, 2>                       base_type;
 
-    typedef typename base_type::color_type                         color_type;
-    typedef typename base_type::size_type                          size_type;
-    typedef typename base_type::int_type                           int_type;
-    typedef typename base_type::real_type                          real_type;
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::int_type                  int_type;
+    typedef typename base_type::real_type                 real_type;
+    
+    enum { k_size = base_type::k_size };
+    
+    typedef Color_T<value_type, k_size>                   this_type;
 
   public:
     Color_T()
@@ -446,11 +454,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 2>
+  const typename Color_T<T, 2>::this_type
     Color_T<T, 2>::COLOR_BLACK = Color_T<T, 2>(0, 0);
 
   template <typename T>
-  const Color_T<T, 2>
+  const typename Color_T<T, 2>::this_type
     Color_T<T, 2>::COLOR_WHITE = Color_T<T, 2>(255, 255);
 
   // ///////////////////////////////////////////////////////////////////////
@@ -462,13 +470,16 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T                                             value_type;
-    typedef Color_T<value_type, k_size>                   this_type;
     typedef Color_TI<value_type, 1>                       base_type;
 
-    typedef typename base_type::color_type                         color_type;
-    typedef typename base_type::size_type                          size_type;
-    typedef typename base_type::int_type                           int_type;
-    typedef typename base_type::real_type                          real_type;
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::int_type                  int_type;
+    typedef typename base_type::real_type                 real_type;
+    
+    enum { k_size = base_type::k_size };
+    
+    typedef Color_T<value_type, k_size>                   this_type;
 
   public:
     Color_T()
@@ -521,11 +532,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 1>
+  const typename Color_T<T, 1>::this_type
     Color_T<T, 1>::COLOR_BLACK = Color_T<T, 1>(0);
 
   template <typename T>
-  const Color_T<T, 1>
+  const typename Color_T<T, 1>::this_type
     Color_T<T, 1>::COLOR_WHITE = Color_T<T, 1>(255);
 
   // -----------------------------------------------------------------------

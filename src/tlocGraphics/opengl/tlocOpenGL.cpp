@@ -381,6 +381,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Hardware: " << (const char*)glGetString(GL_RENDERER);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total VertexAttribArrays: " << Get<p_get::MaxVertexAttribs>();
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total TextureUnits: " << Get<p_get::MaxCombinedTextureImageUnits>();
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "-----------------------------------------------";
 
       // internal variables that need a one time setup

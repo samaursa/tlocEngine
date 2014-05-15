@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace types {
 
     namespace detail
     {
-      tl_size bitShift[4] = {24, 16, 8, 0};
+      tl_size bitShift[] = {24, 16, 8, 0};
 
       template <typename T_Real, typename T_ColorValueType>
       T_Real
@@ -361,7 +361,7 @@ namespace tloc { namespace graphics { namespace types {
         DoSetAs(core_ds::Tuple<T_Integer, T_Size> a_in,
                 core_ds::Tuple<T_ColorType, T_Size> & a_out, byte_type_true, byte_type_true)
       {
-        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+        typedef typename core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
 
         for (tl_int i = 0; i < T_Size; ++i)
         { a_out[i] = core::utils::CastNumber<value_type>(a_in[i]); }
@@ -373,8 +373,8 @@ namespace tloc { namespace graphics { namespace types {
         DoSetAs(core_ds::Tuple<T_Real, T_Size> a_in,
                 core_ds::Tuple<T_ColorType, T_Size>& a_out, real_type_true, byte_type_true)
       {
-        typedef T_Real                                              real_type;
-        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+        typedef T_Real                                                    real_type;
+        typedef typename core_ds::Tuple<T_ColorType, T_Size>::value_type  value_type;
 
         core_ds::Tuple<real_type, T_Size> clamped;
         for (tl_int i = 0; i < T_Size; ++i)
@@ -393,7 +393,7 @@ namespace tloc { namespace graphics { namespace types {
         DoSetAs(core_ds::Tuple<T_Real, T_Size> a_in,
                 core_ds::Tuple<T_ColorType, T_Size> & a_out, real_type_true, real_type_true)
       {
-        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+        typedef typename core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
 
         for (tl_int i = 0; i < T_Size; ++i)
         { a_out[i] = core::utils::CastNumber<value_type>(a_in[i]); }
@@ -405,7 +405,7 @@ namespace tloc { namespace graphics { namespace types {
         DoSetAs(core_ds::Tuple<T_Integer, T_Size> a_in,
                 core_ds::Tuple<T_ColorType, T_Size> & a_out, byte_type_true, real_type_true)
       {
-        typedef core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
+        typedef typename core_ds::Tuple<T_ColorType, T_Size>::value_type     value_type;
 
         const T_Integer min = 0;
         const T_Integer max = NumericLimits_T<u8>::max();
@@ -670,26 +670,27 @@ namespace tloc { namespace graphics { namespace types {
   // Explicit initialization
 
   using namespace tloc::math::types;
+  using namespace p_color::format;
 
-#define TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, _colorFormat_, _vecType_)\
+#define TLOC_INSTANTIATE_COLOR_GET_AS(_type_, _size_, _colorFormat_, _vecType_)\
   template void\
-    _colorType_::DoGetAs<_colorFormat_, _vecType_>(_vecType_&) const\
+    Color_TI<_type_, _size_>::DoGetAs<_colorFormat_, _vecType_>(_vecType_&) const
 
-#define TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(_colorType_, _vecType_)\
-  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::RGBA, _vecType_);\
-  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::ABGR, _vecType_);\
-  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::ARGB, _vecType_);\
-  TLOC_INSTANTIATE_COLOR_GET_AS(_colorType_, p_color::format::BGRA, _vecType_)
+#define TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(_type_, _size_, _vecType_)\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_type_, _size_, RGBA, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_type_, _size_, ABGR, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_type_, _size_, ARGB, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS(_type_, _size_, BGRA, _vecType_)
 
-#define TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, _colorFormat_)\
-  template _colorType_::int_type  \
-    _colorType_::DoGetAs<_colorFormat_>() const
+#define TLOC_INSTANTIATE_COLOR_GET_AS_INT(_type_, _size_, _colorFormat_)\
+  template Color_TI<_type_, _size_>::int_type  \
+    Color_TI<_type_, _size_>::DoGetAs<_colorFormat_>() const
 
-#define TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_colorType_)\
-  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::RGBA);\
-  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::ABGR);\
-  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::ARGB);\
-  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_colorType_, p_color::format::BGRA);\
+#define TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_type_, _size_)\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_type_, _size_, p_color::format::RGBA);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_type_, _size_, p_color::format::ABGR);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_type_, _size_, p_color::format::ARGB);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT(_type_, _size_, p_color::format::BGRA);\
 
 #define TLOC_INSTANTIATE_COLOR_SET_AS(_colorType_, _size_)\
   template void _colorType_::DoSetAs(const core_ds::Tuple<u8, _size_>&);\
@@ -698,19 +699,34 @@ namespace tloc { namespace graphics { namespace types {
   template void _colorType_::DoSetAs(const core_ds::Tuple<f32, _size_>&);\
   template void _colorType_::DoSetAs(const core_ds::Tuple<f64, _size_>&)
 
-
-#define TLOC_INSTANTIATE_COLOR(_type_, _size_, _vecType_)\
-  template class Color_TI<_type_, _size_>;\
-  TLOC_INSTANTIATE_COLOR_SET_AS(Color_TI<_type_ TLOC_COMMA _size_>, _size_);\
-  \
-  TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(Color_TI<_type_ TLOC_COMMA _size_>, _vecType_);\
-  TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(Color_TI<_type_ TLOC_COMMA _size_>)
-
 #define TLOC_INSTANTIATE_COLOR_ALL_TYPES(_size_, _vecType_)\
-  TLOC_INSTANTIATE_COLOR(u8, _size_, _vecType_);\
-  TLOC_INSTANTIATE_COLOR(u16, _size_, _vecType_);\
-  TLOC_INSTANTIATE_COLOR(f32, _size_, _vecType_)
-
+  TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(u8, _size_, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(u16, _size_, _vecType_);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_ALL_FORMATS(f32, _size_, _vecType_)
+  
+  
+#define TLOC_INSTANTIATE_COLOR_ALL_SIZE(_type_)\
+  template class Color_TI<_type_, 1>;\
+  template class Color_TI<_type_, 2>;\
+  template class Color_TI<_type_, 3>;\
+  template class Color_TI<_type_, 4>;\
+  TLOC_INSTANTIATE_COLOR_SET_AS(Color_TI<_type_ TLOC_COMMA 1>, 1);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_type_, 1);\
+  \
+  TLOC_INSTANTIATE_COLOR_SET_AS(Color_TI<_type_ TLOC_COMMA 2>, 2);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_type_, 2);\
+  \
+  TLOC_INSTANTIATE_COLOR_SET_AS(Color_TI<_type_ TLOC_COMMA 3>, 3);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_type_, 3);\
+  \
+  TLOC_INSTANTIATE_COLOR_SET_AS(Color_TI<_type_ TLOC_COMMA 4>, 4);\
+  TLOC_INSTANTIATE_COLOR_GET_AS_INT_ALL_FORMATS(_type_, 4)
+  
+  //
+  
+  TLOC_INSTANTIATE_COLOR_ALL_SIZE(u8);
+  TLOC_INSTANTIATE_COLOR_ALL_SIZE(u16);
+  TLOC_INSTANTIATE_COLOR_ALL_SIZE(f32);
 
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f32);
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Vec3f32);
@@ -721,14 +737,12 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Vec2f64);
 
   using namespace core_ds;
+  
+  typedef Tuple<f32, 1>   Tuple1f32;
 
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Tuple4f32);
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Tuple3f32);
   TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Tuple2f32);
-  TLOC_INSTANTIATE_COLOR_ALL_TYPES(1, Tuple<f32 TLOC_COMMA 1>);
-
-  TLOC_INSTANTIATE_COLOR_ALL_TYPES(4, Vec4f64);
-  TLOC_INSTANTIATE_COLOR_ALL_TYPES(3, Vec3f64);
-  TLOC_INSTANTIATE_COLOR_ALL_TYPES(2, Vec2f64);
+  TLOC_INSTANTIATE_COLOR_ALL_TYPES(1, Tuple1f32);
 
 };};};

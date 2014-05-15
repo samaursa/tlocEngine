@@ -18,7 +18,7 @@ namespace tloc { namespace graphics { namespace media {
   class Image_I
   { };
 
-  template <typename T_ColorType = Color>
+  template <typename T_ColorType = types::Color>
   class Image_T
     : public Image_I
   {

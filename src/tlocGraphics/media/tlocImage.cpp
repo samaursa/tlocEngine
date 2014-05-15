@@ -196,27 +196,29 @@ namespace tloc { namespace graphics { namespace media {
            m_dim[1] > 0 &&
            (m_pixels.size() == m_dim[0] * m_dim[1]);
   }
+  
+  // -----------------------------------------------------------------------
+  // explicitly instantiate Image_T<> types
+  
+  using namespace gfx_t;
+
+  template class Image_T<Color>;
+  template class Image_T<color_rgb>;
+  template class Image_T<color_rg>;
+  template class Image_T<color_r>;
+  template class Image_T<color_u16_rgba>;
+  template class Image_T<color_u16_rgb>;
+  template class Image_T<color_u16_rg>;
+  template class Image_T<color_u16_r>;
+  template class Image_T<color_f32_r>;
 
 };};};
 
-using namespace tloc::gfx_med;
-using namespace tloc::gfx_t;
-
-// -----------------------------------------------------------------------
-// explicitly instantiate Image_T<> types
-
-template class Image_T<Color>;
-template class Image_T<color_rgb>;
-template class Image_T<color_rg>;
-template class Image_T<color_r>;
-template class Image_T<color_u16_rgba>;
-template class Image_T<color_u16_rgb>;
-template class Image_T<color_u16_rg>;
-template class Image_T<color_u16_r>;
-template class Image_T<color_f32_r>;
-
 //------------------------------------------------------------------------
 // Explicitly instantiate the container
+
+using namespace tloc::gfx_med;
+using namespace tloc::gfx_t;
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 

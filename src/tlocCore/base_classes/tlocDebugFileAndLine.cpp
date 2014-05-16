@@ -40,6 +40,7 @@ namespace tloc { namespace core { namespace base_classes {
    // -----------------------------------------------------------------------
    // explicit instantiation
 
-   template class DebugFileAndLine_T<>;
+   template class DebugFileAndLine_T<core_cfg::p_build_config::Debug>;
+   template class DebugFileAndLine_T<core_cfg::p_build_config::Release_DebugInfo>;
 
 };};};

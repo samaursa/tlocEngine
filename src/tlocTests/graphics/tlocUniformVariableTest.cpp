@@ -22,10 +22,17 @@ namespace TestingUniformVariable
 
       gl::Uniform u;
       u.SetValueAs(v);
+      u.SetEnabled(false);
 
       {
         gl::Uniform ucopy(u);
         CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+        CHECK_FALSE( ucopy.IsEnabled() );
+        CHECK_FALSE( u.IsEnabled() );
+
+        ucopy.SetEnabled(true);
+        CHECK( ucopy.IsEnabled() );
+        CHECK_FALSE( u.IsEnabled() );
       }
 
       {
@@ -55,6 +62,9 @@ namespace TestingUniformVariable
       CHECK_FALSE( uCopy2.IsArrayPtr());
       CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( uCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+
+      Array<f32> arrayToGetBack;
+      u.GetValueAs(arrayToGetBack);
     }
 
     SECTION("Array pointers", "")

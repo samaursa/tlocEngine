@@ -7,6 +7,7 @@
 #include FT_OUTLINE_H
 #include FT_BITMAP_H
 #include FT_MODULE_ERRORS_H
+#include FT_LCD_FILTER_H
 
 #include <tlocCore/base_classes/tlocInitializeAndDestroy.h>
 #include <tlocCore/string/tlocString.h>

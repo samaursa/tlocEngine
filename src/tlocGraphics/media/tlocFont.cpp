@@ -41,7 +41,7 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::
     Font()
-    : m_cachedParams(0)
+    : m_cachedParams( FontSize(FontSize::pixels(0)) )
     , m_flags(k_count)
   { }
 
@@ -60,7 +60,7 @@ namespace tloc { namespace graphics { namespace media {
     GetCharImage(tl_ulong a_char, const Params& a_params) const
   {
     AssertIsInitialized();
-    m_ft->SetCurrentSize(a_params.m_fontSize);
+    m_ft->SetCurrentSize(a_params.m_fontSize.GetHeightInPixels());
     return m_ft->GetGlyphImage(a_char, a_params.m_fontColor, a_params.m_bgColor);
   }
 
@@ -245,7 +245,7 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoCacheGlyphMetrics(tl_ulong a_char, const Params& a_params)
   {
-    m_ft->SetCurrentSize(a_params.m_fontSize);
+    m_ft->SetCurrentSize(a_params.m_fontSize.GetHeightInPixels());
     free_type::FreeTypeGlyph ftg = m_ft->LoadGlyph(a_char);
 
     FT_Glyph_Metrics ftMetrics = ftg.GetGlyphSlot()->metrics;

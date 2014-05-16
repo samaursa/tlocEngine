@@ -9,6 +9,55 @@
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
+namespace {
+
+  using namespace tloc;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // FreeTypeErrors
+
+  struct FreeTypeErrors
+  {
+    FreeTypeErrors()
+      : m_string("Invalid Error In FreeTypeErrors")
+    { }
+
+    FreeTypeErrors(BufferArg a_string)
+      : m_string(a_string)
+    { }
+
+    core_str::String    m_string;
+  };
+
+  // -----------------------------------------------------------------------
+
+  core_conts::Array<FreeTypeErrors> g_freeTypeErrors;
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  tl_int
+    DoAddFreeTypeError(tl_int a_number, BufferArg a_string)
+  {
+    g_freeTypeErrors.resize(a_number + 1);
+    g_freeTypeErrors[a_number].m_string = a_string;
+    return a_number;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  BufferArg
+    DoGetFreeTypeError(tl_int a_number)
+  {
+    return g_freeTypeErrors[a_number].m_string.c_str();
+  }
+};
+
+#define FT_NOERRORDEF_(_type_, _number_, _str_)
+#define FT_ERRORDEF_(_type_, _number_, _str_) \
+  tloc::tl_int _type_ = DoAddFreeTypeError(_number_, _str_);
+
+#include <FreeType/fterrdef.h>
+
 namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   // ///////////////////////////////////////////////////////////////////////
@@ -82,10 +131,10 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     if (currentSize != a_charSize)
     {
       FT_Error err = FT_Set_Pixel_Sizes(m_face, 0, a_charSize);
-      //FT_Error err = FT_Set_Char_Size(m_face, 0, a_charSize * 64, 500, 500);
 
       TLOC_LOG_GFX_WARN_IF(err != 0)
-        << "Unable to set current font size to: " << a_charSize;
+        << "Unable to set current font size to " << a_charSize
+        << "- FreeType: " << DoGetFreeTypeError(err);
 
       return err == 0;
     }
@@ -105,17 +154,15 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
     if (FT_HAS_KERNING(m_face))
     {
-      LoadGlyph(a_leftCharCode);
-
       ft_ulong leftIndex = FT_Get_Char_Index(m_face, a_leftCharCode);
       ft_ulong index = FT_Get_Char_Index(m_face, a_charCode);
 
       FT_Error err = FT_Get_Kerning(m_face, leftIndex, index,
-                                    FT_KERNING_UNFITTED, &delta);
+                                    FT_KERNING_DEFAULT, &delta);
 
-      TLOC_LOG_GFX_ERR_IF(err != 0)
+      TLOC_LOG_GFX_WARN_IF(err != 0)
         << "Could not get kerning for characters (" << a_leftCharCode
-        << ", " << a_charCode << ")";
+        << ", " << a_charCode << ") - FreeType: " << DoGetFreeTypeError(err);
     }
 
     return delta;
@@ -133,8 +180,11 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
     if (err)
     {
-      TLOC_LOG_GFX_ERR_IF( err != 0 )
-        << "Could not load glyph for character: " << a_charCode;
+      TLOC_LOG_GFX_WARN_IF( err != 0 )
+        << "Could not load glyph for character (" << a_charCode << ") or ("
+        << core_str::StringW(1, core_utils::CastNumber<char32>(a_charCode))
+        << ")- FreeType(" << err << "): "
+        << DoGetFreeTypeError(err);
 
       return FreeTypeGlyph();
     }
@@ -160,7 +210,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     FreeTypeGlyph g = LoadGlyph(a_charCode);
 
     FT_Bitmap bmp = g.GetGlyphSlot()->bitmap;
-    Image::const_uchar8_ptr bmpBuff(bmp.buffer);
+    Image::const_color_ptr bmpBuff(bmp.buffer);
 
     Image::pixel_container_type pixelCont;
     for (tl_int i = 0; i < bmp.width * bmp.rows; ++i)
@@ -193,8 +243,10 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     FT_Error error = FT_Init_FreeType( &m_library );
     if ( error )
     {
-      TLOC_LOG_GFX_ERR() <<
-        "Failed to initialize FreeType - FreeType error code: " << error;
+      TLOC_LOG_GFX_ERR() 
+        << "Failed to initialize FreeType"
+        << " - FreeType(" << error << "): "
+        << DoGetFreeTypeError(error);
       return TLOC_ERROR( gfx_err::error_free_type_initialize );
     }
 
@@ -205,8 +257,10 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
     if ( error )
     {
-      TLOC_LOG_GFX_ERR() <<
-        "Failed to load font from memory - FreeType error code: " << error;
+      TLOC_LOG_GFX_ERR() 
+        << "Failed to load font from memory"
+        << " - FreeType(" << error << "): "
+        << DoGetFreeTypeError(error);
       return TLOC_ERROR( gfx_err::error_free_type_error_loading_font );
     }
 
@@ -214,8 +268,10 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
     if ( error )
     {
-      TLOC_LOG_GFX_ERR() <<
-        "Failed to set character size - FreeType error code: " << error;
+      TLOC_LOG_GFX_ERR() 
+        << "Failed to set character size"
+        << " - FreeType(" << error << "): "
+        << DoGetFreeTypeError(error);
       return TLOC_ERROR( gfx_err::error_free_type_error_setting_size);
     }
 

@@ -1,6 +1,7 @@
 #include "tlocMeshRenderSystem.h"
 
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocProjectionComponent.h>
@@ -117,10 +118,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
-    if (m_shaderPtr == nullptr ||
-        m_shaderPtr.get() != sp.get())
+    if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
     {
-      sp->Enable();
+      if (m_shaderPtr)
+      { m_shaderPtr->Disable(); }
+
+      if (sp->Enable().Failed())
+      { 
+        TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+          << " could not be enabled.";
+        return;
+      }
+
       m_shaderPtr = sp;
 
       typedef mat_type::shader_op_cont::const_iterator    shader_op_itr;
@@ -137,11 +146,11 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-    m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+    if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
+    { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
 
-    so_mesh->PrepareAllAttributes(*m_shaderPtr);
-    so_mesh->EnableAllAttributes(*m_shaderPtr);
+    if (so_mesh->PrepareAllAttributes(*m_shaderPtr).Succeeded())
+    { so_mesh->EnableAllAttributes(*m_shaderPtr); }
 
     glDrawArrays(GL_TRIANGLES, 0,
                  core_utils::CastNumber<GLsizei, tl_size>(numVertices));
@@ -154,13 +163,7 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64)
   {
-    // No materials/entities may have been loaded initially
-    // (m_shaderPtr would have remained NULL)
-    if (m_shaderPtr)
-    {
-      m_shaderPtr->Disable();
-      m_shaderPtr.reset();
-    }
+    m_shaderPtr.reset();
 
     base_type::Post_ProcessActiveEntities(f64());
   }

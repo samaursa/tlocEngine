@@ -5,6 +5,7 @@
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
+#include <tlocPrefab/graphics/tlocTextureCoords.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -60,14 +61,6 @@ namespace tloc { namespace prefab { namespace graphics {
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)
     {
-      typedef gfx_cs::texture_coords_pool         tcoord_pool;
-
-      gfx_cs::texture_coords_pool_vptr tCoordPool
-        = m_compPoolMgr->GetOrCreatePool<gfx_cs::TextureCoords>();
-
-      tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
-      TextureCoords tc;
-
       typedef math_t::Circlef32 circle_type;
       // Create the texture co-ordinates
       circle_type circForTex;
@@ -76,17 +69,18 @@ namespace tloc { namespace prefab { namespace graphics {
       using math_t::degree_f32;
       const f32 angleInterval = 360.0f/m_numSides;
 
-      tc.AddCoord(math_t::Vec2f32(0.5f, 0.5f));
+      TextureCoords tCoords(m_entMgr, m_compPoolMgr);
+
+      tCoords.AddCoord(math_t::Vec2f32(0.5f, 0.5f));
       for (f32 i = 0; i <= m_numSides; ++i)
       {
         math_t::Vec2f32 newTexCoord =
           circForTex.GetCoord(degree_f32(angleInterval * i));
         newTexCoord += math_t::Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
-        tc.AddCoord(newTexCoord);
+        tCoords.AddCoord(newTexCoord);
       }
 
-      (*itrTCoord)->SetValue(MakeShared<TextureCoords>(tc) );
-      m_entMgr->InsertComponent(a_ent, *(*itrTCoord)->GetValuePtr() );
+      tCoords.Add(a_ent);
     }
   }
 

@@ -34,6 +34,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef WindowImplBase<Window_T<> >             base_type;
     typedef GraphicsMode<platform_type>             graphics_mode;
     typedef base_type::parent_window_type           parent_window_type;
+    typedef parent_window_type::dim_type            dim_type;
 
     // Note: We are using tlocAny to replace Objective-C types in this case
     // since any source file (cpp) that included this header would have to be
@@ -108,6 +109,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The maximum height.
     ///-------------------------------------------------------------------------
     size_type GetMaxHeight() const;
+    
+    ///-------------------------------------------------------------------------
+    /// Gets the height.
+    ///
+    /// @return The height.
+    ///-------------------------------------------------------------------------
+    dim_type GetDPI() const;
 
     void ProcessEvents();
 

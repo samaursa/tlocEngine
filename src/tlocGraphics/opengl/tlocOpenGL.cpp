@@ -366,11 +366,11 @@ namespace tloc { namespace graphics { namespace gl {
   {
     AssertOpenGLContextExists();
 
-    if ( DoIsPlatformInitialized( core_plat::PlatformInfo::platform_type() ) )
-    { return ErrorSuccess; }
+    core_err::Error err = ErrorSuccess;
+    
+    if ( DoIsPlatformInitialized(core_plat::PlatformInfo::platform_type()) == false)
+    { err = DoInitializePlatform(core_plat::PlatformInfo::platform_type()); }
 
-    core_err::Error err =
-      DoInitializePlatform(core_plat::PlatformInfo::platform_type());
     if (err.Succeeded())
     {
       g_platformInitialized = true;

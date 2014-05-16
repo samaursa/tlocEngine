@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/platform/tlocPlatform.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -10,7 +11,8 @@
 
 namespace {
 
-  const char* vsSource = 
+#ifdef TLOC_OS_WIN
+  const char* vsSource =
     "#version 330 core                                        \n\
                                                               \n\
      in vec3 a_vPos;                                          \n\
@@ -37,6 +39,35 @@ namespace {
         color = a_lineColor;                                  \n\
      }                                                        \n\
     ";
+#else
+  const char* vsSource =
+    "#version 100                                             \n\
+                                                              \n\
+     attribute lowp vec3 a_vPos;                              \n\
+     attribute lowp vec4 a_color;                             \n\
+     uniform mat4 u_mvp;                                      \n\
+                                                              \n\
+     varying vec4 v_lineColor;                                \n\
+                                                              \n\
+     void main()                                              \n\
+     {                                                        \n\
+        gl_Position = u_mvp * vec4(a_vPos, 1);                \n\
+        v_lineColor = a_color;                                \n\
+     }                                                        \n\
+    ";
+  
+  const char* fsSource =
+    "#version 100                                             \n\
+                                                              \n\
+     varying lowp vec4 v_lineColor;                           \n\
+                                                              \n\
+     void main()                                              \n\
+     {                                                        \n\
+        gl_FragColor = v_lineColor;                           \n\
+     }                                                        \n\
+    ";
+#endif
+
 
 };
 

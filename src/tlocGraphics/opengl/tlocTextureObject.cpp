@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -165,6 +166,7 @@ namespace tloc { namespace graphics { namespace gl {
     const fvt NearestMipmapLinear::s_glParamName  = GL_NEAREST_MIPMAP_LINEAR;
     const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
+    const ifvt internal_format::Auto::s_glParamName    = GL_NONE;
     const formvt format::RGB::s_glParamName            = GL_RGB;
     const formvt format::RGBA::s_glParamName           = GL_RGBA;
     const formvt format::BGRA::s_glParamName           = GL_BGRA;
@@ -177,6 +179,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     const wvt ClampToBorder::s_glParamName = 0;
 
+    const formvt format::Auto::s_glParamName          = GL_NONE;
     const formvt format::Red::s_glParamName           = 0;
     const formvt format::RG::s_glParamName            = 0;
     const formvt format::BGR::s_glParamName           = 0;
@@ -451,8 +454,8 @@ namespace tloc { namespace graphics { namespace gl {
     object_handle handle = GetHandle();
 
     glBindTexture(a_target, handle);
-
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glBindTexture()");
+    
     return ErrorSuccess;
   }
 
@@ -495,6 +498,7 @@ namespace tloc { namespace graphics { namespace gl {
     m_params.m_alignment = alignment;
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
+    TLOC_ASSERT(gl::Error().Succeeded(), "Error in glPixelStorei()");
 
     Bind(target);
     glTexImage2D(target, 0, internalFormat,
@@ -504,7 +508,12 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glTexImage2D()");
 
     if (m_params.IsAutoGenMipMaps())
-    { glGenerateMipmap(m_params.GetTextureType()); }
+    {
+      glGenerateMipmap(m_params.GetTextureType());
+      TLOC_LOG_GFX_WARN_IF(gl::Error().Failed())
+        << "Error in glGenerateMipmap() for Texture with handle(" << GetHandle()
+        << ") - Is texture valid and power of two?";
+    }
 
     Update();
 
@@ -560,6 +569,7 @@ namespace tloc { namespace graphics { namespace gl {
     glTexParameteri(texType, GL_TEXTURE_WRAP_T, m_params.GetWrap_T());
     glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
     glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
+    TLOC_ASSERT(gl::Error().Succeeded(), "Error in glTexParameteri()");
   }
 
 };};};

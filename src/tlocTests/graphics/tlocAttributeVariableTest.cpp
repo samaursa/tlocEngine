@@ -24,6 +24,7 @@ namespace TestingAttributeVariable
       gl::Attribute a;
       a.SetName("TestVar");
       a.SetValueAs(v);
+      a.SetEnabled(false);
 
       CHECK(gl::algos::shader_variable::compare::Name("TestVar")(a));
       CHECK_FALSE(gl::algos::shader_variable::compare::Name("TestVars")(a));
@@ -33,6 +34,13 @@ namespace TestingAttributeVariable
         CHECK( acopy.GetType() == a.GetType() );
         CHECK( (acopy.GetName().compare(a.GetName()) == 0) );
         CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+
+        CHECK_FALSE( acopy.IsEnabled() );
+        CHECK_FALSE( a.IsEnabled() );
+
+        acopy.SetEnabled(true);
+        CHECK( acopy.IsEnabled() );
+        CHECK_FALSE( a.IsEnabled() );
       }
 
       {

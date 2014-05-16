@@ -287,7 +287,7 @@
 
 // Sometimes we have to pass templates in macros where commas don't work.
 // There we'll have to use this macro
-#define TLOC_COMMA() ,
+#define TLOC_COMMA ,
 
 // Idea taken from WildMagic5
 // Avoid warnings about unused variables.  This is designed for variables

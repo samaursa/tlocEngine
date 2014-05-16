@@ -19,7 +19,7 @@ namespace TestingImage
         32, 64, 128, 128
       };
 
-      Image::const_uchar8_ptr pixelsPtr(pixels);
+      Image::const_color_ptr pixelsPtr(pixels);
 
       Image img;
       CHECK_FALSE(img.IsValid());

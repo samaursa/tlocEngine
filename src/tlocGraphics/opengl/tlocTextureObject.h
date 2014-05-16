@@ -66,6 +66,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       typedef s32         value_type;
 
+      struct Auto           { static const value_type s_glParamName; };
       struct Red            { static const value_type s_glParamName; };
       struct RG             { static const value_type s_glParamName; };
       struct RGB            { static const value_type s_glParamName; };
@@ -187,6 +188,7 @@ namespace tloc { namespace graphics { namespace gl {
         using namespace p_texture_object::format;
 
         tloc::type_traits::AssertTypeIsSupported<T_Format,
+          Auto,
           Red, RG, RGB, BGR, RGBA, BGRA, RedInteger, RedInteger, RGInteger,
           RGBInteger, BGRInteger, RGBAInteger, BGRAInteger, StencilIndex,
           DepthComponent>();
@@ -202,6 +204,10 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+      void AutoGenerateMipMaps(bool a_autoGenMipMaps = true);
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_S, m_wrap_s);
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_T, m_wrap_t);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMinFilter, m_minFilter);
@@ -209,6 +215,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
       TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
       TLOC_DECL_AND_DEF_GETTER (format_value_type, GetFormat, m_format);
+      TLOC_DECL_AND_DEF_GETTER (bool, IsAutoGenMipMaps, m_autoGenMipMaps);
 
     private:
       wrap_value_type             m_wrap_s;
@@ -218,6 +225,7 @@ namespace tloc { namespace graphics { namespace gl {
       texture_type                m_textureType;
       internal_format_value_type  m_internalFormat;
       format_value_type           m_format;
+      bool                        m_autoGenMipMaps;
     };
 
   public:
@@ -237,7 +245,8 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject(const Params& a_params = Params());
     ~TextureObject();
 
-    error_type  Initialize(const image_type& a_image);
+    template <typename T_Image>
+    error_type  Initialize(const T_Image& a_image);
 
     error_type  Bind() const;
 
@@ -252,8 +261,6 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
     TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
-
-  private:
 
   private:
     texture_image_unit_type   m_texImageUnit;

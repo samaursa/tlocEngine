@@ -15,28 +15,41 @@
 
 namespace tloc { namespace graphics { namespace media {
 
-  class Image
+  class Image_I
+  { };
+
+  template <typename T_ColorType = Color>
+  class Image_T
+    : public Image_I
   {
   public:
+    typedef T_ColorType                                   value_type;
+    typedef Image_T<value_type>                           this_type;
+
+    typedef value_type                                    color_type;
+    typedef typename color_type::value_type               color_value_type;
+    typedef typename 
+      core::containers::tl_array<color_type>::type        pixel_container_type;
+
+    typedef core_sptr::VirtualPtr<color_value_type>       color_ptr;
+    typedef core_sptr::VirtualPtr<const color_value_type> const_color_ptr;
+
     typedef tl_size                                       size_type;
-    typedef types::Color                                  color_type;
-    typedef core::containers::tl_array<color_type>::type  pixel_container_type;
+
     typedef core::error::Error                            error_type;
     typedef types::Dimension2                             dimension_type;
-    typedef core_sptr::VirtualPtr<const uchar8>           const_uchar8_ptr;
 
-    typedef Image                                         this_type;
     typedef core_sptr::VirtualPtr<this_type>              image_ptr;
     typedef core_sptr::SharedPtr<this_type>               image_sptr;
     typedef core_conts::Array<image_ptr>                  image_ptr_cont;
 
   public:
-    Image();
+    Image_T();
 
     ///-------------------------------------------------------------------------
     /// @brief Loads color buffer from memory (assuming RGBA format)
     ///-------------------------------------------------------------------------
-    error_type        LoadFromMemory(const_uchar8_ptr a_buffer,
+    error_type        LoadFromMemory(const_color_ptr a_buffer,
                                      dimension_type a_dim,
                                      size_type a_channels);
 
@@ -81,21 +94,23 @@ namespace tloc { namespace graphics { namespace media {
   // -----------------------------------------------------------------------
   // template definitions
 
+  template <typename T_ColorType>
   template <typename T_ImageVSOContainer>
-  Image::error_type
-    Image::
+  typename Image_T<T_ColorType>::error_type
+    Image_T<T_ColorType>::
     LoadFromImages(const T_ImageVSOContainer& a_arrayOfImages)
   {
     typedef typename T_ImageVSOContainer::value_type          image_vso;
     typedef typename image_vso::value_type                    image_type;
 
-    type_traits::AssertTypeIsSupported<image_type, Image>();
+    TLOC_STATIC_ASSERT( (Loki::Conversion<image_type, Image_I>::exists),
+      Incoming_container_value_type_must_be_an_Image_T);
 
-    Image::image_ptr_cont imagePtrs;
+    this_type::image_ptr_cont imagePtrs;
 
     //NOTE:: Commented out temporarily since ToVPtr does not appear to be implemented yet
-//    core::transform_all( a_arrayOfImages, imagePtrs,
-//                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
+    //    core::transform_all( a_arrayOfImages, imagePtrs,
+    //                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
     // TODO: extract VirtualPtrs from array of images, push into container, and
     //       send it to DoLoadFromImages for packing. We don't have a binpacker
     //       yet, which is needed for this operation
@@ -107,8 +122,20 @@ namespace tloc { namespace graphics { namespace media {
   // -----------------------------------------------------------------------
   // typedefs
 
+  // default image type
+  typedef Image_T<gfx_t::Color>                             Image;
+
+  typedef Image_T<gfx_t::color_rgb>                         image_rgb;
+  typedef Image_T<gfx_t::color_f32_r>                       image_f32_r;
+
   TLOC_TYPEDEF_ALL_SMART_PTRS(Image, image);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Image, image);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgb, image_rgb);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgb, image_rgb);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_f32_r, image_f32_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_f32_r, image_f32_r);
 
 };};};
 

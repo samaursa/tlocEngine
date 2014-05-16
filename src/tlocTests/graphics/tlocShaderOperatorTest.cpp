@@ -38,12 +38,14 @@ namespace TestingShaderOperator
     "  uniform mat2   u_mat2;                                          \n"
     "  uniform mat3   u_mat3;                                          \n"
     "  uniform mat4   u_mat4;                                          \n"
+    "  uniform mat4   u_mat5; // bug fix - see below                   \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x * u_vec4.x;       \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
-    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;        \n"
+    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x         \n"
+    "                  + u_mat5[0].x;                                  \n"
     "  gl_Position.a = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
@@ -63,6 +65,7 @@ namespace TestingShaderOperator
     "  uniform mat2   u_mat2;                                             \n"
     "  uniform mat3   u_mat3;                                             \n"
     "  uniform mat4   u_mat4;                                             \n"
+    "  uniform mat4   u_mat5; // bug fix - see below                   \n"
     "                                                                     \n"
     "void main(void)                                                      \n"
     "{                                                                    \n"
@@ -289,6 +292,19 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
 
+    gl::uniform_vptr uniformBugFix;
+    {
+      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+
+      gl::uniform_sptr uniform = uniCont.back();
+      uniform->SetName("u_mat5");
+      uniform->SetValueAs(Mat4f32(1, 0, 0, 0,
+                                  0, 1, 0, 0,
+                                  0, 0, 1, 0,
+                                  0, 0, 0, 1));
+      uniformBugFix = so->AddUniform(*uniform);
+    }
+
     // Copy the operator
     shader_op_ptr soCopy(so);
     shader_op_ptr soCopy2;
@@ -297,15 +313,39 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+
+
+
+    so->EnableAllUniforms(sp);
     CHECK(so->IsUniformsCached());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
 
+    SECTION("Bug Fix", "Purposefully invalidating the uniform and disabling it")
+    {
+      uniformBugFix->ResetValue();
+      uniformBugFix->SetValueAs(5.0f);
+
+      TLOC_TEST_ASSERT
+      {
+        so->EnableAllUniforms(sp);
+      }
+      TLOC_TEST_ASSERT_CHECK();
+
+      uniformBugFix->SetEnabled(false);
+    }
+
+    so->EnableAllUniforms(sp);
+
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
+    soCopy->EnableAllUniforms(sp);
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
+    soCopy->EnableAllUniforms(sp);
     CHECK(soCopy->IsUniformsCached());
 
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
+    soCopy2->EnableAllUniforms(sp);
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess); // testing cache
+    soCopy2->EnableAllUniforms(sp);
     CHECK(soCopy2->IsUniformsCached());
     CHECK(gl::Error().Succeeded());
     sp.Disable();
@@ -317,16 +357,19 @@ namespace TestingShaderOperator
     so->ClearUniformsCache();
     CHECK_FALSE(so->IsUniformsCached());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    so->EnableAllUniforms(sp);
     CHECK(so->IsUniformsCached());
 
     soCopy->ClearCache();
     CHECK_FALSE(soCopy->IsUniformsCached());
     CHECK(soCopy->PrepareAllUniforms(sp) == ErrorSuccess);
+    soCopy->EnableAllUniforms(sp);
     CHECK(soCopy->IsUniformsCached());
 
     soCopy2->ClearCache();
     CHECK_FALSE(soCopy2->IsUniformsCached());
     CHECK(soCopy2->PrepareAllUniforms(sp) == ErrorSuccess);
+    soCopy2->EnableAllUniforms(sp);
     CHECK(soCopy2->IsUniformsCached());
 
     CHECK(gl::Error().Succeeded());
@@ -353,6 +396,7 @@ namespace TestingShaderOperator
 
     sp.Enable();
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    so->EnableAllUniforms(sp);
     CHECK(so->IsUniformsCached());
     sp.Disable();
 
@@ -597,6 +641,7 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
+    so->EnableAllUniforms(sp);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }
@@ -618,13 +663,15 @@ namespace TestingShaderOperator
     "  attribute uvec2 u_uivec2;                                       \n"
     "  attribute uvec3 u_uivec3;                                       \n"
     "  attribute uvec4 u_uivec4;                                       \n"
+    "  attribute uvec4 u_uivec5;                                       \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position   = u_vec4;                                         \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
-    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
+    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x   \n"
+    "                  + u_uivec5.x;                                   \n"
     "}\n";
 
 #elif defined (TLOC_OS_IPHONE)
@@ -782,6 +829,15 @@ namespace TestingShaderOperator
 
       so->AddAttribute(*attribute);
     }
+    gl::attribute_vptr attributeBugFix;
+    {
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
+      attribute->SetName("u_uivec5");
+      attribute->SetValueAs(Tuple4u32(4));
+
+      attributeBugFix = so->AddAttribute(*attribute);
+    }
 #endif
 
     // Copy the operator
@@ -792,16 +848,37 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
+    so->EnableAllAttributes(sp);
     CHECK(so->IsAttributesCached());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess); // check the cache
 
+    SECTION("Bug Fix", "Purposefully invalidating the attribute and disabling it")
+    {
+      attributeBugFix->ResetValue();
+      attributeBugFix->SetValueAs(5.0f);
+
+      TLOC_TEST_ASSERT
+      {
+        so->EnableAllAttributes(sp);
+      }
+      TLOC_TEST_ASSERT_CHECK();
+
+      attributeBugFix->SetEnabled(false);
+    }
+
+    so->EnableAllAttributes(sp);
+
     CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess);
+    soCopy->EnableAllAttributes(sp);
     CHECK(soCopy->IsAttributesCached());
     CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess); // check the cache
+    soCopy->EnableAllAttributes(sp);
 
     CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess);
+    soCopy2->EnableAllAttributes(sp);
     CHECK(soCopy2->IsAttributesCached());
     CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess); // check the cache
+    soCopy2->EnableAllAttributes(sp);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
 
@@ -812,16 +889,19 @@ namespace TestingShaderOperator
     so->ClearAttributesCache();
     CHECK_FALSE(so->IsAttributesCached());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
+    so->EnableAllAttributes(sp);
     CHECK(so->IsAttributesCached());
 
     soCopy->ClearAttributesCache();
     CHECK_FALSE(soCopy->IsAttributesCached());
     CHECK(soCopy->PrepareAllAttributes(sp) == ErrorSuccess);
+    soCopy->EnableAllAttributes(sp);
     CHECK(soCopy->IsAttributesCached());
 
     soCopy->ClearAttributesCache();
     CHECK_FALSE(soCopy2->IsAttributesCached());
     CHECK(soCopy2->PrepareAllAttributes(sp) == ErrorSuccess);
+    soCopy2->EnableAllAttributes(sp);
     CHECK(soCopy2->IsAttributesCached());
 
     CHECK(gl::Error().Succeeded());
@@ -848,6 +928,7 @@ namespace TestingShaderOperator
 
     sp.Enable();
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
+    so->EnableAllAttributes(sp);
     CHECK(so->IsAttributesCached());
     sp.Disable();
 
@@ -1071,6 +1152,7 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllAttributes(sp) == ErrorSuccess);
+    so->EnableAllAttributes(sp);
     CHECK(gl::Error().Succeeded());
     sp.Disable();
   }

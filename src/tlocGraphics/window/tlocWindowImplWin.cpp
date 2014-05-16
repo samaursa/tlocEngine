@@ -250,6 +250,17 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return GetGraphicsMode().GetProperties().m_height;
   }
 
+  WINDOW_IMPL_WIN_TYPE::dim_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    GetDPI() const
+  {
+    HDC screen = GetDC(TLOC_NULL);
+    tl_size dpiX = core_utils::CastNumber<tl_size>( GetDeviceCaps(screen, LOGPIXELSX) );
+    tl_size dpiY = core_utils::CastNumber<tl_size>( GetDeviceCaps(screen, LOGPIXELSY) );
+
+    return core_ds::MakeTuple(dpiX, dpiY);
+  }
+
   WINDOW_IMPL_WIN_TYPE::size_type
     WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetMaxWidth() const
   {

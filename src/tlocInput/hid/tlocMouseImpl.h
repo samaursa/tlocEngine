@@ -29,7 +29,7 @@ namespace tloc { namespace input { namespace hid {
       button7 = 1 << 6,
       button8 = 1 << 7,
 
-      count = core::utils::EnumCounter<button8, true>::result,
+      count = core::utils::EnumCounter_T<button8, true>::result,
     };  typedef s32 button_code_type;
 
   public:

@@ -87,17 +87,25 @@ namespace TestingMemory
       three = 1 << 2,
       four  = 1 << 3,
       five  = 1 << 4,
-      count = core::utils::EnumCounter<five>::result,
+      count = core::utils::EnumCounter_T<five>::result,
     };
 
     CHECK( count == 5);
+    CHECK( core::utils::EnumCounter(five) == 5);
 
-    CHECK( (core::utils::EnumToIndex<five>::result) == 4);
-    CHECK( (core::utils::EnumToIndex<one>::result) == 0);
+    CHECK( (core::utils::EnumToIndex_T<five>::result) == 4);
+    CHECK( (core::utils::EnumToIndex_T<one>::result) == 0);
 
-    CHECK( (core_utils::EnumToIndex<zero, true>::result) == 0);
-    CHECK( (core::utils::EnumToIndex<five, true>::result) == 5);
-    CHECK( (core::utils::EnumToIndex<one>::result) == 0);
+    CHECK(core_utils::EnumToIndex(five) == 4);
+    CHECK(core_utils::EnumToIndex(one) == 0);
+
+    CHECK( (core_utils::EnumToIndex_T<zero, true>::result) == 0);
+    CHECK( (core::utils::EnumToIndex_T<five, true>::result) == 5);
+    CHECK( (core::utils::EnumToIndex_T<one>::result) == 0);
+
+    CHECK(core_utils::EnumToIndex(zero, true) == 0);
+    CHECK(core_utils::EnumToIndex(five, true) == 5);
+    CHECK(core_utils::EnumToIndex(one) == 0);
   }
 
   TEST_CASE("Core/Utilities/NestedFunction", "")

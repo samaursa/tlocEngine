@@ -154,8 +154,8 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
     if (FT_HAS_KERNING(m_face))
     {
-      ft_ulong leftIndex = FT_Get_Char_Index(m_face, a_leftCharCode);
-      ft_ulong index = FT_Get_Char_Index(m_face, a_charCode);
+      ft_uint leftIndex = FT_Get_Char_Index(m_face, a_leftCharCode);
+      ft_uint index = FT_Get_Char_Index(m_face, a_charCode);
 
       FT_Error err = FT_Get_Kerning(m_face, leftIndex, index,
                                     FT_KERNING_DEFAULT, &delta);

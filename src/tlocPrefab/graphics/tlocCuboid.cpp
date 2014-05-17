@@ -268,6 +268,9 @@ namespace tloc { namespace prefab { namespace graphics {
          itr != itrEnd; ++itr)
     { meshPtr->AddVertex(*itr); }
 
+    meshPtr->SetTexCoordsEnabled(m_texCoords);
+    meshPtr->SetNormalsEnabled(m_normals);
+
     // -----------------------------------------------------------------------
     // transform component
 

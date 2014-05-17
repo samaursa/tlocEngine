@@ -34,7 +34,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     entity_ptr    Create(const core_io::Path& a_vertexShader,
                          const core_io::Path& a_fragmentShader);
-    void          Add(entity_ptr a_ent,
+    error_type    Add(entity_ptr a_ent,
                       const core_io::Path& a_vertexShader,
                       const core_io::Path& a_fragmentShader);
 

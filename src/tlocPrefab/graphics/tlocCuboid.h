@@ -22,6 +22,7 @@ namespace tloc { namespace prefab { namespace graphics {
     Cuboid(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
            : Prefab_I(a_entMgr, a_poolMgr)
            , m_texCoords(true)
+           , m_normals(true)
            , m_cuboid(cuboid_type (cuboid_type::width(1.0f),
                                    cuboid_type::height(1.0f),
                                    cuboid_type::depth(1.0f)) )
@@ -31,6 +32,7 @@ namespace tloc { namespace prefab { namespace graphics {
     void          Add(entity_ptr a_ent);
 
     TLOC_DECL_PARAM_VAR(bool, TexCoords, m_texCoords);
+    TLOC_DECL_PARAM_VAR(bool, Normals, m_normals);
     TLOC_DECL_PARAM_VAR(cuboid_type, Dimensions, m_cuboid);
 
   };

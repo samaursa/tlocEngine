@@ -26,6 +26,9 @@ namespace tloc { namespace prefab { namespace graphics {
     entity_ptr   Create(const vert_cont_type& a_vertices);
     void         Add(entity_ptr a_ent, const vert_cont_type& a_vertices);
 
+    TLOC_DECL_PARAM_VAR(bool, TexCoords, m_texCoords);
+    TLOC_DECL_PARAM_VAR(bool, Normals, m_normals);
+
   };
 
 };};};

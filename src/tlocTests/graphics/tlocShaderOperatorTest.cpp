@@ -65,13 +65,14 @@ namespace TestingShaderOperator
     "  uniform mat2   u_mat2;                                             \n"
     "  uniform mat3   u_mat3;                                             \n"
     "  uniform mat4   u_mat4;                                             \n"
-    "  uniform mat4   u_mat5; // bug fix - see below                   \n"
+    "  uniform mat4   u_mat5; // bug fix - see below                      \n"
     "                                                                     \n"
     "void main(void)                                                      \n"
     "{                                                                    \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x * u_vec4.x;          \n"
     "  gl_Position.y = float(u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x);  \n"
     "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;           \n"
+    "                  + u_mat5[0].x;                                     \n"
     "}\n";
 
 #endif
@@ -313,8 +314,6 @@ namespace TestingShaderOperator
     sp.Enable();
     CHECK(gl::Error().Succeeded());
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
-
-
 
     so->EnableAllUniforms(sp);
     CHECK(so->IsUniformsCached());
@@ -655,6 +654,7 @@ namespace TestingShaderOperator
     "  attribute vec2  u_vec2;                                         \n"
     "  attribute vec3  u_vec3;                                         \n"
     "  attribute vec4  u_vec4;                                         \n"
+    "  attribute vec4  u_vec5;                                         \n"
     "  attribute int   u_int;                                          \n"
     "  attribute ivec2 u_ivec2;                                        \n"
     "  attribute ivec3 u_ivec3;                                        \n"
@@ -663,15 +663,13 @@ namespace TestingShaderOperator
     "  attribute uvec2 u_uivec2;                                       \n"
     "  attribute uvec3 u_uivec3;                                       \n"
     "  attribute uvec4 u_uivec4;                                       \n"
-    "  attribute uvec4 u_uivec5;                                       \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
-    "  gl_Position   = u_vec4;                                         \n"
+    "  gl_Position   = u_vec4 + u_vec5;                                \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
     "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x   \n"
-    "                  + u_uivec5.x;                                   \n"
     "}\n";
 
 #elif defined (TLOC_OS_IPHONE)
@@ -683,10 +681,11 @@ namespace TestingShaderOperator
   "  attribute vec2  u_vec2;                                         \n"
   "  attribute vec3  u_vec3;                                         \n"
   "  attribute vec4  u_vec4;                                         \n"
+  "  attribute vec4  u_vec5;                                         \n"
   "                                                                  \n"
   "void main(void)                                                   \n"
   "{                                                                 \n"
-  "  gl_Position   = u_vec4;                                         \n"
+  "  gl_Position   = u_vec4 + u_vec5;                                \n"
   "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
   "}\n";
 
@@ -763,6 +762,15 @@ namespace TestingShaderOperator
 
       so->AddAttribute(*attribute);
     }
+    gl::attribute_vptr attributeBugFix;
+    {
+      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
+      attribute_ptr_type attribute = attribCont.back();
+      attribute->SetName("u_vec5");
+      attribute->SetValueAs(Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+
+      attributeBugFix = so->AddAttribute(*attribute);
+    }
 #if defined (TLOC_OS_WIN)
     {
       attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
@@ -828,15 +836,6 @@ namespace TestingShaderOperator
       attribute->SetValueAs(Tuple4u32(4));
 
       so->AddAttribute(*attribute);
-    }
-    gl::attribute_vptr attributeBugFix;
-    {
-      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
-      attribute_ptr_type attribute = attribCont.back();
-      attribute->SetName("u_uivec5");
-      attribute->SetValueAs(Tuple4u32(4));
-
-      attributeBugFix = so->AddAttribute(*attribute);
     }
 #endif
 

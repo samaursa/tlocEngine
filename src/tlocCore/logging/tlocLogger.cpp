@@ -19,7 +19,6 @@ namespace {
   {
     using namespace tloc::console;
 
-    static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     switch(a_severity)
     {
     case Log_I::k_info:

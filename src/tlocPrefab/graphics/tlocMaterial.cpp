@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/io/tlocFileIO.h>
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -41,7 +42,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  Material::error_type
     Material::
     Add(entity_ptr a_ent,
         const core_io::Path& a_vertexShader,
@@ -57,16 +58,31 @@ namespace tloc { namespace prefab { namespace graphics {
 
     core_err::Error err = ErrorSuccess;
     err = vsFile.Open();
+
+    if (err.Failed())
+    {
+      TLOC_LOG_PREF_ERR() << "Could not open vertex shader: " << a_vertexShader.GetPath();
+      return TLOC_ERROR(common_error_types::error_file_not_found);
+    }
+
     TLOC_ASSERT(err == ErrorSuccess, "Could not open the vertex shader file");
     vsFile.GetContents(vsCode);
     vsFile.Close();
 
     err = fsFile.Open();
-    TLOC_ASSERT(err == ErrorSuccess, "Could not open the fragment shader file");
+
+    if (err.Failed())
+    {
+      TLOC_LOG_PREF_ERR() << "Could not open fragment shader: " << a_vertexShader.GetPath();
+      return TLOC_ERROR(common_error_types::error_file_not_found);
+    }
+
     fsFile.GetContents(fsCode);
     fsFile.Close();
 
     Add(a_ent, vsCode, fsCode);
+
+    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

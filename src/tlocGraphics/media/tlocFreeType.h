@@ -58,6 +58,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     typedef FT_UInt                               ft_index_type;
     typedef FT_UShort                             ft_ushort;
     typedef FT_ULong                              ft_ulong;
+    typedef FT_UInt                               ft_uint;
     typedef FT_Vector                             ft_vec;
 
     typedef core_str::String                      data_type;

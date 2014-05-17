@@ -165,7 +165,7 @@ namespace tloc { namespace graphics { namespace gl {
       DisableAll();
 
       // now disable ALL gl vertex attrib arrays
-      gl_int maxAttribs = g_enabledAttributes.size();
+      tl_size maxAttribs = g_enabledAttributes.size();
 
       for (gl_int i = 0; i < maxAttribs; ++i)
       { glDisableVertexAttribArray(i); }

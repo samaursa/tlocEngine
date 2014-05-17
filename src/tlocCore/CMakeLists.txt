@@ -349,7 +349,10 @@ include_directories(
 )
 
 if (TLOC_ENABLE_MEMORY_TRACKING)
+  message(STATUS "MEMORY TRACKING: Enabled")
   add_definitions(-DTLOC_ENABLE_MEMORY_TRACKING)
+else()
+  message(STATUS "MEMORY TRACKING: Disabled")
 endif()
 
 add_library(tlocCore STATIC

@@ -21,8 +21,8 @@ namespace tloc { namespace prefab { namespace graphics {
   ArcBall::
     ArcBall(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
-  {
-  }
+    , m_focusPoint(vec_type::ZERO)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

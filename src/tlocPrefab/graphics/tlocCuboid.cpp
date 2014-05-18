@@ -268,7 +268,7 @@ namespace tloc { namespace prefab { namespace graphics {
     meshPtr->SetTexCoordsEnabled(m_texCoords);
     meshPtr->SetNormalsEnabled(m_normals);
 
-    return *(*itrMesh)->GetValuePtr();
+    return meshPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -297,6 +297,7 @@ namespace tloc { namespace prefab { namespace graphics {
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
+    // mesh component
 
     m_entMgr->InsertComponent(a_ent, Construct()); 
 

@@ -110,7 +110,7 @@ namespace tloc { namespace prefab { namespace animation {
 
     anim_cs::transform_animation_sptr ta = nullptr;
 
-    if (a_ent->HasComponent<math_cs::Transform>())
+    if (a_ent->HasComponent<anim_cs::TransformAnimation>())
     {
       ta = a_ent->GetComponent<anim_cs::TransformAnimation>();
       Construct(a_keyframes, ta);

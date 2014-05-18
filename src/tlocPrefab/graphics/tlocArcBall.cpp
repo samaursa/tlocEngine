@@ -15,26 +15,22 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using core_sptr::MakeShared;
 
-  void
-    ArcBall::
-    Add(entity_ptr a_ent)
+  // ///////////////////////////////////////////////////////////////////////
+  // ArcBall
+
+  ArcBall::
+    ArcBall(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
   {
-    TLOC_ASSERT_NOT_NULL(a_ent);
+  }
 
-    using gfx_cs::components::arcball;
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  ArcBall::component_ptr
+    ArcBall::
+    Construct()
+  {
     using namespace core_cs;
-    using namespace math_cs;
-    using namespace gfx_cs;
-
-    // -----------------------------------------------------------------------
-    // transform component
-
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
-    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
-
-    // -----------------------------------------------------------------------
-    // arcball component
 
     typedef ComponentPoolManager        pool_mgr;
     typedef gfx_cs::arcball_pool        ab_pool;
@@ -45,7 +41,35 @@ namespace tloc { namespace prefab { namespace graphics {
     ab_pool::iterator itrArcBall = arcPool->GetNext();
     (*itrArcBall)->SetValue(MakeShared<gfx_cs::ArcBall>(m_focusPoint) );
 
-    m_entMgr->InsertComponent(a_ent, *(*itrArcBall)->GetValuePtr());
+    return *(*itrArcBall)->GetValuePtr();
+  }
+
+  ArcBall::entity_ptr
+    ArcBall::
+    Create()
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ArcBall::
+    Add(entity_ptr a_ent)
+  {
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // arcball component
+
+    m_entMgr->InsertComponent(a_ent, Construct());
   }
 
 };};};

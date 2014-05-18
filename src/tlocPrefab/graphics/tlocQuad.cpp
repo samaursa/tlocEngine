@@ -20,9 +20,42 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using math_t::Rectangle_T;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Quad
+
+  Quad::
+    Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+    , m_texCoords(true) 
+    , m_rect(rect_type(rect_type::width(1.0f),
+                       rect_type::height(1.0f)) )
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Quad::component_ptr
+    Quad::
+    Construct() const
+  {
+    typedef ComponentPoolManager      pool_mgr;
+
+    // Create the quad (and the quad pool if necessary)
+    typedef gfx_cs::quad_pool         quad_pool;
+
+    gfx_cs::quad_pool_vptr quadPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Quad>();
+
+    quad_pool::iterator itrQuad = quadPool->GetNext();
+    (*itrQuad)->SetValue(MakeShared<gfx_cs::Quad>(m_rect) );
+
+    return *(*itrQuad)->GetValuePtr();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   Quad::entity_ptr
     Quad::
-    Create()
+    Create() const
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent);
@@ -32,7 +65,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     Quad::
-    Add(entity_ptr a_ent)
+    Add(entity_ptr a_ent) const
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
@@ -46,18 +79,7 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // quad component
 
-    typedef ComponentPoolManager      pool_mgr;
-
-    // Create the quad (and the quad pool if necessary)
-    typedef gfx_cs::quad_pool         quad_pool;
-
-    gfx_cs::quad_pool_vptr quadPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Quad>();
-
-    quad_pool::iterator itrQuad = quadPool->GetNext();
-    (*itrQuad)->SetValue(MakeShared<gfx_cs::Quad>(m_rect) );
-
-    m_entMgr->InsertComponent(a_ent, *(*itrQuad)->GetValuePtr());
+    m_entMgr->InsertComponent(a_ent, Construct());
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)

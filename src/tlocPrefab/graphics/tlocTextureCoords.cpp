@@ -25,26 +25,14 @@ namespace tloc { namespace prefab { namespace graphics {
 
   TextureCoords::
     TextureCoords(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
-    : Prefab_I(a_entMgr, a_poolMgr)
+    : base_type(a_entMgr, a_poolMgr)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TextureCoords::entity_ptr
+  TextureCoords::component_ptr
     TextureCoords::
-    Create()
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent);
-
-    return ent;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    TextureCoords::
-    Add(entity_ptr a_ent)
+    Construct() const
   {
     using namespace gfx_cs::components;
     using gfx_cs::TextureCoords;
@@ -57,13 +45,35 @@ namespace tloc { namespace prefab { namespace graphics {
     tcoord_pool::iterator itrTCoord = tCoordPool->GetNext();
     TextureCoords tc;
 
-    for (coords_cont::iterator itr = m_coords.begin(), itrEnd = m_coords.end();
+    for (coords_cont::const_iterator 
+         itr = m_coords.begin(), itrEnd = m_coords.end();
          itr != itrEnd; ++itr)
     { tc.AddCoord(itr->m_tcoord, TextureCoords::set_index(itr->m_setIndex)); }
 
     (*itrTCoord)->SetValue(core_sptr::MakeShared<TextureCoords>(tc));
 
-    m_entMgr->InsertComponent(a_ent, *(*itrTCoord)->GetValuePtr(), 
+    return *(*itrTCoord)->GetValuePtr();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  TextureCoords::entity_ptr
+    TextureCoords::
+    Create() const
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TextureCoords::
+    Add(entity_ptr a_ent) const
+  {
+    m_entMgr->InsertComponent(a_ent, Construct(), 
                               core_cs::EntityManager::orphan(true));
   }
 

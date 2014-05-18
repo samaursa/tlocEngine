@@ -464,7 +464,7 @@ namespace tloc { namespace graphics { namespace types {
   {
     this_type temp(*this);
 
-    for (tl_int i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.GetSize()); ++i)
     { temp[i] += a_other[i]; }
 
     return temp;
@@ -477,7 +477,7 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator +=(const this_type &a_other)
   {
-    for (tl_int i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.GetSize()); ++i)
     { m_color[i] += a_other[i]; }
 
     return *this;
@@ -492,7 +492,7 @@ namespace tloc { namespace graphics { namespace types {
   {
     this_type temp(*this);
 
-    for (tl_int i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.GetSize()); ++i)
     { temp[i] *= a_other[i]; }
 
     return temp;
@@ -505,7 +505,7 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator *=(const this_type &a_other)
   {
-    for (tl_int i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.GetSize()); ++i)
     { m_color[i] *= a_other[i]; }
 
     return *this;
@@ -520,7 +520,7 @@ namespace tloc { namespace graphics { namespace types {
   {
     this_type temp(*this);
 
-    for (tl_int i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.GetSize()); ++i)
     { temp[i] -= a_other[i]; }
 
     return temp;
@@ -533,7 +533,7 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator -=(const this_type &a_other)
   {
-    for (tl_int i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.GetSize()); ++i)
     { m_color[i] -= a_other[i]; }
 
     return *this;

@@ -6,24 +6,55 @@
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>
 #include <tlocGraphics/media/tlocSprite.h>
 
-namespace tloc { namespace prefab { namespace graphics { namespace priv {
+namespace tloc { namespace prefab { namespace graphics {
 
   using namespace gfx_med;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // SpriteAnimation
+
+  SpriteAnimation::
+    SpriteAnimation(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+    , m_loop(true)
+    , m_fps(24)
+    , m_startingFrame(0)
+    , m_paused(false)
+    , m_setIndex(0)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename SpriteLoaderIterator>
   void
-    DoAddSpriteAnimation(core_cs::entity_vptr a_entity,
-                         core_cs::entity_manager_vptr a_mgr,
-                         core_cs::component_pool_mgr_vptr a_poolMgr,
-                         SpriteLoaderIterator a_begin,
-                         SpriteLoaderIterator a_end,
-                         bool a_loop,
-                         tl_size a_fps,
-                         tl_size a_setIndex,
-                         tl_size a_startingFrame,
-                         bool a_paused)
+    SpriteAnimation::
+    DoAdd(entity_ptr a_entity,
+          SpriteLoaderIterator a_begin, SpriteLoaderIterator a_end) const
   {
-    TLOC_ASSERT_NOT_NULL(a_entity);
+    gfx_cs::texture_animator_sptr ta = nullptr;
+
+    const tl_size size = 
+      a_entity->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+
+    if (size && m_setIndex < size)
+    {
+      ta = a_entity->GetComponent<gfx_cs::TextureAnimator>(m_setIndex);
+      Construct(a_begin, a_end, ta);
+    }
+    else
+    { m_entMgr->InsertComponent(a_entity, Construct(a_begin, a_end, ta)); }
+
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename SpriteLoaderIterator>
+  SpriteAnimation::component_ptr
+    SpriteAnimation::
+    DoConstructSpriteAnimation(SpriteLoaderIterator a_begin,
+                               SpriteLoaderIterator a_end, 
+                               component_ptr a_existing) const
+  {
     TLOC_ASSERT(a_begin != a_end, "No sprite info available");
 
     typedef typename PointeeType<SpriteLoaderIterator>::value_type     sprite_info;
@@ -34,24 +65,16 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
     typedef gfx_cs::texture_animator_pool           ta_pool;
     gfx_cs::texture_animator_pool_vptr              taPool;
 
-    gfx_cs::texture_animator_sptr ta = nullptr;
+    gfx_cs::texture_animator_sptr ta = a_existing;
 
-    const tl_size size = a_entity->GetComponents(texture_animator).size();
-
-    if (size && a_setIndex < size)
+    if (ta == nullptr)
     {
-      ta = a_entity->GetComponent<gfx_cs::TextureAnimator>(a_setIndex);
-    }
-    else
-    {
-      taPool = a_poolMgr->GetOrCreatePool<gfx_cs::TextureAnimator>();
+      taPool = m_compPoolMgr->GetOrCreatePool<gfx_cs::TextureAnimator>();
 
       ta_pool::iterator itrTa = taPool->GetNext();
       (*itrTa)->SetValue(core_sptr::MakeShared<TextureAnimator>() );
 
       ta = *(*itrTa)->GetValuePtr();
-
-      a_mgr->InsertComponent(a_entity, ta);
     }
 
     TextureCoords tcoord;
@@ -78,12 +101,14 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
 
     ta->AddSpriteSet(tcoord);
     ta->SetCurrentSpriteSequence(ta->GetNumSpriteSequences() - 1);
-    ta->SetLooping(a_loop);
-    ta->SetFPS(a_fps);
-    ta->SetFrame(a_startingFrame);
-    ta->SetPaused(a_paused);
+    ta->SetLooping(m_loop);
+    ta->SetFPS(m_fps);
+    ta->SetFrame(m_startingFrame);
+    ta->SetPaused(m_paused);
 
     ta->SetCurrentSpriteSequence(currSetIndex);
+
+    return ta;
   }
 
   //------------------------------------------------------------------------
@@ -92,14 +117,14 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   using gfx_med::sprite_sheet_ul;
 
 #define TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(_type_)\
+  template SpriteAnimation::component_ptr\
+    SpriteAnimation::DoConstructSpriteAnimation<_type_>\
+    (_type_, _type_, SpriteAnimation::component_ptr) const;\
+  \
   template void\
-    DoAddSpriteAnimation<_type_>\
-    (core_cs::entity_vptr a_entity,\
-     core_cs::entity_manager_vptr,\
-     core_cs::component_pool_mgr_vptr,\
-     _type_,\
-     _type_,\
-     bool, tl_size, tl_size, tl_size, bool)
+    SpriteAnimation::DoAdd<_type_>\
+    (SpriteAnimation::entity_ptr, _type_, _type_) const
+
 
   TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_ul::iterator);
   TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_ul::const_iterator);
@@ -107,4 +132,4 @@ namespace tloc { namespace prefab { namespace graphics { namespace priv {
   TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_str::iterator);
   TLOC_EXPLICITLY_INSTANTIATE_DO_ADD_SPRITE_ANIM(sprite_sheet_str::const_iterator);
 
-};};};};
+};};};

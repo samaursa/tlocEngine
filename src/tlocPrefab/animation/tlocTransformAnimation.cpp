@@ -21,7 +21,7 @@ namespace tloc { namespace prefab { namespace animation {
   TransformAnimation::
     TransformAnimation(entity_mgr_ptr a_entMgr,
                        comp_pool_mgr_ptr a_poolMgr)
-                      : Prefab_I(a_entMgr, a_poolMgr)
+                      : base_type(a_entMgr, a_poolMgr)
                       , m_fps(24)
                       , m_startingFrame(0)
                       , m_paused(false)
@@ -31,21 +31,12 @@ namespace tloc { namespace prefab { namespace animation {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  TransformAnimation::this_type&
+  TransformAnimation::component_ptr
     TransformAnimation::
-    Add(entity_ptr a_ent, const kf_seq_type& a_keyframes)
+    Construct(const kf_seq_type& a_keyframes, component_ptr a_existing) const
   {
     using namespace anim_cs::components;
     using anim_cs::TransformAnimation;
-
-    // -----------------------------------------------------------------------
-    // transform component
-
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
-    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
-
-    // -----------------------------------------------------------------------
-    // TransformAnimation
 
     typedef ComponentPoolManager          pool_mgr;
 
@@ -53,20 +44,14 @@ namespace tloc { namespace prefab { namespace animation {
     typedef anim_cs::transform_animation_pool             ta_pool;
     anim_cs::transform_animation_pool_vptr                taPool;
 
-    anim_cs::transform_animation_sptr ta = nullptr;
+    anim_cs::transform_animation_sptr ta = a_existing;
 
-    if (a_ent->HasComponent(transform_animation))
-    {
-      ta = a_ent->GetComponent<TransformAnimation>();
-    }
-    else
+    if (ta == nullptr)
     {
       taPool = m_compPoolMgr->GetOrCreatePool<anim_cs::TransformAnimation>();
 
       ta_pool::iterator itrTransformAnim = taPool->GetNext();
       (*itrTransformAnim)->SetValue(MakeShared<anim_cs::TransformAnimation>());
-
-      m_entMgr->InsertComponent(a_ent, *(*itrTransformAnim)->GetValuePtr());
 
       ta = *(*itrTransformAnim)->GetValuePtr();
     }
@@ -84,6 +69,57 @@ namespace tloc { namespace prefab { namespace animation {
 
     ta->SetCurrentKFSequence(currSeqIndex);
 
+    return ta;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    TransformAnimation::
+    Modify(component_ptr a_ta, 
+           const kf_seq_type& a_keyframes, tl_size a_sequenceIndex) const
+  {
+    const TransformAnimation::size_type
+      currSeqIndex = a_ta->GetCurrentKeyframeSequenceIndex();
+
+    a_ta->ModifyKeyframeSet(a_keyframes, a_sequenceIndex);
+    a_ta->SetCurrentKFSequence(a_sequenceIndex);
+    a_ta->SetFPS(m_fps);
+    a_ta->SetFrame(m_startingFrame);
+    a_ta->SetPaused(m_paused);
+    a_ta->SetLooping(m_loop);
+    a_ta->SetReverse(m_reverse);
+
+    a_ta->SetCurrentKFSequence(currSeqIndex);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const TransformAnimation::this_type&
+    TransformAnimation::
+    Add(entity_ptr a_ent, const kf_seq_type& a_keyframes) const
+  {
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // TransformAnimation
+
+    anim_cs::transform_animation_sptr ta = nullptr;
+
+    if (a_ent->HasComponent<math_cs::Transform>())
+    {
+      ta = a_ent->GetComponent<anim_cs::TransformAnimation>();
+      Construct(a_keyframes, ta);
+    }
+    else
+    {
+      m_entMgr->InsertComponent(a_ent, Construct(a_keyframes, ta));
+    }
+
     return *this;
   }
 
@@ -92,7 +128,7 @@ namespace tloc { namespace prefab { namespace animation {
   void
     TransformAnimation::
     Modify(entity_ptr a_ent, const kf_seq_type& a_keyframes,
-           tl_size a_sequenceIndex)
+           tl_size a_sequenceIndex) const
   {
     using namespace anim_cs::components;
     using anim_cs::TransformAnimation;
@@ -103,18 +139,7 @@ namespace tloc { namespace prefab { namespace animation {
     anim_cs::transform_animation_sptr ta = 
       a_ent->GetComponent<TransformAnimation>();
 
-    const TransformAnimation::size_type
-      currSeqIndex = ta->GetCurrentKeyframeSequenceIndex();
-
-    ta->ModifyKeyframeSet(a_keyframes, a_sequenceIndex);
-    ta->SetCurrentKFSequence(a_sequenceIndex);
-    ta->SetFPS(m_fps);
-    ta->SetFrame(m_startingFrame);
-    ta->SetPaused(m_paused);
-    ta->SetLooping(m_loop);
-    ta->SetReverse(m_reverse);
-
-    ta->SetCurrentKFSequence(currSeqIndex);
+    Modify(ta, a_keyframes, a_sequenceIndex);
   }
 
 };};};

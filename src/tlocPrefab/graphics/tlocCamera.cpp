@@ -14,21 +14,23 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using core_sptr::MakeShared;
 
-  Camera::entity_ptr
-    Camera::
-    Create(dim_type a_windowDimensions)
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent, a_windowDimensions);
+  // ///////////////////////////////////////////////////////////////////////
+  // Camera
 
-    return ent;
-  }
+  Camera::
+    Camera(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+    , m_near(5.0f)
+    , m_far(100.0f)
+    , m_vertFOV(60.0f)
+    , m_perspective(true)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  Camera::component_ptr
     Camera::
-    Add(entity_ptr a_ent, dim_type a_windowDimensions)
+    Construct(dim_type a_windowDimensions)
   {
     using namespace math_t;
     using namespace math_proj;
@@ -49,7 +51,7 @@ namespace tloc { namespace prefab { namespace graphics {
       FrustumPersp frPersp(params);
       frPersp.BuildFrustum();
 
-      Add(a_ent, frPersp);
+      return Construct(frPersp);
     }
     else
     {
@@ -59,8 +61,58 @@ namespace tloc { namespace prefab { namespace graphics {
       FrustumOrtho frOrtho = FrustumOrtho(fRect, m_near, m_far);
       frOrtho.BuildFrustum();
 
-      Add(a_ent, frOrtho);
+      return Construct(frOrtho);
     }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Camera::component_ptr
+    Camera::
+    Construct(const frustum_type& a_frustum)
+  {
+    using namespace core_cs;
+    using namespace gfx_cs;
+
+    typedef ComponentPoolManager                    pool_mgr;
+    typedef gfx_cs::camera_pool                     p_pool;
+    camera_pool_vptr  pPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Camera>();
+
+    p_pool::iterator itrProjection = pPool->GetNext();
+    (*itrProjection)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
+
+    return *(*itrProjection)->GetValuePtr();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Camera::entity_ptr
+    Camera::
+    Create(dim_type a_windowDimensions)
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_windowDimensions);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Camera::
+    Add(entity_ptr a_ent, dim_type a_windowDimensions)
+  {
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Position(m_position).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // camera component
+
+    m_entMgr->InsertComponent(a_ent, Construct(a_windowDimensions));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -81,13 +133,6 @@ namespace tloc { namespace prefab { namespace graphics {
     Camera::
     Add(entity_ptr a_ent, const frustum_type& a_frustum)
   {
-    using math_cs::components::transform;
-    using gfx_cs::components::camera;
-
-    using namespace core_cs;
-    using namespace math_cs;
-    using namespace gfx_cs;
-
     // -----------------------------------------------------------------------
     // transform component
 
@@ -97,15 +142,7 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // camera component
 
-    typedef ComponentPoolManager                    pool_mgr;
-    typedef gfx_cs::camera_pool                     p_pool;
-    camera_pool_vptr  pPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Camera>();
-
-    p_pool::iterator itrProjection = pPool->GetNext();
-    (*itrProjection)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
-
-    m_entMgr->InsertComponent(a_ent, *(*itrProjection)->GetValuePtr() );
+    m_entMgr->InsertComponent(a_ent, Construct(a_frustum));
   }
 
 };};};

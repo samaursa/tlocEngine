@@ -35,3 +35,13 @@ namespace tloc { namespace graphics { namespace media {
   }
 
 };};};
+
+using namespace tloc::gfx_med;
+
+#include <tlocCore/types/tlocStrongType.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(FontSize::dim_type, 0);
+TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(FontSize::dim_type, 1);
+TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(FontSize::real_type, 0);
+TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(FontSize::size_type, 0);
+TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(FontSize::size_type, 1);

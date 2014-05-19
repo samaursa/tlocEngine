@@ -29,6 +29,7 @@ namespace tloc { namespace prefab { namespace animation {
                              const kf_seq_type& a_keyframes, 
                              tl_size a_sequenceIndex) const;
 
+    entity_ptr        Create(const kf_seq_type& a_keyframes) const;
     const this_type&  Add(entity_ptr a_ent, const kf_seq_type& a_keyframes) const;
     void              Modify(entity_ptr a_ent, const kf_seq_type& a_keyframes,
                              tl_size a_sequenceIndex) const;

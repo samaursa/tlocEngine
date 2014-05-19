@@ -95,6 +95,18 @@ namespace tloc { namespace prefab { namespace animation {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  TransformAnimation::entity_ptr
+    TransformAnimation::
+    Create(const kf_seq_type& a_keyframes) const
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_keyframes);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   const TransformAnimation::this_type&
     TransformAnimation::
     Add(entity_ptr a_ent, const kf_seq_type& a_keyframes) const

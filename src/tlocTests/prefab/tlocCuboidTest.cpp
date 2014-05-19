@@ -26,6 +26,9 @@ namespace
     system_vso                      system(MakeArgs(evtMgr.get(), entMgr.get()) );
     TLOC_UNUSED(system);
 
+    // -----------------------------------------------------------------------
+    // renderer and window
+
     gfx_win::Window win;
     win.Create( gfx_win::Window::graphics_mode::Properties(1024, 768),
                 gfx_win::WindowSettings("Object File Loader") );

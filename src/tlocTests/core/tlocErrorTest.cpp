@@ -104,7 +104,7 @@ namespace TestingPair
       CheckExtraInfo<core_cfg::BuildConfig::build_config_type>(err, line, file);
     }
 
-    SECTION("Error check and return macro", "")
+    //SECTION("Error check and return macro", "")
     {
       error::Error err = ReturnErrorIfFailed
         (TLOC_ERROR(common_error_types::error_already_initialized));

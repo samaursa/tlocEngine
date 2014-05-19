@@ -100,7 +100,7 @@ namespace TestingEntityManager
 
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")
   {
-    SECTION("CreateEntity() and DestroyEntity()", "")
+    //SECTION("CreateEntity() and DestroyEntity()", "")
     {
       const tl_uint entityCount = 100;
 
@@ -172,7 +172,7 @@ namespace TestingEntityManager
       CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
     }
 
-    SECTION("Destructor memory leak", "")
+    //SECTION("Destructor memory leak", "")
     {
       // The dtor was calling DestroyEntity but was not doing an update to
       // clean the entities causing memory leaks

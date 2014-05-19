@@ -18,6 +18,16 @@ namespace tloc { namespace graphics { namespace types {
 };};};
 
 namespace tloc { namespace graphics { namespace gl {
+  
+  // ///////////////////////////////////////////////////////////////////////
+  // InitializePlatform()
+
+  core_err::Error
+    InitializePlatform();
+  bool
+    IsPlatformInitialized();
+  void
+    AssertOpenGLContextExists();
 
   // ///////////////////////////////////////////////////////////////////////
   // OpenGL get functions (safely wrapped)
@@ -115,16 +125,6 @@ namespace tloc { namespace graphics { namespace gl {
   // Texture units start from 0 to max_units - 1
   bool                 IsValidTextureUnit(gfx_t::gl_int a_texUnit);
  gfx_t::gl_int         GetTextureUnitFromTextureImageUnit(gfx_t::gl_int a_texImgUnit);
-
-  // ///////////////////////////////////////////////////////////////////////
-  // InitializePlatform()
-
-  core_err::Error
-    InitializePlatform();
-  bool
-    IsPlatformInitialized();
-  void
-    AssertOpenGLContextExists();
 
 };};};
 

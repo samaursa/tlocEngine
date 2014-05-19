@@ -7,27 +7,27 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
+#include <tlocGraphics/component_system/tlocQuad.h>
+
 #include <tlocMath/types/tlocRectangle.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
   class Quad
-    : public Prefab_I
+    : public Prefab_TI<gfx_cs::Quad>
   {
   public:
-    typedef Quad                    this_type;
-    typedef math_t::Rectf32_c       rect_type;
+    typedef Prefab_TI<component_type>           base_type;
+    typedef Quad                                this_type;
+    typedef math_t::Rectf32_c                   rect_type;
 
   public:
-    Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
-         : Prefab_I(a_entMgr, a_poolMgr)
-         , m_texCoords(true)
-         , m_rect(rect_type(rect_type::width(1.0f),
-                            rect_type::height(1.0f)) )
-    { }
+    Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
-    entity_ptr Create();
-    void       Add(entity_ptr a_ent);
+    component_ptr Construct() const;
+
+    entity_ptr    Create() const;
+    void          Add(entity_ptr a_ent) const;
 
     TLOC_DECL_PARAM_VAR(bool, TexCoords, m_texCoords);
     TLOC_DECL_PARAM_VAR(rect_type, Dimensions, m_rect);

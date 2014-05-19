@@ -69,7 +69,7 @@ namespace tloc { namespace console {
 
   void
     WriteToConsole(const char8* a_formattedText)
-  { printf(a_formattedText); }
+  { printf("%s", a_formattedText); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

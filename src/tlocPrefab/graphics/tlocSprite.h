@@ -70,6 +70,8 @@ namespace tloc { namespace prefab { namespace graphics {
               SpriteLoaderIterator a_end, 
               component_ptr a_existing) const
   {
+    using namespace gfx_med;
+
     type_traits::AssertTypeIsSupported
       <SpriteLoaderIterator, 
        sprite_sheet_str::iterator,

@@ -64,7 +64,7 @@ namespace tloc { namespace core { namespace data_structs {
   TL_FI Tuple<TUPLE_PARAMS>::
     Tuple(const T_Variadic<T, tl_size>& a_vars)
   {
-    TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_TupleSize),
+    TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_size),
       Size_mismatch_between_variadic_and_tuple);
     operator=(static_cast<Tuple<T, T_Size> >(a_vars));
   }
@@ -136,8 +136,8 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   TL_FI tl_size Tuple<TUPLE_PARAMS>::
-    GetSize() const
-  { return k_TupleSize; }
+    size() const
+  { return k_size; }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -211,7 +211,7 @@ namespace tloc { namespace core { namespace data_structs {
     typedef Loki::IsSameType<value_type, other_value_type>  type_result;
     typedef Loki::Int2Type<type_result::value>              types_same_or_not;
 
-    TLOC_STATIC_ASSERT((T_TupleType::k_TupleSize == k_TupleSize),
+    TLOC_STATIC_ASSERT((T_TupleType::k_size == k_size),
                         Tuple_sizes_must_be_same);
 
     return DoCast<other_value_type, value_type, T_Size>
@@ -269,7 +269,7 @@ namespace tloc { namespace core { namespace data_structs {
     DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_bigger)
   {
-    for (tl_int i = 0; i < k_TupleSize; ++i)
+    for (tl_int i = 0; i < k_size; ++i)
     { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
   }
 
@@ -281,10 +281,10 @@ namespace tloc { namespace core { namespace data_structs {
     DoConvertFrom(const T_OtherTuple& a_other,
                   incoming_smaller)
   {
-    for (tl_int i = 0; i < T_OtherTuple::k_TupleSize; ++i)
+    for (tl_int i = 0; i < T_OtherTuple::k_size; ++i)
     { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
 
-    DoFillRemaining<T_OtherTuple::k_TupleSize>(T_Policy());
+    DoFillRemaining<T_OtherTuple::k_size>(T_Policy());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -300,7 +300,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_one)
   {
-    for (tl_int i = T_TupleSize; i < k_TupleSize; ++i)
+    for (tl_int i = T_TupleSize; i < k_size; ++i)
     { m_values[i] = 1; }
   }
 
@@ -311,7 +311,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     DoFillRemaining(p_tuple::overflow_zero)
   {
-    for (tl_int i = T_TupleSize; i < k_TupleSize; ++i)
+    for (tl_int i = T_TupleSize; i < k_size; ++i)
     { m_values[i] = 0; }
   }
 
@@ -323,7 +323,7 @@ namespace tloc { namespace core { namespace data_structs {
     ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other)
   {
     DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, p_tuple::overflow_one>
-      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+      (a_other, Loki::Int2Type< (k_size < T_TupleSize) >());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -343,7 +343,7 @@ namespace tloc { namespace core { namespace data_structs {
       >();
 
     DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, T_Policy>
-      (a_other, Loki::Int2Type< (k_TupleSize < T_TupleSize) >());
+      (a_other, Loki::Int2Type< (k_size < T_TupleSize) >());
   }
 
   //------------------------------------------------------------------------

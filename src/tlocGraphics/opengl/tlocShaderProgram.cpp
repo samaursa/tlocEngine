@@ -173,7 +173,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::AttachShaders
     (Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
-    for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
+    for (size_type i = 0; i < a_shaderComponents.size(); ++i)
     {
       glAttachShader(GetHandle(), a_shaderComponents[i]->GetHandle());
       TLOC_ASSERT(gl::Error().Succeeded(), "Could not attach shader");

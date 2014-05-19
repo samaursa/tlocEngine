@@ -21,9 +21,8 @@ namespace tloc { namespace core { namespace data_structs {
   class Tuple
   {
   public:
-    enum { k_TupleSize = T_Size};
     enum { k_size = T_Size};
-    T m_values[k_TupleSize];
+    T m_values[k_size];
 
   public:
     typedef T                                           value_type;
@@ -60,7 +59,7 @@ namespace tloc { namespace core { namespace data_structs {
     T const*  data() const;
 
     // Access the size of the tuple
-    size_type GetSize() const;
+    size_type size() const;
 
     //------------------------------------------------------------------------
     // Modifiers

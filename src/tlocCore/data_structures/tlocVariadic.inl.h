@@ -17,7 +17,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 1>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 1>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0) = a_array[0];
   }
@@ -31,7 +31,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 2>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 2>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0) = a_array[0];
     operator[](1) = a_array[1];
@@ -49,7 +49,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 3>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 3>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -69,7 +69,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 4>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 4>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -91,7 +91,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 5>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 5>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -115,7 +115,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 6>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 6>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -141,7 +141,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 7>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 7>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -170,7 +170,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 8>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 8>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -201,7 +201,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 9>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 9>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -234,7 +234,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 10>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 10>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -269,7 +269,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 11>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 11>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -306,7 +306,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 12>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 12>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -345,7 +345,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 13>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 13>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -386,7 +386,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 14>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 14>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -430,7 +430,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 15>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 15>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];
@@ -476,7 +476,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <typename T>
   template <typename T_ArrayType>
-  Variadic<T, 16>::Variadic(const T_ArrayType (&a_array)[size])
+  Variadic<T, 16>::Variadic(const T_ArrayType (&a_array)[k_size])
   {
     operator[](0)   = a_array[0];
     operator[](1)   = a_array[1];

@@ -7,6 +7,8 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
+#include <tlocGraphics/component_system/tlocCamera.h>
+
 #include <tlocMath/projection/tlocFrustum.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocAngle.h>
@@ -17,9 +19,11 @@ namespace tloc { namespace prefab { namespace graphics {
   // Camera
 
   class Camera
-    : public Prefab_I
+    : public Prefab_TI<gfx_cs::Camera>
   {
   public:
+    typedef Prefab_TI<component_type>                   base_type;
+
     typedef Camera                                      this_type;
     typedef math_proj::frustum_f32                      frustum_type;
     typedef tl_float                                    real_type;
@@ -28,21 +32,18 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef math_t::Degree                              angle_type;
 
   public:
-    Camera(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
-      : Prefab_I(a_entMgr, a_poolMgr)
-      , m_near(5.0f)
-      , m_far(100.0f)
-      , m_vertFOV(60.0f)
-      , m_perspective(true)
-    { }
+    Camera(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
-    entity_ptr   Create(dim_type a_windowDimensions);
-    void         Add   (entity_ptr a_ent, 
-                        dim_type a_windowDimensions);
+    component_ptr   Construct(dim_type a_windowDimensions);
+    component_ptr   Construct(const frustum_type& a_frustum);
 
-    entity_ptr   Create(const frustum_type& a_frustum);
-    void         Add   (entity_ptr a_ent, 
-                        const frustum_type& a_frustum);
+    entity_ptr      Create(dim_type a_windowDimensions);
+    void            Add   (entity_ptr a_ent, 
+                           dim_type a_windowDimensions);
+
+    entity_ptr      Create(const frustum_type& a_frustum);
+    void            Add   (entity_ptr a_ent, 
+                           const frustum_type& a_frustum);
 
     TLOC_DECL_PARAM_VAR(vec_type, Position, m_position);
     TLOC_DECL_PARAM_VAR(real_type, Near, m_near);

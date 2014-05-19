@@ -562,7 +562,7 @@ namespace tloc { namespace graphics { namespace gl {
           GLint texImgUnit = m.GetTextureImageUnit();
 
           ActivateTextureImageUnit(texImgUnit);
-          m.Bind();
+          m.Bind(p_texture_object::target::Tex2D::s_glParamName);
           glUniform1i(a_info.m_location,
                       GetTextureUnitFromTextureImageUnit(texImgUnit));
           break;

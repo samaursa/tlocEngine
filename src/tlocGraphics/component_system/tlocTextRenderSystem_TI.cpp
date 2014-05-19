@@ -420,7 +420,9 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_Initialize()
   {
     m_textQuadRenderSys.SetRenderer(GetRenderer());
-    m_textQuadRenderSys.SetCamera(GetCamera());
+
+    if (GetCamera() != nullptr)
+    { m_textQuadRenderSys.SetCamera(GetCamera()); }
     
     m_textQuadRenderSys.Initialize();
     m_textSceneGraphSys.Initialize();

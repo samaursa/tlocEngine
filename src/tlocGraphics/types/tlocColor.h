@@ -47,10 +47,25 @@ namespace tloc { namespace graphics { namespace types {
   };
 
   // ///////////////////////////////////////////////////////////////////////
+  // Empty base class to distinguish Color_TI from other types
+
+  namespace priv {
+    class ColorType
+    {
+      template <class T, class U> friend struct Loki::Conversion;
+
+    protected:
+      ColorType() {}
+      ~ColorType() {}
+    };
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
   // Color_TI<>
 
   template <typename T, tl_int T_Size>
   class Color_TI
+    : public gfx_t::priv::ColorType
   {
     TLOC_STATIC_ASSERT(T_Size >= 0 && T_Size <= 4, Unsupported_color_size_requested);
     TLOC_STATIC_ASSERT( (Loki::IsSameType<T, u8>::value ||
@@ -128,9 +143,9 @@ namespace tloc { namespace graphics { namespace types {
 
   template <typename T, tl_int T_Size>
   template <typename U>
-  Color_TI<T, T_Size>:: 
+  Color_TI<T, T_Size>::
     Color_TI(const core_ds::Tuple<U, k_size>& a_colorByChannels)
-  { 
+  {
     SetAs(a_colorByChannels);
   }
 
@@ -139,7 +154,7 @@ namespace tloc { namespace graphics { namespace types {
   template <typename T, tl_int T_Size>
   template <typename U>
   void
-  Color_TI<T, T_Size>:: 
+  Color_TI<T, T_Size>::
     SetAs(const core_ds::Tuple<U, k_size>& a_colorInChannels)
   {
     type_traits::AssertTypeIsSupported
@@ -174,7 +189,7 @@ namespace tloc { namespace graphics { namespace types {
       Selected_vector_cannot_contain_color_type);
 
     type_traits::AssertTypeIsSupported
-      <T_VectorType, 
+      <T_VectorType,
       core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
       math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32>();
 
@@ -186,7 +201,7 @@ namespace tloc { namespace graphics { namespace types {
   template <typename T, tl_int T_Size>
   template <typename T_ColorFormat, typename T_VectorType>
   void
-    Color_TI<T, T_Size>:: 
+    Color_TI<T, T_Size>::
     GetAs(T_VectorType& a_vec) const
   {
     using namespace p_color::format;
@@ -197,9 +212,9 @@ namespace tloc { namespace graphics { namespace types {
       <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
 
     type_traits::AssertTypeIsSupported
-      <T_VectorType, 
-      core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>, 
-      core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>, 
+      <T_VectorType,
+      core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
+      core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>,
       math_t::Vector2<f32>, math_t::Vector2<f64>,
       math_t::Vector3<f32>, math_t::Vector3<f64>,
       math_t::Vector4<f32>, math_t::Vector4<f64> >();
@@ -229,6 +244,8 @@ namespace tloc { namespace graphics { namespace types {
     typedef typename base_type::size_type                          size_type;
     typedef typename base_type::int_type                           int_type;
     typedef typename base_type::real_type                          real_type;
+    
+    enum { k_size = base_type::k_size };
 
   public:
     Color_T()
@@ -281,11 +298,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 4> 
+  const Color_T<T, 4>
     Color_T<T, 4>::COLOR_BLACK = Color_T<T, 4>(0, 0, 0, 255);
 
   template <typename T>
-  const Color_T<T, 4> 
+  const Color_T<T, 4>
     Color_T<T, 4>::COLOR_WHITE = Color_T<T, 4>(255, 255, 255, 255);
 
   // ///////////////////////////////////////////////////////////////////////
@@ -297,13 +314,16 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T                                             value_type;
-    typedef Color_T<value_type, k_size>                   this_type;
     typedef Color_TI<value_type, 3>                       base_type;
-
-    typedef typename base_type::color_type                         color_type;
-    typedef typename base_type::size_type                          size_type;
-    typedef typename base_type::int_type                           int_type;
-    typedef typename base_type::real_type                          real_type;
+    
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::int_type                  int_type;
+    typedef typename base_type::real_type                 real_type;
+    
+    enum { k_size = base_type::k_size };
+    
+    typedef Color_T<value_type, k_size>                   this_type;
 
   public:
     Color_T()
@@ -356,11 +376,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 3> 
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_BLACK = Color_T<T, 3>(0, 0, 0);
 
   template <typename T>
-  const Color_T<T, 3> 
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_WHITE = Color_T<T, 3>(255, 255, 255);
 
   // ///////////////////////////////////////////////////////////////////////
@@ -372,13 +392,16 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T                                             value_type;
-    typedef Color_T<value_type, k_size>                   this_type;
     typedef Color_TI<value_type, 2>                       base_type;
 
-    typedef typename base_type::color_type                         color_type;
-    typedef typename base_type::size_type                          size_type;
-    typedef typename base_type::int_type                           int_type;
-    typedef typename base_type::real_type                          real_type;
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::int_type                  int_type;
+    typedef typename base_type::real_type                 real_type;
+    
+    enum { k_size = base_type::k_size };
+    
+    typedef Color_T<value_type, k_size>                   this_type;
 
   public:
     Color_T()
@@ -431,11 +454,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 2> 
+  const typename Color_T<T, 2>::this_type
     Color_T<T, 2>::COLOR_BLACK = Color_T<T, 2>(0, 0);
 
   template <typename T>
-  const Color_T<T, 2> 
+  const typename Color_T<T, 2>::this_type
     Color_T<T, 2>::COLOR_WHITE = Color_T<T, 2>(255, 255);
 
   // ///////////////////////////////////////////////////////////////////////
@@ -447,13 +470,16 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T                                             value_type;
-    typedef Color_T<value_type, k_size>                   this_type;
     typedef Color_TI<value_type, 1>                       base_type;
 
-    typedef typename base_type::color_type                         color_type;
-    typedef typename base_type::size_type                          size_type;
-    typedef typename base_type::int_type                           int_type;
-    typedef typename base_type::real_type                          real_type;
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef typename base_type::int_type                  int_type;
+    typedef typename base_type::real_type                 real_type;
+    
+    enum { k_size = base_type::k_size };
+    
+    typedef Color_T<value_type, k_size>                   this_type;
 
   public:
     Color_T()
@@ -506,11 +532,11 @@ namespace tloc { namespace graphics { namespace types {
   // static variables
 
   template <typename T>
-  const Color_T<T, 1> 
+  const typename Color_T<T, 1>::this_type
     Color_T<T, 1>::COLOR_BLACK = Color_T<T, 1>(0);
 
   template <typename T>
-  const Color_T<T, 1> 
+  const typename Color_T<T, 1>::this_type
     Color_T<T, 1>::COLOR_WHITE = Color_T<T, 1>(255);
 
   // -----------------------------------------------------------------------

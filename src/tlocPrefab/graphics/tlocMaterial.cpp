@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/io/tlocFileIO.h>
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -13,67 +14,19 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using gfx_cs::material_sptr;
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // ///////////////////////////////////////////////////////////////////////
+  // Material
 
-  Material::entity_ptr
-    Material::
-    Create(const core_io::Path& a_vertexShader,
-           const core_io::Path& a_fragmentShader)
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent, a_vertexShader, a_fragmentShader);
-
-    return ent;
-  }
+  Material::
+    Material(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Material::entity_ptr
+  Material::component_ptr
     Material::
-    Create(BufferArg a_vertexShader,
-           BufferArg a_fragmentShader)
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent, a_vertexShader, a_fragmentShader);
-
-    return ent;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    Material::
-    Add(entity_ptr a_ent,
-        const core_io::Path& a_vertexShader,
-        const core_io::Path& a_fragmentShader)
-  {
-    core_io::Path vsFullPath( (m_assetsPath + a_vertexShader.GetPath()).c_str() );
-    core_io::Path fsFullPath( (m_assetsPath + a_fragmentShader.GetPath()).c_str() );
-
-    core_io::FileIO_ReadA vsFile = core_io::FileIO_ReadA(vsFullPath);
-    core_io::FileIO_ReadA fsFile = core_io::FileIO_ReadA(fsFullPath);
-
-    core_str::String vsCode, fsCode;
-
-    core_err::Error err = ErrorSuccess;
-    err = vsFile.Open();
-    TLOC_ASSERT(err == ErrorSuccess, "Could not open the vertex shader file");
-    vsFile.GetContents(vsCode);
-    vsFile.Close();
-
-    err = fsFile.Open();
-    TLOC_ASSERT(err == ErrorSuccess, "Could not open the fragment shader file");
-    fsFile.GetContents(fsCode);
-    fsFile.Close();
-
-    Add(a_ent, vsCode, fsCode);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    Material::
-    Add(entity_ptr a_ent, BufferArg a_vertexShader, BufferArg a_fragmentShader)
+    Construct(BufferArg a_vertexShader, BufferArg a_fragmentShader) const
   {
     using namespace gfx_cs::components;
 
@@ -93,17 +46,100 @@ namespace tloc { namespace prefab { namespace graphics {
 
     gfx_gl::shader_operator_vso so;
 
-    for (uniform_itr itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
+    for (const_uniform_itr 
+         itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
     { so->AddUniform(**itr); }
 
-    for (attribute_itr itr = m_attributes.begin(), itrEnd = m_attributes.end();
+    for (const_attribute_itr 
+         itr = m_attributes.begin(), itrEnd = m_attributes.end();
          itr != itrEnd; ++itr)
     { so->AddAttribute(**itr); }
 
     mat->AddShaderOperator(*so);
 
-    m_entMgr->InsertComponent(a_ent, mat);
+    return mat;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Material::entity_ptr
+    Material::
+    Create(const core_io::Path& a_vertexShader,
+           const core_io::Path& a_fragmentShader) const
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_vertexShader, a_fragmentShader);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Material::entity_ptr
+    Material::
+    Create(BufferArg a_vertexShader,
+           BufferArg a_fragmentShader) const
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_vertexShader, a_fragmentShader);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Material::error_type
+    Material::
+    Add(entity_ptr a_ent,
+        const core_io::Path& a_vertexShader,
+        const core_io::Path& a_fragmentShader) const
+  {
+    core_io::Path vsFullPath( (m_assetsPath + a_vertexShader.GetPath()).c_str() );
+    core_io::Path fsFullPath( (m_assetsPath + a_fragmentShader.GetPath()).c_str() );
+
+    core_io::FileIO_ReadA vsFile = core_io::FileIO_ReadA(vsFullPath);
+    core_io::FileIO_ReadA fsFile = core_io::FileIO_ReadA(fsFullPath);
+
+    core_str::String vsCode, fsCode;
+
+    core_err::Error err = ErrorSuccess;
+    err = vsFile.Open();
+
+    if (err.Failed())
+    {
+      TLOC_LOG_PREF_ERR() << "Could not open vertex shader: " << a_vertexShader.GetPath();
+      return TLOC_ERROR(common_error_types::error_file_not_found);
+    }
+
+    TLOC_ASSERT(err == ErrorSuccess, "Could not open the vertex shader file");
+    vsFile.GetContents(vsCode);
+    vsFile.Close();
+
+    err = fsFile.Open();
+
+    if (err.Failed())
+    {
+      TLOC_LOG_PREF_ERR() << "Could not open fragment shader: " << a_vertexShader.GetPath();
+      return TLOC_ERROR(common_error_types::error_file_not_found);
+    }
+
+    fsFile.GetContents(fsCode);
+    fsFile.Close();
+
+    Add(a_ent, vsCode, fsCode);
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Material::
+    Add(entity_ptr a_ent, 
+        BufferArg a_vertexShader, BufferArg a_fragmentShader) const
+  {
+    m_entMgr->InsertComponent(a_ent, Construct(a_vertexShader, a_fragmentShader));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

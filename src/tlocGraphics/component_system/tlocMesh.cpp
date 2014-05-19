@@ -12,6 +12,8 @@ namespace tloc { namespace graphics { namespace component_system {
   Mesh_T<MESH_PARAMS>::
     Mesh_T()
     : base_type(vertex_storage_policy::k_component_id, "Mesh")
+    , m_texCoordsEnabled(true)
+    , m_normalsEnabled(true)
   {
     m_posAttr->SetName("a_vPos");
     m_normAttr->SetName("a_vNorm");

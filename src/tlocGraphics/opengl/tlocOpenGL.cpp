@@ -165,7 +165,8 @@ namespace tloc { namespace graphics { namespace gl {
       DisableAll();
 
       // now disable ALL gl vertex attrib arrays
-      gl_int maxAttribs = g_enabledAttributes.size();
+      gl_int maxAttribs = 
+        core_utils::CastNumber<gl_int>(g_enabledAttributes.size());
 
       for (gl_int i = 0; i < maxAttribs; ++i)
       { glDisableVertexAttribArray(i); }
@@ -366,11 +367,11 @@ namespace tloc { namespace graphics { namespace gl {
   {
     AssertOpenGLContextExists();
 
-    if ( DoIsPlatformInitialized( core_plat::PlatformInfo::platform_type() ) )
-    { return ErrorSuccess; }
+    core_err::Error err = ErrorSuccess;
+    
+    if ( DoIsPlatformInitialized(core_plat::PlatformInfo::platform_type()) == false)
+    { err = DoInitializePlatform(core_plat::PlatformInfo::platform_type()); }
 
-    core_err::Error err =
-      DoInitializePlatform(core_plat::PlatformInfo::platform_type());
     if (err.Succeeded())
     {
       g_platformInitialized = true;
@@ -381,6 +382,7 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Vendor: " << (const char*)glGetString(GL_VENDOR);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Hardware: " << (const char*)glGetString(GL_RENDERER);
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total VertexAttribArrays: " << Get<p_get::MaxVertexAttribs>();
+      TLOC_LOG_GFX_INFO_NO_FILENAME() << "Total TextureUnits: " << Get<p_get::MaxCombinedTextureImageUnits>();
       TLOC_LOG_GFX_INFO_NO_FILENAME() << "-----------------------------------------------";
 
       // internal variables that need a one time setup

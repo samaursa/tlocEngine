@@ -1,6 +1,7 @@
 #include "tlocError.h"
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -200,7 +201,7 @@ const char8* GetErrorString(GLenum a_errorCode)
   template <typename T_BuildConfig>
   Error::value_type
     DoGetOpenGLError(T_BuildConfig)
-  { 
+  {
     if (Error::IsIgnoreAllErrors())
     { return GL_NO_ERROR; }
     else
@@ -236,6 +237,8 @@ const char8* GetErrorString(GLenum a_errorCode)
     {
       s_lastError = m_lastError;
       GetLastErrorAsString(s_lastErrorDesc);
+      TLOC_LOG_GFX_ERR() << "OpenGL error(" << s_lastError << "): "
+        << s_lastErrorDesc;
     }
 
     return m_lastError;

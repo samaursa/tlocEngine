@@ -18,7 +18,7 @@ namespace tloc { namespace core { namespace data_structs {
   //------------------------------------------------------------------------
   // Macros
 
-#define ITERATE_TABLE for (size_type i = 0; i < k_TableSize; ++i)
+#define ITERATE_TABLE for (size_type i = 0; i < k_size; ++i)
 
 #define TABLE_TEMPS  typename T, tl_size T_Rows, tl_size T_Cols
 #define TABLE_PARAMS T, T_Rows, T_Cols
@@ -62,14 +62,14 @@ namespace tloc { namespace core { namespace data_structs {
   template <TABLE_TEMPS>
   template <typename T_ArrayType>
   Table<TABLE_PARAMS>::
-    Table(const T_ArrayType (&values)[k_TableSize], table_order aTableOrder)
+    Table(const T_ArrayType (&values)[k_size], table_order aTableOrder)
   { Set(values, aTableOrder); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
   Table<TABLE_PARAMS>::
-    Table (const Variadic<value_type, k_TableSize>& a_vars,
+    Table (const Variadic<value_type, k_size>& a_vars,
            table_order a_tableOrder)
   { Set(a_vars, a_tableOrder); }
 
@@ -150,7 +150,7 @@ namespace tloc { namespace core { namespace data_structs {
   T& Table<TABLE_PARAMS>::
     operator [](size_type aIndex)
   {
-    TLOC_ASSERT_LOW_LEVEL(aIndex < k_TableSize, "Index is out of bounds!");
+    TLOC_ASSERT_LOW_LEVEL(aIndex < k_size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
@@ -161,7 +161,7 @@ namespace tloc { namespace core { namespace data_structs {
   const T& Table<TABLE_PARAMS>::
     operator [](size_type aIndex) const
   {
-    TLOC_ASSERT_LOW_LEVEL(aIndex < k_TableSize, "Index is out of bounds!");
+    TLOC_ASSERT_LOW_LEVEL(aIndex < k_size, "Index is out of bounds!");
     return m_values[aIndex];
   }
 
@@ -246,12 +246,12 @@ namespace tloc { namespace core { namespace data_structs {
   template <typename T_ArrayType>
   void
     Table<TABLE_PARAMS>::
-    Set(const T_ArrayType (&values)[k_TableSize], table_order aTableOrder)
+    Set(const T_ArrayType (&values)[k_size], table_order aTableOrder)
   {
     TLOC_ASSERT_LOW_LEVEL(&values != &m_values, "Set() called on itself. "
       "Undefined behavior.");
 
-    Set(Variadic<value_type, k_TableSize>(values), aTableOrder);
+    Set(Variadic<value_type, k_size>(values), aTableOrder);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -259,11 +259,11 @@ namespace tloc { namespace core { namespace data_structs {
   template <TABLE_TEMPS>
   void
     Table<TABLE_PARAMS>::
-    Set(const Variadic<value_type, k_TableSize>& a_vars,
+    Set(const Variadic<value_type, k_size>& a_vars,
         table_order a_tableOrder)
   {
     if (a_tableOrder == k_ColMajor)
-    { memcpy(m_values, &a_vars, sizeof(T) * k_TableSize); }
+    { memcpy(m_values, &a_vars, sizeof(T) * k_size); }
     else
     {
       for (size_type currRow = 0; currRow < k_Rows; ++currRow)
@@ -316,7 +316,7 @@ namespace tloc { namespace core { namespace data_structs {
   Table<TABLE_PARAMS>& Table<TABLE_PARAMS>::
     operator= (const Table& aTable)
   {
-    memcpy(m_values, aTable.data(), sizeof(T) * k_TableSize);
+    memcpy(m_values, aTable.data(), sizeof(T) * k_size);
     return *this;
   }
 

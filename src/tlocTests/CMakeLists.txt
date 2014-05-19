@@ -17,6 +17,7 @@ set(tlocAllTests
 
 include_directories(
   ${TLOC_DEP_PATH}/include/CATCH/
+  ${TLOC_DEP_PATH}/include/Box2D/
   )
 
 add_subdirectory(core)

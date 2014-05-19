@@ -24,6 +24,7 @@ set(TLOC_CURRENT_EXEC_NAME tlocTestsPrefab)
 
 link_directories(
   ${TLOC_DEP_BUILD_PATH}/src/FreeType/
+  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
   )
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
@@ -36,6 +37,7 @@ add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocMath
   tlocGraphics
   tlocAnimation
+  tlocPhysics
   tlocPrefab
   )
 
@@ -45,7 +47,9 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocGraphics
   tlocAnimation
   tlocPrefab
+  tlocPhysics
   FreeType
+  Box2D
   )
 
 if(MSVC)

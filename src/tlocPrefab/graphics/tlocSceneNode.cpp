@@ -25,6 +25,8 @@ namespace tloc { namespace prefab { namespace graphics {
     SceneNode(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_parent(nullptr)
+    , m_pos(0)
+    , m_ori(orientation_type::IDENTITY)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -79,7 +81,12 @@ namespace tloc { namespace prefab { namespace graphics {
     // transform component
 
     if (a_ent->HasComponent<math_cs::Transform>() == false)
-    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+    { 
+      pref_math::Transform(m_entMgr, m_compPoolMgr)
+        .Position(m_pos)
+        .Orientation(m_ori)
+        .Add(a_ent);
+    }
 
     // -----------------------------------------------------------------------
     // SceneNode component

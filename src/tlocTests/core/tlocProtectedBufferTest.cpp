@@ -39,8 +39,8 @@ namespace ProtectedBufferTest
       }
     }
 
-    SECTION("Test buffer validity",
-            "Only run occasionally as this corrupts the stack")
+    //SECTION("Test buffer validity",
+            //"Only run occasionally as this corrupts the stack")
     {
       //char5 p;
       //sprintf(p.get(), "This ");

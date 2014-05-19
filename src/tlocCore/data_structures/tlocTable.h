@@ -20,7 +20,7 @@ namespace tloc { namespace core { namespace data_structs {
   {
   public:
     enum { k_Rows = T_Rows, k_Cols = T_Cols };
-    enum { k_TableSize = k_Rows * k_Cols };
+    enum { k_size = k_Rows * k_Cols };
 
   public:
     //------------------------------------------------------------------------
@@ -49,9 +49,9 @@ namespace tloc { namespace core { namespace data_structs {
     explicit Table(const value_type& aValue);
 
     template <typename T_ArrayType>
-    Table(const T_ArrayType(&values)[k_TableSize], table_order aTableOrder);
+    Table(const T_ArrayType(&values)[k_size], table_order aTableOrder);
 
-    Table(const Variadic<value_type, k_TableSize>& a_vars,
+    Table(const Variadic<value_type, k_size>& a_vars,
                 table_order a_tableOrder);
 
     //------------------------------------------------------------------------
@@ -83,11 +83,11 @@ namespace tloc { namespace core { namespace data_structs {
 
     void Set(const value_type& aValue);
 
-    void Set(const Variadic<value_type, k_TableSize>& a_vars,
+    void Set(const Variadic<value_type, k_size>& a_vars,
                    table_order a_tableOrder);
 
     template <typename T_ArrayType>
-    void Set(const T_ArrayType(&values)[k_TableSize],
+    void Set(const T_ArrayType(&values)[k_size],
                    table_order aTableOrder);
 
     void Set(size_type aRow, size_type aCol, const T& aValue);
@@ -102,7 +102,7 @@ namespace tloc { namespace core { namespace data_structs {
     bool operator != (const Table& aTable);
 
   protected:
-    T m_values[k_TableSize];
+    T m_values[k_size];
 
   };
 

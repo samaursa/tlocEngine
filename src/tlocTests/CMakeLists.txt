@@ -12,6 +12,7 @@ set(tlocAllTests
   tlocTestsMath
   tlocTestsPhysics
   tlocTestsAnimation
+  tlocTestsPrefab
   )
 
 include_directories(
@@ -24,6 +25,7 @@ add_subdirectory(input)
 add_subdirectory(math)
 add_subdirectory(physics)
 add_subdirectory(animation)
+add_subdirectory(prefab)
 
 if(TLOC_COMPILER_MSVC)
   foreach(testProj ${tlocAllTests})

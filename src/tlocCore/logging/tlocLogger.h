@@ -134,6 +134,10 @@ namespace tloc { namespace core { namespace logging {
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(severity_type, SetSeverity, m_severity);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
 
+    void ResetBreakOnSeverity();
+    TLOC_DECL_AND_DEF_GETTER(severity_type, GetBreakOnSeverity, m_breakOnSeverity);
+    TLOC_DECL_AND_DEF_SETTER(severity_type, SetBreakOnSeverity, m_breakOnSeverity);
+
   private:
     void DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate);
     void DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush);
@@ -146,6 +150,7 @@ namespace tloc { namespace core { namespace logging {
     log_cont                  m_logs;
     core_utils::Checkpoints   m_flags;
     severity_type             m_severity;
+    severity_type             m_breakOnSeverity;
   };
 
   // -----------------------------------------------------------------------

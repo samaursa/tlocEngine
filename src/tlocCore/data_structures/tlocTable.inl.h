@@ -9,6 +9,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
 
 namespace tloc { namespace core { namespace data_structs {
@@ -147,6 +148,30 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
+  TABLE_TYPE::tuple_col_type
+    Table<TABLE_PARAMS>
+    ::GetRow(tl_size aRow) const
+  {
+    tuple_col_type temp;
+    GetRow(aRow, temp);
+    return temp;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  TABLE_TYPE::tuple_row_type
+    Table<TABLE_PARAMS>
+    ::GetCol(tl_size aCol) const
+  {
+    tuple_row_type temp;
+    GetCol(aCol, temp);
+    return temp;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
   T& Table<TABLE_PARAMS>::
     operator [](size_type aIndex)
   {
@@ -176,9 +201,93 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  typename Table<TABLE_PARAMS>::value_type const * Table<TABLE_PARAMS>::
+  const TABLE_TYPE::value_type* 
+    Table<TABLE_PARAMS>::
     data() const
   { return m_values; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherValueType, tl_size T_OtherRows, tl_size T_OtherCols>
+  void
+    Table<TABLE_PARAMS>::
+    ConvertFrom(const Table<T_OtherValueType, T_OtherRows, T_OtherCols>& a_other)
+  {
+    ConvertFrom(a_other, p_tuple::overflow_zero());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherValueType, tl_size T_OtherRows, tl_size T_OtherCols, 
+            typename T_Policy>
+  void
+    Table<TABLE_PARAMS>::
+    ConvertFrom(const Table<T_OtherValueType, T_OtherRows, T_OtherCols>& a_other, 
+                T_Policy )
+  {
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy,
+        p_tuple::overflow_one,
+        p_tuple::overflow_same,
+        p_tuple::overflow_zero
+      >();
+
+    typedef Table<T_OtherValueType, T_OtherRows, T_OtherCols> other_table_type;
+
+    DoConvertFrom<other_table_type, T_Policy>
+      (a_other, Loki::Int2Type< (k_Cols < other_table_type::k_Cols)>());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable, typename T_Policy>
+  void
+    Table<TABLE_PARAMS>::
+    DoConvertFrom(const T_OtherTable& a_other, incoming_cols_bigger)
+  {
+    typedef T_OtherTable                                      other_table_type;
+    typedef typename other_table_type::tuple_row_type         other_tuple_type;
+
+    // get all tuples from the other table
+    tuple_row_type cols[k_Cols];
+    for (tl_int col = 0; col < k_Cols; ++col)
+    { GetCol(col, cols[col]); }
+
+    for (tl_int col = 0; col < k_Cols; ++col)
+    {
+      cols[col].ConvertFrom(a_other.GetCol(col), T_Policy());
+      SetCol(col, cols[col]);
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable, typename T_Policy>
+  void
+    Table<TABLE_PARAMS>::
+    DoConvertFrom(const T_OtherTable& a_other, incoming_cols_smaller)
+  {
+    typedef T_OtherTable                                      other_table_type;
+    typedef typename other_table_type::tuple_row_type         other_tuple_type;
+
+    // get all tuples from the other table
+    tuple_row_type cols[other_table_type::k_Cols];
+    for (tl_int col = 0; col < other_table_type::k_Cols; ++col)
+    { GetCol(col, cols[col]); }
+
+    for (tl_int col = 0; col < other_table_type::k_Cols; ++col)
+    {
+      cols[col].ConvertFrom(a_other.GetCol(col), T_Policy());
+      SetCol(col, cols[col]);
+    }
+
+    DoFillRemaining<other_table_type::k_Cols>(T_Policy());
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -211,9 +320,12 @@ namespace tloc { namespace core { namespace data_structs {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <TABLE_TEMPS>
   template <typename T_TableType>
-  T_TableType Table<TABLE_PARAMS>::
+  T_TableType 
+    Table<TABLE_PARAMS>::
     Cast() const
   {
     typedef typename T_TableType::value_type                other_value_type;
@@ -338,6 +450,40 @@ namespace tloc { namespace core { namespace data_structs {
   {
     return !operator==(aTable);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <tl_size T_OtherCols>
+  void
+    Table<TABLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_same)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <tl_size T_OtherCols>
+  void
+    Table<TABLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_one)
+  { 
+    for (tl_size col = T_OtherCols; col < k_Cols; ++col)
+    { SetCol(col, tuple_row_type(1)); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <tl_size T_OtherCols>
+  void
+    Table<TABLE_PARAMS>::
+    DoFillRemaining(p_tuple::overflow_zero)
+  { 
+    for (tl_size col = T_OtherCols; col < k_Cols; ++col)
+    { SetCol(col, tuple_row_type(0)); }
+  }
+
 
 };};};
 

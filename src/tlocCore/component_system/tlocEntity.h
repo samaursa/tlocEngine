@@ -90,6 +90,10 @@ namespace tloc { namespace core { namespace component_system {
   core_sptr::SharedPtr<T_ComponentType>
     Entity::GetComponent(size_type a_index) const
   {
+    TLOC_STATIC_ASSERT( 
+      (Loki::Conversion<T_ComponentType*, core_cs::Component*>::exists),
+      T_ComponentType_is_not_a_valid_component);
+
     TLOC_ASSERT(HasComponent(T_ComponentType::k_component_type),
       "Component doesn't exist in this entity");
     typedef ComponentMapper<T_ComponentType> cmapper;
@@ -102,7 +106,13 @@ namespace tloc { namespace core { namespace component_system {
   template <typename T_ComponentType>
   bool
     Entity::HasComponent() const
-  { return HasComponent(T_ComponentType::k_component_type); }
+  { 
+    TLOC_STATIC_ASSERT( 
+      (Loki::Conversion<T_ComponentType*, core_cs::Component*>::exists),
+      T_ComponentType_is_not_a_valid_component);
+
+    return HasComponent(T_ComponentType::k_component_type);
+  }
 
   //------------------------------------------------------------------------
   // typedef

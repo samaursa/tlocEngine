@@ -41,9 +41,10 @@ namespace tloc { namespace tests {
 
 #if TLOC_ASSERTS_DEFINED == 1 && defined(TLOC_CPPUNWIND_ENABLED)
 #define TLOC_TEST_ASSERT\
-  tloc::core::assert::SetAssertCustomBreak(tloc::tests::GetThrowOnBreak());\
-  bool exceptionThrown = false;\
-  try
+  {\
+    tloc::core::assert::SetAssertCustomBreak(tloc::tests::GetThrowOnBreak());\
+    bool exceptionThrown = false;\
+    try
 
 #define TLOC_TEST_ASSERT_CHECK()\
   catch(const tloc::tests::exception::Assert&)\
@@ -51,7 +52,8 @@ namespace tloc { namespace tests {
     exceptionThrown = true;\
   }\
   CHECK(exceptionThrown);\
-  tloc::core::assert::SetAssertDefaultBreak()
+  tloc::core::assert::SetAssertDefaultBreak();\
+  }
 #else
 
 #define TLOC_TEST_ASSERT\

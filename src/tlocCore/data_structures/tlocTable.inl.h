@@ -244,39 +244,6 @@ namespace tloc { namespace core { namespace data_structs {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  template <typename T_OtherTable>
-  T_OtherTable
-    Table<TABLE_PARAMS>::
-    ConvertTo() const
-  {
-    T_OtherTable toRet;
-    toRet.ConvertFrom(*this);
-    return toRet;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TABLE_TEMPS>
-  template <typename T_OtherTable, typename T_Policy>
-  T_OtherTable
-    Table<TABLE_PARAMS>::
-    ConvertTo() const
-  {
-    type_traits::AssertTypeIsSupported
-      <
-        T_Policy,
-        p_tuple::overflow_one,
-        p_tuple::overflow_zero
-      >();
-
-    T_OtherTable toRet;
-    toRet.ConvertFrom(*this, T_Policy());
-    return toRet;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TABLE_TEMPS>
   template <typename T_OtherTable, typename T_Policy>
   void
     Table<TABLE_PARAMS>::
@@ -320,6 +287,89 @@ namespace tloc { namespace core { namespace data_structs {
     }
 
     DoFillRemaining<other_table_type::k_Cols>(T_Policy());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable>
+  T_OtherTable
+    Table<TABLE_PARAMS>::
+    ConvertTo() const
+  {
+    T_OtherTable toRet;
+    toRet.ConvertFrom(*this);
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable, typename T_Policy>
+  T_OtherTable
+    Table<TABLE_PARAMS>::
+    ConvertTo() const
+  {
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy,
+        p_tuple::overflow_one,
+        p_tuple::overflow_zero
+      >();
+
+    T_OtherTable toRet;
+    toRet.ConvertFrom(*this, T_Policy());
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable>
+  T_OtherTable
+    Table<TABLE_PARAMS>::
+    Extract(const size_type a_rowIndex, const size_type a_colIndex) const
+  {
+    typedef T_OtherTable                                  other_table_type;
+
+    TLOC_ASSERT(a_rowIndex + other_table_type::k_Rows <= k_Rows,
+      "Cannot extract table, out of bounds.");
+    TLOC_ASSERT(a_colIndex + other_table_type::k_Cols <= k_Cols,
+      "Cannot extract table, out of bounds.");
+
+    T_OtherTable temp;
+    for (tl_size row = 0; row < other_table_type::k_Rows; ++row)
+    {
+      for (tl_size col = 0; col < other_table_type::k_Cols; ++col)
+      { temp.Set(row, col, Get(a_rowIndex + row, a_colIndex + col)); }
+    }
+
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable, tl_size T_RowIndex, tl_size T_ColIndex>
+  T_OtherTable
+    Table<TABLE_PARAMS>::
+    Extract() const
+  {
+    typedef T_OtherTable                                  other_table_type;
+
+    TLOC_STATIC_ASSERT( (T_RowIndex + other_table_type::k_Rows <= k_Rows),
+      Cannot_extract_table_Out_of_bounds);
+    TLOC_STATIC_ASSERT( (T_ColIndex + other_table_type::k_Cols <= k_Cols),
+      Cannot_extract_table_Out_of_bounds);
+
+    T_OtherTable temp;
+    for (tl_size row = 0; row < other_table_type::k_Rows; ++row)
+    {
+      for (tl_size col = 0; col < other_table_type::k_Cols; ++col)
+      { temp.Set(row, col, Get(T_RowIndex + row, T_ColIndex + col)); }
+    }
+
+    return temp;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

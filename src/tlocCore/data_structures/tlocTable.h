@@ -94,15 +94,9 @@ namespace tloc { namespace core { namespace data_structs {
     T_OtherTable  ConvertTo() const;
 
     template <typename T_OtherTable>
-    T_OtherTable  Extract(size_type a_row = 0, size_type a_col = 0) const;
+    T_OtherTable  Extract(size_type a_rowIndex = 0, size_type a_colIndex = 0) const;
 
-    template <typename T_OtherTable, typename T_Policy>
-    T_OtherTable  Extract(size_type a_row = 0, size_type a_col = 0) const;
-
-    template <typename T_OtherTable, tl_size a_row, tl_size a_col>
-    T_OtherTable  Extract() const;
-
-    template <typename T_OtherTable, tl_size a_row, tl_size a_col, typename T_Policy>
+    template <typename T_OtherTable, tl_size T_RowIndex, tl_size T_ColIndex>
     T_OtherTable  Extract() const;
 
     template <typename T_TableType>

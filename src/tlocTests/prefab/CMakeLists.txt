@@ -17,6 +17,11 @@ set(TLOC_TESTS_PREFAB
   tlocTransformAnimationTest.cpp
   tlocTransformTest.cpp
   )
+
+set(TLOC_TESTS_PREFAB_ASSETS
+  ${TLOC_ENGINE_PATH}/assets
+  )
+
 #-------------------------------------------
 # Project setup
 
@@ -30,6 +35,7 @@ link_directories(
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}
   ${TLOC_TESTS_PREFAB}
+  ${TLOC_TESTS_PREFAB_ASSETS}
   )
 
 add_dependencies(${TLOC_CURRENT_EXEC_NAME}
@@ -39,6 +45,7 @@ add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocAnimation
   tlocPhysics
   tlocPrefab
+  tlocInput
   )
 
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
@@ -48,6 +55,7 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocAnimation
   tlocPrefab
   tlocPhysics
+  tlocInput
   FreeType
   Box2D
   )
@@ -65,6 +73,8 @@ if(APPLE)
   set(BUNDLE_NAME     ${TLOC_CURRENT_EXEC_NAME})
     set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
       MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
+    set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES
+      RESOURCE "${TLOC_TESTS_PREFAB_ASSETS}")
 endif()
 
 set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})

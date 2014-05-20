@@ -105,17 +105,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  T& Table<TABLE_PARAMS>::Get(size_type aRow, size_type aCol)
-  {
-    ASSERT_NUM_ROWS;
-    ASSERT_NUM_COLS;
-    return m_values[aRow + aCol * T_Rows];
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TABLE_TEMPS>
-  const T& Table<TABLE_PARAMS>::
+  TABLE_TYPE::value_type
+    Table<TABLE_PARAMS>::
     Get(size_type aRow, size_type aCol) const
   {
     ASSERT_NUM_ROWS;
@@ -126,8 +117,9 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  void Table<TABLE_PARAMS>
-    ::GetRow(tl_size aRow, tuple_col_type& aRowOut) const
+  void 
+    Table<TABLE_PARAMS>::
+    GetRow(tl_size aRow, tuple_col_type& aRowOut) const
   {
     ASSERT_NUM_ROWS;
 
@@ -138,8 +130,9 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  void Table<TABLE_PARAMS>
-    ::GetCol(tl_size aCol, tuple_row_type& aColOut) const
+  void 
+    Table<TABLE_PARAMS>::
+    GetCol(tl_size aCol, tuple_row_type& aColOut) const
   {
     ASSERT_NUM_COLS;
     memcpy(aColOut.data(), m_values + (aCol * T_Rows), sizeof(T) * T_Cols);
@@ -149,8 +142,8 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   TABLE_TYPE::tuple_col_type
-    Table<TABLE_PARAMS>
-    ::GetRow(tl_size aRow) const
+    Table<TABLE_PARAMS>::
+    GetRow(tl_size aRow) const
   {
     tuple_col_type temp;
     GetRow(aRow, temp);
@@ -161,8 +154,8 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TABLE_TEMPS>
   TABLE_TYPE::tuple_row_type
-    Table<TABLE_PARAMS>
-    ::GetCol(tl_size aCol) const
+    Table<TABLE_PARAMS>::
+    GetCol(tl_size aCol) const
   {
     tuple_row_type temp;
     GetCol(aCol, temp);
@@ -172,7 +165,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  T& Table<TABLE_PARAMS>::
+  TABLE_TYPE::value_type& 
+    Table<TABLE_PARAMS>::
     operator [](size_type aIndex)
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < k_size, "Index is out of bounds!");
@@ -183,7 +177,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  const T& Table<TABLE_PARAMS>::
+  const TABLE_TYPE::value_type& 
+    Table<TABLE_PARAMS>::
     operator [](size_type aIndex) const
   {
     TLOC_ASSERT_LOW_LEVEL(aIndex < k_size, "Index is out of bounds!");
@@ -474,7 +469,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  void Table<TABLE_PARAMS>::
+  void 
+    Table<TABLE_PARAMS>::
     Set(tl_size aRow, tl_size aCol, const T& aValue)
   {
     ASSERT_NUM_ROWS;
@@ -485,7 +481,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  void Table<TABLE_PARAMS>::
+  void 
+    Table<TABLE_PARAMS>::
     SetRow(tl_size aRow, const tuple_col_type& aRowIn)
   {
     ASSERT_NUM_ROWS;
@@ -497,7 +494,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  void Table<TABLE_PARAMS>::
+  void 
+    Table<TABLE_PARAMS>::
     SetCol(tl_size aCol, const tuple_row_type& aColIn)
   {
     ASSERT_NUM_COLS;
@@ -508,7 +506,8 @@ namespace tloc { namespace core { namespace data_structs {
   // Operators
 
   template <TABLE_TEMPS>
-  Table<TABLE_PARAMS>& Table<TABLE_PARAMS>::
+  Table<TABLE_PARAMS>& 
+    Table<TABLE_PARAMS>::
     operator= (const Table& aTable)
   {
     memcpy(m_values, aTable.data(), sizeof(T) * k_size);
@@ -518,7 +517,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
-  bool Table<TABLE_PARAMS>::
+  bool 
+    Table<TABLE_PARAMS>::
     operator== (const Table<TABLE_PARAMS>& aTable)
   {
     ITERATE_TABLE
@@ -528,7 +528,8 @@ namespace tloc { namespace core { namespace data_structs {
   }
 
   template <TABLE_TEMPS>
-  bool Table<TABLE_PARAMS>::
+  bool 
+    Table<TABLE_PARAMS>::
     operator!= (const Table<T, T_Rows, T_Cols>& aTable)
   {
     return !operator==(aTable);

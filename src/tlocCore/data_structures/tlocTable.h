@@ -63,8 +63,7 @@ namespace tloc { namespace core { namespace data_structs {
     value_type& operator() (size_type aRow, size_type aCol);
     const value_type& operator() (size_type aRow, size_type aCol) const;
 
-    value_type& Get(size_type aRow, size_type aCol);
-    const value_type& Get(size_type aRow, size_type aCol) const;
+    value_type Get(size_type aRow, size_type aCol) const;
 
     void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
     void GetCol(size_type aCol, tuple_row_type& aColOut) const;

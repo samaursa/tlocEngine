@@ -224,7 +224,7 @@ namespace TestingTable
     table32.Set(2, 3, 14);
     table32.Set(3, 3, 15);
 
-    SECTION("Convert from - 3x3", "")
+    SECTION("ConvertFrom - 3x3", "")
     {
       Table<s32, 3, 3> table3x3;
       table3x3.ConvertFrom(table32);
@@ -232,7 +232,7 @@ namespace TestingTable
       CHECK_TABLE(table3x3, 0, 1, 2, 4, 5, 6, 8, 9, 10);
     }
 
-    SECTION("Convert from - overflow_same", "")
+    SECTION("ConvertFrom - overflow_same", "")
     {
       Table<s32, 3, 3> table3x3(5);
       table32.ConvertFrom(table3x3, p_tuple::overflow_same());
@@ -243,7 +243,7 @@ namespace TestingTable
                              12, 13, 14, 15);
     }
 
-    SECTION("Convert from - overflow_one", "")
+    SECTION("ConvertFrom - overflow_one", "")
     {
       Table<s32, 3, 3> table3x3(5);
       table32.ConvertFrom(table3x3, p_tuple::overflow_one());
@@ -254,7 +254,7 @@ namespace TestingTable
                              1, 1, 1, 1);
     }
 
-    SECTION("Convert from - overflow_one", "")
+    SECTION("ConvertFrom - overflow_one", "")
     {
       Table<s32, 3, 3> table3x3(5);
       table32.ConvertFrom(table3x3, p_tuple::overflow_zero());
@@ -264,5 +264,61 @@ namespace TestingTable
                              5, 5, 5, 0, 
                              0, 0, 0, 0);
     }
+
+    SECTION("ConvertTo - 3x3", "")
+    {
+      Table<s32, 3, 3> table3x3 = table32.ConvertTo<Table<s32, 3, 3> >();
+
+      CHECK_TABLE(table3x3, 0, 1, 2, 4, 5, 6, 8, 9, 10);
+    }
+
+    SECTION("ConvertTo - overflow_same", "")
+    {
+      Table<s32, 3, 3> table3x3(5);
+
+      table32 = table3x3.ConvertTo<Table<s32, 4, 4>, p_tuple::overflow_one>();
+
+      CHECK_TABLE_4(table32, 5, 5, 5, 1, 
+                             5, 5, 5, 1, 
+                             5, 5, 5, 1, 
+                             1, 1, 1, 1);
+    }
+
+    SECTION("ConvertTo - overflow_one", "")
+    {
+      Table<s32, 3, 3> table3x3(5);
+
+      table32 = table3x3.ConvertTo<Table<s32, 4, 4>, p_tuple::overflow_zero>();
+
+      CHECK_TABLE_4(table32, 5, 5, 5, 0, 
+                             5, 5, 5, 0, 
+                             5, 5, 5, 0, 
+                             0, 0, 0, 0);
+    }
   }
+
+  TEST_CASE("core/data_structures/Table/Extract", "")
+  {
+    Table<s32, 4, 4> table32;
+    table32.Set(0, 0, 0);
+    table32.Set(1, 0, 1);
+    table32.Set(2, 0, 2);
+    table32.Set(3, 0, 3);
+
+    table32.Set(0, 1, 4);
+    table32.Set(1, 1, 5);
+    table32.Set(2, 1, 6);
+    table32.Set(3, 1, 7);
+
+    table32.Set(0, 2, 8);
+    table32.Set(1, 2, 9);
+    table32.Set(2, 2, 10);
+    table32.Set(3, 2, 11);
+
+    table32.Set(0, 3, 12);
+    table32.Set(1, 3, 13);
+    table32.Set(2, 3, 14);
+    table32.Set(3, 3, 15);
+  }
+
 };

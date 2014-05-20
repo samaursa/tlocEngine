@@ -340,13 +340,13 @@ namespace TestingTable
 
       TLOC_TEST_ASSERT
       {
-        Table<s32, 5, 5> wrongSize = table32.Extract<Table<s32, 5, 5> >(0, 0);
+        table32.Extract<Table<s32, 5, 5> >(0, 0);
       }
       TLOC_TEST_ASSERT_CHECK();
 
       TLOC_TEST_ASSERT
       {
-        Table<s32, 3, 3> wrongSize = table32.Extract<Table<s32, 3, 3> >(2, 2);
+        table32.Extract<Table<s32, 3, 3> >(2, 2);
       }
       TLOC_TEST_ASSERT_CHECK();
     }

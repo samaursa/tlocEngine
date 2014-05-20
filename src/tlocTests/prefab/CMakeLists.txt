@@ -67,6 +67,25 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   )
 endif()
 
+# Find dinput.lib and add it as a link target
+if(WIN32)
+  if(${ARCH_DIR} MATCHES "x86")
+    find_library(DIRECT_INPUT_LIB
+      NAMES dinput8.lib
+      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
+      )
+  else()
+    find_library(DIRECT_INPUT_LIB
+      NAMES dinput8.lib
+      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
+      )
+  endif()
+
+  target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
+    ${DIRECT_INPUT_LIB}
+    )
+endif()
+
 if(APPLE)
   set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}")
   set(PRODUCT_NAME    "\${PRODUCT_NAME}")

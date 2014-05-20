@@ -76,8 +76,8 @@ namespace tloc { namespace core { namespace logging {
   // ///////////////////////////////////////////////////////////////////////
   // Log
 
-#define TLOC_LOG_TEMPS    typename T_Logger
-#define TLOC_LOG_PARAMS   T_Logger
+#define TLOC_LOG_TEMPS    typename T_Logger, typename T_BuildConfig
+#define TLOC_LOG_PARAMS   T_Logger, T_BuildConfig
 #define TLOC_LOG_TYPE     typename Log_T<TLOC_LOG_PARAMS>
 
   template <TLOC_LOG_TEMPS>

@@ -40,8 +40,8 @@ namespace tloc { namespace tests {
 // want such code to run because it will result in undefined behavior.
 
 #if TLOC_ASSERTS_DEFINED == 1 && defined(TLOC_CPPUNWIND_ENABLED)
-#define TLOC_TEST_ASSERT\
-  {\
+#define TLOC_TEST_ASSERT \
+do {\
     tloc::core::assert::SetAssertCustomBreak(tloc::tests::GetThrowOnBreak());\
     bool exceptionThrown = false;\
     try
@@ -53,14 +53,15 @@ namespace tloc { namespace tests {
   }\
   CHECK(exceptionThrown);\
   tloc::core::assert::SetAssertDefaultBreak();\
-  }
+  } while((void)0, 0)
 #else
 
-#define TLOC_TEST_ASSERT\
+#define TLOC_TEST_ASSERT \
+do {\
   bool alwaysFalse = tloc::core::assert::AlwaysReturnFalse();\
   if (alwaysFalse)
 
-#define TLOC_TEST_ASSERT_CHECK()
+#define TLOC_TEST_ASSERT_CHECK() } while((void)0, 0)
 
 #endif
 

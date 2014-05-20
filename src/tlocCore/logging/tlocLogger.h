@@ -180,7 +180,8 @@ namespace tloc { namespace core { namespace logging {
   // ///////////////////////////////////////////////////////////////////////
   // Log
 
-  template <typename T_Logger>
+  template <typename T_Logger, 
+            typename T_BuildConfig = core_cfg::BuildConfig::build_config_type>
   class Log_T
     : public Log_I
   {
@@ -195,7 +196,7 @@ namespace tloc { namespace core { namespace logging {
 
   public:
     typedef Log_I                                     base_type;
-    typedef Log_T                                     this_type;
+    typedef Log_T<T_Logger, T_BuildConfig>            this_type;
     typedef base_type::severity_type                  severity_type;
 
   public:
@@ -228,6 +229,44 @@ namespace tloc { namespace core { namespace logging {
   {
     return Log_T<T_Logger>(a_logger, a_severity, a_fileName, a_lineNumber);
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Log_T<Release>
+
+  template <typename T_Logger>
+  class Log_T<T_Logger, core_cfg::p_build_config::Release>
+  {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_Logger, LoggerConsoleImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerConsoleOnFlush>::value ||
+       Loki::IsSameType<T_Logger, LoggerOutputImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerOutputOnFlush>::value ||
+       Loki::IsSameType<T_Logger, LoggerFileImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerFileOnFlush>::value),
+       Unsupported_logger_type);
+
+  public:
+    typedef Log_I                                     base_type;
+    typedef Log_T<T_Logger, 
+                  core_cfg::p_build_config::Release>  this_type;
+    typedef base_type::severity_type                  severity_type;
+
+  public:
+    Log_T(T_Logger* , severity_type ,
+          BufferArg , const tl_ulong ) {}
+    ~Log_T() {}
+
+    this_type& operator << (BufferArg  )  { return *this; }
+    this_type& operator << (BufferArgW )  { return *this; }
+    this_type& operator << (char8      )  { return *this; }
+    this_type& operator << (char32     )  { return *this; }
+    this_type& operator << (tl_int     )  { return *this; }
+    this_type& operator << (tl_long    )  { return *this; }
+    this_type& operator << (tl_uint    )  { return *this; }
+    this_type& operator << (tl_ulong   )  { return *this; }
+    this_type& operator << (tl_float   )  { return *this; }
+    this_type& operator << (tl_double  )  { return *this; }
+  };
 
   // -----------------------------------------------------------------------
   // typedefs

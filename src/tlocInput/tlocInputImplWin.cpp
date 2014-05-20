@@ -147,26 +147,58 @@ namespace tloc { namespace input { namespace priv {
         {
           case p_hid::Keyboard::m_index:
             {
-              delete static_cast<hid::Keyboard<policy_type>* >
-                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
+              core_t::Any anyHid = m_winHIDs[hidIndex][hidNum].m_devicePtr;
+
+              if (anyHid.IsEmpty()) { break; }
+
+              core_sptr::VirtualPtr<hid::Keyboard<policy_type> > 
+                ptr = anyHid.Cast
+                <core_sptr::VirtualPtr<hid::Keyboard<policy_type> > >();
+
+              core_sptr::algos::virtual_ptr::DeleteAndReset()(ptr);
+
               break;
             }
           case p_hid::Mouse::m_index:
             {
-              delete static_cast<hid::Mouse<policy_type>* >
-                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
+              core_t::Any anyHid = m_winHIDs[hidIndex][hidNum].m_devicePtr;
+
+              if (anyHid.IsEmpty()) { break; }
+
+              core_sptr::VirtualPtr<hid::Mouse<policy_type> > 
+                ptr = anyHid.Cast
+                <core_sptr::VirtualPtr<hid::Mouse<policy_type> > >();
+
+              core_sptr::algos::virtual_ptr::DeleteAndReset()(ptr);
+
               break;
             }
           case p_hid::Joystick::m_index:
             {
-              delete static_cast<hid::Joystick_T<policy_type>* >
-                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
+              core_t::Any anyHid = m_winHIDs[hidIndex][hidNum].m_devicePtr;
+
+              if (anyHid.IsEmpty()) { break; }
+
+              core_sptr::VirtualPtr<hid::Joystick_T<policy_type> > 
+                ptr = anyHid.Cast
+                <core_sptr::VirtualPtr<hid::Joystick_T<policy_type> > >();
+
+              core_sptr::algos::virtual_ptr::DeleteAndReset()(ptr);
+
               break;
             }
           case p_hid::TouchSurface::m_index:
             {
-              delete static_cast<hid::TouchSurface<policy_type>* >
-                (m_winHIDs[hidIndex][hidNum].m_devicePtr);
+              core_t::Any anyHid = m_winHIDs[hidIndex][hidNum].m_devicePtr;
+
+              if (anyHid.IsEmpty()) { break; }
+
+              core_sptr::VirtualPtr<hid::TouchSurface<policy_type> > 
+                ptr = anyHid.Cast
+                <core_sptr::VirtualPtr<hid::TouchSurface<policy_type> > >();
+
+              core_sptr::algos::virtual_ptr::DeleteAndReset()(ptr);
+
               break;
             }
         }
@@ -204,12 +236,13 @@ namespace tloc { namespace input { namespace priv {
 
   template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
-  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
+  core_sptr::VirtualPtr<T_InputObject>  
+    InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     CreateHID(param_options::value_type a_params)
   {
     STATIC_ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
-    T_InputObject* newInput = nullptr;
+    core_sptr::VirtualPtr<T_InputObject> newInput;
 
     for (size_type i = 0; i < m_winHIDs[T_InputObject::m_index].size(); ++i)
     {
@@ -247,14 +280,15 @@ namespace tloc { namespace input { namespace priv {
     {
     case keyboard_type::m_index:
       {
-        typedef hid::Keyboard<policy_type> keyboard_type;
+        typedef hid::Keyboard<policy_type>            keyboard_type;
+        typedef core_sptr::VirtualPtr<keyboard_type>  keyboard_ptr;
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
           if (m_winHIDs[keyboard_type::m_index][i].m_inUse)
           {
-            keyboard_type* kb = static_cast<keyboard_type*>
-              (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
+            keyboard_ptr kb = m_winHIDs[keyboard_type::m_index][i].m_devicePtr
+              .Cast<keyboard_ptr>();
             kb->Update();
           }
         }
@@ -262,14 +296,15 @@ namespace tloc { namespace input { namespace priv {
       }
     case mouse_type::m_index:
       {
-        typedef hid::Mouse<policy_type> mouse_type;
+        typedef hid::Mouse<policy_type>               mouse_type;
+        typedef core_sptr::VirtualPtr<mouse_type>     mouse_ptr;
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
           if (m_winHIDs[mouse_type::m_index][i].m_inUse)
           {
-            mouse_type* mse = static_cast<mouse_type*>
-              (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
+            mouse_ptr mse = m_winHIDs[mouse_type::m_index][i].m_devicePtr
+              .Cast<mouse_ptr>();
             mse->Update();
           }
         }
@@ -277,14 +312,15 @@ namespace tloc { namespace input { namespace priv {
       }
     case joystick_type::m_index:
       {
-        typedef hid::Joystick_T<policy_type>  joystick_type;
+        typedef hid::Joystick_T<policy_type>            joystick_type;
+        typedef core_sptr::VirtualPtr<joystick_type>    joystick_ptr;
 
         for (size_type i = 0; i < m_winHIDs[joystick_type::m_index].size(); ++i)
         {
           if (m_winHIDs[joystick_type::m_index][i].m_inUse)
           {
-            joystick_type* js = static_cast<joystick_type*>
-              (m_winHIDs[joystick_type::m_index][i].m_devicePtr);
+            joystick_ptr js = m_winHIDs[joystick_type::m_index][i].m_devicePtr
+              .Cast<joystick_ptr>();
             js->Update();
           }
         }
@@ -315,14 +351,15 @@ namespace tloc { namespace input { namespace priv {
     {
     case keyboard_type::m_index:
       {
-        typedef hid::Keyboard<policy_type> keyboard_type;
+        typedef hid::Keyboard<policy_type>            keyboard_type;
+        typedef core_sptr::VirtualPtr<keyboard_type>  keyboard_ptr;
 
         for (size_type i = 0; i < m_winHIDs[keyboard_type::m_index].size(); ++i)
         {
           if (m_winHIDs[keyboard_type::m_index][i].m_inUse)
           {
-            keyboard_type* kb = static_cast<keyboard_type*>
-              (m_winHIDs[keyboard_type::m_index][i].m_devicePtr);
+            keyboard_ptr kb = m_winHIDs[keyboard_type::m_index][i].m_devicePtr
+              .Cast<keyboard_ptr>();
             kb->Reset();
           }
         }
@@ -330,14 +367,15 @@ namespace tloc { namespace input { namespace priv {
       }
     case mouse_type::m_index:
       {
-        typedef hid::Mouse<policy_type> mouse_type;
+        typedef hid::Mouse<policy_type>               mouse_type;
+        typedef core_sptr::VirtualPtr<mouse_type>     mouse_ptr;
 
         for (size_type i = 0; i < m_winHIDs[mouse_type::m_index].size(); ++i)
         {
           if (m_winHIDs[mouse_type::m_index][i].m_inUse)
           {
-            mouse_type* mse = static_cast<mouse_type*>
-              (m_winHIDs[mouse_type::m_index][i].m_devicePtr);
+            mouse_ptr mse = m_winHIDs[mouse_type::m_index][i].m_devicePtr
+              .Cast<mouse_ptr>();
             mse->Reset();
           }
         }
@@ -345,14 +383,15 @@ namespace tloc { namespace input { namespace priv {
       }
     case joystick_type::m_index:
       {
-        typedef hid::Joystick_T<policy_type>  joystick_type;
+        typedef hid::Joystick_T<policy_type>            joystick_type;
+        typedef core_sptr::VirtualPtr<joystick_type>    joystick_ptr;
 
         for (size_type i = 0; i < m_winHIDs[joystick_type::m_index].size(); ++i)
         {
           if (m_winHIDs[joystick_type::m_index][i].m_inUse)
           {
-            joystick_type* js = static_cast<joystick_type*>
-              (m_winHIDs[joystick_type::m_index][i].m_devicePtr);
+            joystick_ptr js = m_winHIDs[joystick_type::m_index][i].m_devicePtr
+              .Cast<joystick_ptr>();
             js->Reset();
           }
         }
@@ -371,7 +410,8 @@ namespace tloc { namespace input { namespace priv {
 
   template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
-  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
+  core_sptr::VirtualPtr<T_InputObject>
+    InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     GetHID(size_type a_index)
   {
     STATIC_ASSERT_INPUT_TYPE(T_InputObject::m_index);
@@ -383,8 +423,8 @@ namespace tloc { namespace input { namespace priv {
       ( (Loki::IsSameType<T_InputObject::policy_type, policy_type>::value),
          Requested_return_type_has_incorrect_policy_type );
 
-    return static_cast<T_InputObject*>
-      (m_winHIDs[T_InputObject::m_index][a_index].m_devicePtr);
+    return m_winHIDs[T_InputObject::m_index][a_index].m_devicePtr
+      .Cast<core_sptr::VirtualPtr<T_InputObject> >();
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -447,7 +487,7 @@ namespace tloc { namespace input { namespace priv {
     dummyInfo.m_deviceGuid  = GUID();
     dummyInfo.m_deviceName  = "DummyDevice";
     dummyInfo.m_inUse       = false;
-    dummyInfo.m_devicePtr   = nullptr;
+    dummyInfo.m_devicePtr.Reset();
 
     m_winHIDs[p_hid::TouchSurface::m_index].push_back(dummyInfo);
   }
@@ -463,7 +503,7 @@ namespace tloc { namespace input { namespace priv {
     info.m_deviceGuid  = lpddi->guidInstance;
     info.m_deviceName  = lpddi->tszInstanceName;
     info.m_inUse       = false;
-    info.m_devicePtr   = nullptr;
+    info.m_devicePtr.Reset();
 
     if( GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_KEYBOARD)
     {
@@ -498,23 +538,22 @@ namespace tloc { namespace input { namespace priv {
   template class InputManagerImpl<i_mgr_imm >;
 
 #define INSTANTIATE_HID(_HID_) \
-  template _HID_<i_buff>*  \
+  template core_sptr::VirtualPtr<_HID_<i_buff> >\
     InputManagerImpl<i_mgr_buff>::CreateHID<_HID_<i_buff> >\
     (param_options::value_type);\
   \
-  template _HID_<i_imm>* \
+  template core_sptr::VirtualPtr<_HID_<i_imm> >\
     InputManagerImpl<i_mgr_imm >::CreateHID<_HID_<i_imm> >\
     (param_options::value_type);\
   \
-  template _HID_<i_buff>*  \
+  template core_sptr::VirtualPtr<_HID_<i_buff> >  \
     InputManagerImpl<i_mgr_buff>::GetHID<_HID_<i_buff> >(tl_size);\
-  template _HID_<i_imm>* \
+  template core_sptr::VirtualPtr<_HID_<i_imm> > \
     InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
 
   INSTANTIATE_HID(hid::Keyboard);
   INSTANTIATE_HID(hid::Mouse);
   INSTANTIATE_HID(hid::TouchSurface);
   INSTANTIATE_HID(hid::Joystick_T);
-
 
 };};};

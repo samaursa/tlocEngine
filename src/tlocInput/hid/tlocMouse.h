@@ -8,7 +8,8 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocMath/tlocRange.h>
 
@@ -170,8 +171,14 @@ namespace tloc { namespace input { namespace hid {
     bool           m_clamped;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
   typedef Mouse<InputPolicy::Buffered>   MouseB;
   typedef Mouse<InputPolicy::Immediate>  MouseI;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(MouseB, mouse_b);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(MouseI, mouse_i);
 
 };};};
 

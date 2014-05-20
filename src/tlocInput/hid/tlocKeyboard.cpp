@@ -106,3 +106,10 @@ namespace tloc { namespace input { namespace hid {
 #endif
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::input_hid;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(KeyboardB);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(KeyboardI);

@@ -49,7 +49,7 @@ namespace TestingTable
   CHECK((tab[2]) == ((z1)) ); CHECK((tab[3]) == ((x2)) ); \
   CHECK((tab[4]) == ((y2)) ); CHECK((tab[5]) == ((z2)) ); \
   CHECK((tab[6]) == ((x3)) ); CHECK((tab[7]) == ((y3)) ); \
-  CHECK((tab[8]) == ((z3)) );
+  CHECK((tab[8]) == ((z3)) )
 
 #define CHECK_TABLE_4(tab,x1,y1,z1,w1, x2,y2,z2,w2, x3,y3,z3, w3, x4, y4, z4, w4) \
   CHECK((tab[0]) == ((x1)) ); CHECK((tab[1]) == ((y1)) ); \
@@ -319,6 +319,56 @@ namespace TestingTable
     table32.Set(1, 3, 13);
     table32.Set(2, 3, 14);
     table32.Set(3, 3, 15);
+
+    SECTION("Extract - runtime", "")
+    {
+      Table<s32, 3, 3> table3x3 = table32.Extract<Table<s32, 3, 3> >(0, 0);
+      CHECK_TABLE(table3x3, 0, 1, 2,
+                            4, 5, 6,
+                            8, 9, 10);
+
+      table3x3 = table32.Extract<Table<s32, 3, 3> >(1, 1);
+      CHECK_TABLE(table3x3, 5, 6, 7, 9, 10, 11, 13, 14, 15);
+
+      Table<s32, 2, 1> table2x1 = table32.Extract<Table<s32, 2, 1> >(0, 0);
+      CHECK(table2x1.Get(0, 0) == 0);
+      CHECK(table2x1.Get(1, 0) == 1);
+
+      Table<s32, 1, 2> table1x2 = table32.Extract<Table<s32, 1, 2> >(0, 0);
+      CHECK(table1x2.Get(0, 0) == 0);
+      CHECK(table1x2.Get(0, 1) == 4);
+
+      TLOC_TEST_ASSERT
+      {
+        Table<s32, 5, 5> wrongSize = table32.Extract<Table<s32, 5, 5> >(0, 0);
+      }
+      TLOC_TEST_ASSERT_CHECK();
+
+      TLOC_TEST_ASSERT
+      {
+        Table<s32, 3, 3> wrongSize = table32.Extract<Table<s32, 3, 3> >(2, 2);
+      }
+      TLOC_TEST_ASSERT_CHECK();
+    }
+
+    SECTION("Extract - compile time", "")
+    {
+      Table<s32, 3, 3> table3x3 = table32.Extract<Table<s32, 3, 3>, 0, 0>();
+      CHECK_TABLE(table3x3, 0, 1, 2,
+                            4, 5, 6,
+                            8, 9, 10);
+
+      table3x3 = table32.Extract<Table<s32, 3, 3>, 1, 1>();
+      CHECK_TABLE(table3x3, 5, 6, 7, 9, 10, 11, 13, 14, 15);
+
+      Table<s32, 2, 1> table2x1 = table32.Extract<Table<s32, 2, 1>, 0, 0>();
+      CHECK(table2x1.Get(0, 0) == 0);
+      CHECK(table2x1.Get(1, 0) == 1);
+
+      Table<s32, 1, 2> table1x2 = table32.Extract<Table<s32, 1, 2>, 0, 0>();
+      CHECK(table1x2.Get(0, 0) == 0);
+      CHECK(table1x2.Get(0, 1) == 4);
+    }
   }
 
 };

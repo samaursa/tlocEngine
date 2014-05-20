@@ -8,6 +8,7 @@
 #include <memory.h>
 
 namespace tloc { namespace core { namespace data_structs {
+
   // Column major ordering (because OpenGL uses it. Switching back and forth
   // is not a problem as long as we are consistent)
   //
@@ -68,12 +69,41 @@ namespace tloc { namespace core { namespace data_structs {
     void GetRow(size_type aRow, tuple_col_type& aRowOut) const;
     void GetCol(size_type aCol, tuple_row_type& aColOut) const;
 
+    tuple_col_type GetRow(size_type aRow) const;
+    tuple_row_type GetCol(size_type aCol) const;
+
     value_type& operator[] (size_type aIndex);
     const value_type& operator[] (size_type aIndex) const;
 
     // Direct array access. Generally not recommended but useful for memcpy
     T*        data();
     T const*  data() const;
+
+    template <typename T_OtherValueType, tl_size T_OtherRows, tl_size T_OtherCols>
+    void ConvertFrom(const Table<T_OtherValueType, T_OtherRows, T_OtherCols>& a_other);
+
+    template <typename T_OtherValueType, tl_size T_OtherRows, tl_size T_OtherCols, 
+              typename T_Policy>
+    void ConvertFrom(const Table<T_OtherValueType, T_OtherRows, T_OtherCols>& a_other, 
+                     T_Policy a_conversionPolicy);
+
+    template <typename T_OtherTable>
+    T_OtherTable  ConvertTo() const;
+
+    template <typename T_OtherTable, typename T_Policy>
+    T_OtherTable  ConvertTo() const;
+
+    template <typename T_OtherTable>
+    T_OtherTable  Extract(size_type a_row = 0, size_type a_col = 0) const;
+
+    template <typename T_OtherTable, typename T_Policy>
+    T_OtherTable  Extract(size_type a_row = 0, size_type a_col = 0) const;
+
+    template <typename T_OtherTable, tl_size a_row, tl_size a_col>
+    T_OtherTable  Extract() const;
+
+    template <typename T_OtherTable, tl_size a_row, tl_size a_col, typename T_Policy>
+    T_OtherTable  Extract() const;
 
     template <typename T_TableType>
     T_TableType Cast() const;
@@ -100,6 +130,23 @@ namespace tloc { namespace core { namespace data_structs {
     Table& operator= (const Table& aTable);
     bool operator == (const Table& aTable);
     bool operator != (const Table& aTable);
+
+  private:
+    typedef type_true     incoming_cols_bigger;
+    typedef type_false    incoming_cols_smaller;
+
+    template <typename T_OtherTable, typename T_Policy>
+    void DoConvertFrom(const T_OtherTable& a_other, incoming_cols_bigger);
+
+    template <typename T_OtherTable, typename T_Policy>
+    void DoConvertFrom(const T_OtherTable& a_other, incoming_cols_smaller);
+
+    template <tl_size T_OtherCols>
+    void DoFillRemaining(p_tuple::overflow_same);
+    template <tl_size T_OtherCols>
+    void DoFillRemaining(p_tuple::overflow_one);
+    template <tl_size T_OtherCols>
+    void DoFillRemaining(p_tuple::overflow_zero);
 
   protected:
     T m_values[k_size];

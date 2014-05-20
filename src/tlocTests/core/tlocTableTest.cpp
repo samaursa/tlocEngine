@@ -51,6 +51,19 @@ namespace TestingTable
   CHECK((tab[6]) == ((x3)) ); CHECK((tab[7]) == ((y3)) ); \
   CHECK((tab[8]) == ((z3)) );
 
+#define CHECK_TABLE_4(tab,x1,y1,z1,w1, x2,y2,z2,w2, x3,y3,z3, w3, x4, y4, z4, w4) \
+  CHECK((tab[0]) == ((x1)) ); CHECK((tab[1]) == ((y1)) ); \
+  CHECK((tab[2]) == ((z1)) ); CHECK((tab[3]) == ((w1)) );\
+  \
+  CHECK((tab[4]) == ((x2)) ); CHECK((tab[5]) == ((y2)) ); \
+  CHECK((tab[6]) == ((z2)) ); CHECK((tab[7]) == ((w2)) );\
+  \
+  CHECK((tab[8]) == ((x3)) ); CHECK((tab[9]) == ((y3)) ); \
+  CHECK((tab[10]) == ((z3)) ); CHECK((tab[11]) == ((w3)) );\
+  \
+  CHECK((tab[12]) == ((x4)) ); CHECK((tab[13]) == ((y4)) ); \
+  CHECK((tab[14]) == ((z4)) ); CHECK((tab[15]) == ((w4)) )
+
 
   TEST_CASE_METHOD(Table3Fixture, "Core/DataStructures/Tables/General",
     "Test general/basic functionality")
@@ -86,10 +99,22 @@ namespace TestingTable
     a.GetRow(0, tup);
     CHECK(tup[0] == 1); CHECK(tup[1] == 2); CHECK(tup[2] == 3);
 
+    tup.Set(0);
+    tup = a.GetRow(0);
+    CHECK(tup[0] == 1); CHECK(tup[1] == 2); CHECK(tup[2] == 3);
+
     a.GetRow(2, tup);
     CHECK(tup[0] == 7); CHECK(tup[1] == 8); CHECK(tup[2] == 9);
 
+    tup.Set(0);
+    tup = a.GetRow(2);
+    CHECK(tup[0] == 7); CHECK(tup[1] == 8); CHECK(tup[2] == 9);
+
     a.GetCol(0, tup);
+    CHECK(tup[0] == 1); CHECK(tup[1] == 4); CHECK(tup[2] == 7);
+
+    tup.Set(0);
+    tup = a.GetCol(0);
     CHECK(tup[0] == 1); CHECK(tup[1] == 4); CHECK(tup[2] == 7);
 
     // Col-major ordering
@@ -174,5 +199,70 @@ namespace TestingTable
     table32 = table32.Cast<Table<s32, 3, 3> >();
 
     CHECK_TABLE(table32, 11, 41, 71, 21, 51, 81, 31, 61, 91);
+  }
+
+  TEST_CASE("core/data_structures/Table/ConvertFrom", "")
+  {
+    Table<s32, 4, 4> table32;
+    table32.Set(0, 0, 0);
+    table32.Set(1, 0, 1);
+    table32.Set(2, 0, 2);
+    table32.Set(3, 0, 3);
+
+    table32.Set(0, 1, 4);
+    table32.Set(1, 1, 5);
+    table32.Set(2, 1, 6);
+    table32.Set(3, 1, 7);
+
+    table32.Set(0, 2, 8);
+    table32.Set(1, 2, 9);
+    table32.Set(2, 2, 10);
+    table32.Set(3, 2, 11);
+
+    table32.Set(0, 3, 12);
+    table32.Set(1, 3, 13);
+    table32.Set(2, 3, 14);
+    table32.Set(3, 3, 15);
+
+    SECTION("Convert from - 3x3", "")
+    {
+      Table<s32, 3, 3> table3x3;
+      table3x3.ConvertFrom(table32);
+
+      CHECK_TABLE(table3x3, 0, 1, 2, 4, 5, 6, 8, 9, 10);
+    }
+
+    SECTION("Convert from - overflow_same", "")
+    {
+      Table<s32, 3, 3> table3x3(5);
+      table32.ConvertFrom(table3x3, p_tuple::overflow_same());
+
+      CHECK_TABLE_4(table32, 5, 5, 5, 3, 
+                             5, 5, 5, 7, 
+                             5, 5, 5, 11, 
+                             12, 13, 14, 15);
+    }
+
+    SECTION("Convert from - overflow_one", "")
+    {
+      Table<s32, 3, 3> table3x3(5);
+      table32.ConvertFrom(table3x3, p_tuple::overflow_one());
+
+      CHECK_TABLE_4(table32, 5, 5, 5, 1, 
+                             5, 5, 5, 1, 
+                             5, 5, 5, 1, 
+                             1, 1, 1, 1);
+    }
+
+    SECTION("Convert from - overflow_one", "")
+    {
+      Table<s32, 3, 3> table3x3(5);
+      table32.ConvertFrom(table3x3, p_tuple::overflow_zero());
+
+      CHECK_TABLE_4(table32, 5, 5, 5, 0, 
+                             5, 5, 5, 0, 
+                             5, 5, 5, 0, 
+                             0, 0, 0, 0);
+    }
   }
 };

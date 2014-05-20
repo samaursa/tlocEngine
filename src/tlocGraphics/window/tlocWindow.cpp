@@ -144,6 +144,22 @@ namespace tloc { namespace graphics { namespace win {
   }
 
   template <WINDOW_TEMP>
+  WINDOW_TYPE::dim_type Window_T<WINDOW_PARAMS>::
+    GetDimensions() const
+  {
+    VALIDATE_WINDOW();
+    return core_ds::MakeTuple(GetWidth(), GetHeight());
+  }
+
+  template <WINDOW_TEMP>
+  WINDOW_TYPE::dim_type Window_T<WINDOW_PARAMS>::
+    GetDPI() const
+  {
+    VALIDATE_WINDOW();
+    return m_impl->GetDPI();
+  }
+
+  template <WINDOW_TEMP>
   WINDOW_TYPE::size_type Window_T<WINDOW_PARAMS>::
     GetMaxWidth() const
   {

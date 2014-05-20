@@ -51,6 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ArcBallSystem, arc_ball_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(ArcBallSystem, arc_ball_system);
 
 };};};
 

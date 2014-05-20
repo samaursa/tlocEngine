@@ -6,7 +6,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TextureCoords::
     TextureCoords()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "TextureCoords")
     , m_currentSet(0)
   { }
 
@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TextureCoords::
     TextureCoords(const cont_set_type& a_coords)
-    : base_type(k_component_type)
+    : base_type(k_component_type, "TextureCoords")
     , m_coordSets(a_coords)
     , m_currentSet(0)
   { }
@@ -117,8 +117,7 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TextureCoords);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(TextureCoords);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureCoords);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TextureCoords);
 
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(TextureCoords::cont_type);

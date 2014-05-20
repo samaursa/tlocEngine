@@ -35,6 +35,7 @@ namespace tloc { namespace graphics { namespace win {
       lost_focus,
       gained_focus,
       destroy,
+      open_url,
 
       events_count
     };
@@ -42,6 +43,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef tl_size                           size_type;
     typedef core_ds::Tuple<size_type, 2>      dim_type;
     typedef core_ds::Variadic<size_type, 2>   variadic_type;
+    typedef core_str::String                  string_type;
 
     WindowEvent()
       : m_type(none)
@@ -49,9 +51,13 @@ namespace tloc { namespace graphics { namespace win {
     { }
 
     WindowEvent(const EventType& a_event,
-                tl_size a_sizeX, tl_size a_sizeY)
+                tl_size a_sizeX, tl_size a_sizeY,
+                const string_type& a_url = string_type(),
+                const string_type& a_urlSourceApplication = string_type())
       : m_type(a_event)
       , m_dim(variadic_type(a_sizeX, a_sizeY))
+      , m_url(a_url)
+      , m_urlSourceApplication(a_urlSourceApplication)
     { }
 
     size_type GetWidth() const
@@ -62,6 +68,9 @@ namespace tloc { namespace graphics { namespace win {
 
     EventType m_type;
     dim_type  m_dim;
+
+    string_type m_url;
+    string_type m_urlSourceApplication;
   };
 
   struct WindowCallbacks
@@ -115,6 +124,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef renderer_type::Params                        renderer_params_type;
     typedef gfx_rend::renderer_sptr                      renderer_sptr;
     typedef priv::WindowImpl<this_type>                  impl_type;
+    typedef WindowEvent::dim_type                        dim_type;
 
   public:
 
@@ -182,6 +192,20 @@ namespace tloc { namespace graphics { namespace win {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets the width and height.
+    ///
+    /// @return The window dimensions
+    ///-------------------------------------------------------------------------
+    dim_type GetDimensions() const;
+
+    ///-------------------------------------------------------------------------
+    /// Returns the horizontal and vertical DPI for the device.
+    ///
+    /// @return The device DPI
+    ///-------------------------------------------------------------------------
+    dim_type GetDPI() const;
 
     ///-------------------------------------------------------------------------
     /// @brief

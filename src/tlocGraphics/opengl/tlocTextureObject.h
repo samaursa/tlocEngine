@@ -3,6 +3,7 @@
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/media/tlocImage.h>
 
@@ -11,8 +12,9 @@ namespace tloc { namespace graphics { namespace gl {
   namespace p_texture_object {
     namespace target
     {
-      typedef s32 value_type; // s32 because GLint is s32
+      typedef gfx_t::gl_int             value_type;
 
+      struct Auto                  { static const value_type s_glParamName; };
       struct Tex1D                 { static const value_type s_glParamName; };
       struct Tex2D                 { static const value_type s_glParamName; };
       struct Tex3D                 { static const value_type s_glParamName; };
@@ -29,7 +31,7 @@ namespace tloc { namespace graphics { namespace gl {
     };
     namespace wrap_technique
     {
-      typedef s32         value_type;
+      typedef gfx_t::gl_int             value_type;
 
       struct ClampToEdge       { static const value_type s_glParamName; };
       struct ClampToBorder     { static const value_type s_glParamName; };
@@ -40,7 +42,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace filter
     {
-      typedef s32         value_type;
+      typedef gfx_t::gl_int             value_type;
 
       struct Nearest              { static const value_type s_glParamName; };
       struct Linear               { static const value_type s_glParamName; };
@@ -52,8 +54,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace internal_format
     {
-      typedef s32         value_type;
+      typedef gfx_t::gl_int             value_type;
 
+      struct Auto            { static const value_type s_glParamName; };
       struct Red             { static const value_type s_glParamName; };
       struct RG              { static const value_type s_glParamName; };
       struct RGB             { static const value_type s_glParamName; };
@@ -64,8 +67,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace format
     {
-      typedef s32         value_type;
+      typedef gfx_t::gl_int             value_type;
 
+      struct Auto           { static const value_type s_glParamName; };
       struct Red            { static const value_type s_glParamName; };
       struct RG             { static const value_type s_glParamName; };
       struct RGB            { static const value_type s_glParamName; };
@@ -81,6 +85,34 @@ namespace tloc { namespace graphics { namespace gl {
       struct StencilIndex   { static const value_type s_glParamName; };
       struct DepthComponent { static const value_type s_glParamName; };
     };
+
+    namespace type
+    {
+      typedef gfx_t::gl_int             value_type;
+
+      struct Auto               { static const value_type s_glParamName; };
+      struct UnsignedByte       { static const value_type s_glParamName; };
+      struct Byte               { static const value_type s_glParamName; };
+      struct UnsignedShort      { static const value_type s_glParamName; };
+      struct Short              { static const value_type s_glParamName; };
+      struct UnsignedInt        { static const value_type s_glParamName; };
+      struct Int                { static const value_type s_glParamName; };
+      struct Float              { static const value_type s_glParamName; };
+      struct UnsignedShort565   { static const value_type s_glParamName; };
+      struct UnsignedShort4444  { static const value_type s_glParamName; };
+      struct UnsignedShort5551  { static const value_type s_glParamName; };
+    };
+
+    namespace alignment
+    {
+      typedef gfx_t::gl_int             value_type;
+
+      struct Auto           { static const value_type s_glParamName; };
+      struct OneByte        { static const value_type s_glParamName; };
+      struct TwoBytes       { static const value_type s_glParamName; };
+      struct FourBytes      { static const value_type s_glParamName; };
+      struct EightBytes     { static const value_type s_glParamName; };
+    };
   };
 
   class TextureObject
@@ -89,12 +121,16 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     struct Params
     {
+      friend class TextureObject;
+
       typedef Params                                        this_type;
       typedef p_texture_object::target::value_type          texture_type;
       typedef p_texture_object::wrap_technique::value_type  wrap_value_type;
       typedef p_texture_object::filter::value_type          filter_value_type;
       typedef p_texture_object::internal_format::value_type internal_format_value_type;
       typedef p_texture_object::format::value_type          format_value_type;
+      typedef p_texture_object::type::value_type            type_value_type;
+      typedef p_texture_object::alignment::value_type       alignment_value_type;
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -172,7 +208,7 @@ namespace tloc { namespace graphics { namespace gl {
         using namespace p_texture_object::internal_format;
 
         tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
-          Red, RG, RGB, RGBA, DepthComponent, DepthStencil>();
+          Auto, Red, RG, RGB, RGBA, DepthComponent, DepthStencil>();
 
         m_internalFormat = T_InternalFormat::s_glParamName;
         return *this;
@@ -187,6 +223,7 @@ namespace tloc { namespace graphics { namespace gl {
         using namespace p_texture_object::format;
 
         tloc::type_traits::AssertTypeIsSupported<T_Format,
+          Auto,
           Red, RG, RGB, BGR, RGBA, BGRA, RedInteger, RedInteger, RGInteger,
           RGBInteger, BGRInteger, RGBAInteger, BGRAInteger, StencilIndex,
           DepthComponent>();
@@ -197,8 +234,43 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+      template <typename T_Type>
+      this_type&
+        Type()
+      {
+        using namespace p_texture_object::type;
+
+        tloc::type_traits::AssertTypeIsSupported<T_Type,
+          Auto,
+          UnsignedByte, Byte, UnsignedShort, Short, UnsignedInt, Int, Float>();
+
+        m_type = T_Type::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_Alignment>
+      this_type&
+        Alignment()
+      {
+        using namespace p_texture_object::alignment;
+
+        tloc::type_traits::AssertTypeIsSupported<T_Alignment,
+          Auto, OneByte, TwoBytes, FourBytes, EightBytes>();
+
+        m_alignment = T_Alignment::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
       template <typename T_Target>
       void  TextureType();
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      void AutoGenerateMipMaps(bool a_autoGenMipMaps = true);
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -209,6 +281,9 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
       TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
       TLOC_DECL_AND_DEF_GETTER (format_value_type, GetFormat, m_format);
+      TLOC_DECL_AND_DEF_GETTER (type_value_type, GetType, m_type);
+      TLOC_DECL_AND_DEF_GETTER (alignment_value_type, GetAlignment, m_alignment);
+      TLOC_DECL_AND_DEF_GETTER (bool, IsAutoGenMipMaps, m_autoGenMipMaps);
 
     private:
       wrap_value_type             m_wrap_s;
@@ -218,6 +293,9 @@ namespace tloc { namespace graphics { namespace gl {
       texture_type                m_textureType;
       internal_format_value_type  m_internalFormat;
       format_value_type           m_format;
+      type_value_type             m_type;
+      alignment_value_type        m_alignment;
+      bool                        m_autoGenMipMaps;
     };
 
   public:
@@ -237,9 +315,10 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject(const Params& a_params = Params());
     ~TextureObject();
 
-    error_type  Initialize(const image_type& a_image);
+    template <typename T_ColorType>
+    error_type  Initialize(const gfx_med::Image_T<T_ColorType>& a_image);
 
-    error_type  Bind() const;
+    error_type  Bind(texture_type a_target) const;
 
     error_type  Activate();
     bool        IsActive() const;
@@ -252,8 +331,6 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
     TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
-
-  private:
 
   private:
     texture_image_unit_type   m_texImageUnit;
@@ -280,7 +357,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     tloc::type_traits::AssertTypeIsSupported
       <T_Target,
-      Tex2D, TexCubeMap>();
+      Auto, Tex2D, TexCubeMap>();
     m_textureType = T_Target::s_glParamName;
   }
 

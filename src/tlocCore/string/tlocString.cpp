@@ -209,7 +209,7 @@ namespace tloc { namespace core { namespace string {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   tl_size
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_size a_inSize)
   {
     return ::mbstowcs(a_out, a_in, a_inSize);
   }
@@ -217,9 +217,33 @@ namespace tloc { namespace core { namespace string {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   tl_size
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_size a_inSize)
   {
     return ::wcstombs(a_out, a_in, a_inSize);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  StringW
+    CharAsciiToWide(const String a_in)
+  {
+    const StringW::size_type length = a_in.length();
+    char32* buffer = new char32[length + 1];
+    buffer[length] = 0;
+    CharAsciiToWide(buffer, a_in.c_str(), a_in.length());
+    return StringW(buffer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  String
+    CharWideToAscii(const StringW a_in)
+  {
+    const String::size_type length = a_in.length();
+    char8* buffer = new char[length + 1];
+    buffer[length] = 0;
+    CharWideToAscii(buffer, a_in.c_str(), a_in.length());
+    return String(buffer);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

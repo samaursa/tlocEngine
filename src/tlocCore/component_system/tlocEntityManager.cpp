@@ -3,6 +3,9 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -72,7 +75,8 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   void EntityManager::
-    InsertComponent(entity_ptr_type a_entity, component_vptr a_component)
+    InsertComponent(entity_ptr_type a_entity, component_ptr_type a_component,
+                    orphan a_orphan)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
                 "Entity not found!");
@@ -82,9 +86,15 @@ namespace tloc { namespace core { namespace component_system {
     entities.push_back(a_entity);
     a_entity->InsertComponent(a_component);
 
-    m_eventMgr->DispatchNow(
-      EntityComponentEvent(entity_events::insert_component, a_entity,
-                           a_component) );
+    EntityComponentEvent evt(entity_events::insert_component, a_entity,
+                             a_component);
+
+    if (m_eventMgr->DispatchNow(evt) == false)
+    {
+      TLOC_LOG_CORE_WARN_FILENAME_ONLY_IF(!a_orphan) 
+        << a_component->GetDebugName() << " component inserted into Entity (" 
+        << a_entity->GetDebugName() << ") is without a system.";
+    }
   }
 
   bool EntityManager::

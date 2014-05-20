@@ -60,13 +60,20 @@ namespace tloc { namespace core { namespace component_system {
 
   bool EventManager::DispatchNow(const EventBase& a_event) const
   {
+    bool componentAdded = false;
+
     typedef listeners_list::const_iterator lis_itr;
     for (lis_itr itr = m_globalListeners.begin(),
                  itrEnd = m_globalListeners.end();
                  itr != itrEnd; ++itr)
     {
       // If the event is being vetoed, then no need to go through the whole list
-      if ( (*itr)->OnEvent(a_event) ) { return true; }
+      EventReturn evt = (*itr)->OnEvent(a_event);
+      if (evt.m_componentInSystem)
+      { componentAdded = true; }
+
+      if (evt.m_veto)
+      { return componentAdded; }
     }
 
     typedef listener_map::const_iterator map_itr;
@@ -77,11 +84,16 @@ namespace tloc { namespace core { namespace component_system {
       for (lis_itr itr = list.begin(), itrEnd = list.end();
            itr != itrEnd; ++itr)
       {
-        if ( (*itr)->OnEvent(a_event) ) { return true; }
+        EventReturn evt = (*itr)->OnEvent(a_event);
+        if (evt.m_componentInSystem)
+        { componentAdded = true; }
+
+        if (evt.m_veto)
+        { return componentAdded; }
       }
     }
 
-    return false;
+    return componentAdded;
   }
 
   void EventManager::Dispatch(const EventBase& a_event)
@@ -103,11 +115,8 @@ namespace tloc { namespace core { namespace component_system {
                    itrEnd = m_globalListeners.end();
                    itr != itrEnd; ++itr)
       {
-        if ( (*itr)->OnEvent( *(*eventItr)) )
-        {
-          itr = m_globalListeners.erase(itr);
-          --itr; // because the for loop is going perform a ++
-        }
+        if ( (*itr)->OnEvent(*(*eventItr)).m_veto )
+        { break; }
       }
     }
 
@@ -122,7 +131,7 @@ namespace tloc { namespace core { namespace component_system {
         for (lis_itr itr = list.begin(), itrEnd = list.end();
                      itr != itrEnd; ++itr)
         {
-          if ( (*itr)->OnEvent( *(*eventItr) ) ) { break; }
+          if ( (*itr)->OnEvent(*(*eventItr)).m_veto ) { break; }
         }
       }
     }

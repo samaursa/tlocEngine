@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -37,28 +38,28 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     m_quadList->resize(4);
 
-    m_vData->SetName("a_vPos");
-    m_uniVpMat->SetName("u_mvp");
+    m_meshOperator->reserve_uniforms(1); // mvp 
+    m_meshOperator->reserve_attributes(5); // vertex data + texture coordinates
 
-    m_tData.push_back(gl::attribute_vso() );
-    m_tData.back()->SetName("a_tCoord");
+    m_uniVpMat = m_meshOperator->AddUniform(gl::Uniform().SetName("u_mvp"));
+    m_vData = m_meshOperator->AddAttribute(gl::Attribute().SetName("a_vPos"));
 
-    m_tData.push_back(gl::attribute_vso() );
-    m_tData.back()->SetName("a_tCoord2");
-
-    m_tData.push_back(gl::attribute_vso() );
-    m_tData.back()->SetName("a_tCoord3");
-
-    m_tData.push_back(gl::attribute_vso() );
-    m_tData.back()->SetName("a_tCoord4");
+    m_tData.resize(4);
+    m_tData[0] = m_meshOperator->AddAttribute(gl::Attribute().SetName("a_tCoord"));
+    m_tData[1] = m_meshOperator->AddAttribute(gl::Attribute().SetName("a_tCoord2"));
+    m_tData[2] = m_meshOperator->AddAttribute(gl::Attribute().SetName("a_tCoord3"));
+    m_tData[3] = m_meshOperator->AddAttribute(gl::Attribute().SetName("a_tCoord4"));
   }
   
   QuadRenderSystem::
     ~QuadRenderSystem()
   { }
 
-  error_type QuadRenderSystem::InitializeEntity(entity_ptr)
-  { return ErrorSuccess; }
+  error_type QuadRenderSystem::InitializeEntity(entity_ptr a_ent)
+  { 
+    base_type::InitializeEntity(a_ent);
+    return ErrorSuccess;
+  }
 
   error_type QuadRenderSystem::ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
@@ -72,8 +73,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (a_ent->HasComponent(components::material))
     {
-      gfx_cs::material_vptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
-      gfx_cs::quad_vptr     quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
+      gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
+      gfx_cs::quad_sptr     quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
       //------------------------------------------------------------------------
       // Prepare the Quad
@@ -93,7 +94,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
                                     rect.GetValue<rect_type::bottom>(), 0);
 
-      math_cs::transform_vptr posPtr = a_ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_sptr posPtr = a_ent->GetComponent<math_cs::Transform>();
 
       Mat4f32 tMatrix;
       if (a_ent->HasComponent(components::scene_node))
@@ -106,15 +107,15 @@ namespace tloc { namespace graphics { namespace component_system {
       // Generate the mvp matrix
       m_uniVpMat->SetValueAs(tFinalMat);
 
-      m_mvpOperator->RemoveAllUniforms();
-      m_mvpOperator->AddUniform(*m_uniVpMat);
-
       const tl_size numVertices = m_quadList->size();
 
       m_vData->SetVertexArray(m_quadList.get(), gl::p_shader_variable_ti::Pointer() );
 
-      m_so_quad->RemoveAllAttributes();
-      m_so_quad->AddAttribute(*m_vData);
+      // the texture variables will be enabled as required
+      m_tData[0]->SetEnabled(false);
+      m_tData[1]->SetEnabled(false);
+      m_tData[2]->SetEnabled(false);
+      m_tData[3]->SetEnabled(false);
 
       if (a_ent->HasComponent(components::texture_coords))
       {
@@ -128,7 +129,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
         for (tl_size i = 0; i < numTexCoords; ++i)
         {
-          gfx_cs::texture_coords_vptr texCoordPtr =
+          gfx_cs::texture_coords_sptr texCoordPtr =
             a_ent->GetComponent<gfx_cs::TextureCoords>(i);
 
           if (texCoordPtr && texCoordPtr->GetNumSets())
@@ -137,10 +138,9 @@ namespace tloc { namespace graphics { namespace component_system {
               texCoordCont = texCoordPtr->GetCoords
               (set_index(texCoordPtr->GetCurrentSet()) );
 
+            m_tData[i]->SetEnabled(true);
             m_tData[i]->SetVertexArray(texCoordCont,
                                        gl::p_shader_variable_ti::Pointer() );
-
-            m_so_quad->AddAttribute(*m_tData[i]);
           }
         }
       }
@@ -150,12 +150,23 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
+      error_type uniformErr = ErrorSuccess;
+      error_type attribErr  = ErrorSuccess;
+
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr == nullptr ||
-           m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
       {
-        sp->Enable();
+        if (m_shaderPtr)
+        { m_shaderPtr->Disable(); }
+
+        if (sp->Enable().Failed())
+        { 
+          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+            << " could not be enabled.";
+          return;
+        }
+
         m_shaderPtr = sp;
 
         typedef mat_type::shader_op_cont::const_iterator  shader_op_itr;
@@ -170,14 +181,19 @@ namespace tloc { namespace graphics { namespace component_system {
           so->EnableAllUniforms(*m_shaderPtr);
           so->EnableAllAttributes(*m_shaderPtr);
         }
+
+        // shader switch requires us to re-prepare the attributes/uniforms
+        m_meshOperator->ClearCache();
+        uniformErr = m_meshOperator->PrepareAllUniforms(*m_shaderPtr);
+        attribErr = m_meshOperator->PrepareAllAttributes(*m_shaderPtr);
       }
 
       // Add the mvp
-      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+      if (uniformErr.Succeeded())
+      { m_meshOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      m_so_quad->PrepareAllAttributes(*m_shaderPtr);
-      m_so_quad->EnableAllAttributes(*m_shaderPtr);
+      if (attribErr.Succeeded())
+      { m_meshOperator->EnableAllAttributes(*m_shaderPtr); }
 
       TLOC_UNUSED(numVertices);
       glDrawArrays(GL_TRIANGLE_STRIP, 0,
@@ -185,17 +201,11 @@ namespace tloc { namespace graphics { namespace component_system {
     }
   }
 
-  void QuadRenderSystem::Post_ProcessActiveEntities(f64)
+  void QuadRenderSystem::Post_ProcessActiveEntities(f64 a_deltaT)
   {
-    // No materials/entities may have been loaded initially
-    // (m_shaderPtr would have remained NULL)
-    if (m_shaderPtr)
-    {
-      m_shaderPtr->Disable();
-      m_shaderPtr.reset();
-    }
+    m_shaderPtr.reset();
 
-    base_type::Post_ProcessActiveEntities(f64());
+    base_type::Post_ProcessActiveEntities(a_deltaT);
   }
 
 };};};
@@ -208,5 +218,7 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(QuadRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(QuadRenderSystem);
+
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(QuadRenderSystem::vec2_cont_type);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(QuadRenderSystem::vec3_cont_type);

@@ -40,31 +40,37 @@ namespace tloc { namespace animation {
 };};
 
 #define TLOC_LOG_ANIM_INFO()    TLOC_LOG_INFO(&tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_SUCCESS() TLOC_LOG_SUCCESS(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_DEBUG()   TLOC_LOG_DEBUG(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_WARN()    TLOC_LOG_WARN(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_ERR()     TLOC_LOG_ERR(&tloc::animation::GetLogger())
 
 #define TLOC_LOG_ANIM_INFO_IF(_expr_)    TLOC_LOG_INFO_IF(_expr_, &tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_SUCCESS_IF(_expr_) TLOC_LOG_SUCCESS_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_DEBUG_IF(_expr_)   TLOC_LOG_DEBUG_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_WARN_IF(_expr_)    TLOC_LOG_WARN_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_ERR_IF(_expr_)     TLOC_LOG_ERR_IF(_expr_, &tloc::animation::GetLogger())
 
 #define TLOC_LOG_ANIM_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_SUCCESS_FILENAME_ONLY() TLOC_LOG_SUCCESS_FILENAME_ONLY(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::animation::GetLogger())
 
 #define TLOC_LOG_ANIM_INFO_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, &tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_SUCCESS_FILENAME_ONLY_IF(_expr_) TLOC_LOG_SUCCESS_FILENAME_ONLY_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_DEBUG_FILENAME_ONLY_IF(_expr_)   TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_WARN_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_ERR_FILENAME_ONLY_IF(_expr_)     TLOC_LOG_ERR_FILENAME_ONLY_IF(_expr_, &tloc::animation::GetLogger())
 
 #define TLOC_LOG_ANIM_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_SUCCESS_NO_FILENAME() TLOC_LOG_SUCCESS_NO_FILENAME(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::animation::GetLogger())
 
 #define TLOC_LOG_ANIM_INFO_NO_FILENAME_IF(_expr_)    TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, &tloc::animation::GetLogger())
+#define TLOC_LOG_ANIM_SUCCESS_NO_FILENAME_IF(_expr_) TLOC_LOG_SUCCESS_NO_FILENAME_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_DEBUG_NO_FILENAME_IF(_expr_)   TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_WARN_NO_FILENAME_IF(_expr_)    TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, &tloc::animation::GetLogger())
 #define TLOC_LOG_ANIM_ERR_NO_FILENAME_IF(_expr_)     TLOC_LOG_ERR_NO_FILENAME_IF(_expr_, &tloc::animation::GetLogger())

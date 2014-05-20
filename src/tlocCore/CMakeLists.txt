@@ -7,6 +7,12 @@ set(TLOC_ENGINE_CORE
     tlocAlgorithms.inl.h
     tlocAssert.h
     tlocAssert.cpp
+    tlocAssertCustomBreak.h
+    tlocAssertCustomBreak.cpp
+    tlocArgs.h
+    tlocArgs.cpp
+    tlocConsole.h
+    tlocConsole.cpp
     tlocCoreBase.h
     tlocCoreBase.cpp
     tlocCoreIncludes.h
@@ -24,6 +30,9 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.h
     base_classes/tloc_base_classes.inl.h
     base_classes/tloc_base_classes.cpp
+    base_classes/tlocDebugName.h
+    base_classes/tlocDebugFileAndLine.h
+    base_classes/tlocDebugFileAndLine.cpp
     base_classes/tlocInitializeAndDestroy.h
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h
@@ -159,6 +168,8 @@ set(TLOC_ENGINE_CORE_LOGGER
     logging/tlocLog.cpp
     logging/tlocLogger.h
     logging/tlocLogger.cpp
+    logging/tlocDefaultLogger.h
+    logging/tlocDefaultLogger.cpp
     logging/tlocLoggerHelper.h
 )
 set(TLOC_ENGINE_CORE_MEMORY
@@ -338,7 +349,10 @@ include_directories(
 )
 
 if (TLOC_ENABLE_MEMORY_TRACKING)
+  message(STATUS "MEMORY TRACKING: Enabled")
   add_definitions(-DTLOC_ENABLE_MEMORY_TRACKING)
+else()
+  message(STATUS "MEMORY TRACKING: Disabled")
 endif()
 
 add_library(tlocCore STATIC

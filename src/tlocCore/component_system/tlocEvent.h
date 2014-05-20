@@ -37,11 +37,25 @@ namespace tloc { namespace core { namespace component_system {
     event_type m_type;
   };
 
+  struct EventReturn
+  {
+    EventReturn(bool a_veto, bool a_componentAdded)
+      : m_veto(a_veto)
+      , m_componentInSystem(a_componentAdded)
+    { }
+
+    bool m_veto;
+    bool m_componentInSystem;
+  };
+
   class EventListener
   {
   public:
+    typedef EventReturn                             return_type;
+
+  public:
     virtual ~EventListener() {}
-    virtual bool OnEvent(const EventBase& a_event) = 0;
+    virtual return_type OnEvent(const EventBase& a_event) = 0;
   };
 
 

@@ -51,12 +51,12 @@ namespace tloc { namespace math { namespace types {
     // using declarations for access to base class
     using base_type::GetRow;
     using base_type::Set;
-    using base_type::k_TableSize;
+    using base_type::k_size;
     using base_type::m_values;
 
   protected:
 
-    enum { k_MatrixSize = k_TableSize };
+    enum { k_MatrixSize = k_size };
 
   public:
     //------------------------------------------------------------------------

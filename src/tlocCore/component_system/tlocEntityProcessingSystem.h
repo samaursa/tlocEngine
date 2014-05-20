@@ -46,12 +46,12 @@ namespace tloc { namespace core { namespace component_system {
     virtual error_type Post_Shutdown();
 
   private:
-    virtual void DoProcessActiveEntities (const entity_ptr_array& a_entities,
+    virtual void DoProcessActiveEntities (const entity_count_cont& a_entities,
                                           f64 a_deltaT);
 
-    virtual error_type DoInitialize(const entity_ptr_array& a_entities);
+    virtual error_type DoInitialize(const entity_count_cont& a_entities);
 
-    virtual error_type DoShutdown(const entity_ptr_array& a_entities);
+    virtual error_type DoShutdown(const entity_count_cont& a_entities);
   };
 
   //------------------------------------------------------------------------

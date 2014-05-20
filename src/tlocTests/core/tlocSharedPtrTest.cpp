@@ -42,7 +42,7 @@ namespace TestingSharedPtr
 
   void PassSharedPtr(const SharedPtr<SharedStruct>& a_other)
   {
-    tl_int currCount = a_other.use_count();
+    tl_long currCount = a_other.use_count();
     SharedPtr<SharedStruct> localPtr = a_other;
     CHECK(localPtr.use_count() == currCount + 1);
   }
@@ -296,9 +296,9 @@ namespace TestingSharedPtr
       tl_int counter = 0;
       for (; itr != itrEnd; ++itr)
       {
-        if ( (*(*itr)->GetValue())->x != counter &&
-          (*(*itr)->GetValue())->y != counter + 1 &&
-          (*(*itr)->GetValue())->z != counter + 2)
+        if ( (*(*itr)->GetValuePtr())->x != counter &&
+          (*(*itr)->GetValuePtr())->y != counter + 1 &&
+          (*(*itr)->GetValuePtr())->z != counter + 2)
         {
           testPassed = false;
           break;
@@ -556,5 +556,32 @@ namespace TestingSharedPtr
 
     sp.reset(new tl_int(10));
     CHECK(GetUseCount(sp) == 1);
+  }
+
+  struct FiveParams
+  {
+    FiveParams(tl_int a, tl_int b, tl_int c, tl_int d, tl_int e)
+      : m_a(a), m_b(b), m_c(c), m_d(d), m_e(e)
+    { }
+
+    tl_int m_a, m_b, m_c, m_d, m_e;
+  };
+
+  TEST_CASE("core/smart_ptr/shared_ptr/MakeShared", "")
+  {
+    {
+      SharedPtr<SharedStruct> sp =
+        core_sptr::MakeShared<SharedStruct>(13);
+      CHECK(sp->m_value == 13);
+    }
+    {
+      SharedPtr<FiveParams> sp =
+        core_sptr::MakeShared<FiveParams>(1, 2, 3, 4, 5);
+      CHECK(sp->m_a == 1);
+      CHECK(sp->m_b == 2);
+      CHECK(sp->m_c == 3);
+      CHECK(sp->m_d == 4);
+      CHECK(sp->m_e == 5);
+    }
   }
 }

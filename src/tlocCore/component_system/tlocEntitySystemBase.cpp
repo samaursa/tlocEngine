@@ -86,15 +86,52 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool
+  EventReturn
     EntitySystemBase::
     OnEvent(const EventBase& a_event)
   {
     event_value_type type = a_event.GetType();
 
+    EventReturn evtRet(false, false);
+
     switch(type)
     {
     case entity_events::insert_component:
+      {
+        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+
+        // does the event have the component we are interested in?
+        component_type_array::iterator itr = 
+          core::find_all(m_typeFlags, entEvent.GetComponent()->GetType());
+        if (itr == m_typeFlags.end())
+        { break; }
+
+        entity_vptr ent = entEvent.GetEntity();
+
+        for (component_type_array::iterator itr = m_typeFlags.begin(),
+             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        {
+          if (ent->HasComponent(*itr) )
+          {
+            evtRet.m_componentInSystem = true;
+
+            entity_count_cont::iterator entItr = 
+              core::find_if_all(m_activeEntities, 
+              algos::compare::pair::MakeFirst(ent));
+
+            if (entItr == m_activeEntities.end())
+            {
+              OnComponentInsert(entEvent);
+              m_activeEntities.push_back(MakePair(ent, 1));
+            }
+            else
+            {
+              entItr->second++;
+            }
+          }
+        }
+        break;
+      }
     case entity_events::remove_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
@@ -105,30 +142,32 @@ namespace tloc { namespace core { namespace component_system {
         {
           if (ent->HasComponent(*itr) )
           {
-            entity_ptr_array::iterator entItr = core::find_all(m_activeEntities, ent);
-            if (entItr == m_activeEntities.end())
-            {
-              OnComponentInsert(entEvent);
-              m_activeEntities.push_back(ent);
-            }
-          }
-          else
-          {
-            entity_ptr_array::iterator itr = find_all(m_activeEntities, ent);
-            if (itr != m_activeEntities.end())
+            entity_count_cont::iterator entItr = 
+              core::find_if_all(m_activeEntities, 
+              algos::compare::pair::MakeFirst(ent));
+
+            if (entItr != m_activeEntities.end())
             {
               OnComponentRemove(entEvent);
-              m_activeEntities.erase(itr);
+              if (entItr->second == 1)
+              {
+                m_activeEntities.erase(entItr);
+              }
+              else
+              {
+                entItr->second--;
+              }
             }
           }
         }
         break;
       }
+
     case entity_events::disable_component:
     case entity_events::enable_component:
       {
         const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
-        component_vptr comp = entEvent.GetComponent();
+        component_sptr comp = entEvent.GetComponent();
 
         for (component_type_array::iterator itr = m_typeFlags.begin(),
              itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
@@ -145,7 +184,7 @@ namespace tloc { namespace core { namespace component_system {
       }
     }
 
-    return false;
+    return evtRet;
   }
 
 };};};

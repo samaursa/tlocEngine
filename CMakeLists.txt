@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(tlocEngine)
+set(TLOC_ENGINE_NAME "tlocEngine" CACHE STRING "You may change the name based on build configuration")
+
+project(${TLOC_ENGINE_NAME})
 
 set(TLOC_ENGINE_VERSION 0.1)
 

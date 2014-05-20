@@ -654,12 +654,16 @@ namespace tloc { namespace core { namespace memory {
     return MemoryTracker::Get().GetNumberOfPointersToMemAddresses(a_memAddress);
   }
 
+};};};};};
+
+namespace tloc { namespace core { namespace memory { namespace tracking {
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     DoEnableLogging()
   {
-    MemoryTracker::Get().EnableLogging(true);
+    priv::MemoryTracker::Get().EnableLogging(true);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -667,9 +671,9 @@ namespace tloc { namespace core { namespace memory {
   void
     DoDisableLogging()
   {
-    MemoryTracker::Get().EnableLogging( true );
+    priv::MemoryTracker::Get().EnableLogging( true );
   }
 
-};};};};};
+};};};};
 
 #endif

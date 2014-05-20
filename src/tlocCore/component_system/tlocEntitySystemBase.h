@@ -41,6 +41,9 @@ namespace tloc { namespace core { namespace component_system {
     typedef core_cs::const_entity_vptr            const_entity_ptr;
     typedef EventBase::event_type                 event_value_type;
 
+    typedef core::Pair<entity_ptr, size_type>     entity_count_pair;
+    typedef core_conts::Array<entity_count_pair>  entity_count_cont;
+
     typedef containers::tl_array_fixed
       <component_type, max_component_types>::type       component_type_array;
 
@@ -83,7 +86,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoInitialize(const entity_ptr_array& a_entities) = 0;
+    virtual error_type DoInitialize(const entity_count_cont& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -99,7 +102,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by Initialize()
     ///-------------------------------------------------------------------------
-    virtual error_type DoShutdown(const entity_ptr_array& a_entities) = 0;
+    virtual error_type DoShutdown(const entity_count_cont& a_entities) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after DoInitializeEntity is called
@@ -124,7 +127,7 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
-    virtual void DoProcessActiveEntities(const entity_ptr_array& a_entities,
+    virtual void DoProcessActiveEntities(const entity_count_cont& a_entities,
                                          f64 a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
@@ -145,21 +148,21 @@ namespace tloc { namespace core { namespace component_system {
     ///
     /// @return true if the message was processed, false if it was ignored.
     ///-------------------------------------------------------------------------
-    bool OnEvent(const event_type& a_event);
+    EventReturn OnEvent(const event_type& a_event);
 
     TLOC_DECL_AND_DEF_GETTER(entity_manager_vptr, DoGetEntityManager,
                              entity_manager_vptr(m_entityMgr));
     TLOC_DECL_AND_DEF_GETTER(event_manager_vptr, DoGetEventManager,
                              event_manager_vptr(m_eventMgr));
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(entity_ptr_array, DoGetActiveEntities,
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(entity_count_cont, DoGetActiveEntities,
                                     m_activeEntities);
 
   private:
-    component_type_array  m_typeFlags;
-    entity_ptr_array      m_activeEntities;
+    component_type_array    m_typeFlags;
+    entity_count_cont       m_activeEntities;
 
-    event_manager_ptr     m_eventMgr;
-    entity_manager_ptr    m_entityMgr;
+    event_manager_ptr       m_eventMgr;
+    entity_manager_ptr      m_entityMgr;
 
     core_utils::Checkpoints m_flags;
     static const tl_int     s_flagCount;
@@ -183,7 +186,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,
                        Exceeded_max_components_supported);
 
-    for (tl_uint i = 0; i < a_typeFlags.GetSize(); ++i)
+    for (tl_uint i = 0; i < a_typeFlags.size(); ++i)
     {
       m_typeFlags.push_back(a_typeFlags[i]);
     }

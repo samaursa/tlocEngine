@@ -53,7 +53,7 @@ namespace tloc { namespace input {
       TL_WIN_DISCL_DEFAULT = TL_WIN_DISCL_FOREGROUND |
                              TL_WIN_DISCL_NONEXCLUSIVE,
 
-      k_count = core::utils::EnumCounter<TL_WIN_DISCL_NOWINKEY, true>::result,
+      k_count = core::utils::EnumCounter_T<TL_WIN_DISCL_NOWINKEY, true>::result,
     }; typedef tl_int value_type;
   }
 
@@ -227,7 +227,7 @@ namespace tloc { namespace input {
         k_north_west  = 1 << 6,
         k_south_west  = 1 << 7,
 
-        k_count = core_utils::EnumCounter<k_south_west, true>::result
+        k_count = core_utils::EnumCounter_T<k_south_west, true>::result
       }; typedef tl_int direction_type;
 
       TLOC_DECL_AND_DEF_SETTER_BY_VALUE(direction_type, SetDirection, m_direction);

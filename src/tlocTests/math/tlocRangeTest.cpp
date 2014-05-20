@@ -250,11 +250,23 @@ namespace TestingRange
     CHECK( (RangeNeg1to1<f32, p_range::Inclusive>().Get().front()) == Approx(-1.0f));
     CHECK( (RangeNeg1to1<f32, p_range::Inclusive>().Get().back()) == Approx(1.0f));
 
+    CHECK(Range0to128<s16>().Get().front() == 0);
+    CHECK(Range0to128<s16>().Get().back() == 127);
+
+    CHECK( (Range0to128<s16, p_range::Inclusive>().Get().front()) == 0);
+    CHECK( (Range0to128<s16, p_range::Inclusive>().Get().back()) == 128);
+
     CHECK(Range0to128<s32>().Get().front() == 0);
     CHECK(Range0to128<s32>().Get().back() == 127);
 
     CHECK( (Range0to128<s32, p_range::Inclusive>().Get().front()) == 0);
     CHECK( (Range0to128<s32, p_range::Inclusive>().Get().back()) == 128);
+
+    CHECK(Range0to256<s16>().Get().front() == 0);
+    CHECK(Range0to256<s16>().Get().back() == 255);
+
+    CHECK( (Range0to256<s16, p_range::Inclusive>().Get().front()) == 0);
+    CHECK( (Range0to256<s16, p_range::Inclusive>().Get().back()) == 256);
 
     CHECK(Range0to256<s32>().Get().front() == 0);
     CHECK(Range0to256<s32>().Get().back() == 255);

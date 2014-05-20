@@ -244,6 +244,39 @@ namespace tloc { namespace core { namespace data_structs {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TABLE_TEMPS>
+  template <typename T_OtherTable>
+  T_OtherTable
+    Table<TABLE_PARAMS>::
+    ConvertTo() const
+  {
+    T_OtherTable toRet;
+    toRet.ConvertFrom(*this);
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
+  template <typename T_OtherTable, typename T_Policy>
+  T_OtherTable
+    Table<TABLE_PARAMS>::
+    ConvertTo() const
+  {
+    type_traits::AssertTypeIsSupported
+      <
+        T_Policy,
+        p_tuple::overflow_one,
+        p_tuple::overflow_zero
+      >();
+
+    T_OtherTable toRet;
+    toRet.ConvertFrom(*this, T_Policy());
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TABLE_TEMPS>
   template <typename T_OtherTable, typename T_Policy>
   void
     Table<TABLE_PARAMS>::

@@ -13,7 +13,7 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tloccore/containers/tlocContainers.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
@@ -37,11 +37,11 @@ namespace tloc { namespace input { namespace hid {
 
   template <typename T>
   struct TouchSurfaceCallbackGroupT
-    : public core::base_classes::CallbackGroupTArray
+    : public core::dispatch::CallbackGroupTArray
              <T, TouchSurfaceCallbacks>::type
   {
   public:
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, TouchSurfaceCallbacks>::type     base_type;
 
     using base_type::m_observers;
@@ -102,7 +102,7 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_Policy = InputPolicy::Buffered,
     typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class TouchSurface
-    : public core::base_classes::DispatcherBaseArray
+    : public core::dispatch::DispatcherBaseArray
              <TouchSurfaceCallbacks, TouchSurfaceCallbackGroupT>::type
     , public core_bclass::NonCopyable_I
     , public p_hid::TouchSurface

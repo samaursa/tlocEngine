@@ -9,7 +9,7 @@
 
 #include "tlocTemplateDispatch.h"
 
-namespace tloc { namespace core { namespace base_classes {
+namespace tloc { namespace core { namespace dispatch {
 
   //------------------------------------------------------------------------
   // Helpers for the base group

@@ -38,8 +38,6 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tlocNonNewable.h
     base_classes/tlocPlatformImplBase.h
     base_classes/tlocPolicyBase.h
-    base_classes/tlocTemplateDispatch.h
-    base_classes/tlocTemplateDispatchDefaults.h
 )
 set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tloc_component_system.h
@@ -135,6 +133,15 @@ set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tlocVariadic.inl.h
     data_structures/tlocVariadic.cpp
     data_structures/tlocVariadicTypedefMacros.h
+)
+set(TLOC_ENGINE_CORE_DISPATCH
+    dispatch/tloc_dispatch.h
+    dispatch/tloc_dispatch.inl.h
+    dispatch/tloc_dispatch.cpp
+    dispatch/tlocEvent.h
+    dispatch/tlocEvent.cpp
+    dispatch/tlocTemplateDispatch.h
+    dispatch/tlocTemplateDispatchDefaults.h
 )
 set(TLOC_ENGINE_CORE_ERROR
     error/tloc_error.h
@@ -362,6 +369,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_CONFIGS}
   ${TLOC_ENGINE_CORE_CONTAINERS}
   ${TLOC_ENGINE_CORE_DATA_STRUCTURES}
+  ${TLOC_ENGINE_CORE_DISPATCH}
   ${TLOC_ENGINE_CORE_ERROR}
   ${TLOC_ENGINE_CORE_IO}
   ${TLOC_ENGINE_CORE_ITERATORS}
@@ -387,6 +395,7 @@ source_group(component_system FILES ${TLOC_ENGINE_CORE_COMPONENT_SYSTEM})
 source_group(configs FILES ${TLOC_ENGINE_CORE_CONFIGS})
 source_group(core_containers FILES ${TLOC_ENGINE_CORE_CONTAINERS})
 source_group(data_structures FILES ${TLOC_ENGINE_CORE_DATA_STRUCTURES})
+source_group(dispatch FILES ${TLOC_ENGINE_CORE_DISPATCH})
 source_group(error FILES ${TLOC_ENGINE_CORE_ERROR})
 source_group(io FILES ${TLOC_ENGINE_CORE_IO})
 source_group(iterators FILES ${TLOC_ENGINE_CORE_ITERATORS})

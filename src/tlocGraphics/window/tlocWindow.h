@@ -11,7 +11,7 @@
 #include <tlocCore/containers/tlocQueue.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
@@ -80,10 +80,10 @@ namespace tloc { namespace graphics { namespace win {
 
   template <typename T>
   struct WindowCallbackGroupT
-    : public core::base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
+    : public core::dispatch::CallbackGroupTArray<T, WindowCallbacks>::type
   {
   public:
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, WindowCallbacks>::type         base_type;
 
     using base_type::m_observers;
@@ -107,7 +107,7 @@ namespace tloc { namespace graphics { namespace win {
   ///-------------------------------------------------------------------------
   template <typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Window_T
-    : public core::base_classes::DispatcherBaseArray
+    : public core::dispatch::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
     , public core_bclass::NonCopyable_I
   {

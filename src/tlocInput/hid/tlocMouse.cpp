@@ -58,7 +58,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->OnButtonPress(core_utils::GetMemoryAddress(this),
-                                           a_event, a_buttonCode) == true)
+                                           a_event, a_buttonCode).IsVeto())
       {
         break;
       }
@@ -73,7 +73,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->OnButtonRelease(core_utils::GetMemoryAddress(this),
-                                             a_event, a_buttonCode) == true)
+                                             a_event, a_buttonCode).IsVeto())
       {
         break;
       }
@@ -87,7 +87,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->OnMouseMove(core_utils::GetMemoryAddress(this),
-                                         a_event) == true)
+                                         a_event).IsVeto())
       { break; }
     }
   }

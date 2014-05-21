@@ -138,8 +138,8 @@ set(TLOC_ENGINE_CORE_DISPATCH
     dispatch/tloc_dispatch.h
     dispatch/tloc_dispatch.inl.h
     dispatch/tloc_dispatch.cpp
-    dispatch/tlocCallbackReturn.h
-    dispatch/tlocCallbackReturn.cpp
+    dispatch/tlocEvent.h
+    dispatch/tlocEvent.cpp
     dispatch/tlocTemplateDispatch.h
     dispatch/tlocTemplateDispatchDefaults.h
 )

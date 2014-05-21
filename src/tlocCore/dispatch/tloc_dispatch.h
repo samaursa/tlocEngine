@@ -3,7 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
-#include <tlocCore/dispatch/tlocCallbackReturn.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 #include <tlocCore/dispatch/tlocTemplateDispatch.h>
 #include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 

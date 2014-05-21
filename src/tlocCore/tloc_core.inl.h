@@ -15,6 +15,7 @@
 #include <tlocCore/configs/tloc_configs.inl.h>
 #include <tlocCore/containers/tloc_containers.inl.h>
 #include <tlocCore/data_structures/tloc_data_structures.inl.h>
+#include <tlocCore/dispatch/tloc_dispatch.inl.h>
 #include <tlocCore/error/tloc_error.inl.h>
 #include <tlocCore/io/tloc_io.inl.h>
 #include <tlocCore/iterators/tloc_iterators.inl.h>

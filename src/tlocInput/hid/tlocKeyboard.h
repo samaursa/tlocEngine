@@ -7,6 +7,7 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
@@ -27,10 +28,14 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   struct KeyboardCallbacks
   {
-    virtual bool OnKeyPress(const tl_size a_caller,
-                            const KeyboardEvent& a_event) const = 0;
-    virtual bool OnKeyRelease(const tl_size a_caller,
-                              const KeyboardEvent& a_event) const = 0;
+  public:
+    typedef core_dispatch::Event                        event_type;
+
+  public:
+    virtual event_type OnKeyPress(const tl_size a_caller,
+                                  const KeyboardEvent& a_event) const = 0;
+    virtual event_type OnKeyRelease(const tl_size a_caller,
+                                    const KeyboardEvent& a_event) const = 0;
   };
 
   ///-------------------------------------------------------------------------
@@ -46,33 +51,35 @@ namespace tloc { namespace input { namespace hid {
     typedef typename core::dispatch::
       CallbackGroupTArray<T, KeyboardCallbacks>::type     base_type;
 
+    typedef typename base_type::event_type                event_type;
+
     using base_type::m_observers;
 
   public:
-    virtual bool OnKeyPress(const tl_size a_caller,
-                            const KeyboardEvent& a_event) const
+    virtual event_type OnKeyPress(const tl_size a_caller,
+                                  const KeyboardEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnKeyPress(a_caller, a_event) == true)
+        if (m_observers[i]->OnKeyPress(a_caller, a_event).IsVeto())
         {
-          return true;
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    virtual bool OnKeyRelease(const tl_size a_caller,
-                              const KeyboardEvent& a_event) const
+    virtual event_type OnKeyRelease(const tl_size a_caller,
+                                    const KeyboardEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnKeyRelease(a_caller, a_event) == true)
+        if (m_observers[i]->OnKeyRelease(a_caller, a_event).IsVeto())
         {
-          return true;
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+      return core_dispatch::f_event::Continue();
     }
   };
 

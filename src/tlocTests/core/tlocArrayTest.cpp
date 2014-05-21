@@ -169,7 +169,7 @@ namespace TestingArray
     //TODO: Turn into function later so that we are not repeating the same tests
     // multiple times with different types.
 
-    SECTION("Array<u32>", "")
+    //SECTION("Array<u32>", "")
     {
       Array<u32> copyToTestArray;
       FILL_INT_ARRAY_BY_PUSH(copyToTestArray, 0, 5);
@@ -211,7 +211,7 @@ namespace TestingArray
 
     RESET_CTOR_DTOR_COUNT();
 
-    SECTION("Array<SomeClass>", "")
+    //SECTION("Array<SomeClass>", "")
     {
       Array<SomeClass> copyToTestClassArray;
       FILL_TEST_CLASS_ARRAY_BY_PUSH(copyToTestClassArray, 0, 5);
@@ -478,7 +478,7 @@ namespace TestingArray
   TEST_CASE_METHOD(ArrayFixture, "Core/Containers/Array/Resize",
     "Test the resize methods")
   {
-    SECTION("Simple types", "")
+    //SECTION("Simple types", "")
     {
       ints.resize(0); // should not crash or do anything
       CHECK(ints.size() == 0);
@@ -509,12 +509,12 @@ namespace TestingArray
       }
     }
 
-    SECTION("Complex types", "Our array copies complex types instead of using "
-      "realloc which 'moves' the objects. This is to ensure that objects with "
-      "side effects get constructed/destructed/copied properly. This is "
-      "obviously slower than reallocation provided reallocation can 'extend' "
-      "the memory block. On the plus side, it is not deterministically slow for "
-      "complex objects")
+    //SECTION("Complex types", "Our array copies complex types instead of using "
+      //"realloc which 'moves' the objects. This is to ensure that objects with "
+      //"side effects get constructed/destructed/copied properly. This is "
+      //"obviously slower than reallocation provided reallocation can 'extend' "
+      //"the memory block. On the plus side, it is not deterministically slow for "
+      //"complex objects")
     {
       someClass.resize(1);
       SomeClass* ptr = someClass.begin();

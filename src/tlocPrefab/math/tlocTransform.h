@@ -9,13 +9,16 @@
 
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/component_system/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace math {
 
   class Transform
-    : public Prefab_I
+    : public Prefab_TI<math_cs::Transform>
   {
   public:
+    typedef Prefab_TI<component_type>                     base_type;
+
     typedef Transform                                     this_type;
     typedef math_t::Vec3f32                               position_type;
     typedef math_t::Mat3f32                               orientation_type;
@@ -23,8 +26,10 @@ namespace tloc { namespace prefab { namespace math {
   public:
     Transform(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
-    entity_ptr    Create();
-    void          Add(entity_ptr a_ent);
+    component_ptr   Construct() const;
+
+    entity_ptr      Create() const;
+    void            Add(entity_ptr a_ent) const;
 
     TLOC_DECL_PARAM_VAR(position_type, Position, m_pos);
     TLOC_DECL_PARAM_VAR(orientation_type, Orientation, m_ori);

@@ -186,7 +186,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,
                        Exceeded_max_components_supported);
 
-    for (tl_uint i = 0; i < a_typeFlags.GetSize(); ++i)
+    for (tl_uint i = 0; i < a_typeFlags.size(); ++i)
     {
       m_typeFlags.push_back(a_typeFlags[i]);
     }

@@ -270,7 +270,7 @@ TLOC_PRINT_STACK_ARRAY_INDEX_OUT_OF_RANGE(a_rangeEnd) )
   typename ArrayFixed<STACK_ARRAY_PARAMS>::size_type
     ArrayFixed<STACK_ARRAY_PARAMS>::capacity() const
   {
-    return m_begin.GetSize();
+    return m_begin.size();
   }
 
   template <STACK_ARRAY_TYPES>

@@ -10,28 +10,28 @@ namespace TestingTemplateParams
 
   TEST_CASE("core/types/ParamList", "")
   {
-    SECTION("OneParam", "")
+    //SECTION("OneParam", "")
     {
       ParamList<tl_int> 
         p = MakeParams(1);
       CHECK(p.m_param1 == 1);
     }
 
-    SECTION("TwoParams", "")
+    //SECTION("TwoParams", "")
     {
       ParamList<tl_int, tl_int> 
         p = MakeParams(1, 2);
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2);
     }
 
-    SECTION("ThreeParams", "")
+    //SECTION("ThreeParams", "")
     {
       ParamList<tl_int, tl_int, tl_int> 
         p = MakeParams(1, 2, 3);
       CHECK(p.m_param1 == 1); CHECK(p.m_param2 == 2); CHECK(p.m_param3 == 3);
     }
 
-    SECTION("FourParams", "")
+    //SECTION("FourParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int> 
         p = MakeParams(1, 2, 3, 4);
@@ -39,7 +39,7 @@ namespace TestingTemplateParams
       CHECK(p.m_param4 == 4); 
     }
 
-    SECTION("FiveParams", "")
+    //SECTION("FiveParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int> 
@@ -49,7 +49,7 @@ namespace TestingTemplateParams
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5);
     }
 
-    SECTION("SixParams", "")
+    //SECTION("SixParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int> 
@@ -59,7 +59,7 @@ namespace TestingTemplateParams
       CHECK(p.m_param4 == 4); CHECK(p.m_param5 == 5); CHECK(p.m_param6 == 6);
     }
 
-    SECTION("SevenParams", "")
+    //SECTION("SevenParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int> 
@@ -70,7 +70,7 @@ namespace TestingTemplateParams
       CHECK(p.m_param7 == 7);
     }
     
-    SECTION("EightParams", "")
+    //SECTION("EightParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int, tl_int> 
@@ -81,7 +81,7 @@ namespace TestingTemplateParams
       CHECK(p.m_param7 == 7); CHECK(p.m_param8 == 8);
     }
 
-    SECTION("NineParams", "")
+    //SECTION("NineParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int, tl_int,
@@ -93,7 +93,7 @@ namespace TestingTemplateParams
       CHECK(p.m_param7 == 7); CHECK(p.m_param8 == 8); CHECK(p.m_param9 == 9);
     }
 
-    SECTION("TenParams", "")
+    //SECTION("TenParams", "")
     {
       ParamList<tl_int, tl_int, tl_int, tl_int,
                 tl_int, tl_int, tl_int, tl_int,

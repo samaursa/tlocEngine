@@ -29,9 +29,9 @@ namespace TestingVirtualStackObject
 {
   TEST_CASE("core/smart_ptr/VirtualStackObject/ctors", "")
   {
-    SECTION("All ctors", "")
+    //SECTION("All ctors", "")
     {
-      SECTION("Default VSO", "")
+      //SECTION("Default VSO", "")
       {
         int_vso onStack;
         onStack = 10;
@@ -64,7 +64,7 @@ namespace TestingVirtualStackObject
         CHECK(*onStack == 10);
       }
 
-      SECTION("No copy", "")
+      //SECTION("No copy", "")
       {
         int_nocopy_vso onStack;
         *onStack = 10;
@@ -75,7 +75,7 @@ namespace TestingVirtualStackObject
         CHECK_FALSE(onStack < onStack);
       }
 
-      SECTION("No copy no default", "")
+      //SECTION("No copy no default", "")
       {
         int_nocopy_nodef_vso onStack(MakeArgs(20));
         CHECK( (*onStack == 20) );
@@ -86,14 +86,14 @@ namespace TestingVirtualStackObject
       }
     }
 
-    SECTION("No default ctor", "")
+    //SECTION("No default ctor", "")
     {
       VirtualStackObjectBase_TI<int, p_virtual_stack_object::default_ctor::NotAvail>
         onStack(MakeArgs(20));
       CHECK( (*onStack == 20) );
     }
 
-    SECTION("Memory address check", "")
+    //SECTION("Memory address check", "")
     {
       int_vso onStack(MakeArgs(10));
       tl_uintptr  memAddress = core_utils::GetMemoryAddress(onStack.get());
@@ -164,7 +164,7 @@ namespace TestingVirtualStackObject
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/operators", "")
   {
-    SECTION("comparison", "")
+    //SECTION("comparison", "")
     {
       int_vso s1(MakeArgs(10)), s2(MakeArgs(20)), s3(MakeArgs(10));
       CHECK( (*s1 == *s3) );
@@ -172,7 +172,7 @@ namespace TestingVirtualStackObject
       CHECK_FALSE( (*s1 == *s2) );
     }
 
-    SECTION("No equality", "")
+    //SECTION("No equality", "")
     {
       no_def_ctor_vso onStack(MakeArgs(50));
       CHECK(onStack->a == 50);
@@ -243,7 +243,7 @@ namespace TestingVirtualStackObject {
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/arrays", "")
   {
-    SECTION("Array<>", "")
+    //SECTION("Array<>", "")
     {
       // BUGFIX: VSOs lose their pointer addresses when the memory is
       // reallocated e.g. in containers. This bug was fixed by forcing the
@@ -313,7 +313,7 @@ namespace TestingVirtualStackObject {
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/algorithms", "")
   {
-    SECTION("Compare::VirtualPtr", "")
+    //SECTION("Compare::VirtualPtr", "")
     {
       core_conts::ArrayFixed<int_vso, 100> int_array;
 

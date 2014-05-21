@@ -57,11 +57,27 @@ namespace tloc { namespace core { namespace logging {
     WriteToConsole(tloc::BufferArg a_formattedLog, severity_type a_severity)
   { DoWrite(a_formattedLog, a_severity); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Log, typename T_Logger, typename T_BuildConfig>
+  void
+    DoBreakOnSeverity(const T_Log& a_log, const T_Logger& a_logger, T_BuildConfig)
+  {
+    if (a_log.GetSeverity() >= a_logger.GetBreakOnSeverity())
+    { TLOC_DEBUG_BREAK(); }
+  }
+
+  template <typename T_Log, typename T_Logger>
+  void
+    DoBreakOnSeverity(const T_Log& , const T_Logger& , 
+                      core_cfg::p_build_config::Release)
+  { }
+
   // ///////////////////////////////////////////////////////////////////////
   // Log
 
-#define TLOC_LOG_TEMPS    typename T_Logger
-#define TLOC_LOG_PARAMS   T_Logger
+#define TLOC_LOG_TEMPS    typename T_Logger, typename T_BuildConfig
+#define TLOC_LOG_PARAMS   T_Logger, T_BuildConfig
 #define TLOC_LOG_TYPE     typename Log_T<TLOC_LOG_PARAMS>
 
   template <TLOC_LOG_TEMPS>
@@ -90,6 +106,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(BufferArg a_string)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_string); }
@@ -104,6 +123,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(BufferArgW a_string)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_string); }
@@ -118,6 +140,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_int a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -132,6 +157,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_long a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+    
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -146,6 +174,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(char8 a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -160,6 +191,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(char32 a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -174,6 +208,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_uint a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -188,6 +225,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_ulong a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -202,6 +242,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_float a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -216,6 +259,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_double a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -339,6 +385,7 @@ namespace tloc { namespace core { namespace logging {
     , m_name(a_name)
     , m_flags(k_count)
     , m_severity(log_type::k_info)
+    , m_breakOnSeverity(log_type::k_count)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -397,6 +444,14 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
+    ResetBreakOnSeverity()
+  { m_severity = log_type::k_count; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOGGER_TEMPS>
+  void
+    Logger_T<TLOC_LOGGER_PARAMS>::
     DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate)
   {
     str_type log = format_base_type::DoFormat(a_log);
@@ -409,7 +464,9 @@ namespace tloc { namespace core { namespace logging {
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
     DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush)
-  { m_logs.push_back(a_log); }
+  { 
+    m_logs.push_back(a_log);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

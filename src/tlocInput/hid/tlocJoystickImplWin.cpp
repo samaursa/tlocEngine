@@ -327,24 +327,23 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         // -----------------------------------------------------------------------
         // Since there are only 4 POVs in the DIJOYSTATE struct
       case TLOC_DIJOFS_POV(0):
-        if(DoChangePOV(0,diBuff[i], policy_type()) == false)
+        DoChangePOV(0,diBuff[i], policy_type());
         break;
       case TLOC_DIJOFS_POV(1):
-        if(DoChangePOV(1,diBuff[i], policy_type()) == false)
+        DoChangePOV(1,diBuff[i], policy_type());
         break;
       case TLOC_DIJOFS_POV(2):
-        if(DoChangePOV(2,diBuff[i], policy_type()) == false)
+        DoChangePOV(2,diBuff[i], policy_type());
         break;
       case TLOC_DIJOFS_POV(3):
-        if(DoChangePOV(3,diBuff[i], policy_type()) == false)
+        DoChangePOV(3,diBuff[i], policy_type());
         break;
       default:
         if( offset >= TLOC_DIJOFS_BUTTON(0) &&
             offset < TLOC_DIJOFS_BUTTON(joystick_event_type::k_count) )
         {
-          if(DoButtonEvent( (offset - TLOC_DIJOFS_BUTTON(0)), diBuff[i],
-                            policy_type()) == false)
-          { continue; }
+          DoButtonEvent( (offset - TLOC_DIJOFS_BUTTON(0)), diBuff[i],
+                            policy_type());
         }
         else if (diBuff[i].uAppData == 0x1313)
         {
@@ -493,8 +492,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         if (m_axisMoved[i])
         {
           if (m_parent.SendAxisChange(m_currentState, i,
-                                      m_currentState.m_axes[i]) == false)
+                                      m_currentState.m_axes[i]).IsVeto())
+          {
             return;
+          }
         }
       }
 
@@ -503,8 +504,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         if (m_sliderMoved[i])
         {
           if (m_parent.SendSliderChange(m_currentState, i,
-                                        m_currentState.m_sliders[i]) == false)
+                                        m_currentState.m_sliders[i]).IsVeto())
+          {
             return;
+          }
         }
       }
     }
@@ -523,7 +526,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_IMPL_TEMP>
-  bool
+  JOYSTICK_IMPL_TYPE::event_type
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
     DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate)
   {
@@ -536,13 +539,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       m_currentState.m_buttons[a_button] = true;
     }
 
-    return true;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_IMPL_TEMP>
-  bool
+  JOYSTICK_IMPL_TYPE::event_type
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
     DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered)
   {
@@ -562,7 +565,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_IMPL_TEMP>
-  bool
+  JOYSTICK_IMPL_TYPE::event_type
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
     DoChangePOV(tl_int a_povIndex, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered)
   {
@@ -574,7 +577,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_IMPL_TEMP>
-  bool
+  JOYSTICK_IMPL_TYPE::event_type
     JoystickImpl_T<JOYSTICK_IMPL_PARAMS>::
     DoChangePOV(tl_int a_povIndex, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate)
   {
@@ -599,7 +602,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
     }
 
-    return true;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

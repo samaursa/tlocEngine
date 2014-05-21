@@ -3,9 +3,6 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
-#include <tlocMath/types/tlocCuboid.h>
-
-#include <tlocGraphics/component_system/tlocMesh.h>
 
 #include <tlocPrefab/math/tlocTransform.h>
 
@@ -24,26 +21,26 @@ namespace tloc { namespace prefab { namespace graphics {
   // ///////////////////////////////////////////////////////////////////////
   // Cuboid
 
-  Cuboid::entity_ptr
-    Cuboid::
-    Create()
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent);
-
-    return ent;
-  }
+  Cuboid::
+    Cuboid(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+    , m_texCoords(true) 
+    , m_normals(true) 
+    , m_cuboid(cuboid_type (cuboid_type::width(1.0f),
+                            cuboid_type::height(1.0f),
+                            cuboid_type::depth(1.0f)) )
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  Cuboid::component_ptr
     Cuboid::
-    Add(entity_ptr a_ent)
+    Construct()
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
 
-    typedef ComponentPoolManager        pool_mgr;
+    typedef ComponentPoolManager                          pool_mgr;
 
     typedef core_conts::Array<gfx_cs::Mesh::vert_type>    vert_cont;
     typedef vert_cont::const_iterator                     vert_cont_itr;
@@ -271,6 +268,28 @@ namespace tloc { namespace prefab { namespace graphics {
     meshPtr->SetTexCoordsEnabled(m_texCoords);
     meshPtr->SetNormalsEnabled(m_normals);
 
+    return meshPtr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Cuboid::entity_ptr
+    Cuboid::
+    Create()
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent);
+
+    return ent;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Cuboid::
+    Add(entity_ptr a_ent)
+  {
+
     // -----------------------------------------------------------------------
     // transform component
 
@@ -278,8 +297,9 @@ namespace tloc { namespace prefab { namespace graphics {
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
+    // mesh component
 
-    m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValuePtr() );
+    m_entMgr->InsertComponent(a_ent, Construct()); 
 
   }
 };};};

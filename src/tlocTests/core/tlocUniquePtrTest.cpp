@@ -317,7 +317,7 @@ namespace TestingUniquePtr
 
   TEST_CASE("core/smart_ptr/unique_ptr/Release", "")
   {
-    SECTION("Basic functionality", "")
+    //SECTION("Basic functionality", "")
     {
       UniquePtr<derived> up(new derived());
       CHECK(up);
@@ -341,8 +341,8 @@ namespace TestingUniquePtr
                                 core_cfg::BuildConfig::build_config_type() );
     }
 
-    SECTION("Basic functionality", "Also tests whether release is untracking "
-             "the memory address it started tracking on construction.")
+    //SECTION("Basic functionality", "Also tests whether release is untracking "
+             //"the memory address it started tracking on construction.")
     {
       UniquePtr<tl_int> up(new tl_int(50));
       CHECK(up);

@@ -14,12 +14,59 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using gfx_cs::material_sptr;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Material
+
+  Material::
+    Material(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Material::component_ptr
+    Material::
+    Construct(BufferArg a_vertexShader, BufferArg a_fragmentShader) const
+  {
+    using namespace gfx_cs::components;
+
+    typedef ComponentPoolManager              pool_mgr;
+    typedef gfx_cs::material_pool             mat_pool;
+
+    gfx_cs::material_pool_vptr matPool
+      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Material>();
+
+    mat_pool::iterator  itrMat = matPool->GetNext();
+    (*itrMat)->SetValue(MakeShared<gfx_cs::Material>() );
+
+    gfx_cs::material_sptr mat = *(*itrMat)->GetValuePtr();
+
+    mat->SetVertexSource(a_vertexShader);
+    mat->SetFragmentSource(a_fragmentShader);
+
+    gfx_gl::shader_operator_vso so;
+
+    for (const_uniform_itr 
+         itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
+         itr != itrEnd; ++itr)
+    { so->AddUniform(**itr); }
+
+    for (const_attribute_itr 
+         itr = m_attributes.begin(), itrEnd = m_attributes.end();
+         itr != itrEnd; ++itr)
+    { so->AddAttribute(**itr); }
+
+    mat->AddShaderOperator(*so);
+
+    return mat;
+  }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Material::entity_ptr
     Material::
     Create(const core_io::Path& a_vertexShader,
-           const core_io::Path& a_fragmentShader)
+           const core_io::Path& a_fragmentShader) const
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent, a_vertexShader, a_fragmentShader);
@@ -32,7 +79,7 @@ namespace tloc { namespace prefab { namespace graphics {
   Material::entity_ptr
     Material::
     Create(BufferArg a_vertexShader,
-           BufferArg a_fragmentShader)
+           BufferArg a_fragmentShader) const
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent, a_vertexShader, a_fragmentShader);
@@ -46,7 +93,7 @@ namespace tloc { namespace prefab { namespace graphics {
     Material::
     Add(entity_ptr a_ent,
         const core_io::Path& a_vertexShader,
-        const core_io::Path& a_fragmentShader)
+        const core_io::Path& a_fragmentShader) const
   {
     core_io::Path vsFullPath( (m_assetsPath + a_vertexShader.GetPath()).c_str() );
     core_io::Path fsFullPath( (m_assetsPath + a_fragmentShader.GetPath()).c_str() );
@@ -89,37 +136,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
   void
     Material::
-    Add(entity_ptr a_ent, BufferArg a_vertexShader, BufferArg a_fragmentShader)
+    Add(entity_ptr a_ent, 
+        BufferArg a_vertexShader, BufferArg a_fragmentShader) const
   {
-    using namespace gfx_cs::components;
-
-    typedef ComponentPoolManager              pool_mgr;
-    typedef gfx_cs::material_pool             mat_pool;
-
-    gfx_cs::material_pool_vptr matPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Material>();
-
-    mat_pool::iterator  itrMat = matPool->GetNext();
-    (*itrMat)->SetValue(MakeShared<gfx_cs::Material>() );
-
-    gfx_cs::material_sptr mat = *(*itrMat)->GetValuePtr();
-
-    mat->SetVertexSource(a_vertexShader);
-    mat->SetFragmentSource(a_fragmentShader);
-
-    gfx_gl::shader_operator_vso so;
-
-    for (uniform_itr itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
-         itr != itrEnd; ++itr)
-    { so->AddUniform(**itr); }
-
-    for (attribute_itr itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    { so->AddAttribute(**itr); }
-
-    mat->AddShaderOperator(*so);
-
-    m_entMgr->InsertComponent(a_ent, mat);
+    m_entMgr->InsertComponent(a_ent, Construct(a_vertexShader, a_fragmentShader));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -669,7 +669,7 @@ namespace TestingShaderOperator
     "  gl_Position   = u_vec4 + u_vec5;                                \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
-    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x   \n"
+    "  gl_Position.z = u_uint * u_uivec2.x * u_uivec3.x * u_uivec4.x;  \n"
     "}\n";
 
 #elif defined (TLOC_OS_IPHONE)
@@ -837,6 +837,11 @@ namespace TestingShaderOperator
 
       so->AddAttribute(*attribute);
     }
+
+    // for windows, we'll have to get the pointer for attributeFix again since
+    // more attributes were added
+    attributeBugFix = core::find_if(so->begin_attributes(), so->end_attributes(),
+      gfx_gl::algos::shader_operator::compare::AttributeName("u_vec5"))->first.get();
 #endif
 
     // Copy the operator

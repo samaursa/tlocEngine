@@ -187,7 +187,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimator::
     GetFPS() const
   {
-    return static_cast<size_type>(1.0f / m_coordSets[m_currentSet].m_frameDeltaT);
+    return static_cast<size_type>( (1.0f / m_coordSets[m_currentSet].m_frameDeltaT) + 0.5f);
   }
 
   void

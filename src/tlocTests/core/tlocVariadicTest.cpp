@@ -13,7 +13,7 @@ namespace TestingVariadic
   void CheckVariadic(const Variadic<tl_int, T_Size>& a_variableArgs)
   {
     bool testPassed = true;
-    for (tl_uint i = 0; i < a_variableArgs.GetSize(); ++i)
+    for (tl_uint i = 0; i < a_variableArgs.size(); ++i)
     {
       if (a_variableArgs[i] != (tl_int)(i + 1))
       {

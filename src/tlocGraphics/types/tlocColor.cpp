@@ -94,7 +94,7 @@ namespace tloc { namespace graphics { namespace types {
         // put as many colors are you can in the int - the rest will be 0
         // NOTE: We convert the color values to u8 because it may be u8, u16
         //       or f32
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
@@ -128,7 +128,7 @@ namespace tloc { namespace graphics { namespace types {
         int_color_type  retVal = 0;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
@@ -162,7 +162,7 @@ namespace tloc { namespace graphics { namespace types {
         int_color_type  retVal = 0;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
@@ -196,7 +196,7 @@ namespace tloc { namespace graphics { namespace types {
         int_color_type  retVal = 0;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           retVal |= DoGetAsU8(a_colArray[r]) << bitShift[r];
@@ -231,7 +231,7 @@ namespace tloc { namespace graphics { namespace types {
         typedef typename T_VectorType::value_type value_type;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
@@ -264,7 +264,7 @@ namespace tloc { namespace graphics { namespace types {
         typedef typename T_VectorType::value_type value_type;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
@@ -297,7 +297,7 @@ namespace tloc { namespace graphics { namespace types {
         typedef typename T_VectorType::value_type value_type;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
@@ -330,7 +330,7 @@ namespace tloc { namespace graphics { namespace types {
         typedef typename T_VectorType::value_type value_type;
 
         // put as many colors are you can in the int - the rest will be 0
-        switch(a_colArray.GetSize())
+        switch(a_colArray.size())
         {
         case 1:
           a_vecOut[0] = DoNormalizeColor<value_type>(a_colArray[r]);
@@ -464,7 +464,7 @@ namespace tloc { namespace graphics { namespace types {
   {
     this_type temp(*this);
 
-    for (size_type i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.size()); ++i)
     { temp[i] += a_other[i]; }
 
     return temp;
@@ -477,7 +477,7 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator +=(const this_type &a_other)
   {
-    for (size_type i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.size()); ++i)
     { m_color[i] += a_other[i]; }
 
     return *this;
@@ -492,7 +492,7 @@ namespace tloc { namespace graphics { namespace types {
   {
     this_type temp(*this);
 
-    for (size_type i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.size()); ++i)
     { temp[i] *= a_other[i]; }
 
     return temp;
@@ -505,7 +505,7 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator *=(const this_type &a_other)
   {
-    for (size_type i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.size()); ++i)
     { m_color[i] *= a_other[i]; }
 
     return *this;
@@ -520,7 +520,7 @@ namespace tloc { namespace graphics { namespace types {
   {
     this_type temp(*this);
 
-    for (size_type i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.size()); ++i)
     { temp[i] -= a_other[i]; }
 
     return temp;
@@ -533,7 +533,7 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator -=(const this_type &a_other)
   {
-    for (size_type i =0; i < m_color.GetSize(); ++i)
+    for (tl_int i =0; i < core_utils::CastNumber<tl_int>(m_color.size()); ++i)
     { m_color[i] -= a_other[i]; }
 
     return *this;

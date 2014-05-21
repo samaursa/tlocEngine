@@ -135,7 +135,7 @@ namespace TestingInitializeAndDestroy
     CHECK(s3.Initialize(10, 5.0f, 10.0) == ErrorSuccess);
     CHECK(s3.Destroy() == ErrorSuccess);
 
-    SECTION("Assert fired if Destroy() not called", "")
+    //SECTION("Assert fired if Destroy() not called", "")
     {
       TLOC_TEST_ASSERT
       {

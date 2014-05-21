@@ -499,7 +499,7 @@ namespace tloc { namespace graphics { namespace gl {
       case GL_FLOAT_MAT2:
         {
           const GLint matSize = 2 * 2;
-          TLOC_STATIC_ASSERT( matSize == Mat2f32::k_TableSize,
+          TLOC_STATIC_ASSERT( matSize == Mat2f32::k_size,
                               Mismatched_uniform_array_size );
           TLOC_UNUSED(matSize);
 
@@ -517,7 +517,7 @@ namespace tloc { namespace graphics { namespace gl {
       case GL_FLOAT_MAT3:
         {
           const GLint matSize = 3 * 3;
-          TLOC_STATIC_ASSERT( matSize == Mat3f32::k_TableSize,
+          TLOC_STATIC_ASSERT( matSize == Mat3f32::k_size,
                               Mismatched_uniform_array_size );
           TLOC_UNUSED(matSize);
 
@@ -535,7 +535,7 @@ namespace tloc { namespace graphics { namespace gl {
       case GL_FLOAT_MAT4:
         {
           const GLint matSize = 4 * 4;
-          TLOC_STATIC_ASSERT( matSize == Mat4f32::k_TableSize,
+          TLOC_STATIC_ASSERT( matSize == Mat4f32::k_size,
                               Mismatched_uniform_array_size );
           TLOC_UNUSED(matSize);
 

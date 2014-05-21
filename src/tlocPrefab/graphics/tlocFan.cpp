@@ -22,31 +22,25 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using math_t::Circle_T;
 
-  Fan::entity_ptr
-    Fan::
-    Create()
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent);
+  // ///////////////////////////////////////////////////////////////////////
+  // Fan
 
-    return ent;
-  }
+  Fan::
+    Fan(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+    , m_circle(circle_type(circle_type::radius(1.0f)) )
+    , m_numSides(8)
+    , m_texCoords(true)
+  { }
 
-  void
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Fan::component_ptr
     Fan::
-    Add(entity_ptr a_ent)
+    Construct() const
   {
     typedef ComponentPoolManager    pool_mgr;
     typedef gfx_cs::fan_pool        fan_pool;
-
-    // -----------------------------------------------------------------------
-    // transform component
-
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
-    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
-
-    // -----------------------------------------------------------------------
-    // fan component
 
     gfx_cs::fan_pool_vptr fanPool 
       = m_compPoolMgr->GetOrCreatePool<gfx_cs::Fan>();
@@ -56,7 +50,35 @@ namespace tloc { namespace prefab { namespace graphics {
       MakeShared<gfx_cs::Fan>(m_circle, gfx_cs::Fan::sides(m_numSides)
       ));
 
-    m_entMgr->InsertComponent(a_ent, *(*itr)->GetValuePtr() );
+    return *(*itr)->GetValuePtr();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Fan::entity_ptr
+    Fan::
+    Create() const
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent);
+
+    return ent;
+  }
+
+  void
+    Fan::
+    Add(entity_ptr a_ent) const
+  {
+    // -----------------------------------------------------------------------
+    // transform component
+
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // fan component
+
+    m_entMgr->InsertComponent(a_ent, Construct());
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)

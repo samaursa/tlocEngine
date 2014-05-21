@@ -13,7 +13,7 @@ namespace TestingLogging
 
   TEST_CASE("core/logger", "")
   {
-    SECTION("Print all log severity types", "")
+    //SECTION("Print all log severity types", "")
     {
       TLOC_LOG_INFO(&lcfi) << "Info log";
       TLOC_LOG_SUCCESS(&lcfi) << "Success log";
@@ -22,7 +22,7 @@ namespace TestingLogging
       TLOC_LOG_ERR(&lcfi) << "Error log";
     }
 
-    SECTION("Disable log test", "")
+    //SECTION("Disable log test", "")
     {
       lcfi.SetDisable(true);
 
@@ -32,7 +32,7 @@ namespace TestingLogging
       TLOC_LOG_ERR(&lcfi) << "SHOULD NOT DISPLAY";
     }
 
-    SECTION("All log supported types test", "")
+    //SECTION("All log supported types test", "")
     {
       TLOC_LOG_INFO(&lcfi) << 'a';
       TLOC_LOG_INFO(&lcfi) << L'a';
@@ -46,7 +46,7 @@ namespace TestingLogging
       TLOC_LOG_INFO(&lcfi) << (tl_double)5.0f;
     }
 
-    SECTION("Log filter test", "")
+    //SECTION("Log filter test", "")
     {
       lcfi.SetDisable(false);
       lcfi.SetSeverity(Log::k_warning);
@@ -57,12 +57,12 @@ namespace TestingLogging
       TLOC_LOG_ERR(&lcfi) << "Should display";
     }
 
-    SECTION("Filename only in log", "")
+    //SECTION("Filename only in log", "")
     {
       TLOC_LOG_WARN_FILENAME_ONLY(&lcfi) << "only filename displayed";
     }
 
-    SECTION("All logging macros with IF", "")
+    //SECTION("All logging macros with IF", "")
     {
       s32 i = 1;
 

@@ -6,9 +6,11 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocMath/tlocRange.h>
 
@@ -28,15 +30,19 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   struct MouseCallbacks
   {
-    virtual bool
+  public:
+    typedef core_dispatch::Event                            event_type;
+
+  public:
+    virtual event_type
       OnButtonPress(const tl_size a_caller,
                     const MouseEvent& a_event,
                     const MouseEvent::button_code_type a_buttonCode) const = 0;
-    virtual bool
+    virtual event_type
       OnButtonRelease(const tl_size a_caller,
                       const MouseEvent& a_event,
                       const MouseEvent::button_code_type a_buttonCode) const = 0;
-    virtual bool
+    virtual event_type
       OnMouseMove(const tl_size a_caller,
                   const MouseEvent& a_event) const = 0;
   };
@@ -48,16 +54,18 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   template <typename T>
   struct MouseCallbackGroupT:
-    public core::base_classes::CallbackGroupTArray<T, MouseCallbacks>::type
+    public core::dispatch::CallbackGroupTArray<T, MouseCallbacks>::type
   {
   public:
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, MouseCallbacks>::type      base_type;
+
+    typedef typename base_type::event_type              event_type;
 
     using base_type::m_observers;
 
   public:
-    virtual bool
+    virtual event_type
       OnButtonPress(const tl_size a_caller,
                     const MouseEvent& a_event,
                     const MouseEvent::button_code_type a_buttonCode) const
@@ -65,15 +73,16 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonPress(a_caller, a_event, a_buttonCode) == true)
+            OnButtonPress(a_caller, a_event, a_buttonCode).IsVeto())
         {
-          return true; // Veto the rest of the events
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+
+      return core_dispatch::f_event::Continue();
     }
 
-    virtual bool
+    virtual event_type
       OnButtonRelease(const tl_size a_caller,
                       const MouseEvent& a_event,
                       const MouseEvent::button_code_type a_buttonCode) const
@@ -81,27 +90,28 @@ namespace tloc { namespace input { namespace hid {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonRelease(a_caller, a_event, a_buttonCode) == true)
+            OnButtonRelease(a_caller, a_event, a_buttonCode).IsVeto())
         {
-          return true; // Veto the rest of the events
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+
+      return core_dispatch::f_event::Continue();
     }
 
-    virtual bool
+    virtual event_type
       OnMouseMove(const tl_size a_caller,
                   const MouseEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->
-            OnMouseMove(a_caller, a_event) == true)
+        if (m_observers[i]->OnMouseMove(a_caller, a_event).IsVeto())
         {
-          return true; // Veto the rest of the events
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+
+      return core_dispatch::f_event::Continue();
     }
   };
 
@@ -111,7 +121,7 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Mouse
-    : public core::base_classes::DispatcherBaseArray
+    : public core::dispatch::DispatcherBaseArray
              <MouseCallbacks, MouseCallbackGroupT>::type
     , public core_bclass::NonCopyable_I
     , public p_hid::Mouse
@@ -170,8 +180,14 @@ namespace tloc { namespace input { namespace hid {
     bool           m_clamped;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
   typedef Mouse<InputPolicy::Buffered>   MouseB;
   typedef Mouse<InputPolicy::Immediate>  MouseI;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(MouseB, mouse_b);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(MouseI, mouse_i);
 
 };};};
 

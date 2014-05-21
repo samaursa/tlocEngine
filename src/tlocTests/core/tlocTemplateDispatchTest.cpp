@@ -1,14 +1,19 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 
+// This class is purposefully declared/defined before the dispatchers to 
+// ensure that dispatching works when class (pipes) has no prior knowledge
+// of dispatcher or its callbacks
 namespace ns
 {
+  using namespace tloc::core_dispatch;
   struct pipes
   {
-    void C1() {}
-    void C2() {}
-    void C3() {}
+    Event C1() { return f_event::Continue(); }
+    Event C2() { return f_event::Continue(); }
+    Event C3() { return f_event::Continue(); }
   };
 };
 
@@ -18,14 +23,15 @@ namespace TestingTemplateDispatch
 {
   using namespace tloc;
   using namespace core;
+  using namespace dispatch;
 
   struct bullets
   {
     bullets() : m_c1(0), m_c2(0), m_c3(0) {}
 
-    void C1() { ++m_c1; }
-    void C2() { ++m_c2; }
-    void C3() { ++m_c3; }
+    Event C1() { ++m_c1; return f_event::Continue(); }
+    Event C2() { ++m_c2; return f_event::Continue(); }
+    Event C3() { ++m_c3; return f_event::Continue(); }
 
     u32 m_c1, m_c2, m_c3;
   };
@@ -34,9 +40,9 @@ namespace TestingTemplateDispatch
   {
     particles() : m_c1(0), m_c2(0), m_c3(0) {}
 
-    void C1() { ++m_c1; }
-    void C2() { ++m_c2; }
-    void C3() { ++m_c3; }
+    Event C1() { ++m_c1; return f_event::Continue(); }
+    Event C2() { ++m_c2; return f_event::Continue(); }
+    Event C3() { ++m_c3; return f_event::Continue(); }
 
     u32 m_c1, m_c2, m_c3;
   };
@@ -50,9 +56,9 @@ namespace TestingTemplateDispatch
 
   template <typename T>
   struct WindowCallbackGroupT
-    : public base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
+    : public dispatch::CallbackGroupTArray<T, WindowCallbacks>::type
   {
-    typedef typename base_classes::
+    typedef typename dispatch::
       CallbackGroupTArray<T, WindowCallbacks>::type       base_type;
     using base_type::m_observers;
 
@@ -60,7 +66,8 @@ namespace TestingTemplateDispatch
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->C1();
+        if (m_observers[i]->C1().IsVeto())
+        { break; }
       }
     }
 
@@ -68,7 +75,8 @@ namespace TestingTemplateDispatch
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->C2();
+        if (m_observers[i]->C2().IsVeto())
+        { break; }
       }
     }
 
@@ -76,13 +84,14 @@ namespace TestingTemplateDispatch
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->C3();
+        if (m_observers[i]->C3().IsVeto())
+        { break; }
       }
     }
   };
 
   struct Window
-    : public base_classes::DispatcherBaseArray
+    : public dispatch::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
   {
     void CallC1()

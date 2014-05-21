@@ -6,7 +6,7 @@
 
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/error/tlocError.h>
@@ -52,9 +52,9 @@ namespace tloc { namespace physics { namespace box2d {
 
   template <typename T>
   struct ContactCallbackGroupT :
-    public core::base_classes::CallbackGroupTArray<T, ContactCallbacks>::type
+    public core::dispatch::CallbackGroupTArray<T, ContactCallbacks>::type
   {
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, ContactCallbacks>::type        base_type;
 
     typedef typename base_type::size_type                   size_type;
@@ -93,12 +93,12 @@ namespace tloc { namespace physics { namespace box2d {
   /// events to callback classes registered to it.
   ///-------------------------------------------------------------------------
   class PhysicsManager
-    : public core::base_classes::
+    : public core::dispatch::
       DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
   {
   public:
     typedef PhysicsManager                              this_type;
-    typedef core::base_classes::DispatcherBaseArray
+    typedef core::dispatch::DispatcherBaseArray
       <ContactCallbacks, ContactCallbackGroupT>::type   base_type;
 
     typedef base_type::size_type  size_type;

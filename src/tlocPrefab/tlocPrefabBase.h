@@ -5,6 +5,7 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 // All major namespaces that prefab uses should go here
 
@@ -36,10 +37,15 @@ namespace tloc {
   // ///////////////////////////////////////////////////////////////////////
   // Base for all prefab objects
 
-  class Prefab_I
+  template <typename T_ComponentType>
+  class Prefab_TI
     : core_bclass::NonCopyable_I
   {
   public:
+    typedef T_ComponentType                       component_type;
+    typedef core_sptr::SharedPtr<component_type>  component_ptr;
+    typedef Prefab_TI<component_type>             this_type;
+
     typedef core_cs::entity_manager_vptr      entity_mgr_ptr;
     typedef core_cs::component_pool_mgr_vptr  comp_pool_mgr_ptr;
     typedef core_cs::Entity                   entity_type;
@@ -47,9 +53,9 @@ namespace tloc {
     typedef core_err::Error                   error_type;
 
   protected:
-    Prefab_I(entity_mgr_ptr  a_entMgr, comp_pool_mgr_ptr a_poolMgr)
-             : m_entMgr(a_entMgr)
-             , m_compPoolMgr(a_poolMgr)
+    Prefab_TI(entity_mgr_ptr  a_entMgr, comp_pool_mgr_ptr  a_poolMgr)
+      : m_entMgr(a_entMgr)
+      , m_compPoolMgr(a_poolMgr)
     { }
 
   protected:

@@ -17,19 +17,19 @@ namespace tloc { namespace prefab { namespace graphics {
   using math_cs::Transform;
   using math_cs::transform_sptr;
 
-  Mesh::entity_ptr
-    Mesh::
-    Create(const vert_cont_type& a_vertices)
-  {
-    entity_ptr ent = m_entMgr->CreateEntity();
-    Add(ent, a_vertices);
+  // ///////////////////////////////////////////////////////////////////////
+  // Mesh
 
-    return ent;
-  }
+  Mesh::
+    Mesh(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    : base_type(a_entMgr, a_poolMgr)
+  { }
 
-  void
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Mesh::component_ptr
     Mesh::
-    Add(entity_ptr a_ent, const vert_cont_type& a_vertices)
+    Construct(const vert_cont_type& a_vertices) const
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
@@ -55,13 +55,35 @@ namespace tloc { namespace prefab { namespace graphics {
          itr != itrEnd; ++itr)
     { meshPtr->AddVertex(*itr); }
 
-    m_entMgr->InsertComponent(a_ent, *(*itrMesh)->GetValuePtr() );
+    return meshPtr;
+  }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Mesh::entity_ptr
+    Mesh::
+    Create(const vert_cont_type& a_vertices) const
+  {
+    entity_ptr ent = m_entMgr->CreateEntity();
+    Add(ent, a_vertices);
+
+    return ent;
+  }
+
+  void
+    Mesh::
+    Add(entity_ptr a_ent, const vert_cont_type& a_vertices) const
+  {
     // -----------------------------------------------------------------------
-    // transform component
+    // Transform component
 
     if (a_ent->HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // Mesh component
+
+    m_entMgr->InsertComponent(a_ent, Construct(a_vertices));
   }
 
 };};};

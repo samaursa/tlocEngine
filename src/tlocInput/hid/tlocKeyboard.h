@@ -8,7 +8,8 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocInput/tlocInputManager.h>
 #include <tlocInput/hid/tlocKeyboardImpl.h>
@@ -125,8 +126,14 @@ namespace tloc { namespace input { namespace hid {
     impl_ptr_type m_impl;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
   typedef Keyboard<InputPolicy::Buffered>   KeyboardB;
   typedef Keyboard<InputPolicy::Immediate>  KeyboardI;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(KeyboardB, keyboard_b);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(KeyboardI, keyboard_i);
 
 };};};
 

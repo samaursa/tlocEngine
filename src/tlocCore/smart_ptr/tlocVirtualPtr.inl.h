@@ -82,17 +82,6 @@ namespace tloc { namespace core { namespace smart_ptr {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VIRTUAL_PTR_TEMPS>
-  TLOC_VIRTUAL_PTR_TYPE::this_type&
-    VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
-    operator=(pointer a_ptr)
-  {
-    this_type(a_ptr).swap(*this);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_PTR_TEMPS>
   TLOC_VIRTUAL_PTR_TYPE::pointer
     VirtualPtr<TLOC_VIRTUAL_PTR_PARAMS>::
     operator->() const
@@ -289,17 +278,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator= (this_type a_other)
   {
     m_rawPtr = a_other.m_rawPtr;
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_PTR_RELEASE_TEMPS>
-  TLOC_VIRTUAL_PTR_RELEASE_TYPE::this_type&
-    VirtualPtr<TLOC_VIRTUAL_PTR_RELEASE_PARAMS>::
-    operator= (const pointer a_other)
-  {
-    m_rawPtr = a_other;
     return *this;
   }
 

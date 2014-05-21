@@ -24,8 +24,9 @@ namespace tloc {
     namespace configs          {};
     namespace containers       {};
     namespace data_structs     {};
+    namespace dispatch         {};
     namespace error            {};
-    namespace logging           {};
+    namespace logging          {};
     namespace io               {};
     namespace memory           {};
     namespace parsers          {};
@@ -47,6 +48,7 @@ namespace tloc {
   namespace core_cfg          = core::configs;
   namespace core_conts        = core::containers;
   namespace core_ds           = core::data_structs;
+  namespace core_dispatch     = core::dispatch;
   namespace core_err          = core::error;
   namespace core_log          = core::logging;
   namespace core_io           = core::io;

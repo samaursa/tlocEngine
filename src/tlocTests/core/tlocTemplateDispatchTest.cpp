@@ -50,9 +50,9 @@ namespace TestingTemplateDispatch
 
   template <typename T>
   struct WindowCallbackGroupT
-    : public base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
+    : public dispatch::CallbackGroupTArray<T, WindowCallbacks>::type
   {
-    typedef typename base_classes::
+    typedef typename dispatch::
       CallbackGroupTArray<T, WindowCallbacks>::type       base_type;
     using base_type::m_observers;
 
@@ -82,7 +82,7 @@ namespace TestingTemplateDispatch
   };
 
   struct Window
-    : public base_classes::DispatcherBaseArray
+    : public dispatch::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
   {
     void CallC1()

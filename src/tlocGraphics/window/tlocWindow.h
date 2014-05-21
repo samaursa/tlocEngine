@@ -11,7 +11,7 @@
 #include <tlocCore/containers/tlocQueue.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>

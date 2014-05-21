@@ -6,7 +6,7 @@
 #include <tlocCore/tlocBase.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>

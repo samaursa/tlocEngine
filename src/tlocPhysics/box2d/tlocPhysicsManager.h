@@ -6,7 +6,7 @@
 
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/error/tlocError.h>

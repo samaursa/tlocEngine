@@ -5,6 +5,13 @@
 
 // All major namespaces that core uses should go here
 
+#ifdef TLOC_CXX03
+  #include <tlocCore/types/tlocNullptr.h>
+
+  using std::nullptr_t;
+  using std::nullptr;
+#endif
+
 namespace tloc {
 
   //////////////////////////////////////////////////////////////////////////

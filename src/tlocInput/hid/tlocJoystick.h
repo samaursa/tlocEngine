@@ -9,7 +9,8 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.h>
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocInput/hid/tlocJoystickImpl.h>
 
@@ -173,8 +174,14 @@ namespace tloc { namespace input { namespace hid {
     impl_ptr_type   m_impl;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
   typedef Joystick_T<InputPolicy::Buffered>           JoystickB;
   typedef Joystick_T<InputPolicy::Immediate>          JoystickI;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(JoystickB, joystick_b);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(JoystickI, joystick_i);
 
 };};};
 

@@ -49,10 +49,10 @@ namespace tloc { namespace input { namespace hid {
   ///-------------------------------------------------------------------------
   template <typename T>
   struct MouseCallbackGroupT:
-    public core::base_classes::CallbackGroupTArray<T, MouseCallbacks>::type
+    public core::dispatch::CallbackGroupTArray<T, MouseCallbacks>::type
   {
   public:
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, MouseCallbacks>::type      base_type;
 
     using base_type::m_observers;
@@ -112,7 +112,7 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_Policy = InputPolicy::Buffered,
             typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Mouse
-    : public core::base_classes::DispatcherBaseArray
+    : public core::dispatch::DispatcherBaseArray
              <MouseCallbacks, MouseCallbackGroupT>::type
     , public core_bclass::NonCopyable_I
     , public p_hid::Mouse

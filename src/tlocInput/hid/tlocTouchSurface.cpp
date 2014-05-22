@@ -60,7 +60,7 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnTouchPress( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->OnTouchPress( (tl_size)this, a_event).IsVeto())
       {
         break;
       }
@@ -73,7 +73,7 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnTouchRelease( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->OnTouchRelease( (tl_size)this, a_event).IsVeto())
       {
         break;
       }
@@ -86,7 +86,7 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnTouchMove( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->OnTouchMove( (tl_size)this, a_event).IsVeto())
       {
         break;
       }

@@ -10,6 +10,7 @@ function(add_common_libraries EXEC_NAME)
     tlocPhysics
     tlocPrefab
     tlocAnimation
+    FreeType
     Box2D
     )
 
@@ -90,6 +91,7 @@ link_directories(
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
 
   ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
   )
 
 # -----------------------------------------------------------------------------

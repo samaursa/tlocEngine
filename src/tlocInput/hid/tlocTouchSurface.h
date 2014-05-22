@@ -14,6 +14,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tloccore/containers/tlocContainers.h>
 #include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
@@ -27,12 +28,19 @@ namespace tloc { namespace input { namespace hid {
 
   struct TouchSurfaceCallbacks
   {
-    virtual bool OnTouchPress(const tl_size a_caller,
-                              const TouchSurfaceEvent& a_event) = 0;
-    virtual bool OnTouchRelease(const tl_size a_caller,
-                                const TouchSurfaceEvent& a_event) = 0;
-    virtual bool OnTouchMove(const tl_size a_caller,
-                             const TouchSurfaceEvent& a_event) = 0;
+  public:
+    typedef core_dispatch::Event                      event_type;
+
+  public:
+    virtual event_type 
+      OnTouchPress(const tl_size a_caller, 
+                   const TouchSurfaceEvent& a_event) = 0;
+    virtual event_type 
+      OnTouchRelease(const tl_size a_caller, 
+                     const TouchSurfaceEvent& a_event) = 0;
+    virtual event_type 
+      OnTouchMove(const tl_size a_caller, 
+                  const TouchSurfaceEvent& a_event) = 0;
   };
 
   template <typename T>
@@ -44,46 +52,51 @@ namespace tloc { namespace input { namespace hid {
     typedef typename core::dispatch::
       CallbackGroupTArray<T, TouchSurfaceCallbacks>::type     base_type;
 
+    typedef typename base_type::event_type                    event_type;
+
     using base_type::m_observers;
 
   public:
-    virtual bool OnTouchPress(const tl_size a_caller,
-                              const TouchSurfaceEvent& a_event)
+    virtual event_type 
+      OnTouchPress(const tl_size a_caller, 
+                   const TouchSurfaceEvent& a_event)
     {
       for (tl_size i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnTouchPress(a_caller, a_event) == true)
+        if (m_observers[i]->OnTouchPress(a_caller, a_event).IsVeto())
         {
-          return true; // Veto the rest of the events
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    virtual bool OnTouchRelease(const tl_size a_caller,
-                                const TouchSurfaceEvent& a_event)
+    virtual event_type 
+      OnTouchRelease(const tl_size a_caller, 
+                     const TouchSurfaceEvent& a_event)
     {
       for (tl_size i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnTouchRelease(a_caller, a_event) == true)
+        if (m_observers[i]->OnTouchRelease(a_caller, a_event).IsVeto())
         {
-          return true; // Veto the rest of the events
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    virtual bool OnTouchMove(const tl_size a_caller,
-                             const TouchSurfaceEvent& a_event)
+    virtual event_type 
+      OnTouchMove(const tl_size a_caller,
+                  const TouchSurfaceEvent& a_event)
     {
       for (tl_size i = 0; i < m_observers.size(); ++i)
       {
-        if (m_observers[i]->OnTouchMove(a_caller, a_event) == true)
+        if (m_observers[i]->OnTouchMove(a_caller, a_event).IsVeto())
         {
-          return true;
+          return core_dispatch::f_event::Veto();
         }
       }
-      return false;
+      return core_dispatch::f_event::Continue();
     }
   };
 

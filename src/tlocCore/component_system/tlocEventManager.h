@@ -9,6 +9,7 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -45,9 +46,9 @@ namespace tloc { namespace core { namespace component_system {
     bool DispatchNow(const EventBase& a_event, 
                      const listeners_list& a_includeOnly) const;
 
-    template <tl_int T_Size>
+    template <typename T_EventListener, tl_int T_Size>
     bool DispatchNow(const EventBase& a_event,
-                     const core_ds::Tuple<EventListener*, T_Size>& a_includeOnly) const;
+                     const core_ds::Tuple<T_EventListener*, T_Size>& a_includeOnly) const;
 
   protected:
     bool DoDispatchNow(const EventBase& a_event, 
@@ -61,12 +62,15 @@ namespace tloc { namespace core { namespace component_system {
   // -----------------------------------------------------------------------
   // template definitions
 
-  template <tl_int T_Size>
+  template <typename T_EventListener, tl_int T_Size>
   bool
     EventManager::
     DispatchNow(const EventBase& a_event, 
-                const core_ds::Tuple<EventListener*, T_Size>& a_includeOnly) const
+                const core_ds::Tuple<T_EventListener*, T_Size>& a_includeOnly) const
   {
+    TLOC_STATIC_ASSERT( (Loki::Conversion<T_EventListener*, EventListener*>::exists), 
+                       T_EventListener_must_be_an_EventListener);
+
     TLOC_STATIC_ASSERT(T_Size <= 5, Use_DispatchNow_with_listeners_list_instead);
 
     listeners_list list;

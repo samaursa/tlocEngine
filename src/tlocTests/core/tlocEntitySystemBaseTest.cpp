@@ -165,39 +165,39 @@ namespace TestingEntitySystemBase
 
     typedef core_cs::EntityManager::orphan          orphan;
 
-    entMgr->InsertComponent(ent, e2_a, orphan(true));
+    entMgr->InsertComponent(EntityManager::Params(ent, e2_a).Orphan(true));
     // adding unrelated components does not add entities to the system
     CHECK(e.DoGetActiveEntities().size() == 0);
 
-    entMgr->InsertComponent(ent, e1_a);
+    entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
     // we have one active entity due to the above component
     CHECK(e.DoGetActiveEntities().size() == 1);
 
-    entMgr->InsertComponent(ent, e1_b);
+    entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
     // we still have one active entity because the component belongs to the 
     // same entity
     CHECK(e.DoGetActiveEntities().size() == 1);
 
-    entMgr->RemoveComponent(ent, e1_a);
+    entMgr->RemoveComponent(core::MakePair(ent, e1_a));
     entMgr->Update();
 
-    entMgr->InsertComponent(ent, e1_a);
+    entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
     CHECK(e.DoGetActiveEntities().size() == 1);
 
-    entMgr->RemoveComponent(ent, e1_a);
+    entMgr->RemoveComponent(core::MakePair(ent, e1_a));
     CHECK(e.DoGetActiveEntities().size() == 1);
-    entMgr->RemoveComponent(ent, e1_b);
+    entMgr->RemoveComponent(core::MakePair(ent, e1_b));
     CHECK(e.DoGetActiveEntities().size() == 0);
 
     entMgr->Update();
 
-    entMgr->InsertComponent(ent, e1_a);
-    entMgr->InsertComponent(ent, e1_b);
+    entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
+    entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
 
     core_cs::entity_vptr ent2 = entMgr->CreateEntity();
 
-    entMgr->InsertComponent(ent2, e1_a);
-    entMgr->InsertComponent(ent2, e1_b);
+    entMgr->InsertComponent(EntityManager::Params(ent2, e1_a));
+    entMgr->InsertComponent(EntityManager::Params(ent2, e1_b));
     CHECK(e.DoGetActiveEntities().size() == 2);
 
     entMgr->DestroyEntity(ent2);

@@ -258,6 +258,18 @@ namespace tloc { namespace core { namespace data_structs {
   // MakeTuple
 
   template <typename T>
+  Tuple<T, 1>
+    MakeTuple(T x)
+  {
+    Tuple<T, 1> tupToRet;
+    tupToRet[0] = x;
+
+    return tupToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
   Tuple<T, 2>
     MakeTuple(T x, T y)
   {
@@ -293,6 +305,22 @@ namespace tloc { namespace core { namespace data_structs {
     tupToRet[1] = y;
     tupToRet[2] = z;
     tupToRet[3] = w;
+
+    return tupToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Tuple<T, 5>
+    MakeTuple(T x, T y, T z, T w, T a)
+  {
+    Tuple<T, 5> tupToRet;
+    tupToRet[0] = x;
+    tupToRet[1] = y;
+    tupToRet[2] = z;
+    tupToRet[3] = w;
+    tupToRet[4] = a;
 
     return tupToRet;
   }

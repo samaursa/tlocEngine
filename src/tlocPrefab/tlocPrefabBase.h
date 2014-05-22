@@ -46,11 +46,21 @@ namespace tloc {
     typedef core_sptr::SharedPtr<component_type>  component_ptr;
     typedef Prefab_TI<component_type>             this_type;
 
-    typedef core_cs::entity_manager_vptr      entity_mgr_ptr;
-    typedef core_cs::component_pool_mgr_vptr  comp_pool_mgr_ptr;
-    typedef core_cs::Entity                   entity_type;
-    typedef core_cs::entity_vptr              entity_ptr;
-    typedef core_err::Error                   error_type;
+    typedef core_cs::EventManager::listeners_list listeners_cont;
+    typedef core_cs::EventManager::listener_ptr   listener_ptr;
+    typedef core_cs::EntityManager::Params        insert_params;
+
+    typedef core_cs::entity_manager_vptr          entity_mgr_ptr;
+    typedef core_cs::component_pool_mgr_vptr      comp_pool_mgr_ptr;
+    typedef core_cs::Entity                       entity_type;
+    typedef core_cs::entity_vptr                  entity_ptr;
+    typedef core_err::Error                       error_type;
+
+  public:
+    this_type& DispatchTo(listener_ptr a_system)
+    { m_listeners.push_back(a_system); return *this; }
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(listeners_cont, GetListeners, m_listeners);
 
   protected:
     Prefab_TI(entity_mgr_ptr  a_entMgr, comp_pool_mgr_ptr  a_poolMgr)
@@ -61,6 +71,7 @@ namespace tloc {
   protected:
     entity_mgr_ptr          m_entMgr;
     comp_pool_mgr_ptr       m_compPoolMgr;
+    listeners_cont          m_listeners;
   };
 
 };

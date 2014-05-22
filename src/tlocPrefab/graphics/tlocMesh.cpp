@@ -83,7 +83,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // Mesh component
 
-    m_entMgr->InsertComponent(a_ent, Construct(a_vertices));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_vertices))
+                              .DispatchTo(GetListeners()) );
   }
 
 };};};

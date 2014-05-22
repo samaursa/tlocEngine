@@ -139,7 +139,9 @@ namespace tloc { namespace prefab { namespace graphics {
     Add(entity_ptr a_ent, 
         BufferArg a_vertexShader, BufferArg a_fragmentShader) const
   {
-    m_entMgr->InsertComponent(a_ent, Construct(a_vertexShader, a_fragmentShader));
+    m_entMgr->InsertComponent( 
+      insert_params(a_ent, Construct(a_vertexShader, a_fragmentShader)) 
+      .DispatchTo(GetListeners()) );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

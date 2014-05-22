@@ -69,7 +69,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // arcball component
 
-    m_entMgr->InsertComponent(a_ent, Construct());
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct())
+                              .DispatchTo(GetListeners()) );
   }
 
 };};};

@@ -161,6 +161,9 @@ namespace TestingTuple
 
   TEST_CASE("Core/DataStructures/Tuple/MakeTuple", "")
   {
+    Tuple<s32, 1> tup1 = core_ds::MakeTuple(1);
+    CHECK(tup1[0] == 1);
+
     Tuple<s32, 2> tup2 = core_ds::MakeTuple(1, 2);
     CHECK(tup2[0] == 1);
     CHECK(tup2[1] == 2);
@@ -175,6 +178,13 @@ namespace TestingTuple
     CHECK(tup4[1] == 2);
     CHECK(tup4[2] == 3);
     CHECK(tup4[3] == 4);
+
+    Tuple<s32, 5> tup5 = core_ds::MakeTuple(1, 2, 3, 4, 5);
+    CHECK(tup5[0] == 1);
+    CHECK(tup5[1] == 2);
+    CHECK(tup5[2] == 3);
+    CHECK(tup5[3] == 4);
+    CHECK(tup5[4] == 5);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Simple Arithmetic", "")

@@ -42,7 +42,12 @@ namespace tloc { namespace core { namespace component_system {
     void RemoveAllListeners();
 
     bool DispatchNow(const EventBase& a_event) const;
-    bool DispatchNow(const EventBase& a_event, listeners_list a_includeOnly) const;
+    bool DispatchNow(const EventBase& a_event, 
+                     const listeners_list& a_includeOnly) const;
+
+    template <tl_int T_Size>
+    bool DispatchNow(const EventBase& a_event,
+                     const core_ds::Tuple<EventListener*, T_Size>& a_includeOnly) const;
 
   protected:
     bool DoDispatchNow(const EventBase& a_event, 
@@ -52,6 +57,24 @@ namespace tloc { namespace core { namespace component_system {
     listener_map          m_listeners;
     listeners_list        m_globalListeners;
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <tl_int T_Size>
+  bool
+    EventManager::
+    DispatchNow(const EventBase& a_event, 
+                const core_ds::Tuple<EventListener*, T_Size>& a_includeOnly) const
+  {
+    TLOC_STATIC_ASSERT(T_Size <= 5, Use_DispatchNow_with_listeners_list_instead);
+
+    listeners_list list;
+    for (tl_size i = 0; i < a_includeOnly.size(); ++i)
+    { list.push_back(a_includeOnly[i]); }
+
+    return DispatchNow(a_event, list);
+  }
 
   //------------------------------------------------------------------------
   // typedefs

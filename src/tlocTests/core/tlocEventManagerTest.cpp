@@ -112,7 +112,7 @@ namespace TestingEventManager
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
     EventTracker globalTracker;
-    EventTracker tracker;
+    EventTracker tracker, tracker2;
 
     entity_vso         dummyEnt( MakeArgs(0) );
     comp_to_test_sptr  transComp = MakeShared<CompToTest>();
@@ -160,6 +160,14 @@ namespace TestingEventManager
     mgr.RemoveAllListeners();
 
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
+    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
+    CHECK(tracker.GetEventCount(currentEvent) == 2);
+
+    // dispatching to selective listeners
+    CHECK(tracker2.GetEventCount(currentEvent) == 0);
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()), 
+                    core_ds::MakeTuple<EventListener*>(&tracker2));
+    CHECK(tracker2.GetEventCount(currentEvent) == 1);
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 2);
 

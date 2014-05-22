@@ -8,10 +8,22 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  EventManager::EventManager() { }
-  EventManager::~EventManager() { }
+  // ///////////////////////////////////////////////////////////////////////
+  // EventManager
 
-  void EventManager::AddListener(EventListener* a_listener, event_type a_type)
+  EventManager::
+    EventManager() { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  EventManager::
+    ~EventManager() { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    EventManager::
+    AddListener(EventListener* a_listener, event_type a_type)
   {
     listener_map::iterator itr = m_listeners.find(a_type);
     if (itr == m_listeners.end())
@@ -22,6 +34,8 @@ namespace tloc { namespace core { namespace component_system {
     listeners_list& li = itr->second;
     li.push_back(a_listener);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void EventManager::RemoveListener(EventListener* a_listener, event_type a_type)
   {
@@ -37,12 +51,20 @@ namespace tloc { namespace core { namespace component_system {
     }
   }
 
-  void EventManager::AddGlobalListener(EventListener* a_listener)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    EventManager::
+    AddGlobalListener(EventListener* a_listener)
   {
     m_globalListeners.push_back(a_listener);
   }
 
-  void EventManager::RemoveGlobalListener(EventListener* a_listener)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    EventManager::
+    RemoveGlobalListener(EventListener* a_listener)
   {
     listeners_list::iterator itr = find(m_globalListeners.begin(),
                                         m_globalListeners.end(), a_listener);
@@ -52,13 +74,19 @@ namespace tloc { namespace core { namespace component_system {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void EventManager::RemoveAllListeners()
   {
     m_listeners.clear();
     m_globalListeners.clear();
   }
 
-  bool EventManager::DispatchNow(const EventBase& a_event) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool 
+    EventManager::
+    DispatchNow(const EventBase& a_event) const
   {
     bool componentAdded = false;
 
@@ -77,6 +105,18 @@ namespace tloc { namespace core { namespace component_system {
 
     return componentAdded;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    EventManager::
+    DispatchNow(const EventBase& a_event, 
+                const listeners_list& a_includeOnly) const
+  {
+    return DoDispatchNow(a_event, a_includeOnly.begin(), a_includeOnly.end());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool 
     EventManager::
@@ -103,5 +143,15 @@ namespace tloc { namespace core { namespace component_system {
 //------------------------------------------------------------------------
 // Explicit instantiations
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EventManager);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core_cs::EventManager);
+using namespace tloc::core_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(EventManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(EventManager);
+
+#include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 1);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 2);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 3);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 4);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 5);

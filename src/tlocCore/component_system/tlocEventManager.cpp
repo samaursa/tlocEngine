@@ -113,7 +113,15 @@ namespace tloc { namespace core { namespace component_system {
     DispatchNow(const EventBase& a_event, 
                 const listeners_list& a_includeOnly) const
   {
-    return DoDispatchNow(a_event, a_includeOnly.begin(), a_includeOnly.end());
+    if (a_includeOnly.size() > 0)
+    {
+      return DoDispatchNow(a_event, a_includeOnly.begin(), 
+                           a_includeOnly.end());
+    }
+    else
+    {
+      return DispatchNow(a_event);
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

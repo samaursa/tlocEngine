@@ -166,7 +166,7 @@ namespace TestingEventManager
     // dispatching to selective listeners
     CHECK(tracker2.GetEventCount(currentEvent) == 0);
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()), 
-                    core_ds::MakeTuple<EventListener*>(&tracker2));
+                    core_ds::MakeTuple(&tracker2));
     CHECK(tracker2.GetEventCount(currentEvent) == 1);
     CHECK(globalTracker.GetEventCount(currentEvent) == 2);
     CHECK(tracker.GetEventCount(currentEvent) == 2);

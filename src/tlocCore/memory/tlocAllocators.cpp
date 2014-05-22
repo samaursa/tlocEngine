@@ -289,6 +289,15 @@ namespace tloc { namespace core { namespace memory {
             "Unable to find a_ptrAddress assigned to memAddress it is tracking");
 
           itrMemAddress->second.erase(itr);
+          
+          // is this the marked memory address which was only tracked because
+          // a VirtualPtr began tracking a raw pointer? If yes, untrack
+          // see TrackPointerToMemoryAddress() for push_back of nullptr
+          if (itrMemAddress->second.size() == 1 && 
+              *itrMemAddress->second.begin() == nullptr)
+          {
+            UntrackMemoryAddress(a_memAddress);
+          }
         }
 
         m_pointerToAddresses.erase(a_ptrAddress);

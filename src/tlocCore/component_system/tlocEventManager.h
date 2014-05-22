@@ -17,14 +17,16 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     typedef events::value_type                    event_type;
+
     typedef containers::
       tl_doubly_list <EventListener*>::type       listeners_list;
+    typedef listeners_list::iterator              itr_listeners;
+    typedef listeners_list::const_iterator        const_itr_listeners;
+
     typedef containers::
       tl_hash_map<event_type,
                   listeners_list>::type           listener_map;
     typedef listener_map::value_type              map_value_type;
-    typedef containers::
-      tl_array<const EventBase*>::type            event_list;
 
   public:
 
@@ -40,14 +42,15 @@ namespace tloc { namespace core { namespace component_system {
     void RemoveAllListeners();
 
     bool DispatchNow(const EventBase& a_event) const;
-    void Dispatch(const EventBase& a_event);
+    bool DispatchNow(const EventBase& a_event, listeners_list a_includeOnly) const;
 
-    void Update();
+  protected:
+    bool DoDispatchNow(const EventBase& a_event, 
+                       const_itr_listeners a_begin, const_itr_listeners a_end) const;
 
   protected:
     listener_map          m_listeners;
     listeners_list        m_globalListeners;
-    event_list            m_events;
   };
 
   //------------------------------------------------------------------------

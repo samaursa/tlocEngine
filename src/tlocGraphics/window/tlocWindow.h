@@ -12,6 +12,7 @@
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
@@ -75,7 +76,11 @@ namespace tloc { namespace graphics { namespace win {
 
   struct WindowCallbacks
   {
-    virtual void OnWindowEvent(const WindowEvent& a_event) = 0;
+  public:
+    typedef core_dispatch::Event                    event_type;
+
+  public:
+    virtual event_type OnWindowEvent(const WindowEvent& a_event) = 0;
   };
 
   template <typename T>
@@ -86,15 +91,20 @@ namespace tloc { namespace graphics { namespace win {
     typedef typename core::dispatch::
       CallbackGroupTArray<T, WindowCallbacks>::type         base_type;
 
+    typedef typename base_type::event_type                  event_type;
+
     using base_type::m_observers;
 
   public:
-    virtual void OnWindowEvent(const WindowEvent& a_event)
+    virtual event_type OnWindowEvent(const WindowEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnWindowEvent(a_event);
+        if (m_observers[i]->OnWindowEvent(a_event).IsVeto())
+        { return core_dispatch::f_event::Veto(); }
       }
+
+      return core_dispatch::f_event::Continue();
     }
   };
 

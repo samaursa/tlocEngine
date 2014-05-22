@@ -28,7 +28,8 @@ namespace TestingWindow
       }
     }
 
-    void OnWindowEvent(const WindowEvent& a_event)
+    core_dispatch::Event 
+      OnWindowEvent(const WindowEvent& a_event)
     {
       INFO("Unknown event was passed.");
       REQUIRE(a_event.m_type < WindowEvent::events_count);
@@ -38,6 +39,8 @@ namespace TestingWindow
 
       CHECK(a_event.GetWidth() == g_windowSizeX);
       CHECK(a_event.GetHeight() == g_windowSizeY);
+
+      return core_dispatch::f_event::Continue();
     }
 
     s32 m_windowEventCount;

@@ -34,22 +34,24 @@ namespace TestingInput
       m_keypresses(0),
       m_keyreleases(0) {}
 
-    bool OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
+    core_dispatch::Event 
+      OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
     {
       CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_keypresses++;
 
-      return true; // Veto all later keypresses - does nothing here, just an e.g.
+      return core_dispatch::f_event::Veto();
     }
 
-    bool OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
+    core_dispatch::Event 
+      OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
     {
       CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_keyreleases++;
 
-      return true; // Veto all later keypresses - does nothing here, just an e.g.
+      return core_dispatch::f_event::Veto();
     }
 
     KeyboardEvent m_event;
@@ -70,7 +72,7 @@ namespace TestingInput
       , m_buttonReleases(0)
       , m_movementEvents(0) {}
 
-    bool
+    core_dispatch::Event
       OnButtonPress(const tl_size a_caller,
       const MouseEvent& a_event,
       const MouseEvent::button_code_type a_buttonCode)
@@ -80,10 +82,10 @@ namespace TestingInput
       m_buttonCode = a_buttonCode;
       m_buttonPresses++;
 
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    bool
+    core_dispatch::Event
       OnButtonRelease(const tl_size a_caller,
       const MouseEvent& a_event,
       const MouseEvent::button_code_type a_buttonCode)
@@ -93,15 +95,17 @@ namespace TestingInput
       m_buttonCode = a_buttonCode;
       m_buttonReleases++;
 
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    bool OnMouseMove(const tl_size a_caller, const MouseEvent& a_event)
+    core_dispatch::Event
+      OnMouseMove(const tl_size a_caller, const MouseEvent& a_event)
     {
       CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_movementEvents++;
-      return false;
+
+      return core_dispatch::f_event::Continue();
     }
 
     MouseEvent                    m_event;

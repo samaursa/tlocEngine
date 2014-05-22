@@ -52,7 +52,6 @@ namespace tloc { namespace core { namespace component_system {
 
     public:
       Params();
-      Params(ent_comp_pair_type a_entCompPair);
       Params(entity_ptr_type a_ent,  component_ptr_type a_component);
 
       this_type& DispatchTo(listeners_ptr a_system);

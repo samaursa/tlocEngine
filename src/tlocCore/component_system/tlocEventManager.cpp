@@ -23,7 +23,7 @@ namespace tloc { namespace core { namespace component_system {
 
   void 
     EventManager::
-    AddListener(EventListener* a_listener, event_type a_type)
+    AddListener(listener_ptr a_listener, event_type a_type)
   {
     listener_map::iterator itr = m_listeners.find(a_type);
     if (itr == m_listeners.end())
@@ -37,7 +37,7 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void EventManager::RemoveListener(EventListener* a_listener, event_type a_type)
+  void EventManager::RemoveListener(listener_ptr a_listener, event_type a_type)
   {
     listener_map::iterator itr = m_listeners.find(a_type);
     if (itr != m_listeners.end())
@@ -55,7 +55,7 @@ namespace tloc { namespace core { namespace component_system {
 
   void 
     EventManager::
-    AddGlobalListener(EventListener* a_listener)
+    AddGlobalListener(listener_ptr a_listener)
   {
     m_globalListeners.push_back(a_listener);
   }
@@ -64,7 +64,7 @@ namespace tloc { namespace core { namespace component_system {
 
   void 
     EventManager::
-    RemoveGlobalListener(EventListener* a_listener)
+    RemoveGlobalListener(listener_ptr a_listener)
   {
     listeners_list::iterator itr = find(m_globalListeners.begin(),
                                         m_globalListeners.end(), a_listener);
@@ -158,8 +158,8 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(EventManager);
 
 #include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
 
-TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 1);
-TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 2);
-TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 3);
-TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 4);
-TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventListener*, 5);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 1);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 2);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 3);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 4);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 5);

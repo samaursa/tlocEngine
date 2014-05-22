@@ -39,6 +39,7 @@ namespace TestingRigidBodySystem
     typedef core_cs::event_manager_vso          event_manager_vso;
     typedef core_cs::entity_manager_vso         entity_manager_vso;
     typedef core_cs::Entity                     entity_type;
+    typedef core_cs::EntityManager::Params      params_type;
 
     typedef math_t::Rectf32_c                   rect_shape_type;
     typedef math_t::Circlef32                   circle_shape_type;
@@ -167,9 +168,9 @@ namespace TestingRigidBodySystem
     SharedPtr<rigid_body_shape_component> rbShapeComponent = 
       MakeShared<rigid_body_shape_component>(rbRectShape);
 
-    entityMgr->InsertComponent(rbStaticRectEntity, transformComponent);
-    entityMgr->InsertComponent(rbStaticRectEntity, rbStaticRectComponent);
-    entityMgr->InsertComponent(rbStaticRectEntity, rbShapeComponent);
+    entityMgr->InsertComponent(params_type(rbStaticRectEntity, transformComponent));
+    entityMgr->InsertComponent(params_type(rbStaticRectEntity, rbStaticRectComponent));
+    entityMgr->InsertComponent(params_type(rbStaticRectEntity, rbShapeComponent));
 
     //------------------------------------------------------------------------
     // Create a static rigid body entity (Circle)
@@ -192,9 +193,9 @@ namespace TestingRigidBodySystem
     SharedPtr<rigid_body_shape_component> rbShapeComponent1 = 
       MakeShared<rigid_body_shape_component>(rbCircleShape);
 
-    entityMgr->InsertComponent(rbStaticCircleEntity, transformComponent1);
-    entityMgr->InsertComponent(rbStaticCircleEntity, rbStaticComponent);
-    entityMgr->InsertComponent(rbStaticCircleEntity, rbShapeComponent1);
+    entityMgr->InsertComponent(params_type(rbStaticCircleEntity, transformComponent1));
+    entityMgr->InsertComponent(params_type(rbStaticCircleEntity, rbStaticComponent));
+    entityMgr->InsertComponent(params_type(rbStaticCircleEntity, rbShapeComponent1));
 
     //------------------------------------------------------------------------
     // Create a dynamic rigid body (Circle)
@@ -218,10 +219,10 @@ namespace TestingRigidBodySystem
       rbListenerComponent = MakeShared<rigid_body_listener_component>
       ( VirtualPtr<ComponentContactCallback>(&myComponentContactCallback) );
 
-    entityMgr->InsertComponent(rbDynamicCircleEntity, transformComponent2);
-    entityMgr->InsertComponent(rbDynamicCircleEntity, rbDynamicComponent);
-    entityMgr->InsertComponent(rbDynamicCircleEntity, rbShapeComponent2);
-    entityMgr->InsertComponent(rbDynamicCircleEntity, rbListenerComponent);
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, transformComponent2));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, rbDynamicComponent));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, rbShapeComponent2));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, rbListenerComponent));
 
     //------------------------------------------------------------------------
     CHECK(rigidBodySys.Initialize() == ErrorSuccess);

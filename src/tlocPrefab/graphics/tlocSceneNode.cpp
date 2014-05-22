@@ -91,7 +91,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // SceneNode component
 
-    m_entMgr->InsertComponent(a_ent, Construct(a_ent));
+    m_entMgr->InsertComponent( insert_params(a_ent, Construct(a_ent))
+                              .DispatchTo(GetListeners()) );
   }
 
 };};};

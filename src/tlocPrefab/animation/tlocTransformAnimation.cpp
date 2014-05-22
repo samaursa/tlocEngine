@@ -129,7 +129,8 @@ namespace tloc { namespace prefab { namespace animation {
     }
     else
     {
-      m_entMgr->InsertComponent(a_ent, Construct(a_keyframes, ta));
+      m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_keyframes, ta))
+                                .DispatchTo(GetListeners()) );
     }
 
     return *this;

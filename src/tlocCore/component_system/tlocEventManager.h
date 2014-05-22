@@ -19,8 +19,9 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef events::value_type                    event_type;
 
+    typedef EventListener*                        listener_ptr;
     typedef containers::
-      tl_doubly_list <EventListener*>::type       listeners_list;
+      tl_doubly_list <listener_ptr>::type         listeners_list;
     typedef listeners_list::iterator              itr_listeners;
     typedef listeners_list::const_iterator        const_itr_listeners;
 
@@ -34,11 +35,11 @@ namespace tloc { namespace core { namespace component_system {
     EventManager();
     virtual ~EventManager();
 
-    void AddListener(EventListener* a_listener, event_type a_type);
-    void RemoveListener(EventListener* a_listener, event_type a_type);
+    void AddListener(listener_ptr a_listener, event_type a_type);
+    void RemoveListener(listener_ptr a_listener, event_type a_type);
 
-    void AddGlobalListener(EventListener* a_listener);
-    void RemoveGlobalListener(EventListener* a_listener);
+    void AddGlobalListener(listener_ptr a_listener);
+    void RemoveGlobalListener(listener_ptr a_listener);
 
     void RemoveAllListeners();
 
@@ -68,7 +69,7 @@ namespace tloc { namespace core { namespace component_system {
     DispatchNow(const EventBase& a_event, 
                 const core_ds::Tuple<T_EventListener*, T_Size>& a_includeOnly) const
   {
-    TLOC_STATIC_ASSERT( (Loki::Conversion<T_EventListener*, EventListener*>::exists), 
+    TLOC_STATIC_ASSERT( (Loki::Conversion<T_EventListener*, listener_ptr>::exists), 
                        T_EventListener_must_be_an_EventListener);
 
     TLOC_STATIC_ASSERT(T_Size <= 5, Use_DispatchNow_with_listeners_list_instead);

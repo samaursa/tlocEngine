@@ -20,16 +20,6 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   EntityManager::Params::
-    Params(ent_comp_pair_type a_entCompPair)
-    : m_entity(a_entCompPair.first)
-    , m_component(a_entCompPair.second)
-    , m_orphan(false)
-  {
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  EntityManager::Params::
     Params(entity_ptr_type a_ent, component_ptr_type a_component)
     : m_entity(a_ent)
     , m_component(a_component)

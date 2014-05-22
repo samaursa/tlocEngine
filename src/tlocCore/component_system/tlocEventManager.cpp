@@ -62,82 +62,40 @@ namespace tloc { namespace core { namespace component_system {
   {
     bool componentAdded = false;
 
-    typedef listeners_list::const_iterator lis_itr;
-    for (lis_itr itr = m_globalListeners.begin(),
-                 itrEnd = m_globalListeners.end();
-                 itr != itrEnd; ++itr)
-    {
-      // If the event is being vetoed, then no need to go through the whole list
-      EventReturn evt = (*itr)->OnEvent(a_event);
-      if (evt.m_componentInSystem)
-      { componentAdded = true; }
+    // global listeners include all listeners
+    componentAdded = 
+      DoDispatchNow(a_event, m_globalListeners.begin(), m_globalListeners.end());
 
-      if (evt.m_veto)
-      { return componentAdded; }
-    }
-
+    // find matching listeners and dispatch event
     typedef listener_map::const_iterator map_itr;
     map_itr found = m_listeners.find( a_event.GetType() );
     if (found != m_listeners.end() )
     {
       const listeners_list& list = found->second;
-      for (lis_itr itr = list.begin(), itrEnd = list.end();
-           itr != itrEnd; ++itr)
-      {
-        EventReturn evt = (*itr)->OnEvent(a_event);
-        if (evt.m_componentInSystem)
-        { componentAdded = true; }
-
-        if (evt.m_veto)
-        { return componentAdded; }
-      }
+      componentAdded = DoDispatchNow(a_event, list.begin(), list.end());
     }
 
     return componentAdded;
   }
 
-  void EventManager::Dispatch(const EventBase& a_event)
+  bool 
+    EventManager::
+    DoDispatchNow(const EventBase& a_event, 
+                  const_itr_listeners a_begin, const_itr_listeners a_end) const
   {
-    m_events.push_back(&a_event);
-  }
+    bool componentAdded = false;
 
-  void EventManager::Update()
-  {
-    typedef event_list::iterator      event_itr;
-    typedef listeners_list::iterator  lis_itr;
-    typedef listener_map::iterator    map_itr;
-
-    // Dispatch all events to all global listeners
-    for (event_itr eventItr = m_events.begin(), eventItrEnd = m_events.end();
-         eventItr != eventItrEnd; ++eventItr)
+    for ( ; a_begin != a_end; ++a_begin)
     {
-      for (lis_itr itr = m_globalListeners.begin(),
-                   itrEnd = m_globalListeners.end();
-                   itr != itrEnd; ++itr)
-      {
-        if ( (*itr)->OnEvent(*(*eventItr)).m_veto )
-        { break; }
-      }
+      EventReturn evt = (*a_begin)->OnEvent(a_event);
+      if (evt.m_componentInSystem)
+      { componentAdded = true; }
+
+      if (evt.m_veto)
+      { break; }
     }
 
-    // Dispatch remaining events to all mapped listeners
-    for (event_itr eventItr = m_events.begin(), eventItrEnd = m_events.end();
-         eventItr != eventItrEnd; ++eventItr)
-    {
-      map_itr mapItr = m_listeners.find( (*(*eventItr)).GetType());
-      if (mapItr != m_listeners.end())
-      {
-        listeners_list& list = mapItr->second;
-        for (lis_itr itr = list.begin(), itrEnd = list.end();
-                     itr != itrEnd; ++itr)
-        {
-          if ( (*itr)->OnEvent(*(*eventItr)).m_veto ) { break; }
-        }
-      }
-    }
-
-    // Clear the event list
-    m_events.clear();
+    return componentAdded;
   }
 
 };};};

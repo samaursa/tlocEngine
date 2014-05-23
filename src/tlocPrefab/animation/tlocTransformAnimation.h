@@ -12,11 +12,11 @@
 namespace tloc { namespace prefab { namespace animation {
 
   class TransformAnimation
-    : public Prefab_TI<anim_cs::TransformAnimation>
+    : public Prefab_TI<TransformAnimation, anim_cs::TransformAnimation>
   {
   public:
-    typedef Prefab_TI<component_type>                         base_type;
     typedef TransformAnimation                                this_type;
+    typedef Prefab_TI<this_type, component_type>              base_type;
     typedef tl_size                                           size_type;
     typedef anim_cs::TransformAnimation::kf_seq_type          kf_seq_type;
 

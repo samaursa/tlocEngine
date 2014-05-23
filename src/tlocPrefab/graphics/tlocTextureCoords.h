@@ -14,10 +14,12 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class TextureCoords
-    : public Prefab_TI<gfx_cs::TextureCoords>
+    : public Prefab_TI<TextureCoords, gfx_cs::TextureCoords>
   {
   public:
     typedef TextureCoords                               this_type;
+    typedef Prefab_TI<this_type, component_type>        base_type;
+
     typedef math_t::Vec2f32                             vec_type;
     typedef tl_size                                     size_type;
 
@@ -34,7 +36,6 @@ namespace tloc { namespace prefab { namespace graphics {
     };
 
   public:
-    typedef Prefab_TI<component_type>                   base_type;
     typedef core_conts::Array<Coords>                   coords_cont;
 
   public:

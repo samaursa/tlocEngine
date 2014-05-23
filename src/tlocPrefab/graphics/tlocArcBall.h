@@ -15,11 +15,11 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class ArcBall
-    : public Prefab_TI<gfx_cs::ArcBall>
+    : public Prefab_TI<ArcBall, gfx_cs::ArcBall>
   {
   public:
-    typedef Prefab_TI<component_type>                   base_type;
     typedef ArcBall                                     this_type;
+    typedef Prefab_TI<this_type, component_type>        base_type;
     typedef math_t::Vec3f32                             vec_type;
 
   public:

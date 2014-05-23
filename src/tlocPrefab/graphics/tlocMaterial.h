@@ -15,11 +15,11 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class Material
-    : public Prefab_TI<gfx_cs::Material>
+    : public Prefab_TI<Material, gfx_cs::Material>
   {
   public:
-    typedef Prefab_TI<component_type>               base_type;
     typedef Material                                this_type;
+    typedef Prefab_TI<this_type, component_type>    base_type;
     typedef gfx_gl::uniform_vptr                    uniform_ptr_type;
     typedef gfx_gl::attribute_vptr                  attribute_ptr_type;
 

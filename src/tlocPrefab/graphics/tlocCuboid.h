@@ -14,11 +14,11 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class Cuboid
-    : public Prefab_TI<gfx_cs::Mesh>
+    : public Prefab_TI<Cuboid, gfx_cs::Mesh>
   {
   public:
-    typedef Prefab_TI<component_type>                   base_type;
     typedef Cuboid                                      this_type;
+    typedef Prefab_TI<this_type, component_type>        base_type;
     typedef math_t::Cuboidf32                           cuboid_type;
 
   public:

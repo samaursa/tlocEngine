@@ -19,6 +19,4 @@
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
-#include <tlocCore/component_system/tlocSystemsManager.h>
-
 #endif

@@ -14,11 +14,12 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class Fan
-    : public Prefab_TI<gfx_cs::Fan>
+    : public Prefab_TI<Fan, gfx_cs::Fan>
   {
   public:
-    typedef Prefab_TI<component_type>                     base_type;
     typedef Fan                                           this_type;
+    typedef Prefab_TI<this_type, component_type>          base_type;
+
     typedef math_t::Circlef32                             circle_type;
 
   public:

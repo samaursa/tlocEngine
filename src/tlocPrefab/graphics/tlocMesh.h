@@ -12,11 +12,12 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class Mesh
-    : public Prefab_TI<gfx_cs::Mesh>
+    : public Prefab_TI<Mesh, gfx_cs::Mesh>
   {
   public:
-    typedef Prefab_TI<component_type>                     base_type;
     typedef Mesh                                          this_type;
+    typedef Prefab_TI<this_type, component_type>          base_type;
+
     typedef core_conts::Array<gfx_cs::Mesh::vert_type>    vert_cont_type;
 
   public:

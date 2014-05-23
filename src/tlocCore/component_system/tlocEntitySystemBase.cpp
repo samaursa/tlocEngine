@@ -24,8 +24,10 @@ namespace tloc { namespace core { namespace component_system {
   EntitySystemBase::
     ~EntitySystemBase()
   {
-    m_eventMgr->RemoveListener(this, entity_events::insert_component);
-    m_eventMgr->RemoveListener(this, entity_events::remove_component);
+    m_eventMgr->RemoveListener
+      (core_sptr::VirtualPtr<this_type>(this), entity_events::insert_component);
+    m_eventMgr->RemoveListener
+      (core_sptr::VirtualPtr<this_type>(this), entity_events::remove_component);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -38,7 +40,6 @@ namespace tloc { namespace core { namespace component_system {
 
     if (Pre_Initialize() == ErrorSuccess)
     {
-      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       if (DoInitialize(m_activeEntities) == ErrorSuccess)
       {
         return Post_Initialize();
@@ -52,14 +53,13 @@ namespace tloc { namespace core { namespace component_system {
 
   void
     EntitySystemBase::
-    ProcessActiveEntities(f64 a_deltaT)
+    ProcessActiveEntities(time_type a_deltaT)
   {
     TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized),
       "Did you forget to call Initialize()?");
 
     if (CheckProcessing())
     {
-      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       Pre_ProcessActiveEntities(a_deltaT);
       DoProcessActiveEntities(m_activeEntities, a_deltaT);
       Post_ProcessActiveEntities(a_deltaT);
@@ -74,7 +74,6 @@ namespace tloc { namespace core { namespace component_system {
   {
     if (Pre_Shutdown() == ErrorSuccess)
     {
-      TLOC_ASSERT_NOT_NULL(m_entityMgr);
       if (DoShutdown(m_activeEntities) == ErrorSuccess)
       {
         return Post_Shutdown();
@@ -117,7 +116,7 @@ namespace tloc { namespace core { namespace component_system {
 
             entity_count_cont::iterator entItr = 
               core::find_if_all(m_activeEntities, 
-              algos::compare::pair::MakeFirst(ent));
+              core::algos::compare::pair::MakeFirst(ent));
 
             if (entItr == m_activeEntities.end())
             {
@@ -144,7 +143,7 @@ namespace tloc { namespace core { namespace component_system {
           {
             entity_count_cont::iterator entItr = 
               core::find_if_all(m_activeEntities, 
-              algos::compare::pair::MakeFirst(ent));
+              core::algos::compare::pair::MakeFirst(ent));
 
             if (entItr != m_activeEntities.end())
             {
@@ -187,4 +186,45 @@ namespace tloc { namespace core { namespace component_system {
     return evtRet;
   }
 
+  // -----------------------------------------------------------------------
+  // algorithms
+
+  namespace algos { namespace entity_system {
+
+    // ///////////////////////////////////////////////////////////////////////
+    // initialize
+
+    void
+      Initialize::
+      operator()(value_type& a_system)
+    { a_system.Initialize(); }
+
+    // ///////////////////////////////////////////////////////////////////////
+    // shutdown
+
+    void
+      ShutDown::
+      operator()(value_type& a_system)
+    { a_system.Shutdown(); }
+
+    // ///////////////////////////////////////////////////////////////////////
+    // process
+
+    Process::
+      Process(time_type a_deltaT)
+      : m_deltaT(a_deltaT)
+    { }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      Process::
+      operator()(value_type& a_system)
+    { a_system.ProcessActiveEntities(m_deltaT); }
+
+  };};
+
 };};};
+
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntitySystemBase);

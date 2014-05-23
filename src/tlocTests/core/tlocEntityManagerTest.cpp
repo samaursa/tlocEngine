@@ -106,20 +106,20 @@ namespace TestingEntityManager
     {
       const tl_uint entityCount = 100;
 
-      EntityTracker   entTrack, entTrack2;
-      event_manager_vso  evtMgr;
-      evtMgr->AddGlobalListener(&entTrack);
-      evtMgr->AddListener(&entTrack2, entity_events::insert_component);
-      evtMgr->AddListener(&entTrack2, entity_events::remove_component);
+      entity_tracker_vso  entTrack, entTrack2;
+      event_manager_vso   evtMgr;
+      evtMgr->AddGlobalListener(entTrack.get());
+      evtMgr->AddListener(entTrack2.get(), entity_events::insert_component);
+      evtMgr->AddListener(entTrack2.get(), entity_events::remove_component);
 
       EntityManager   eMgr(evtMgr.get());
 
       EntityManager::entity_ptr_type newEnt = eMgr.CreateEntity();
       CHECK( (newEnt != nullptr) );
-      CHECK(entTrack.m_entEventCounter == 1);
+      CHECK(entTrack->m_entEventCounter == 1);
 
       eMgr.DestroyEntity(newEnt);
-      CHECK(entTrack.m_entEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 0);
 
       bool stressTestPassed = true;
       EntityManager::entity_cont myList;
@@ -131,7 +131,7 @@ namespace TestingEntityManager
         if (newEnt == nullptr) { stressTestPassed = false; break; }
       }
       CHECK(eMgr.GetUnusedEntities() == 0);
-      CHECK(entTrack.m_entEventCounter == entityCount);
+      CHECK(entTrack->m_entEventCounter == entityCount);
       CHECK(stressTestPassed);
 
       for (EntityManager::entity_cont::iterator itr = myList.begin(),
@@ -147,44 +147,44 @@ namespace TestingEntityManager
       myList.clear();
 
       eMgr.Update();
-      CHECK(entTrack.m_entEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 0);
       CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
 
       newEnt = eMgr.CreateEntity();
-      CHECK(entTrack.m_entEventCounter == 1);
-      CHECK(entTrack.m_compEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 1);
+      CHECK(entTrack->m_compEventCounter == 0);
 
       component_sptr testComp = MakeShared<Component>(Component(components::listener, "temp"));
       { // dispatch to all
         eMgr.InsertComponent(EntityManager::Params()
                              .Entity(newEnt).Component(testComp).Orphan(true));
-        CHECK(entTrack.m_compEventCounter == 1);
-        CHECK(entTrack2.m_compEventCounter == 1);
+        CHECK(entTrack->m_compEventCounter == 1);
+        CHECK(entTrack2->m_compEventCounter == 1);
       }
 
       { // dispatch selectively
         component_sptr testComp2 = MakeShared<Component>(Component(components::listener, "temp"));
         eMgr.InsertComponent(EntityManager::Params(newEnt, testComp2).Orphan(true)
-                             .DispatchTo(&entTrack2));
-          CHECK(entTrack.m_compEventCounter == 1);
-          CHECK(entTrack2.m_compEventCounter == 2);
+                             .DispatchTo(entTrack2.get()));
+          CHECK(entTrack->m_compEventCounter == 1);
+          CHECK(entTrack2->m_compEventCounter == 2);
       }
 
       component_sptr invalidComp = MakeShared<Component>(Component(components::listener + 1, "temp"));
 
       CHECK_FALSE(eMgr.RemoveComponent( core::MakePair(newEnt, invalidComp)) );
       eMgr.Update();
-      CHECK(entTrack.m_compEventCounter == 1);
+      CHECK(entTrack->m_compEventCounter == 1);
 
       CHECK(eMgr.RemoveComponent( core::MakePair(newEnt, testComp)) );
       eMgr.Update();
-      CHECK(entTrack.m_compEventCounter == 0);
+      CHECK(entTrack->m_compEventCounter == 0);
 
       eMgr.DestroyEntity(newEnt);
       newEnt.reset();
 
       eMgr.Update();
-      CHECK(entTrack.m_entEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 0);
       CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
     }
 
@@ -217,9 +217,9 @@ namespace TestingEntityManager
 
         const tl_uint entityCount = 100;
 
-        EntityTracker   entTrack;
-        event_manager_vso evtMgr;
-        evtMgr->AddGlobalListener(&entTrack);
+        entity_tracker_vso  entTrack;
+        event_manager_vso   evtMgr;
+        evtMgr->AddGlobalListener(entTrack.get());
 
         EntityManager   eMgr(evtMgr.get());
 

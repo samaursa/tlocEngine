@@ -31,7 +31,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   public:
     VirtualPtr();
     VirtualPtr(std::nullptr_t);
-    VirtualPtr(const pointer a_rawPtr);
+    explicit VirtualPtr(const pointer a_rawPtr);
     VirtualPtr(const this_type& a_other);
 
     template <typename T_Other>
@@ -259,7 +259,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   public:
     VirtualPtr();
     VirtualPtr(std::nullptr_t);
-    VirtualPtr(const pointer a_rawPtr);
+    explicit VirtualPtr(const pointer a_rawPtr);
     VirtualPtr(const this_type& a_other);
 
     template <typename T_Other>

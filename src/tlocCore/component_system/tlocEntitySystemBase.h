@@ -68,6 +68,8 @@ namespace tloc { namespace core { namespace component_system {
 
     virtual void SortEntities() = 0;
 
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumEntities, m_activeEntities.size());
+
   protected:
 
     template <tl_size T_VarSize>

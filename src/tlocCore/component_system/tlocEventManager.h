@@ -19,7 +19,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef events::value_type                    event_type;
 
-    typedef EventListener*                        listener_ptr;
+    typedef event_listener_vptr                   listener_ptr;
     typedef containers::
       tl_doubly_list <listener_ptr>::type         listeners_list;
     typedef listeners_list::iterator              itr_listeners;

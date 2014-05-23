@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -58,6 +59,10 @@ namespace tloc { namespace core { namespace component_system {
     virtual return_type OnEvent(const EventBase& a_event) = 0;
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EventListener, event_listener);
 
 };};};
 

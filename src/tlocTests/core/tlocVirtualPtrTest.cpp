@@ -155,7 +155,7 @@ namespace TestingVirtualPtr
       CHECK(*vp == 10);
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
 
-      vp = new int(20);
+      vp.reset(new int(20));
       CHECK(*vp == 20);
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
     }

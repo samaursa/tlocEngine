@@ -56,7 +56,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
 
     a_childNode->SetHierarchyUpdateRequired(true);
-    a_childNode->m_parent = this;
+    a_childNode->m_parent.reset(this);
     m_children.push_back(a_childNode);
 
     return *this;

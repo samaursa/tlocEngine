@@ -5,5 +5,6 @@
 
 #include <tlocCore/logging/tlocLog.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/logging/tlocDefaultLogger.h>
 
 #endif

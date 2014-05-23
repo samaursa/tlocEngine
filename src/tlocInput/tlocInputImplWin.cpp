@@ -248,9 +248,9 @@ namespace tloc { namespace input { namespace priv {
     {
       if (m_winHIDs[T_InputObject::m_index][i].m_inUse == false)
       {
-        newInput =
-          DoCreateHID<T_InputObject, T_InputObject::m_index>()
-          .Create(a_params, m_directInput, m_params);
+        newInput.reset
+          (DoCreateHID<T_InputObject, T_InputObject::m_index>()
+          .Create(a_params, m_directInput, m_params));
 
         m_winHIDs[T_InputObject::m_index][i].m_inUse = true;
         m_winHIDs[T_InputObject::m_index][i].m_devicePtr = newInput;

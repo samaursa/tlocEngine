@@ -125,8 +125,8 @@ namespace TestingEventManager
     component_sptr     dummyComp = MakeShared<component_sptr::value_type>(*transComp);
 
     EventManager mgr;
-    mgr.AddGlobalListener(globalTracker.get());
-    mgr.AddListener(tracker.get(), entity_events::create_entity);
+    mgr.AddGlobalListener(globalTracker.get().get());
+    mgr.AddListener(tracker.get().get(), entity_events::create_entity);
 
     events::value_type currentEvent = entity_events::create_entity;
 
@@ -145,13 +145,13 @@ namespace TestingEventManager
     CHECK(tracker->GetEventCount(currentEvent) == 0);
 
     currentEvent = entity_events::insert_component;
-    mgr.AddListener(tracker.get(), entity_events::insert_component);
+    mgr.AddListener(tracker.get().get(), entity_events::insert_component);
     mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
     CHECK(globalTracker->GetEventCount(currentEvent) == 1);
     CHECK(tracker->GetEventCount(currentEvent) == 1);
 
-    mgr.RemoveListener(tracker.get(), entity_events::insert_component);
+    mgr.RemoveListener(tracker.get().get(), entity_events::insert_component);
     mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
     CHECK(globalTracker->GetEventCount(currentEvent) == 2);
@@ -172,7 +172,7 @@ namespace TestingEventManager
     // dispatching to selective listeners
     CHECK(tracker2->GetEventCount(currentEvent) == 0);
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()), 
-                    core_ds::MakeTuple(tracker2.get()));
+                    core_ds::MakeTuple(tracker2.get().get()));
     CHECK(tracker2->GetEventCount(currentEvent) == 1);
     CHECK(globalTracker->GetEventCount(currentEvent) == 2);
     CHECK(tracker->GetEventCount(currentEvent) == 2);

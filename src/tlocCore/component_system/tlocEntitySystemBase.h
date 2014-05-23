@@ -199,9 +199,9 @@ namespace tloc { namespace core { namespace component_system {
     }
 
     m_eventMgr->AddListener
-      (core_sptr::VirtualPtr<this_type>(this), entity_events::insert_component);
+      (this, entity_events::insert_component);
     m_eventMgr->AddListener
-      (core_sptr::VirtualPtr<this_type>(this), entity_events::remove_component);
+      (this, entity_events::remove_component);
   }
 
   // -----------------------------------------------------------------------

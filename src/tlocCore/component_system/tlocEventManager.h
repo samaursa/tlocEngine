@@ -19,7 +19,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef events::value_type                    event_type;
 
-    typedef event_listener_vptr                   listener_ptr;
+    typedef EventListener*                        listener_ptr;
     typedef containers::
       tl_doubly_list <listener_ptr>::type         listeners_list;
     typedef listeners_list::iterator              itr_listeners;
@@ -49,7 +49,7 @@ namespace tloc { namespace core { namespace component_system {
 
     template <typename T_EventListener, tl_int T_Size>
     bool DispatchNow(const EventBase& a_event,
-                     const core_ds::Tuple<T_EventListener, T_Size>& a_includeOnly) const;
+                     const core_ds::Tuple<T_EventListener*, T_Size>& a_includeOnly) const;
 
   protected:
     bool DoDispatchNow(const EventBase& a_event, 
@@ -67,9 +67,9 @@ namespace tloc { namespace core { namespace component_system {
   bool
     EventManager::
     DispatchNow(const EventBase& a_event, 
-                const core_ds::Tuple<T_EventListener, T_Size>& a_includeOnly) const
+                const core_ds::Tuple<T_EventListener*, T_Size>& a_includeOnly) const
   {
-    TLOC_STATIC_ASSERT( (Loki::Conversion<T_EventListener, listener_ptr>::exists), 
+    TLOC_STATIC_ASSERT( (Loki::Conversion<T_EventListener*, listener_ptr>::exists), 
                        T_EventListener_must_be_an_EventListener);
 
     TLOC_STATIC_ASSERT(T_Size <= 5, Use_DispatchNow_with_listeners_list_instead);

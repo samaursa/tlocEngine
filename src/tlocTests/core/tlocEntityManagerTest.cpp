@@ -108,9 +108,9 @@ namespace TestingEntityManager
 
       entity_tracker_vso  entTrack, entTrack2;
       event_manager_vso   evtMgr;
-      evtMgr->AddGlobalListener(entTrack.get());
-      evtMgr->AddListener(entTrack2.get(), entity_events::insert_component);
-      evtMgr->AddListener(entTrack2.get(), entity_events::remove_component);
+      evtMgr->AddGlobalListener(entTrack.get().get());
+      evtMgr->AddListener(entTrack2.get().get(), entity_events::insert_component);
+      evtMgr->AddListener(entTrack2.get().get(), entity_events::remove_component);
 
       EntityManager   eMgr(evtMgr.get());
 
@@ -165,7 +165,7 @@ namespace TestingEntityManager
       { // dispatch selectively
         component_sptr testComp2 = MakeShared<Component>(Component(components::listener, "temp"));
         eMgr.InsertComponent(EntityManager::Params(newEnt, testComp2).Orphan(true)
-                             .DispatchTo(entTrack2.get()));
+                             .DispatchTo(entTrack2.get().get()) );
           CHECK(entTrack->m_compEventCounter == 1);
           CHECK(entTrack2->m_compEventCounter == 2);
       }
@@ -219,7 +219,7 @@ namespace TestingEntityManager
 
         entity_tracker_vso  entTrack;
         event_manager_vso   evtMgr;
-        evtMgr->AddGlobalListener(entTrack.get());
+        evtMgr->AddGlobalListener(entTrack.get().get());
 
         EntityManager   eMgr(evtMgr.get());
 

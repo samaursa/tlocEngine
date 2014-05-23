@@ -159,7 +159,7 @@ namespace TestingEntitySystemBase
     core_cs::entity_manager_vso     entMgr( MakeArgs(evtMgr.get()) );
 
     EntSys e(evtMgr.get(), entMgr.get());
-    CHECK(e.DoGetActiveEntities().size() == 0);
+    CHECK(e.GetNumEntities() == 0);
 
     core_cs::entity_vptr ent = entMgr->CreateEntity();
 
@@ -167,27 +167,27 @@ namespace TestingEntitySystemBase
 
     entMgr->InsertComponent(EntityManager::Params(ent, e2_a).Orphan(true));
     // adding unrelated components does not add entities to the system
-    CHECK(e.DoGetActiveEntities().size() == 0);
+    CHECK(e.GetNumEntities() == 0);
 
     entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
     // we have one active entity due to the above component
-    CHECK(e.DoGetActiveEntities().size() == 1);
+    CHECK(e.GetNumEntities() == 1);
 
     entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
     // we still have one active entity because the component belongs to the 
     // same entity
-    CHECK(e.DoGetActiveEntities().size() == 1);
+    CHECK(e.GetNumEntities() == 1);
 
     entMgr->RemoveComponent(core::MakePair(ent, e1_a));
     entMgr->Update();
 
     entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
-    CHECK(e.DoGetActiveEntities().size() == 1);
+    CHECK(e.GetNumEntities() == 1);
 
     entMgr->RemoveComponent(core::MakePair(ent, e1_a));
-    CHECK(e.DoGetActiveEntities().size() == 1);
+    CHECK(e.GetNumEntities() == 1);
     entMgr->RemoveComponent(core::MakePair(ent, e1_b));
-    CHECK(e.DoGetActiveEntities().size() == 0);
+    CHECK(e.GetNumEntities() == 0);
 
     entMgr->Update();
 
@@ -198,14 +198,14 @@ namespace TestingEntitySystemBase
 
     entMgr->InsertComponent(EntityManager::Params(ent2, e1_a));
     entMgr->InsertComponent(EntityManager::Params(ent2, e1_b));
-    CHECK(e.DoGetActiveEntities().size() == 2);
+    CHECK(e.GetNumEntities() == 2);
 
     entMgr->DestroyEntity(ent2);
-    CHECK(e.DoGetActiveEntities().size() == 2);
+    CHECK(e.GetNumEntities() == 2);
 
     CHECK(entMgr->GetUnusedEntities() == 0);
     entMgr->Update();
     CHECK(entMgr->GetUnusedEntities() == 1);
-    CHECK(e.DoGetActiveEntities().size() == 1);
+    CHECK(e.GetNumEntities() == 1);
   }
 };

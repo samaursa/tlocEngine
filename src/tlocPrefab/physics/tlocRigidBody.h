@@ -15,10 +15,12 @@ namespace tloc { namespace prefab { namespace physics {
   // RigidBody
 
   class RigidBody
-    : public Prefab_TI<phys_cs::RigidBody>
+    : public Prefab_TI<RigidBody, phys_cs::RigidBody>
   {
     public:
-      typedef RigidBody                         this_type;
+      typedef RigidBody                               this_type;
+      typedef Prefab_TI<this_type, component_type>    base_type;
+      
       typedef phys_box2d::rigid_body_def_sptr   rb_def_sptr;
 
     public:
@@ -34,15 +36,17 @@ namespace tloc { namespace prefab { namespace physics {
   // RigidBodyShape
 
   class RigidBodyShape
-    : public Prefab_TI<phys_cs::RigidBodyShape>
+    : public Prefab_TI<RigidBodyShape, phys_cs::RigidBodyShape>
   {
     public:
-      typedef RigidBodyShape                      this_type;
-      typedef phys_box2d::RigidBodyShapeDef       rb_shape_def;
-      typedef core_conts::tl_array
-        <const rb_shape_def>::type                rb_shape_def_cont;
+      typedef RigidBodyShape                          this_type;
+      typedef Prefab_TI<this_type, component_type>    base_type;
 
-      typedef core_t::StrongType_T<tl_float, 0>   density;
+      typedef phys_box2d::RigidBodyShapeDef           rb_shape_def;
+      typedef core_conts::tl_array
+        <const rb_shape_def>::type                    rb_shape_def_cont;
+
+      typedef core_t::StrongType_T<tl_float, 0>       density;
 
     public:
       RigidBodyShape(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
@@ -92,10 +96,12 @@ namespace tloc { namespace prefab { namespace physics {
   // RigidBodyListener
 
   class RigidBodyListener
-    : public Prefab_TI<phys_cs::RigidBodyListener>
+    : public Prefab_TI<RigidBodyListener, phys_cs::RigidBodyListener>
   {
     public:
       typedef RigidBodyListener                         this_type;
+      typedef Prefab_TI<this_type, component_type>      base_type;
+
       typedef tloc::physics::RigidBodyListener          rb_listener;
       typedef tloc::physics::rigid_body_listener_vptr   rb_listener_ptr;
       typedef phys_cs::RigidBodyListener                rb_listener_comp;

@@ -16,14 +16,14 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class StaticText
-    : public Prefab_TI<gfx_cs::StaticText>
+    : public Prefab_TI<StaticText, gfx_cs::StaticText>
   {
   public:
-    typedef Prefab_TI<component_type>           base_type;
-    typedef StaticText                          this_type;
-    typedef core_str::StringW                   string_type;
-    typedef gfx_cs::alignment::align_type       align_type;
-    typedef gfx_med::font_sptr                  font_ptr;
+    typedef StaticText                                this_type;
+    typedef Prefab_TI<this_type, component_type>      base_type;
+    typedef core_str::StringW                         string_type;
+    typedef gfx_cs::alignment::align_type             align_type;
+    typedef gfx_med::font_sptr                        font_ptr;
 
   public:
     StaticText(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);

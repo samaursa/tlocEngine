@@ -106,7 +106,7 @@ namespace tloc { namespace input { namespace component_system {
     ArcBallControlSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   {
-    if (m_flags.ReturnAndUnmark(k_updated))
+    if (m_flags.IsMarked(k_updated))
     {
       using math_cs::Transform;
       using gfx_cs::ArcBall;
@@ -148,6 +148,15 @@ namespace tloc { namespace input { namespace component_system {
         t->SetPosition(t->GetPosition() - dirVec);
       }
     }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ArcBallControlSystem::
+    Post_ProcessActiveEntities(f64 )
+  {
+    m_flags.Unmark(k_updated);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

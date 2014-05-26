@@ -9,9 +9,9 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocUtils.h>
 
+#include <tlocMath/types/tlocVector2.h>
+
 #include <tlocInput/component_system/tlocComponentType.h>
-#include <tlocInput/hid/tlocKeyboard.h>
-#include <tlocInput/hid/tlocMouse.h>
 
 namespace tloc { namespace input { namespace component_system {
 
@@ -21,25 +21,32 @@ namespace tloc { namespace input { namespace component_system {
   public:
     typedef ArcBallControl                                        this_type;
     typedef Component_T<this_type, components::k_arcball_control> base_type;
-    typedef hid::keyboard_b_sptr                                  keyboard_ptr;
-    typedef hid::mouse_b_sptr                                     mouse_ptr;
+    typedef math_t::Vec2f                                         vec_type;
+    typedef vec_type::value_type                                  real_type;
 
   public:
     ArcBallControl();
-    ArcBallControl(keyboard_ptr a_keyboard);
-    ArcBallControl(mouse_ptr a_mouse);
-    ArcBallControl(keyboard_ptr a_keyboard, mouse_ptr a_mouse);
 
-    TLOC_DECL_AND_DEF_SETTER(keyboard_ptr, SetKeyboard, m_keyboard);
-    TLOC_DECL_AND_DEF_SETTER(mouse_ptr, SetMouse, m_mouse);
+    TLOC_DECL_AND_DEF_GETTER(vec_type, GetGlobalMultiplier, m_globalMulti);
+    TLOC_DECL_AND_DEF_GETTER(vec_type, GetRotationMultiplier, m_rotMulti);
+    TLOC_DECL_AND_DEF_GETTER(vec_type, GetPanMultiplier, m_panMulti);
+    TLOC_DECL_AND_DEF_GETTER(real_type, GetDollyMultiplier, m_dollyMulti);
 
-    TLOC_DECL_AND_DEF_GETTER(keyboard_ptr, GetKeyboard, m_keyboard);
-    TLOC_DECL_AND_DEF_GETTER(mouse_ptr, GetMouse, m_mouse);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(vec_type, SetGlobalMultiplier, m_globalMulti);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(vec_type, SetRotationMultiplier, m_rotMulti);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(vec_type, SetPanMultiplier, m_panMulti);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(real_type, SetDollyMultiplier, m_dollyMulti);
 
   private:
-    keyboard_ptr    m_keyboard;
-    mouse_ptr       m_mouse;
+    vec_type     m_globalMulti, m_rotMulti, m_panMulti;
+    real_type    m_dollyMulti;
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ArcBallControl, arc_ball_control);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ArcBallControl, arc_ball_control);
 
 };};};
 

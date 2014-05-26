@@ -18,8 +18,10 @@ namespace tloc { namespace input { namespace component_system {
 };};};
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 using namespace tloc::input_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ArcBallControl);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(ArcBallControl);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(ArcBallControl);

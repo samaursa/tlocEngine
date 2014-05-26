@@ -87,6 +87,12 @@ namespace tloc { namespace prefab { namespace graphics {
         .Orientation(m_ori)
         .Add(a_ent);
     }
+    else
+    {
+      math_cs::transform_sptr t = a_ent->GetComponent<math_cs::Transform>();
+      t->SetPosition(m_pos);
+      t->SetOrientation(m_ori);
+    }
 
     // -----------------------------------------------------------------------
     // SceneNode component

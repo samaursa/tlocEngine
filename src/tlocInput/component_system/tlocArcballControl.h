@@ -47,6 +47,7 @@ namespace tloc { namespace input { namespace component_system {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ArcBallControl, arc_ball_control);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ArcBallControl, arc_ball_control);
+  TLOC_TYPEDEF_COMPONENT_POOL(ArcBallControl, arc_ball_control);
 
 };};};
 

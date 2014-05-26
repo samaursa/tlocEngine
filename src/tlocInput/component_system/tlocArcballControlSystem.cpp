@@ -49,6 +49,13 @@ namespace tloc { namespace input { namespace component_system {
 
   ArcBallControlSystem::error_type
     ArcBallControlSystem::
+    Pre_Initialize()
+  { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::error_type
+    ArcBallControlSystem::
     InitializeEntity(entity_ptr a_ent)
   {
     TLOC_LOG_INPUT_WARN_IF(a_ent->HasComponent<gfx_cs::ArcBall>() == false)
@@ -116,29 +123,29 @@ namespace tloc { namespace input { namespace component_system {
       ArcBallControl::vec_type panMulti    = arcBallControl->GetPanMultiplier();
       ArcBallControl::real_type dollyMulti = arcBallControl->GetDollyMultiplier();
 
-      if (m_flags.ReturnAndUnmark(k_rotating))
+      if (m_flags.IsMarked(k_rotating))
       {
         arcBall->MoveVertical(m_yRel * globalMulti[1] * rotMulti[1]);
         arcBall->MoveHorizontal(m_xRel * globalMulti[0] * rotMulti[0]);
       }
-      
-      if (m_flags.ReturnAndUnmark(k_panning))
+      else if (m_flags.IsMarked(k_panning))
       {
         math_t::Vec3f leftVec = t->GetOrientation().GetCol(0);
         math_t::Vec3f upVec = t->GetOrientation().GetCol(1);
 
-        leftVec *= globalMulti[0] * panMulti[0];
-        upVec *= globalMulti[1] * panMulti[1];
+        leftVec *= m_xRel * globalMulti[0] * panMulti[0];
+        upVec *= m_yRel * globalMulti[1] * panMulti[1];
 
         t->SetPosition(t->GetPosition() - leftVec + upVec);
         arcBall->SetFocus(arcBall->GetFocus() - leftVec + upVec);
       }
-
-      if (m_flags.ReturnAndUnmark(k_dolly))
+      else if (m_flags.IsMarked(k_dolly))
       {
         math_t::Vec3f dirVec = t->GetOrientation().GetCol(2);
 
-        dirVec *= globalMulti[0] * dollyMulti;
+        dirVec *= m_xRel * globalMulti[0] * dollyMulti;
+
+        t->SetPosition(t->GetPosition() - dirVec);
       }
     }
   }
@@ -227,6 +234,7 @@ namespace tloc { namespace input { namespace component_system {
       return core_dispatch::f_event::Veto();
     }
 
+    m_flags.Unmark(k_updated);
     return core_dispatch::f_event::Continue();
   }
 

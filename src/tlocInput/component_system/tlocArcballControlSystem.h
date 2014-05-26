@@ -38,8 +38,8 @@ namespace tloc { namespace input { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&);
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&);
 
-    virtual void ProcessEntity(entity_ptr a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 );
+    virtual void Post_ProcessActiveEntities(f64 );
 
     // -----------------------------------------------------------------------
     // callbacks

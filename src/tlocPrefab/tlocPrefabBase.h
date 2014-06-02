@@ -37,20 +37,34 @@ namespace tloc {
   // ///////////////////////////////////////////////////////////////////////
   // Base for all prefab objects
 
-  template <typename T_ComponentType>
+  template <typename T_Derived, typename T_ComponentType>
   class Prefab_TI
     : core_bclass::NonCopyable_I
+    , core_bclass::PolicyBase_TI<T_Derived>
   {
   public:
-    typedef T_ComponentType                       component_type;
-    typedef core_sptr::SharedPtr<component_type>  component_ptr;
-    typedef Prefab_TI<component_type>             this_type;
+    typedef core_bclass::PolicyBase_TI<T_Derived>         base_type;
+    typedef typename base_type::derived_type              derived_type;
 
-    typedef core_cs::entity_manager_vptr      entity_mgr_ptr;
-    typedef core_cs::component_pool_mgr_vptr  comp_pool_mgr_ptr;
-    typedef core_cs::Entity                   entity_type;
-    typedef core_cs::entity_vptr              entity_ptr;
-    typedef core_err::Error                   error_type;
+    typedef T_ComponentType                               component_type;
+    typedef core_sptr::SharedPtr<component_type>          component_ptr;
+    typedef Prefab_TI<derived_type, component_type>       this_type;
+
+    typedef core_cs::EventManager::listeners_list         listeners_cont;
+    typedef core_cs::EventManager::listener_ptr           listener_ptr;
+    typedef core_cs::EntityManager::Params                insert_params;
+
+    typedef core_cs::entity_manager_vptr                  entity_mgr_ptr;
+    typedef core_cs::component_pool_mgr_vptr              comp_pool_mgr_ptr;
+    typedef core_cs::Entity                               entity_type;
+    typedef core_cs::entity_vptr                          entity_ptr;
+    typedef core_err::Error                               error_type;
+
+  public:
+    derived_type& DispatchTo(listener_ptr a_system)
+    { m_listeners.push_back(a_system); return *This(); }
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(listeners_cont, GetListeners, m_listeners);
 
   protected:
     Prefab_TI(entity_mgr_ptr  a_entMgr, comp_pool_mgr_ptr  a_poolMgr)
@@ -58,9 +72,12 @@ namespace tloc {
       , m_compPoolMgr(a_poolMgr)
     { }
 
+    using base_type::This;
+
   protected:
     entity_mgr_ptr          m_entMgr;
     comp_pool_mgr_ptr       m_compPoolMgr;
+    listeners_cont          m_listeners;
   };
 
 };

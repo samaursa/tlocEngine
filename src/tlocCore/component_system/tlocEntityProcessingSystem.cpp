@@ -1,5 +1,8 @@
 #include "tlocEntityProcessingSystem.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
+
 namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
@@ -14,6 +17,10 @@ namespace tloc { namespace core { namespace component_system {
   error_type EntityProcessingSystem::
     DoInitialize(const entity_count_cont& a_entities)
   {
+    TLOC_LOG_CORE_WARN_IF(a_entities.size() == 0) 
+      <<  "System (" << core_utils::GetMemoryAddress(this) 
+      << ") does not have any components to Initialize (or process)";
+
     for (entity_count_cont::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {

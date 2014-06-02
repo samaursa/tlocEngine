@@ -14,12 +14,12 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class SpriteAnimation
-    : public Prefab_TI<gfx_cs::TextureAnimator>
+    : public Prefab_TI<SpriteAnimation, gfx_cs::TextureAnimator>
   {
   public:
-    typedef Prefab_TI<component_type>         base_type;
-    typedef SpriteAnimation                   this_type;
-    typedef tl_size                           size_type;
+    typedef SpriteAnimation                         this_type;
+    typedef Prefab_TI<this_type, component_type>    base_type;
+    typedef tl_size                                 size_type;
 
   public:
     SpriteAnimation(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);

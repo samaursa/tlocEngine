@@ -93,6 +93,12 @@ namespace TestingEventManager
     container_type m_eventsToTest;
   };
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EventTracker, event_tracker);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(EventTracker, event_tracker);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // CompToTest
+
   class CompToTest
     : public core::component_system::Component_T<CompToTest, components::listener>
   {
@@ -111,57 +117,65 @@ namespace TestingEventManager
 
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
-    EventTracker globalTracker;
-    EventTracker tracker;
+    event_tracker_vso globalTracker;
+    event_tracker_vso tracker, tracker2;
 
     entity_vso         dummyEnt( MakeArgs(0) );
     comp_to_test_sptr  transComp = MakeShared<CompToTest>();
     component_sptr     dummyComp = MakeShared<component_sptr::value_type>(*transComp);
 
     EventManager mgr;
-    mgr.AddGlobalListener(&globalTracker);
-    mgr.AddListener(&tracker, entity_events::create_entity);
+    mgr.AddGlobalListener(globalTracker.get().get());
+    mgr.AddListener(tracker.get().get(), entity_events::create_entity);
 
     events::value_type currentEvent = entity_events::create_entity;
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 0);
-    CHECK(tracker.GetEventCount(currentEvent) == 0);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 0);
+    CHECK(tracker->GetEventCount(currentEvent) == 0);
 
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
-    CHECK(tracker.GetEventCount(currentEvent) == 1);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 1);
+    CHECK(tracker->GetEventCount(currentEvent) == 1);
 
     currentEvent = entity_events::destroy_entity;
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
-    CHECK(tracker.GetEventCount(currentEvent) == 0);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 1);
+    CHECK(tracker->GetEventCount(currentEvent) == 0);
 
     currentEvent = entity_events::insert_component;
-    mgr.AddListener(&tracker, entity_events::insert_component);
+    mgr.AddListener(tracker.get().get(), entity_events::insert_component);
     mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
-    CHECK(tracker.GetEventCount(currentEvent) == 1);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 1);
+    CHECK(tracker->GetEventCount(currentEvent) == 1);
 
-    mgr.RemoveListener(&tracker, entity_events::insert_component);
+    mgr.RemoveListener(tracker.get().get(), entity_events::insert_component);
     mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
-    CHECK(tracker.GetEventCount(currentEvent) == 1); // no change
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 1); // no change
 
     currentEvent = entity_events::create_entity;
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
-    CHECK(tracker.GetEventCount(currentEvent) == 2);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 2);
 
     mgr.RemoveAllListeners();
 
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
-    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
-    CHECK(tracker.GetEventCount(currentEvent) == 2);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 2);
+
+    // dispatching to selective listeners
+    CHECK(tracker2->GetEventCount(currentEvent) == 0);
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()), 
+                    core_ds::MakeTuple(tracker2.get().get()));
+    CHECK(tracker2->GetEventCount(currentEvent) == 1);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 2);
 
   }
 };

@@ -66,7 +66,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // DynamicText component
 
-    m_entMgr->InsertComponent(a_ent, Construct(a_text, a_font));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_text, a_font))
+                              .DispatchTo(GetListeners()) );
   }
 
 };};};

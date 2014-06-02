@@ -16,10 +16,13 @@ public:
     : m_endProgram(false)
   { }
 
-  void OnWindowEvent(const gfx_win::WindowEvent& a_event)
+  core_dispatch::Event 
+    OnWindowEvent(const gfx_win::WindowEvent& a_event)
   {
     if (a_event.m_type == gfx_win::WindowEvent::close)
     { m_endProgram = true; }
+
+    return core_dispatch::f_event::Continue();
   }
 
   bool  m_endProgram;
@@ -41,7 +44,10 @@ int TLOC_MAIN(int argc, char *argv[])
   // Initialize OpenGL for the current platform
 
   if (gfx_gl::InitializePlatform() != ErrorSuccess)
-  { printf("\nRenderer failed to initialize"); return 1; }
+  { 
+    TLOC_LOG_GFX_ERR() << "Renderer failed to initialize"; 
+    return 1;
+  }
 
   //------------------------------------------------------------------------
   // A component pool manager manages all the components in a particular
@@ -133,7 +139,7 @@ int TLOC_MAIN(int argc, char *argv[])
 
   //------------------------------------------------------------------------
   // Exiting
-  printf("\nExiting normally");
+  TLOC_LOG_CORE_INFO() << "Exiting normally";
 
   return 0;
 

@@ -46,6 +46,8 @@ set(TLOC_PREFAB_INPUT
   input/tloc_input.cpp 
   input/tloc_input.h 
   input/tloc_input.inl.h 
+  input/tlocArcBallControl.h
+  input/tlocArcBallControl.cpp
   )
 
 set(TLOC_PREFAB_MATH

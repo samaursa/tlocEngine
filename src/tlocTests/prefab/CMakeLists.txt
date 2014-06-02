@@ -3,6 +3,7 @@ set(TLOC_TESTS_PREFAB
   tlocTestCommon.h
   tlocTestCommon.cpp
   tlocArcBallTest.cpp
+  tlocArcBallControlTest.cpp
   tlocCameraTest.cpp
   tlocCuboidTest.cpp
   tlocDynamicTextTest.cpp

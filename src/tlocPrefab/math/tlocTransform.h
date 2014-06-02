@@ -14,12 +14,12 @@
 namespace tloc { namespace prefab { namespace math {
 
   class Transform
-    : public Prefab_TI<math_cs::Transform>
+    : public Prefab_TI<Transform, math_cs::Transform>
   {
   public:
-    typedef Prefab_TI<component_type>                     base_type;
-
     typedef Transform                                     this_type;
+    typedef Prefab_TI<this_type, component_type>          base_type;
+
     typedef math_t::Vec3f32                               position_type;
     typedef math_t::Mat3f32                               orientation_type;
 

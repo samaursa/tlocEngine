@@ -11,6 +11,7 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -23,6 +24,8 @@ namespace tloc { namespace core { namespace component_system {
     // The maximum number of components a system is allowed to register for
     // events listening
     enum { max_component_types = 4 };
+
+    typedef EntitySystemBase                      this_type;
 
     typedef components::value_type                component_type;
     typedef tl_size                               size_type;
@@ -44,6 +47,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef core::Pair<entity_ptr, size_type>     entity_count_pair;
     typedef core_conts::Array<entity_count_pair>  entity_count_cont;
 
+    typedef f64                                   time_type;
+
     typedef containers::tl_array_fixed
       <component_type, max_component_types>::type       component_type_array;
 
@@ -64,9 +69,11 @@ namespace tloc { namespace core { namespace component_system {
     /// Process the active entities. The entities are not processed if
     /// CheckProcessing returns 0.
     ///-------------------------------------------------------------------------
-    void ProcessActiveEntities(f64 a_deltaT = 0);
+    void ProcessActiveEntities(time_type a_deltaT = 0);
 
     virtual void SortEntities() = 0;
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumEntities, m_activeEntities.size());
 
   protected:
 
@@ -122,18 +129,18 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     /// @brief Called before processing entities
     ///-------------------------------------------------------------------------
-    virtual void Pre_ProcessActiveEntities(f64 a_deltaT) = 0;
+    virtual void Pre_ProcessActiveEntities(time_type a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called by ProcessActiveEntities() for base classes
     ///-------------------------------------------------------------------------
     virtual void DoProcessActiveEntities(const entity_count_cont& a_entities,
-                                         f64 a_deltaT) = 0;
+                                         time_type a_deltaT) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called after processing entities
     ///-------------------------------------------------------------------------
-    virtual void Post_ProcessActiveEntities(f64 a_deltaT) = 0;
+    virtual void Post_ProcessActiveEntities(time_type a_deltaT) = 0;
 
     virtual void OnComponentInsert(const EntityComponentEvent& a_event) = 0;
     virtual void OnComponentRemove(const EntityComponentEvent& a_event) = 0;
@@ -191,10 +198,63 @@ namespace tloc { namespace core { namespace component_system {
       m_typeFlags.push_back(a_typeFlags[i]);
     }
 
-    m_eventMgr->AddListener(this, entity_events::insert_component);
-    m_eventMgr->AddListener(this, entity_events::remove_component);
+    m_eventMgr->AddListener
+      (this, entity_events::insert_component);
+    m_eventMgr->AddListener
+      (this, entity_events::remove_component);
   }
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_VIRTUAL_PTR(EntitySystemBase, entity_system_base);
+
+  namespace algos { namespace entity_system  {
+
+    // ///////////////////////////////////////////////////////////////////////
+    // initialize
+
+    struct Initialize
+    {
+    public:
+      typedef EntitySystemBase                            value_type;
+
+    public:
+      void operator()(value_type& a_system);
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+    // shutdown
+
+    struct ShutDown
+    {
+    public:
+      typedef EntitySystemBase                            value_type;
+
+    public:
+      void operator()(value_type& a_system);
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+    // process
+
+    struct Process
+    {
+    public:
+      typedef EntitySystemBase                            value_type;
+      typedef value_type::time_type                       time_type;
+
+    public:
+      Process(time_type a_deltaT);
+
+      void operator()(value_type& a_system);
+
+    private:
+      time_type m_deltaT;
+    };
+
+  };};
+  
 };};};
 
 #endif

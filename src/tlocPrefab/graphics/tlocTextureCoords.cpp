@@ -73,8 +73,8 @@ namespace tloc { namespace prefab { namespace graphics {
     TextureCoords::
     Add(entity_ptr a_ent) const
   {
-    m_entMgr->InsertComponent(a_ent, Construct(), 
-                              core_cs::EntityManager::orphan(true));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct())
+                              .DispatchTo(GetListeners()).Orphan(true));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

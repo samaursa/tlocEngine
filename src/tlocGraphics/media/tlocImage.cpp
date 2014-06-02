@@ -39,7 +39,7 @@ namespace tloc { namespace graphics { namespace media {
     { return TLOC_ERROR(common_error_types::error_no_data); }
 
     // Check if a_size can accommodate a whole number of Color*
-    TLOC_ASSERT( ((a_channels % sizeof(color_type)) == 0),
+    TLOC_ASSERT( (a_channels == color_type::k_size),
       "The buffer has an invalid size!");
 
     const color_type* buffer = reinterpret_cast<const color_type*>(a_buffer.get());

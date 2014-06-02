@@ -42,7 +42,10 @@ namespace tloc { namespace prefab { namespace graphics {
       Construct(a_begin, a_end, ta);
     }
     else
-    { m_entMgr->InsertComponent(a_entity, Construct(a_begin, a_end, ta)); }
+    { 
+      m_entMgr->InsertComponent( insert_params(a_entity, 
+        Construct(a_begin, a_end, ta)).DispatchTo(GetListeners()) );
+    }
 
   }
 

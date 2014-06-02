@@ -76,7 +76,8 @@ namespace tloc { namespace prefab { namespace physics {
     // -----------------------------------------------------------------------
     // RigidBody component
 
-    m_entMgr->InsertComponent(a_ent, Construct(a_rbDef) );
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_rbDef))
+                              .DispatchTo(GetListeners()) );
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -115,8 +116,8 @@ namespace tloc { namespace prefab { namespace physics {
     RigidBodyShape::
     Add(entity_ptr a_ent, RigidBodyShapeDef a_rbShape) const
   {
-    m_entMgr->
-      InsertComponent(a_ent, Construct(a_rbShape), EntityManager::orphan(true) );
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_rbShape))
+                              .DispatchTo(GetListeners()).Orphan(true));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -175,7 +176,8 @@ namespace tloc { namespace prefab { namespace physics {
     RigidBodyListener::
     Add(entity_ptr a_ent, rb_listener_ptr a_listener) const
   {
-    m_entMgr->InsertComponent(a_ent, Construct(a_listener));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_listener))
+                              .DispatchTo(GetListeners()));
   }
 
 };};};

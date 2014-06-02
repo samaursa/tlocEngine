@@ -12,16 +12,16 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class SceneNode
-    : public Prefab_TI<gfx_cs::SceneNode>
+    : public Prefab_TI<SceneNode, gfx_cs::SceneNode>
   {
   public:
-    typedef Prefab_TI<component_type>     base_type;
-    typedef SceneNode                     this_type;
-    typedef gfx_cs::SceneNode             scene_node_type;
-    typedef gfx_cs::scene_node_vptr       scene_node_ptr;
+    typedef SceneNode                               this_type;
+    typedef Prefab_TI<this_type, component_type>    base_type;
+    typedef gfx_cs::SceneNode                       scene_node_type;
+    typedef gfx_cs::scene_node_vptr                 scene_node_ptr;
 
-    typedef math_t::Vec3f32               position_type;
-    typedef math_t::Mat3f32               orientation_type;
+    typedef math_t::Vec3f32                         position_type;
+    typedef math_t::Mat3f32                         orientation_type;
 
   public:
     SceneNode(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);

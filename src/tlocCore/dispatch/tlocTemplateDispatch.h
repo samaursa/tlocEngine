@@ -109,12 +109,6 @@ namespace tloc { namespace core { namespace dispatch {
       m_allObservers.clear();
     }
 
-    template <typename T_Ref>
-    void foo(T_Ref a)
-    {
-      TLOC_STATIC_ASSERT_IS_REFERENCE(T_Ref);
-    }
-
     ///-------------------------------------------------------------------------
     /// Registers this object.
     ///

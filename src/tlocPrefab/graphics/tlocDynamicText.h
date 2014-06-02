@@ -16,15 +16,15 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class DynamicText
-    : public Prefab_TI<gfx_cs::DynamicText>
+    : public Prefab_TI<DynamicText, gfx_cs::DynamicText>
   {
   public:
-    typedef Prefab_TI<component_type>         base_type;
+    typedef DynamicText                             this_type;
+    typedef Prefab_TI<this_type, component_type>    base_type;
 
-    typedef DynamicText                       this_type;
-    typedef core_str::StringW                 string_type;
-    typedef gfx_cs::alignment::align_type     align_type;
-    typedef gfx_med::font_sptr                font_ptr;
+    typedef core_str::StringW                       string_type;
+    typedef gfx_cs::alignment::align_type           align_type;
+    typedef gfx_med::font_sptr                      font_ptr;
 
   public:
     DynamicText(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);

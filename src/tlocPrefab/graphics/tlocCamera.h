@@ -19,12 +19,12 @@ namespace tloc { namespace prefab { namespace graphics {
   // Camera
 
   class Camera
-    : public Prefab_TI<gfx_cs::Camera>
+    : public Prefab_TI<Camera, gfx_cs::Camera>
   {
   public:
-    typedef Prefab_TI<component_type>                   base_type;
-
     typedef Camera                                      this_type;
+    typedef Prefab_TI<this_type, component_type>        base_type;
+
     typedef math_proj::frustum_f32                      frustum_type;
     typedef tl_float                                    real_type;
     typedef math_t::Vec3f32                             vec_type;

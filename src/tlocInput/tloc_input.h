@@ -7,5 +7,6 @@
 #include <tlocInput/tlocInputTypes.h>
 
 #include <tlocInput/hid/tloc_hid.h>
+#include <tlocInput/component_system/tloc_component_system.h>
 
 #endif

@@ -79,7 +79,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // quad component
 
-    m_entMgr->InsertComponent(a_ent, Construct());
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct())
+                              .DispatchTo(GetListeners()) );
 
     // Create the texture coords (and the texture coord pool if necessary)
     if (m_texCoords)

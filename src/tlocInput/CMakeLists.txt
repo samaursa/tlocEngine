@@ -12,6 +12,17 @@ set(TLOC_INPUT
   tloc_input.inl.h
   )
 
+set(TLOC_INPUT_COMPONENT_SYSTEM
+  component_system/tloc_component_system.h
+  component_system/tloc_component_system.inl.h
+  component_system/tloc_component_system.cpp
+  component_system/tlocComponentType.h
+  component_system/tlocArcballControl.h
+  component_system/tlocArcballControl.cpp
+  component_system/tlocArcballControlSystem.h
+  component_system/tlocArcballControlSystem.cpp
+  )
+
 set(TLOC_INPUT_HID 
   hid/tlocJoystick.cpp 
   hid/tlocJoystick.h 
@@ -82,6 +93,7 @@ endif()
 add_library(tlocInput STATIC
   ${TLOC_INPUT}
   ${TLOC_INPUT_HID}
+  ${TLOC_INPUT_COMPONENT_SYSTEM}
   )
 
 add_dependencies(tlocInput
@@ -94,3 +106,4 @@ set_platform_specific_properties(tlocInput)
 
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})
+source_group(component_system FILES ${TLOC_INPUT_COMPONENT_SYSTEM})

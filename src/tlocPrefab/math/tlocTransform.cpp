@@ -60,7 +60,8 @@ namespace tloc { namespace prefab { namespace math {
   {
     // Create an entity from the manager and return to user
     // Transform components don't have a system - known as orphan components
-    m_entMgr->InsertComponent(a_ent, Construct(), EntityManager::orphan(true));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct())
+                              .DispatchTo(GetListeners()).Orphan(true));
   }
 
 };};};

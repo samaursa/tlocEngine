@@ -14,12 +14,12 @@
 namespace tloc { namespace prefab { namespace graphics {
 
   class Quad
-    : public Prefab_TI<gfx_cs::Quad>
+    : public Prefab_TI<Quad, gfx_cs::Quad>
   {
   public:
-    typedef Prefab_TI<component_type>           base_type;
-    typedef Quad                                this_type;
-    typedef math_t::Rectf32_c                   rect_type;
+    typedef Quad                                    this_type;
+    typedef Prefab_TI<this_type, component_type>    base_type;
+    typedef math_t::Rectf32_c                       rect_type;
 
   public:
     Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);

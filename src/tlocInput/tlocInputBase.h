@@ -10,12 +10,17 @@ namespace tloc {
   //////////////////////////////////////////////////////////////////////////
   // Complete namespace here
 
-  namespace input { namespace hid { }};
+  namespace input 
+  { 
+    namespace hid                 {};
+    namespace component_system    {};
+  };
 
   //////////////////////////////////////////////////////////////////////////
   // Namespace aliases here
 
   namespace input_hid = input::hid;
+  namespace input_cs  = input::component_system;
 
 };
 

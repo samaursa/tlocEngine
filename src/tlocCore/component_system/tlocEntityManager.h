@@ -13,6 +13,7 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -42,6 +43,26 @@ namespace tloc { namespace core { namespace component_system {
     typedef core_t::StrongType_T<bool, 0>         orphan;
 
   public:
+    struct Params
+    {
+    public:
+      typedef Params                              this_type;
+      typedef EventManager::listeners_list        listeners_list;
+      typedef listeners_list::value_type          listeners_ptr;
+
+    public:
+      Params();
+      Params(entity_ptr_type a_ent,  component_ptr_type a_component);
+
+      this_type& DispatchTo(listeners_ptr a_system);
+
+      TLOC_DECL_PARAM_VAR(entity_ptr_type,  Entity, m_entity);
+      TLOC_DECL_PARAM_VAR(component_ptr_type, Component, m_component);
+      TLOC_DECL_PARAM_VAR(bool, Orphan, m_orphan);
+      TLOC_DECL_PARAM_VAR(listeners_list, DispatchTo, m_dispatchTo);
+    };
+
+  public:
     EntityManager(event_manager_vptr a_eventManager);
     virtual ~EntityManager();
 
@@ -52,11 +73,8 @@ namespace tloc { namespace core { namespace component_system {
     // A component is an orphan if there is no system present to receive it/
     // This will suppress the warning that a component was added without a 
     // system
-    void              InsertComponent(entity_ptr_type a_entity,
-                                      component_ptr_type a_component,
-                                      orphan = orphan(false));
-    bool              RemoveComponent(entity_ptr_type a_entity,
-                                      component_ptr_type a_component);
+    void              InsertComponent(const Params& a_params);
+    bool              RemoveComponent(ent_comp_pair_type a_entityAndComponent);
 
     void              Update();
 

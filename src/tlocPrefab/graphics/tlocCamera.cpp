@@ -112,7 +112,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // camera component
 
-    m_entMgr->InsertComponent(a_ent, Construct(a_windowDimensions));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_windowDimensions))
+                              .DispatchTo(GetListeners()));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -142,7 +143,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // camera component
 
-    m_entMgr->InsertComponent(a_ent, Construct(a_frustum));
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct(a_frustum))
+                              .DispatchTo(GetListeners()) );
   }
 
 };};};

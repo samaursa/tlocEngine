@@ -229,7 +229,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     }
 
     image_ptr fontImg(new image_ptr::value_type());
-    fontImg->LoadFromMemory(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
+    fontImg->Load(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
 
     return fontImg;
   }

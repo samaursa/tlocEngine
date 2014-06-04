@@ -15,11 +15,49 @@
 
 namespace tloc { namespace graphics { namespace media {
 
-  class Image_I
-  { };
+  namespace p_image
+  {
+    namespace storage 
+    {
+      class Internal {};
+      class External {};
+    };
+  };
 
-  template <typename T_ColorType = types::Color>
-  class Image_T
+  // ///////////////////////////////////////////////////////////////////////
+  // Image_I
+
+  class Image_I
+  { 
+  public:
+
+    typedef tl_size                                       size_type;
+    typedef core::error::Error                            error_type;
+    typedef types::Dimension2                             dimension_type;
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
+    TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
+
+  protected:
+    Image_I();
+    ~Image_I();
+
+  protected:
+    dimension_type          m_dim;
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Image_TI<>
+
+  template <typename T_ColorType, typename T_StorageType>
+  class Image_TI;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Image_TI<Internal>
+
+  template <typename T_ColorType>
+  class Image_TI<T_ColorType, p_image::storage::Internal>
     : public Image_I
   {
     TLOC_STATIC_ASSERT
@@ -28,20 +66,119 @@ namespace tloc { namespace graphics { namespace media {
 
   public:
     typedef T_ColorType                                   value_type;
-    typedef Image_T<value_type>                           this_type;
+    typedef p_image::storage::Internal                    storage_type;
+
+    typedef Image_I                                       base_type;
+    typedef Image_TI<value_type, storage_type>            this_type;
 
     typedef value_type                                    color_type;
     typedef typename color_type::value_type               color_value_type;
     typedef typename
       core::containers::tl_array<color_type>::type        pixel_container_type;
 
+    typedef core_sptr::VirtualPtr<color_type>             color_type_ptr;
     typedef core_sptr::VirtualPtr<color_value_type>       color_ptr;
     typedef core_sptr::VirtualPtr<const color_value_type> const_color_ptr;
 
-    typedef tl_size                                       size_type;
+  public:
+    error_type        Load(const_color_ptr a_buffer, dimension_type a_dim,
+                           size_type a_channels);
+    error_type        Load(const pixel_container_type& a_buffer,
+                           dimension_type a_dim);
+    error_type        Create(dimension_type a_dim, const color_type& a_color);
+    error_type        AddPadding(dimension_type a_padding,
+                                 const color_type& a_color);
+    bool              IsValid() const;
 
-    typedef core::error::Error                            error_type;
-    typedef types::Dimension2                             dimension_type;
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
+                                          GetPixels, m_pixels);
+
+  protected:
+    Image_TI();
+    ~Image_TI();
+
+    void              DoSet(tl_int a_index, const color_type& a_color);
+    const color_type& DoGet(tl_int a_index) const;
+
+  private:
+    pixel_container_type    m_pixels;
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Image_TI<External>
+
+  template <typename T_ColorType>
+  class Image_TI<T_ColorType, p_image::storage::External>
+    : public Image_I
+  {
+    TLOC_STATIC_ASSERT
+      ( (Loki::Conversion<T_ColorType, gfx_t::priv::ColorType>::exists),
+      Unsupported_color_type_selected);
+
+  public:
+    typedef T_ColorType                                   value_type;
+    typedef p_image::storage::External                    storage_type;
+
+    typedef Image_I                                       base_type;
+    typedef Image_TI<value_type, storage_type>            this_type;
+
+    typedef value_type                                    color_type;
+    typedef typename color_type::value_type               color_value_type;
+    typedef typename
+      core::containers::tl_array<color_type>::type        pixel_container_type;
+
+    typedef core_sptr::VirtualPtr<color_type>             color_type_ptr;
+    typedef core_sptr::VirtualPtr<color_value_type>       color_ptr;
+    typedef core_sptr::VirtualPtr<const color_value_type> const_color_ptr;
+
+  public:
+    error_type        Load(color_ptr a_buffer, dimension_type a_dim,
+                           size_type a_channels);
+    error_type        Create(dimension_type a_dim, const color_type& a_color);
+    error_type        AddPadding(dimension_type a_padding,
+                                 const color_type& a_color);
+    bool              IsValid() const;
+
+    TLOC_DECL_AND_DEF_GETTER(color_type_ptr, GetPixels, m_pixels);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(color_type_ptr, GetPixels, m_pixels);
+
+  protected:
+    Image_TI();
+    ~Image_TI();
+
+    void              DoSet(tl_int a_index, const color_type& a_color);
+    const color_type& DoGet(tl_int a_index) const;
+
+  private:
+    color_type_ptr    m_pixels;
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Image_T<> 
+
+  template <typename T_ColorType = types::Color, 
+            typename T_StorageType = p_image::storage::Internal>
+  class Image_T
+    : public Image_TI<T_ColorType, T_StorageType>
+  {
+  public:
+    typedef T_ColorType                                   value_type;
+    typedef T_StorageType                                 storage_type;
+
+    typedef Image_TI<value_type, storage_type>            base_type;
+    typedef Image_T<value_type, storage_type>             this_type;
+
+    typedef typename base_type::color_type                color_type;
+    typedef typename base_type::color_value_type          color_value_type;
+    typedef typename base_type::pixel_container_type      pixel_container_type;
+
+    typedef typename base_type::color_type_ptr            color_type_ptr;
+    typedef typename base_type::color_ptr                 color_ptr;
+    typedef typename base_type::const_color_ptr           const_color_ptr;
+    typedef typename base_type::size_type                 size_type;
+
+    typedef typename base_type::error_type                error_type;
+    typedef typename base_type::dimension_type            dimension_type;
 
     typedef core_sptr::VirtualPtr<this_type>              image_ptr;
     typedef core_sptr::SharedPtr<this_type>               image_sptr;
@@ -50,78 +187,23 @@ namespace tloc { namespace graphics { namespace media {
   public:
     Image_T();
 
-    ///-------------------------------------------------------------------------
-    /// @brief Loads color buffer from memory (assuming RGBA format)
-    ///-------------------------------------------------------------------------
-    error_type        LoadFromMemory(const_color_ptr a_buffer,
-                                     dimension_type a_dim,
-                                     size_type a_channels);
-
-    error_type        LoadFromMemory(const pixel_container_type& a_buffer,
-                                     dimension_type a_dim);
-
-    template <typename T_ImageVSOContainer>
-    error_type        LoadFromImages(const T_ImageVSOContainer& a_arrayOfImages);
-
-    error_type        Create(dimension_type a_dim, const color_type& a_color);
-
     void              SetPixel(size_type a_X, size_type a_Y,
                                const color_type& a_color);
-
     void              SetImage(size_type a_x, size_type a_y,
                                const this_type& a_image);
-
-    error_type        AddPadding(dimension_type a_padding,
-                                 const color_type& a_color);
-
     const color_type& GetPixel(size_type a_X, size_type a_Y) const;
-
     image_sptr        GetImage(size_type a_x, size_type a_y,
                                dimension_type a_dimToGet) const;
 
-    bool              IsValid() const;
-
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetWidth, m_dim[types::dimension::width]);
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetHeight, m_dim[types::dimension::height]);
-    TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
-                                          GetPixels, m_pixels);
-
-  private:
-    error_type        DoLoadFromImages(const image_ptr_cont& a_arrayOfImages);
-
-  private:
-    dimension_type          m_dim;
-    pixel_container_type    m_pixels;
+    using base_type::Load;
+    using base_type::Create;
+    using base_type::AddPadding;
+    using base_type::GetWidth;
+    using base_type::GetHeight;
+    using base_type::GetDimensions;
+    using base_type::GetPixels;
+    using base_type::IsValid;
   };
-
-  // -----------------------------------------------------------------------
-  // template definitions
-
-  template <typename T_ColorType>
-  template <typename T_ImageVSOContainer>
-  typename Image_T<T_ColorType>::error_type
-    Image_T<T_ColorType>::
-    LoadFromImages(const T_ImageVSOContainer& a_arrayOfImages)
-  {
-    typedef typename T_ImageVSOContainer::value_type          image_vso;
-    typedef typename image_vso::value_type                    image_type;
-
-    TLOC_STATIC_ASSERT( (Loki::Conversion<image_type, Image_I>::exists),
-      Incoming_container_value_type_must_be_an_Image_T);
-
-    this_type::image_ptr_cont imagePtrs;
-
-    //NOTE:: Commented out temporarily since ToVPtr does not appear to be implemented yet
-    //    core::transform_all( a_arrayOfImages, imagePtrs,
-    //                         core_sptr::algos::virtual_ptr::transform::ToVPtr() );
-    // TODO: extract VirtualPtrs from array of images, push into container, and
-    //       send it to DoLoadFromImages for packing. We don't have a binpacker
-    //       yet, which is needed for this operation
-    TLOC_ASSERT_WIP();
-
-    DoLoadFromImages(imagePtrs);
-  }
 
   // -----------------------------------------------------------------------
   // typedefs
@@ -144,41 +226,71 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Image, image);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Image, image);
 
+  typedef Image_T<gfx_t::color_rgba, p_image::storage::External>      image_stream_rgba;
+  typedef Image_T<gfx_t::color_rgb, p_image::storage::External>       image_stream_rgb;
+  typedef Image_T<gfx_t::color_rg, p_image::storage::External>        image_stream_rg;
+  typedef Image_T<gfx_t::color_r, p_image::storage::External>         image_stream_r;
+
+  typedef Image_T<gfx_t::color_u16_rgba, p_image::storage::External>  image_stream_u16_rgba;
+  typedef Image_T<gfx_t::color_u16_rgb, p_image::storage::External>   image_stream_u16_rgb;
+  typedef Image_T<gfx_t::color_u16_rg, p_image::storage::External>    image_stream_u16_rg;
+  typedef Image_T<gfx_t::color_u16_r, p_image::storage::External>     image_stream_u16_r;
+
+  typedef Image_T<gfx_t::color_f32_r, p_image::storage::External>     image_stream_f32_r;
+
   // ```````````````````````````````````````````````````````````````````````
   // u8 images
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgba, image_rgba);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_rgba, image_stream_rgba);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgba, image_rgba);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_rgba, image_stream_rgba);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgb, image_rgb);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_rgb, image_stream_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgb, image_rgb);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_rgb, image_stream_rgb);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rg, image_rg);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_rg, image_stream_rg);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rg, image_rg);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_rg, image_stream_rg);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_r, image_r);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_r, image_stream_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_r, image_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_r, image_stream_r);
 
   // ```````````````````````````````````````````````````````````````````````
   // u16 images
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rgba, image_u16_rgba);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_rgba, image_stream_u16_rgba);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rgba, image_u16_rgba);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_rgba, image_stream_u16_rgba);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rgb, image_u16_rgb);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_rgb, image_stream_u16_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rgb, image_u16_rgb);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_rgb, image_stream_u16_rgb);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rg, image_u16_rg);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_rg, image_stream_u16_rg);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rg, image_u16_rg);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_rg, image_stream_u16_rg);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_r, image_u16_r);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_r, image_stream_u16_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_r, image_u16_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_r, image_stream_u16_r);
 
   // ```````````````````````````````````````````````````````````````````````
   // special images
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_f32_r, image_f32_r);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_f32_r, image_stream_f32_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_f32_r, image_f32_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_f32_r, image_stream_f32_r);
 
 };};};
 

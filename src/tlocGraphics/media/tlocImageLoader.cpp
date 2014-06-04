@@ -47,7 +47,7 @@ namespace tloc { namespace graphics { namespace media {
     DoLoadImageFromMemory(const_color_ptr a_buffer, dimention_type a_dim,
                           size_type a_channels)
   {
-    return m_image.LoadFromMemory(a_buffer, a_dim, a_channels);
+    return m_image.Load(a_buffer, a_dim, a_channels);
   }
 
   //------------------------------------------------------------------------

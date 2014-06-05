@@ -598,7 +598,8 @@ using namespace tloc::gfx_gl;
 using namespace tloc::gfx_med;
 
 #define TLOC_EXPLICITLY_INSTANTIATE_IMAGE(_imageType_)\
-template TextureObject::error_type TextureObject::Initialize(const _imageType_&)
+template TextureObject::error_type TextureObject::Initialize(const _imageType_&);\
+template TextureObject::error_type TextureObject::Update(const _imageType_&) const
 
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(Image);
 
@@ -623,7 +624,7 @@ TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_rgb);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_rg);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_r);
 
-TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_r);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_f32_r);
 
 //------------------------------------------------------------------------
 // Explicit instantiations

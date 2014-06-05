@@ -225,9 +225,9 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // Return the 'target' of image (see glTexImage2D doc)
 
-    template <typename T_ColorType>
+    template <typename T_ColorType, typename T_Storage>
     gfx_t::gl_int
-      DoGetTarget(const gfx_med::Image_T<T_ColorType>&)
+      DoGetTarget(const gfx_med::Image_T<T_ColorType, T_Storage>&)
     { return p_texture_object::target::Tex2D::s_glParamName; }
 
     // -----------------------------------------------------------------------
@@ -459,17 +459,15 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess;
   }
 
-  template <typename T_ColorType>
+  template <typename T_ColorType, typename T_Storage>
   error_type
     TextureObject::
-    Initialize(const gfx_med::Image_T<T_ColorType>& a_image)
+    Initialize(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image)
   {
     using gfx_t::gl_int;
     typedef gfx_med::Image_T<T_ColorType>                       image_type;
     typedef typename image_type::pixel_container_type           pix_cont_type;
     typedef typename image_type::color_type                     color_type;
-
-    pix_cont_type cont = a_image.GetPixels();
 
     // We do NOT need the original image because glTexImage2D copies the image
     m_dim[0] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[0]);
@@ -478,13 +476,13 @@ namespace tloc { namespace graphics { namespace gl {
     const gl_int target = m_params.GetTextureType() == GL_NONE
       ? DoGetTarget(a_image)
       : m_params.GetTextureType();
-    const gl_int internalFormat = m_params.GetFormat() == GL_NONE
+    const gl_int internalFormat = m_params.GetInternalFormat() == GL_NONE
       ? DoGetInternalImageFormat(color_type())
       : m_params.GetInternalFormat();
     const gl_int format = m_params.GetFormat() == GL_NONE
       ? DoGetImageFormat(color_type())
       : m_params.GetFormat();
-    const gl_int type   = m_params.GetFormat() == GL_NONE
+    const gl_int type   = m_params.GetType() == GL_NONE
       ?  DoGetImageType(color_type())
       : m_params.GetType();
     const gl_int alignment = m_params.GetAlignment() == GL_NONE
@@ -497,6 +495,25 @@ namespace tloc { namespace graphics { namespace gl {
     m_params.m_type = type;
     m_params.m_alignment = alignment;
 
+    return Update(a_image);
+  }
+
+  template <typename T_ColorType, typename T_Storage>
+  error_type
+    TextureObject::
+    Update(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image) const
+  {
+    using gfx_t::gl_int;
+    typedef gfx_med::Image_T<T_ColorType>                       image_type;
+    typedef typename image_type::pixel_container_type           pix_cont_type;
+    typedef typename image_type::color_type                     color_type;
+
+    const gl_int target = m_params.GetTextureType();
+    const gl_int internalFormat = m_params.GetInternalFormat();
+    const gl_int format = m_params.GetFormat();
+    const gl_int type   = m_params.GetType();
+    const gl_int alignment = m_params.GetAlignment();
+
     glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glPixelStorei()");
 
@@ -504,7 +521,7 @@ namespace tloc { namespace graphics { namespace gl {
     glTexImage2D(target, 0, internalFormat,
                  core_utils::CastNumber<GLsizei>(m_dim[0]),
                  core_utils::CastNumber<GLsizei>(m_dim[1]),
-                 0, format, type, &*a_image.GetPixels().begin() );
+                 0, format, type, a_image.get().get() );
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glTexImage2D()");
 
     if (m_params.IsAutoGenMipMaps())
@@ -515,7 +532,7 @@ namespace tloc { namespace graphics { namespace gl {
         << ") - Is texture valid and power of two?";
     }
 
-    Update();
+    UpdateParameters();
 
     return ErrorSuccess;
   }
@@ -560,7 +577,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   void
     TextureObject::
-    Update()
+    UpdateParameters() const
   {
     texture_type texType = m_params.GetTextureType();
 
@@ -593,6 +610,18 @@ TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_rgba);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_rgb);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_rg);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_rg);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_rg);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_u16_r);
 
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_r);
 

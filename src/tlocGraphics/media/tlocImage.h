@@ -77,6 +77,7 @@ namespace tloc { namespace graphics { namespace media {
       core::containers::tl_array<color_type>::type        pixel_container_type;
 
     typedef core_sptr::VirtualPtr<color_type>             color_type_ptr;
+    typedef core_sptr::VirtualPtr<const color_type>       const_color_type_ptr;
     typedef core_sptr::VirtualPtr<color_value_type>       color_ptr;
     typedef core_sptr::VirtualPtr<const color_value_type> const_color_ptr;
 
@@ -89,6 +90,8 @@ namespace tloc { namespace graphics { namespace media {
     error_type        AddPadding(dimension_type a_padding,
                                  const color_type& a_color);
     bool              IsValid() const;
+
+    const_color_type_ptr   get() const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
                                           GetPixels, m_pixels);
@@ -128,6 +131,7 @@ namespace tloc { namespace graphics { namespace media {
       core::containers::tl_array<color_type>::type        pixel_container_type;
 
     typedef core_sptr::VirtualPtr<color_type>             color_type_ptr;
+    typedef core_sptr::VirtualPtr<const color_type>       const_color_type_ptr;
     typedef core_sptr::VirtualPtr<color_value_type>       color_ptr;
     typedef core_sptr::VirtualPtr<const color_value_type> const_color_ptr;
 
@@ -138,6 +142,8 @@ namespace tloc { namespace graphics { namespace media {
     error_type        AddPadding(dimension_type a_padding,
                                  const color_type& a_color);
     bool              IsValid() const;
+
+    const_color_type_ptr   get() const;
 
     TLOC_DECL_AND_DEF_GETTER(color_type_ptr, GetPixels, m_pixels);
     TLOC_DECL_AND_DEF_GETTER_DIRECT(color_type_ptr, GetPixels, m_pixels);

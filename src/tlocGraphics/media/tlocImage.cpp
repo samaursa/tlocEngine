@@ -160,6 +160,16 @@ namespace tloc { namespace graphics { namespace media {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_IMAGE_INTERNAL_TEMPS>
+  TLOC_IMAGE_INTERNAL_TYPE::const_color_type_ptr
+    Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
+    get() const
+  {
+    return const_color_type_ptr(&*m_pixels.begin());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_INTERNAL_TEMPS>
   void
     Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
     DoSet(tl_int a_index, const color_type& a_color)
@@ -250,6 +260,16 @@ namespace tloc { namespace graphics { namespace media {
     return GetDimensions()[0] > 0 &&
            GetDimensions()[1] > 0 &&
            m_pixels != nullptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_EXTERNAL_TEMPS>
+  TLOC_IMAGE_EXTERNAL_TYPE::const_color_type_ptr
+    Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
+    get() const
+  {
+    return m_pixels;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -397,6 +417,18 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_rg::color_type_ptr);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_r::color_type_ptr);
 
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_f32_r::color_type_ptr);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_rgba::const_color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_rgb::const_color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_rg::const_color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_r::const_color_type_ptr);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_rgba::const_color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_rgb::const_color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_rg::const_color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_r::const_color_type_ptr);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_f32_r::const_color_type_ptr);
 
 // ```````````````````````````````````````````````````````````````````````
 // Defaults

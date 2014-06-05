@@ -9,6 +9,33 @@ namespace TestingImage
   using namespace tloc::gfx_med;
   using namespace tloc::gfx_t;
 
+  TEST_CASE("tloc/graphics/Image", "Smart pointers")
+  {
+    { image_rgba_vso  img; image_rgba_vptr  imgPtr = img.get(); }
+    { image_rgb_vso   img; image_rgb_vptr   imgPtr = img.get(); }
+    { image_rg_vso    img; image_rg_vptr    imgPtr = img.get(); }
+    { image_r_vso     img; image_r_vptr     imgPtr = img.get(); }
+    { image_f32_r_vso img; image_f32_r_vptr imgPtr = img.get(); }
+
+    { image_stream_rgba_vso  img; image_stream_rgba_vptr  imgPtr = img.get(); }
+    { image_stream_rgb_vso   img; image_stream_rgb_vptr   imgPtr = img.get(); }
+    { image_stream_rg_vso    img; image_stream_rg_vptr    imgPtr = img.get(); }
+    { image_stream_r_vso     img; image_stream_r_vptr     imgPtr = img.get(); }
+    { image_stream_f32_r_vso img; image_stream_f32_r_vptr imgPtr = img.get(); }
+
+    { image_rgba::pixel_container_type  cont; }
+    { image_rgb::pixel_container_type   cont; }
+    { image_rg::pixel_container_type    cont; }
+    { image_r::pixel_container_type     cont; }
+    { image_f32_r::pixel_container_type cont; }
+
+    { image_stream_rgba::pixel_container_type  cont; }
+    { image_stream_rgb::pixel_container_type   cont; }
+    { image_stream_rg::pixel_container_type    cont; }
+    { image_stream_r::pixel_container_type     cont; }
+    { image_stream_f32_r::pixel_container_type cont; }
+  }
+
   TEST_CASE("tloc/graphics/Image/Load", "")
   {
     SECTION("From Memory uchar8", "")
@@ -91,7 +118,7 @@ namespace TestingImage
 
           img.Load(tempPixelsPtr, core_ds::MakeTuple(2, 1), 4);
 
-          delete tempPixels;
+          delete[] tempPixels;
         }
 
         TLOC_TEST_ASSERT

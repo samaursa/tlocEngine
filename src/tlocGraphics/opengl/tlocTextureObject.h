@@ -315,8 +315,10 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject(const Params& a_params = Params());
     ~TextureObject();
 
-    template <typename T_ColorType>
-    error_type  Initialize(const gfx_med::Image_T<T_ColorType>& a_image);
+    template <typename T_ColorType, typename T_Storage>
+    error_type  Initialize(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image);
+    template <typename T_ColorType, typename T_Storage>
+    error_type  Update(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image) const;
 
     error_type  Bind(texture_type a_target) const;
 
@@ -324,7 +326,7 @@ namespace tloc { namespace graphics { namespace gl {
     bool        IsActive() const;
     error_type  Deactivate();
 
-    void        Update();
+    void        UpdateParameters() const;
 
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);

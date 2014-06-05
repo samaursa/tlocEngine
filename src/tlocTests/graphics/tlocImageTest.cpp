@@ -84,6 +84,22 @@ namespace TestingImage
 
         image_stream_rgba img;
         CHECK_FALSE(img.IsValid());
+
+        {
+          uchar8* tempPixels = new uchar8[8];
+          Image::color_ptr tempPixelsPtr(tempPixels);
+
+          img.Load(tempPixelsPtr, core_ds::MakeTuple(2, 1), 4);
+
+          delete tempPixels;
+        }
+
+        TLOC_TEST_ASSERT
+        {
+          img.SetPixel(0, 0, image_stream_rgba::color_type(1, 2, 3, 4));
+        }
+        TLOC_TEST_ASSERT_CHECK();
+
         img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
         CHECK(img.IsValid());
 

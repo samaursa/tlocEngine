@@ -24,6 +24,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef core_str::StringW                       string_type;
     typedef gfx_cs::alignment::align_type           align_type;
+    typedef gfx_cs::DynamicText::real_type          real_type;
     typedef gfx_med::font_sptr                      font_ptr;
 
   public:
@@ -35,6 +36,7 @@ namespace tloc { namespace prefab { namespace graphics {
     void          Add(entity_ptr a_ent, BufferArgW a_text, font_ptr a_font) const;
 
     TLOC_DECL_PARAM_VAR(align_type, Alignment, m_alignment);
+    TLOC_DECL_PARAM_VAR(real_type, VerticalKerning, m_verticalKern);
   };
 
 };};};

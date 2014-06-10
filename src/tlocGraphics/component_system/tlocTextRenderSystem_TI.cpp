@@ -77,23 +77,9 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
-    real_type totalTextWidth = 0;
-
-    for (const_ent_ptr_cont_itr itr = a_begin, itrEnd = a_end; 
-         itr != itrEnd; ++itr)
-    {
-      gfx_cs::quad_sptr quad = (*itr)->GetComponent<gfx_cs::Quad>();
-      totalTextWidth += quad->GetRectangleRef().GetWidth() - 
-                        a_text->GetFont()->GetCachedParams().m_paddingDim[0];
-    }
-
     real_type advance = 0;
 
-    if (a_text->GetAlignment() == alignment::k_align_center)
-    { advance = totalTextWidth * 0.5f * -1.0f; }
-    else if (a_text->GetAlignment() == alignment::k_align_right)
-    { advance = totalTextWidth * -1.0f; }
-
+    math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
     for (const_ent_ptr_cont_itr itr = a_begin, itrEnd = a_end; 
          itr != itrEnd; ++itr)
@@ -103,21 +89,46 @@ namespace tloc { namespace graphics { namespace component_system {
       math_cs::transform_sptr t = (*itr)->GetComponent<math_cs::Transform>();
       gfx_cs::quad_sptr       q = (*itr)->GetComponent<gfx_cs::Quad>();
 
-      if (count != 0)
+      if (count != a_beginIndex)
       {
         advance = 
           DoSetTextQuadPosition(t, q, ToVirtualPtr(a_text), 
                                 a_text->Get()[count - 1], 
                                 a_text->Get()[count], advance, a_lineNumber);
+        if (itr + 1 == itrEnd)
+        {
+          endPos = t->GetPosition();
+          endPos[0] += q->GetRectangleRef().GetWidth() - 
+            a_text->GetFont()->GetCachedParams().m_paddingDim[0] * 2;
+        }
       }
       else
       {
         advance = 
           DoSetTextQuadPosition(t, q, ToVirtualPtr(a_text), 
                                 a_text->Get()[count], advance, a_lineNumber);
+        starPos = t->GetPosition();
       }
 
       ++count;
+    }
+
+    math_t::Vec3f totalTextWidth = endPos - starPos;
+    
+    // only center and right alignment needs adjustment
+    if (a_text->GetAlignment() != alignment::k_align_left)
+    {
+      if (a_text->GetAlignment() == alignment::k_align_center)
+      { totalTextWidth = totalTextWidth * 0.5f * -1.0f; }
+      else if (a_text->GetAlignment() == alignment::k_align_right)
+      { totalTextWidth = totalTextWidth * -1.0f; }
+
+      for (const_ent_ptr_cont_itr itr = a_begin, itrEnd = a_end; 
+           itr != itrEnd; ++itr)
+      {
+        math_cs::transform_sptr t = (*itr)->GetComponent<math_cs::Transform>();
+        t->SetPosition(t->GetPosition() + totalTextWidth);
+      }
     }
   }
 

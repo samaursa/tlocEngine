@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
 
     typedef Mesh_T                                        mesh_type;
-    typedef core_sptr::VirtualPtr<mesh_type>              mesh_ptr;
+    typedef core_sptr::SharedPtr<mesh_type>               mesh_ptr;
     typedef typename Mesh_T::vertex_storage_policy        vertex_storage_policy;
 
     typedef math::types::Vec3f32                          vec3_type;
@@ -65,6 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
   typedef MeshRenderSystem_T<Mesh>      MeshRenderSystem;
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(MeshRenderSystem, mesh_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(MeshRenderSystem, mesh_render_system);
 
 };};};
 

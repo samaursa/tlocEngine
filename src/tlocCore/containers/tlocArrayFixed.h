@@ -21,6 +21,9 @@ namespace tloc { namespace core { namespace containers {
   class ArrayFixed
   {
   public:
+    enum { k_capacity = T_Capacity };
+
+  public:
     //------------------------------------------------------------------------
     // typedefs (similar to vector)
     typedef ArrayFixed<T, T_Capacity>                     this_type;

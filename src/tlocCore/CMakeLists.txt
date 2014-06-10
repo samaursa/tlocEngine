@@ -7,6 +7,12 @@ set(TLOC_ENGINE_CORE
     tlocAlgorithms.inl.h
     tlocAssert.h
     tlocAssert.cpp
+    tlocAssertCustomBreak.h
+    tlocAssertCustomBreak.cpp
+    tlocArgs.h
+    tlocArgs.cpp
+    tlocConsole.h
+    tlocConsole.cpp
     tlocCoreBase.h
     tlocCoreBase.cpp
     tlocCoreIncludes.h
@@ -24,13 +30,14 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.h
     base_classes/tloc_base_classes.inl.h
     base_classes/tloc_base_classes.cpp
+    base_classes/tlocDebugName.h
+    base_classes/tlocDebugFileAndLine.h
+    base_classes/tlocDebugFileAndLine.cpp
     base_classes/tlocInitializeAndDestroy.h
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h
     base_classes/tlocPlatformImplBase.h
     base_classes/tlocPolicyBase.h
-    base_classes/tlocTemplateDispatch.h
-    base_classes/tlocTemplateDispatchDefaults.h
 )
 set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tloc_component_system.h
@@ -127,6 +134,15 @@ set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tlocVariadic.cpp
     data_structures/tlocVariadicTypedefMacros.h
 )
+set(TLOC_ENGINE_CORE_DISPATCH
+    dispatch/tloc_dispatch.h
+    dispatch/tloc_dispatch.inl.h
+    dispatch/tloc_dispatch.cpp
+    dispatch/tlocEvent.h
+    dispatch/tlocEvent.cpp
+    dispatch/tlocTemplateDispatch.h
+    dispatch/tlocTemplateDispatchDefaults.h
+)
 set(TLOC_ENGINE_CORE_ERROR
     error/tloc_error.h
     error/tloc_error.inl.h
@@ -159,6 +175,8 @@ set(TLOC_ENGINE_CORE_LOGGER
     logging/tlocLog.cpp
     logging/tlocLogger.h
     logging/tlocLogger.cpp
+    logging/tlocDefaultLogger.h
+    logging/tlocDefaultLogger.cpp
     logging/tlocLoggerHelper.h
 )
 set(TLOC_ENGINE_CORE_MEMORY
@@ -338,7 +356,10 @@ include_directories(
 )
 
 if (TLOC_ENABLE_MEMORY_TRACKING)
+  message(STATUS "MEMORY TRACKING: Enabled")
   add_definitions(-DTLOC_ENABLE_MEMORY_TRACKING)
+else()
+  message(STATUS "MEMORY TRACKING: Disabled")
 endif()
 
 add_library(tlocCore STATIC
@@ -348,6 +369,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_CONFIGS}
   ${TLOC_ENGINE_CORE_CONTAINERS}
   ${TLOC_ENGINE_CORE_DATA_STRUCTURES}
+  ${TLOC_ENGINE_CORE_DISPATCH}
   ${TLOC_ENGINE_CORE_ERROR}
   ${TLOC_ENGINE_CORE_IO}
   ${TLOC_ENGINE_CORE_ITERATORS}
@@ -373,6 +395,7 @@ source_group(component_system FILES ${TLOC_ENGINE_CORE_COMPONENT_SYSTEM})
 source_group(configs FILES ${TLOC_ENGINE_CORE_CONFIGS})
 source_group(core_containers FILES ${TLOC_ENGINE_CORE_CONTAINERS})
 source_group(data_structures FILES ${TLOC_ENGINE_CORE_DATA_STRUCTURES})
+source_group(dispatch FILES ${TLOC_ENGINE_CORE_DISPATCH})
 source_group(error FILES ${TLOC_ENGINE_CORE_ERROR})
 source_group(io FILES ${TLOC_ENGINE_CORE_IO})
 source_group(iterators FILES ${TLOC_ENGINE_CORE_ITERATORS})

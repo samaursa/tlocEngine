@@ -432,10 +432,18 @@ namespace tloc { namespace core { namespace string {
   template <typename T>
   T
     CharToUpper(const T& aChar);
+  char32
+    CharAsciiToWide(const char8 a_in);
+  char8
+    CharWideToAscii(const char32 a_in);
   tl_size
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize);
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_size a_inSize);
   tl_size
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_size a_inSize);
+  StringW
+    CharAsciiToWide(const String a_in);
+  String
+    CharWideToAscii(const StringW a_in);
 
   template <typename T, typename T_StringContainer>
   void

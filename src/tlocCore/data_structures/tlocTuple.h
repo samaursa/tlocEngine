@@ -21,8 +21,8 @@ namespace tloc { namespace core { namespace data_structs {
   class Tuple
   {
   public:
-    enum { k_TupleSize = T_Size};
-    T m_values[k_TupleSize];
+    enum { k_size = T_Size};
+    T m_values[k_size];
 
   public:
     typedef T                                           value_type;
@@ -59,7 +59,7 @@ namespace tloc { namespace core { namespace data_structs {
     T const*  data() const;
 
     // Access the size of the tuple
-    size_type GetSize() const;
+    size_type size() const;
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -140,55 +140,69 @@ namespace tloc { namespace core { namespace data_structs {
   //------------------------------------------------------------------------
   // typedefs
 
-  typedef Tuple<tl_size,	2>    Tuple2size;
-  typedef Tuple<tl_float,	2>    Tuple2f;
-  typedef Tuple<f32,			2>    Tuple2f32;
-  typedef Tuple<f64,			2>    Tuple2f64;
-  typedef Tuple<tl_int,		2>    Tuple2s;
-  typedef Tuple<s32,			2>    Tuple2s32;
-  typedef Tuple<s64,			2>    Tuple2s64;
-  typedef Tuple<tl_uint,	2>    Tuple2u;
-  typedef Tuple<u32,			2>    Tuple2u32;
-  typedef Tuple<u64,			2>    Tuple2u64;
+  typedef Tuple<tl_size,  1>    Tuplesize;
+  typedef Tuple<tl_float, 1>    Tuplef;
+  typedef Tuple<f32,      1>    Tuplef32;
+  typedef Tuple<f64,      1>    Tuplef64;
+  typedef Tuple<tl_int,   1>    Tuples;
+  typedef Tuple<s32,      1>    Tuples32;
+  typedef Tuple<s64,      1>    Tuples64;
+  typedef Tuple<tl_uint,  1>    Tupleu;
+  typedef Tuple<u32,      1>    Tupleu32;
+  typedef Tuple<u64,      1>    Tupleu64;
 
-  typedef Tuple<tl_size,	3>    Tuple3size;
-  typedef Tuple<tl_float,	3>    Tuple3f;
-  typedef Tuple<f32,			3>    Tuple3f32;
-  typedef Tuple<f64,			3>    Tuple3f64;
-  typedef Tuple<tl_int,		3>    Tuple3s;
-  typedef Tuple<s32,			3>    Tuple3s32;
-  typedef Tuple<s64,			3>    Tuple3s64;
-  typedef Tuple<tl_uint,	3>    Tuple3u;
-  typedef Tuple<u32,			3>    Tuple3u32;
-  typedef Tuple<u64,			3>    Tuple3u64;
+  typedef Tuple<tl_size,  2>    Tuple2size;
+  typedef Tuple<tl_float, 2>    Tuple2f;
+  typedef Tuple<f32,      2>    Tuple2f32;
+  typedef Tuple<f64,      2>    Tuple2f64;
+  typedef Tuple<tl_int,   2>    Tuple2s;
+  typedef Tuple<s32,      2>    Tuple2s32;
+  typedef Tuple<s64,      2>    Tuple2s64;
+  typedef Tuple<tl_uint,  2>    Tuple2u;
+  typedef Tuple<u32,      2>    Tuple2u32;
+  typedef Tuple<u64,      2>    Tuple2u64;
 
-  typedef Tuple<tl_size,	4>    Tuple4size;
-  typedef Tuple<tl_float,	4>    Tuple4f;
-  typedef Tuple<f32,			4>    Tuple4f32;
-  typedef Tuple<f64,			4>    Tuple4f64;
-  typedef Tuple<tl_int,		4>    Tuple4s;
-  typedef Tuple<s32,			4>    Tuple4s32;
-  typedef Tuple<s64,			4>    Tuple4s64;
-  typedef Tuple<tl_uint,	4>    Tuple4u;
-  typedef Tuple<u32,			4>    Tuple4u32;
-  typedef Tuple<u64,			4>    Tuple4u64;
+  typedef Tuple<tl_size,  3>    Tuple3size;
+  typedef Tuple<tl_float, 3>    Tuple3f;
+  typedef Tuple<f32,      3>    Tuple3f32;
+  typedef Tuple<f64,      3>    Tuple3f64;
+  typedef Tuple<tl_int,   3>    Tuple3s;
+  typedef Tuple<s32,      3>    Tuple3s32;
+  typedef Tuple<s64,      3>    Tuple3s64;
+  typedef Tuple<tl_uint,  3>    Tuple3u;
+  typedef Tuple<u32,      3>    Tuple3u32;
+  typedef Tuple<u64,      3>    Tuple3u64;
 
+  typedef Tuple<tl_size,  4>    Tuple4size;
+  typedef Tuple<tl_float, 4>    Tuple4f;
+  typedef Tuple<f32,      4>    Tuple4f32;
+  typedef Tuple<f64,      4>    Tuple4f64;
+  typedef Tuple<tl_int,   4>    Tuple4s;
+  typedef Tuple<s32,      4>    Tuple4s32;
+  typedef Tuple<s64,      4>    Tuple4s64;
+  typedef Tuple<tl_uint,  4>    Tuple4u;
+  typedef Tuple<u32,      4>    Tuple4u32;
+  typedef Tuple<u64,      4>    Tuple4u64;
+
+  typedef Tuple<bool,     1>    Tupleb;
   typedef Tuple<bool,     2>    Tuple2b;
   typedef Tuple<bool,     3>    Tuple3b;
   typedef Tuple<bool,     4>    Tuple4b;
 
-  typedef Tuple<tl_long,	2>    Tuple2l;
-  typedef Tuple<tl_long,	3>    Tuple3l;
-  typedef Tuple<tl_long,	4>    Tuple4l;
+  typedef Tuple<tl_long,    1>    Tuplel;
+  typedef Tuple<tl_long,    2>    Tuple2l;
+  typedef Tuple<tl_long,    3>    Tuple3l;
+  typedef Tuple<tl_long,    4>    Tuple4l;
 
-  typedef Tuple<tl_ulong,	2>    Tuple2ul;
-  typedef Tuple<tl_ulong,	3>    Tuple3ul;
-  typedef Tuple<tl_ulong,	4>    Tuple4ul;
+  typedef Tuple<tl_ulong,   1>    Tupleul;
+  typedef Tuple<tl_ulong,   2>    Tuple2ul;
+  typedef Tuple<tl_ulong,   3>    Tuple3ul;
+  typedef Tuple<tl_ulong,   4>    Tuple4ul;
 
   // ///////////////////////////////////////////////////////////////////////
   // Basic arithmetic operations
 
-  template <typename T, tl_int T_Size>
+  template <typename T, tl_size T_Size>
   Tuple<T, T_Size>
     Add(const Tuple<T, T_Size>& a,
         const Tuple<T, T_Size>& b)
@@ -202,7 +216,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_int T_Size>
+  template <typename T, tl_size T_Size>
   Tuple<T, T_Size>
     Subtract(const Tuple<T, T_Size>& a,
              const Tuple<T, T_Size>& b)
@@ -214,8 +228,46 @@ namespace tloc { namespace core { namespace data_structs {
     return result;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_size T_Size>
+  Tuple<T, T_Size>
+    Multiply(T a, const Tuple<T, T_Size>& b)
+  {
+    Tuple<T, T_Size> result;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { result[i] = b[i] * a; }
+
+    return result;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_size T_Size>
+  Tuple<T, T_Size>
+    Divide(T a, const Tuple<T, T_Size>& b)
+  {
+    Tuple<T, T_Size> result;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { result[i] = b[i] / a; }
+
+    return result;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // MakeTuple
+
+  template <typename T>
+  Tuple<T, 1>
+    MakeTuple(T x)
+  {
+    Tuple<T, 1> tupToRet;
+    tupToRet[0] = x;
+
+    return tupToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
   Tuple<T, 2>
@@ -253,6 +305,22 @@ namespace tloc { namespace core { namespace data_structs {
     tupToRet[1] = y;
     tupToRet[2] = z;
     tupToRet[3] = w;
+
+    return tupToRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Tuple<T, 5>
+    MakeTuple(T x, T y, T z, T w, T a)
+  {
+    Tuple<T, 5> tupToRet;
+    tupToRet[0] = x;
+    tupToRet[1] = y;
+    tupToRet[2] = z;
+    tupToRet[3] = w;
+    tupToRet[4] = a;
 
     return tupToRet;
   }

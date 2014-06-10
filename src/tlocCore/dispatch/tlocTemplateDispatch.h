@@ -7,7 +7,7 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/string/tlocString.inl.h>
 
-namespace tloc { namespace core { namespace base_classes {
+namespace tloc { namespace core { namespace dispatch {
 
   /// Use this class as a base class for callback classes that use the zero
   /// virtual overhead observer callback pattern. The inherited callback classes
@@ -107,12 +107,6 @@ namespace tloc { namespace core { namespace base_classes {
       core::delete_ptrs(m_allObservers.begin(), m_allObservers.end());
 
       m_allObservers.clear();
-    }
-
-    template <typename T_Ref>
-    void foo(T_Ref a)
-    {
-      TLOC_STATIC_ASSERT_IS_REFERENCE(T_Ref);
     }
 
     ///-------------------------------------------------------------------------

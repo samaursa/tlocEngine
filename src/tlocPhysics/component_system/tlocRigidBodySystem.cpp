@@ -32,7 +32,7 @@ namespace tloc { namespace physics { namespace component_system {
       using namespace tloc::core::component_system;
 
 
-      phys_cs::rigid_body_vptr rigidBodyPtr =
+      phys_cs::rigid_body_sptr rigidBodyPtr =
         a_ent->GetComponent<phys_cs::RigidBody>();
 
       return *rigidBodyPtr;
@@ -140,7 +140,7 @@ namespace tloc { namespace physics { namespace component_system {
 
     rb.GetTransform(rbPosition, rbOrientation);
 
-    math_cs::transform_vptr
+    math_cs::transform_sptr
       transformPtr = a_ent->GetComponent<math_cs::Transform>();
 
     transform_type::position_type position((real_type)rbPosition[0],
@@ -230,3 +230,4 @@ namespace tloc { namespace physics { namespace component_system {
 using namespace tloc::phys_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(RigidBodySystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(RigidBodySystem);

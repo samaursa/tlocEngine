@@ -145,6 +145,7 @@ namespace tloc { namespace core { namespace utils {
   template _type_  CastNumber(tl_long);\
   template _type_  CastNumber(tl_ulong)
 
+  INSTANTIATE_CAST_NUMBER(char32);
   INSTANTIATE_CAST_NUMBER(s8);
   INSTANTIATE_CAST_NUMBER(u8);
   INSTANTIATE_CAST_NUMBER(s16);

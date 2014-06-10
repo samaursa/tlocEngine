@@ -8,6 +8,8 @@
 #include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocList.inl.h>
 
+#include <iterator>
+
 namespace TestingIterator
 {
   using namespace tloc;
@@ -65,7 +67,10 @@ namespace TestingIterator
     back_insert_iterator< Array<s32> > back_itr2 =
       MakeBackInsertIterator(thirdVector);
 
-    copy_all(secondvector, back_itr2);
+    // test copying
+    back_it = back_itr2;
+
+    copy_all(secondvector, back_it);
 
     CHECK(thirdVector[0] == 10);
     CHECK(thirdVector[1] == 20);

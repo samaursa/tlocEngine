@@ -59,21 +59,21 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/ctors", "")
   {
-    SECTION("default ctor", "")
+    //SECTION("default ctor", "")
     {
       VirtualPtr<int> p;
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
-    SECTION("nullptr ctor", "")
+    //SECTION("nullptr ctor", "")
     {
       VirtualPtr<int> p(nullptr);
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
-    SECTION("raw pointer ctor", "")
+    //SECTION("raw pointer ctor", "")
     {
       int* a = new int();
 
@@ -86,7 +86,7 @@ namespace TestingVirtualPtr
       //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("this_type copy ctor", "")
+    //SECTION("this_type copy ctor", "")
     {
       int* a = new int();
 
@@ -105,7 +105,7 @@ namespace TestingVirtualPtr
       delete a;
     }
 
-    SECTION("VirtualPtr<T_Other> copy ctor", "")
+    //SECTION("VirtualPtr<T_Other> copy ctor", "")
     {
       SharedStruct* s = new SharedStruct(10);
 
@@ -120,7 +120,7 @@ namespace TestingVirtualPtr
       delete s;
     }
 
-    SECTION("SharedPtr<> copy ctor", "")
+    //SECTION("SharedPtr<> copy ctor", "")
     {
       SharedPtr<int> sptr(new int(10));
 
@@ -132,7 +132,7 @@ namespace TestingVirtualPtr
       //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("UniquePtr<> copy ctor", "")
+    //SECTION("UniquePtr<> copy ctor", "")
     {
       UniquePtr<int> sptr(new int(10));
 
@@ -147,7 +147,7 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/operators", "")
   {
-    SECTION("operator=(this_type)", "")
+    //SECTION("operator=(this_type)", "")
     {
       VirtualPtr<int> vp;
       vp = VirtualPtr<int>(new int(10));
@@ -155,12 +155,12 @@ namespace TestingVirtualPtr
       CHECK(*vp == 10);
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
 
-      vp = new int(20);
+      vp.reset(new int(20));
       CHECK(*vp == 20);
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
     }
 
-    SECTION("operator=(SharedPtr)", "")
+    //SECTION("operator=(SharedPtr)", "")
     {
       SharedPtr<int>      sp(new int(20));
       VirtualPtr<int>     vp;
@@ -179,7 +179,7 @@ namespace TestingVirtualPtr
       //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("operator=(UniquePtr)", "")
+    //SECTION("operator=(UniquePtr)", "")
     {
       UniquePtr<int>      sp(new int(20));
       VirtualPtr<int>     vp;
@@ -198,7 +198,7 @@ namespace TestingVirtualPtr
       //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("operator==", "")
+    //SECTION("operator==", "")
     {
       VirtualPtr<int> vp;
       CHECK( (vp == nullptr) );
@@ -237,7 +237,7 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/casts", "")
   {
-    SECTION("static_pointer_cast<>()", "")
+    //SECTION("static_pointer_cast<>()", "")
     {
       SharedStruct localVar(2);
 
@@ -249,7 +249,7 @@ namespace TestingVirtualPtr
       CheckUseCount(vp2, 2, core_cfg::BuildConfig::build_config_type());
     }
 
-    SECTION("const_pointer_cast<>()", "")
+    //SECTION("const_pointer_cast<>()", "")
     {
       SharedStruct localVar(2);
 
@@ -301,31 +301,31 @@ namespace TestingVirtualPtr
     core_sptr::VirtualStackObjectBase_TI<tl_int>        vso; *vso = 30;
     const core_sptr::VirtualStackObjectBase_TI<tl_int>  constVso = vso;
 
-    SECTION("ToConvert(SharedPtr)", "")
+    //SECTION("ToConvert(SharedPtr)", "")
     {
       VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(sptr);
       CHECK(*vp == 10);
     }
 
-    SECTION("ToConvert(UniquePtr)", "")
+    //SECTION("ToConvert(UniquePtr)", "")
     {
       VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(uptr);
       CHECK(*vp == 20);
     }
 
-    SECTION("ToConvert(VirtualStackObject)", "")
+    //SECTION("ToConvert(VirtualStackObject)", "")
     {
       VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(vso);
       CHECK(*vp == 30);
     }
 
-    SECTION("ToConvert(VirtualStackObject)", "")
+    //SECTION("ToConvert(VirtualStackObject)", "")
     {
       VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
       CHECK(*vp == 30);
     }
 
-    SECTION("ToConvert(VirtualPtr)", "")
+    //SECTION("ToConvert(VirtualPtr)", "")
     {
       VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
       vp = core_sptr::ToVirtualPtr(vp);
@@ -336,20 +336,20 @@ namespace TestingVirtualPtr
   // -----------------------------------------------------------------------
 
   class Foo1
-  { 
+  {
   public:
     virtual ~Foo1() {}
   };
 
   class Foo2
-  { 
+  {
   public:
     virtual ~Foo2() {}
   };
 
   class Base
     : public Foo1
-  { 
+  {
   public:
     virtual ~Base() {}
     int c;
@@ -358,7 +358,7 @@ namespace TestingVirtualPtr
   class Base2
     : public Foo2
     , public Base
-  { 
+  {
   public:
     virtual ~Base2() {}
     int d;
@@ -366,7 +366,7 @@ namespace TestingVirtualPtr
 
   class Derived
     : public Base2
-  { 
+  {
   public:
     virtual ~Derived() {}
     int e;
@@ -380,6 +380,15 @@ namespace TestingVirtualPtr
   }
 
   void DoCheckVPtrCount(void* , tl_size , core_cfg::p_build_config::Release)
+  { }
+
+  template <typename T_BuildConfig>
+  void DoCheckMemoryAddressIsTracked(void* a_pointer, bool a_expected, T_BuildConfig)
+  {
+    CHECK( core_mem::tracking::priv::DoIsMemoryAddressTracked(a_pointer) == a_expected);
+  }
+
+  void DoCheckMemoryAddressIsTracked(void* , bool , core_cfg::p_build_config::Release)
   { }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/MultipleInheritance",
@@ -417,6 +426,31 @@ namespace TestingVirtualPtr
     bb.reset();
 
     DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
+  }
+
+  TEST_CASE("core/smart_ptr/VirtualPtr/force tracking", "Bug fix in d5d52a045a35")
+  {
+    /*
+    A VirtualPtr may track an address that is not already tracked but then it
+    has no mechanism to untrack that address. This is now fixed by untracking
+    the memory address if it is marked as such.
+    */
+
+    tl_int varOnStack;
+    DoCheckMemoryAddressIsTracked((void*)&varOnStack, false,
+      core_cfg::BuildConfig::build_config_type());
+
+    {
+      core_sptr::VirtualPtr<tl_int> vptr(&varOnStack);
+      DoCheckMemoryAddressIsTracked((void*)&varOnStack, true,
+        core_cfg::BuildConfig::build_config_type());
+    }
+
+    // now we force track the address, this should not crash
+    core_mem::tracking::priv::DoTrackMemoryAddress(&varOnStack);
+
+    // and then untrack
+    core_mem::tracking::priv::DoUntrackMemoryAddress(&varOnStack);
   }
 }
 

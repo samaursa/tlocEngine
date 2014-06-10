@@ -174,8 +174,42 @@ namespace tloc { namespace core { namespace string {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  char32
+    CharAsciiToWide(const char8 a_in)
+  {
+    char32 out[2] = {0, 0};
+    char8 in[] = {a_in, '\0'};
+
+    if (CharAsciiToWide(out, in, 1) > 0)
+    { 
+      TLOC_ASSERT_LOW_LEVEL(out[1] == 0, "More than 1 character written to buffer");
+      return out[0];
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  char8
+    CharWideToAscii(const char32 a_in)
+  {
+    char8 out[2] = {0, 0};
+    char32 in[] = {a_in, L'\0'};
+
+    if (CharWideToAscii(out, in, 1) > 0)
+    { 
+      TLOC_ASSERT_LOW_LEVEL(out[1] == 0, "More than 1 character written to buffer");
+      return out[0];
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_size a_inSize)
   {
     return ::mbstowcs(a_out, a_in, a_inSize);
   }
@@ -183,9 +217,33 @@ namespace tloc { namespace core { namespace string {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   tl_size
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_size a_inSize)
   {
     return ::wcstombs(a_out, a_in, a_inSize);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  StringW
+    CharAsciiToWide(const String a_in)
+  {
+    const StringW::size_type length = a_in.length();
+    char32* buffer = new char32[length + 1];
+    buffer[length] = 0;
+    CharAsciiToWide(buffer, a_in.c_str(), a_in.length());
+    return StringW(buffer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  String
+    CharWideToAscii(const StringW a_in)
+  {
+    const String::size_type length = a_in.length();
+    char8* buffer = new char[length + 1];
+    buffer[length] = 0;
+    CharWideToAscii(buffer, a_in.c_str(), a_in.length());
+    return String(buffer);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

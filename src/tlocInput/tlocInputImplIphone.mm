@@ -85,22 +85,6 @@ namespace tloc { namespace input { namespace priv {
         return newInput;
       }
     };
-
-
-//    template <typename T_InputManagerImplType>
-//    typename T_InputManagerImplType::view_handle_type
-//      DoGetOpenGLViewHandle
-//      (typename T_InputManagerImplType::window_handle_type* a_windowHandle)
-//    {
-//
-//      
-//      UIWindow* window = a_windowHandle.template Cast<UIWindow*>();
-//
-//      TLOC_ASSERT([[window subviews] count] != 0,
-//                  "Window has no views attached");
-//
-//      return view_handle_type([[window subviews] lastObject]);
-//    }  }
   }
 
   //------------------------------------------------------------------------
@@ -134,14 +118,28 @@ namespace tloc { namespace input { namespace priv {
           }
           case p_hid::TouchSurface::m_index:
           {
-            delete
-              static_cast<hid::TouchSurface<policy_type>*>(m_iphoneHIDs[i].m_devicePtr);
+            core_t::Any anyHid = m_iphoneHIDs[i].m_devicePtr;
+
+            if (anyHid.IsEmpty()) { break; }
+
+            core_sptr::VirtualPtr<hid::TouchSurface<policy_type> > 
+              ptr = anyHid.Cast
+              <core_sptr::VirtualPtr<hid::TouchSurface<policy_type> > >();
+
+            core_sptr::algos::virtual_ptr::DeleteAndReset()(ptr);
             break;
           }
           case p_hid::Joystick::m_index:
           {
-            delete
-              static_cast<hid::Joystick_T<policy_type>*>(m_iphoneHIDs[i].m_devicePtr);
+            core_t::Any anyHid = m_iphoneHIDs[i].m_devicePtr;
+
+            if (anyHid.IsEmpty()) { break; }
+
+            core_sptr::VirtualPtr<hid::Joystick_T<policy_type> >
+              ptr = anyHid.Cast
+              <core_sptr::VirtualPtr<hid::Joystick_T<policy_type> > >();
+
+            core_sptr::algos::virtual_ptr::DeleteAndReset()(ptr);
           }
 
           default: break;
@@ -164,12 +162,13 @@ namespace tloc { namespace input { namespace priv {
 
   template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
-  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
+  core_sptr::VirtualPtr<T_InputObject>
+    InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     CreateHID(param_options::value_type a_params)
   {
     ASSERT_INPUT_TYPE(T_InputObject::m_index);
 
-    T_InputObject* newInput = nullptr;
+    core_sptr::VirtualPtr<T_InputObject> newInput;
 
     if(m_iphoneHIDs[T_InputObject::m_index].m_available == false)
     {
@@ -202,26 +201,26 @@ namespace tloc { namespace input { namespace priv {
       }
       case p_hid::TouchSurface::m_index:
       {
-        typedef hid::TouchSurface<policy_type> touch_surface_type;
+        typedef hid::TouchSurface<policy_type>            touch_surface_type;
+        typedef core_sptr::VirtualPtr<touch_surface_type> touch_surface_ptr;
 
-        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
+        if (m_iphoneHIDs[touch_surface_type::m_index].m_available)
         {
-          touch_surface_type* ts = static_cast<touch_surface_type*>
-              (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
-
+          touch_surface_ptr ts = m_iphoneHIDs[touch_surface_type::m_index]
+            .m_devicePtr.template Cast<touch_surface_ptr>();
           ts->Update();
         }
         break;
       }
       case p_hid::Joystick::m_index:
       {
-        typedef hid::Joystick_T<policy_type> joystick_type;
+        typedef hid::Joystick_T<policy_type>              joystick_type;
+        typedef core_sptr::VirtualPtr<joystick_type>      joystick_ptr;
 
-        if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
+        if (m_iphoneHIDs[joystick_type::m_index].m_available)
         {
-          joystick_type* js = static_cast<joystick_type*>
-              (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
-
+          joystick_ptr js = m_iphoneHIDs[joystick_type::m_index]
+            .m_devicePtr.template Cast<joystick_ptr>();
           js->Update();
         }
         
@@ -247,13 +246,13 @@ namespace tloc { namespace input { namespace priv {
       }
       case p_hid::TouchSurface::m_index:
       {
-        typedef hid::TouchSurface<policy_type> touch_surface_type;
+        typedef hid::TouchSurface<policy_type>            touch_surface_type;
+        typedef core_sptr::VirtualPtr<touch_surface_type> touch_surface_ptr;
 
         if (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_available)
         {
-          touch_surface_type* ts = static_cast<touch_surface_type*>
-            (m_iphoneHIDs[p_hid::TouchSurface::m_index].m_devicePtr);
-
+          touch_surface_ptr ts = m_iphoneHIDs[p_hid::TouchSurface::m_index]
+            .m_devicePtr.template Cast<touch_surface_ptr>();
           ts->Reset();
         }
         break;
@@ -267,7 +266,8 @@ namespace tloc { namespace input { namespace priv {
 
   template <INPUT_MANAGER_IMPL_TEMP>
   template <typename T_InputObject>
-  T_InputObject* InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
+  core_sptr::VirtualPtr<T_InputObject>
+    InputManagerImpl<INPUT_MANAGER_IMPL_PARAM>::
     GetHID(size_type a_index)
   {
     ASSERT_INPUT_TYPE(T_InputObject::m_index);
@@ -277,8 +277,8 @@ namespace tloc { namespace input { namespace priv {
       ( (Loki::IsSameType<typename T_InputObject::policy_type, policy_type>::value),
        Requested_return_type_has_incorrect_policy_type);
 
-    return static_cast<T_InputObject*>
-      (m_iphoneHIDs[T_InputObject::m_index].m_devicePtr);
+    return m_iphoneHIDs[T_InputObject::m_index].m_devicePtr
+      .template Cast<core_sptr::VirtualPtr<T_InputObject> >();
   }
 
   template <INPUT_MANAGER_IMPL_TEMP>
@@ -348,17 +348,18 @@ namespace tloc { namespace input { namespace priv {
   template class InputManagerImpl<InputManager<InputPolicy::Immediate> >;
 
 #define INSTANTIATE_HID(_HID_) \
-  template _HID_<i_buff>*  \
+  template core_sptr::VirtualPtr<_HID_<i_buff> >  \
   InputManagerImpl<i_mgr_buff >::CreateHID<_HID_<i_buff> >\
   (param_options::value_type);\
   \
-  template _HID_<i_imm>*  \
+  template core_sptr::VirtualPtr<_HID_<i_imm> >  \
   InputManagerImpl<i_mgr_imm >::CreateHID<_HID_<i_imm> >\
   (param_options::value_type);\
   \
-  template _HID_<i_buff>*  \
+  template core_sptr::VirtualPtr<_HID_<i_buff> >  \
   InputManagerImpl<i_mgr_buff >::GetHID<_HID_<i_buff> >(tl_size);\
-  template _HID_<i_imm>*  \
+  \
+  template core_sptr::VirtualPtr<_HID_<i_imm> >  \
   InputManagerImpl<i_mgr_imm >::GetHID<_HID_<i_imm> >(tl_size)
 
   INSTANTIATE_HID(hid::Keyboard);

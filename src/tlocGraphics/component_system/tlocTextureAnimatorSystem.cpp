@@ -44,7 +44,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (tl_size i = 0; i < size; ++i)
     {
-      gfx_cs::texture_animator_vptr texAnim =
+      gfx_cs::texture_animator_sptr texAnim =
         a_ent->GetComponent<gfx_cs::TextureAnimator>(i);
       texAnim->SetStartTime(0);
     }
@@ -86,7 +86,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (tl_size i = 0; i < size; ++i)
     {
-      gfx_cs::texture_animator_vptr texAnim =
+      gfx_cs::texture_animator_sptr texAnim =
         a_ent->GetComponent<gfx_cs::TextureAnimator>(i);
 
       texAnim->SetTotalTime(texAnim->GetTotalTime() + a_deltaT);
@@ -109,7 +109,7 @@ namespace tloc { namespace graphics { namespace component_system {
       if (a_ent->HasComponent(components::texture_coords) &&
           texAnim->IsSpriteSeqChanged())
       {
-        gfx_cs::texture_coords_vptr coordPtr =
+        gfx_cs::texture_coords_sptr coordPtr =
           a_ent->GetComponent<gfx_cs::TextureCoords>(i);
 
         TLOC_ASSERT(coordPtr,
@@ -140,3 +140,4 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureAnimatorSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(TextureAnimatorSystem);

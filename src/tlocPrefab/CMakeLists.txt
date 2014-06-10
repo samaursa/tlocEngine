@@ -19,6 +19,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocCamera.h 
   graphics/tlocCuboid.h
   graphics/tlocCuboid.cpp
+  graphics/tlocDynamicText.h
+  graphics/tlocDynamicText.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
   graphics/tlocMaterial.h
@@ -31,6 +33,10 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
+  graphics/tlocStaticText.h
+  graphics/tlocStaticText.cpp
+  graphics/tlocTextureCoords.h
+  graphics/tlocTextureCoords.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
   graphics/tloc_graphics.inl.h 
@@ -40,12 +46,16 @@ set(TLOC_PREFAB_INPUT
   input/tloc_input.cpp 
   input/tloc_input.h 
   input/tloc_input.inl.h 
+  input/tlocArcBallControl.h
+  input/tlocArcBallControl.cpp
   )
 
 set(TLOC_PREFAB_MATH
   math/tloc_math.cpp 
   math/tloc_math.h 
-  math/tloc_math.inl.h 
+  math/tloc_math.inl.h
+  math/tlocTransform.h
+  math/tlocTransform.cpp
   )
 
 set(TLOC_PREFAB_PHYSICS

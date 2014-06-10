@@ -147,6 +147,7 @@ namespace tloc { namespace math { namespace types {
                              position_policy>       base_type;
 
     typedef core_ds::Tuple<value_type, 2>           point_type;
+    typedef point_type                              dim_type;
 
     typedef core::types::StrongType_T<value_type, 0>    width;
     typedef core::types::StrongType_T<value_type, 1>    height;
@@ -198,6 +199,8 @@ namespace tloc { namespace math { namespace types {
     using base_type::GetPosition;
     using base_type::SetPosition;
     using base_type::GetDimensions;
+    using base_type::m_dimensions;
+    using base_type::m_position;
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -230,10 +233,10 @@ namespace tloc { namespace math { namespace types {
   template <typename U, typename U_PositionPolicy>
   Rectangle_TI<T, T_PositionPolicy>::
     Rectangle_TI(const Rectangle_TI<U, U_PositionPolicy>& a_other)
-    : base_type( left( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::left>() ), 
-                 right( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::right>() ),
-                 top( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::top>() ), 
-                 bottom( a_other.GetValue<typename Rectangle_TI<U, U_PositionPolicy>::bottom>() ) )
+    : base_type( left( a_other.template GetValue<typename Rectangle_TI<U, U_PositionPolicy>::left>() ),
+                 right( a_other.template GetValue<typename Rectangle_TI<U, U_PositionPolicy>::right>() ),
+                 top( a_other.template GetValue<typename Rectangle_TI<U, U_PositionPolicy>::top>() ),
+                 bottom( a_other.template GetValue<typename Rectangle_TI<U, U_PositionPolicy>::bottom>() ) )
   { }
 
   template <typename T, typename T_PositionPolicy>

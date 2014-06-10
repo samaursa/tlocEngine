@@ -56,7 +56,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   MEMORY_POOL_INDEX_WRAPPER_TYPE::pointer
     MemoryPoolIndexedWrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
-    GetValue()
+    GetValuePtr()
   {
     TLOC_ASSERT_LOW_LEVEL(m_index != p_memory_pool_index::GetInvalidIndex(),
                           "Accessing an invalid value (see pool wrapper)");
@@ -66,7 +66,7 @@ namespace tloc { namespace core { namespace memory { namespace priv {
   template <MEMORY_POOL_INDEX_WRAPPER_TEMP>
   MEMORY_POOL_INDEX_WRAPPER_TYPE::const_pointer
     MemoryPoolIndexedWrapper<MEMORY_POOL_INDEX_WRAPPER_PARAMS>::
-    GetValue() const
+    GetValuePtr() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_index != p_memory_pool_index::GetInvalidIndex(),
                           "Accessing an invalid value (see pool wrapper)");

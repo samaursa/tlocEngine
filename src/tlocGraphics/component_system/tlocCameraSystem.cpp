@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef Camera::matrix_type         matrix_type;
 
-    camera_vptr cam = a_ent->GetComponent<Camera>();
+    camera_sptr cam = a_ent->GetComponent<Camera>();
 
     matrix_type viewMat;
     matrix_type m_vpMatrix;
@@ -51,7 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (a_ent->HasComponent(transform))
     {
-      math_cs::transform_vptr vMat = a_ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_sptr vMat = a_ent->GetComponent<math_cs::Transform>();
       math_cs::Transform vMatInv = vMat->Invert();
       viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
     }
@@ -71,3 +71,4 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(CameraSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(CameraSystem);

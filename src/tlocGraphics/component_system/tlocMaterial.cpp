@@ -14,7 +14,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // Material
 
   Material::Material()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "Material")
   { }
 
   Material::Material(const Material& a_other)
@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void Material::
     AddShaderOperator(const shader_op& a_shaderOp)
   {
-    m_shaderOperators.push_back(shader_op_vso(a_shaderOp));
+    m_shaderOperators.push_back(shader_op_vso(MakeArgs(a_shaderOp)));
     SetUpdateRequired(true);
   }
 
@@ -99,6 +99,5 @@ using namespace tloc::gfx_cs;
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Material::shader_op_ptr);
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Material);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Material);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Material);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Material);

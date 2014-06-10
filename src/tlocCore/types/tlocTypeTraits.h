@@ -280,6 +280,32 @@ namespace tloc
       <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
   };
 
+  namespace priv {
+
+    template <typename T, bool>
+    struct PointerType;
+
+    template <typename T>
+    struct PointerType<T, false>
+    {
+      typedef typename T::pointer                         value_type;
+    };
+
+    template <typename T>
+    struct PointerType<T, true>
+    {
+      typedef T                                           value_type;
+    };
+
+  };
+
+  template <typename T>
+  struct PointerType
+  {
+    typedef typename priv::PointerType
+      <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
+  };
+
 };
 
 //------------------------------------------------------------------------

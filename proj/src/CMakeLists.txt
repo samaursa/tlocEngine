@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------
 # Functions
 
-# -----------------------------------------------------------------------------
 function(add_common_libraries EXEC_NAME)
   target_link_libraries(${EXEC_NAME}
     tlocCore
@@ -11,6 +10,7 @@ function(add_common_libraries EXEC_NAME)
     tlocPhysics
     tlocPrefab
     tlocAnimation
+    FreeType
     Box2D
     )
 
@@ -45,7 +45,6 @@ function(add_common_libraries EXEC_NAME)
 
 endfunction()
 
-# -----------------------------------------------------------------------------
 function(add_apple_plist EXEC_NAME ASSETS_PATH)
   if(TLOC_PLATFORM_IOS)
     # Check if a PLIST file was specified. If not, then go with default.
@@ -66,6 +65,9 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
 endfunction()
 
 # -----------------------------------------------------------------------------
+# compiler flags
+
+tloc_add_definitions_strict()
 
 # common includes
 include_directories(
@@ -89,6 +91,7 @@ link_directories(
   ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
 
   ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
   )
 
 # -----------------------------------------------------------------------------
@@ -100,9 +103,6 @@ foreach(lib ${USER_LIBRARY_PROJECTS})
   message(STATUS "Adding ${lib} library project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_LIB})
   set(USER_CURRENT_PROJECT_NAME ${lib})
-
-  # strict definitions
-  tloc_add_definitions_strict()
 
   add_subdirectory(${lib})
 
@@ -121,9 +121,6 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${exec})
   
-  # strict definitions
-  tloc_add_definitions_strict()
-
   add_subdirectory(${exec})
 
   # put the executable in the "Projects" folder
@@ -134,15 +131,23 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
 endforeach()
 message(STATUS "-- Executables -- DONE")
 
+# -----------------------------------------------------------------------------
+# compiler flags
+#
+# NOTE: For tests we need regular compiler flags which enable RTTI and 
+#       exceptions
+
+tloc_add_definitions()
+
+# -----------------------------------------------------------------------------
+# Add all test executables
+
 message("")
 message(STATUS "-- Tests --")
 foreach(test ${USER_TEST_PROJECTS})
   message(STATUS "Adding ${test} executable project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${test})
-
-  # non-strict definitions
-  tloc_add_definitions()
   
   add_subdirectory(${test})
 

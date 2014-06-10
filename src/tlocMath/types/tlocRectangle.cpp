@@ -4,7 +4,6 @@
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
-#include <tlocCore/types/tlocStrongType.inl.h>
 
 #include <tlocMath/tlocMath.inl.h>
 
@@ -608,10 +607,10 @@ namespace tloc { namespace math { namespace types {
     const point_type& rayOrigin = a_ray.GetOrigin();
 
     // Since we are a 2D box, we assume our direction is +Z
-    if (rayOrigin[0] < GetValue<left>() ||
-        rayOrigin[0] > GetValue<right>()  ||
-        rayOrigin[1] < GetValue<bottom>() ||
-        rayOrigin[1] > GetValue<top>() )
+    if (rayOrigin[0] < base_type::template GetValue<left>() ||
+        rayOrigin[0] > base_type::template GetValue<right>()  ||
+        rayOrigin[1] < base_type::template GetValue<bottom>() ||
+        rayOrigin[1] > base_type::template GetValue<top>() )
     {
       return false;
     }
@@ -685,8 +684,7 @@ namespace tloc { namespace math { namespace types {
   template Rectangle_TI<_type_, _positionPolicy_>::point_type \
   Rectangle_TI<_type_, _positionPolicy_>::\
   DoGetCoord<Rectangle_TI<_type_, _positionPolicy_>::bottom,\
-             Rectangle_TI<_type_, _positionPolicy_>::right>() const;\
-  TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE( Rectangle_TI<_type_ TLOC_COMMA() _positionPolicy_>::point_type, 0)
+             Rectangle_TI<_type_, _positionPolicy_>::right>() const;
 
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s32, p_rectangle::position::BottomLeft);
   TLOC_EXPLICITLY_INSTANTIATE_RECTANGLE_TI(s64, p_rectangle::position::BottomLeft);
@@ -706,38 +704,40 @@ namespace tloc { namespace math { namespace types {
 
 };};};
 
-#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/types/tlocStrongType.inl.h>
+#include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 
 using namespace tloc::math_t;
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects_bl);
+// NOTE: Instatiating only for Bottom Left since Center has the same point_type
+TLOC_INSTANTIATE_STRONG_TYPE(Rects32_bl::point_type);
+TLOC_INSTANTIATE_STRONG_TYPE(Rects64_bl::point_type);
+
+TLOC_INSTANTIATE_STRONG_TYPE(Rectf32_bl::point_type);
+TLOC_INSTANTIATE_STRONG_TYPE(Rectf64_bl::point_type);
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects32_bl);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects64_bl);
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects_c);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects32_c);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rects64_c);
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf_bl);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf32_bl);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf64_bl);
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf_c);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf32_c);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rectf64_c);
 
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects_bl);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects32_bl);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects64_bl);
 
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects_c);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects32_c);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rects64_c);
 
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf_bl);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf32_bl);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf64_bl);
 
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf_c);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf32_c);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Rectf64_c);

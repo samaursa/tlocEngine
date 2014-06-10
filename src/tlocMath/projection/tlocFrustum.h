@@ -57,7 +57,7 @@ namespace tloc { namespace math { namespace proj {
     template <typename T_Plane>
     real_type GetPlane() const;
 
-    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+    ray_type  GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_SETTER(matrix_type,
                              SetProjectionMatrix, m_projMatrix);
@@ -186,7 +186,7 @@ namespace tloc { namespace math { namespace proj {
     template <typename T_Plane>
     real_type GetPlane() const;
 
-    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+    ray_type  GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
@@ -248,7 +248,7 @@ namespace tloc { namespace math { namespace proj {
     template <typename T_Plane>
     real_type GetPlane() const;
 
-    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+    ray_type  GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const;
   };
 
   //````````````````````````````````````````````````````````````````````````

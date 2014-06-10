@@ -69,10 +69,10 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_4_TEMPS>
   Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(const Vector<value_type, 4>& aVec1,
-            const Vector<value_type, 4>& aVec2,
-            const Vector<value_type, 4>& aVec3,
-            const Vector<value_type, 4>& aVec4,
+    Matrix4(const Vector_T<value_type, 4>& aVec1,
+            const Vector_T<value_type, 4>& aVec2,
+            const Vector_T<value_type, 4>& aVec3,
+            const Vector_T<value_type, 4>& aVec4,
             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
@@ -326,7 +326,7 @@ namespace tloc { namespace math { namespace types {
                                          toRet[1], toRet[5], toRet[9],
                                          toRet[2], toRet[6], toRet[10]);
 
-    Vector3<value_type>  vectorPart(toRet[12], toRet[13], toRet[14]);
+    Vector_T<value_type, 3>  vectorPart(toRet[12], toRet[13], toRet[14]);
 
     orientationPart = orientationPart.Inverse();
     vectorPart      = orientationPart * vectorPart.Inverse();

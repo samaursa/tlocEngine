@@ -68,8 +68,8 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TEMPS>
   Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const Vector2<value_type>& a_vec1,
-            const Vector2<value_type>& a_vec2,
+    Matrix2(const Vector_T<value_type, 2>& a_vec1,
+            const Vector_T<value_type, 2>& a_vec2,
             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)

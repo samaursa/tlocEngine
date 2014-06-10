@@ -45,7 +45,7 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::value_type&               reference;
     typedef typename base_type::value_type const&         const_reference;
 
-    typedef Vector<value_type, T_Size>                    vec_type;
+    typedef Vector_T<value_type, T_Size>                  vec_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -83,7 +83,7 @@ namespace tloc { namespace math { namespace types {
 
     // Modifies this matrix to be a diagonal matrix
     void MakeDiagonal(const value_type values[T_Size]);
-    void MakeDiagonal(const Vector<value_type, T_Size>& a_diagonal);
+    void MakeDiagonal(const Vector_T<value_type, T_Size>& a_diagonal);
 
     //------------------------------------------------------------------------
     // Math operations
@@ -119,8 +119,8 @@ namespace tloc { namespace math { namespace types {
     this_type   operator* (const_reference a_value) const;
     this_type   operator/ (const_reference a_value) const;
 
-    Vector<value_type, T_Size>
-      operator* (const Vector<value_type, T_Size>& a_vector) const;
+    Vector_T<value_type, T_Size>
+      operator* (const Vector_T<value_type, T_Size>& a_vector) const;
 
     this_type&   operator+= (const this_type& a_matrix);
     this_type&   operator-= (const this_type& a_matrix);

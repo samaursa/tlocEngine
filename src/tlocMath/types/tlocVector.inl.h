@@ -40,14 +40,14 @@ namespace tloc { namespace math { namespace types {
   }
 
   //////////////////////////////////////////////////////////////////////////
-  // Vector<N>
+  // Vector_T<N>
 
   ////////////////////////////////////////////////////////////////////////
   // Template Macros
 
 #define VECTOR_TEMP typename T, tl_size T_Size
 #define VECTOR_PARAMS T, T_Size
-#define VECTOR_TYPE typename Vector<T, T_Size>
+#define VECTOR_TYPE typename Vector_TI<T, T_Size>
 
   //////////////////////////////////////////////////////////////////////////
   // Misc Macros
@@ -61,15 +61,15 @@ namespace tloc { namespace math { namespace types {
   // Constructors
 
   template <VECTOR_TEMP>
-  Vector<VECTOR_PARAMS>::
-    Vector()
+  Vector_TI<VECTOR_PARAMS>::
+    Vector_TI()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  Vector<VECTOR_PARAMS>::
-    Vector(value_type a_value)
+  Vector_TI<VECTOR_PARAMS>::
+    Vector_TI(value_type a_value)
     : base_type(a_value)
   { }
 
@@ -77,16 +77,16 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   template <typename T_ArrayType>
-  Vector<VECTOR_PARAMS>::
-    Vector(const T_ArrayType (&aArray)[T_Size])
+  Vector_TI<VECTOR_PARAMS>::
+    Vector_TI(const T_ArrayType (&aArray)[T_Size])
     : base_type(aArray)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  Vector<VECTOR_PARAMS>::
-    Vector(const core::data_structs::Variadic<T, T_Size>& a_vars)
+  Vector_TI<VECTOR_PARAMS>::
+    Vector_TI(const core::data_structs::Variadic<T, T_Size>& a_vars)
     : base_type(a_vars)
   { }
 
@@ -95,7 +95,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     MakeZero()
   {
     Set(0);
@@ -105,7 +105,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Inverse() const
   {
     this_type inv(*this);
@@ -121,7 +121,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Inverse(const this_type& a_vector)
   {
     base_type::operator=(a_vector.Inverse());
@@ -132,7 +132,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Add(const this_type& a_vector) const
   {
     this_type temp(*this);
@@ -149,7 +149,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Add(const this_type& a_vector1, const this_type& a_vector2)
   {
     *this = a_vector1.Add(a_vector2);
@@ -159,7 +159,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Sub(const this_type& a_vector) const
   {
     this_type temp(*this);
@@ -176,7 +176,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Sub(const this_type& a_vector1, const this_type& a_vector2)
   {
     *this = a_vector1.Sub(a_vector2);
@@ -186,7 +186,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Mul(const this_type& a_vector) const
   {
     this_type temp(*this);
@@ -202,7 +202,7 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
-  void Vector<VECTOR_PARAMS>::
+  void Vector_TI<VECTOR_PARAMS>::
     Mul(const this_type& a_vector1, const this_type& a_vector2)
   {
     *this = a_vector1.Mul(a_vector2);
@@ -212,7 +212,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Mul(const value_type a_real) const
   {
     this_type temp(*this);
@@ -229,7 +229,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Mul(const this_type& a_vector, const value_type a_real)
   {
     ITERATE_VECTOR
@@ -242,7 +242,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Div(const this_type& a_vector) const
   {
     this_type temp(*this);
@@ -259,7 +259,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Div(const this_type& a_vector1, const this_type& a_vector2)
   {
     *this = a_vector1.Div(a_vector2);
@@ -269,7 +269,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Div(const value_type a_real) const
   {
     this_type temp(*this);
@@ -286,7 +286,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Div(const this_type& a_vector, const value_type a_real)
   {
     *this = a_vector.Div(a_real);
@@ -296,7 +296,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     LengthSquared() const
   {
     T lengthSq = 0;
@@ -313,7 +313,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Length() const
   {
     return DoLength<p_vector::accurate>(*this);
@@ -324,7 +324,7 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_TEMP>
   template <typename T_Accuracy>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     DoLength(const this_type& a_vector) const
   {
     value_type length = a_vector.LengthSquared();
@@ -335,7 +335,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Normalize()
   {
     return Normalize<p_vector::accurate>(*this);
@@ -345,7 +345,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Normalize(const this_type& a_vector)
   {
     return Normalize<p_vector::accurate>(a_vector);
@@ -356,7 +356,7 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_TEMP>
   template <typename T_Accuracy>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     DoNorm(const this_type& a_vector)
   {
     value_type dblLength = a_vector.LengthSquared();
@@ -377,7 +377,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Distance(const this_type& a_vector) const
   {
     return DoDistance<p_vector::accurate>(a_vector);
@@ -388,7 +388,7 @@ namespace tloc { namespace math { namespace types {
   template <VECTOR_TEMP>
   template <typename T_Accuracy>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     DoDistance(const this_type& a_vector) const
   {
     this_type lTemp = *this;
@@ -402,7 +402,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     DistanceSquared(const this_type& a_vector) const
   {
     this_type lTemp = Sub(a_vector);
@@ -415,7 +415,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Dot(const this_type& a_vector) const
   {
     value_type dotProd = 0;
@@ -432,7 +432,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::value_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     DotAbs(const this_type& a_vector) const
   {
     value_type dotProd = Dot(a_vector);
@@ -443,7 +443,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Midpoint(const this_type& a_vector) const
   {
     this_type temp(*this);
@@ -460,7 +460,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   void
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     Midpoint(const this_type& a_vector1, const this_type& a_vector2)
   {
     *this = a_vector1.Midpoint(a_vector2);
@@ -471,7 +471,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator+ (const this_type& a_vector) const
   {
     return Add(a_vector);
@@ -481,7 +481,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator- (const this_type& a_vector) const
   {
     return Sub(a_vector);
@@ -491,8 +491,8 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
-    operator* (const_reference a_value) const
+    Vector_TI<VECTOR_PARAMS>::
+    operator* (value_type a_value) const
   {
     return Mul(a_value);
   }
@@ -501,7 +501,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator* (const this_type& a_vector) const
   {
     return Mul(a_vector);
@@ -511,8 +511,8 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
-    operator/ (const_reference a_value) const
+    Vector_TI<VECTOR_PARAMS>::
+    operator/ (value_type a_value) const
   {
     return Div(a_value);
   }
@@ -521,7 +521,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator/ (const this_type& a_vector) const
   {
     return Div(a_vector);
@@ -531,7 +531,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator+= (const this_type& a_vector)
   {
     Add(*this, a_vector);
@@ -542,7 +542,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator-= (const this_type& a_vector)
   {
     Sub(*this, a_vector);
@@ -553,8 +553,8 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::
-    operator*= (const_reference a_value)
+    Vector_TI<VECTOR_PARAMS>::
+    operator*= (value_type a_value)
   {
     Mul(*this, a_value);
     return *this;
@@ -564,7 +564,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator*= (const this_type& a_vector)
   {
     Mul(*this, a_vector);
@@ -575,8 +575,8 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::
-    operator/= (const_reference a_value)
+    Vector_TI<VECTOR_PARAMS>::
+    operator/= (value_type a_value)
   {
     Div(*this, a_value);
     return (*this);
@@ -586,7 +586,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   VECTOR_TYPE::this_type&
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator/=(const this_type& a_vector)
   {
     Div(*this, a_vector);
@@ -597,7 +597,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   bool
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator==(const this_type& a_vector) const
   {
     ITERATE_VECTOR
@@ -612,7 +612,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   bool
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     operator!=(const this_type& a_vector) const
   {
     return !operator==(a_vector);
@@ -623,7 +623,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   bool
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     IsValid()
   {
     ITERATE_VECTOR
@@ -638,7 +638,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_TEMP>
   bool
-    Vector<VECTOR_PARAMS>::
+    Vector_TI<VECTOR_PARAMS>::
     IsZero()
   {
     ITERATE_VECTOR

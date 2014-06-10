@@ -581,7 +581,7 @@ namespace tloc { namespace core { namespace containers {
 
     ///-------------------------------------------------------------------------
     /// Please note that this operation is a bit slower for Hashtables with the
-    /// buckets as list<singly_linked> or Vector<> that maintains element order
+    /// buckets as list<singly_linked> or Vector_T<> that maintains element order
     /// when erasing (instead of using swap() and pop_back() - check Array<>
     /// policies).
     ///

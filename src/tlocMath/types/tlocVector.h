@@ -15,7 +15,7 @@
 namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
-  // Vector<N>
+  // Vector_T<N>
 
   namespace p_vector
   {
@@ -24,7 +24,8 @@ namespace tloc { namespace math { namespace types {
   };
 
   template <typename T, tl_size T_Size>
-  class Vector : public core::data_structs::Tuple<T, T_Size>
+  class Vector_TI
+    : public core::data_structs::Tuple<T, T_Size>
   {
   public:
     TLOC_STATIC_ASSERT_IS_ARITH(T);
@@ -35,7 +36,7 @@ namespace tloc { namespace math { namespace types {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Vector<T, T_Size>                     this_type;
+    typedef Vector_TI<T, T_Size>                  this_type;
     typedef core::data_structs::Tuple<T, T_Size>  base_type;
 
     typedef typename base_type::value_type        value_type;
@@ -44,23 +45,18 @@ namespace tloc { namespace math { namespace types {
     typedef value_type const&                     const_reference;
 
     //------------------------------------------------------------------------
-    // using declarations for access to base class
-    using base_type::Set;
-    using base_type::m_values;
-
-    //------------------------------------------------------------------------
     // Constructors
 
     // Empty default constructor
-    Vector();
-    explicit Vector(value_type a_value);
-    Vector(const core::data_structs::Variadic<T, T_Size>& a_vars);
+    Vector_TI();
+    explicit Vector_TI(value_type a_value);
+    Vector_TI(const core::data_structs::Variadic<T, T_Size>& a_vars);
 
     template <typename T_Real>
-    Vector(const core_ds::Tuple<T_Real, T_Size>& a_vector);
+    Vector_TI(const core_ds::Tuple<T_Real, T_Size>& a_vector);
 
     template <typename T_ArrayType>
-    Vector(const T_ArrayType (&aArray)[T_Size]);
+    Vector_TI(const T_ArrayType (&aArray)[T_Size]);
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -119,16 +115,16 @@ namespace tloc { namespace math { namespace types {
 
     this_type   operator+ (const this_type& a_vector) const;
     this_type   operator- (const this_type& a_vector) const;
-    this_type   operator* (const_reference a_value) const;
+    this_type   operator* (      value_type a_value) const;
     this_type   operator* (const this_type& a_vector) const;
-    this_type   operator/ (const value_type& a_value) const;
+    this_type   operator/ (      value_type a_value) const;
     this_type   operator/ (const this_type& a_vector) const;
 
     this_type&  operator+= (const this_type& a_vector);
     this_type&  operator-= (const this_type& a_vector);
-    this_type&  operator*= (const_reference a_value);
+    this_type&  operator*= (      value_type a_value);
     this_type&  operator*= (const this_type& a_vector);
-    this_type&  operator/= (const_reference a_value);
+    this_type&  operator/= (      value_type a_value);
     this_type&  operator/= (const this_type& a_vector);
 
     bool        operator == (const this_type& a_vector) const;
@@ -147,6 +143,17 @@ namespace tloc { namespace math { namespace types {
     static const this_type ZERO;
     static const this_type ONE;
 
+    // -----------------------------------------------------------------------
+    // base functions
+
+    using base_type::Get;
+    using base_type::data;
+    using base_type::Set;
+    using base_type::ConvertFrom;
+    using base_type::ConvertTo;
+    using base_type::Cast;
+    using base_type::operator[];
+
   private:
 
     template <typename T_Accuracy>
@@ -163,20 +170,20 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Static const definitions
   template<typename T, tl_size T_Size>
-  const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ZERO =
-    typename Vector<T, T_Size>::this_type(0);
+  const typename Vector_TI<T, T_Size>::this_type 
+    Vector_TI<T, T_Size>::ZERO = typename Vector_TI<T, T_Size>::this_type(0);
 
   template<typename T, tl_size T_Size>
-  const typename Vector<T, T_Size>::this_type Vector<T, T_Size>::ONE =
-    typename Vector<T, T_Size>::this_type(1);
+  const typename Vector_TI<T, T_Size>::this_type 
+    Vector_TI<T, T_Size>::ONE = typename Vector_TI<T, T_Size>::this_type(1);
 
   //------------------------------------------------------------------------
   // Template definitions
 
   template <typename T, tl_size T_Size>
   template <typename T_Real>
-  Vector<T, T_Size>::
-    Vector(const core_ds::Tuple<T_Real, T_Size>& a_vector)
+  Vector_TI<T, T_Size>::
+    Vector_TI(const core_ds::Tuple<T_Real, T_Size>& a_vector)
       : base_type(a_vector)
   { }
 
@@ -184,8 +191,8 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
   template <typename T_Accuracy>
-  typename Vector<T, T_Size>::value_type
-    Vector<T, T_Size>::
+  typename Vector_TI<T, T_Size>::value_type
+    Vector_TI<T, T_Size>::
     Length() const
   {
     type_traits::AssertTypeIsSupported
@@ -197,8 +204,8 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
   template <typename T_Accuracy>
-  typename Vector<T, T_Size>::value_type
-    Vector<T, T_Size>::
+  typename Vector_TI<T, T_Size>::value_type
+    Vector_TI<T, T_Size>::
     Normalize()
   {
     type_traits::AssertTypeIsSupported
@@ -210,8 +217,8 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
   template <typename T_Accuracy>
-  typename Vector<T, T_Size>::value_type
-    Vector<T, T_Size>::
+  typename Vector_TI<T, T_Size>::value_type
+    Vector_TI<T, T_Size>::
     Normalize(const this_type& a_vector)
   {
     type_traits::AssertTypeIsSupported
@@ -223,8 +230,8 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
   template <typename T_Accuracy>
-  typename Vector<T, T_Size>::value_type
-    Vector<T, T_Size>::
+  typename Vector_TI<T, T_Size>::value_type
+    Vector_TI<T, T_Size>::
     Distance(const this_type& a_vector) const
   {
     type_traits::AssertTypeIsSupported
@@ -236,16 +243,24 @@ namespace tloc { namespace math { namespace types {
   // Global operators
 
   template <typename T, tl_size T_Size>
-  Vector<T, T_Size> operator* (T a_lhs, const Vector<T, T_Size>& a_rhs)
+  Vector_TI<T, T_Size> 
+    operator* (T a_lhs, const Vector_TI<T, T_Size>& a_rhs)
   {
     return a_rhs.operator*(a_lhs);
   }
 
   template <typename T, tl_size T_Size>
-  Vector<T, T_Size> operator/ (T a_lhs, const Vector<T, T_Size>& a_rhs)
+  Vector_TI<T, T_Size> 
+    operator/ (T a_lhs, const Vector_TI<T, T_Size>& a_rhs)
   {
     return a_rhs.operator/(a_lhs);
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VectorT<>
+
+  template <typename T, tl_size T_Size>
+  class Vector_T;
 
 };};};
 

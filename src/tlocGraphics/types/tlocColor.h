@@ -215,9 +215,8 @@ namespace tloc { namespace graphics { namespace types {
       <T_VectorType,
       core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
       core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>,
-      math_t::Vector2<f32>, math_t::Vector2<f64>,
-      math_t::Vector3<f32>, math_t::Vector3<f64>,
-      math_t::Vector4<f32>, math_t::Vector4<f64> >();
+      math_t::Vector_T<f32, k_size>, math_t::Vector_T<f64, k_size> 
+      >();
 
     DoGetAs<T_ColorFormat>(a_vec);
   }

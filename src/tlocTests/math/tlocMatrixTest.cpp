@@ -115,7 +115,7 @@ namespace TestingMatrix
     c.MakeDiagonal(numbers);
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 2, 0, 0, 0, 3);
 
-    c.MakeDiagonal(Vector3<tl_float>(5, 6, 7));;
+    c.MakeDiagonal(Vector_T<tl_float, 3>(5, 6, 7));;
     CHECK_MATRIX3F(c, 5, 0, 0, 0, 6, 0, 0, 0, 7);
   }
 
@@ -202,7 +202,7 @@ namespace TestingMatrix
     m(2, 0) = 0.43559578f; m(2, 1) = 0.65973961f;   m(2, 2) = 0.6123724f;
     m(3, 0) = 0;           m(3, 1) = 0;             m(3, 2) = 0;
 
-    Vector<tl_float, 4> v4(0), v4res;
+    Vector_T<tl_float, 4> v4(0), v4res;
     v4[2] = -1; v4[3] = 1;
 
     m.Mul(v4, v4res);

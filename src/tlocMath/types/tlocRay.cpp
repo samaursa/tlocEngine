@@ -67,7 +67,7 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY_PARAMS>::
     operator*(const transform_type& a_trans) const
   {
-    typedef Vector4<T>    vec4_type;
+    typedef Vector_T<T, 4>    vec4_type;
 
     vec4_type newPos = a_trans * m_origin.template ConvertTo<vec4_type>();
 
@@ -154,10 +154,10 @@ TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec2f64);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec3f32);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec3f64);
 
-typedef tloc::math_t::Vector<tloc::f32, 2> Vector2f32;
-typedef tloc::math_t::Vector<tloc::f64, 2> Vector2f64;
-typedef tloc::math_t::Vector<tloc::f32, 3> Vector3f32;
-typedef tloc::math_t::Vector<tloc::f64, 3> Vector3f64;
+typedef tloc::math_t::Vector_T<tloc::f32, 2> Vector2f32;
+typedef tloc::math_t::Vector_T<tloc::f64, 2> Vector2f64;
+typedef tloc::math_t::Vector_T<tloc::f32, 3> Vector3f32;
+typedef tloc::math_t::Vector_T<tloc::f64, 3> Vector3f64;
 
 TLOC_INSTANTIATE_STRONG_TYPE(Vector2f32);
 TLOC_INSTANTIATE_STRONG_TYPE(Vector2f64);

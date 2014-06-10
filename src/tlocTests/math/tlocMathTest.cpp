@@ -10,70 +10,64 @@ namespace TestingTlocMath
   TEST_CASE("Math/CeilFloor", "")
   {
     f32 aValue = 1.5;
-    CHECK(Mathf::Ceil(aValue) == 2);
-    CHECK(Mathf::Ceil(1.1f) == 2);
+    CHECK(math::Ceil(aValue) == 2);
+    CHECK(math::Ceil(1.1f) == 2);
 
-    CHECK(Mathf::Floor(aValue) == 1);
-    CHECK(Mathf::Floor(1.9f) == 1);
+    CHECK(math::Floor(aValue) == 1);
+    CHECK(math::Floor(1.9f) == 1);
   }
 
   TEST_CASE("Math/Abs", "")
   {
-    CHECK(Mathf::Abs(-2) == 2);
-    CHECK(Mathf::Abs(-2.756f) == Approx(2.756f));
+    CHECK(math::Abs(-2) == 2);
+    CHECK(math::Abs(-2.756f) == Approx(2.756f));
   }
 
   TEST_CASE("Math/AtanAtan2", "")
   {
-    CHECK(Mathf::ATan(5.0f) == Approx(1.37340076f));
-    CHECK(Mathf::ATan2(-862.42f, 78.5149f) == Approx(-1.4800063f));
+    CHECK(math::ATan(5.0f).Get() == Approx(1.37340076f));
+    CHECK(math::ATan2(-862.42f, 78.5149f).Get() == Approx(-1.4800063f));
   }
 
   TEST_CASE("Math/IsNaN", "")
   {
     f32 b = sqrt(-1.0f);
-    CHECK(Mathf::IsNaN(b) == true);
+    CHECK(math::IsNaN(b) == true);
   }
 
   TEST_CASE("Math/Approx", "")
   {
     f32 a = 1.0f, b = 1.0f;
-    CHECK(Mathf::Approx(a, b));
+    CHECK(math::IsEqual(a, b));
     a = 1.23456789f;
     b = 1.23456789f;
-    CHECK(Mathf::Approx(a, b));
-  }
-
-  TEST_CASE("Math/DegreeRadian", "")
-  {
-    f32 degree = 1.0f;
-    CHECK( Mathf::Radian(degree) == Approx(0.0174532925f) );
+    CHECK(math::IsEqual(a, b));
   }
 
   TEST_CASE("Math/IsPowerOfTwo", "")
   {
     tl_uint tempVal = 8;
-    CHECK(Mathu::IsPowerOfTwo(tempVal) == true);
+    CHECK(math::IsPowerOfTwo(tempVal) == true);
 
     tempVal = 9;
-    CHECK(Mathu::IsPowerOfTwo(tempVal) == false);
+    CHECK(math::IsPowerOfTwo(tempVal) == false);
   }
 
   TEST_CASE("Math/FastPowerOfTwo", "")
   {
-    tl_uint val = Mathu::FastPowOfTwo(8);
+    tl_uint val = math::FastPowOfTwo(8);
     CHECK(val == 256);
-    val = Mathu::FastPowOfTwo(16);
+    val = math::FastPowOfTwo(16);
     CHECK(val == 65536);
   }
 
   TEST_CASE("Math/FastSignInt", "")
   {
-    s32 val = Mathf::FastSignInt(1.5f);
+    s32 val = math::FastSignInt(1.5f);
     CHECK(val == 1);
-    val = Mathf::FastSignInt(-50.9f);
+    val = math::FastSignInt(-50.9f);
     CHECK(val == -1);
-    val = Mathf::FastSignInt(0.0f);
+    val = math::FastSignInt(0.0f);
     CHECK(val == 0);
   }
 
@@ -81,7 +75,7 @@ namespace TestingTlocMath
   {
     f32 value1 = 0.0f;
     f32 value2 = 1.0f;
-    CHECK(Mathf::Lerp(value1, value2) == Approx(0.5f));
+    CHECK(math::Lerp(value1, value2) == Approx(0.5f));
   }
 
   TEST_CASE("Math/Remainder", "")

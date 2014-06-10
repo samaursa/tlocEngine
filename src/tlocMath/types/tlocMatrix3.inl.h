@@ -45,8 +45,8 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   Matrix_T<MATRIX_3_PARAMS>::
     Matrix_T(value_type m00, value_type m01, value_type m02,
-            value_type m10, value_type m11, value_type m12,
-            value_type m20, value_type m21, value_type m22)
+             value_type m10, value_type m11, value_type m12,
+             value_type m20, value_type m21, value_type m22)
   {
     m_values[0] = m00; m_values[3] = m01; m_values[6] = m02;
     m_values[1] = m10; m_values[4] = m11; m_values[7] = m12;
@@ -69,9 +69,9 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   Matrix_T<MATRIX_3_PARAMS>::
     Matrix_T(const Vector_T<value_type, 3>& aVec1,
-            const Vector_T<value_type, 3>& aVec2,
-            const Vector_T<value_type, 3>& aVec3,
-            typename base_type::matrix_order aOrder)
+             const Vector_T<value_type, 3>& aVec2,
+             const Vector_T<value_type, 3>& aVec3,
+             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
     {
@@ -137,7 +137,7 @@ namespace tloc { namespace math { namespace types {
     value_type detInv = aMatrix.Determinant();
 
     TLOC_ASSERT_LOW_LEVEL
-      (Math<value_type>::IsEqual(detInv, 0.0f) == false, "Divide by zero!");
+      (math::IsEqual<value_type>(detInv, 0) == false, "Divide by zero!");
     detInv = ((value_type)1) / detInv;
 
     Adjoint(aMatrix);
@@ -203,7 +203,7 @@ namespace tloc { namespace math { namespace types {
 
     // Compute q0.
     value_type invLength =
-      Math<value_type>::InvSqrt(m_values[0] * m_values[0] +
+      math::InvSqrt(m_values[0] * m_values[0] +
                                 m_values[1] * m_values[1] +
                                 m_values[2] * m_values[2]);
 
@@ -220,7 +220,7 @@ namespace tloc { namespace math { namespace types {
     m_values[4] -= dot0 * m_values[1];
     m_values[5] -= dot0 * m_values[2];
 
-    invLength = Math<value_type>::InvSqrt(m_values[3] * m_values[3] +
+    invLength = math::InvSqrt(m_values[3] * m_values[3] +
                                           m_values[4] * m_values[4] +
                                           m_values[5] * m_values[5]);
 
@@ -241,7 +241,7 @@ namespace tloc { namespace math { namespace types {
     m_values[7] -= dot0 * m_values[1] + dot1 * m_values[4];
     m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
 
-    invLength = Math<value_type>::InvSqrt(m_values[6] * m_values[6] +
+    invLength = math::InvSqrt(m_values[6] * m_values[6] +
                                           m_values[7] * m_values[7] +
                                           m_values[8] * m_values[8]);
 
@@ -281,7 +281,7 @@ namespace tloc { namespace math { namespace types {
 
     // Compute q0.
     value_type invLength =
-      Math<value_type>::FastInvSqrt(m_values[0] * m_values[0] +
+      math::FastInvSqrt(m_values[0] * m_values[0] +
                                     m_values[1] * m_values[1] +
                                     m_values[2] * m_values[2]);
 
@@ -298,7 +298,7 @@ namespace tloc { namespace math { namespace types {
     m_values[4] -= dot0 * m_values[1];
     m_values[5] -= dot0 * m_values[2];
 
-    invLength = Math<value_type>::FastInvSqrt(m_values[3] * m_values[3] +
+    invLength = math::FastInvSqrt(m_values[3] * m_values[3] +
                                               m_values[4] * m_values[4] +
                                               m_values[5] * m_values[5]);
 
@@ -319,7 +319,7 @@ namespace tloc { namespace math { namespace types {
     m_values[7] -= dot0 * m_values[1] + dot1 * m_values[4];
     m_values[8] -= dot0 * m_values[2] + dot1 * m_values[5];
 
-    invLength = Math<value_type>::FastInvSqrt(m_values[6] * m_values[6] +
+    invLength = math::FastInvSqrt(m_values[6] * m_values[6] +
                                               m_values[7] * m_values[7] +
                                               m_values[8] * m_values[8]);
 
@@ -413,12 +413,12 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeRotationX( const_reference aXAngle )
+    MakeRotationX( angle_type a_angle )
   {
     value_type cosine, sine;
 
-    cosine = Math<value_type>::Cos(aXAngle);
-    sine = Math<value_type>::Sin(aXAngle);
+    cosine = math::Cos(a_angle);
+    sine = math::Sin(a_angle);
 
     value_type values[9] = { (value_type)1,  (value_type)0,  (value_type)0,
                              (value_type)0,         cosine,          -sine,
@@ -430,12 +430,12 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeRotationY( const_reference aYAngle )
+    MakeRotationY( angle_type a_angle )
   {
     value_type cosine, sine;
 
-    cosine = Math<value_type>::Cos(aYAngle);
-    sine = Math<value_type>::Sin(aYAngle);
+    cosine = math::Cos(a_angle);
+    sine = math::Sin(a_angle);
 
     value_type values[9] = {        cosine,  (value_type)0,           sine,
                              (value_type)0,  (value_type)1,  (value_type)0,
@@ -447,12 +447,12 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeRotationZ( const_reference aZAngle )
+    MakeRotationZ( angle_type a_angle )
   {
     value_type cosine, sine;
 
-    cosine = Math<value_type>::Cos(aZAngle);
-    sine = Math<value_type>::Sin(aZAngle);
+    cosine = math::Cos(a_angle);
+    sine = math::Sin(a_angle);
 
     value_type values[9] = {        cosine,          -sine,  (value_type)0,
                                       sine,         cosine,  (value_type)0,
@@ -464,13 +464,13 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeRotation(const vec_type& a_axis, Radian_T<value_type> a_angle)
+    MakeRotation(const vec_type& a_axis, angle_type a_angle)
   {
     // Taken from WildMagic5 and checked against Essential Mathematics for
     // Games
 
-    value_type cs = Math<value_type>::Cos(a_angle.Get());
-    value_type sn = Math<value_type>::Sin(a_angle.Get());
+    value_type cs = math::Cos(a_angle);
+    value_type sn = math::Sin(a_angle);
     value_type oneMinusCos = ((value_type)1) - cs;
     value_type x2 = a_axis[0]*a_axis[0];
     value_type y2 = a_axis[1]*a_axis[1];
@@ -498,7 +498,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerXYZ(value_type aXAngle, value_type aYAngle, value_type aZAngle)
+    MakeEulerXYZ(angle_type aXAngle, angle_type aYAngle, angle_type aZAngle)
   {
     this_type matY, matZ;
 
@@ -512,7 +512,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerXZY(value_type aXAngle, value_type aZAngle, value_type aYAngle)
+    MakeEulerXZY(angle_type aXAngle, angle_type aZAngle, angle_type aYAngle)
   {
     this_type matY, matZ;
 
@@ -526,7 +526,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerYXZ( value_type aYAngle, value_type aXAngle, value_type aZAngle )
+    MakeEulerYXZ( angle_type aYAngle, angle_type aXAngle, angle_type aZAngle )
   {
     this_type matX, matZ;
 
@@ -540,7 +540,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerYZX( value_type aYAngle, value_type aZAngle, value_type aXAngle )
+    MakeEulerYZX( angle_type aYAngle, angle_type aZAngle, angle_type aXAngle )
   {
     this_type matX, matZ;
 
@@ -554,7 +554,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerZXY( value_type aZAngle, value_type aXAngle, value_type aYAngle )
+    MakeEulerZXY( angle_type aZAngle, angle_type aXAngle, angle_type aYAngle )
   {
     this_type matX, matY;
 
@@ -568,7 +568,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerZYX( value_type aZAngle, value_type aYAngle, value_type aXAngle )
+    MakeEulerZYX( angle_type aZAngle, angle_type aYAngle, angle_type aXAngle )
   {
     this_type matX, matY;
 
@@ -582,7 +582,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerXYX( value_type aXAngle0, value_type aYAngle, value_type aXAngle1 )
+    MakeEulerXYX( angle_type aXAngle0, angle_type aYAngle, angle_type aXAngle1 )
   {
     this_type matX, matY;
 
@@ -596,7 +596,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerXZX( value_type aXAngle0, value_type aZAngle, value_type aXAngle1 )
+    MakeEulerXZX( angle_type aXAngle0, angle_type aZAngle, angle_type aXAngle1 )
   {
     this_type matX, matZ;
 
@@ -610,7 +610,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerYXY( value_type aYAngle0, value_type aXAngle, value_type aYAngle1 )
+    MakeEulerYXY( angle_type aYAngle0, angle_type aXAngle, angle_type aYAngle1 )
   {
     this_type matX, matY;
 
@@ -624,7 +624,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerYZY( value_type aYAngle0, value_type aZAngle, value_type aYAngle1 )
+    MakeEulerYZY( angle_type aYAngle0, angle_type aZAngle, angle_type aYAngle1 )
   {
     this_type matY, matZ;
 
@@ -638,7 +638,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerZXZ( value_type aZAngle0, value_type aXAngle, value_type aZAngle1 )
+    MakeEulerZXZ( angle_type aZAngle0, angle_type aXAngle, angle_type aZAngle1 )
   {
     this_type matZ, matX;
 
@@ -652,7 +652,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    MakeEulerZYZ( value_type aZAngle0, value_type aYAngle, value_type aZAngle1 )
+    MakeEulerZYZ( angle_type aZAngle0, angle_type aYAngle, angle_type aZAngle1 )
   {
     this_type matZ, matY;
 
@@ -686,9 +686,9 @@ namespace tloc { namespace math { namespace types {
     value_type m22 = m_values[8];
 
     aDiagonal[0] = m00;
-    if (Math<value_type>::FAbs(m02) >= Math<value_type>::ZERO_TOLERANCE)
+    if (math::FAbs(m02) >= Math<value_type>::ZERO_TOLERANCE)
     {
-      aSubdiagonal[0] = Math<value_type>::Sqrt(m01*m01 + m02*m02);
+      aSubdiagonal[0] = math::Sqrt(m01*m01 + m02*m02);
       value_type invLength = ((value_type)1)/aSubdiagonal[0];
       m01 *= invLength;
       m02 *= invLength;
@@ -745,9 +745,9 @@ namespace tloc { namespace math { namespace types {
       value_type sum, diff, discr, eigVal0, eigVal1, cs, sn, tmp;
       s32 row;
 
-      sum = Math<value_type>::FAbs(aDiagonal[0]) +
-            Math<value_type>::FAbs(aDiagonal[1]);
-      if (Math<value_type>::FAbs(aSubdiagonal[0]) + sum == sum)
+      sum = math::FAbs(aDiagonal[0]) +
+            math::FAbs(aDiagonal[1]);
+      if (math::FAbs(aSubdiagonal[0]) + sum == sum)
       {
         // The matrix is effectively
         //       +-        -+
@@ -757,9 +757,9 @@ namespace tloc { namespace math { namespace types {
         //       +-        -+
 
         // Test whether M is diagonal (within numerical round-off).
-        sum = Math<value_type>::FAbs(aDiagonal[1]) +
-              Math<value_type>::FAbs(aDiagonal[2]);
-        if (Math<value_type>::FAbs(aSubdiagonal[1]) + sum == sum)
+        sum = math::FAbs(aDiagonal[1]) +
+              math::FAbs(aDiagonal[2]);
+        if (math::FAbs(aSubdiagonal[1]) + sum == sum)
         {
           return true;
         }
@@ -767,7 +767,7 @@ namespace tloc { namespace math { namespace types {
         // Compute the eigenvalues as roots of a quadratic equation.
         sum = aDiagonal[1] + aDiagonal[2];
         diff = aDiagonal[1] - aDiagonal[2];
-        discr = Math<value_type>::Sqrt(diff * diff +
+        discr = math::Sqrt(diff * diff +
                 ((value_type)4) * aSubdiagonal[1] * aSubdiagonal[1]);
         eigVal0 = ((value_type)0.5) * (sum - discr);
         eigVal1 = ((value_type)0.5) * (sum + discr);
@@ -783,7 +783,7 @@ namespace tloc { namespace math { namespace types {
           cs = aDiagonal[2] - eigVal0;
           sn = aSubdiagonal[1];
         }
-        tmp = Math<value_type>::InvSqrt(cs*cs + sn*sn);
+        tmp = math::InvSqrt(cs*cs + sn*sn);
         cs *= tmp;
         sn *= tmp;
 
@@ -804,9 +804,9 @@ namespace tloc { namespace math { namespace types {
         return true;
       }
 
-      sum = Math<value_type>::FAbs(aDiagonal[1]) +
-            Math<value_type>::FAbs(aDiagonal[2]);
-      if (Math<value_type>::FAbs(aSubdiagonal[1]) + sum == sum)
+      sum = math::FAbs(aDiagonal[1]) +
+            math::FAbs(aDiagonal[2]);
+      if (math::FAbs(aSubdiagonal[1]) + sum == sum)
       {
         // The matrix is effectively
         //       +-         -+
@@ -816,9 +816,9 @@ namespace tloc { namespace math { namespace types {
         //       +-         -+
 
         // Test whether M is diagonal (within numerical round-off).
-        sum = Math<value_type>::FAbs(aDiagonal[0]) +
-              Math<value_type>::FAbs(aDiagonal[1]);
-        if (Math<value_type>::FAbs(aSubdiagonal[0]) + sum == sum)
+        sum = math::FAbs(aDiagonal[0]) +
+              math::FAbs(aDiagonal[1]);
+        if (math::FAbs(aSubdiagonal[0]) + sum == sum)
         {
           return true;
         }
@@ -826,7 +826,7 @@ namespace tloc { namespace math { namespace types {
         // Compute the eigenvalues as roots of a quadratic equation.
         sum = aDiagonal[0] + aDiagonal[1];
         diff = aDiagonal[0] - aDiagonal[1];
-        discr = Math<value_type>::Sqrt(diff*diff +
+        discr = math::Sqrt(diff*diff +
                 ((value_type)4.0) * aSubdiagonal[0] * aSubdiagonal[0]);
         eigVal0 = ((value_type)0.5)*(sum - discr);
         eigVal1 = ((value_type)0.5)*(sum + discr);
@@ -842,7 +842,7 @@ namespace tloc { namespace math { namespace types {
           cs = aDiagonal[1] - eigVal0;
           sn = aSubdiagonal[0];
         }
-        tmp = Math<value_type>::InvSqrt(cs*cs + sn*sn);
+        tmp = math::InvSqrt(cs*cs + sn*sn);
         cs *= tmp;
         sn *= tmp;
 
@@ -875,7 +875,7 @@ namespace tloc { namespace math { namespace types {
       // implicit shift suggested by Wilkinson.
       value_type ratio = (aDiagonal[1] - aDiagonal[0])/
                           (((value_type)2) * aSubdiagonal[0]);
-      value_type root = Math<value_type>::Sqrt((value_type)1 + ratio * ratio);
+      value_type root = math::Sqrt((value_type)1 + ratio * ratio);
       value_type b = aSubdiagonal[1];
       value_type a = aDiagonal[2] - aDiagonal[0];
       if (ratio >= (value_type)0)
@@ -888,16 +888,16 @@ namespace tloc { namespace math { namespace types {
       }
 
       // Compute the Givens rotation for the first pass.
-      if (Math<value_type>::FAbs(b) >= Math<value_type>::FAbs(a))
+      if (math::FAbs(b) >= math::FAbs(a))
       {
         ratio = a/b;
-        sn = Math<value_type>::InvSqrt((value_type)1 + ratio*ratio);
+        sn = math::InvSqrt((value_type)1 + ratio*ratio);
         cs = ratio*sn;
       }
       else
       {
         ratio = b/a;
-        cs = Math<value_type>::InvSqrt((value_type)1 + ratio*ratio);
+        cs = math::InvSqrt((value_type)1 + ratio*ratio);
         sn = ratio*cs;
       }
 
@@ -922,10 +922,10 @@ namespace tloc { namespace math { namespace types {
 
       // Compute the Givens rotation for the second pass.  The subdiagonal
       // term S[1] in the tridiagonal matrix is updated at this time.
-      if (Math<value_type>::FAbs(b) >= Math<value_type>::FAbs(a))
+      if (math::FAbs(b) >= math::FAbs(a))
       {
         ratio = a/b;
-        root = Math<value_type>::Sqrt((value_type)1 + ratio*ratio);
+        root = math::Sqrt((value_type)1 + ratio*ratio);
         aSubdiagonal[1] = b*root;
         sn = ((value_type)1)/root;
         cs = ratio*sn;
@@ -933,7 +933,7 @@ namespace tloc { namespace math { namespace types {
       else
       {
         ratio = b/a;
-        root = Math<value_type>::Sqrt((value_type)1 + ratio*ratio);
+        root = math::Sqrt((value_type)1 + ratio*ratio);
         aSubdiagonal[1] = a * root;
         cs = ((value_type)1)/root;
         sn = ratio * cs;

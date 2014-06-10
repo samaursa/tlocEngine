@@ -17,25 +17,25 @@ namespace tloc { namespace math { namespace types {
     template <typename T>
     TL_FI T GetInvSqrt(T a_value, p_vector::accurate)
     {
-      return Math<T>::InvSqrt(a_value);
+      return math::InvSqrt(a_value);
     }
 
     template <typename T>
     TL_FI T GetInvSqrt(T a_value, p_vector::fast)
     {
-      return Math<T>::FastInvSqrt(a_value);
+      return math::FastInvSqrt(a_value);
     }
 
     template <typename T>
     TL_FI T GetSqrt(T a_value, p_vector::accurate)
     {
-      return Math<T>::Sqrt(a_value);
+      return math::Sqrt(a_value);
     }
 
     template <typename T>
     TL_FI T GetSqrt(T a_value, p_vector::fast)
     {
-      return Math<T>::InvSqrt(a_value);
+      return math::InvSqrt(a_value);
     }
   }
 
@@ -361,7 +361,7 @@ namespace tloc { namespace math { namespace types {
   {
     value_type dblLength = a_vector.LengthSquared();
 
-    TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(dblLength, 0) == false,
+    TLOC_ASSERT_LOW_LEVEL(math::IsEqual<value_type>(dblLength, 0) == false,
       "Divide by zero!");
 
     value_type invLength = GetInvSqrt(dblLength, T_Accuracy() );
@@ -436,7 +436,7 @@ namespace tloc { namespace math { namespace types {
     DotAbs(const this_type& a_vector) const
   {
     value_type dotProd = Dot(a_vector);
-    return Math<value_type>::Abs(dotProd);
+    return math::Abs(dotProd);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -602,7 +602,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      if (!Math<value_type>::Approx(m_values[i], a_vector[i])) return false;
+      if (!math::IsEqual(m_values[i], a_vector[i])) return false;
     }
 
     return true;
@@ -628,7 +628,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      if (Math<value_type>::IsNaN(m_values[i])) { return false; }
+      if (math::IsNaN(m_values[i])) { return false; }
     }
 
     return true;
@@ -643,7 +643,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      if (!Math<value_type>::Approx(m_values[i], 0)) { return false; }
+      if (!math::IsEqual<value_type>(m_values[i], 0)) { return false; }
     }
 
     return true;

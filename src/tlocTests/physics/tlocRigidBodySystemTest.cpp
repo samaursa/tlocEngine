@@ -267,7 +267,7 @@ namespace TestingRigidBodySystem
       tl_float calculatedPositionY =
         circleStartPosition + 0.5f * gravityY * time * time;
 
-      if(Mathf::Approx(calculatedPositionY, position[1], tolerance) == false)
+      if(math::Approx(calculatedPositionY, position[1], tolerance) == false)
       { actualPTest = false; break; }
     }
     CHECK(deltaPTest);

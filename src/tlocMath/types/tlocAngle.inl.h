@@ -23,31 +23,31 @@ namespace tloc { namespace math { namespace types {
     : m_angle(a_angle) { }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type& 
+  ANGLE_TYPE::derived_type& 
     Angle_T<ANGLE_PARAMS>::
     operator= (value_type a_angle)
   {
     m_angle = a_angle;
-    return *this;
+    return *This();
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type& 
+  ANGLE_TYPE::derived_type& 
     Angle_T<ANGLE_PARAMS>::
     operator= (const this_type& a_other)
   {
     m_angle = a_other.m_angle;
-    return *this;
+    return *This();
   }
 
   template <ANGLE_TEMP>
   template <typename T_AngleType>
-  ANGLE_TYPE::this_type&
+  ANGLE_TYPE::derived_type&
     Angle_T<ANGLE_PARAMS>::
     operator= (const T_AngleType& a_angle)
   {
-    static_cast<derived_type*>(this)->DoSetAngle(a_angle);
-    return *this;
+    This()->DoSetAngle(a_angle);
+    return *This();
   }
 
   template <ANGLE_TEMP>
@@ -56,12 +56,11 @@ namespace tloc { namespace math { namespace types {
     Angle_T<ANGLE_PARAMS>::
     GetAs() const
   {
-    return static_cast<const derived_type*>(this)->
-      DoGetAs(T_AngleType( (value_type)0.0f));
+    return This()->DoGetAs(T_AngleType( (value_type)0.0f));
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type 
+  ANGLE_TYPE::derived_type
     Angle_T<ANGLE_PARAMS>::
     operator+ (this_type a_other) const
   {
@@ -69,16 +68,16 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type&
+  ANGLE_TYPE::derived_type&
     Angle_T<ANGLE_PARAMS>::
     operator+= (this_type a_other)
   {
     m_angle += a_other.m_angle;
-    return *this;
+    return *This();
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type 
+  ANGLE_TYPE::derived_type 
     Angle_T<ANGLE_PARAMS>::
     operator- (this_type a_other) const
   {
@@ -86,16 +85,16 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type&
+  ANGLE_TYPE::derived_type&
     Angle_T<ANGLE_PARAMS>::
     operator-= (this_type a_other)
   {
     m_angle -= a_other.m_angle;
-    return *this;
+    return *This();
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type 
+  ANGLE_TYPE::derived_type 
     Angle_T<ANGLE_PARAMS>::
     operator* (this_type a_other) const
   {
@@ -103,31 +102,31 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type&
+  ANGLE_TYPE::derived_type&
     Angle_T<ANGLE_PARAMS>::
     operator*= (this_type a_other)
   {
     m_angle *= a_other.m_angle;
-    return *this;
+    return *This();
   }
   
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type 
+  ANGLE_TYPE::derived_type 
     Angle_T<ANGLE_PARAMS>::
     operator/ (this_type a_other) const
   {
-    TLOC_ASSERT(Math<value_type>::IsEqual(a_other.m_angle, 0), "Divide by zero!");
+    TLOC_ASSERT(!math::IsEqual<value_type>(a_other.m_angle, 0), "Divide by zero!");
     return m_angle / a_other.m_angle;
   }
 
   template <ANGLE_TEMP>
-  ANGLE_TYPE::this_type&
+  ANGLE_TYPE::derived_type&
     Angle_T<ANGLE_PARAMS>::
     operator/= (this_type a_other)
   {
-    TLOC_ASSERT(Math<value_type>::IsEqual(a_other.m_angle, 0), "Divide by zero!");
+    TLOC_ASSERT(!math::IsEqual<value_type>(a_other.m_angle, 0), "Divide by zero!");
     m_angle /= a_other.m_angle;
-    return *this;
+    return *This();
   }
 
   template <ANGLE_TEMP>
@@ -144,7 +143,7 @@ namespace tloc { namespace math { namespace types {
   bool Angle_T<ANGLE_PARAMS>::
     operator== (this_type a_other) const
   {
-    return Math<value_type>::IsEqual(m_angle, a_other.m_angle);
+    return math::IsEqual(m_angle, a_other.m_angle);
   }
 
   template <ANGLE_TEMP>

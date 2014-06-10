@@ -14,9 +14,9 @@ namespace tloc { namespace math { namespace types {
     AspectRatio_T(width a_width, height a_height)
     : m_ratio( a_width.m_value / a_height.m_value)
   {
-    TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(a_height, 0.0f) == false,
+    TLOC_ASSERT_LOW_LEVEL(math::IsEqual<value_type>(a_height, 0.0f) == false,
                           "Divide by zero!");
-    TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(m_ratio, 0.0f) == false,
+    TLOC_ASSERT_LOW_LEVEL(math::IsEqual<value_type>(m_ratio, 0.0f) == false,
                           "Aspect ratio cannot be zero!");
   }
 
@@ -25,7 +25,7 @@ namespace tloc { namespace math { namespace types {
     AspectRatio_T(const this_type& a_other)
     : m_ratio(a_other.m_ratio)
   {
-    TLOC_ASSERT_LOW_LEVEL(Math<value_type>::IsEqual(m_ratio, 0.0f) == false,
+    TLOC_ASSERT_LOW_LEVEL(math::IsEqual<value_type>(m_ratio, 0.0f) == false,
                           "Aspect ratio cannot be zero!");
   }
 

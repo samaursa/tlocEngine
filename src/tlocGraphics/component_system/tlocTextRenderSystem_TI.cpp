@@ -81,9 +81,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
+
+    const_ent_ptr_cont_itr itrLast = a_begin;
+
     for (const_ent_ptr_cont_itr itr = a_begin, itrEnd = a_end; 
          itr != itrEnd; ++itr)
     {
+      itrLast = itr;
       using core_sptr::ToVirtualPtr;
 
       math_cs::transform_sptr t = (*itr)->GetComponent<math_cs::Transform>();
@@ -95,12 +99,6 @@ namespace tloc { namespace graphics { namespace component_system {
           DoSetTextQuadPosition(t, q, ToVirtualPtr(a_text), 
                                 a_text->Get()[count - 1], 
                                 a_text->Get()[count], advance, a_lineNumber);
-        if (itr + 1 == itrEnd)
-        {
-          endPos = t->GetPosition();
-          endPos[0] += q->GetRectangleRef().GetWidth() - 
-            a_text->GetFont()->GetCachedParams().m_paddingDim[0] * 2;
-        }
       }
       else
       {
@@ -111,6 +109,19 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       ++count;
+    }
+
+    // if itrLast == a_end then this means a_begin == a_end, otherwise, 
+    // itrLast is the last character on this line from which we will calculate
+    // the end position
+    if (itrLast != a_end)
+    {
+      math_cs::transform_sptr t = (*itrLast)->GetComponent<math_cs::Transform>();
+      gfx_cs::quad_sptr       q = (*itrLast)->GetComponent<gfx_cs::Quad>();
+
+      endPos = t->GetPosition();
+      endPos[0] += q->GetRectangleRef().GetWidth() - 
+        a_text->GetFont()->GetCachedParams().m_paddingDim[0] * 2;
     }
 
     math_t::Vec3f totalTextWidth = endPos - starPos;
@@ -467,6 +478,11 @@ namespace tloc { namespace graphics { namespace component_system {
          itr != itrEnd; ++itr)
     {
       DoReInitializeEntity(*itr);
+
+      text_quads_cont::const_iterator itrRes = core::find_if_all
+        (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(*itr)));
+
+      DoAlignText(*itrRes);
     }
     m_entsToReinit.clear();
   }

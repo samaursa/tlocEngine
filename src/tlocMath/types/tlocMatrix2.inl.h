@@ -12,39 +12,39 @@
 namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
-  // Matrix2f<T>
+  // Matrix_T<T>
 
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
 #define MATRIX_2_TEMPS typename T
-#define MATRIX_2_PARAMS T
-#define MATRIX_2_TYPE  typename Matrix2<MATRIX_2_PARAMS>
+#define MATRIX_2_PARAMS T, 2
+#define MATRIX_2_TYPE  typename Matrix_T<MATRIX_2_PARAMS>
 
   //------------------------------------------------------------------------
   // Constructors
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2()
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T()
     : base_type()
   { }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const this_type& a_matrix)
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(const this_type& a_matrix)
     : base_type(a_matrix)
   { }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const base_type& a_matrix)
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(const base_type& a_matrix)
     : base_type(a_matrix)
   { }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(value_type m00, value_type m01,
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(value_type m00, value_type m01,
             value_type m10, value_type m11)
   {
     m_values[0] = m00;
@@ -54,21 +54,21 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(value_type m00, value_type m11)
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(value_type m00, value_type m11)
   {
     T diag[2] = {m00, m11};
     MakeDiagonal(diag);
   }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const_reference aValue)
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(const_reference aValue)
     : base_type(aValue) {}
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const Vector_T<value_type, 2>& a_vec1,
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(const Vector_T<value_type, 2>& a_vec1,
             const Vector_T<value_type, 2>& a_vec2,
             typename base_type::matrix_order aOrder)
   {
@@ -89,14 +89,14 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const value_type (&values)[k_MatrixSize], matrix_order aOrder)
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(const value_type (&values)[k_MatrixSize], matrix_order aOrder)
     : base_type(values, aOrder)
   { }
 
   template <MATRIX_2_TEMPS>
-  Matrix2<MATRIX_2_PARAMS>::
-    Matrix2(const tloc::core::data_structs::Variadic<value_type, 4>& a_vars,
+  Matrix_T<MATRIX_2_PARAMS>::
+    Matrix_T(const tloc::core::data_structs::Variadic<value_type, 4>& a_vars,
             matrix_order a_order)
     : base_type(a_vars, a_order)
   { }
@@ -106,7 +106,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TEMPS>
   MATRIX_2_TYPE::value_type
-    Matrix2<MATRIX_2_PARAMS>::
+    Matrix_T<MATRIX_2_PARAMS>::
     Determinant() const
   {
     return (m_values[0] * m_values[3]) - (m_values[2] * m_values[1]);
@@ -114,7 +114,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TEMPS>
   MATRIX_2_TYPE::this_type
-    Matrix2<MATRIX_2_PARAMS>::
+    Matrix_T<MATRIX_2_PARAMS>::
     Inverse() const
   {
     this_type temp;
@@ -124,7 +124,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TEMPS>
   void
-    Matrix2<MATRIX_2_PARAMS>::
+    Matrix_T<MATRIX_2_PARAMS>::
     Inverse(const this_type& a_matrix)
   {
     value_type detInv = a_matrix.Determinant();
@@ -140,8 +140,8 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TEMPS>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type
-    Matrix2<MATRIX_2_PARAMS>::
+  typename Matrix_T<MATRIX_2_PARAMS>::this_type
+    Matrix_T<MATRIX_2_PARAMS>::
     Adjoint() const
   {
     this_type temp;
@@ -151,7 +151,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TEMPS>
-  void Matrix2<MATRIX_2_PARAMS>::
+  void Matrix_T<MATRIX_2_PARAMS>::
     Adjoint(const this_type& a_matrix)
   {
     m_values[0] = a_matrix[3];
@@ -162,8 +162,8 @@ namespace tloc { namespace math { namespace types {
 
   // Taken directly from WildMagic5 (modified to suit out needs)
   template <MATRIX_2_TEMPS>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type
-    Matrix2<MATRIX_2_PARAMS>::
+  typename Matrix_T<MATRIX_2_PARAMS>::this_type
+    Matrix_T<MATRIX_2_PARAMS>::
     Orthonormalize() const
   {
     this_type temp(*this);
@@ -191,15 +191,15 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_2_TEMPS>
-  void Matrix2<MATRIX_2_PARAMS>::
+  void Matrix_T<MATRIX_2_PARAMS>::
     Orthonormalize( const this_type& a_matrix )
   {
     *this = a_matrix.Orthonormalize();
   }
 
   template <MATRIX_2_TEMPS>
-  typename Matrix2<MATRIX_2_PARAMS>::this_type
-    Matrix2<MATRIX_2_PARAMS>::
+  typename Matrix_T<MATRIX_2_PARAMS>::this_type
+    Matrix_T<MATRIX_2_PARAMS>::
     FastOrthonormalize() const
   {
     this_type temp(*this);
@@ -228,14 +228,14 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_2_TEMPS>
   void
-    Matrix2<MATRIX_2_PARAMS>::
+    Matrix_T<MATRIX_2_PARAMS>::
     FastOrthonormalize( const this_type& a_matrix )
   {
     *this = a_matrix.FastOrthonormalize();
   }
 
   template <MATRIX_2_TEMPS>
-  void Matrix2<MATRIX_2_PARAMS>::
+  void Matrix_T<MATRIX_2_PARAMS>::
     EigenDecomposition(this_type& a_rot, this_type& a_diag) const
   {
     value_type sum = Math<value_type>::FAbs(m_values[0]) +

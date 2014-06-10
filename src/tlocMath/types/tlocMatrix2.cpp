@@ -5,8 +5,8 @@ namespace tloc { namespace math { namespace types {
 
   //------------------------------------------------------------------------
   // Explicit template instantiations
-  template class Matrix2<tloc::f32>;
-  template class Matrix2<tloc::f64>;
-  template class Matrix2<tloc::f128>;
+  template class Matrix_T<tloc::f32, 2>;
+  template class Matrix_T<tloc::f64, 2>;
+  template class Matrix_T<tloc::f128, 2>;
 
 };};};

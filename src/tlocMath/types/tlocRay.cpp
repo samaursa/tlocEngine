@@ -71,9 +71,9 @@ namespace tloc { namespace math { namespace types {
 
     vec4_type newPos = a_trans * m_origin.template ConvertTo<vec4_type>();
 
-    Matrix3<T> mRot(a_trans[0], a_trans[4], a_trans[8],
-                    a_trans[1], a_trans[5], a_trans[9],
-                    a_trans[2], a_trans[6], a_trans[10]);
+    Matrix_T<T, 3> mRot(a_trans[0], a_trans[4], a_trans[8],
+                        a_trans[1], a_trans[5], a_trans[9],
+                        a_trans[2], a_trans[6], a_trans[10]);
 
     vec_type newDir = mRot * m_direction;
 

@@ -24,21 +24,22 @@ namespace tloc { namespace math { namespace types {
   // 3   7   11   15
 
   template <typename T>
-  class Matrix4 : public Matrix<T, 4>
+  class Matrix_T<T, 4>
+    : public Matrix_TI<T, 4>
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix4<T>                            this_type;
-    typedef Matrix<T, 4>                          base_type;
+    typedef Matrix_T<T, 4>                          this_type;
+    typedef Matrix_TI<T, 4>                         base_type;
 
-    typedef typename base_type::matrix_order      matrix_order;
+    typedef typename base_type::matrix_order        matrix_order;
 
-    typedef typename base_type::value_type        value_type;
-    typedef typename base_type::reference         reference;
-    typedef typename base_type::const_reference   const_reference;
+    typedef typename base_type::value_type          value_type;
+    typedef typename base_type::reference           reference;
+    typedef typename base_type::const_reference     const_reference;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -53,39 +54,39 @@ namespace tloc { namespace math { namespace types {
     // Constructors
 
     // Empty default constructor
-    Matrix4();
+    Matrix_T();
 
     // Generate a matrix by inputs in row-major order
-    Matrix4(value_type m00, value_type m01, value_type m02, value_type m03,
-            value_type m10, value_type m11, value_type m12, value_type m13,
-            value_type m20, value_type m21, value_type m22, value_type m23,
-            value_type m30, value_type m31, value_type m32, value_type m33);
+    Matrix_T(value_type m00, value_type m01, value_type m02, value_type m03,
+             value_type m10, value_type m11, value_type m12, value_type m13,
+             value_type m20, value_type m21, value_type m22, value_type m23,
+             value_type m30, value_type m31, value_type m32, value_type m33);
 
     // Generate a diagonal matrix
-    Matrix4(value_type m00, value_type m11, value_type m22, value_type m33);
+    Matrix_T(value_type m00, value_type m11, value_type m22, value_type m33);
 
     // Copy constructor
-    Matrix4(const this_type& aMatrix);
+    Matrix_T(const this_type& aMatrix);
 
     // Copy constructor
-    Matrix4(const base_type& aMatrix);
+    Matrix_T(const base_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    explicit Matrix4(const_reference aValue);
+    explicit Matrix_T(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    Matrix4(const Vector_T<value_type, 4>& aVec1,
-            const Vector_T<value_type, 4>& aVec2,
-            const Vector_T<value_type, 4>& aVec3,
-            const Vector_T<value_type, 4>& aVec4,
-            typename base_type::matrix_order aOrder);
+    Matrix_T(const Vector_T<value_type, 4>& aVec1,
+             const Vector_T<value_type, 4>& aVec2,
+             const Vector_T<value_type, 4>& aVec3,
+             const Vector_T<value_type, 4>& aVec4,
+             typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    Matrix4(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix_T(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    Matrix4(const core::data_structs::
-            Variadic<value_type, k_MatrixSize>& a_vars,
-            matrix_order a_order);
+    Matrix_T(const core::data_structs::
+             Variadic<value_type, k_MatrixSize>& a_vars,
+             matrix_order a_order);
 
     this_type Adjoint() const;
 
@@ -108,8 +109,8 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   template <typename T_InverseType>
-  typename Matrix4<T>::this_type
-    Matrix4<T>::Invert() const
+  typename Matrix_T<T, 4>::this_type
+    Matrix_T<T, 4>::Invert() const
   {
     type_traits::AssertTypeIsSupported
       <T_InverseType, p_matrix4::Affine, p_matrix4::NonAffine>();
@@ -120,11 +121,11 @@ namespace tloc { namespace math { namespace types {
   // -----------------------------------------------------------------------
   // typedefs
 
-  typedef Matrix4<f32>  Mat4f32;
-  typedef Matrix4<f64>  Mat4f64;
-  typedef Matrix4<f128> Mat4f128;
+  typedef Matrix_T<f32, 4>  Mat4f32;
+  typedef Matrix_T<f64, 4>  Mat4f64;
+  typedef Matrix_T<f128, 4> Mat4f128;
 
-  typedef Matrix4<tl_float> Mat4f;
+  typedef Matrix_T<tl_float, 4> Mat4f;
 
 };};};
 

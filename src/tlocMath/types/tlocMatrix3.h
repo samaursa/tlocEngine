@@ -12,22 +12,23 @@
 namespace tloc { namespace math { namespace types {
 
   template <typename T>
-  class Matrix3 : public Matrix<T, 3>
+  class Matrix_T<T, 3>
+    : public Matrix_TI<T, 3>
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix3<T>                            this_type;
-    typedef Matrix<T, 3>                          base_type;
+    typedef Matrix_T<T, 3>                            this_type;
+    typedef Matrix_TI<T, 3>                           base_type;
 
-    typedef typename base_type::matrix_order      matrix_order;
+    typedef typename base_type::matrix_order          matrix_order;
 
-    typedef typename base_type::value_type        value_type;
-    typedef typename base_type::reference         reference;
-    typedef typename base_type::const_reference   const_reference;
-    typedef typename base_type::vec_type          vec_type;
+    typedef typename base_type::value_type            value_type;
+    typedef typename base_type::reference             reference;
+    typedef typename base_type::const_reference       const_reference;
+    typedef typename base_type::vec_type              vec_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -43,37 +44,37 @@ namespace tloc { namespace math { namespace types {
     // Constructors
 
     // Empty default constructor
-    Matrix3();
+    Matrix_T();
 
     // Generate a matrix by inputs in row-major order
-    Matrix3(value_type m00, value_type m01, value_type m02,
+    Matrix_T(value_type m00, value_type m01, value_type m02,
             value_type m10, value_type m11, value_type m12,
             value_type m20, value_type m21, value_type m22);
 
     // Generate a diagonal matrix
-    Matrix3(value_type m00, value_type m11, value_type m22);
+    Matrix_T(value_type m00, value_type m11, value_type m22);
 
     // Copy constructor
-    Matrix3(const this_type& aMatrix);
+    Matrix_T(const this_type& aMatrix);
 
     // Copy constructor
-    Matrix3(const base_type& aMatrix);
+    Matrix_T(const base_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    explicit Matrix3(const_reference aValue);
+    explicit Matrix_T(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    Matrix3(const Vector_T<value_type, 3>& aVec1,
-            const Vector_T<value_type, 3>& aVec2,
-            const Vector_T<value_type, 3>& aVec3,
-            typename base_type::matrix_order aOrder);
+    Matrix_T(const Vector_T<value_type, 3>& aVec1,
+             const Vector_T<value_type, 3>& aVec2,
+             const Vector_T<value_type, 3>& aVec3,
+             typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    Matrix3(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix_T(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    Matrix3(const core::data_structs::
-            Variadic <value_type, k_MatrixSize>& a_vars,
-            matrix_order a_order);
+    Matrix_T(const core::data_structs::
+             Variadic <value_type, k_MatrixSize>& a_vars,
+             matrix_order a_order);
 
     //------------------------------------------------------------------------
     // Math operations
@@ -157,11 +158,11 @@ namespace tloc { namespace math { namespace types {
     bool DoQLAlgorithm (value_type aDiagonal[3], value_type aSubdiagonal[2]);
   };
 
-  typedef Matrix3<f32>  Mat3f32;
-  typedef Matrix3<f64>  Mat3f64;
-  typedef Matrix3<f128> Mat3f128;
+  typedef Matrix_T<f32, 3>  Mat3f32;
+  typedef Matrix_T<f64, 3>  Mat3f64;
+  typedef Matrix_T<f128, 3> Mat3f128;
 
-  typedef Matrix3<tl_float> Mat3f;
+  typedef Matrix_T<tl_float, 3> Mat3f;
 
 };};};
 

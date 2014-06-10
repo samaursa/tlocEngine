@@ -296,6 +296,12 @@ namespace tloc { namespace graphics { namespace component_system {
       // we need the quad later for other operations
       tqp.second.push_back(q);
 
+      // disable rendering of empty characters (spaces, \n) - we could simply
+      // not create it but other logic relies on these characters
+      // TODO: Refactor later to not create the quad in the first place
+      if (core_str::IsSpace(core_str::CharWideToAscii(text[i])))
+      { q->Deactivate(); }
+
       // -----------------------------------------------------------------------
       // make it a node
 

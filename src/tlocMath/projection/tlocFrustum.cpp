@@ -46,7 +46,7 @@ namespace tloc { namespace math { namespace proj {
   template <FRUSTUM_TEMPS>
   FRUSTUM_TYPE::ray_type
     Frustum_TI<FRUSTUM_PARAMS>::
-    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+    GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const
   {
 
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
@@ -56,7 +56,7 @@ namespace tloc { namespace math { namespace proj {
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 
-    using math_t::Vector3;
+    using math_t::Vector_T;
 
     const real_type z_eye
       = - (projMatrix.Get(2,3) / (a_xyzNDC[2] + projMatrix.Get(2, 2)) );
@@ -71,8 +71,8 @@ namespace tloc { namespace math { namespace proj {
       (-z_eye / projMatrix.Get(1, 1)) *
        (a_xyzNDC[1] + projMatrix.Get(1, 2) + (projMatrix.Get(1, 3) / z_eye) );
 
-    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(rayOrigin);
+    Vector_T<real_type, 3> rayOrigin(x_eye, y_eye, z_eye);
+    Vector_T<real_type, 3> rayDir(rayOrigin);
     rayDir.Normalize();
 
     return ray_type(typename ray_type::origin(rayOrigin),
@@ -234,7 +234,7 @@ namespace tloc { namespace math { namespace proj {
   template <FRUSTUM_PERSP_TEMPS>
   FRUSTUM_PERSP_TYPE::ray_type
     Frustum_T<FRUSTUM_PERSP_PARAMS>::
-    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+    GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const
   {
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
                 a_xyzNDC[1] >= -1.0f && a_xyzNDC[1] <= 1.0f &&
@@ -246,7 +246,7 @@ namespace tloc { namespace math { namespace proj {
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 
-    using math_t::Vector3;
+    using math_t::Vector_T;
     /* For details, see Saad's Master's thesis Appendix H */
 
     // We need to go from NDC -> Clip -> Eye
@@ -267,8 +267,8 @@ namespace tloc { namespace math { namespace proj {
     real_type y_eye = (-z_eye / projMatrix.Get(1, 1)) *
                       (a_xyzNDC[1] + projMatrix.Get(1, 2));
 
-    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(rayOrigin);
+    Vector_T<real_type, 3> rayOrigin(x_eye, y_eye, z_eye);
+    Vector_T<real_type, 3> rayDir(rayOrigin);
     rayDir.Normalize();
 
     return ray_type(typename ray_type::origin(rayOrigin),
@@ -357,7 +357,7 @@ namespace tloc { namespace math { namespace proj {
   template <FRUSTUM_ORTHO_TEMPS>
   FRUSTUM_ORTHO_TYPE::ray_type
     Frustum_T<FRUSTUM_ORTHO_PARAMS>::
-    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+    GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const
   {
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
                 a_xyzNDC[1] >= -1.0f && a_xyzNDC[1] <= 1.0f &&
@@ -369,7 +369,7 @@ namespace tloc { namespace math { namespace proj {
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 
-    using math_t::Vector3;
+    using math_t::Vector_T;
     /* For details, see Saad's Master's thesis Appendix H */
 
     // We need to go from NDC -> Clip -> Eye
@@ -388,8 +388,8 @@ namespace tloc { namespace math { namespace proj {
     real_type y_eye = (a_xyzNDC[1] - projMatrix.Get(1, 3)) /
                        projMatrix.Get(1, 1);
 
-    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(0, 0, -1);
+    Vector_T<real_type, 3> rayOrigin(x_eye, y_eye, z_eye);
+    Vector_T<real_type, 3> rayDir(0, 0, -1);
 
     return ray_type(typename ray_type::origin(rayOrigin),
                     typename ray_type::direction(rayDir));

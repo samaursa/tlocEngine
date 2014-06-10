@@ -58,8 +58,8 @@ namespace tloc { namespace math { namespace types {
     explicit Matrix2(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    Matrix2(const Vector2<value_type>& aVec1,
-            const Vector2<value_type>& aVec2,
+    Matrix2(const Vector_T<value_type, 2>& aVec1,
+            const Vector_T<value_type, 2>& aVec2,
             typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order

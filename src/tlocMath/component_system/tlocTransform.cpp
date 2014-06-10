@@ -10,7 +10,7 @@ namespace tloc { namespace math { namespace component_system {
 #define TRANSFORM_PARAMS  T_Real
 #define TRANSFORM_TYPE    typename Transform_T<TRANSFORM_PARAMS>
 
-  using types::Vector4;
+  using types::Vector_T;
 
   template <TRANSFORM_TEMPS>
   Transform_T<TRANSFORM_PARAMS>::
@@ -52,7 +52,7 @@ namespace tloc { namespace math { namespace component_system {
     GetPosition() const
   {
     position_type       pos3;
-    Vector4<real_type>  pos4;
+    Vector_T<real_type, 4>  pos4;
 
     m_transformation.GetCol(3, pos4);
     pos3.ConvertFrom(pos4);
@@ -87,7 +87,7 @@ namespace tloc { namespace math { namespace component_system {
 
     transform_type scaleMat(0);
     scaleMat.
-      MakeDiagonal(m_scale.template ConvertTo<math_t::Vector4<real_type> >());
+      MakeDiagonal(m_scale.template ConvertTo<math_t::Vector_T<real_type, 4> >());
 
     t = t * scaleMat;
 

@@ -10,6 +10,9 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTable.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -96,7 +99,7 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_TEMPS>
   void
     Matrix<MATRIX_PARAMS>::
-    MakeDiagonal(const Vector<value_type, T_Size>& a_diagonal)
+    MakeDiagonal(const Vector_T<value_type, T_Size>& a_diagonal)
   {
     MakeZero();
     ITERATE_MATRIX_HALF
@@ -162,11 +165,11 @@ namespace tloc { namespace math { namespace types {
 
     for (tl_size i = 0; i < T_Size; ++i)
     {
-      Vector<value_type, T_Size> row;
+      Vector_T<value_type, T_Size> row;
       temp.GetRow(i, row);
       for (tl_size j = 0; j < T_Size; ++j)
       {
-        Vector<value_type, T_Size> col;
+        Vector_T<value_type, T_Size> col;
         a_matrix.GetCol(j, col);
 
         temp.Set(i, j, row.Dot(col));
@@ -205,7 +208,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_MATRIX_HALF
     {
-      Vector<value_type, T_Size> row;
+      Vector_T<value_type, T_Size> row;
       GetRow(i, row);
       a_vecOut[(tl_int)i] = a_vecIn.Dot(row);
     }
@@ -260,7 +263,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_TEMPS>
   void Matrix<MATRIX_PARAMS>::
-    GetDiagonal(Vector<value_type, T_Size>& aVector)
+    GetDiagonal(Vector_T<value_type, T_Size>& aVector)
   {
     ITERATE_MATRIX_HALF
     {
@@ -308,9 +311,9 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  Vector<typename Matrix<MATRIX_PARAMS>::value_type, T_Size>
+  Vector_T<typename Matrix<MATRIX_PARAMS>::value_type, T_Size>
     Matrix<MATRIX_PARAMS>::
-    operator* (const Vector<value_type, T_Size>& a_vector) const
+    operator* (const Vector_T<value_type, T_Size>& a_vector) const
   {
     vec_type returnVec = Mul(a_vector);
     return returnVec;

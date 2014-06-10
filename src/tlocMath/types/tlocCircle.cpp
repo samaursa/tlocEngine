@@ -111,7 +111,7 @@ namespace tloc { namespace math { namespace types {
     Contains(const point_type& a_xyPoint) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
-    Vector2<value_type> displacement(m_position);
+    Vector_T<value_type, 2> displacement(m_position);
     displacement = displacement.Sub(a_xyPoint);
 
     value_type distance = displacement.Length();
@@ -126,7 +126,7 @@ namespace tloc { namespace math { namespace types {
     Contains(const this_type& a_other) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
-    Vector2<value_type> displacement(m_position);
+    Vector_T<value_type, 2> displacement(m_position);
     displacement = displacement.Sub(a_other.m_position);
 
     value_type outerDistance = displacement.Length() + a_other.m_radius;
@@ -143,7 +143,7 @@ namespace tloc { namespace math { namespace types {
     TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
 
     TLOC_ASSERT_CIRCLE_VALID();
-    Vector2<value_type> displacement(m_position);
+    Vector_T<value_type, 2> displacement(m_position);
     displacement = displacement.Sub(a_other.m_position);
 
     value_type distance = displacement.Length();

@@ -63,9 +63,9 @@ namespace tloc { namespace math { namespace types {
     explicit Matrix3(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    Matrix3(const Vector<value_type, 3>& aVec1,
-            const Vector<value_type, 3>& aVec2,
-            const Vector<value_type, 3>& aVec3,
+    Matrix3(const Vector_T<value_type, 3>& aVec1,
+            const Vector_T<value_type, 3>& aVec2,
+            const Vector_T<value_type, 3>& aVec3,
             typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order

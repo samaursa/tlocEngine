@@ -171,14 +171,14 @@ namespace tloc { namespace core { namespace memory {
     iterator          GetNext();
     final_value_type& GetNextValue();
 
-    iterator      Find(const final_value_type& a_returnedElement);
+    iterator          Find(const final_value_type& a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycles an element. Invalidates element indexes.
     ///
     /// @param  a_returnedElement The returned element.
     ///-------------------------------------------------------------------------
-    void          RecycleElement(iterator a_returnedElement);
+    iterator          RecycleElement(iterator a_returnedElement);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -187,12 +187,12 @@ namespace tloc { namespace core { namespace memory {
     ///
     /// @param  a_index Zero-based index of a.
     ///-------------------------------------------------------------------------
-    void          RecycleAtIndex(index_type a_index);
+    void              RecycleAtIndex(index_type a_index);
 
     ///-------------------------------------------------------------------------
     /// @brief Recycle all elements
     ///-------------------------------------------------------------------------
-    void          RecycleAll();
+    void              RecycleAll();
 
     ///-------------------------------------------------------------------------
     /// @brief

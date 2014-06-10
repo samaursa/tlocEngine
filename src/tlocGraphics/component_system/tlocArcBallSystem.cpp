@@ -45,8 +45,8 @@ namespace tloc { namespace graphics { namespace component_system {
     pos_type posWorld;
     ori_type oriWorld;
 
-    math_cs::transform_vptr t = a_ent->GetComponent<math_cs::Transform>();
-    gfx_cs::arcball_vptr arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
+    math_cs::transform_sptr t = a_ent->GetComponent<math_cs::Transform>();
+    gfx_cs::arcball_sptr arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
 
     if (a_ent->HasComponent(gfx_cs::components::scene_node))
     {
@@ -112,3 +112,4 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ArcBallSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(ArcBallSystem);

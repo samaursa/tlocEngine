@@ -199,7 +199,7 @@ namespace tloc { namespace core { namespace io {
     if (fseek(m_file, 0, SEEK_END) != 0)
     { return ErrorFailure; }
 
-    tl_int fileSize = ftell(m_file);
+    tl_long fileSize = ftell(m_file);
     if (fileSize < 0)
     { return ErrorFailure; }
 

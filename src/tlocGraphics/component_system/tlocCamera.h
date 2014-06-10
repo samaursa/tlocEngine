@@ -21,8 +21,8 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef Camera                                      this_type;
     typedef Component_T<this_type, components::camera>  base_type;
-    typedef math_proj::frustum_f32                           frustum_type;
-    typedef frustum_type::matrix_type                           matrix_type;
+    typedef math_proj::frustum_f32                      frustum_type;
+    typedef frustum_type::matrix_type                   matrix_type;
 
   public:
     Camera();
@@ -36,8 +36,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_SETTER(matrix_type, SetViewProj, m_vpMat);
 
   private:
-    frustum_type        m_frustum;
-    matrix_type  m_vpMat;
+    frustum_type      m_frustum;
+    matrix_type       m_vpMat;
   };
 
   //------------------------------------------------------------------------

@@ -5,6 +5,7 @@
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
@@ -12,6 +13,7 @@
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/utilities/tlocUtils.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -21,7 +23,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef Entity                                entity_type;
     typedef entity_vptr                           entity_ptr_type;
-    typedef component_vptr                        component_ptr_type;
+    typedef component_sptr                        component_ptr_type;
 
     typedef containers::
       tl_array<entity_ptr_type>::type             entity_cont;
@@ -38,6 +40,28 @@ namespace tloc { namespace core { namespace component_system {
     typedef Entity::component_list                component_cont;
     typedef Entity::entity_id                     entity_id_type;
 
+    typedef core_t::StrongType_T<bool, 0>         orphan;
+
+  public:
+    struct Params
+    {
+    public:
+      typedef Params                              this_type;
+      typedef EventManager::listeners_list        listeners_list;
+      typedef listeners_list::value_type          listeners_ptr;
+
+    public:
+      Params();
+      Params(entity_ptr_type a_ent,  component_ptr_type a_component);
+
+      this_type& DispatchTo(listeners_ptr a_system);
+
+      TLOC_DECL_PARAM_VAR(entity_ptr_type,  Entity, m_entity);
+      TLOC_DECL_PARAM_VAR(component_ptr_type, Component, m_component);
+      TLOC_DECL_PARAM_VAR(bool, Orphan, m_orphan);
+      TLOC_DECL_PARAM_VAR(listeners_list, DispatchTo, m_dispatchTo);
+    };
+
   public:
     EntityManager(event_manager_vptr a_eventManager);
     virtual ~EntityManager();
@@ -46,10 +70,11 @@ namespace tloc { namespace core { namespace component_system {
     void              DestroyEntity(entity_ptr_type a_entity);
     entity_ptr_type   GetEntity(tl_int a_index);
 
-    void              InsertComponent(entity_ptr_type a_entity,
-                                      component_ptr_type a_component);
-    bool              RemoveComponent(entity_ptr_type a_entity,
-                                      component_ptr_type a_component);
+    // A component is an orphan if there is no system present to receive it/
+    // This will suppress the warning that a component was added without a 
+    // system
+    void              InsertComponent(const Params& a_params);
+    bool              RemoveComponent(ent_comp_pair_type a_entityAndComponent);
 
     void              Update();
 
@@ -60,6 +85,7 @@ namespace tloc { namespace core { namespace component_system {
                              m_removedEntities.size());
 
   private:
+    EntityManager(const EntityManager&);
 
     void DoUpdateAndCleanComponents();
     void DoUpdateAndCleanEntities();
@@ -77,6 +103,7 @@ namespace tloc { namespace core { namespace component_system {
     ent_comp_pair_cont      m_compToRemove;
     entity_cont             m_entitiesToRemove;
   };
+
 
   //------------------------------------------------------------------------
   // typedefs

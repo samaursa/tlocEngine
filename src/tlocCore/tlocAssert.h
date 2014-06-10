@@ -5,6 +5,9 @@
 #include <3rdParty/loki/TypeTraits.h>
 #include <stdio.h>
 
+#include <tlocCore/tlocAssertCustomBreak.h>
+#include <tlocCore/tlocConsole.h>
+
 // ///////////////////////////////////////////////////////////////////////
 // Runtime assert
 //
@@ -17,16 +20,28 @@
 
 namespace tloc { namespace core { namespace assert {
 
-  bool AlwaysReturnFalse();
+  bool  AlwaysReturnFalse();
 
 };};};
 
 #if defined(_MSC_VER)
   #include <intrin.h>
-  #define TLOC_DEBUG_BREAK()  __debugbreak()
+    #define TLOC_DEBUG_BREAK() \
+    do { \
+      if(tloc::core::assert::IsDefaultBreak())\
+      { __debugbreak(); } \
+      else\
+      { tloc::core::assert::GetCustomBreak()->Break(); } \
+    } while((void)0, 0)
 #else
   #include <stdlib.h>
-  #define TLOC_DEBUG_BREAK()  abort()
+    #define TLOC_DEBUG_BREAK()  \
+    do { \
+      if(tloc::core::assert::IsDefaultBreak())\
+      { abort(); } \
+      else\
+      { tloc::core::assert::GetCustomBreak()->Break(); } \
+    } while((void)0, 0)
 #endif
 
 #if defined(TLOC_DEBUG) || defined(TLOC_DEBUG_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBINFO_DLL)
@@ -36,7 +51,9 @@ namespace tloc { namespace core { namespace assert {
   do {\
     if (!(_Expression))\
     {\
+      tloc::console::SetConsoleColor(tloc::console::p_color::red, tloc::console::p_color::black);\
       printf("\n[E] Assertion (%s) FAILED: %s | %s(%i)", (#_Expression), _Msg, __FILE__, __LINE__);\
+      tloc::console::SetConsoleColor(tloc::console::p_color::dark_white, tloc::console::p_color::black);\
       TLOC_DEBUG_BREAK();\
     }\
   } while((void)0, 0)

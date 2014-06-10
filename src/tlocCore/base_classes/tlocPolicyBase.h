@@ -3,14 +3,14 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
-namespace tloc { namespace core { namespace policies {
+namespace tloc { namespace core { namespace base_classes {
 
   template <typename T_Derived>
-  class Base
+  class PolicyBase_TI
   {
   protected:
-    typedef T_Derived             derived_type;
-    typedef Base<derived_type>    this_type;
+    typedef T_Derived                     derived_type;
+    typedef PolicyBase_TI<derived_type>   this_type;
 
     T_Derived* This()
     {

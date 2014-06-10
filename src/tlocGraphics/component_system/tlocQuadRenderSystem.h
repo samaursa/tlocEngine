@@ -40,7 +40,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
 
-    typedef core_conts::ArrayFixed<gl::attribute_vso, 4>      attributes_cont;
+    typedef gl::uniform_vptr                                  uniform_ptr;
+    typedef gl::attribute_vptr                                attribute_ptr;
+
+    typedef core_conts::ArrayFixed<attribute_ptr, 4>          attributes_ptr_cont;
 
   public:
     QuadRenderSystem(event_manager_ptr a_eventMgr,
@@ -60,26 +63,23 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
-    using base_type::GetCamera;
-    using base_type::GetViewProjectionMatrix;
-
   private:
-    const_shader_prog_ptr     m_shaderPtr;
+    const_shader_prog_ptr         m_shaderPtr;
 
-    gl::uniform_vso           m_uniVpMat;
-    gl::shader_operator_vso   m_mvpOperator,
-                              m_so_quad;
+    gl::shader_operator_vso       m_meshOperator;
+    uniform_ptr                   m_uniVpMat;
+    attribute_ptr                 m_vData;
+    attributes_ptr_cont           m_tData;
 
     // Cache
-    vec3_cont_vso       m_quadList;
-    gl::attribute_vso   m_vData;
-    attributes_cont     m_tData;
+    vec3_cont_vso                 m_quadList;
   };
 
   //------------------------------------------------------------------------
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(QuadRenderSystem, quad_render_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(QuadRenderSystem, quad_render_system);
 
 };};};
 

@@ -3,8 +3,10 @@ set(TLOC_TESTS_CORE
   tlocAlgorithmsTest.cpp
   tlocAllocatorsTest.cpp
   tlocAnyTest.cpp
+  tlocArgsTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
+  tlocAssertTest.cpp
   tlocBaseClassesTest.cpp
   tlocBufferArgTest.cpp
   tlocCheckPointsTest.cpp
@@ -12,6 +14,7 @@ set(TLOC_TESTS_CORE
   tlocContainerTraitsTest.cpp
   tlocContainerUtilsTest.cpp
   tlocEntityManagerTest.cpp
+  tlocEntitySystemBaseTest.cpp
   tlocEntityTest.cpp
   tlocErrorTest.cpp
   tlocEventManagerTest.cpp
@@ -20,6 +23,7 @@ set(TLOC_TESTS_CORE
   tlocGroupIDTest.cpp
   tlocHashMapTest.cpp
   tlocHashtableTest.cpp
+  tlocInitializeAndDestroyTest.cpp
   tlocIteratorTest.cpp
   tlocListTest.cpp
   tlocLoggerTest.cpp
@@ -27,6 +31,7 @@ set(TLOC_TESTS_CORE
   tlocMemoryTest.cpp
   tlocObjectCounterTest.cpp
   tlocPair.cpp
+  tlocParamListTest.cpp
   tlocPathTest.cpp
   tlocProtectedBufferTest.cpp
   tlocQueueTest.cpp

@@ -128,10 +128,9 @@ namespace tloc { namespace core {
     this_type& operator++();
     this_type& operator++(int);
     this_type& operator= (const_reference aValue);
-    this_type& operator= (const this_type& aOther);
 
   protected:
-    T_Container& m_container;
+    T_Container* m_container;
   };
 
   template <typename T_Container>

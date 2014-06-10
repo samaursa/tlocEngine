@@ -26,19 +26,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   struct NodeCompareFromEntity
   {
-    typedef scene_node_vptr                       node_ptr_type;
-    typedef core_cs::entity_vptr                  entity_ptr_type;
+    typedef scene_node_sptr                               node_ptr_type;
+    typedef core_cs::EntitySystemBase::entity_count_pair  entity_ptr_type;
 
     bool
-      operator()(entity_ptr_type a_first, entity_ptr_type a_second)
+      operator()(entity_ptr_type a, entity_ptr_type b)
     {
-      TLOC_ASSERT(a_first->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(a.first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
-      TLOC_ASSERT(a_second->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(b.first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
 
-      scene_node_vptr firstNode = a_first->GetComponent<SceneNode>();
-      scene_node_vptr secondNode = a_second->GetComponent<SceneNode>();
+      node_ptr_type firstNode = a.first->GetComponent<SceneNode>();
+      node_ptr_type secondNode = b.first->GetComponent<SceneNode>();
 
       return firstNode->GetLevel() < secondNode->GetLevel();
     }
@@ -67,7 +67,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_node->HasComponent<gfx_cs::SceneNode>() == false)
     { return; }
 
-    scene_node_vptr node = a_node->GetComponent<SceneNode>();
+    scene_node_sptr node = a_node->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
@@ -89,7 +89,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_parent->HasComponent(components::scene_node) == false)
     { return; }
 
-    scene_node_vptr node = a_parent->GetComponent<SceneNode>();
+    scene_node_sptr node = a_parent->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
@@ -125,7 +125,7 @@ namespace tloc { namespace graphics { namespace component_system {
       HasComponent(math_cs::Transform::k_component_type) == false)
       << "Node component requires math_cs::Transform component";
 
-    scene_node_vptr node = a_ent->GetComponent<SceneNode>();
+    scene_node_sptr node = a_ent->GetComponent<SceneNode>();
 
     // get the level of this node relative to its parents. If the parent
     // already has a level and update hierarchy is not required, then find
@@ -135,6 +135,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (parent)
     {
+      // check if the parent is disabled, if yes, disable us as well
+      if (parent->GetEntity()->IsActive() == false)
+      { a_ent->Deactivate(); }
+
       if (parent->IsHierarchyUpdateRequired())
       {
         SceneNode::index_type nodeLevel = 0;
@@ -189,8 +193,8 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     using namespace math_cs;
 
-    transform_vptr localTransform = a_ent->GetComponent<Transform>();
-    scene_node_vptr node = a_ent->GetComponent<SceneNode>();
+    transform_sptr localTransform = a_ent->GetComponent<Transform>();
+    scene_node_sptr node = a_ent->GetComponent<SceneNode>();
 
     scene_node_vptr nodeParent = node->GetParent();
 
@@ -225,3 +229,4 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SceneGraphSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(SceneGraphSystem);

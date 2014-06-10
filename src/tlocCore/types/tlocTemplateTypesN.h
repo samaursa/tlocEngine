@@ -7,7 +7,7 @@
 // #include <tlocCore/types/tlocTypes.h>
 // #undef TYPE
 //
-// The above lines will instantiate the tloc::Vector<> template class with
+// The above lines will instantiate the tloc::Vector_T<> template class with
 // the following instantiations. No need for code repetition.
 
 template CLASS_NAME<TYPE, 1>;

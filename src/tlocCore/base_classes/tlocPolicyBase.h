@@ -16,6 +16,11 @@ namespace tloc { namespace core { namespace base_classes {
     {
       return static_cast<derived_type*>(this);
     }
+
+    const T_Derived* This() const
+    {
+      return static_cast<const derived_type*>(this);
+    }
   };
 
 };};};

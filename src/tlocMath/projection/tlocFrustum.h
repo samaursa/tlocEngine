@@ -45,7 +45,7 @@ namespace tloc { namespace math { namespace proj {
   public:
     typedef T_Real                                      real_type;
     typedef Frustum_TI<real_type>                       this_type;
-    typedef math::types::Matrix4<real_type>             matrix_type;
+    typedef math::types::Matrix_T<real_type, 4>         matrix_type;
     typedef core::data_structs::Tuple
       <real_type, p_frustum::PlaneCount::k_planeIndex>  cont_type;
     typedef types::Ray_T<real_type, 3>                  ray_type;
@@ -57,7 +57,7 @@ namespace tloc { namespace math { namespace proj {
     template <typename T_Plane>
     real_type GetPlane() const;
 
-    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+    ray_type  GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_SETTER(matrix_type,
                              SetProjectionMatrix, m_projMatrix);
@@ -127,7 +127,7 @@ namespace tloc { namespace math { namespace proj {
        math_t::p_rectangle::position::Center>           rect_type;
 
     typedef types::Ray_T<real_type, 3>                  ray_type;
-    typedef math_t::Matrix4<real_type>                  matrix_type;
+    typedef math_t::Matrix_T<real_type, 4>              matrix_type;
 
     typedef types::FOV_T<real_type>                     fov_type;
     typedef types::AspectRatio_T<real_type>             ar_type;
@@ -186,7 +186,7 @@ namespace tloc { namespace math { namespace proj {
     template <typename T_Plane>
     real_type GetPlane() const;
 
-    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+    ray_type  GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
@@ -230,7 +230,7 @@ namespace tloc { namespace math { namespace proj {
 
     typedef tl_size                                     size_type;
     typedef types::Ray_T<real_type, 3>                  ray_type;
-    typedef math::types::Matrix4<real_type>             matrix_type;
+    typedef math::types::Matrix_T<real_type, 4>         matrix_type;
 
     typedef types::FOV_T<real_type>                     fov_type;
     typedef types::AspectRatio_T<real_type>             ar_type;
@@ -248,7 +248,7 @@ namespace tloc { namespace math { namespace proj {
     template <typename T_Plane>
     real_type GetPlane() const;
 
-    ray_type  GetRay(const types::Vector3<real_type>& a_xyzNDC) const;
+    ray_type  GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const;
   };
 
   //````````````````````````````````````````````````````````````````````````

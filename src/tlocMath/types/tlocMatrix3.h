@@ -12,22 +12,24 @@
 namespace tloc { namespace math { namespace types {
 
   template <typename T>
-  class Matrix3 : public Matrix<T, 3>
+  class Matrix_T<T, 3>
+    : public Matrix_TI<T, 3>
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix3<T>                            this_type;
-    typedef Matrix<T, 3>                          base_type;
+    typedef Matrix_T<T, 3>                            this_type;
+    typedef Matrix_TI<T, 3>                           base_type;
 
-    typedef typename base_type::matrix_order      matrix_order;
+    typedef typename base_type::matrix_order          matrix_order;
 
-    typedef typename base_type::value_type        value_type;
-    typedef typename base_type::reference         reference;
-    typedef typename base_type::const_reference   const_reference;
-    typedef typename base_type::vec_type          vec_type;
+    typedef typename base_type::value_type            value_type;
+    typedef typename base_type::reference             reference;
+    typedef typename base_type::const_reference       const_reference;
+    typedef typename base_type::vec_type              vec_type;
+    typedef Radian_T<value_type>                      angle_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -43,37 +45,37 @@ namespace tloc { namespace math { namespace types {
     // Constructors
 
     // Empty default constructor
-    Matrix3();
+    Matrix_T();
 
     // Generate a matrix by inputs in row-major order
-    Matrix3(value_type m00, value_type m01, value_type m02,
+    Matrix_T(value_type m00, value_type m01, value_type m02,
             value_type m10, value_type m11, value_type m12,
             value_type m20, value_type m21, value_type m22);
 
     // Generate a diagonal matrix
-    Matrix3(value_type m00, value_type m11, value_type m22);
+    Matrix_T(value_type m00, value_type m11, value_type m22);
 
     // Copy constructor
-    Matrix3(const this_type& aMatrix);
+    Matrix_T(const this_type& aMatrix);
 
     // Copy constructor
-    Matrix3(const base_type& aMatrix);
+    Matrix_T(const base_type& aMatrix);
 
     // Modifies this matrix by filling it with the incoming value
-    explicit Matrix3(const_reference aValue);
+    explicit Matrix_T(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    Matrix3(const Vector<value_type, 3>& aVec1,
-            const Vector<value_type, 3>& aVec2,
-            const Vector<value_type, 3>& aVec3,
-            typename base_type::matrix_order aOrder);
+    Matrix_T(const Vector_T<value_type, 3>& aVec1,
+             const Vector_T<value_type, 3>& aVec2,
+             const Vector_T<value_type, 3>& aVec3,
+             typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    Matrix3(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix_T(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    Matrix3(const core::data_structs::
-            Variadic <value_type, k_MatrixSize>& a_vars,
-            matrix_order a_order);
+    Matrix_T(const core::data_structs::
+             Variadic <value_type, k_MatrixSize>& a_vars,
+             matrix_order a_order);
 
     //------------------------------------------------------------------------
     // Math operations
@@ -103,12 +105,11 @@ namespace tloc { namespace math { namespace types {
     // eigenvalues are ordered as d0 <= d1.
     void        EigenDecomposition(this_type& aRot, this_type& aDiag) const;
 
-    void        MakeRotationX(const_reference aXAngle);
-    void        MakeRotationY(const_reference aYAngle);
-    void        MakeRotationZ(const_reference aZAngle);
+    void        MakeRotationX(angle_type a_angle);
+    void        MakeRotationY(angle_type a_angle);
+    void        MakeRotationZ(angle_type a_angle);
 
-    void        MakeRotation(const vec_type& a_axis,
-                             Radian_T<value_type> a_angle);
+    void        MakeRotation(const vec_type& a_axis, angle_type a_angle);
 
     // Modifies this vector by creating a rotation matrix from the incoming
     // angles by the order specified by the function. E.g. MakeEulerXYZ will
@@ -119,30 +120,30 @@ namespace tloc { namespace math { namespace types {
     // and if multiplied by a vector later, the breakdown will be:
     //
     // MatX * (MayY * (MatZ * V))
-    void MakeEulerXYZ (value_type aXAngle, value_type aYAngle,
-                       value_type aZAngle);
-    void MakeEulerXZY (value_type aXAngle, value_type aZAngle,
-                       value_type aYAngle);
-    void MakeEulerYXZ (value_type aYAngle, value_type aXAngle,
-                       value_type aZAngle);
-    void MakeEulerYZX (value_type aYAngle, value_type aZAngle,
-                       value_type aXAngle);
-    void MakeEulerZXY (value_type aZAngle, value_type aXAngle,
-                       value_type aYAngle);
-    void MakeEulerZYX (value_type aZAngle, value_type aYAngle,
-                       value_type aXAngle);
-    void MakeEulerXYX (value_type aXAngle0, value_type aYAngle,
-                       value_type aXAngle1);
-    void MakeEulerXZX (value_type aXAngle0, value_type aZAngle,
-                       value_type aXAngle1);
-    void MakeEulerYXY (value_type aYAngle0, value_type aXAngle,
-                       value_type aYAngle1);
-    void MakeEulerYZY (value_type aYAngle0, value_type aZAngle,
-                       value_type aYAngle1);
-    void MakeEulerZXZ (value_type aZAngle0, value_type aXAngle,
-                       value_type aZAngle1);
-    void MakeEulerZYZ (value_type aZAngle0, value_type aYAngle,
-                       value_type aZAngle1);
+    void MakeEulerXYZ (angle_type aXAngle, angle_type aYAngle,
+                       angle_type aZAngle);
+    void MakeEulerXZY (angle_type aXAngle, angle_type aZAngle,
+                       angle_type aYAngle);
+    void MakeEulerYXZ (angle_type aYAngle, angle_type aXAngle,
+                       angle_type aZAngle);
+    void MakeEulerYZX (angle_type aYAngle, angle_type aZAngle,
+                       angle_type aXAngle);
+    void MakeEulerZXY (angle_type aZAngle, angle_type aXAngle,
+                       angle_type aYAngle);
+    void MakeEulerZYX (angle_type aZAngle, angle_type aYAngle,
+                       angle_type aXAngle);
+    void MakeEulerXYX (angle_type aXAngle0, angle_type aYAngle,
+                       angle_type aXAngle1);
+    void MakeEulerXZX (angle_type aXAngle0, angle_type aZAngle,
+                       angle_type aXAngle1);
+    void MakeEulerYXY (angle_type aYAngle0, angle_type aXAngle,
+                       angle_type aYAngle1);
+    void MakeEulerYZY (angle_type aYAngle0, angle_type aZAngle,
+                       angle_type aYAngle1);
+    void MakeEulerZXZ (angle_type aZAngle0, angle_type aXAngle,
+                       angle_type aZAngle1);
+    void MakeEulerZYZ (angle_type aZAngle0, angle_type aYAngle,
+                       angle_type aZAngle1);
 
   private:
 
@@ -157,11 +158,11 @@ namespace tloc { namespace math { namespace types {
     bool DoQLAlgorithm (value_type aDiagonal[3], value_type aSubdiagonal[2]);
   };
 
-  typedef Matrix3<f32>  Mat3f32;
-  typedef Matrix3<f64>  Mat3f64;
-  typedef Matrix3<f128> Mat3f128;
+  typedef Matrix_T<f32, 3>  Mat3f32;
+  typedef Matrix_T<f64, 3>  Mat3f64;
+  typedef Matrix_T<f128, 3> Mat3f128;
 
-  typedef Matrix3<tl_float> Mat3f;
+  typedef Matrix_T<tl_float, 3> Mat3f;
 
 };};};
 

@@ -1,6 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocAngle.h>
 #include <tlocCore/rng/tlocRandom.h>
 
 namespace TestingMatrix3
@@ -168,15 +169,15 @@ namespace TestingMatrix3
     a.Set(values, Mat3f::k_RowMajor);
     a = a.FastOrthonormalize();
     tl_float prec = 1e-1f;
-    CHECK( (Mathf::Approx(a[0], 0.10f, prec)) == true );
-    CHECK( (Mathf::Approx(a[1], 0.40f, prec)) == true );
-    CHECK( (Mathf::Approx(a[2], 0.90f, prec)) == true );
-    CHECK( (Mathf::Approx(a[3], 0.83f, prec)) == true );
-    CHECK( (Mathf::Approx(a[4], -0.52f, prec)) == true );
-    CHECK( (Mathf::Approx(a[5], 0.14f, prec)) == true );
-    CHECK( (Mathf::Approx(a[6], 0.53f, prec)) == true );
-    CHECK( (Mathf::Approx(a[7], 0.74f, prec)) == true );
-    CHECK( (Mathf::Approx(a[8], -0.39f, prec)) == true );
+    CHECK( (math::Approx(a[0], 0.10f, prec)) == true );
+    CHECK( (math::Approx(a[1], 0.40f, prec)) == true );
+    CHECK( (math::Approx(a[2], 0.90f, prec)) == true );
+    CHECK( (math::Approx(a[3], 0.83f, prec)) == true );
+    CHECK( (math::Approx(a[4], -0.52f, prec)) == true );
+    CHECK( (math::Approx(a[5], 0.14f, prec)) == true );
+    CHECK( (math::Approx(a[6], 0.53f, prec)) == true );
+    CHECK( (math::Approx(a[7], 0.74f, prec)) == true );
+    CHECK( (math::Approx(a[8], -0.39f, prec)) == true );
 
     // Multiplying any vector with an orthonormal matrix should yield a vector
     // with the same length as the original vector
@@ -198,7 +199,7 @@ namespace TestingMatrix3
                    g_defaultRNG.GetRandomFloat()), vecRes;
       tl_float vecLength = vecRot.Length();
       a.Mul(vecRot, vecRes);
-      CHECK( Mathf::Approx(vecLength, vecRes.Length(), prec) == true);
+      CHECK( math::Approx(vecLength, vecRes.Length(), prec) == true);
     }
 
   }
@@ -234,16 +235,17 @@ namespace TestingMatrix3
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/MakerEulerXYZ",
     "Test MakerEulerXYZ() method")
   {
-    tl_float angle90 = 90 * Mathf::DEG_TO_RAD;
-    tl_float angle45 = 45 * Mathf::DEG_TO_RAD;
+    math_t::Degree angle90(90.0f);
+    math_t::Degree angle45(45.0f);
+    math_t::Degree angle0(0.0f);
 
-    a.MakeEulerXYZ(angle90, 0, 0);
+    a.MakeEulerXYZ(angle90, angle0, angle0);
     CHECK_MATRIX3F(a, 1, 0, 0, 0, 0, 1, 0, -1, 0);
 
-    a.MakeEulerXYZ(0, angle90, 0);
+    a.MakeEulerXYZ(angle0, angle90, angle0);
     CHECK_MATRIX3F(a, 0, 0, -1, 0, 1, 0, 1, 0, 0);
 
-    a.MakeEulerXYZ(0, 0, angle90);
+    a.MakeEulerXYZ(angle0, angle0, angle90);
     CHECK_MATRIX3F(a, 0, 1, 0, -1, 0, 0, 0, 0, 1);
 
     a.MakeEulerXYZ(angle90, angle90, angle90);

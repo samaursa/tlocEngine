@@ -190,20 +190,20 @@ namespace tloc { namespace animation { namespace component_system {
       case k_ease_in_sin:
         {
           interpolatedVal =
-            delta * -1.0f * Mathf32::Cos(mu * (Mathf32::PI * 0.5f)) +
+            delta * -1.0f * math::Cos(math_t::MakeRadian(mu * (Mathf32::PI * 0.5f))) +
             delta + first;
           break;
         }
       case k_ease_out_sin:
         {
           interpolatedVal =
-            delta * Mathf32::Sin(mu * (Mathf32::PI * 0.5f)) + first;
+            delta * math::Sin(math_t::MakeRadian(mu * (Mathf32::PI * 0.5f))) + first;
           break;
         }
       case k_ease_in_out_sin:
         {
           interpolatedVal =
-            delta * -0.5f * (Mathf32::Cos(Mathf32::PI * mu) - 1.0f) +
+            delta * -0.5f * (math::Cos(math_t::MakeRadian(Mathf32::PI * mu)) - 1.0f) +
             first;
           break;
         }

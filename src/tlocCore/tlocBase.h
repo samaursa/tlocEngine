@@ -57,7 +57,7 @@
 // The following macros can be enabled to increase the size of the template
 // instantiations (that many more template types will be instantiated).
 // For example, with TLOC_TEMPLATE_TYPES_SIZE_20 defined, Table<>,
-// Matrix<>, Vector<> etc. classes will be instantiated such that they have
+// Matrix<>, Vector_T<> etc. classes will be instantiated such that they have
 // have a size of at least 20 rows and cols (if any). Note that for types
 // such as Table<> this will require a large type generation.
 //

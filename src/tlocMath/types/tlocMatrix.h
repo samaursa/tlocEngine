@@ -27,7 +27,8 @@
 namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
-  class Matrix : public core::data_structs::Table<T, T_Size, T_Size>
+  class Matrix_TI
+    : public core::data_structs::Table<T, T_Size, T_Size>
   {
   public:
     TLOC_STATIC_ASSERT_IS_ARITH(T);
@@ -35,7 +36,7 @@ namespace tloc { namespace math { namespace types {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix<T, T_Size>                             this_type;
+    typedef Matrix_TI<T, T_Size>                          this_type;
     typedef core::data_structs::Table<T, T_Size, T_Size>  base_type;
 
     typedef typename base_type::table_order               table_order;
@@ -45,7 +46,7 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::value_type&               reference;
     typedef typename base_type::value_type const&         const_reference;
 
-    typedef Vector<value_type, T_Size>                    vec_type;
+    typedef Vector_T<value_type, T_Size>                  vec_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -62,15 +63,15 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Constructors
 
-    Matrix();
-    explicit Matrix(value_type aValue);
+    Matrix_TI();
+    explicit Matrix_TI(value_type aValue);
 
-    Matrix(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
-    Matrix(const core::data_structs::Variadic<T, k_MatrixSize>& a_vars,
+    Matrix_TI(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix_TI(const core::data_structs::Variadic<T, k_MatrixSize>& a_vars,
            matrix_order a_order);
 
     template <typename T_Real>
-    Matrix(const core_ds::Table<T_Real, T_Size, T_Size>& a_matrix);
+    Matrix_TI(const core_ds::Table<T_Real, T_Size, T_Size>& a_matrix);
 
     //------------------------------------------------------------------------
     // Modifiers
@@ -83,7 +84,7 @@ namespace tloc { namespace math { namespace types {
 
     // Modifies this matrix to be a diagonal matrix
     void MakeDiagonal(const value_type values[T_Size]);
-    void MakeDiagonal(const Vector<value_type, T_Size>& a_diagonal);
+    void MakeDiagonal(const Vector_T<value_type, T_Size>& a_diagonal);
 
     //------------------------------------------------------------------------
     // Math operations
@@ -119,8 +120,8 @@ namespace tloc { namespace math { namespace types {
     this_type   operator* (const_reference a_value) const;
     this_type   operator/ (const_reference a_value) const;
 
-    Vector<value_type, T_Size>
-      operator* (const Vector<value_type, T_Size>& a_vector) const;
+    Vector_T<value_type, T_Size>
+      operator* (const Vector_T<value_type, T_Size>& a_vector) const;
 
     this_type&   operator+= (const this_type& a_matrix);
     this_type&   operator-= (const this_type& a_matrix);
@@ -147,34 +148,42 @@ namespace tloc { namespace math { namespace types {
   // Static const definitions
 
   template <typename T, tl_size T_Size>
-  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::ZERO =
-    typename Matrix<T, T_Size>::this_type(0);
+  const typename Matrix_TI<T, T_Size>::this_type 
+    Matrix_TI<T, T_Size>::ZERO =
+    typename Matrix_TI<T, T_Size>::this_type(0);
 
   template <typename T, tl_size T_Size>
-  const typename Matrix<T, T_Size>::this_type Matrix<T, T_Size>::IDENTITY =
-    Matrix<T, T_Size>::this_type::DoGetIdentity();
+  const typename Matrix_TI<T, T_Size>::this_type 
+    Matrix_TI<T, T_Size>::IDENTITY =
+    Matrix_TI<T, T_Size>::this_type::DoGetIdentity();
 
   //------------------------------------------------------------------------
   // Template definitions
 
   template <typename T, tl_size T_Size>
   template <typename T_Real>
-  Matrix<T, T_Size>::
-    Matrix(const core_ds::Table<T_Real, T_Size, T_Size>& a_matrix)
+  Matrix_TI<T, T_Size>::
+    Matrix_TI(const core_ds::Table<T_Real, T_Size, T_Size>& a_matrix)
     : base_type(a_matrix)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, tl_size T_Size>
-  typename Matrix<T, T_Size>::this_type
-    Matrix<T, T_Size>::
+  typename Matrix_TI<T, T_Size>::this_type
+    Matrix_TI<T, T_Size>::
     DoGetIdentity()
   {
     this_type temp;
     temp.MakeIdentity();
     return temp;
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Matrix_T<> base case
+
+  template <typename T, tl_size T_Size>
+  class Matrix_T;
 
 };};};
 

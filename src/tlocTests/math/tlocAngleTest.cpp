@@ -8,11 +8,12 @@
 namespace TestingAngle
 {
   using namespace tloc;
+  using math_t::Radian;
+  using math_t::Degree;
+  using math_t::MakeDegree;
+  using math_t::MakeRadian;
   TEST_CASE("Math/Angle/DegreeAndRadian", "")
   {
-    using math::types::Radian;
-    using math::types::Degree;
-
     tl_float initAngle = 0.1f;
 
     Radian angle(initAngle);
@@ -55,5 +56,40 @@ namespace TestingAngle
     Degree d1(10.0f);
     d1 = d; // should not result in an ambiguous call
     CHECK(d1 == d);
+  }
+
+  TEST_CASE("Math/Angle/DegreeAndRadian/Make", "")
+  {
+    const tl_float piDiv2 = Mathf::PI / 2.0f;
+
+    { 
+      Degree d = MakeDegree(90.0f);
+      CHECK(d.Get() == Approx(90.0f));
+    }
+
+    { 
+      Degree d = MakeDegree(Radian(piDiv2));
+      CHECK(d.Get() == Approx(90.0f));
+    }
+
+    { 
+      Degree d = MakeDegree(Degree(90.0f));
+      CHECK(d.Get() == Approx(90.0f));
+    }
+
+    { 
+      Radian r = MakeRadian(piDiv2);
+      CHECK(r.Get() == Approx(piDiv2));
+    }
+
+    { 
+      Radian r = MakeDegree(Degree(90.0f));
+      CHECK(r.Get() == Approx(piDiv2));
+    }
+
+    { 
+      Radian r = MakeDegree(Radian(piDiv2));
+      CHECK(r.Get() == Approx(piDiv2));
+    }
   }
 };

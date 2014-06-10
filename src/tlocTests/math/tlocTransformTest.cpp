@@ -43,7 +43,7 @@ namespace TestingTransform
       CHECK_VEC3F(t.GetPosition(), 1, 2, 5);
 
       tf32::orientation_type ori;
-      ori.MakeRotationX(90);
+      ori.MakeRotationX(90.0f);
       t.SetOrientation(ori);
 
       CHECK_MATRIX3F(t.GetOrientation(),

@@ -169,8 +169,8 @@ namespace tloc { namespace math { namespace types {
   {
     // Get the point on a unit circle
     value_type r = a_angle.Get();
-    value_type rCos = Math<value_type>::Cos(r);
-    value_type rSin = Math<value_type>::Sin(r);
+    value_type rCos = math::Cos(math_t::MakeRadian(r));
+    value_type rSin = math::Sin(math_t::MakeRadian(r));
 
     return point_type(m_radius * rCos, m_radius * rSin) + m_position;
   }

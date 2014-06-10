@@ -23,17 +23,13 @@
   template <>\
   const _type_ Math<_type_>::RAD_TO_DEG       = (_type_)(180.0f/Math<_type_>::PI);\
   template <>\
-  const _type_ Math<_type_>::LOGN_2           = Math<_type_>::Log(2.0f);\
+  const _type_ Math<_type_>::LOGN_2           = math::Log(2.0f);\
   template <>\
-  const _type_ Math<_type_>::LOGN_10          = Math<_type_>::Log(10.0f);\
+  const _type_ Math<_type_>::LOGN_10          = math::Log(10.0f);\
   template <>\
   const _type_ Math<_type_>::INV_LOGN_2       = 1.0f / Math<_type_>::LOGN_2;\
   template <>\
   const _type_ Math<_type_>::INV_LOGN_10      = 1.0f / Math<_type_>::LOGN_10;\
-  template <>\
-  const _type_ Math<_type_>::m_cosTable[64]   = {0};\
-  template <>\
-  const _type_ Math<_type_>::m_sinTable[64]   = {0};\
   \
   template class Math<_type_>
 

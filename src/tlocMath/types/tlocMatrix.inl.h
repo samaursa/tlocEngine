@@ -228,7 +228,7 @@ namespace tloc { namespace math { namespace types {
     Matrix_TI<MATRIX_PARAMS>::
     Div(const_reference aReal) const
   {
-    TLOC_ASSERT_LOW_LEVEL(Math<value_type>::Approx(aReal, 0.0f) == false,
+    TLOC_ASSERT_LOW_LEVEL(math::IsEqual<value_type>(aReal, 0.0f) == false,
       "The matrix is being divided by zero!");
 
     this_type temp(*this);
@@ -378,7 +378,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_MATRIX
     {
-      if (!Math<T>::Approx(m_values[i], a_matrix[i])) { return false; }
+      if (!math::IsEqual(m_values[i], a_matrix[i])) { return false; }
     }
 
     return true;

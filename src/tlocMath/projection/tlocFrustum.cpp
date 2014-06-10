@@ -143,8 +143,8 @@ namespace tloc { namespace math { namespace proj {
     this->DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));
 
-    typename ar_type::width width(Math<real_type>::Abs(right - left));
-    typename ar_type::height height(Math<real_type>::Abs(top - bottom));
+    typename ar_type::width width(math::Abs(right - left));
+    typename ar_type::height height(math::Abs(top - bottom));
 
     pyth_type pythHalfAngle =
       pyth_type( typename pyth_type::base(a_near),
@@ -196,11 +196,11 @@ namespace tloc { namespace math { namespace proj {
     const real_type pNear   = GetPlane<Near>();
     const real_type pFar    = GetPlane<Far>();
 
-    TLOC_ASSERT(Math<real_type>::Approx( (pRight - pLeft), 0.0f) == false,
+    TLOC_ASSERT(math::IsEqual<real_type>( (pRight - pLeft), 0.0f) == false,
                 "Divide by zero");
-    TLOC_ASSERT(Math<real_type>::Approx( (pTop - pBott), 0.0f) == false,
+    TLOC_ASSERT(math::IsEqual<real_type>( (pTop - pBott), 0.0f) == false,
                 "Divide by zero");
-    TLOC_ASSERT(Math<real_type>::Approx( (pFar - pNear), 0.0f) == false,
+    TLOC_ASSERT(math::IsEqual<real_type>( (pFar - pNear), 0.0f) == false,
                 "Divide by zero");
 
     const real_type RminLReci = 1 / (pRight - pLeft);
@@ -222,7 +222,7 @@ namespace tloc { namespace math { namespace proj {
     const real_type pConv     = this->GetParams().GetConvergence();
     const real_type pInter    = this->GetParams().GetInteraxial();
 
-    TLOC_ASSERT( Math<real_type>::Approx(pConv, 0) == false,
+    TLOC_ASSERT( math::IsEqual<real_type>(pConv, 0) == false,
                  "Divide by zero");
 
     const real_type pConvInv  = 1 / pConv;
@@ -330,11 +330,11 @@ namespace tloc { namespace math { namespace proj {
     const real_type pNear   = GetPlane<Near>();
     const real_type pFar    = GetPlane<Far>();
 
-    TLOC_ASSERT(Math<real_type>::Approx( (pRight - pLeft), 0.0f) == false,
+    TLOC_ASSERT(math::IsEqual<real_type>( (pRight - pLeft), 0.0f) == false,
                 "Divide by zero");
-    TLOC_ASSERT(Math<real_type>::Approx( (pTop - pBott), 0.0f) == false,
+    TLOC_ASSERT(math::IsEqual<real_type>( (pTop - pBott), 0.0f) == false,
                 "Divide by zero");
-    TLOC_ASSERT(Math<real_type>::Approx( (pFar - pNear), 0.0f) == false,
+    TLOC_ASSERT(math::IsEqual<real_type>( (pFar - pNear), 0.0f) == false,
                 "Divide by zero");
 
     const real_type RminLReci = 1 / (pRight - pLeft);

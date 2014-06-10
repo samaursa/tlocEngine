@@ -29,6 +29,7 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::reference             reference;
     typedef typename base_type::const_reference       const_reference;
     typedef typename base_type::vec_type              vec_type;
+    typedef Radian_T<value_type>                      angle_type;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -104,12 +105,11 @@ namespace tloc { namespace math { namespace types {
     // eigenvalues are ordered as d0 <= d1.
     void        EigenDecomposition(this_type& aRot, this_type& aDiag) const;
 
-    void        MakeRotationX(const_reference aXAngle);
-    void        MakeRotationY(const_reference aYAngle);
-    void        MakeRotationZ(const_reference aZAngle);
+    void        MakeRotationX(angle_type a_angle);
+    void        MakeRotationY(angle_type a_angle);
+    void        MakeRotationZ(angle_type a_angle);
 
-    void        MakeRotation(const vec_type& a_axis,
-                             Radian_T<value_type> a_angle);
+    void        MakeRotation(const vec_type& a_axis, angle_type a_angle);
 
     // Modifies this vector by creating a rotation matrix from the incoming
     // angles by the order specified by the function. E.g. MakeEulerXYZ will
@@ -120,30 +120,30 @@ namespace tloc { namespace math { namespace types {
     // and if multiplied by a vector later, the breakdown will be:
     //
     // MatX * (MayY * (MatZ * V))
-    void MakeEulerXYZ (value_type aXAngle, value_type aYAngle,
-                       value_type aZAngle);
-    void MakeEulerXZY (value_type aXAngle, value_type aZAngle,
-                       value_type aYAngle);
-    void MakeEulerYXZ (value_type aYAngle, value_type aXAngle,
-                       value_type aZAngle);
-    void MakeEulerYZX (value_type aYAngle, value_type aZAngle,
-                       value_type aXAngle);
-    void MakeEulerZXY (value_type aZAngle, value_type aXAngle,
-                       value_type aYAngle);
-    void MakeEulerZYX (value_type aZAngle, value_type aYAngle,
-                       value_type aXAngle);
-    void MakeEulerXYX (value_type aXAngle0, value_type aYAngle,
-                       value_type aXAngle1);
-    void MakeEulerXZX (value_type aXAngle0, value_type aZAngle,
-                       value_type aXAngle1);
-    void MakeEulerYXY (value_type aYAngle0, value_type aXAngle,
-                       value_type aYAngle1);
-    void MakeEulerYZY (value_type aYAngle0, value_type aZAngle,
-                       value_type aYAngle1);
-    void MakeEulerZXZ (value_type aZAngle0, value_type aXAngle,
-                       value_type aZAngle1);
-    void MakeEulerZYZ (value_type aZAngle0, value_type aYAngle,
-                       value_type aZAngle1);
+    void MakeEulerXYZ (angle_type aXAngle, angle_type aYAngle,
+                       angle_type aZAngle);
+    void MakeEulerXZY (angle_type aXAngle, angle_type aZAngle,
+                       angle_type aYAngle);
+    void MakeEulerYXZ (angle_type aYAngle, angle_type aXAngle,
+                       angle_type aZAngle);
+    void MakeEulerYZX (angle_type aYAngle, angle_type aZAngle,
+                       angle_type aXAngle);
+    void MakeEulerZXY (angle_type aZAngle, angle_type aXAngle,
+                       angle_type aYAngle);
+    void MakeEulerZYX (angle_type aZAngle, angle_type aYAngle,
+                       angle_type aXAngle);
+    void MakeEulerXYX (angle_type aXAngle0, angle_type aYAngle,
+                       angle_type aXAngle1);
+    void MakeEulerXZX (angle_type aXAngle0, angle_type aZAngle,
+                       angle_type aXAngle1);
+    void MakeEulerYXY (angle_type aYAngle0, angle_type aXAngle,
+                       angle_type aYAngle1);
+    void MakeEulerYZY (angle_type aYAngle0, angle_type aZAngle,
+                       angle_type aYAngle1);
+    void MakeEulerZXZ (angle_type aZAngle0, angle_type aXAngle,
+                       angle_type aZAngle1);
+    void MakeEulerZYZ (angle_type aZAngle0, angle_type aYAngle,
+                       angle_type aZAngle1);
 
   private:
 

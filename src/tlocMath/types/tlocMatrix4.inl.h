@@ -16,36 +16,36 @@
 namespace tloc { namespace math { namespace types {
 
   //////////////////////////////////////////////////////////////////////////
-  // Matrix4f<T>
+  // Matrix_T<T>
 
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
 #define MATRIX_4_TEMPS typename T
-#define MATRIX_4_PARAMS T
-#define MATRIX_4_TYPE typename Matrix4<MATRIX_4_PARAMS>
+#define MATRIX_4_PARAMS T, 4
+#define MATRIX_4_TYPE typename Matrix_T<MATRIX_4_PARAMS>
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4()
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T()
     : base_type() {}
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(const this_type& aMatrix)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(const this_type& aMatrix)
     : base_type(aMatrix) {}
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(const base_type& aMatrix)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(const base_type& aMatrix)
     : base_type(aMatrix) {}
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(value_type m00, value_type m01, value_type m02, value_type m03,
-            value_type m10, value_type m11, value_type m12, value_type m13,
-            value_type m20, value_type m21, value_type m22, value_type m23,
-            value_type m30, value_type m31, value_type m32, value_type m33)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(value_type m00, value_type m01, value_type m02, value_type m03,
+             value_type m10, value_type m11, value_type m12, value_type m13,
+             value_type m20, value_type m21, value_type m22, value_type m23,
+             value_type m30, value_type m31, value_type m32, value_type m33)
   {
     m_values[0] = m00; m_values[4] = m01; m_values[8] = m02; m_values[12] = m03;
     m_values[1] = m10; m_values[5] = m11; m_values[9] = m12; m_values[13] = m13;
@@ -54,26 +54,26 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(value_type m00, value_type m11, value_type m22, value_type m33)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(value_type m00, value_type m11, value_type m22, value_type m33)
   {
     value_type diag[4] = {m00, m11, m22, m33};
     MakeDiagonal(diag);
   }
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(const_reference aValue)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(const_reference aValue)
     : base_type(aValue)
   { }
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(const Vector<value_type, 4>& aVec1,
-            const Vector<value_type, 4>& aVec2,
-            const Vector<value_type, 4>& aVec3,
-            const Vector<value_type, 4>& aVec4,
-            typename base_type::matrix_order aOrder)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(const Vector_T<value_type, 4>& aVec1,
+             const Vector_T<value_type, 4>& aVec2,
+             const Vector_T<value_type, 4>& aVec3,
+             const Vector_T<value_type, 4>& aVec4,
+             typename base_type::matrix_order aOrder)
   {
     if (aOrder == base_type::k_ColMajor)
     {
@@ -102,22 +102,22 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4(const value_type (&values)[k_MatrixSize],
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(const value_type (&values)[k_MatrixSize],
             typename base_type::matrix_order aOrder)
     : base_type(values, aOrder)
   { }
 
   template <MATRIX_4_TEMPS>
-  Matrix4<MATRIX_4_PARAMS>::
-    Matrix4 (const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars,
-             matrix_order a_order)
+  Matrix_T<MATRIX_4_PARAMS>::
+    Matrix_T(const core::data_structs::Variadic<value_type,k_MatrixSize> &a_vars,
+              matrix_order a_order)
     : base_type(a_vars, a_order)
   { }
 
   template <MATRIX_4_TEMPS>
   MATRIX_4_TYPE::this_type
-  Matrix4<MATRIX_4_PARAMS>::
+  Matrix_T<MATRIX_4_PARAMS>::
     Adjoint() const
   {
     this_type   adj;
@@ -239,7 +239,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_4_TEMPS>
   MATRIX_4_TYPE::this_type
-    Matrix4<MATRIX_4_PARAMS>::
+    Matrix_T<MATRIX_4_PARAMS>::
     Invert() const
   {
     this_type   inv;
@@ -251,7 +251,7 @@ namespace tloc { namespace math { namespace types {
     det = m_values[0] * inv[0] + m_values[1] * inv[4] +
           m_values[2] * inv[8] + m_values[3] * inv[12];
 
-    TLOC_ASSERT_LOW_LEVEL(tloc::Math<value_type>::IsEqual(det, 0.0f) == false,
+    TLOC_ASSERT_LOW_LEVEL(tloc::math::IsEqual<value_type>(det, 0) == false,
       "Determinant is zero (will result in divide by zero)!");
 
     det = 1.0f / det;
@@ -264,7 +264,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_4_TEMPS>
   MATRIX_4_TYPE::value_type
-    Matrix4<MATRIX_4_PARAMS>::
+    Matrix_T<MATRIX_4_PARAMS>::
     Determinant() const
   {
     // the numbers denote the index of matrix (see Inverse() for further
@@ -305,7 +305,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_4_TEMPS>
   MATRIX_4_TYPE::this_type
-    Matrix4<MATRIX_4_PARAMS>::
+    Matrix_T<MATRIX_4_PARAMS>::
     DoInvert(p_matrix4::NonAffine) const
   {
     return Invert();
@@ -313,7 +313,7 @@ namespace tloc { namespace math { namespace types {
 
   template <MATRIX_4_TEMPS>
   MATRIX_4_TYPE::this_type
-    Matrix4<MATRIX_4_PARAMS>::
+    Matrix_T<MATRIX_4_PARAMS>::
     DoInvert(p_matrix4::Affine) const
   {
     // from: http://stackoverflow.com/a/2625420/368599
@@ -322,11 +322,11 @@ namespace tloc { namespace math { namespace types {
 
     this_type toRet(*this);
 
-    Matrix3<value_type> orientationPart (toRet[0], toRet[4], toRet[8],
-                                         toRet[1], toRet[5], toRet[9],
-                                         toRet[2], toRet[6], toRet[10]);
+    Matrix_T<value_type, 3> orientationPart (toRet[0], toRet[4], toRet[8], 
+                                             toRet[1], toRet[5], toRet[9], 
+                                             toRet[2], toRet[6], toRet[10]);
 
-    Vector3<value_type>  vectorPart(toRet[12], toRet[13], toRet[14]);
+    Vector_T<value_type, 3>  vectorPart(toRet[12], toRet[13], toRet[14]);
 
     orientationPart = orientationPart.Inverse();
     vectorPart      = orientationPart * vectorPart.Inverse();

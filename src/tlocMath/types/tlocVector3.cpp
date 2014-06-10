@@ -5,8 +5,8 @@ namespace tloc { namespace math { namespace types {
 
   //------------------------------------------------------------------------
   // Explicit template instantiations
-  template class Vector3<tloc::f32>;
-  template class Vector3<tloc::f64>;
+  template class Vector_T<tloc::f32, 3>;
+  template class Vector_T<tloc::f64, 3>;
 
 };};};
 

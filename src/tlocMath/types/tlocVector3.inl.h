@@ -19,43 +19,43 @@ namespace tloc { namespace math { namespace types {
   // Template Macros
 
 #define VECTOR_3_TYPES typename T
-#define VECTOR_3_PARAMS T
+#define VECTOR_3_PARAMS T, 3
 
   //------------------------------------------------------------------------
   // Constructors
 
   template <VECTOR_3_TYPES>
-  Vector3<VECTOR_3_PARAMS>::
-    Vector3()
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T()
   { }
 
   template <VECTOR_3_TYPES>
-  Vector3<VECTOR_3_PARAMS>::
-    Vector3(const_reference aValue)
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(value_type aValue)
     : base_type(aValue)
   { }
 
   template <VECTOR_3_TYPES>
-  Vector3<VECTOR_3_PARAMS>::
-    Vector3(const_reference aX, const_reference aY, const_reference aZ)
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(const_reference aX, const_reference aY, const_reference aZ)
     : base_type(core::data_structs::Variadic<value_type, 3>(aX, aY, aZ) )
   { }
 
   template <VECTOR_3_TYPES>
-  Vector3<VECTOR_3_PARAMS>::
-    Vector3(const this_type& aVector)
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(const this_type& aVector)
     : base_type(aVector)
   { }
 
   template <VECTOR_3_TYPES>
-  Vector3<VECTOR_3_PARAMS>::
-    Vector3(const base_type& aVector)
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(const base_type& aVector)
     : base_type(aVector)
   { }
 
   template <VECTOR_3_TYPES>
-  Vector3<VECTOR_3_PARAMS>::
-    Vector3(const core::data_structs::Variadic<value_type,3> &a_vars)
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(const core::data_structs::Variadic<value_type,3> &a_vars)
     : base_type(a_vars)
   { }
 
@@ -63,8 +63,8 @@ namespace tloc { namespace math { namespace types {
   // Math operations
 
   template <VECTOR_3_TYPES>
-  typename Vector3<VECTOR_3_PARAMS>::this_type
-    Vector3<VECTOR_3_PARAMS>::
+  typename Vector_T<VECTOR_3_PARAMS>::this_type
+    Vector_T<VECTOR_3_PARAMS>::
     Cross(const this_type& aVector) const
   {
     /*
@@ -83,7 +83,7 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <VECTOR_3_TYPES>
-  void Vector3<VECTOR_3_PARAMS>::
+  void Vector_T<VECTOR_3_PARAMS>::
     Cross(const this_type& aVector1, const this_type& aVector2)
   {
     *this = aVector1.Cross(aVector2);

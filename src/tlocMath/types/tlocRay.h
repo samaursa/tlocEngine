@@ -30,8 +30,8 @@ namespace tloc { namespace math { namespace types {
     typedef Ray_T<T, 3>                              this_type;
     typedef Vector_T<T, 3>                           vec_type;
     typedef Vector_T<T, 3>                           dir_vec_type;
-    typedef Matrix3<T>                               orientation_type;
-    typedef Matrix4<T>                               transform_type;
+    typedef Matrix_T<T, 3>                           orientation_type;
+    typedef Matrix_T<T, 4>                           transform_type;
 
     typedef core::types::StrongType_T<vec_type, 0>   origin;
     typedef core::types::StrongType_T<vec_type, 1>   direction;

@@ -230,6 +230,39 @@ namespace TestingUniformVariable
 
     {
       gl::Uniform u;
+      u.SetValueAs(gfx_t::color_rg(255, 255));
+      CHECK( u.GetValueAs<Vec2f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec2f32>()[1] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::color_rgb(255, 255, 255));
+      CHECK( u.GetValueAs<Vec3f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec3f32>()[2] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::Color(255, 255, 255, 255));
+      CHECK( u.GetValueAs<Vec4f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[1] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[2] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[3] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::color_f32_rgba(1.0f, 0.5f, 0.0f, 1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[1] == Approx(0.5f));
+      CHECK( u.GetValueAs<Vec4f32>()[2] == Approx(0.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[3] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
       u.SetValueAs(s32(1));
       CHECK(u.GetValueAs<s32>() == 1);
     }

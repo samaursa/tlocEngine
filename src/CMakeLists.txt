@@ -17,6 +17,7 @@ set(tlocAllLibraries
   tlocPhysics 
   tlocPrefab
   tlocAnimation
+  tlocUI
   )
 
 foreach(lib ${tlocAllLibraries})

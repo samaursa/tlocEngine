@@ -115,6 +115,9 @@ namespace tloc { namespace graphics { namespace gl {
     };
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // TextureObject
+
   class TextureObject
     : public Object_T<TextureObject, p_object::OnlyID>
   {

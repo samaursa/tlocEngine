@@ -158,8 +158,3 @@ typedef tloc::math_t::Vector_T<tloc::f32, 2> Vector2f32;
 typedef tloc::math_t::Vector_T<tloc::f64, 2> Vector2f64;
 typedef tloc::math_t::Vector_T<tloc::f32, 3> Vector3f32;
 typedef tloc::math_t::Vector_T<tloc::f64, 3> Vector3f64;
-
-TLOC_INSTANTIATE_STRONG_TYPE(Vector2f32);
-TLOC_INSTANTIATE_STRONG_TYPE(Vector2f64);
-TLOC_INSTANTIATE_STRONG_TYPE(Vector3f32);
-TLOC_INSTANTIATE_STRONG_TYPE(Vector3f64);

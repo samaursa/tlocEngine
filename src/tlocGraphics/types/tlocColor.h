@@ -419,27 +419,27 @@ namespace tloc { namespace graphics { namespace types {
     Color_T<T, 3>::COLOR_WHITE = Color_T<T, 3>(255, 255, 255);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_RED = Color_T<T, 3>(255, 0, 0);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_GREEN = Color_T<T, 3>(0, 255, 0);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_BLUE = Color_T<T, 3>(0, 0, 255);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_YELLOW = Color_T<T, 3>(255, 255, 0);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_CYAN = Color_T<T, 3>(0, 255, 255);
 
   template <typename T>
-  const Color_T<T, 3>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_MAGENTA = Color_T<T, 3>(255, 0, 255);
 
   // ///////////////////////////////////////////////////////////////////////

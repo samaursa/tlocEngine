@@ -161,7 +161,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const_ent_ptr_cont_itr prevItr = itr;
     const_ent_ptr_cont_itr itrEnd = a_pair.second.end();
 
-    typename const text_type::str_type& str = text->Get();
+    const typename text_type::str_type& str = text->Get();
 
     tl_int count = 0;
     tl_int beginIndex = count;

@@ -10,7 +10,7 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, class T_Derived>
   class Angle_T
-    : core_bclass::PolicyBase_TI<T_Derived>
+    : public core_bclass::PolicyBase_TI<T_Derived>
   {
   public:
     TLOC_STATIC_ASSERT_IS_ARITH(T);
@@ -71,7 +71,8 @@ namespace tloc { namespace math { namespace types {
   // Radian
 
   template <typename T>
-  class Radian_T : protected Angle_T<T, Radian_T<T> >
+  class Radian_T
+    : public Angle_T<T, Radian_T<T> >
   {
   public:
     template <typename U, class V> friend class Angle_T;
@@ -126,7 +127,8 @@ namespace tloc { namespace math { namespace types {
   // Degree
 
   template <typename T>
-  class Degree_T : protected Angle_T<T, Degree_T<T> >
+  class Degree_T
+    : public Angle_T<T, Degree_T<T> >
   {
   public:
     template <typename U, class V> friend class Angle_T;
@@ -254,7 +256,7 @@ namespace tloc { namespace math { namespace types {
   Radian_T<T>
     MakeRadian(Radian_T<T> a_angle)
   {
-    return a_angle
+    return a_angle;
   }
 
   //------------------------------------------------------------------------

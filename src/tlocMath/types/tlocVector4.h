@@ -57,6 +57,9 @@ namespace tloc { namespace math { namespace types {
     static const this_type NEG_UNIT_Y;
     static const this_type NEG_UNIT_Z;
     static const this_type NEG_UNIT_W;
+    
+  private:
+    using base_type::m_values;
   };
 
   //------------------------------------------------------------------------

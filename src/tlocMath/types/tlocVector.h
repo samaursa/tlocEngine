@@ -164,6 +164,9 @@ namespace tloc { namespace math { namespace types {
 
     template <typename T_Accuracy>
     value_type DoDistance(const this_type& a_vector) const;
+    
+  protected:
+    using base_type::m_values;
 
   };
 

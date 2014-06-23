@@ -106,6 +106,22 @@ namespace tloc { namespace graphics { namespace gl {
     const formvt format::StencilIndex::s_glParamName   = GL_STENCIL_INDEX;
     const formvt format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
+    const size_type format::Auto::s_glChannels           = 0;
+    const size_type format::Red::s_glChannels            = 1;
+    const size_type format::RG::s_glChannels             = 2;
+    const size_type format::RGB::s_glChannels            = 3;
+    const size_type format::BGR::s_glChannels            = 3;
+    const size_type format::RGBA::s_glChannels           = 4;
+    const size_type format::BGRA::s_glChannels           = 4;
+    const size_type format::RedInteger::s_glChannels     = 1;
+    const size_type format::RGInteger::s_glChannels      = 2;
+    const size_type format::RGBInteger::s_glChannels     = 3;
+    const size_type format::BGRInteger::s_glChannels     = 3;
+    const size_type format::RGBAInteger::s_glChannels    = 4;
+    const size_type format::BGRAInteger::s_glChannels    = 4;
+    const size_type format::StencilIndex::s_glChannels   = 1;
+    const size_type format::DepthComponent::s_glChannels = 1;
+
     const ifvt internal_format::Auto::s_glParamName           = GL_NONE;
     const ifvt internal_format::Red::s_glParamName            = GL_RED;
     const ifvt internal_format::RG::s_glParamName             = GL_RG;
@@ -113,6 +129,14 @@ namespace tloc { namespace graphics { namespace gl {
     const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
     const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
     const ifvt internal_format::DepthStencil::s_glParamName   = GL_DEPTH_STENCIL;
+
+    const size_type internal_format::Auto::s_glChannels           = 0;
+    const size_type internal_format::Red::s_glChannels            = 1;
+    const size_type internal_format::RG::s_glChannels             = 2;
+    const size_type internal_format::RGB::s_glChannels            = 3;
+    const size_type internal_format::RGBA::s_glChannels           = 4;
+    const size_type internal_format::DepthComponent::s_glChannels = 1;
+    const size_type internal_format::DepthStencil::s_glChannels   = 1;
 
     const tvt  type::Auto::s_glParamName                      = GL_NONE;
     const tvt  type::UnsignedByte::s_glParamName              = GL_UNSIGNED_BYTE;
@@ -166,20 +190,32 @@ namespace tloc { namespace graphics { namespace gl {
     const fvt NearestMipmapLinear::s_glParamName  = GL_NEAREST_MIPMAP_LINEAR;
     const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
-    const ifvt internal_format::Auto::s_glParamName    = GL_NONE;
+    const formvt format::Auto::s_glParamName           = GL_NONE;
     const formvt format::RGB::s_glParamName            = GL_RGB;
     const formvt format::RGBA::s_glParamName           = GL_RGBA;
     const formvt format::BGRA::s_glParamName           = GL_BGRA;
     const formvt format::StencilIndex::s_glParamName   = GL_STENCIL_INDEX;
     const formvt format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
+    const size_type format::Auto::s_glChannels           = 0;
+    const size_type format::RGB::s_glChannels            = 3;
+    const size_type format::RGBA::s_glChannels           = 4;
+    const size_type format::BGRA::s_glChannels           = 4;
+    const size_type format::StencilIndex::s_glChannels   = 1;
+    const size_type format::DepthComponent::s_glChannels = 1;
+
+    const ifvt internal_format::Auto::s_glParamName           = GL_NONE;
     const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
     const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
     const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
+    const size_type internal_format::Auto::s_glChannels           = 0;
+    const size_type internal_format::RGB::s_glChannels            = 3;
+    const size_type internal_format::RGBA::s_glChannels           = 4;
+    const size_type internal_format::DepthComponent::s_glChannels = 1;
+
     const wvt ClampToBorder::s_glParamName = 0;
 
-    const formvt format::Auto::s_glParamName          = GL_NONE;
     const formvt format::Red::s_glParamName           = 0;
     const formvt format::RG::s_glParamName            = 0;
     const formvt format::BGR::s_glParamName           = 0;
@@ -190,10 +226,23 @@ namespace tloc { namespace graphics { namespace gl {
     const formvt format::RGBAInteger::s_glParamName   = 0;
     const formvt format::BGRAInteger::s_glParamName   = 0;
 
+    const size_type format::Red::s_glChannels            = 0;
+    const size_type format::RG::s_glChannels             = 0;
+    const size_type format::BGR::s_glChannels            = 0;
+    const size_type format::RedInteger::s_glChannels     = 0;
+    const size_type format::RGInteger::s_glChannels      = 0;
+    const size_type format::RGBInteger::s_glChannels     = 0;
+    const size_type format::BGRInteger::s_glChannels     = 0;
+    const size_type format::RGBAInteger::s_glChannels    = 0;
+    const size_type format::BGRAInteger::s_glChannels    = 0;
+
     const ifvt internal_format::Red::s_glParamName  = 0;
     const ifvt internal_format::RG::s_glParamName   = 0;
-
     const ifvt internal_format::DepthStencil::s_glParamName   = 0;
+
+    const size_type internal_format::Red::s_glChannels            = 0;
+    const size_type internal_format::RG::s_glChannels             = 0;
+    const size_type internal_format::DepthStencil::s_glChannels   = 0;
 
     const tvt  type::Auto::s_glParamName                      = GL_NONE;
     const tvt  type::UnsignedByte::s_glParamName              = GL_UNSIGNED_BYTE;
@@ -310,6 +359,36 @@ namespace tloc { namespace graphics { namespace gl {
     { return p_texture_object::format::DepthComponent::s_glParamName; }
 
     // -----------------------------------------------------------------------
+    // Return the number of channels of an image format
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::Color) { return 4; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_rgb) { return 3; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_rg) { return 2; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_r) { return 1; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_u16_rgba) { return 4; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_u16_rgb) { return 3; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_u16_rg) { return 2; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_u16_r) { return 1; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_f32_r) { return 1; }
+
+    // -----------------------------------------------------------------------
     // Return the 'type' of image (see glTexImage2D doc)
 
     gfx_t::gl_int
@@ -395,6 +474,8 @@ namespace tloc { namespace graphics { namespace gl {
   TextureObject::Params::
     Params()
     : m_autoGenMipMaps(true)
+    , m_formatChannels(0)
+    , m_internalFormatChannels(0)
   {
     using namespace p_texture_object;
     using namespace p_texture_object::wrap_technique;
@@ -473,25 +554,41 @@ namespace tloc { namespace graphics { namespace gl {
     m_dim[0] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[0]);
     m_dim[1] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[1]);
 
-    const gl_int target = m_params.GetTextureType() == GL_NONE
+    const gl_int target = m_params.GetTextureType() == 
+      p_texture_object::target::Auto::s_glParamName
       ? DoGetTarget(a_image)
       : m_params.GetTextureType();
-    const gl_int internalFormat = m_params.GetInternalFormat() == GL_NONE
+
+    const gl_int internalFormat = m_params.GetInternalFormat() == 
+      p_texture_object::internal_format::Auto::s_glParamName
       ? DoGetInternalImageFormat(color_type())
       : m_params.GetInternalFormat();
-    const gl_int format = m_params.GetFormat() == GL_NONE
+    const size_type internalFormatChannels = m_params.GetInternalFormat() ==
+      p_texture_object::format::Auto::s_glParamName
+      ? DoGetImageFormatChannels(color_type()) : m_params.GetInternalFormatChannels();
+
+    const gl_int format = m_params.GetFormat() ==
+      p_texture_object::format::Auto::s_glParamName
       ? DoGetImageFormat(color_type())
       : m_params.GetFormat();
-    const gl_int type   = m_params.GetType() == GL_NONE
+    const size_type formatChannels = m_params.GetFormat() ==
+      p_texture_object::format::Auto::s_glParamName
+      ? DoGetImageFormatChannels(color_type()) : m_params.GetFormatChannels();
+
+    const gl_int type   = m_params.GetType() == 
+      p_texture_object::type::Auto::s_glParamName
       ?  DoGetImageType(color_type())
       : m_params.GetType();
-    const gl_int alignment = m_params.GetAlignment() == GL_NONE
+    const gl_int alignment = m_params.GetAlignment() ==
+      p_texture_object::alignment::Auto::s_glParamName
       ? DoGetAlignment(color_type())
       : m_params.GetAlignment();
 
     m_params.m_textureType = target;
     m_params.m_internalFormat = internalFormat;
+    m_params.m_internalFormatChannels = internalFormatChannels;
     m_params.m_format = format;
+    m_params.m_formatChannels = formatChannels;
     m_params.m_type = type;
     m_params.m_alignment = alignment;
 
@@ -503,6 +600,10 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject::
     Update(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image) const
   {
+    TLOC_ASSERT(a_image.GetWidth() == m_dim[0] && 
+                a_image.GetHeight() == m_dim[1], "Image dimensions do not match."
+                " Use Initialize() for a different image.");
+
     using gfx_t::gl_int;
     typedef gfx_med::Image_T<T_ColorType>                       image_type;
     typedef typename image_type::pixel_container_type           pix_cont_type;
@@ -513,6 +614,32 @@ namespace tloc { namespace graphics { namespace gl {
     const gl_int format = m_params.GetFormat();
     const gl_int type   = m_params.GetType();
     const gl_int alignment = m_params.GetAlignment();
+
+    // -----------------------------------------------------------------------
+    // issue warnings for inconsistencies in image type
+
+    TLOC_LOG_GFX_WARN_IF(DoGetTarget(a_image) != target) 
+      << "TextureObject initialized with different TARGET than "
+      << "incoming image. Use Initialize() for a different image type.";
+
+    // NOTE: no need to warn against 'internal format' as it is frequently 
+    // different
+
+    TLOC_LOG_GFX_WARN_IF(DoGetImageFormatChannels(color_type()) != 
+                         m_params.GetFormatChannels()) 
+      << "TextureObject initialized with different FORMAT than "
+      << "incoming image. Use Initialize() for a different image type.";
+
+    TLOC_LOG_GFX_WARN_IF(DoGetImageType(color_type()) != type) 
+      << "TextureObject initialized with different IMAGE TYPE than "
+      << "incoming image. Use Initialize() for a different image type.";
+    
+    TLOC_LOG_GFX_WARN_IF(DoGetAlignment(color_type()) != alignment) 
+      << "TextureObject initialized with different ALIGNMENT than "
+      << "incoming image. Use Initialize() for a different image type.";
+
+    // -----------------------------------------------------------------------
+    // update the image
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glPixelStorei()");

@@ -173,6 +173,51 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
   };
+  
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexArrayObject
+  
+  namespace vertex_array_object {
+    
+    void
+      Bind(gfx_t::gl_uint a_name)
+    {
+#ifdef TLOC_OS_IPHONE
+      glBindVertexArrayOES(a_name);
+#else
+      glBindVertexArray(a_name);
+#endif
+    }
+    
+    void
+      UnBind()
+    {
+      Bind(0);
+    }
+    
+    gfx_t::gl_uint
+      Generate()
+    {
+      gfx_t::gl_uint handle;
+#ifdef TLOC_OS_IPHONE
+      glGenVertexArraysOES(1, &handle);
+#else
+      glGenVertexArrays(1, &handle);
+#endif
+      return handle;
+    }
+    
+    void
+      Destroy(gfx_t::gl_uint a_name)
+    {
+#ifdef TLOC_OS_IPHONE
+      glDeleteVertexArraysOES(1, &a_name);
+#else
+      glDeleteVertexArrays(1, &a_name);
+#endif
+    }
+    
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // Texture units

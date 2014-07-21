@@ -2,6 +2,7 @@
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -12,7 +13,7 @@ namespace tloc { namespace graphics { namespace gl {
     Bind(const vao_ptr a_vao)
   {
     object_handle handle = a_vao->GetHandle();
-    glBindVertexArray(handle);
+    gfx_gl::vertex_array_object::Bind(handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(), "OpenGL: Error with glBindVertexArray");
   }
@@ -22,7 +23,7 @@ namespace tloc { namespace graphics { namespace gl {
   VertexArrayObject::Bind::
     ~Bind()
   {
-    glBindVertexArray(0);
+    gfx_gl::vertex_array_object::UnBind();
     TLOC_ASSERT(gl::Error().Succeeded(), "OpenGL: Error with glBindVertexArray(0)");
   }
 
@@ -32,8 +33,7 @@ namespace tloc { namespace graphics { namespace gl {
   VertexArrayObject::
     VertexArrayObject()
   {
-    object_handle handle;
-    glGenVertexArrays(1, &handle);
+    object_handle handle = gfx_gl::vertex_array_object::Generate();
     SetHandle(handle);
   }
 
@@ -45,7 +45,7 @@ namespace tloc { namespace graphics { namespace gl {
     if (IsLastRef() && GetHandle() != 0)
     {
       object_handle handle = GetHandle();
-      glDeleteVertexArrays(1, &handle);
+      gfx_gl::vertex_array_object::Destroy(handle);
     }
   }
 

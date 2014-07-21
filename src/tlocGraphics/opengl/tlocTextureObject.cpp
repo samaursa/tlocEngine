@@ -473,9 +473,9 @@ namespace tloc { namespace graphics { namespace gl {
 
   TextureObject::Params::
     Params()
-    : m_autoGenMipMaps(true)
+    : m_internalFormatChannels(0)
     , m_formatChannels(0)
-    , m_internalFormatChannels(0)
+    , m_autoGenMipMaps(true)
   {
     using namespace p_texture_object;
     using namespace p_texture_object::wrap_technique;

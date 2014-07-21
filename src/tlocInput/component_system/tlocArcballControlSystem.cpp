@@ -130,8 +130,8 @@ namespace tloc { namespace input { namespace component_system {
       }
       else if (m_flags.IsMarked(k_panning))
       {
-        math_t::Vec3f leftVec = t->GetOrientation().GetCol(0);
-        math_t::Vec3f upVec = t->GetOrientation().GetCol(1);
+        math_t::Vec3f leftVec = t->GetOrientation().GetCol(0).ConvertTo<math_t::Vec3f>();
+        math_t::Vec3f upVec = t->GetOrientation().GetCol(1).ConvertTo<math_t::Vec3f>();
 
         leftVec *= m_xRel * globalMulti[0] * panMulti[0];
         upVec *= m_yRel * globalMulti[1] * panMulti[1];
@@ -141,7 +141,7 @@ namespace tloc { namespace input { namespace component_system {
       }
       else if (m_flags.IsMarked(k_dolly))
       {
-        math_t::Vec3f dirVec = t->GetOrientation().GetCol(2);
+        math_t::Vec3f dirVec = t->GetOrientation().GetCol(2).ConvertTo<math_t::Vec3f>();
 
         dirVec *= m_xRel * globalMulti[0] * dollyMulti;
 

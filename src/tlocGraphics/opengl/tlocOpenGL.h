@@ -110,6 +110,18 @@ namespace tloc { namespace graphics { namespace gl {
     void ForceDisableAll();
 
   }
+  
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexArrayObject
+  
+  namespace vertex_array_object {
+    
+    void            Bind(gfx_t::gl_uint a_name);
+    void            UnBind();
+    gfx_t::gl_uint  Generate();
+    void            Destroy(gfx_t::gl_uint a_name);
+    
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // Texture Units

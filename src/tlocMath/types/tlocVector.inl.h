@@ -234,7 +234,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      m_values[i] = a_vector.m_values[i] * a_real;
+      this->m_values[i] = a_vector.m_values[i] * a_real;
     }
   }
 
@@ -303,7 +303,7 @@ namespace tloc { namespace math { namespace types {
 
     ITERATE_VECTOR
     {
-      lengthSq += (m_values[i] * m_values[i]);
+      lengthSq += (this->m_values[i] * this->m_values[i]);
     }
 
     return lengthSq;
@@ -367,7 +367,7 @@ namespace tloc { namespace math { namespace types {
     value_type invLength = GetInvSqrt(dblLength, T_Accuracy() );
     ITERATE_VECTOR
     {
-      m_values[i] = a_vector[i] * invLength;
+      this->m_values[i] = a_vector[i] * invLength;
     }
 
     return (T)1 / invLength;
@@ -422,7 +422,7 @@ namespace tloc { namespace math { namespace types {
 
     ITERATE_VECTOR
     {
-      dotProd += m_values[i] * a_vector[i];
+      dotProd += this->m_values[i] * a_vector[i];
     }
 
     return dotProd;
@@ -602,7 +602,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      if (!math::IsEqual(m_values[i], a_vector[i])) return false;
+      if (!math::IsEqual(this->m_values[i], a_vector[i])) return false;
     }
 
     return true;
@@ -628,7 +628,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      if (math::IsNaN(m_values[i])) { return false; }
+      if (math::IsNaN(this->m_values[i])) { return false; }
     }
 
     return true;
@@ -643,7 +643,7 @@ namespace tloc { namespace math { namespace types {
   {
     ITERATE_VECTOR
     {
-      if (!math::IsEqual<value_type>(m_values[i], 0)) { return false; }
+      if (!math::IsEqual<value_type>(this->m_values[i], 0)) { return false; }
     }
 
     return true;

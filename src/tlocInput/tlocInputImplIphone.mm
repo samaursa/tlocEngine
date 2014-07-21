@@ -172,9 +172,9 @@ namespace tloc { namespace input { namespace priv {
 
     if(m_iphoneHIDs[T_InputObject::m_index].m_available == false)
     {
-      newInput =
-        DoCreateHID<T_InputObject, T_InputObject::m_index>().
-        Create(a_params, m_params);
+      newInput.reset
+        (DoCreateHID<T_InputObject, T_InputObject::m_index>().
+         Create(a_params, m_params));
 
       m_iphoneHIDs[T_InputObject::m_index].m_available = true;
       m_iphoneHIDs[T_InputObject::m_index].m_devicePtr = newInput;

@@ -173,8 +173,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<T_Derived>::
     SetValueAs(const gfx_t::Color_T<T, T_Size> a_color)
   {
-    return SetValueAs(a_color.GetAs<gfx_t::p_color::format::RGBA, 
-                                    math_t::Vector_T<f32, T_Size> >() );
+    return SetValueAs(a_color.template GetAs<gfx_t::p_color::format::RGBA,
+                                             math_t::Vector_T<f32, T_Size> >() );
   }
 
   template <typename T_Derived>

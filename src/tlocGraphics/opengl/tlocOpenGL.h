@@ -128,9 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   // Texture image units start from GL_TEXTURE0 and go all the way to
   // GL_TEXTURE0 + max_units - 1
-  gfx_t::gl_int        GetActiveTextureImageUnit();
   core_err::Error      GetNextAvailableTextureImageUnit(gfx_t::gl_int& a_texImgUnitOut);
-  void                 RecycleTextureImageUnit(gfx_t::gl_int a_texImgUnit);
   void                 ActivateTextureImageUnit(gfx_t::gl_int a_texImgUnit);
   bool                 IsValidTextureImageUnit(gfx_t::gl_int a_texImgUnit);
 

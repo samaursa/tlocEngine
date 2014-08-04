@@ -334,20 +334,14 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type  Bind(texture_type a_target) const;
 
-    error_type  Activate();
-    bool        IsActive() const;
-    error_type  Deactivate();
-
     void        UpdateParameters() const;
 
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
-    TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
     TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
 
   private:
-    texture_image_unit_type   m_texImageUnit;
     Params                    m_params;
     dimension_type            m_dim;
   };

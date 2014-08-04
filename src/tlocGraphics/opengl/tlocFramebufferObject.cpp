@@ -249,9 +249,6 @@ namespace tloc { namespace graphics { namespace gl {
              p_framebuffer_object::attachment::value_type a_attachment,
              const to_type& a_to)
   {
-    TLOC_ASSERT(a_to.IsActive(),
-      "TextureObject is NOT active - did you forget to call Activate()?");
-
     Bind b(this);
 
     const to_type::Params& toParams = a_to.GetParams();

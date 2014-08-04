@@ -509,6 +509,7 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject(const Params& a_params)
     : m_params(a_params)
     , m_dim(0)
+    , m_reservedTexImageUnit(-1)
   {
     object_handle handle;
     glGenTextures(1, &handle);
@@ -520,6 +521,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     if (IsLastRef())
     {
+      ReleaseTextureUnit();
       object_handle handle = GetHandle();
       glDeleteTextures(1, &handle);
     }
@@ -673,6 +675,31 @@ namespace tloc { namespace graphics { namespace gl {
     glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
     glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glTexParameteri()");
+  }
+
+  TextureObject::error_type
+    TextureObject::
+    ReserveTextureUnit()
+  {
+    return gl::ReserveNextAvailableTextureImageUnit(m_reservedTexImageUnit);
+  }
+
+  void
+    TextureObject::
+    ReleaseTextureUnit()
+  {
+    if (HasReservedTextureUnit())
+    {
+      gl::ReleaseTextureImageUnit(m_reservedTexImageUnit);
+      m_reservedTexImageUnit = -1;
+    }
+  }
+
+  bool
+    TextureObject::
+    HasReservedTextureUnit() const
+  {
+    return m_reservedTexImageUnit != -1;
   }
 
 };};};

@@ -231,6 +231,7 @@ namespace tloc { namespace graphics { namespace gl {
     GLint         g_maxTextureUnits = -1;
     GLint         g_currentAvailableTextureUnit = 0;
     gl_int_array  g_availableTextureUnits;
+    gl_int_array  g_reservedTextureUnits;
 
     void DoSetMaxTextureUnits()
     {
@@ -242,6 +243,9 @@ namespace tloc { namespace graphics { namespace gl {
       {
         g_availableTextureUnits.push_back(GL_TEXTURE0 + i);
       }
+
+      TLOC_LOG_GFX_WARN_IF(g_maxTextureUnits == 0) << 
+        "Graphics hardware has no texture units available";
     }
   }
 
@@ -258,7 +262,10 @@ namespace tloc { namespace graphics { namespace gl {
       if (g_maxTextureUnits == 0)
       { return TLOC_ERROR(error::error_no_texture_units_available); }
 
-      if (g_currentAvailableTextureUnit == g_maxTextureUnits)
+      if (g_availableTextureUnits.size() == 0)
+      { return TLOC_ERROR(error::error_texture_unit_limit_reached); }
+
+      if (g_currentAvailableTextureUnit >= (GLint)g_availableTextureUnits.size())
       { g_currentAvailableTextureUnit = 0; }
 
       a_texImgUnitOut = g_availableTextureUnits[g_currentAvailableTextureUnit];
@@ -293,6 +300,42 @@ namespace tloc { namespace graphics { namespace gl {
   {
     return a_texImgUnit >= GL_TEXTURE0 &&
            a_texImgUnit < GL_TEXTURE0 + g_maxTextureUnits;
+  }
+
+  core_err::Error
+    ReserveNextAvailableTextureImageUnit(gfx_t::gl_int& a_texImgUnitOut)
+  {
+    if (g_maxTextureUnits != -1)
+    {
+      if (g_availableTextureUnits.size() > 0)
+      {
+        g_availableTextureUnits.pop_back(a_texImgUnitOut);
+        g_reservedTextureUnits.push_back(a_texImgUnitOut);
+
+        TLOC_ASSERT_LOW_LEVEL(IsValidTextureImageUnit(a_texImgUnitOut),
+                              "Unable to get a correct texture image unit");
+
+        return ErrorSuccess;
+      }
+
+      return TLOC_ERROR(error::error_texture_unit_limit_reached);
+    }
+    else
+    {
+      DoSetMaxTextureUnits();
+      return ReserveNextAvailableTextureImageUnit(a_texImgUnitOut);
+    }
+  }
+
+  void                 
+    ReleaseTextureImageUnit(gfx_t::gl_int a_texImgUnit)
+  {
+    gl_int_array::iterator itr = core::find_all(g_reservedTextureUnits, a_texImgUnit);
+    TLOC_ASSERT_LOW_LEVEL(itr != g_reservedTextureUnits.end(),
+                          "Texture image unit has not been reserved before");
+
+    g_availableTextureUnits.push_back(a_texImgUnit);
+    g_reservedTextureUnits.erase(itr);
   }
 
   // ///////////////////////////////////////////////////////////////////////

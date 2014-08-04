@@ -132,6 +132,10 @@ namespace tloc { namespace graphics { namespace gl {
   void                 ActivateTextureImageUnit(gfx_t::gl_int a_texImgUnit);
   bool                 IsValidTextureImageUnit(gfx_t::gl_int a_texImgUnit);
 
+  // A reserved texture image unit is not returned by GetNextAvailableTextureImageUnit()
+  core_err::Error      ReserveNextAvailableTextureImageUnit(gfx_t::gl_int& a_texImgUnitOut);
+  void                 ReleaseTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+
   // Texture units start from 0 to max_units - 1
   bool                 IsValidTextureUnit(gfx_t::gl_int a_texUnit);
  gfx_t::gl_int         GetTextureUnitFromTextureImageUnit(gfx_t::gl_int a_texImgUnit);

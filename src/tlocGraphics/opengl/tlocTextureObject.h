@@ -336,14 +336,21 @@ namespace tloc { namespace graphics { namespace gl {
 
     void        UpdateParameters() const;
 
+    error_type  ReserveTextureUnit(); 
+    void        ReleaseTextureUnit();
+    bool        HasReservedTextureUnit() const;
+
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
     TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
+    TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetReservedTexImageUnit, 
+                             m_reservedTexImageUnit);
 
   private:
     Params                    m_params;
     dimension_type            m_dim;
+    texture_image_unit_type   m_reservedTexImageUnit;
   };
 
   //------------------------------------------------------------------------

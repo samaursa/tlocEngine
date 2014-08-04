@@ -507,8 +507,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   TextureObject::
     TextureObject(const Params& a_params)
-    : m_texImageUnit(-1)
-    , m_params(a_params)
+    : m_params(a_params)
     , m_dim(0)
   {
     object_handle handle;
@@ -522,8 +521,6 @@ namespace tloc { namespace graphics { namespace gl {
     if (IsLastRef())
     {
       object_handle handle = GetHandle();
-      if (IsActive())
-      { Deactivate(); }
       glDeleteTextures(1, &handle);
     }
   }
@@ -662,44 +659,6 @@ namespace tloc { namespace graphics { namespace gl {
     UpdateParameters();
 
     return ErrorSuccess;
-  }
-
-  error_type
-    TextureObject::
-    Activate()
-  {
-    if (IsActive())
-    { return TLOC_ERROR(gfx_err::error_texture_object_already_activated); }
-
-    texture_image_unit_type tUnit;
-    error_type err = GetNextAvailableTextureImageUnit(tUnit);
-    if (err == ErrorSuccess)
-    {
-      m_texImageUnit = tUnit;
-      return ErrorSuccess;
-    }
-
-    return TLOC_ERROR(gfx_err::error_no_texture_units_available);
-  }
-
-  bool
-    TextureObject::
-    IsActive() const
-  { return m_texImageUnit != -1; }
-
-  error_type
-    TextureObject::
-    Deactivate()
-  {
-    if (IsActive())
-    {
-      RecycleTextureImageUnit(m_texImageUnit);
-      m_texImageUnit = -1;
-
-      return ErrorSuccess;
-    }
-
-    return TLOC_ERROR(error::error_texture_object_never_activated);
   }
 
   void

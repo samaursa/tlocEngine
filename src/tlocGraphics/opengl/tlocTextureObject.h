@@ -10,6 +10,9 @@
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_texture_object {
+
+    typedef tl_size                           size_type;
+
     namespace target
     {
       typedef gfx_t::gl_int             value_type;
@@ -56,34 +59,34 @@ namespace tloc { namespace graphics { namespace gl {
     {
       typedef gfx_t::gl_int             value_type;
 
-      struct Auto            { static const value_type s_glParamName; };
-      struct Red             { static const value_type s_glParamName; };
-      struct RG              { static const value_type s_glParamName; };
-      struct RGB             { static const value_type s_glParamName; };
-      struct RGBA            { static const value_type s_glParamName; };
-      struct DepthComponent  { static const value_type s_glParamName; };
-      struct DepthStencil    { static const value_type s_glParamName; };
+      struct Auto            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct Red             { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RG              { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGB             { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGBA            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct DepthComponent  { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct DepthStencil    { static const value_type s_glParamName; static const size_type s_glChannels; };
     };
 
     namespace format
     {
       typedef gfx_t::gl_int             value_type;
 
-      struct Auto           { static const value_type s_glParamName; };
-      struct Red            { static const value_type s_glParamName; };
-      struct RG             { static const value_type s_glParamName; };
-      struct RGB            { static const value_type s_glParamName; };
-      struct BGR            { static const value_type s_glParamName; };
-      struct RGBA           { static const value_type s_glParamName; };
-      struct BGRA           { static const value_type s_glParamName; };
-      struct RedInteger     { static const value_type s_glParamName; };
-      struct RGInteger      { static const value_type s_glParamName; };
-      struct RGBInteger     { static const value_type s_glParamName; };
-      struct BGRInteger     { static const value_type s_glParamName; };
-      struct RGBAInteger    { static const value_type s_glParamName; };
-      struct BGRAInteger    { static const value_type s_glParamName; };
-      struct StencilIndex   { static const value_type s_glParamName; };
-      struct DepthComponent { static const value_type s_glParamName; };
+      struct Auto           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct Red            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RG             { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGB            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct BGR            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGBA           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct BGRA           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RedInteger     { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGInteger      { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGBInteger     { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct BGRInteger     { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGBAInteger    { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct BGRAInteger    { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct StencilIndex   { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct DepthComponent { static const value_type s_glParamName; static const size_type s_glChannels; };
     };
 
     namespace type
@@ -114,6 +117,9 @@ namespace tloc { namespace graphics { namespace gl {
       struct EightBytes     { static const value_type s_glParamName; };
     };
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // TextureObject
 
   class TextureObject
     : public Object_T<TextureObject, p_object::OnlyID>
@@ -211,6 +217,7 @@ namespace tloc { namespace graphics { namespace gl {
           Auto, Red, RG, RGB, RGBA, DepthComponent, DepthStencil>();
 
         m_internalFormat = T_InternalFormat::s_glParamName;
+        m_internalFormatChannels = T_InternalFormat::s_glChannels;
         return *this;
       }
 
@@ -229,6 +236,7 @@ namespace tloc { namespace graphics { namespace gl {
           DepthComponent>();
 
         m_format = T_Format::s_glParamName;
+        m_formatChannels = T_Format::s_glChannels;
         return *this;
       }
 
@@ -280,7 +288,9 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMagFilter, m_magFilter);
       TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
       TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
+      TLOC_DECL_AND_DEF_GETTER (size_type, GetInternalFormatChannels, m_internalFormatChannels);
       TLOC_DECL_AND_DEF_GETTER (format_value_type, GetFormat, m_format);
+      TLOC_DECL_AND_DEF_GETTER (size_type, GetFormatChannels, m_formatChannels);
       TLOC_DECL_AND_DEF_GETTER (type_value_type, GetType, m_type);
       TLOC_DECL_AND_DEF_GETTER (alignment_value_type, GetAlignment, m_alignment);
       TLOC_DECL_AND_DEF_GETTER (bool, IsAutoGenMipMaps, m_autoGenMipMaps);
@@ -292,7 +302,9 @@ namespace tloc { namespace graphics { namespace gl {
       filter_value_type           m_magFilter;
       texture_type                m_textureType;
       internal_format_value_type  m_internalFormat;
+      size_type                   m_internalFormatChannels;
       format_value_type           m_format;
+      size_type                   m_formatChannels;
       type_value_type             m_type;
       alignment_value_type        m_alignment;
       bool                        m_autoGenMipMaps;
@@ -322,22 +334,23 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type  Bind(texture_type a_target) const;
 
-    error_type  Activate();
-    bool        IsActive() const;
-    error_type  Deactivate();
-
     void        UpdateParameters() const;
+
+    error_type  ReserveTextureUnit(); 
+    void        ReleaseTextureUnit();
+    bool        HasReservedTextureUnit() const;
 
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
 
-    TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetTextureImageUnit, m_texImageUnit);
     TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
+    TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetReservedTexImageUnit, 
+                             m_reservedTexImageUnit);
 
   private:
-    texture_image_unit_type   m_texImageUnit;
     Params                    m_params;
     dimension_type            m_dim;
+    texture_image_unit_type   m_reservedTexImageUnit;
   };
 
   //------------------------------------------------------------------------

@@ -313,6 +313,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
       pref_gfx::SpriteAnimation(m_textEntityMgr.get(), m_textCompMgr.get())
         .Paused(false).Add(q, itrSs, itrEndSs);
+
+      if (a_ent->IsActive() == false)
+      { q->Deactivate(); }
     }
 
     m_allText.push_back(tqp);

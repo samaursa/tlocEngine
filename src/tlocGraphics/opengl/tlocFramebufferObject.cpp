@@ -1,8 +1,6 @@
 #include "tlocFramebufferObject.h"
 
 #include <tlocCore/tlocAssert.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 #include <tlocCore/platform/tlocPlatform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -251,9 +249,6 @@ namespace tloc { namespace graphics { namespace gl {
              p_framebuffer_object::attachment::value_type a_attachment,
              const to_type& a_to)
   {
-    TLOC_ASSERT(a_to.IsActive(),
-      "TextureObject is NOT active - did you forget to call Activate()?");
-
     Bind b(this);
 
     const to_type::Params& toParams = a_to.GetParams();
@@ -299,9 +294,6 @@ namespace tloc { namespace graphics { namespace gl {
              p_framebuffer_object::attachment::value_type a_attachment,
              const to_type& a_to)
   {
-    TLOC_ASSERT(a_to.IsActive(),
-      "TextureObject is NOT active - did you forget to call Activate()?");
-
     Bind b(this);
 
     const to_type::Params& toParams = a_to.GetParams();
@@ -470,7 +462,10 @@ namespace tloc { namespace graphics { namespace gl {
 // ///////////////////////////////////////////////////////////////////////
 // Explicit instantiations
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(FramebufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FramebufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FramebufferObject);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::Bind);

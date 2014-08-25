@@ -166,6 +166,10 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocUniform.cpp 
   opengl/tlocUniform.h 
   opengl/tlocUniformExplicitMacros.h 
+  opengl/tlocVertexArrayObject.h
+  opengl/tlocVertexArrayObject.cpp
+  opengl/tlocVertexBufferObject.h
+  opengl/tlocVertexBufferObject.cpp
   opengl/tloc_opengl.cpp 
   opengl/tloc_opengl.h 
   opengl/tloc_opengl.inl.h

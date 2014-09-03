@@ -3,8 +3,8 @@ tloc_add_definitions_strict()
 
 # common includes
 include_directories(
-  ${TLOC_DEP_PATH}/include/
-  ${TLOC_DEP_PATH}/src/
+  ${TLOC_DEP_INSTALL_PATH}
+  ${TLOC_DEP_INSTALL_PATH}/include/
   ${TLOC_ENGINE_PATH}/src/
   )
 

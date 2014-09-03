@@ -6,20 +6,16 @@ set(TLOC_PROJECT_NAME "game" CACHE STRING "The name of your project goes here")
 
 set(internal_FIXME "FIXME!")
 
-set(TLOC_ENGINE_PATH ${internal_FIXME} CACHE PATH "The root folder of the engine repository.")
-set(TLOC_ENGINE_BUILD_PATH ${internal_FIXME} CACHE PATH "The build folder of the engine repository. Make sure the build architecture is the same.")
-set(TLOC_DEP_PATH ${internal_FIXME} CACHE PATH "The tloc dependency repository path goes here. Make sure the build architecture is the same")
-set(TLOC_DEP_BUILD_PATH ${internal_FIXME} CACHE PATH "The build folder of the dependency repository. Make sure the build architecture is the same")
+set(TLOC_ENGINE_INSTALL_PATH ${internal_FIXME} CACHE PATH "The engine INSTALL path with the correct build folder.")
+set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The dependency INSTALL path with the correct build folder.")
 
 set(USER_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "Root folder of this project. You do not need to change this path.")
 set(USER_IOS_PLIST_PATH "" CACHE FILE "If you have your own custom plist, specify here. If blank, 2LoC will generate one for you.")
 
 # Variables to check for ${internal_FIXEM}
 set(TLOC_CHECK_PATHS
-  TLOC_ENGINE_PATH
-  TLOC_ENGINE_BUILD_PATH
-  TLOC_DEP_PATH
-  TLOC_DEP_BUILD_PATH
+  TLOC_ENGINE_INSTALL_PATH
+  TLOC_DEP_INSTALL_PATH
   )
 
 foreach(PATHDIR ${TLOC_CHECK_PATHS})
@@ -38,7 +34,7 @@ include(tlocUserVars.cmake)
 
 #--------------------------------------------------------------------------
 # Include the common platform settings file
-set(TLOC_COMMON_CMAKE_PATH "${TLOC_DEP_PATH}/tlocCommon.cmake")
+set(TLOC_COMMON_CMAKE_PATH "${TLOC_DEP_INSTALL_PATH}/tlocCommon.cmake")
 include(${TLOC_COMMON_CMAKE_PATH})
 
 #--------------------------------------------------------------------------

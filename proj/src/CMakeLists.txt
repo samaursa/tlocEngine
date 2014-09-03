@@ -20,24 +20,9 @@ function(add_common_libraries EXEC_NAME)
     target_link_libraries(${EXEC_NAME}
       glu32.lib
       OpenGL32.lib
+      dinput8.lib
       )
 
-    # Find dinput.lib and add it as a link target
-    if(${ARCH_DIR} MATCHES "x86")
-      find_library(DIRECT_INPUT_LIB
-        NAMES dinput8.lib
-        PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
-        )
-    else()
-      find_library(DIRECT_INPUT_LIB
-        NAMES dinput8.lib
-        PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
-        )
-    endif()
-
-    target_link_libraries(${EXEC_NAME}
-      ${DIRECT_INPUT_LIB}
-      )
   endif()
 
   if(TLOC_COMPILER_XCODE)
@@ -51,7 +36,7 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
     if(USER_IOS_PLIST_PATH)
       set(PLIST_PATH ${USER_IOS_PLIST_PATH})
     else()
-      set(PLIST_PATH "${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist")
+      set(PLIST_PATH "${TLOC_ENGINE_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
     endif()
 
     set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -71,10 +56,11 @@ tloc_add_definitions_strict()
 
 # common includes
 include_directories(
-  ${TLOC_ENGINE_PATH}/src/
-  ${TLOC_DEP_PATH}/include/
-  ${TLOC_DEP_PATH}/include/Box2D/
-  ${TLOC_DEP_PATH}/include/CATCH/
+  ${TLOC_ENGINE_INSTALL_PATH}/
+  ${TLOC_ENGINE_INSTALL_PATH}/include/
+  ${TLOC_DEP_INSTALL_PATH}/include/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/CATCH/
   ${USER_PATH}/src/
 
   ${CMAKE_SOURCE_DIR}/src/
@@ -82,16 +68,8 @@ include_directories(
 
 # common link directories
 link_directories(
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocCore/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocGraphics/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocMath/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocInput/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPhysics/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPrefab/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
-
-  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
-  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
+  ${TLOC_ENGINE_INSTALL_PATH}/lib/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 # -----------------------------------------------------------------------------

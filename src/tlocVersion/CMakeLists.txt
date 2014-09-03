@@ -32,7 +32,7 @@ add_executable(
 
 # Run the generated executable after build
 add_custom_target(tlocVersionTool ALL
-  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tlocVersion 
+  COMMAND ${TLOC_ENGINE_INSTALL_PATH}/bin/${CMAKE_CFG_INTDIR}/tlocVersion 
   DEPENDS tlocVersion
  )
 

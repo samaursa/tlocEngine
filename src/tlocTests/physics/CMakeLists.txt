@@ -11,11 +11,11 @@ set(TLOC_TESTS_PHYSICS
 set(TLOC_CURRENT_EXEC_NAME tlocTestsPhysics)
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
 link_directories(
-  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}

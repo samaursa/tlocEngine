@@ -43,3 +43,8 @@ if(TLOC_COMPILER_MSVC)
     LINK_FLAGS_RELWITHDEBINFO "/LTCG"
     )
 endif()
+
+# Copy the version to the INSTALL folder
+add_custom_command(TARGET tlocVersion POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/src/tlocVersion.h" "${TLOC_ENGINE_INSTALL_PATH}"
+)

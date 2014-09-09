@@ -396,16 +396,33 @@ namespace TestingMatrix3
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/LookAt", "")
   {
+    using namespace math_t;
     a.MakeIdentity();
 
-    a.LookAt(math_t::Vec3f32(1, 0, 0));
+    SECTION("LookAt() default up", "")
+    {
+      a.LookAt(Mat3f32::dir(Vec3f32(1, 0, 0)));
 
-    math_t::Vec3f32 left  = a.GetCol(0);
-    math_t::Vec3f32 up    = a.GetCol(1);
-    math_t::Vec3f32 dir   = a.GetCol(2);
+      Vec3f32 left = a.GetCol(0);
+      Vec3f32 up = a.GetCol(1);
+      Vec3f32 dir = a.GetCol(2);
 
-    CHECK(dir[0] == Approx(1.0f));
-    CHECK(up[1] == Approx(1.0f));
-    CHECK(left[2] == Approx(-1.0f));
+      CHECK(dir[0] == Approx(1.0f));
+      CHECK(up[1] == Approx(1.0f));
+      CHECK(left[2] == Approx(-1.0f));
+    }
+
+    SECTION("LookAt() +x up", "")
+    {
+      a.LookAt( Mat3f32::dir(Vec3f32(0, 1, 0)), Mat3f32::up(Vec3f32(1, 0, 0)) );
+
+      Vec3f32 left = a.GetCol(0);
+      Vec3f32 up = a.GetCol(1);
+      Vec3f32 dir = a.GetCol(2);
+
+      CHECK(dir[1] == Approx(1.0f));
+      CHECK(up[0] == Approx(1.0f));
+      CHECK(left[2] == Approx(1.0f));
+    }
   }
 };

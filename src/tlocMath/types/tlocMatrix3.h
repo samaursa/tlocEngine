@@ -4,6 +4,7 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/types/tlocStrongType.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix.h>
 
@@ -30,6 +31,8 @@ namespace tloc { namespace math { namespace types {
     typedef typename base_type::const_reference       const_reference;
     typedef typename base_type::vec_type              vec_type;
     typedef Radian_T<value_type>                      angle_type;
+
+    typedef core_t::StrongType_T<vec_type, 0>         up_vec;
 
     //------------------------------------------------------------------------
     // using declarations for access to base class
@@ -144,6 +147,9 @@ namespace tloc { namespace math { namespace types {
                        angle_type aZAngle1);
     void MakeEulerZYZ (angle_type aZAngle0, angle_type aYAngle,
                        angle_type aZAngle1);
+
+    void LookAt(const vec_type& a_direction);
+    void LookAt(const vec_type& a_direction, up_vec a_up);
 
   private:
 

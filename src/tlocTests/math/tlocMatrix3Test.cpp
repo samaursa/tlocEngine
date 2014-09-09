@@ -393,4 +393,19 @@ namespace TestingMatrix3
                       -0.70710677f, 0.70710677f,           0);
     CHECK(a.Determinant() == Approx(1.0f));
   }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/LookAt", "")
+  {
+    a.MakeIdentity();
+
+    a.LookAt(math_t::Vec3f32(1, 0, 0));
+
+    math_t::Vec3f32 left  = a.GetCol(0);
+    math_t::Vec3f32 up    = a.GetCol(1);
+    math_t::Vec3f32 dir   = a.GetCol(2);
+
+    CHECK(dir[0] == Approx(1.0f));
+    CHECK(up[1] == Approx(1.0f));
+    CHECK(left[2] == Approx(-1.0f));
+  }
 };

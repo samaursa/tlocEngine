@@ -78,7 +78,7 @@ set(TLOC_PREFAB_ANIMATION
 # Project setup
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
 add_library(tlocPrefab STATIC
@@ -109,3 +109,5 @@ source_group(input            FILES ${TLOC_PREFAB_INPUT})
 source_group(math             FILES ${TLOC_PREFAB_MATH})
 source_group(physics          FILES ${TLOC_PREFAB_PHYSICS})
 source_group(animation        FILES ${TLOC_PREFAB_ANIMATION})
+
+tloc_install_library(tlocPrefab tlocPrefab)

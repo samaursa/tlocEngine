@@ -75,9 +75,12 @@ namespace tloc { namespace math { namespace types {
 
     this_type temp;
 
-    temp.m_values[0] = m_values[1] * aVector[2] - m_values[2] * aVector[1];
-    temp.m_values[1] = m_values[2] * aVector[0] - m_values[0] * aVector[2];
-    temp.m_values[2] = m_values[0] * aVector[1] - m_values[1] * aVector[0];
+    temp.m_values[0] = this->m_values[1] * aVector[2] -
+                       this->m_values[2] * aVector[1];
+    temp.m_values[1] = this->m_values[2] * aVector[0] -
+                       this->m_values[0] * aVector[2];
+    temp.m_values[2] = this->m_values[0] * aVector[1] -
+                       this->m_values[1] * aVector[0];
 
     return temp;
   }

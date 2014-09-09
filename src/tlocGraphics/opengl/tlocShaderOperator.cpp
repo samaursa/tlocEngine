@@ -557,9 +557,11 @@ namespace tloc { namespace graphics { namespace gl {
             ? *a_uniform.GetValueAsArrayPtr<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
 
-          TLOC_ASSERT(m.IsActive(),
-            "TextureObject is NOT active - did you forget to call Activate()?");
-          GLint texImgUnit = m.GetTextureImageUnit();
+          GLint texImgUnit;
+          if (m.HasReservedTextureUnit())
+          { texImgUnit = m.GetReservedTexImageUnit(); }
+          else
+          { GetNextAvailableTextureImageUnit(texImgUnit); }
 
           ActivateTextureImageUnit(texImgUnit);
           m.Bind(p_texture_object::target::Tex2D::s_glParamName);

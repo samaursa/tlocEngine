@@ -171,8 +171,10 @@ namespace TestingEventManager
 
     // dispatching to selective listeners
     CHECK(tracker2->GetEventCount(currentEvent) == 0);
-    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()), 
-                    core_ds::MakeTuple(tracker2.get().get()));
+    EventManager::listeners_list toDispatch;
+    toDispatch.push_back(tracker2.get().get());
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()),
+                    toDispatch);
     CHECK(tracker2->GetEventCount(currentEvent) == 1);
     CHECK(globalTracker->GetEventCount(currentEvent) == 2);
     CHECK(tracker->GetEventCount(currentEvent) == 2);

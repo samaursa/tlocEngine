@@ -23,6 +23,8 @@ namespace tloc { namespace prefab { namespace graphics {
   Mesh::
     Mesh(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
+    , m_texCoords(true)
+    , m_normals(true)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -54,6 +56,9 @@ namespace tloc { namespace prefab { namespace graphics {
     for (vert_cont_itr itr = a_vertices.begin(), itrEnd = a_vertices.end();
          itr != itrEnd; ++itr)
     { meshPtr->AddVertex(*itr); }
+
+    meshPtr->SetTexCoordsEnabled(m_texCoords);
+    meshPtr->SetNormalsEnabled(m_normals);
 
     return meshPtr;
   }

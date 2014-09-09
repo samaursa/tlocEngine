@@ -27,16 +27,20 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_str::StringW                               str_type;
     typedef alignment::align_type                           align_type;
     typedef gfx_med::font_sptr                              font_ptr;
+    typedef tl_float                                        real_type;
 
   public:
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(BufferArgW, Set, m_text);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(BufferArgW, Set, m_text);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, Get, m_text);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(font_ptr, GetFont, m_font);
-    TLOC_DECL_AND_DEF_SETTER(font_ptr, SetFont, m_font);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(font_ptr, SetFont, m_font);
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(align_type, SetAlignment, m_alignment);
+    TLOC_DECL_AND_DEF_GETTER(real_type, GetVerticalKerning, m_verticalKerning);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(real_type, SetVerticalKerning, m_verticalKerning);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(align_type, SetAlignment, m_alignment);
     TLOC_DECL_AND_DEF_GETTER(align_type, GetAlignment, m_alignment);
 
   protected:
@@ -48,6 +52,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   private:
     str_type                m_text;
+    real_type               m_verticalKerning;
     align_type              m_alignment;
     font_ptr                m_font;
   };

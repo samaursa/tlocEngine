@@ -10,7 +10,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   Text_I::
     Text_I()
-    : m_alignment(alignment::k_align_left)
+    : m_verticalKerning(0)
+    , m_alignment(alignment::k_align_left)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -18,6 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
   Text_I::
     Text_I(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
     : m_text(a_text)
+    , m_verticalKerning(0)
     , m_alignment(a_alignment)
     , m_font(a_font)
   { }

@@ -3,8 +3,6 @@
 #include <tlocMath/tloc_math.h>
 #include <tlocPrefab/tloc_prefab.h>
 
-#include <tlocCore/memory/tlocLinkMe.cpp>
-
 #include <gameAssetsPath.h>
 
 using namespace tloc;
@@ -97,7 +95,6 @@ int TLOC_MAIN(int argc, char *argv[])
   // gl::Uniform supports quite a few types, including a TextureObject
   gfx_gl::texture_object_vso to;
   to->Initialize(png.GetImage());
-  to->Activate();
 
   gfx_gl::uniform_vso  u_to;
   u_to->SetName("s_texture").SetValueAs(*to);

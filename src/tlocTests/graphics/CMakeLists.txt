@@ -32,11 +32,11 @@ set(TLOC_TESTS_GRAPHICS_ASSETS
 set(TLOC_CURRENT_EXEC_NAME tlocTestsGraphics)
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/FreeType/
+  ${TLOC_DEP_INSTALL_PATH}/include/FreeType/
   )
 
 link_directories(
-  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}

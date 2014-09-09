@@ -282,8 +282,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(DebugTransformRenderSystem);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(DebugTransformRenderSystem);
-
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vec3_cont_type);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vec4_cont_type);
+//TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(DebugTransformRenderSystem);
+//TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(DebugTransformRenderSystem);
+//
+//TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vec3_cont_type);
+//TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vec4_cont_type);

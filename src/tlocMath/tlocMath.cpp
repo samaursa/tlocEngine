@@ -30,9 +30,9 @@ namespace tloc
   template <typename T>
   const T Math<T>::RAD_TO_DEG       = (T)(180.0f/Math<T>::PI);
   template <typename T>
-  const T Math<T>::LOGN_2           = Math<T>::Log(2.0f);
+  const T Math<T>::LOGN_2           = math::Log(2.0f);
   template <typename T>
-  const T Math<T>::LOGN_10          = Math<T>::Log(10.0f);
+  const T Math<T>::LOGN_10          = math::Log(10.0f);
   template <typename T>
   const T Math<T>::INV_LOGN_2       = 1.0f / Math<T>::LOGN_2;
   template <typename T>

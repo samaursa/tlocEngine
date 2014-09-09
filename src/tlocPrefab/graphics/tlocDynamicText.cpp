@@ -17,6 +17,7 @@ namespace tloc { namespace prefab { namespace graphics {
     DynamicText(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_alignment(gfx_cs::alignment::k_align_left)
+    , m_verticalKern(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -34,7 +35,12 @@ namespace tloc { namespace prefab { namespace graphics {
       = m_compPoolMgr->GetOrCreatePool<gfx_cs::DynamicText>();
 
     st_pool::iterator itrSt = stPool->GetNext();
-    (*itrSt)->SetValue(MakeShared<gfx_cs::DynamicText>(a_text, a_font, m_alignment));
+
+    gfx_cs::dynamic_text_sptr text = 
+      MakeShared<gfx_cs::DynamicText>(a_text, a_font, m_alignment);
+    text->SetVerticalKerning(m_verticalKern);
+
+    (*itrSt)->SetValue(text);
 
     return *(*itrSt)->GetValuePtr();
   }

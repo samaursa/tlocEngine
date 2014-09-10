@@ -42,11 +42,13 @@ if(TLOC_COMPILER_MSVC)
         PROPERTIES
         FOLDER tlocTests
         )
-      # Make tlocVersion and tlocVersionTool as dependencies for all projects
-      add_dependencies(${testProj}
-        tlocVersion
-        tlocVersionTool
-        )
+      if(NOT TLOC_ENGINE_DISTRIBUTION_BUILD)
+        # Make tlocVersion and tlocVersionTool as dependencies for all projects
+        add_dependencies(${testProj}
+          tlocVersion
+          tlocVersionTool
+          )
+      endif()
     else()
       message("Test project ${testProj} not generated successfully.")
     endif()

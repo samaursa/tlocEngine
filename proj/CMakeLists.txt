@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 
 #--------------------------------------------------------------------------
-# Project name
-project(${TLOC_PROJECT_NAME})
-
-#--------------------------------------------------------------------------
 # User should NOT adjust anything beyond this point
 set(TLOC_PROJECT_NAME "game" CACHE STRING "The name of your project goes here")
+
+#--------------------------------------------------------------------------
+# Project name
+project(${TLOC_PROJECT_NAME})
 
 set(internal_FIXME "FIXME!")
 

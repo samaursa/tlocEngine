@@ -12,7 +12,7 @@ set(internal_FIXME "FIXME!")
 # Install function for libraries
 
 function(tloc_install_library target_name include_folder)
-  if(TLOC_INCLUDE_FULL_SOURCE)
+  if(TLOC_DISTRIBUTION_FULL_SOURCE)
     INSTALL(DIRECTORY "${TLOC_ENGINE_PATH}/src/${include_folder}" 
       DESTINATION "${TLOC_ENGINE_INSTALL_PATH}/include" 
       FILES_MATCHING PATTERN "*.h" PATTERN "*.cpp")
@@ -35,10 +35,8 @@ list(GET p2list 0 TLOC_BUILD_FOLDER_NAME)
 
 set(TLOC_ENGINE_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
 set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine")
-set(TLOC_ENGINE_DISTRIBUTION_BUILD FALSE CACHE BOOL "Distribution builds do not increment version numbers upon builds")
 set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The tloc dependency INSTALL path goes here.")
 set(TLOC_INCLUDE_TESTS TRUE CACHE BOOL "Include tests in the project.")
-set(TLOC_INCLUDE_FULL_SOURCE TRUE CACHE BOOL "Include full source, including opt.inl.h and .cpp files.")
 set(TLOC_ENABLE_MEMORY_TRACKING TRUE CACHE BOOL "Disabling the tracker will increase debugging performance. Tracker is ALWAYS DISABLED in Release.")
 
 # Variables to check for ${internal_FIXEM}
@@ -66,11 +64,6 @@ file(COPY ${TLOC_ENGINE_PATH}/platform/
 
 #------------------------------------------------------------------------------
 # Copy other source files
-
-file(COPY ${TLOC_ENGINE_PATH}/src/3rdParty
-  DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/include/
-  FILES_MATCHING PATTERN "*.*"
-  )
 
 file(COPY ${TLOC_ENGINE_PATH}/src/tlocTests
   DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/include/

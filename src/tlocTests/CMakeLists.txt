@@ -42,7 +42,7 @@ if(TLOC_COMPILER_MSVC)
         PROPERTIES
         FOLDER tlocTests
         )
-      if(NOT TLOC_ENGINE_DISTRIBUTION_BUILD)
+      if(NOT DISTRIBUTION_BUILD)
         # Make tlocVersion and tlocVersionTool as dependencies for all projects
         add_dependencies(${testProj}
           tlocVersion

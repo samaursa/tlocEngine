@@ -29,7 +29,7 @@ if (TLOC_INCLUDE_TESTS)
 endif()
 
 # Add the version tool - currently DISABLED for APPLE due to iOS builds
-if(NOT TLOC_PLATFORM_IOS AND NOT TLOC_ENGINE_DISTRIBUTION_BUILD)
+if(NOT TLOC_PLATFORM_IOS AND NOT DISTRIBUTION_BUILD)
   add_subdirectory(tlocVersion)
 
   # Make tlocVersion and tlocVersionTool as dependencies for all projects
@@ -66,15 +66,17 @@ endif()
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
 
-if(NOT TLOC_ENGINE_DISTRIBUTION_BUILD)
+if(NOT DISTRIBUTION_BUILD)
   SET(ENGINE_ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets/)
 else()
   SET(ENGINE_ASSETS_PATH "../../assets/")
 
-  file(COPY ${TLOC_ENGINE_PATH}/assets
-    DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/
-    FILES_MATCHING PATTERN "*.*"
-    )
+  add_custom_target(tlocAssetsCopier ALL)
+  add_custom_command(TARGET tlocAssetsCopier POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${TLOC_ENGINE_PATH}/assets"
+      "${TLOC_ENGINE_INSTALL_PATH}/assets")
+    
 endif()
 
 FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "

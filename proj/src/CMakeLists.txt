@@ -146,6 +146,20 @@ message(STATUS "-- Tests -- DONE")
 
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
+
+if(NOT DISTRIBUTION_BUILD)
+  SET(ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets/)
+else()
+  SET(ASSETS_PATH "../../assets/")
+
+  add_custom_target(tlocAssetsCopier ALL)
+  add_custom_command(TARGET tlocAssetsCopier POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_SOURCE_DIR}/assets"
+      "${USER_INSTALL_PATH}/assets")
+
+endif()
+
 FILE(WRITE ${USER_ASSETS_PATH} "
 #pragma once
 
@@ -158,13 +172,13 @@ FILE(WRITE ${USER_ASSETS_PATH} "
 # import <Foundation/Foundation.h>
 #endif
 
-#define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+#define TLOC_ASSETS_PATH \"${ASSETS_PATH}\"
 
 #if defined(TLOC_OS_WIN)
 
 inline const char* GetAssetsPath()
 {
-  static const char* assetPath = \"${CMAKE_SOURCE_DIR}/assets/\";
+static const char* assetPath = \"${ASSETS_PATH}\";
   return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)

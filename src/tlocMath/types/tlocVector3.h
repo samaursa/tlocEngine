@@ -110,8 +110,4 @@ namespace tloc { namespace math { namespace types {
 
 };};};
 
-#ifdef TLOC_FULL_SOURCE
-#include "tlocVector3.inl.h"
-#endif
-
 #endif

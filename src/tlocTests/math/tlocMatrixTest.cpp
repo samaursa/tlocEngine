@@ -1,10 +1,8 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix.h>
-#include <tlocMath/types/tlocMatrix.inl.h>
-
 #include <tlocMath/types/tlocVector3.h>
-#include <tlocMath/types/tlocVector3.inl.h>
+#include <tlocMath/types/tlocVector4.h>
 
 namespace TestingMatrix
 {

@@ -69,6 +69,12 @@ file(COPY ${TLOC_ENGINE_PATH}/src/3rdParty
   )
 
 #------------------------------------------------------------------------------
+# Copy the license file
+
+file(COPY ${TLOC_ENGINE_PATH}/LICENSE.pdf
+  DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/)
+
+#------------------------------------------------------------------------------
 # Set binary build directories
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${TLOC_ENGINE_INSTALL_PATH}/lib)

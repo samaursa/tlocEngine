@@ -1,5 +1,6 @@
 #include "tloc_smart_ptr.h"
 #include "tloc_smart_ptr.inl.h"
+#include "tloc_smart_ptr.opt.inl.h"
 
 using namespace tloc;
 

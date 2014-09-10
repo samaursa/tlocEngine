@@ -679,7 +679,7 @@ namespace tloc { namespace math { namespace types {
   {
     const vec_type newDir = a_direction;
 
-    TLOC_ASSERT(math::IsEqual<value_type>(math::Abs(newDir.Dot(a_up)), 1.0f) == false,
+    TLOC_ASSERT(newDir.IsParallel(a_up) == false,
       "a_direction is parallel to a_up. Cannot LookAt() specified direction.");
 
     const vec_type left = this->GetCol(0);

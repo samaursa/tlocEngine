@@ -62,6 +62,7 @@ namespace tloc { namespace math { namespace types {
     using base_type::operator[];
     using base_type::Length;
     using base_type::LengthSquared;
+    using base_type::IsParallel;
 
   public:
     static const this_type ZERO;

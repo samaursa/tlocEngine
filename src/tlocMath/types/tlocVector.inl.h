@@ -442,6 +442,14 @@ namespace tloc { namespace math { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <VECTOR_TEMP>
+  bool
+    Vector_TI<VECTOR_PARAMS>::
+    IsParallel(const this_type& a_vector) const
+  { return IsEqual<value_type>(math::Abs(Dot(a_vector)), 1.0f); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <VECTOR_TEMP>
   VECTOR_TYPE::this_type
     Vector_TI<VECTOR_PARAMS>::
     Midpoint(const this_type& a_vector) const

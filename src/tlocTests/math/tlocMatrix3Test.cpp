@@ -393,4 +393,45 @@ namespace TestingMatrix3
                       -0.70710677f, 0.70710677f,           0);
     CHECK(a.Determinant() == Approx(1.0f));
   }
+
+  TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/LookAt", "")
+  {
+    using namespace math_t;
+    a.MakeIdentity();
+
+    SECTION("LookAt() default up", "")
+    {
+      a.Orient(Mat3f32::dir(Vec3f32(1, 0, 0)));
+
+      Vec3f32 left = a.GetCol(0);
+      Vec3f32 up = a.GetCol(1);
+      Vec3f32 dir = a.GetCol(2);
+
+      CHECK(dir[0] == Approx(1.0f));
+      CHECK(up[1] == Approx(1.0f));
+      CHECK(left[2] == Approx(-1.0f));
+    }
+
+    SECTION("LookAt() +x up", "")
+    {
+      a.Orient( Mat3f32::dir(Vec3f32(0, 1, 0)), Mat3f32::up(Vec3f32(1, 0, 0)) );
+
+      Vec3f32 left = a.GetCol(0);
+      Vec3f32 up = a.GetCol(1);
+      Vec3f32 dir = a.GetCol(2);
+
+      CHECK(dir[1] == Approx(1.0f));
+      CHECK(up[0] == Approx(1.0f));
+      CHECK(left[2] == Approx(1.0f));
+    }
+
+    SECTION("LookAt() Assert test", "")
+    {
+      TLOC_TEST_ASSERT
+      {
+        a.Orient(Mat3f32::dir(Vec3f32(0, 1, 0)) );
+      }
+      TLOC_TEST_ASSERT_CHECK();
+    }
+  }
 };

@@ -663,6 +663,36 @@ namespace tloc { namespace math { namespace types {
     *this = Mul(matY.Mul(matZ));
   }
 
+  template <MATRIX_3_TEMP>
+  void
+    Matrix_T<MATRIX_3_PARAMS>::
+    Orient(dir a_direction)
+  {
+    // assuming that the column vectors are LUD
+    Orient(a_direction, up( this->GetCol(1).ConvertTo<vec_type>() ) );
+  }
+
+  template <MATRIX_3_TEMP>
+  void
+    Matrix_T<MATRIX_3_PARAMS>::
+    Orient(dir a_direction, up a_up)
+  {
+    const vec_type newDir = a_direction;
+
+    TLOC_ASSERT(newDir.IsParallel(a_up) == false,
+      "a_direction is parallel to a_up. Cannot LookAt() specified direction.");
+
+    const vec_type left = this->GetCol(0);
+    const vec_type up   = a_up;
+
+    vec_type newLeft = up.Cross(newDir);
+    vec_type newUp   = newDir.Cross(newLeft);
+
+    this->SetCol(0, newLeft);
+    this->SetCol(1, newUp);
+    this->SetCol(2, newDir);
+  }
+
   //------------------------------------------------------------------------
   // Helper functions
 

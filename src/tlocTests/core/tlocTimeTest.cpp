@@ -9,7 +9,7 @@
 #include<time.h>
 
 #include <tlocCore/time/tlocTime.h>
-#include <tlocCore/time/tlocTime.inl.h>
+#include <tlocCore/time/tlocTime.opt.inl.h>
 
 namespace TestingTime
 {

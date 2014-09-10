@@ -1,5 +1,6 @@
 #include "tlocString.h"
 #include "tlocString.inl.h"
+#include "tlocString.opt.inl.h"
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
@@ -76,6 +77,27 @@ namespace tloc { namespace core { namespace string {
                      0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60,
                      0x7B, 0x7C, 0x7D, 0x7E, NULL};
   String g_punctStr(g_punct);
+
+  // -----------------------------------------------------------------------
+  // Explicitly instantiate the operators for our string types
+
+  template String operator+ (const String& a_lhs, const String& a_rhs);
+  template String operator+ (const char8* a_lhs, const String& a_rhs);
+  template String operator+ (char8 a_lhs, const String& a_rhs);
+  template String operator+ (const String& a_lhs, const char8* a_rhs);
+  template String operator+ (const String& a_lhs, char8 a_rhs);
+
+  template StringW operator+ (const StringW& a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const char32* a_lhs, const StringW& a_rhs);
+  template StringW operator+ (char32 a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const StringW& a_lhs, const char32* a_rhs);
+  template StringW operator+ (const StringW& a_lhs, char32 a_rhs);
+
+  // -----------------------------------------------------------------------
+  // Explicitly instantiate string
+
+  template StringBase<char8>;
+  template StringBase<char32>;
 
   // ------------------------------------------------------------------------
   // specialized function definitions

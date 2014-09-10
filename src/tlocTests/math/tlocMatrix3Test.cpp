@@ -424,5 +424,14 @@ namespace TestingMatrix3
       CHECK(up[0] == Approx(1.0f));
       CHECK(left[2] == Approx(1.0f));
     }
+
+    SECTION("LookAt() Assert test", "")
+    {
+      TLOC_TEST_ASSERT
+      {
+        a.LookAt(Mat3f32::dir(Vec3f32(0, 1, 0)) );
+      }
+      TLOC_TEST_ASSERT_CHECK();
+    }
   }
 };

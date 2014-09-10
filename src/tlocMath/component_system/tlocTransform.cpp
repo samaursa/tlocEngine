@@ -96,8 +96,8 @@ namespace tloc { namespace math { namespace component_system {
 
   template <TRANSFORM_TEMPS>
   void
-    Transform_T<TRANSFORM_PARAMS>
-    ::SetPosition(const position_type& a_pos)
+    Transform_T<TRANSFORM_PARAMS>::
+    SetPosition(const position_type& a_pos)
   {
     this->SetUpdateRequired(true);
     m_transformation[12] = a_pos[0];
@@ -126,8 +126,8 @@ namespace tloc { namespace math { namespace component_system {
 
   template <TRANSFORM_TEMPS>
   void
-    Transform_T<TRANSFORM_PARAMS>
-    ::SetTransformation(const transform_type& a_tr, const scale_type& a_scale)
+    Transform_T<TRANSFORM_PARAMS>::
+    SetTransformation(const transform_type& a_tr, const scale_type& a_scale)
   {
     m_transformation = a_tr;
     m_scale = a_scale;
@@ -135,8 +135,8 @@ namespace tloc { namespace math { namespace component_system {
 
   template <TRANSFORM_TEMPS>
   TRANSFORM_TYPE::this_type
-    Transform_T<TRANSFORM_PARAMS>
-    ::Invert() const
+    Transform_T<TRANSFORM_PARAMS>::
+    Invert() const
   {
     // from: http://stackoverflow.com/a/2625420/368599
     //inv(A) = [ inv(M)   -inv(M) * b ]
@@ -149,6 +149,29 @@ namespace tloc { namespace math { namespace component_system {
     posV = (rotMat * -1) * posV;
 
     return this_type(position_type(posV), orientation_type(rotMat));
+  }
+
+  template <TRANSFORM_TEMPS>
+  void
+    Transform_T<TRANSFORM_PARAMS>::
+    LookAt(position_type a_target)
+  {
+    const position_type newDir = a_target - 
+      m_transformation.GetCol(3).ConvertTo<position_type>();
+
+    orientation_type ori = m_transformation.ConvertTo<orientation_type>();
+
+    if (newDir.IsParallel(position_type::UNIT_Y) == false)
+    { ori.Orient(orientation_type::dir(newDir)); }
+    else // parallel
+    {
+      const position_type newUp = 
+        ori.GetCol(2).ConvertTo<position_type>().Inverse();
+      ori.Orient(orientation_type::dir(newDir), 
+                 orientation_type::up(newUp));
+    }
+
+    m_transformation.ConvertFrom(ori, core_ds::p_tuple::overflow_same());
   }
 
   //------------------------------------------------------------------------

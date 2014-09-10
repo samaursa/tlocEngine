@@ -66,6 +66,7 @@ namespace tloc { namespace math { namespace component_system {
                                         scale_type::ONE);
 
     this_type         Invert() const;
+    void              LookAt(position_type a_target);
 
     TLOC_DECL_AND_DEF_GETTER(scale_type, GetScale, m_scale);
     TLOC_DECL_AND_DEF_SETTER(scale_type, SetScale, m_scale);

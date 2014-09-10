@@ -65,6 +65,18 @@ endif()
 
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
+
+if(NOT TLOC_ENGINE_DISTRIBUTION_BUILD)
+  SET(ENGINE_ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets/)
+else()
+  SET(ENGINE_ASSETS_PATH "../../assets/")
+
+  file(COPY ${TLOC_ENGINE_PATH}/assets
+    DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/
+    FILES_MATCHING PATTERN "*.*"
+    )
+endif()
+
 FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
 #pragma once
 
@@ -77,13 +89,13 @@ FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
 # import <Foundation/Foundation.h>
 #endif
 
-#define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+#define TLOC_ASSETS_PATH \"${ENGINE_ASSETS_PATH}\"
 
 #if defined(TLOC_OS_WIN)
 
 inline const char* GetAssetsPath()
 {
-  static const char* assetPath = \"${CMAKE_SOURCE_DIR}/assets/\";
+  static const char* assetPath = \"${ENGINE_ASSETS_PATH}\";
   return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)

@@ -666,16 +666,16 @@ namespace tloc { namespace math { namespace types {
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    LookAt(dir a_direction)
+    Orient(dir a_direction)
   {
     // assuming that the column vectors are LUD
-    LookAt(a_direction, up( this->GetCol(1).ConvertTo<vec_type>() ) );
+    Orient(a_direction, up( this->GetCol(1).ConvertTo<vec_type>() ) );
   }
 
   template <MATRIX_3_TEMP>
   void
     Matrix_T<MATRIX_3_PARAMS>::
-    LookAt(dir a_direction, up a_up)
+    Orient(dir a_direction, up a_up)
   {
     const vec_type newDir = a_direction;
 

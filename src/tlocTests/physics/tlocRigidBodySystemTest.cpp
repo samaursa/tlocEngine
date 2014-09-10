@@ -39,8 +39,9 @@ namespace TestingRigidBodySystem
     typedef core_cs::event_manager_vso          event_manager_vso;
     typedef core_cs::entity_manager_vso         entity_manager_vso;
     typedef core_cs::Entity                     entity_type;
+    typedef core_cs::EntityManager::Params      params_type;
 
-    typedef math_t::Rectf32                     rect_shape_type;
+    typedef math_t::Rectf32_c                   rect_shape_type;
     typedef math_t::Circlef32                   circle_shape_type;
     typedef math_cs::Transform                  transform_type;
 
@@ -125,6 +126,7 @@ TLOC_DEF_TYPE(TestingRigidBodySystem::WorldContactCallback);
 
 namespace TestingRigidBodySystem
 {
+  using namespace core_sptr;
 
   TEST_CASE_METHOD(rb_sys_fixture,
                    "Physics/component_system/RigidBodySystem/General", "")
@@ -141,9 +143,10 @@ namespace TestingRigidBodySystem
     physicsMgr.Register(&myWorldContactCallback);
 
     event_manager_vso evntMgr;
-    entity_manager_vso entityMgr(evntMgr.get());
+    entity_manager_vso entityMgr( MakeArgs(evntMgr.get()) );
 
-    transform_type transformComponent;
+    SharedPtr<transform_type> transformComponent = 
+      MakeShared<transform_type>();
 
     rigid_body_system rigidBodySys(evntMgr.get(), entityMgr.get(), &physicsMgr.GetWorld());
 
@@ -155,72 +158,71 @@ namespace TestingRigidBodySystem
     core_cs::entity_vptr rbStaticRectEntity = entityMgr->CreateEntity();
 
     rigid_body_def_sptr rbDef(new rigid_body_def_type);
-    rigid_body_component rbStaticRectComponent(rbDef);
+    SharedPtr<rigid_body_component> rbStaticRectComponent = 
+      MakeShared<rigid_body_component>(rbDef);
 
     rect_shape_type rectShape(rect_shape_type::width(20.0f),
                               rect_shape_type::height(2.0f) );
 
     rigid_body_shape_def_type rbRectShape(rectShape);
-    rigid_body_shape_component rbShapeComponent(rbRectShape);
+    SharedPtr<rigid_body_shape_component> rbShapeComponent = 
+      MakeShared<rigid_body_shape_component>(rbRectShape);
 
-    entityMgr->InsertComponent(rbStaticRectEntity,
-                               math_cs::transform_vptr(&transformComponent));
-    entityMgr->InsertComponent(rbStaticRectEntity,
-                               rigid_body_vptr(&rbStaticRectComponent));
-    entityMgr->InsertComponent(rbStaticRectEntity,
-                               rigid_body_shape_vptr(&rbShapeComponent));
+    entityMgr->InsertComponent(params_type(rbStaticRectEntity, transformComponent));
+    entityMgr->InsertComponent(params_type(rbStaticRectEntity, rbStaticRectComponent));
+    entityMgr->InsertComponent(params_type(rbStaticRectEntity, rbShapeComponent));
 
     //------------------------------------------------------------------------
     // Create a static rigid body entity (Circle)
     core_cs::entity_vptr rbStaticCircleEntity = entityMgr->CreateEntity();
 
-    transform_type transformComponent1;
+    SharedPtr<transform_type> transformComponent1 = 
+      MakeShared<transform_type>();
 
     const float circleStartPosition = 3.0f;
 
     rigid_body_def_sptr rbDef1(new rigid_body_def_type);
     rbDef1->SetPosition(vec_type(-2.0f, circleStartPosition));
-    rigid_body_component rbStaticComponent(rbDef1);
+    SharedPtr<rigid_body_component> rbStaticComponent = 
+      MakeShared<rigid_body_component>(rbDef1);
 
     circle_shape_type circleShape;
     circleShape.SetRadius(1.0f);
 
     rigid_body_shape_def_type rbCircleShape(circleShape);
-    rigid_body_shape_component rbShapeComponent1(rbCircleShape);
+    SharedPtr<rigid_body_shape_component> rbShapeComponent1 = 
+      MakeShared<rigid_body_shape_component>(rbCircleShape);
 
-    entityMgr->InsertComponent(rbStaticCircleEntity,
-                               math_cs::transform_vptr(&transformComponent1));
-    entityMgr->InsertComponent(rbStaticCircleEntity,
-                               rigid_body_vptr(&rbStaticComponent));
-    entityMgr->InsertComponent(rbStaticCircleEntity,
-                               rigid_body_shape_vptr(&rbShapeComponent1));
+    entityMgr->InsertComponent(params_type(rbStaticCircleEntity, transformComponent1));
+    entityMgr->InsertComponent(params_type(rbStaticCircleEntity, rbStaticComponent));
+    entityMgr->InsertComponent(params_type(rbStaticCircleEntity, rbShapeComponent1));
 
     //------------------------------------------------------------------------
     // Create a dynamic rigid body (Circle)
     core_cs::entity_vptr rbDynamicCircleEntity = entityMgr->CreateEntity();
 
-    transform_type transformComponent2;
+    SharedPtr<transform_type> transformComponent2 = 
+      MakeShared<transform_type>();
 
     rigid_body_def_sptr rbDef2(new rigid_body_def_type);
     rbDef2->SetType<box2d::p_rigid_body::DynamicBody>();
     rbDef2->SetPosition(vec_type(2.0f, circleStartPosition));
 
-    rigid_body_component rbDynamicComponent(rbDef2);
+    SharedPtr<rigid_body_component> rbDynamicComponent = 
+      MakeShared<rigid_body_component>(rbDef2);
 
-    rigid_body_shape_component rbShapeComponent2(rbCircleShape);
+    SharedPtr<rigid_body_shape_component> rbShapeComponent2 = 
+      MakeShared<rigid_body_shape_component>(rbCircleShape);
 
     ComponentContactCallback myComponentContactCallback;
-    rigid_body_listener_component
-      rbListenerComponent( (comp_contact_callback_vptr(&myComponentContactCallback)) );
+    SharedPtr<rigid_body_listener_component>
+      rbListenerComponent = MakeShared<rigid_body_listener_component>
+      ( VirtualPtr<ComponentContactCallback>(&myComponentContactCallback) );
 
-    entityMgr->InsertComponent(rbDynamicCircleEntity,
-                               math_cs::transform_vptr(&transformComponent2));
-    entityMgr->InsertComponent(rbDynamicCircleEntity,
-                               rigid_body_vptr(&rbDynamicComponent));
-    entityMgr->InsertComponent(rbDynamicCircleEntity,
-                               rigid_body_shape_vptr(&rbShapeComponent2));
-    entityMgr->InsertComponent(rbDynamicCircleEntity,
-                               phys_cs::rigid_body_listener_vptr(&rbListenerComponent));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, transformComponent2));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, rbDynamicComponent));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, rbShapeComponent2));
+    entityMgr->InsertComponent(params_type(rbDynamicCircleEntity, rbListenerComponent));
 
     //------------------------------------------------------------------------
     CHECK(rigidBodySys.Initialize() == ErrorSuccess);
@@ -230,7 +232,7 @@ namespace TestingRigidBodySystem
     rigidBodySys.ProcessActiveEntities();
 
     vec_type position;
-    rbDynamicComponent.GetRigidBody().GetPosition(position);
+    rbDynamicComponent->GetRigidBody().GetPosition(position);
     CHECK(position[1] == Approx(3.0f));
 
     CHECK(myWorldContactCallback.m_numContactBegin == 0);
@@ -255,7 +257,7 @@ namespace TestingRigidBodySystem
       rigidBodyListenerSys.ProcessActiveEntities();
 
       previousPosition = position;
-      rbDynamicComponent.GetRigidBody().GetPosition(position);
+      rbDynamicComponent->GetRigidBody().GetPosition(position);
 
       if((position[1] < previousPosition[1]) == false)
       { deltaPTest = false; break; }
@@ -265,7 +267,7 @@ namespace TestingRigidBodySystem
       tl_float calculatedPositionY =
         circleStartPosition + 0.5f * gravityY * time * time;
 
-      if(Mathf::Approx(calculatedPositionY, position[1], tolerance) == false)
+      if(math::Approx(calculatedPositionY, position[1], tolerance) == false)
       { actualPTest = false; break; }
     }
     CHECK(deltaPTest);
@@ -282,7 +284,7 @@ namespace TestingRigidBodySystem
       rigidBodyListenerSys.ProcessActiveEntities();
 
       previousPosition = position;
-      rbDynamicComponent.GetRigidBody().GetPosition(position);
+      rbDynamicComponent->GetRigidBody().GetPosition(position);
       CHECK(position[1] >= previousPosition[1]);
     }
 

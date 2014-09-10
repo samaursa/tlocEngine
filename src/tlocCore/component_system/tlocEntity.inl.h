@@ -74,7 +74,7 @@ namespace tloc { namespace core { namespace component_system {
     m_index = a_index;
   }
 
-  TL_I void Entity::InsertComponent(component_vptr a_component)
+  TL_I void Entity::InsertComponent(component_sptr a_component)
   {
     component_type ctype = a_component->GetType();
 

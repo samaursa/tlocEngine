@@ -5,6 +5,7 @@
 #include <tlocCore/types/tlocAny.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/types/tlocTemplateParams.h>
+#include <tlocCore/types/tlocAny.h>
 
 #include "tlocInputManager.h"
 #include "tlocInputImpl.h"
@@ -21,8 +22,8 @@ namespace tloc { namespace input { namespace priv {
   // TODO: Make InputDeviceInfo NOT use void*
   struct InputDeviceInfo
   {
-    bool  m_available;
-    void* m_devicePtr;
+    bool        m_available;
+    core_t::Any m_devicePtr;
   };
 
   template <typename T_ParentInputManager>
@@ -66,7 +67,8 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(param_options::value_type a_params);
+    core_sptr::VirtualPtr<T_InputObject>
+      CreateHID(param_options::value_type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.
@@ -86,7 +88,8 @@ namespace tloc { namespace input { namespace priv {
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject* GetHID(size_type a_index);
+    core_sptr::VirtualPtr<T_InputObject>
+      GetHID(size_type a_index);
 
     ///-------------------------------------------------------------------------
     /// Get the number of a given HID type.

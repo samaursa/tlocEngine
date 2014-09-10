@@ -3,4 +3,6 @@
 
 #include <tlocPrefab/tlocPrefabBase.h>
 
+#include <tlocPrefab/math/tlocTransform.h>
+
 #endif

@@ -23,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   SceneNode::
     SceneNode()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "SceneNode")
     , m_entity(nullptr)
     , m_parent(nullptr)
     , m_level(0)
@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   SceneNode::
     SceneNode(entity_ptr a_entity)
-    : base_type(k_component_type)
+    : base_type(k_component_type, "SceneNode")
     , m_entity(a_entity)
     , m_parent(nullptr)
     , m_level(0)
@@ -56,7 +56,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
 
     a_childNode->SetHierarchyUpdateRequired(true);
-    a_childNode->m_parent = this;
+    a_childNode->m_parent.reset(this);
     m_children.push_back(a_childNode);
 
     return *this;
@@ -251,6 +251,5 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneNode);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(SceneNode);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SceneNode);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(SceneNode);

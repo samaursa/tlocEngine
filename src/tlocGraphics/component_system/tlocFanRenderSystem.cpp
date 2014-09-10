@@ -4,6 +4,7 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -46,8 +47,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type
     FanRenderSystem::
-    InitializeEntity(entity_ptr)
-  { return ErrorSuccess; }
+    InitializeEntity(entity_ptr a_ent)
+  { 
+    base_type::InitializeEntity(a_ent);
+    return ErrorSuccess;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -67,8 +71,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (a_ent->HasComponent(components::material))
     {
-      gfx_cs::material_vptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
-      gfx_cs::fan_vptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
+      gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
+      gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
       //------------------------------------------------------------------------
       // Prepare the Fan
@@ -83,7 +87,7 @@ namespace tloc { namespace graphics { namespace component_system {
       const size_type numSides = fanPtr->GetNumSides();
       const f32 angleInterval = 360.0f/numSides;
 
-      math_cs::transform_vptr posPtr = a_ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_sptr posPtr = a_ent->GetComponent<math_cs::Transform>();
 
       Mat4f32 tMatrix;
       if (a_ent->HasComponent(components::scene_node))
@@ -124,7 +128,7 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         typedef gfx_cs::TextureCoords::set_index    set_index;
 
-        gfx_cs::texture_coords_vptr texCoordPtr =
+        gfx_cs::texture_coords_sptr texCoordPtr =
           a_ent->GetComponent<gfx_cs::TextureCoords>();
 
         if (texCoordPtr->GetNumSets())
@@ -147,12 +151,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
       {
         if (m_shaderPtr)
         { m_shaderPtr->Disable(); }
 
-        sp->Enable();
+        if (sp->Enable().Failed())
+        { 
+          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+            << " could not be enabled.";
+          return;
+        }
+
         m_shaderPtr = sp;
 
         typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
@@ -169,11 +179,11 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       // Add the mvp
-      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+      if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
+      { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      m_so_fan->PrepareAllAttributes(*m_shaderPtr);
-      m_so_fan->EnableAllAttributes(*m_shaderPtr);
+      if (m_so_fan->PrepareAllAttributes(*m_shaderPtr).Succeeded())
+      { m_so_fan->EnableAllAttributes(*m_shaderPtr); }
 
       glDrawArrays(GL_TRIANGLE_FAN, 0,
                    core_utils::CastNumber<GLsizei, tl_size>(numVertices));
@@ -186,13 +196,7 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem::
     Post_ProcessActiveEntities(f64)
   {
-    // No materials/entities may have been loaded initially
-    // (m_shaderPtr would have remained NULL)
-    if (m_shaderPtr)
-    {
-      m_shaderPtr->Disable();
-      m_shaderPtr.reset();
-    }
+    m_shaderPtr.reset();
 
     base_type::Post_ProcessActiveEntities(f64());
   }
@@ -207,5 +211,7 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FanRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(FanRenderSystem);
+
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec2_cont_type);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec3_cont_type);

@@ -84,7 +84,7 @@ namespace TestingShaderProgram
       WindowSettings("Atom & Eve"));
 
     // Initialize glew
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader vShader;
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);
@@ -120,7 +120,7 @@ namespace TestingShaderProgram
     win.Create(graphics_mode(graphics_mode::Properties(1, 1)),
       WindowSettings("Atom & Eve"));
 
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     gl::VertexShader vShader;
     REQUIRE(vShader.Load(vShaderStr) == ErrorSuccess);

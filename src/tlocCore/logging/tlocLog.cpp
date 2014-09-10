@@ -16,6 +16,7 @@ namespace tloc { namespace core { namespace logging {
   const char* Log_I::s_severityStr[Log_I::k_count] =
   {
     "Info",
+    "Success",
     "Debug",
     "Warning",
     "Error"
@@ -24,6 +25,7 @@ namespace tloc { namespace core { namespace logging {
   const char* Log_I::s_severityStrShort[Log_I::k_count] =
   {
     "I",
+    "S",
     "D",
     "W",
     "E"
@@ -71,6 +73,36 @@ namespace tloc { namespace core { namespace logging {
     operator<<(BufferArg a_string)
   {
     m_finalString += a_string;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
+    operator<<(BufferArgW a_string)
+  {
+    m_finalString += core_str::CharWideToAscii(a_string.GetPtr());
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
+    operator<<(char8 a_char)
+  {
+    m_finalString += a_char;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
+    operator<<(char32 a_wchar)
+  {
+    m_finalString += core_str::CharWideToAscii(a_wchar);
     return *this;
   }
 

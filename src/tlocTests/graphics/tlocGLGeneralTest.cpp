@@ -19,7 +19,7 @@ namespace TestingGLGeneral
     Window win;
     win.Create(g_mode(g_mode::Properties(1, 1)), WindowSettings("Blank"));
 
-    REQUIRE(gl::InitializePlatform() != common_error_types::error_initialize);
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
 
     CHECK(gl::Get<gl::p_get::CurrentProgram>() == 0);
     CHECK(gl::Error().Succeeded());

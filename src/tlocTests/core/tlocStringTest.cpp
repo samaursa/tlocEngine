@@ -599,7 +599,7 @@ namespace TestingStrings
 
   TEST_CASE_METHOD(StringFixture, "Core/Strings/FreeFunctions/StrChr and StrRChr", "")
   {
-    SECTION("StrChr", "")
+    //SECTION("StrChr", "")
     {
       char str[] = "This is a sample string";
       char* pch;
@@ -619,7 +619,7 @@ namespace TestingStrings
       pch = core_str::StrChr(pch + 1, 's');
       CHECK( (pch == nullptr) );
     }
-    SECTION("StrRChr", "")
+    //SECTION("StrRChr", "")
     {
       char8 str[] = "This is a sample string";
       char8 * pch;
@@ -681,18 +681,38 @@ namespace TestingStrings
     char32 sentence1[] = L"This is a sentence.";
     char8  sentence2[] = "This is a sentence.";
 
+    //SECTION("char32 to char8", "")
     {
       char8 s1[256];
       tl_size retIndex = CharWideToAscii(s1, sentence1, 256);
       CHECK(StrCmp(sentence2, s1) == 0);
       CHECK(retIndex == 19);
+
+      CHECK(CharWideToAscii(L'A') == 'A');
     }
 
+    //SECTION("char8 to char32", "")
     {
       char32 s2[256];
       tl_size retIndex = CharAsciiToWide(s2, sentence2, 256);
       CHECK(StrCmp(sentence1, s2) == 0);
       CHECK(retIndex == 19);
+
+      CHECK(CharAsciiToWide('B') == L'B');
+    }
+
+    //SECTION("StringW to String", "")
+    {
+      String str = CharWideToAscii(StringW(sentence1));
+      CHECK(str.compare(sentence2) == 0);
+      CHECK(str.length() == 19);
+    }
+
+    //SECTION("String to StringW", "")
+    {
+      StringW str = CharAsciiToWide(String(sentence2));
+      CHECK(str.compare(sentence1) == 0);
+      CHECK(str.length() == 19);
     }
   }
 

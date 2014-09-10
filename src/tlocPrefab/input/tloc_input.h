@@ -3,4 +3,6 @@
 
 #include <tlocPrefab/tlocPrefabBase.h>
 
+#include <tlocPrefab/input/tlocArcBallControl.h>
+
 #endif

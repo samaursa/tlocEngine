@@ -317,7 +317,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
           m_modifier |= KeyboardEvent::Alt;
         }
 
-        m_parent.SendOnKeyPress( KeyboardEvent(kc) );
+        m_parent.SendOnKeyPress( KeyboardEvent(kc, m_modifier) );
         m_buffer[kc] = true;
 
       }
@@ -336,7 +336,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
           m_modifier &= ~KeyboardEvent::Alt;
         }
 
-        m_parent.SendOnKeyRelease( KeyboardEvent(kc) );
+        m_parent.SendOnKeyRelease( KeyboardEvent(kc, m_modifier) );
         m_buffer[kc] = false;
 
       }

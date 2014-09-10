@@ -44,10 +44,10 @@ namespace tloc { namespace graphics { namespace media {
 
   template <IMAGE_LOADER_TEMP>
   IMAGE_LOADER_TYPE::error_type ImageLoader_TI<IMAGE_LOADER_PARAMS>::
-    DoLoadImageFromMemory(const uchar8* a_buffer, dimention_type a_dim,
+    DoLoadImageFromMemory(const_color_ptr a_buffer, dimention_type a_dim,
                           size_type a_channels)
   {
-    return m_image.LoadFromMemory(a_buffer, a_dim, a_channels);
+    return m_image.Load(a_buffer, a_dim, a_channels);
   }
 
   //------------------------------------------------------------------------
@@ -68,6 +68,9 @@ namespace tloc { namespace graphics { namespace media {
     tl_uint lodePngErr = lodepng_decode32(&image, &width, &height,
                                           (unsigned const char*)fileCont.c_str(),
                                           (u32)fileCont.length());
+
+    core_sptr::VirtualPtr<uchar8> imgPtr(image);
+
     if (lodePngErr)
     {
       TLOC_LOG_GFX_ERR() << "lodepng_decode32 failed: " 
@@ -78,7 +81,7 @@ namespace tloc { namespace graphics { namespace media {
     {
       dimention_type dim =
         core_ds::Variadic<dimention_type::value_type, 2>(width, height);
-      res = DoLoadImageFromMemory(image, dim, 4);
+      res = DoLoadImageFromMemory(imgPtr, dim, 4);
     }
 
     free(image);

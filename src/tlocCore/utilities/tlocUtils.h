@@ -126,61 +126,87 @@ namespace tloc { namespace core { namespace utils {
   // doesn't give us the correct answer (for full usage, see tests)
   // -----------------------------------------------------------------------
   template <int T_CountInBits, bool T_CountZero = false>
-  struct EnumCounter
+  struct EnumCounter_T
   {
-    enum { result = 1 + EnumCounter<T_CountInBits / 2, T_CountZero>::result };
+    enum { result = 1 + EnumCounter_T<T_CountInBits / 2, T_CountZero>::result };
   };
 
   template <bool T_CountZero>
-  struct EnumCounter<0, T_CountZero>
+  struct EnumCounter_T<0, T_CountZero>
   {
     enum { result = 0 };
   };
 
   template <>
-  struct EnumCounter<1, false>
+  struct EnumCounter_T<1, false>
   {
     enum { result = 1 };
   };
 
   template <>
-  struct EnumCounter<1, true>
+  struct EnumCounter_T<1, true>
   {
     enum { result = 2 };
   };
+
+  TL_I tl_int
+    EnumCounter(tl_int a_countInBits, bool a_countZero = false)
+  {
+    if (a_countInBits == 0)
+    { return 0; }
+    else if (a_countInBits == 1)
+    { return a_countZero ? 2 : 1; }
+    else
+    {
+      return 1 + EnumCounter(a_countInBits / 2, a_countZero);
+    }
+  }
 
   // -----------------------------------------------------------------------
   // Enum to Index converter
 
   template <int T_Enum, bool T_IncludeZero = false, typename T_Dummy = DummyStruct>
-  struct EnumToIndex
+  struct EnumToIndex_T
   {
-    enum { result = 0 + EnumCounter<T_Enum / 2, T_IncludeZero>::result };
+    enum { result = 0 + EnumCounter_T<T_Enum / 2, T_IncludeZero>::result };
   };
 
   template <bool T_IncludeZero, typename T_Dummy>
-  struct EnumToIndex<0, T_IncludeZero, T_Dummy>
+  struct EnumToIndex_T<0, T_IncludeZero, T_Dummy>
   {
     TLOC_STATIC_ASSERT_FALSE(T_Dummy, Enum_cannot_be_converted_to_index_when_not_including_zero);
   };
 
   template <>
-  struct EnumToIndex<0, true>
+  struct EnumToIndex_T<0, true>
   {
     enum { result = 0 };
   };
 
   template <>
-  struct EnumToIndex<1, false>
+  struct EnumToIndex_T<1, false>
   {
     enum { result = 0 };
   };
 
   template <>
-  struct EnumToIndex<1, true>
+  struct EnumToIndex_T<1, true>
   {
     enum { result = 1 };
   };
+
+  TL_I tl_int
+    EnumToIndex(tl_int a_enum, bool a_includesZero = false)
+  {
+    if (a_enum == 0)
+    { return 0; }
+    else if (a_enum == 1)
+    { return a_includesZero ? 1 : 0; }
+    else
+    {
+      return 0 + EnumCounter(a_enum / 2, a_includesZero);
+    }
+  }
 
   // -----------------------------------------------------------------------
   // Used to prevent a struct or class from being initialized by declaring a

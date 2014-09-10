@@ -25,6 +25,13 @@ namespace tloc
 
     typedef T1 param_type_1;
 
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1)
+      : m_param1(p1)
+    { }
+
     param_type_1 m_param1;
   };
 
@@ -35,6 +42,14 @@ namespace tloc
 
     typedef T1 param_type_1;
     typedef T2 param_type_2;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2)
+      : m_param1(p1)
+      , m_param2(p2)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -48,6 +63,15 @@ namespace tloc
     typedef T1 param_type_1;
     typedef T2 param_type_2;
     typedef T3 param_type_3;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -63,6 +87,17 @@ namespace tloc
     typedef T2 param_type_2;
     typedef T3 param_type_3;
     typedef T4 param_type_4;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -80,6 +115,18 @@ namespace tloc
     typedef T3 param_type_3;
     typedef T4 param_type_4;
     typedef T5 param_type_5;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -99,6 +146,19 @@ namespace tloc
     typedef T4 param_type_4;
     typedef T5 param_type_5;
     typedef T6 param_type_6;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -121,6 +181,21 @@ namespace tloc
     typedef T5 param_type_5;
     typedef T6 param_type_6;
     typedef T7 param_type_7;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -145,6 +220,22 @@ namespace tloc
     typedef T6 param_type_6;
     typedef T7 param_type_7;
     typedef T8 param_type_8;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7, param_type_8 p8)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+      , m_param8(p8)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -171,6 +262,23 @@ namespace tloc
     typedef T7 param_type_7;
     typedef T8 param_type_8;
     typedef T9 param_type_9;
+
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7, param_type_8 p8, param_type_9 p9)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+      , m_param8(p8)
+      , m_param9(p9)
+    { }
 
     param_type_1  m_param1;
     param_type_2  m_param2;
@@ -200,6 +308,25 @@ namespace tloc
     typedef T9  param_type_9;
     typedef T10 param_type_10;
 
+    ParamList()
+    { }
+
+    ParamList(param_type_1 p1, param_type_2 p2, param_type_3 p3,
+              param_type_4 p4, param_type_5 p5, param_type_6 p6,
+              param_type_7 p7, param_type_8 p8, param_type_9 p9,
+              param_type_10 p10)
+      : m_param1(p1)
+      , m_param2(p2)
+      , m_param3(p3)
+      , m_param4(p4)
+      , m_param5(p5)
+      , m_param6(p6)
+      , m_param7(p7)
+      , m_param8(p8)
+      , m_param9(p9)
+      , m_param10(p10)
+    { }
+
     param_type_1    m_param1;
     param_type_2    m_param2;
     param_type_3    m_param3;
@@ -211,6 +338,130 @@ namespace tloc
     param_type_9    m_param9;
     param_type_10   m_param10;
   };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MakeParams
+
+  template <typename T1>
+  ParamList<T1>
+    MakeParams(const T1& a_param1)
+  {
+      return ParamList<T1>
+        (a_param1);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2>
+  ParamList<T1, T2>
+    MakeParams(const T1& a_param1, const T2& a_param2)
+  {
+      return ParamList<T1, T2>
+        (a_param1, a_param2);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3>
+  ParamList<T1, T2, T3>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3)
+  {
+      return ParamList<T1, T2, T3>
+        (a_param1, a_param2, a_param3);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4>
+  ParamList<T1, T2, T3, T4>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4)
+  {
+      return ParamList<T1, T2, T3, T4>
+        (a_param1, a_param2, a_param3, a_param4);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4, typename T5>
+  ParamList<T1, T2, T3, T4, T5>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4, const T5& a_param5)
+  {
+      return ParamList<T1, T2, T3, T4, T5>
+        (a_param1, a_param2, a_param3, a_param4, a_param5);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4, typename T5,
+    typename T6>
+    ParamList<T1, T2, T3, T4, T5, T6>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4, const T5& a_param5, const T6& a_param6)
+  {
+      return ParamList<T1, T2, T3, T4, T5, T6>
+        (a_param1, a_param2, a_param3, a_param4, a_param5,
+        a_param6);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4, typename T5,
+    typename T6, typename T7>
+    ParamList<T1, T2, T3, T4, T5, T6, T7>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4, const T5& a_param5, const T6& a_param6,
+    const T7& a_param7)
+  {
+      return ParamList<T1, T2, T3, T4, T5, T6, T7>
+        (a_param1, a_param2, a_param3, a_param4, a_param5,
+        a_param6, a_param7);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4, typename T5,
+    typename T6, typename T7, typename T8>
+    ParamList<T1, T2, T3, T4, T5, T6, T7, T8>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4, const T5& a_param5, const T6& a_param6,
+    const T7& a_param7, const T8& a_param8)
+  {
+      return ParamList<T1, T2, T3, T4, T5, T6, T7, T8>
+        (a_param1, a_param2, a_param3, a_param4, a_param5,
+        a_param6, a_param7, a_param8);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4, typename T5,
+    typename T6, typename T7, typename T8, typename T9>
+    ParamList<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4, const T5& a_param5, const T6& a_param6,
+    const T7& a_param7, const T8& a_param8, const T9& a_param9)
+  {
+      return ParamList<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+        (a_param1, a_param2, a_param3, a_param4, a_param5,
+        a_param6, a_param7, a_param8, a_param9);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2, typename T3, typename T4, typename T5,
+    typename T6, typename T7, typename T8, typename T9, typename T10>
+    ParamList<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+    MakeParams(const T1& a_param1, const T2& a_param2, const T3& a_param3,
+    const T4& a_param4, const T5& a_param5, const T6& a_param6,
+    const T7& a_param7, const T8& a_param8, const T9& a_param9,
+    const T10& a_param10)
+  {
+      return ParamList<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+        (a_param1, a_param2, a_param3, a_param4, a_param5,
+        a_param6, a_param7, a_param8, a_param9, a_param10);
+  }
+
 };
 
 #endif

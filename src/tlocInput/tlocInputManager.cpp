@@ -43,7 +43,8 @@ namespace tloc { namespace input {
 
   template <INPUT_MANAGER_TEMP>
   template <typename T_InputObject>
-  T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
+  core_sptr::VirtualPtr<T_InputObject>
+    InputManager<INPUT_MANAGER_PARAM>::
     DoCreateHID(param_options::value_type a_params)
   {
     return m_impl->template CreateHID<T_InputObject>(a_params);
@@ -81,7 +82,8 @@ namespace tloc { namespace input {
 
   template <INPUT_MANAGER_TEMP>
   template <typename T_InputObject>
-  T_InputObject* InputManager<INPUT_MANAGER_PARAM>::
+  core_sptr::VirtualPtr<T_InputObject>
+    InputManager<INPUT_MANAGER_PARAM>::
     DoGetHID(size_type a_index)
   {
     return m_impl->template GetHID<T_InputObject>(a_index);
@@ -116,10 +118,13 @@ namespace tloc { namespace input {
   // Force instantiate of template methods
 
 #define INSTANTIATE_FOR_HID(_HID_, _type_)\
-  template _HID_<_type_::policy_type>* _type_::DoCreateHID\
-  <_HID_<_type_::policy_type> >(param_options::value_type);\
-  template _HID_<_type_::policy_type>* _type_::DoGetHID\
-  <_HID_<_type_::policy_type> >(_type_::size_type);\
+  template core_sptr::VirtualPtr<_HID_<_type_::policy_type> > \
+    _type_::DoCreateHID\
+    <_HID_<_type_::policy_type> >(param_options::value_type);\
+  \
+  template core_sptr::VirtualPtr<_HID_<_type_::policy_type> > \
+    _type_::DoGetHID\
+    <_HID_<_type_::policy_type> >(_type_::size_type);\
 
   INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Buffered>);
   INSTANTIATE_FOR_HID(hid::Keyboard, InputManager<InputPolicy::Immediate>);

@@ -37,11 +37,12 @@ namespace TestingComponentPoolManager
     typedef tl_int         value_type;
 
   public:
-    IntComponent() : base_type(k_component_type)
+    IntComponent() 
+      : base_type(k_component_type, "IntComponent")
     { m_ctorCount++; }
 
     IntComponent(const IntComponent& a_other)
-      : base_type(k_component_type)
+      : base_type(k_component_type, "IntComponent")
       , m_value(a_other.m_value)
     { m_ctorCount++; }
 
@@ -75,11 +76,12 @@ namespace TestingComponentPoolManager
     typedef tl_uint         value_type;
 
   public:
-    UIntComponent() : base_type(k_component_type)
+    UIntComponent() 
+      : base_type(k_component_type, "UIntComponent")
     { m_ctorCount++; }
 
     UIntComponent(const UIntComponent& a_other)
-      : base_type(k_component_type)
+      : base_type(k_component_type, "UIntComponent")
       , m_value(a_other.m_value)
     { m_ctorCount++; }
 
@@ -113,7 +115,8 @@ namespace TestingComponentPoolManager
     typedef T_PoolType                                pool_type;
     typedef ComponentPoolManager::component_pool_ptr  comp_pool_ptr;
     // iterator of ComponentPool
-    typedef typename pool_type::value_type          value_type;
+    typedef typename pool_type::value_type            value_type;
+    typedef typename pool_type::pointer               pointer;
 
     RESET_CTOR_AND_DTOR_COUNT();
     {
@@ -127,7 +130,7 @@ namespace TestingComponentPoolManager
         tpool->GetNext();
       }
 
-      tpool->GetNextValue()->SetValue(value_type()); // do nothing with it
+      tpool->GetNextValue()->SetValue( pointer(new value_type()) ); // do nothing with it
     }
 
     CHECK(value_type::m_dtorCount == value_type::m_ctorCount);
@@ -137,23 +140,26 @@ namespace TestingComponentPoolManager
       core_sptr::VirtualPtr<T_PoolType> tpool =
         a_mgr.CreateNewPool<value_type>();
       typename pool_type::iterator itr = tpool->GetNext();
-      TLOC_UNUSED(itr);
+
+      core_sptr::VirtualPtr<T_PoolType> tpool2 =
+        a_mgr.GetOrCreatePool<value_type>();
+      CHECK( (tpool == tpool2) );
 
       {
-        (*itr)->SetValue(value_type());
-        (*itr)->GetValue()->m_value = 0;
+        (*itr)->SetValue( pointer(new value_type()) );
+        (*(*itr)->GetValuePtr())->m_value = 0;
       }
 
       // one original use count, and one for the returned vptr. In release,
       // the count will be 1
-      CHECK( core_sptr::GetUseCount((*itr)->GetValue()) > 0); // release
-      CHECK( core_sptr::GetUseCount((*itr)->GetValue()) <= 2); // debug
+      CHECK( core_sptr::GetUseCount((*itr)->GetValuePtr()) > 0); // release
+      CHECK( core_sptr::GetUseCount((*itr)->GetValuePtr()) <= 2); // debug
 
       for (tl_int i = 1; i < elementsToPool; ++i)
       {
         itr = tpool->GetNext();
-        (*itr)->SetValue(value_type());
-        (*itr)->GetValue()->m_value = i;
+        (*itr)->SetValue( pointer(new value_type()) );
+        (*(*itr)->GetValuePtr())->m_value = i;
       }
     }
 
@@ -171,12 +177,21 @@ namespace TestingComponentPoolManager
       bool testPassed = true;
       for (; itr != itrEnd; ++itr)
       {
-        if( (*itr)->GetValue()->m_value != counter)
+        if( (*(*itr)->GetValuePtr())->m_value != counter)
         { testPassed = false; break; }
 
         ++counter;
       }
       CHECK(testPassed);
+
+      {
+        // hold onto one component to avoid it getting recycled
+        itr = intCompPool->begin();
+        typename pool_type::pointer ptr = *(*itr)->GetValuePtr();
+        CHECK(a_mgr.RecycleAllUnused() == elementsToPool - 1);
+      }
+
+      CHECK(a_mgr.RecycleAllUnused() == 1);
     }
   }
 

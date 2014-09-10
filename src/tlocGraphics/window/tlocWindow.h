@@ -11,7 +11,8 @@
 #include <tlocCore/containers/tlocQueue.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocEvent.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
@@ -35,6 +36,7 @@ namespace tloc { namespace graphics { namespace win {
       lost_focus,
       gained_focus,
       destroy,
+      open_url,
 
       events_count
     };
@@ -42,6 +44,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef tl_size                           size_type;
     typedef core_ds::Tuple<size_type, 2>      dim_type;
     typedef core_ds::Variadic<size_type, 2>   variadic_type;
+    typedef core_str::String                  string_type;
 
     WindowEvent()
       : m_type(none)
@@ -49,9 +52,13 @@ namespace tloc { namespace graphics { namespace win {
     { }
 
     WindowEvent(const EventType& a_event,
-                tl_size a_sizeX, tl_size a_sizeY)
+                tl_size a_sizeX, tl_size a_sizeY,
+                const string_type& a_url = string_type(),
+                const string_type& a_urlSourceApplication = string_type())
       : m_type(a_event)
       , m_dim(variadic_type(a_sizeX, a_sizeY))
+      , m_url(a_url)
+      , m_urlSourceApplication(a_urlSourceApplication)
     { }
 
     size_type GetWidth() const
@@ -62,30 +69,42 @@ namespace tloc { namespace graphics { namespace win {
 
     EventType m_type;
     dim_type  m_dim;
+
+    string_type m_url;
+    string_type m_urlSourceApplication;
   };
 
   struct WindowCallbacks
   {
-    virtual void OnWindowEvent(const WindowEvent& a_event) = 0;
+  public:
+    typedef core_dispatch::Event                    event_type;
+
+  public:
+    virtual event_type OnWindowEvent(const WindowEvent& a_event) = 0;
   };
 
   template <typename T>
   struct WindowCallbackGroupT
-    : public core::base_classes::CallbackGroupTArray<T, WindowCallbacks>::type
+    : public core::dispatch::CallbackGroupTArray<T, WindowCallbacks>::type
   {
   public:
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, WindowCallbacks>::type         base_type;
+
+    typedef typename base_type::event_type                  event_type;
 
     using base_type::m_observers;
 
   public:
-    virtual void OnWindowEvent(const WindowEvent& a_event)
+    virtual event_type OnWindowEvent(const WindowEvent& a_event)
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
-        m_observers[i]->OnWindowEvent(a_event);
+        if (m_observers[i]->OnWindowEvent(a_event).IsVeto())
+        { return core_dispatch::f_event::Veto(); }
       }
+
+      return core_dispatch::f_event::Continue();
     }
   };
 
@@ -98,7 +117,7 @@ namespace tloc { namespace graphics { namespace win {
   ///-------------------------------------------------------------------------
   template <typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class Window_T
-    : public core::base_classes::DispatcherBaseArray
+    : public core::dispatch::DispatcherBaseArray
              <WindowCallbacks, WindowCallbackGroupT>::type
     , public core_bclass::NonCopyable_I
   {
@@ -115,6 +134,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef renderer_type::Params                        renderer_params_type;
     typedef gfx_rend::renderer_sptr                      renderer_sptr;
     typedef priv::WindowImpl<this_type>                  impl_type;
+    typedef WindowEvent::dim_type                        dim_type;
 
   public:
 
@@ -182,6 +202,20 @@ namespace tloc { namespace graphics { namespace win {
     /// @return The height.
     ///-------------------------------------------------------------------------
     size_type GetHeight() const;
+
+    ///-------------------------------------------------------------------------
+    /// Gets the width and height.
+    ///
+    /// @return The window dimensions
+    ///-------------------------------------------------------------------------
+    dim_type GetDimensions() const;
+
+    ///-------------------------------------------------------------------------
+    /// Returns the horizontal and vertical DPI for the device.
+    ///
+    /// @return The device DPI
+    ///-------------------------------------------------------------------------
+    dim_type GetDPI() const;
 
     ///-------------------------------------------------------------------------
     /// @brief

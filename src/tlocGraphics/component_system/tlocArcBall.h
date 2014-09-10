@@ -23,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef ArcBall                                       this_type;
     typedef Component_T<this_type, components::arcball>   base_type;
     typedef f32                                           real_type;
-    typedef math_t::Vector3<real_type>                    vec_type;
+    typedef math_t::Vector_T<real_type, 3>                    vec_type;
     typedef math_t::radian_f32                            angle_type;
 
   public:

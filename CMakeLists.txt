@@ -63,9 +63,17 @@ file(COPY ${TLOC_ENGINE_PATH}/platform/
   FILES_MATCHING PATTERN "*.*"
   )
 
+#------------------------------------------------------------------------------
+# Copy other source files
+
 file(COPY ${TLOC_ENGINE_PATH}/src/3rdParty
   DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/include/
   FILES_MATCHING PATTERN "*.*"
+  )
+
+file(COPY ${TLOC_ENGINE_PATH}/src/tlocTests
+  DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/include/
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.cpp"
   )
 
 #------------------------------------------------------------------------------

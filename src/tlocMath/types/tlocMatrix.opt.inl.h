@@ -1,5 +1,5 @@
-#ifndef TLOC_MATRIX_INL
-#define TLOC_MATRIX_INL
+#ifndef TLOC_MATRIX_OPT_INL
+#define TLOC_MATRIX_OPT_INL
 
 #ifndef TLOC_MATRIX_H
 #error "Must include header before including the inline file"

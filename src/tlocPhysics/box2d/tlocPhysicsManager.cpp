@@ -2,8 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 
-#include <tlocMath/types/tlocVector2.inl.h>
-
 #include <tlocPhysics/box2d/tlocWorld.h>
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>

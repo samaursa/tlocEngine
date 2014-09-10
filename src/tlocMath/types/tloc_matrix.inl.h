@@ -5,9 +5,4 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/types/tlocMatrix.inl.h>
-#include <tlocMath/types/tlocMatrix2.inl.h>
-#include <tlocMath/types/tlocMatrix3.inl.h>
-#include <tlocMath/types/tlocMatrix4.inl.h>
-
 #endif

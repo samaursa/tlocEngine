@@ -1,12 +1,12 @@
-#ifndef TLOC_MATH_VECTOR_4_INL
-#define TLOC_MATH_VECTOR_4_INL
+#ifndef TLOC_MATH_VECTOR_4_OPT_INL
+#define TLOC_MATH_VECTOR_4_OPT_INL
 
 #ifndef TLOC_MATH_VECTOR_4_H
 #error "Must include header before including the inline file"
 #endif
 
 #include "tlocVector4.h"
-#include <tlocMath/types/tlocVector.inl.h>
+#include <tlocMath/types/tlocVector.opt.inl.h>
 
 namespace tloc { namespace math { namespace types {
 

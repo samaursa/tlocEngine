@@ -1,5 +1,5 @@
-#ifndef TLOC_MATRIX_3_INL
-#define TLOC_MATRIX_3_INL
+#ifndef TLOC_MATRIX_3_OPT_INL
+#define TLOC_MATRIX_3_OPT_INL
 
 #ifndef TLOC_MATRIX_3_H
 #error "Must include header before including the inline file"
@@ -9,8 +9,8 @@
 
 #include <tlocCore/tlocAssert.h>
 
-#include <tlocMath/types/tlocVector3.inl.h>
-#include <tlocMath/types/tlocMatrix.inl.h>
+#include <tlocMath/types/tlocVector3.opt.inl.h>
+#include <tlocMath/types/tlocMatrix.opt.inl.h>
 
 namespace tloc { namespace math { namespace types {
 

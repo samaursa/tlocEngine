@@ -149,8 +149,8 @@ namespace tloc { namespace math { namespace types {
     void MakeEulerZYZ (angle_type aZAngle0, angle_type aYAngle,
                        angle_type aZAngle1);
 
-    void LookAt(dir a_direction);
-    void LookAt(dir a_direction, up a_up);
+    void Orient(dir a_direction);
+    void Orient(dir a_direction, up a_up);
 
   private:
 

@@ -162,12 +162,12 @@ namespace tloc { namespace math { namespace component_system {
     orientation_type ori = m_transformation.ConvertTo<orientation_type>();
 
     if (newDir.IsParallel(position_type::UNIT_Y) == false)
-    { ori.LookAt(orientation_type::dir(newDir)); }
+    { ori.Orient(orientation_type::dir(newDir)); }
     else // parallel
     {
       const position_type newUp = 
         ori.GetCol(2).ConvertTo<position_type>().Inverse();
-      ori.LookAt(orientation_type::dir(newDir), 
+      ori.Orient(orientation_type::dir(newDir), 
                  orientation_type::up(newUp));
     }
 

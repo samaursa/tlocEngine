@@ -35,6 +35,7 @@ list(GET p2list 0 TLOC_BUILD_FOLDER_NAME)
 
 set(TLOC_ENGINE_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
 set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine")
+set(TLOC_ENGINE_DISTRIBUTION_BUILD FALSE CACHE BOOL "Distribution builds do not increment version numbers upon builds")
 set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The tloc dependency INSTALL path goes here.")
 set(TLOC_INCLUDE_TESTS TRUE CACHE BOOL "Include tests in the project.")
 set(TLOC_INCLUDE_FULL_SOURCE TRUE CACHE BOOL "Include full source, including opt.inl.h and .cpp files.")

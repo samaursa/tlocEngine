@@ -435,3 +435,4 @@ source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
 
 tloc_install_library(tlocCore tlocCore)
+tloc_install_library(3rdParty 3rdParty)

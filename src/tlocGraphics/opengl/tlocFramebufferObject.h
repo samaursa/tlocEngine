@@ -9,7 +9,6 @@
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocRenderbufferObject.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
-#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -193,7 +192,8 @@ namespace tloc { namespace graphics { namespace gl {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(FramebufferObject, framebuffer_object);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(FramebufferObject, framebuffer_object);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(FramebufferObject, framebuffer_object);
 
 };};};
 

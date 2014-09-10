@@ -54,7 +54,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnKeyPress( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnKeyPress( core_utils::GetMemoryAddress(this), a_event).IsVeto())
       {
         return;
       }
@@ -68,7 +68,7 @@ namespace tloc { namespace input { namespace hid {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnKeyRelease( core_utils::GetMemoryAddress(this), a_event) == true)
+          OnKeyRelease( core_utils::GetMemoryAddress(this), a_event).IsVeto())
       {
         return;
       }
@@ -106,3 +106,10 @@ namespace tloc { namespace input { namespace hid {
 #endif
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::input_hid;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(KeyboardB);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(KeyboardI);

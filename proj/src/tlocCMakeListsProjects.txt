@@ -45,7 +45,13 @@ elseif(${USER_CURRENT_PROJECT_NAME} STREQUAL ${USER_PROJECT_TYPE_LIB})
     ${SOURCE_FILES}
     )
 
+  tloc_install_library(${USER_CURRENT_PROJECT_NAME} "src")
+
 endif()
+
+#------------------------------------------------------------------------------
+# Add platform specific properties
+set_platform_specific_properties(${USER_CURRENT_PROJECT_NAME})
 
 # Add dependencies (if any)
 if(USER_PROJECT_DEPENDENCIES)

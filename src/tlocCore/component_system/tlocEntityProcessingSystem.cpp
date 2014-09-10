@@ -1,5 +1,8 @@
 #include "tlocEntityProcessingSystem.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
+
 namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
@@ -12,12 +15,16 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type EntityProcessingSystem::
-    DoInitialize(const entity_ptr_array& a_entities)
+    DoInitialize(const entity_count_cont& a_entities)
   {
-    for (entity_ptr_array::const_iterator itr = a_entities.begin(),
+    TLOC_LOG_CORE_WARN_IF(a_entities.size() == 0) 
+      <<  "System (" << core_utils::GetMemoryAddress(this) 
+      << ") does not have any components to Initialize (or process)";
+
+    for (entity_count_cont::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      InitializeEntity(*itr).Ignore();
+      InitializeEntity(itr->first).Ignore();
     }
 
     return ErrorSuccess;
@@ -41,14 +48,14 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void EntityProcessingSystem::
-    DoProcessActiveEntities(const entity_ptr_array& a_entities,
+    DoProcessActiveEntities(const entity_count_cont& a_entities,
                             f64 a_deltaT)
   {
-    for (entity_ptr_array::const_iterator itr = a_entities.begin(),
+    for (entity_count_cont::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      if ( (*itr)->IsActive())
-      { ProcessEntity(*itr, a_deltaT); }
+      if ( itr->first->IsActive())
+      { ProcessEntity(itr->first, a_deltaT); }
     }
   }
 
@@ -65,12 +72,12 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type EntityProcessingSystem::
-    DoShutdown(const entity_ptr_array& a_entities)
+    DoShutdown(const entity_count_cont& a_entities)
   {
-    for (entity_ptr_array::const_iterator itr = a_entities.begin(),
+    for (entity_count_cont::const_iterator itr = a_entities.begin(),
          itrEnd = a_entities.end(); itr != itrEnd; ++itr)
     {
-      ShutdownEntity(*itr).Ignore();
+      ShutdownEntity(itr->first).Ignore();
     }
 
     return ErrorSuccess;

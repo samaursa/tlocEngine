@@ -9,22 +9,11 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocGraphics/types/tlocDimension.h>
+#include <tlocGraphics/media/tlocSpriteInfo.h>
 
 #include <tlocMath/types/tlocVector2.h>
 
 namespace tloc { namespace graphics { namespace media {
-
-  struct SpriteInfo
-  {
-    typedef core_str::String      string_type;
-
-    string_type           m_name;
-    core_ds::Tuple2s32    m_startingPos;
-    core_ds::Tuple2s32    m_dimensions;
-
-    math_t::Vec2f32       m_texCoordStart;
-    math_t::Vec2f32       m_texCoordEnd;
-  };
 
   namespace p_sprite_loader
   {
@@ -41,7 +30,7 @@ namespace tloc { namespace graphics { namespace media {
         bool            IsSupported(const String& a_input);
         core_err::Error Parse(const String& a_input,
                               const Dimension2 a_imgDim,
-                              core_conts::Array<SpriteInfo>& a_out);
+                              core_conts::Array<sprite_info_str>& a_out);
       };
 
       // ///////////////////////////////////////////////////////////////////////
@@ -52,7 +41,7 @@ namespace tloc { namespace graphics { namespace media {
         bool            IsSupported(const String& a_input);
         core_err::Error Parse(const String& a_input,
                               const Dimension2 a_imgDim,
-                              core_conts::Array<SpriteInfo>& a_out);
+                              core_conts::Array<sprite_info_str>& a_out);
       };
     };
   };
@@ -65,8 +54,9 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_err::Error                       error_type;
     typedef core_str::String                      string_type;
     typedef types::Dimension2                     dim_type;
+    typedef sprite_info_str                       sprite_info_type;
 
-    typedef core_conts::Array<SpriteInfo>               sprite_info_cont;
+    typedef core_conts::Array<sprite_info_type>         sprite_info_cont;
     typedef typename sprite_info_cont::size_type        size_type;
     typedef typename sprite_info_cont::iterator         iterator;
     typedef typename sprite_info_cont::const_iterator   const_iterator;

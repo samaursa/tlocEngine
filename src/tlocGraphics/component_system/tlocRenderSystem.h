@@ -26,21 +26,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     typedef core_cs::EntityProcessingSystem               base_type;
-    using base_type::component_type;
-    using base_type::error_type;
 
     typedef T_RendererSptr                                renderer_type;
     typedef typename
       renderer_type::value_type::render_one_frame_uptr    rof_uptr;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::entity_ptr;
-    using base_type::event_value_type;
-
-    typedef math::types::Mat4f32                              matrix_type;
+    typedef math::types::Mat4f32                          matrix_type;
 
   public:
     template <size_type T_VarSize>
@@ -50,6 +40,9 @@ namespace tloc { namespace graphics { namespace component_system {
                       <component_type, T_VarSize>&  a_typeFlags);
 
     void         SetCamera(const_entity_ptr a_cameraEntity);
+
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+
     virtual void Pre_ProcessActiveEntities(f64);
     virtual void Post_ProcessActiveEntities(f64);
 

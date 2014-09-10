@@ -45,7 +45,7 @@ namespace tloc { namespace input { namespace Component {
     switch(a_dir)
     {
     case k_centered:
-      return s_enumStrings[core_utils::EnumToIndex<k_centered, true>::result];
+      return s_enumStrings[core_utils::EnumToIndex_T<k_centered, true>::result];
     case k_north:
     case k_south:
     case k_east:
@@ -89,16 +89,16 @@ namespace tloc { namespace input { namespace Component {
       else
       { TLOC_ASSERT_FALSE("Invalid case statement - see cases above"); }
     case k_north_east:
-      return s_enumStrings[core_utils::EnumToIndex<k_north_east, true>::result];
+      return s_enumStrings[core_utils::EnumToIndex_T<k_north_east, true>::result];
     case k_south_east:
-      return s_enumStrings[core_utils::EnumToIndex<k_south_east, true>::result];
+      return s_enumStrings[core_utils::EnumToIndex_T<k_south_east, true>::result];
     case k_north_west:
-      return s_enumStrings[core_utils::EnumToIndex<k_north_west, true>::result];
+      return s_enumStrings[core_utils::EnumToIndex_T<k_north_west, true>::result];
     case k_south_west:
-      return s_enumStrings[core_utils::EnumToIndex<k_south_west, true>::result];
+      return s_enumStrings[core_utils::EnumToIndex_T<k_south_west, true>::result];
     default:
       TLOC_ASSERT_FALSE("Invalid direction is stored");
-      return s_enumStrings[core_utils::EnumToIndex<k_centered, true>::result];
+      return s_enumStrings[core_utils::EnumToIndex_T<k_centered, true>::result];
     };
   }
 
@@ -114,7 +114,7 @@ namespace tloc { namespace input { namespace Component {
     switch(a_dir)
     {
     case k_centered:
-      return s_enumStringsShort[core_utils::EnumToIndex<k_centered, true>::result];
+      return s_enumStringsShort[core_utils::EnumToIndex_T<k_centered, true>::result];
     case k_north:
     case k_south:
     case k_east:
@@ -158,16 +158,16 @@ namespace tloc { namespace input { namespace Component {
       else
       { TLOC_ASSERT_FALSE("Invalid case statement - see cases above"); }
     case k_north_east:
-      return s_enumStringsShort[core_utils::EnumToIndex<k_north_east, true>::result];
+      return s_enumStringsShort[core_utils::EnumToIndex_T<k_north_east, true>::result];
     case k_south_east:
-      return s_enumStringsShort[core_utils::EnumToIndex<k_south_east, true>::result];
+      return s_enumStringsShort[core_utils::EnumToIndex_T<k_south_east, true>::result];
     case k_north_west:
-      return s_enumStringsShort[core_utils::EnumToIndex<k_north_west, true>::result];
+      return s_enumStringsShort[core_utils::EnumToIndex_T<k_north_west, true>::result];
     case k_south_west:
-      return s_enumStringsShort[core_utils::EnumToIndex<k_south_west, true>::result];
+      return s_enumStringsShort[core_utils::EnumToIndex_T<k_south_west, true>::result];
     default:
       TLOC_ASSERT_FALSE("Invalid direction is stored");
-      return s_enumStringsShort[core_utils::EnumToIndex<k_centered, true>::result];
+      return s_enumStringsShort[core_utils::EnumToIndex_T<k_centered, true>::result];
     };
   }
 

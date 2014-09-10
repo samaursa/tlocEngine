@@ -16,10 +16,8 @@ set(USER_ASSETS_PATH
 
 # Dependent project is compiled after dependency
 set(USER_PROJECT_DEPENDENCIES
-  " "
   )
 
 # Libraries that the executable needs to link against
 set(USER_EXECUTABLE_LINK_LIBRARIES
-  " "
   )

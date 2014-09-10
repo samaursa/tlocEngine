@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace io {
   Path::
     Path(const BufferArg& a_path) : m_path(a_path)
   {
-    TLOC_ASSERT(!m_path.empty(), "Path string is empty!");
+    TLOC_LOG_CORE_WARN_IF(m_path.empty()) << "Path is empty";
     DoFixPath();
   }
 

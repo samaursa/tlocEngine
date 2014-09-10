@@ -281,14 +281,15 @@ namespace tloc { namespace core { namespace memory {
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
-  void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
+  MEMORY_POOL_INDEX_TYPE::iterator
+    MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::
     RecycleElement(iterator a_retElem)
   {
     if (m_numAvail >= (index_type)m_allElements.size())
     {
       TLOC_ASSERT_LOW_LEVEL_FALSE
         ("Trying to recycle more elements than we have!");
-      return;
+      return end();
     }
 
     // TODO: Store the element as used (as per the policy)
@@ -303,6 +304,11 @@ namespace tloc { namespace core { namespace memory {
     core::swap(DoGetIndexRef(toSwap, policy_allocation_type()),
                DoGetIndexRef(m_allElements[lastUsedElem], policy_allocation_type()) );
     m_numAvail++;
+
+    iterator itr = begin();
+    core::advance(itr, DoGetIndex(toSwap, policy_allocation_type()) );
+
+    return itr;
   }
 
   template <MEMORY_POOL_INDEX_TEMP>
@@ -319,11 +325,9 @@ namespace tloc { namespace core { namespace memory {
   template <MEMORY_POOL_INDEX_TEMP>
   void MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::RecycleAll()
   {
-    for (index_type i = 0; i < m_numAvail; ++i)
+    while (GetUsed() > 0)
     {
-      iterator itr = m_allElements.begin();
-      advance(itr, i);
-      RecycleElement(itr);
+      RecycleElement(begin());
     }
   }
 

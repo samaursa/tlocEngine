@@ -5,6 +5,13 @@
 
 // All major namespaces that core uses should go here
 
+#ifdef TLOC_CXX03
+  #include <tlocCore/types/tlocNullptr.h>
+
+  using std::nullptr_t;
+  using std::nullptr;
+#endif
+
 namespace tloc {
 
   //////////////////////////////////////////////////////////////////////////
@@ -17,8 +24,9 @@ namespace tloc {
     namespace configs          {};
     namespace containers       {};
     namespace data_structs     {};
+    namespace dispatch         {};
     namespace error            {};
-    namespace logging           {};
+    namespace logging          {};
     namespace io               {};
     namespace memory           {};
     namespace parsers          {};
@@ -40,6 +48,7 @@ namespace tloc {
   namespace core_cfg          = core::configs;
   namespace core_conts        = core::containers;
   namespace core_ds           = core::data_structs;
+  namespace core_dispatch     = core::dispatch;
   namespace core_err          = core::error;
   namespace core_log          = core::logging;
   namespace core_io           = core::io;
@@ -69,31 +78,37 @@ namespace tloc { namespace core {
 };};
 
 #define TLOC_LOG_CORE_INFO()    TLOC_LOG_INFO(&tloc::core::GetLogger())
+#define TLOC_LOG_CORE_SUCCESS() TLOC_LOG_SUCCESS(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_DEBUG()   TLOC_LOG_DEBUG(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_WARN()    TLOC_LOG_WARN(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_ERR()     TLOC_LOG_ERR(&tloc::core::GetLogger())
 
 #define TLOC_LOG_CORE_INFO_IF(_expr_)    TLOC_LOG_INFO_IF(_expr_, &tloc::core::GetLogger())
+#define TLOC_LOG_CORE_SUCCESS_IF(_expr_) TLOC_LOG_SUCCESS_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_DEBUG_IF(_expr_)   TLOC_LOG_DEBUG_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_WARN_IF(_expr_)    TLOC_LOG_WARN_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_ERR_IF(_expr_)     TLOC_LOG_ERR_IF(_expr_, &tloc::core::GetLogger())
 
 #define TLOC_LOG_CORE_INFO_FILENAME_ONLY()    TLOC_LOG_INFO_FILENAME_ONLY(&tloc::core::GetLogger())
+#define TLOC_LOG_CORE_SUCCESS_FILENAME_ONLY() TLOC_LOG_SUCCESS_FILENAME_ONLY(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_DEBUG_FILENAME_ONLY()   TLOC_LOG_DEBUG_FILENAME_ONLY(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_WARN_FILENAME_ONLY()    TLOC_LOG_WARN_FILENAME_ONLY(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_ERR_FILENAME_ONLY()     TLOC_LOG_ERR_FILENAME_ONLY(&tloc::core::GetLogger())
 
 #define TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, &tloc::core::GetLogger())
+#define TLOC_LOG_CORE_SUCCESS_FILENAME_ONLY_IF(_expr_) TLOC_LOG_SUCCESS_FILENAME_ONLY_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_DEBUG_FILENAME_ONLY_IF(_expr_)   TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_WARN_FILENAME_ONLY_IF(_expr_)    TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(_expr_)     TLOC_LOG_ERR_FILENAME_ONLY_IF(_expr_, &tloc::core::GetLogger())
 
 #define TLOC_LOG_CORE_INFO_NO_FILENAME()    TLOC_LOG_INFO_NO_FILENAME(&tloc::core::GetLogger())
+#define TLOC_LOG_CORE_SUCCESS_NO_FILENAME() TLOC_LOG_SUCCESS_NO_FILENAME(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_DEBUG_NO_FILENAME()   TLOC_LOG_DEBUG_NO_FILENAME(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_WARN_NO_FILENAME()    TLOC_LOG_WARN_NO_FILENAME(&tloc::core::GetLogger())
 #define TLOC_LOG_CORE_ERR_NO_FILENAME()     TLOC_LOG_ERR_NO_FILENAME(&tloc::core::GetLogger())
 
 #define TLOC_LOG_CORE_INFO_NO_FILENAME_IF(_expr_)    TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, &tloc::core::GetLogger())
+#define TLOC_LOG_CORE_SUCCESS_NO_FILENAME_IF(_expr_) TLOC_LOG_SUCCESS_NO_FILENAME_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_DEBUG_NO_FILENAME_IF(_expr_)   TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_WARN_NO_FILENAME_IF(_expr_)    TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, &tloc::core::GetLogger())
 #define TLOC_LOG_CORE_ERR_NO_FILENAME_IF(_expr_)     TLOC_LOG_ERR_NO_FILENAME_IF(_expr_, &tloc::core::GetLogger())

@@ -55,7 +55,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     this_type&  operator=(const UniquePtr<T_Other>& a_other);
 
     this_type&  operator=(this_type a_other);
-    this_type&  operator=(const pointer a_rawPtr);
 
     pointer             operator->() const;
     reference           operator* () const;
@@ -282,7 +281,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     this_type& operator=(const UniquePtr<T_Other>& a_other);
 
     this_type& operator=(this_type a_other);
-    this_type& operator=(const pointer a_rawPtr);
 
     pointer             operator->() const;
     reference           operator* () const;

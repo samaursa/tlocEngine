@@ -1,5 +1,6 @@
 #include "tlocString.h"
 #include "tlocString.inl.h"
+#include "tlocString.opt.inl.h"
 
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
@@ -76,6 +77,27 @@ namespace tloc { namespace core { namespace string {
                      0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60,
                      0x7B, 0x7C, 0x7D, 0x7E, NULL};
   String g_punctStr(g_punct);
+
+  // -----------------------------------------------------------------------
+  // Explicitly instantiate the operators for our string types
+
+  template String operator+ (const String& a_lhs, const String& a_rhs);
+  template String operator+ (const char8* a_lhs, const String& a_rhs);
+  template String operator+ (char8 a_lhs, const String& a_rhs);
+  template String operator+ (const String& a_lhs, const char8* a_rhs);
+  template String operator+ (const String& a_lhs, char8 a_rhs);
+
+  template StringW operator+ (const StringW& a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const char32* a_lhs, const StringW& a_rhs);
+  template StringW operator+ (char32 a_lhs, const StringW& a_rhs);
+  template StringW operator+ (const StringW& a_lhs, const char32* a_rhs);
+  template StringW operator+ (const StringW& a_lhs, char32 a_rhs);
+
+  // -----------------------------------------------------------------------
+  // Explicitly instantiate string
+
+  template StringBase<char8>;
+  template StringBase<char32>;
 
   // ------------------------------------------------------------------------
   // specialized function definitions
@@ -174,8 +196,42 @@ namespace tloc { namespace core { namespace string {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  char32
+    CharAsciiToWide(const char8 a_in)
+  {
+    char32 out[2] = {0, 0};
+    char8 in[] = {a_in, '\0'};
+
+    if (CharAsciiToWide(out, in, 1) > 0)
+    { 
+      TLOC_ASSERT_LOW_LEVEL(out[1] == 0, "More than 1 character written to buffer");
+      return out[0];
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  char8
+    CharWideToAscii(const char32 a_in)
+  {
+    char8 out[2] = {0, 0};
+    char32 in[] = {a_in, L'\0'};
+
+    if (CharWideToAscii(out, in, 1) > 0)
+    { 
+      TLOC_ASSERT_LOW_LEVEL(out[1] == 0, "More than 1 character written to buffer");
+      return out[0];
+    }
+
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   tl_size
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize)
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_size a_inSize)
   {
     return ::mbstowcs(a_out, a_in, a_inSize);
   }
@@ -183,9 +239,33 @@ namespace tloc { namespace core { namespace string {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   tl_size
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize)
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_size a_inSize)
   {
     return ::wcstombs(a_out, a_in, a_inSize);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  StringW
+    CharAsciiToWide(const String a_in)
+  {
+    const StringW::size_type length = a_in.length();
+    char32* buffer = new char32[length + 1];
+    buffer[length] = 0;
+    CharAsciiToWide(buffer, a_in.c_str(), a_in.length());
+    return StringW(buffer);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  String
+    CharWideToAscii(const StringW a_in)
+  {
+    const String::size_type length = a_in.length();
+    char8* buffer = new char[length + 1];
+    buffer[length] = 0;
+    CharWideToAscii(buffer, a_in.c_str(), a_in.length());
+    return String(buffer);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

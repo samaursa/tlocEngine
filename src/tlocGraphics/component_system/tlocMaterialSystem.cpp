@@ -38,7 +38,7 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
 
     typedef gfx_cs::Material                            mat_type;
-    typedef gfx_cs::material_vptr                       mat_ptr;
+    typedef gfx_cs::material_sptr                       mat_ptr;
     typedef mat_type::shader_prog_ptr                   shader_prog_ptr;
     typedef mat_type::const_shader_prog_ptr             const_shader_prog_ptr;
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
@@ -155,3 +155,4 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(MaterialSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(MaterialSystem);

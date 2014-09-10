@@ -12,7 +12,8 @@ namespace tloc { namespace core { namespace utils {
   /// @brief Counter number of objects that have not yet been destroyed
   ///-------------------------------------------------------------------------
   template <typename T>
-  class ObjectCounter : ObjectCtorCounter<T>
+  class ObjectCounter 
+    : public ObjectCtorCounter<T>
   {
   public:
     typedef ObjectCtorCounter<T>        base_type;

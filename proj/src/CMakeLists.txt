@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------
 # Functions
 
-# -----------------------------------------------------------------------------
 function(add_common_libraries EXEC_NAME)
   target_link_libraries(${EXEC_NAME}
     tlocCore
@@ -11,6 +10,7 @@ function(add_common_libraries EXEC_NAME)
     tlocPhysics
     tlocPrefab
     tlocAnimation
+    FreeType
     Box2D
     )
 
@@ -20,24 +20,9 @@ function(add_common_libraries EXEC_NAME)
     target_link_libraries(${EXEC_NAME}
       glu32.lib
       OpenGL32.lib
+      dinput8.lib
       )
 
-    # Find dinput.lib and add it as a link target
-    if(${ARCH_DIR} MATCHES "x86")
-      find_library(DIRECT_INPUT_LIB
-        NAMES dinput8.lib
-        PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
-        )
-    else()
-      find_library(DIRECT_INPUT_LIB
-        NAMES dinput8.lib
-        PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
-        )
-    endif()
-
-    target_link_libraries(${EXEC_NAME}
-      ${DIRECT_INPUT_LIB}
-      )
   endif()
 
   if(TLOC_COMPILER_XCODE)
@@ -45,14 +30,13 @@ function(add_common_libraries EXEC_NAME)
 
 endfunction()
 
-# -----------------------------------------------------------------------------
 function(add_apple_plist EXEC_NAME ASSETS_PATH)
   if(TLOC_PLATFORM_IOS)
     # Check if a PLIST file was specified. If not, then go with default.
     if(USER_IOS_PLIST_PATH)
       set(PLIST_PATH ${USER_IOS_PLIST_PATH})
     else()
-      set(PLIST_PATH "${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist")
+      set(PLIST_PATH "${TLOC_ENGINE_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
     endif()
 
     set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -66,13 +50,17 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
 endfunction()
 
 # -----------------------------------------------------------------------------
+# compiler flags
+
+tloc_add_definitions_strict()
 
 # common includes
 include_directories(
-  ${TLOC_ENGINE_PATH}/src/
-  ${TLOC_DEP_PATH}/include/
-  ${TLOC_DEP_PATH}/include/Box2D/
-  ${TLOC_DEP_PATH}/include/CATCH/
+  ${TLOC_ENGINE_INSTALL_PATH}/
+  ${TLOC_ENGINE_INSTALL_PATH}/include/
+  ${TLOC_DEP_INSTALL_PATH}/include/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/CATCH/
   ${USER_PATH}/src/
 
   ${CMAKE_SOURCE_DIR}/src/
@@ -80,15 +68,8 @@ include_directories(
 
 # common link directories
 link_directories(
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocCore/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocGraphics/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocMath/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocInput/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPhysics/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPrefab/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
-
-  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_ENGINE_INSTALL_PATH}/lib/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 # -----------------------------------------------------------------------------
@@ -100,9 +81,6 @@ foreach(lib ${USER_LIBRARY_PROJECTS})
   message(STATUS "Adding ${lib} library project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_LIB})
   set(USER_CURRENT_PROJECT_NAME ${lib})
-
-  # strict definitions
-  tloc_add_definitions_strict()
 
   add_subdirectory(${lib})
 
@@ -121,9 +99,6 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${exec})
   
-  # strict definitions
-  tloc_add_definitions_strict()
-
   add_subdirectory(${exec})
 
   # put the executable in the "Projects" folder
@@ -134,6 +109,17 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
 endforeach()
 message(STATUS "-- Executables -- DONE")
 
+# -----------------------------------------------------------------------------
+# compiler flags
+#
+# NOTE: For tests we need regular compiler flags which enable RTTI and 
+#       exceptions
+
+tloc_add_definitions()
+
+# -----------------------------------------------------------------------------
+# Add all test executables
+
 message("")
 message(STATUS "-- Tests --")
 foreach(test ${USER_TEST_PROJECTS})
@@ -141,8 +127,12 @@ foreach(test ${USER_TEST_PROJECTS})
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${test})
 
-  # non-strict definitions
-  tloc_add_definitions()
+# test projects require exceptions and rtti to be enabled - build fails in xcode only
+if(TLOC_COMPILER_XCODE)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+endif()
   
   add_subdirectory(${test})
 

@@ -22,7 +22,7 @@ namespace tloc { namespace math { namespace types {
     typedef tl_size                                   size_type;
     typedef T                                         real_type;
     typedef Cuboid_T<real_type>                       this_type;
-    typedef Vector3<real_type>                        point_type;
+    typedef Vector_T<real_type, 3>                    point_type;
     typedef Ray_T<real_type, 3>                       ray_3d_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;

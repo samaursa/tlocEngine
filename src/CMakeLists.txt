@@ -3,8 +3,8 @@ tloc_add_definitions_strict()
 
 # common includes
 include_directories(
-  ${TLOC_DEP_PATH}/include/
-  ${TLOC_DEP_PATH}/src/
+  ${TLOC_DEP_INSTALL_PATH}
+  ${TLOC_DEP_INSTALL_PATH}/include/
   ${TLOC_ENGINE_PATH}/src/
   )
 
@@ -29,7 +29,7 @@ if (TLOC_INCLUDE_TESTS)
 endif()
 
 # Add the version tool - currently DISABLED for APPLE due to iOS builds
-if(NOT TLOC_PLATFORM_IOS)
+if(NOT TLOC_PLATFORM_IOS AND NOT TLOC_ENGINE_DISTRIBUTION_BUILD)
   add_subdirectory(tlocVersion)
 
   # Make tlocVersion and tlocVersionTool as dependencies for all projects
@@ -39,6 +39,12 @@ if(NOT TLOC_PLATFORM_IOS)
       tlocVersionTool
       )
   endforeach()
+
+  #The version tools must be added to the engine folder as well
+  set_target_properties(tlocVersion tlocVersionTool
+    PROPERTIES
+    FOLDER Versioning
+    )
 
 endif()
 
@@ -54,12 +60,6 @@ if(TLOC_COMPILER_MSVC)
       message("Library ${lib} was not generated successfully.")
     endif()
   endforeach()
-
-#The version tools must be added to the engine folder as well
-set_target_properties(tlocVersion tlocVersionTool
-  PROPERTIES
-  FOLDER Versioning
-  )
 
 endif()
 

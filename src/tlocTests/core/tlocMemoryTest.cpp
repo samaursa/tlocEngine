@@ -152,7 +152,7 @@ namespace TestingMemory
 
   TEST_CASE("core/memory/ObjectCretor", "")
   {
-    SECTION("On Stack", "")
+    //SECTION("On Stack", "")
     {
       core_mem::CreateObject<ObjectDefaultCtor>().OnStack();
 
@@ -172,7 +172,7 @@ namespace TestingMemory
       CHECK(o3.m_c == Approx(5.0));
     }
 
-    SECTION("On Heap", "")
+    //SECTION("On Heap", "")
     {
       core_mem::CreateObject<ObjectDefaultCtor>().OnHeap();
 

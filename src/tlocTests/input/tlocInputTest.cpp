@@ -26,32 +26,36 @@ namespace TestingInput
   template <typename T_Keyboard>
   struct sampleInputKeyboard
   {
-    sampleInputKeyboard(T_Keyboard* a_caller)
+    typedef core_sptr::VirtualPtr<T_Keyboard>             keyboard_ptr;
+
+    sampleInputKeyboard(keyboard_ptr a_caller)
       : m_event(KeyboardEvent::none),
       m_caller(a_caller),
       m_keypresses(0),
       m_keyreleases(0) {}
 
-    bool OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
+    core_dispatch::Event 
+      OnKeyPress(const tl_size a_caller, const KeyboardEvent& a_event)
     {
-      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_keypresses++;
 
-      return true; // Veto all later keypresses - does nothing here, just an e.g.
+      return core_dispatch::f_event::Veto();
     }
 
-    bool OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
+    core_dispatch::Event 
+      OnKeyRelease(const tl_size a_caller, const KeyboardEvent& a_event)
     {
-      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_keyreleases++;
 
-      return true; // Veto all later keypresses - does nothing here, just an e.g.
+      return core_dispatch::f_event::Veto();
     }
 
     KeyboardEvent m_event;
-    T_Keyboard*   m_caller;
+    keyboard_ptr  m_caller;
     u32           m_keypresses;
     u32           m_keyreleases;
   }; TLOC_DEF_TYPE(sampleInputKeyboard<KeyboardB>);
@@ -59,54 +63,58 @@ namespace TestingInput
   template <typename T_Mouse>
   struct sampleInputMouse
   {
-    sampleInputMouse(T_Mouse* a_caller)
+    typedef core_sptr::VirtualPtr<T_Mouse>                mouse_ptr_type;
+
+    sampleInputMouse(mouse_ptr_type a_caller)
       : m_event(MouseEvent::none)
       , m_caller(a_caller)
       , m_buttonPresses(0)
       , m_buttonReleases(0)
       , m_movementEvents(0) {}
 
-    bool
+    core_dispatch::Event
       OnButtonPress(const tl_size a_caller,
       const MouseEvent& a_event,
       const MouseEvent::button_code_type a_buttonCode)
     {
-      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_buttonCode = a_buttonCode;
       m_buttonPresses++;
 
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    bool
+    core_dispatch::Event
       OnButtonRelease(const tl_size a_caller,
       const MouseEvent& a_event,
       const MouseEvent::button_code_type a_buttonCode)
     {
-      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_buttonCode = a_buttonCode;
       m_buttonReleases++;
 
-      return false;
+      return core_dispatch::f_event::Continue();
     }
 
-    bool OnMouseMove(const tl_size a_caller, const MouseEvent& a_event)
+    core_dispatch::Event
+      OnMouseMove(const tl_size a_caller, const MouseEvent& a_event)
     {
-      CHECK(core::utils::IsSamePointer(m_caller, a_caller) == true);
+      CHECK(core::utils::IsSamePointer(m_caller.get(), a_caller) == true);
       m_event = a_event;
       m_movementEvents++;
-      return false;
+
+      return core_dispatch::f_event::Continue();
     }
 
     MouseEvent                    m_event;
     MouseEvent::button_code_type  m_buttonCode;
 
-    T_Mouse*    m_caller;
-    u32         m_buttonPresses;
-    u32         m_buttonReleases;
-    u32         m_movementEvents;
+    mouse_ptr_type  m_caller;
+    u32             m_buttonPresses;
+    u32             m_buttonReleases;
+    u32             m_movementEvents;
   }; TLOC_DEF_TYPE(sampleInputMouse<hid::MouseB>);
 
 
@@ -179,8 +187,8 @@ namespace TestingInput
     { }
   }
 
-  template <typename T_InputManagerType, typename T_KeyboardType>
-  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardType* kb,
+  template <typename T_InputManagerType, typename T_KeyboardTypePtr>
+  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardTypePtr kb,
     HWND a_wnd, WORD a_key, hid::KeyboardEvent::key_code_type a_ourKey,
     input::InputPolicy::Buffered)
   {
@@ -216,9 +224,11 @@ namespace TestingInput
     kb->UnRegister(&callback);
   }
 
-  template <typename T_InputManagerType, typename T_KeyboardType>
-  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardType* kb, HWND a_wnd, WORD a_key,
-    hid::KeyboardEvent::key_code_type a_ourKey, input::InputPolicy::Immediate)
+  template <typename T_InputManagerType, typename T_KeyboardTypePtr>
+  void TestKeyboardType(T_InputManagerType* a_im, T_KeyboardTypePtr kb, 
+                        HWND a_wnd, WORD a_key, 
+                        hid::KeyboardEvent::key_code_type a_ourKey, 
+                        input::InputPolicy::Immediate)
   {
     core::time::Timer countDown;
 
@@ -246,7 +256,8 @@ namespace TestingInput
   {
     typedef typename T_InputManagerType::policy_type  policy_type;
 
-    Keyboard<policy_type>* kb = a_im->GetHID<Keyboard<policy_type> >();
+    core_sptr::VirtualPtr<Keyboard<policy_type> > kb = 
+      a_im->GetHID<Keyboard<policy_type> >();
 
     CHECK( (kb != nullptr) );
 
@@ -272,10 +283,11 @@ namespace TestingInput
     { }
   }
 
-  template <typename T_InputManagerType, typename T_MouseType>
-  void TestMouseType (T_InputManagerType* a_im, T_MouseType* mouse, HWND a_wnd,
-    WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData,
-    hid::MouseEvent::button_code_type a_ourButton, input::InputPolicy::Buffered)
+  template <typename T_InputManagerType, typename T_MouseTypePtr>
+  void TestMouseType (T_InputManagerType* a_im, T_MouseTypePtr mouse, HWND a_wnd, 
+                      WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData, 
+                      hid::MouseEvent::button_code_type a_ourButton, 
+                      input::InputPolicy::Buffered)
   {
     core::time::Timer_T<> countDown;
 
@@ -318,10 +330,11 @@ namespace TestingInput
     }
   }
 
-  template <typename T_InputManagerType, typename T_MouseType>
-  void TestMouseType (T_InputManagerType* a_im, T_MouseType* mouse, HWND a_wnd,
-    WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData,
-    hid::MouseEvent::button_code_type a_ourButton, input::InputPolicy::Immediate)
+  template <typename T_InputManagerType, typename T_MouseTypePtr>
+  void TestMouseType (T_InputManagerType* a_im, T_MouseTypePtr mouse, HWND a_wnd, 
+                      WORD a_buttonDown, WORD a_buttonUp, WORD a_extraData, 
+                      hid::MouseEvent::button_code_type a_ourButton, 
+                      input::InputPolicy::Immediate)
   {
     core::time::Timer_T<> countDown;
 
@@ -357,19 +370,20 @@ namespace TestingInput
   {
     typedef typename T_InputManagerType::policy_type  policy_type;
 
-    Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
+    core_sptr::VirtualPtr<Mouse<policy_type> > mouse = 
+      a_im->GetHID<Mouse<policy_type> >();
 
     CHECK( (mouse != nullptr) );
 
     if (mouse)
     {
-      TestMouseType(a_im, mouse, a_wnd, a_buttonDown, a_buttonUp, a_extraData,
-        a_ourButton, policy_type());
+      TestMouseType(a_im, mouse, a_wnd, a_buttonDown, a_buttonUp, a_extraData, 
+                    a_ourButton, policy_type());
     }
   }
 
-  template <typename T_InputManagerType, typename T_MouseType>
-  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseType* a_mouse,
+  template <typename T_InputManagerType, typename T_MouseTypePtr>
+  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseTypePtr a_mouse,
     HWND a_wnd, WORD a_axis, tl_int a_x, tl_int a_y, WORD a_data,
     input::InputPolicy::Buffered)
   {
@@ -394,8 +408,8 @@ namespace TestingInput
     return callback.m_event;
   }
 
-  template <typename T_InputManagerType, typename T_MouseType>
-  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseType* a_mouse,
+  template <typename T_InputManagerType, typename T_MouseTypePtr>
+  MouseEvent TestMouseState(T_InputManagerType* a_im, T_MouseTypePtr a_mouse,
     HWND a_wnd, WORD a_axis, tl_int a_x, tl_int a_y, WORD a_data,
     input::InputPolicy::Immediate)
   {
@@ -416,14 +430,15 @@ namespace TestingInput
   {
     typedef typename T_InputManagerType::policy_type  policy_type;
 
-    Mouse<policy_type>* mouse = a_im->GetHID<Mouse<policy_type> >();
+    core_sptr::VirtualPtr<Mouse<policy_type> > mouse = 
+      a_im->GetHID<Mouse<policy_type> >();
 
     CHECK( (mouse != nullptr) );
 
     if (mouse)
     {
-      return TestMouseState(a_im, mouse, a_wnd, a_axis, a_x, a_y, a_data,
-        policy_type());
+      return TestMouseState(a_im, mouse, a_wnd, a_axis, a_x, a_y, a_data, 
+                            policy_type());
     }
 
     return MouseEvent(MouseEvent::none);
@@ -589,7 +604,9 @@ namespace TestingInput
     MouseEvent evt;
 
     typedef Mouse<typename T_InputManagerType::policy_type> mouse_type;
-    mouse_type* mouse = inputMgr.GetHID<mouse_type>(0);
+    typedef core_sptr::VirtualPtr<mouse_type>               mouse_ptr_type;
+
+    mouse_ptr_type mouse = inputMgr.GetHID<mouse_type>(0);
     mouse->SetClamped(false);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
@@ -663,7 +680,9 @@ namespace TestingInput
   void TestTouchSurface(T_InputManagerType& inputMgr)
   {
     typedef TouchSurface<typename T_InputManagerType::policy_type> touch_type;
-    touch_type* ts = inputMgr.GetHID<touch_type>(0);
+    typedef core_sptr::VirtualPtr<touch_type>                      touch_ptr_type;
+
+    touch_ptr_type ts = inputMgr.GetHID<touch_type>(0);
 
     ts->Update(); // should not crash
     ts->Reset();  // should not crash
@@ -689,10 +708,10 @@ namespace TestingInput
     param_options::value_type options =
       TL_WIN_DISCL_FOREGROUND | TL_WIN_DISCL_EXCLUSIVE;
 
-    KeyboardB* kb = inputMgr.CreateHID<KeyboardB>(options);
+    hid::keyboard_b_vptr kb = inputMgr.CreateHID<KeyboardB>(options);
     CHECK( (kb != nullptr) );
 
-    KeyboardI* kbImm = inputMgrImm.CreateHID<KeyboardI>(options);
+    hid::keyboard_i_vptr kbImm = inputMgrImm.CreateHID<KeyboardI>(options);
     CHECK( (kbImm != nullptr) );
 
     if (kb)
@@ -709,12 +728,12 @@ namespace TestingInput
     MouseB::abs_range_type rangeX(-1000, 1000);
     MouseB::abs_range_type rangeY(-1000, 1000);
 
-    MouseB* mouse = inputMgr.CreateHID<MouseB>(options);
+    hid::mouse_b_vptr mouse = inputMgr.CreateHID<MouseB>(options);
     CHECK( (mouse != nullptr) );
     mouse->SetClampX(rangeX);
     mouse->SetClampY(rangeY);
 
-    MouseI* mouseImm = inputMgrImm.CreateHID<MouseI>(options);
+    hid::mouse_i_vptr mouseImm = inputMgrImm.CreateHID<MouseI>(options);
     CHECK( (mouseImm != nullptr) );
     mouseImm->SetClampX(rangeX);
     mouseImm->SetClampY(rangeY);
@@ -732,9 +751,9 @@ namespace TestingInput
     //------------------------------------------------------------------------
     // Dummy inputs
 
-    TouchSurfaceB* ts = inputMgr.CreateHID<TouchSurfaceB>();
+    hid::touch_surface_b_vptr ts = inputMgr.CreateHID<TouchSurfaceB>();
     CHECK( (ts != nullptr) );
-    TouchSurfaceI* tsImm = inputMgrImm.CreateHID<TouchSurfaceI>();
+    hid::touch_surface_i_vptr tsImm = inputMgrImm.CreateHID<TouchSurfaceI>();
     CHECK( (tsImm != nullptr) );
 
     TestTouchSurface(inputMgr);

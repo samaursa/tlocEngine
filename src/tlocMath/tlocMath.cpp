@@ -7,29 +7,6 @@ namespace tloc
 {
 
   //------------------------------------------------------------------------
-  // Functions
-
-  template <typename T>
-  Math<T> Math<T>::m_math;
-
-  template <typename T>
-  tloc::Math<T>::Math()
-  {
-    Initialize();
-  }
-
-  template <typename T>
-  tloc::Math<T>::~Math()
-  {
-  }
-
-  template <typename T>
-  void tloc::Math<T>::Initialize()
-  {
-
-  }
-
-  //------------------------------------------------------------------------
   // Constants
 
   template <typename T>
@@ -53,17 +30,42 @@ namespace tloc
   template <typename T>
   const T Math<T>::RAD_TO_DEG       = (T)(180.0f/Math<T>::PI);
   template <typename T>
-  const T Math<T>::LOGN_2           = Math<T>::Log(2.0f);
+  const T Math<T>::LOGN_2           = math::Log(2.0f);
   template <typename T>
-  const T Math<T>::LOGN_10          = Math<T>::Log(10.0f);
+  const T Math<T>::LOGN_10          = math::Log(10.0f);
   template <typename T>
   const T Math<T>::INV_LOGN_2       = 1.0f / Math<T>::LOGN_2;
   template <typename T>
   const T Math<T>::INV_LOGN_10      = 1.0f / Math<T>::LOGN_10;
-  template <typename T>
-  const T Math<T>::m_cosTable[64]   = {0};
-  template <typename T>
-  const T Math<T>::m_sinTable[64]   = {0};
+
+  namespace math 
+  {
+    // -----------------------------------------------------------------------
+    // global functions
+
+    bool 
+      IsPowerOfTwo( const tl_uint& aValue )
+    {
+      return (aValue != 0) && ((aValue & (aValue - 1)) == 0);
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    u32 
+      FastPowOfTwo( const u32& aPower )
+    {
+      return 0x00000001 << aPower;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    s32 
+      FastSignInt( const f32& aRealIn )
+    {
+      if (((s32&)aRealIn & 0x7FFFFFF)==0) return 0;
+      return (signed ((s32&)aRealIn & 0x80000000) >> 31) | 1;
+    }
+  };
 
   //------------------------------------------------------------------------
   // Explicitly template instantiation

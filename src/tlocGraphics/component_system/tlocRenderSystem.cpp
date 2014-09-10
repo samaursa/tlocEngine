@@ -1,8 +1,10 @@
 #include "tlocRenderSystem.h"
 
 #include <tlocCore/tlocAssert.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocCamera.h>
+#include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -24,6 +26,20 @@ namespace tloc { namespace graphics { namespace component_system {
     // Ensure that camera entity has the projection component
     TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
       "The passed entity is not a camera!");
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RENDER_SYSTEM_TYPE::error_type
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    InitializeEntity(entity_ptr a_ent)
+  {
+    TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<gfx_cs::Material>() == false) 
+      << "Entity (" << a_ent->GetDebugName() << ") doesn't have "
+      << "a material.";
+
+    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -4,36 +4,80 @@
 #include <tlocCore/time/tlocTime.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
+#include <tlocCore/tlocConsole.h>
 
 namespace {
   // -----------------------------------------------------------------------
-  // platform specific fast console output
 
-  template <typename T_Platform>
-  void DoWriteOutput(tloc::BufferArg a_formattedLog, T_Platform)
-  { printf("%s", a_formattedLog.GetPtr()); }
+  using namespace tloc::core_log;
 
-#if defined(TLOC_OS_WIN)
-  void DoWriteOutput(tloc::BufferArg a_formattedLog,
-                     tloc::core_plat::p_platform_info::win)
+  typedef Log_I::severity_type                          severity_type;
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void DoWrite(tloc::BufferArg a_formattedLog, severity_type a_severity)
   {
-    static bool idp = IsDebuggerPresent() != 0;
-    if (idp)
-    { OutputDebugString(a_formattedLog); }
-    else
-    { printf(a_formattedLog); }
+    using namespace tloc::console;
+
+    switch(a_severity)
+    {
+    case Log_I::k_info:
+      SetConsoleColor(p_color::gray, p_color::black);
+      break;
+    case Log_I::k_success:
+      SetConsoleColor(p_color::green, p_color::black);
+      break;
+    case Log_I::k_debug:
+      SetConsoleColor(p_color::white, p_color::black);
+      break;
+    case Log_I::k_warning:
+      SetConsoleColor(p_color::yellow, p_color::black);
+      break;
+    case Log_I::k_error:
+      SetConsoleColor(p_color::red, p_color::black);
+      break;
+    default:
+      SetConsoleColor(p_color::dark_white, p_color::black);
+      break;
+    }
+
+    WriteToConsole(a_formattedLog);
+
+    // reset the color (although we don't know what the original colors were)
+    SetConsoleColor(p_color::dark_white, p_color::black);
   }
-#endif
   
 };
 
 namespace tloc { namespace core { namespace logging {
 
+  // -----------------------------------------------------------------------
+
+  void
+    WriteToConsole(tloc::BufferArg a_formattedLog, severity_type a_severity)
+  { DoWrite(a_formattedLog, a_severity); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Log, typename T_Logger, typename T_BuildConfig>
+  void
+    DoBreakOnSeverity(const T_Log& a_log, const T_Logger& a_logger, T_BuildConfig)
+  {
+    if (a_log.GetSeverity() >= a_logger.GetBreakOnSeverity())
+    { TLOC_DEBUG_BREAK(); }
+  }
+
+  template <typename T_Log, typename T_Logger>
+  void
+    DoBreakOnSeverity(const T_Log& , const T_Logger& , 
+                      core_cfg::p_build_config::Release)
+  { }
+
   // ///////////////////////////////////////////////////////////////////////
   // Log
 
-#define TLOC_LOG_TEMPS    typename T_Logger
-#define TLOC_LOG_PARAMS   T_Logger
+#define TLOC_LOG_TEMPS    typename T_Logger, typename T_BuildConfig
+#define TLOC_LOG_PARAMS   T_Logger, T_BuildConfig
 #define TLOC_LOG_TYPE     typename Log_T<TLOC_LOG_PARAMS>
 
   template <TLOC_LOG_TEMPS>
@@ -62,6 +106,26 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(BufferArg a_string)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_string); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(BufferArgW a_string)
+  {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_string); }
@@ -76,6 +140,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_int a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -90,6 +157,43 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_long a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+    
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(char8 a_value)
+  {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(char32 a_value)
+  {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -104,6 +208,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_uint a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -118,6 +225,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_ulong a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -132,6 +242,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_float a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -146,6 +259,9 @@ namespace tloc { namespace core { namespace logging {
     Log_T<TLOC_LOG_PARAMS>::
     operator<<(tl_double a_value)
   {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_value); }
@@ -170,9 +286,9 @@ namespace tloc { namespace core { namespace logging {
 
       void
         Console::
-        DoWrite(BufferArg a_formattedLog)
+        DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
       {
-        printf("%s", a_formattedLog.GetPtr());
+        ::DoWrite(a_formattedLog, a_severity);
       }
 
       // ///////////////////////////////////////////////////////////////////////
@@ -184,9 +300,10 @@ namespace tloc { namespace core { namespace logging {
 
       void
         Output::
-        DoWrite(BufferArg a_formattedLog)
+        DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
       {
-        DoWriteOutput(a_formattedLog, core_plat::PlatformInfo::platform_type());
+        if (console::WriteToIDEConsole(a_formattedLog) == false)
+        { ::DoWrite(a_formattedLog, a_severity); }
       }
 
       // ///////////////////////////////////////////////////////////////////////
@@ -202,7 +319,7 @@ namespace tloc { namespace core { namespace logging {
 
       void
         File::
-        DoWrite(BufferArg a_formattedLog)
+        DoWrite(BufferArg a_formattedLog, severity_type ) const
       {
         m_file.Open();
         m_file.Write(a_formattedLog);
@@ -268,6 +385,7 @@ namespace tloc { namespace core { namespace logging {
     , m_name(a_name)
     , m_flags(k_count)
     , m_severity(log_type::k_info)
+    , m_breakOnSeverity(log_type::k_count)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -326,10 +444,18 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOGGER_TEMPS>
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
+    ResetBreakOnSeverity()
+  { m_severity = log_type::k_count; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOGGER_TEMPS>
+  void
+    Logger_T<TLOC_LOGGER_PARAMS>::
     DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate)
   {
     str_type log = format_base_type::DoFormat(a_log);
-    write_base_type::DoWrite(log);
+    write_base_type::DoWrite(log, a_log.GetSeverity());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -338,7 +464,9 @@ namespace tloc { namespace core { namespace logging {
   void
     Logger_T<TLOC_LOGGER_PARAMS>::
     DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush)
-  { m_logs.push_back(a_log); }
+  { 
+    m_logs.push_back(a_log);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -363,7 +491,9 @@ namespace tloc { namespace core { namespace logging {
       allLogs += format_base_type::DoFormat(*itr);
     }
 
-    write_base_type::DoWrite(allLogs);
+    // the logs are already formatted - not possible to clarify severity so 
+    // it is going to be 'info'
+    write_base_type::DoWrite(allLogs, log_type::k_info);
   }
 
   // -----------------------------------------------------------------------

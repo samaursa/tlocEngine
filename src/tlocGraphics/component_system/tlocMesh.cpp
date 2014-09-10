@@ -11,7 +11,9 @@ namespace tloc { namespace graphics { namespace component_system {
   template <MESH_TEMPS>
   Mesh_T<MESH_PARAMS>::
     Mesh_T()
-    : base_type(vertex_storage_policy::k_component_id)
+    : base_type(vertex_storage_policy::k_component_id, "Mesh")
+    , m_texCoordsEnabled(true)
+    , m_normalsEnabled(true)
   {
     m_posAttr->SetName("a_vPos");
     m_normAttr->SetName("a_vNorm");
@@ -35,10 +37,8 @@ namespace tloc { namespace graphics { namespace component_system {
 using namespace tloc::gfx_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Mesh);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Mesh_Interleaved);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Mesh_Interleaved);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Mesh);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Mesh_Interleaved);
 
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Mesh);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Mesh_Interleaved);

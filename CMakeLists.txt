@@ -12,16 +12,23 @@ set(internal_FIXME "FIXME!")
 # Install function for libraries
 
 function(tloc_install_library target_name include_folder)
-  if(TLOC_DISTRIBUTION_FULL_SOURCE)
-    INSTALL(DIRECTORY "${TLOC_ENGINE_PATH}/src/${include_folder}" 
-      DESTINATION "${TLOC_ENGINE_INSTALL_PATH}/include" 
-      FILES_MATCHING PATTERN "*.h" PATTERN "*.cpp")
+  if(DISTRIBUTION_FULL_SOURCE)
+    file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
+      "file(COPY \"${TLOC_ENGINE_PATH}/src/${include_folder}\" 
+      DESTINATION \"${TLOC_ENGINE_INSTALL_PATH}/include/\" 
+      FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.cpp\"
+      )")
   else()
-    INSTALL(DIRECTORY "${TLOC_ENGINE_PATH}/src/${include_folder}" 
-      DESTINATION "${TLOC_ENGINE_INSTALL_PATH}/include" 
-      FILES_MATCHING PATTERN "*.h"
-      PATTERN "*.opt.inl.h" EXCLUDE)
+    file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
+      "file(COPY \"${TLOC_ENGINE_PATH}/src/${include_folder}\" 
+      DESTINATION \"${TLOC_ENGINE_INSTALL_PATH}/include/\" 
+      FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.opt.inl.h\" EXCLUDE
+      )")
   endif()
+
+  add_custom_command(TARGET ${target_name} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/${target_name}Copy.cmake")
+
 endfunction()
 
 #------------------------------------------------------------------------------

@@ -20,16 +20,22 @@ list(GET p2list 0 USER_BUILD_FOLDER_NAME)
 # Install function for libraries
 
 function(tloc_install_library target_name include_folder)
-  if(USER_INCLUDE_FULL_SOURCE)
-    INSTALL(DIRECTORY "${USER_PATH}/src/${target_name}/${include_folder}/" 
-      DESTINATION "${USER_INSTALL_PATH}/include/${target_name}/" 
-      FILES_MATCHING PATTERN "*.h" PATTERN "*.cpp")
+  if(DISTRIBUTION_FULL_SOURCE)
+    file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
+      "file(COPY \"${USER_PATH}/src/${target_name}/${include_folder}\" 
+      DESTINATION \"${USER_INSTALL_PATH}/include/${target_name}\" 
+      FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.cpp\"
+      )")
   else()
-    INSTALL(DIRECTORY "${USER_PATH}/src/${target_name}/${include_folder}/" 
-      DESTINATION "${USER_INSTALL_PATH}/include/${target_name}/" 
-      FILES_MATCHING PATTERN "*.h"
-      PATTERN "*.opt.inl.h" EXCLUDE)
+    file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
+      "file(COPY \"${USER_PATH}/src/${target_name}/${include_folder}\" 
+      DESTINATION \"${USER_INSTALL_PATH}/include/${target_name}\" 
+      FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.opt.inl.h\" EXCLUDE
+      )")
   endif()
+
+  add_custom_command(TARGET ${target_name} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/${target_name}Copy.cmake")
 endfunction()
 
 #------------------------------------------------------------------------------
@@ -40,7 +46,6 @@ set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The dependency INSTALL p
 
 set(USER_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "Root folder of this project. You do not need to change this path.")
 set(USER_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${USER_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the binaries")
-set(USER_INCLUDE_FULL_SOURCE TRUE CACHE BOOL "Include full source, including opt.inl.h and .cpp files.")
 set(USER_IOS_PLIST_PATH "" CACHE FILE "If you have your own custom plist, specify here. If blank, 2LoC will generate one for you.")
 
 # Variables to check for ${internal_FIXEM}

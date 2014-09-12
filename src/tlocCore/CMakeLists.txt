@@ -409,6 +409,10 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_UTILITIES}
 )
 
+add_dependencies(tlocCore
+  3rdParty
+  )
+
 set_platform_specific_properties(tlocCore)
 
 # Filters to organize the source files
@@ -435,4 +439,3 @@ source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
 
 tloc_install_library(tlocCore tlocCore)
-tloc_install_library(3rdParty 3rdParty)

@@ -401,7 +401,7 @@ namespace TestingMatrix3
 
     SECTION("LookAt() default up", "")
     {
-      a.Orient(Mat3f32::dir(Vec3f32(1, 0, 0)));
+      a.Orient(Mat3f32::dir(Vec3f32(1, 0, 0)) );
 
       Vec3f32 left = a.GetCol(0);
       Vec3f32 up = a.GetCol(1);
@@ -410,6 +410,12 @@ namespace TestingMatrix3
       CHECK(dir[0] == Approx(1.0f));
       CHECK(up[1] == Approx(1.0f));
       CHECK(left[2] == Approx(-1.0f));
+
+      TLOC_TEST_ASSERT
+      {
+        a.Orient(Mat3f32::dir(Vec3f32(2, 0, 0)) );
+      }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
     SECTION("LookAt() +x up", "")

@@ -156,8 +156,9 @@ namespace tloc { namespace math { namespace component_system {
     Transform_T<TRANSFORM_PARAMS>::
     LookAt(position_type a_target)
   {
-    const position_type newDir = a_target - 
+    position_type newDir = a_target - 
       m_transformation.GetCol(3).ConvertTo<position_type>();
+    newDir.Normalize();
 
     orientation_type ori = m_transformation.ConvertTo<orientation_type>();
 
@@ -165,8 +166,10 @@ namespace tloc { namespace math { namespace component_system {
     { ori.Orient(orientation_type::dir(newDir)); }
     else // parallel
     {
-      const position_type newUp = 
+      position_type newUp = 
         ori.GetCol(2).ConvertTo<position_type>().Inverse();
+      newUp.Normalize();
+
       ori.Orient(orientation_type::dir(newDir), 
                  orientation_type::up(newUp));
     }

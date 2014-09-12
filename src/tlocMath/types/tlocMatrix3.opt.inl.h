@@ -678,14 +678,19 @@ namespace tloc { namespace math { namespace types {
     Orient(dir a_direction, up a_up)
   {
     const vec_type newDir = a_direction;
+    const vec_type worldUp = a_up;
+
+    TLOC_ASSERT_LOW_LEVEL(IsEqual<value_type>(newDir.Length(), 1.0f), 
+                "Direction vector is not normalized");
+    TLOC_ASSERT_LOW_LEVEL(IsEqual<value_type>(worldUp.Length(), 1.0f), 
+                "Up vector is not normalized");
 
     TLOC_ASSERT(newDir.IsParallel(a_up) == false,
       "a_direction is parallel to a_up. Cannot LookAt() specified direction.");
 
     const vec_type left = this->GetCol(0);
-    const vec_type up   = a_up;
 
-    vec_type newLeft = up.Cross(newDir);
+    vec_type newLeft = worldUp.Cross(newDir);
     vec_type newUp   = newDir.Cross(newLeft);
 
     this->SetCol(0, newLeft);

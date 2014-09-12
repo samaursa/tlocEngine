@@ -131,7 +131,7 @@ namespace TestingTransform
 
     SECTION("LookAt() - target direction not parallel to up", "")
     {
-      t.LookAt(Vec3f32(1, 0, 0));
+      t.LookAt(Vec3f32(2, 0, 0));
 
       const Vec3f32 left = t.GetOrientation().GetCol(0);
       const Vec3f32 up = t.GetOrientation().GetCol(1);

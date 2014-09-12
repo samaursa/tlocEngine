@@ -10,6 +10,7 @@ include_directories(
 
 # All libraries/projects add their name to this variable
 set(tlocAllLibraries 
+  3rdParty
   tlocCore 
   tlocGraphics 
   tlocInput 

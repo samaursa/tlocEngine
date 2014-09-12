@@ -283,6 +283,7 @@ add_library(tlocGraphics STATIC
   )
 
 add_dependencies(tlocGraphics
+  3rdParty
   tlocCore
   tlocMath
   )

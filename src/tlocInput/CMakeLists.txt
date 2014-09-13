@@ -107,3 +107,5 @@ set_platform_specific_properties(tlocInput)
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})
 source_group(component_system FILES ${TLOC_INPUT_COMPONENT_SYSTEM})
+
+tloc_install_library(tlocInput tlocInput)

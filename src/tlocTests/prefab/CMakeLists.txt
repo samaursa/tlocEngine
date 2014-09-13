@@ -29,8 +29,7 @@ set(TLOC_TESTS_PREFAB_ASSETS
 set(TLOC_CURRENT_EXEC_NAME tlocTestsPrefab)
 
 link_directories(
-  ${TLOC_DEP_BUILD_PATH}/src/FreeType/
-  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
@@ -65,26 +64,8 @@ if(MSVC)
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   glu32.lib
   OpenGL32.lib
+  dinput8.lib
   )
-endif()
-
-# Find dinput.lib and add it as a link target
-if(WIN32)
-  if(${ARCH_DIR} MATCHES "x86")
-    find_library(DIRECT_INPUT_LIB
-      NAMES dinput8.lib
-      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
-      )
-  else()
-    find_library(DIRECT_INPUT_LIB
-      NAMES dinput8.lib
-      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
-      )
-  endif()
-
-  target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
-    ${DIRECT_INPUT_LIB}
-    )
 endif()
 
 if(APPLE)

@@ -259,7 +259,7 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/FreeType/
+  ${TLOC_DEP_INSTALL_PATH}/include/FreeType/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
@@ -283,6 +283,7 @@ add_library(tlocGraphics STATIC
   )
 
 add_dependencies(tlocGraphics
+  3rdParty
   tlocCore
   tlocMath
   )
@@ -304,3 +305,5 @@ source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSIO
 source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
 source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
 source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
+
+tloc_install_library(tlocGraphics tlocGraphics)

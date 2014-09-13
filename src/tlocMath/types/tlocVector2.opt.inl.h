@@ -1,5 +1,5 @@
-#ifndef TLOC_VECTOR_2_INL
-#define TLOC_VECTOR_2_INL
+#ifndef TLOC_VECTOR_2_OPT_INL
+#define TLOC_VECTOR_2_OPT_INL
 
 #ifndef TLOC_VECTOR_2_H
 #error "Must include header before including the inline file"
@@ -9,7 +9,7 @@
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/tlocMath.inl.h>
-#include <tlocMath/types/tlocVector.inl.h>
+#include <tlocMath/types/tlocVector.opt.inl.h>
 
 namespace tloc { namespace math { namespace types {
 

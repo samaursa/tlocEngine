@@ -45,6 +45,8 @@ elseif(${USER_CURRENT_PROJECT_NAME} STREQUAL ${USER_PROJECT_TYPE_LIB})
     ${SOURCE_FILES}
     )
 
+  tloc_install_library(${USER_CURRENT_PROJECT_NAME} "src")
+
 endif()
 
 #------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
-#ifndef TLOC_MATRIX_3_INL
-#define TLOC_MATRIX_3_INL
+#ifndef TLOC_MATRIX_3_OPT_INL
+#define TLOC_MATRIX_3_OPT_INL
 
 #ifndef TLOC_MATRIX_3_H
 #error "Must include header before including the inline file"
@@ -9,8 +9,8 @@
 
 #include <tlocCore/tlocAssert.h>
 
-#include <tlocMath/types/tlocVector3.inl.h>
-#include <tlocMath/types/tlocMatrix.inl.h>
+#include <tlocMath/types/tlocVector3.opt.inl.h>
+#include <tlocMath/types/tlocMatrix.opt.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -661,6 +661,41 @@ namespace tloc { namespace math { namespace types {
     matZ.MakeRotationZ(aZAngle1);
 
     *this = Mul(matY.Mul(matZ));
+  }
+
+  template <MATRIX_3_TEMP>
+  void
+    Matrix_T<MATRIX_3_PARAMS>::
+    Orient(dir a_direction)
+  {
+    // assuming that the column vectors are LUD
+    Orient(a_direction, up( this->GetCol(1).ConvertTo<vec_type>() ) );
+  }
+
+  template <MATRIX_3_TEMP>
+  void
+    Matrix_T<MATRIX_3_PARAMS>::
+    Orient(dir a_direction, up a_up)
+  {
+    const vec_type newDir = a_direction;
+    const vec_type worldUp = a_up;
+
+    TLOC_ASSERT_LOW_LEVEL(IsEqual<value_type>(newDir.Length(), 1.0f), 
+                "Direction vector is not normalized");
+    TLOC_ASSERT_LOW_LEVEL(IsEqual<value_type>(worldUp.Length(), 1.0f), 
+                "Up vector is not normalized");
+
+    TLOC_ASSERT(newDir.IsParallel(a_up) == false,
+      "a_direction is parallel to a_up. Cannot LookAt() specified direction.");
+
+    const vec_type left = this->GetCol(0);
+
+    vec_type newLeft = worldUp.Cross(newDir);
+    vec_type newUp   = newDir.Cross(newLeft);
+
+    this->SetCol(0, newLeft);
+    this->SetCol(1, newUp);
+    this->SetCol(2, newDir);
   }
 
   //------------------------------------------------------------------------

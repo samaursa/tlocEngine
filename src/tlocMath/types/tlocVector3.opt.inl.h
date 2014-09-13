@@ -1,5 +1,5 @@
-#ifndef TLOC_VECTOR_3_INL
-#define TLOC_VECTOR_3_INL
+#ifndef TLOC_VECTOR_3_OPT_INL
+#define TLOC_VECTOR_3_OPT_INL
 
 #ifndef TLOC_VECTOR_3_H
 #error "Must include header before including the inline file"
@@ -8,7 +8,7 @@
 #include "tlocVector3.h"
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocMath/tlocMath.inl.h>
-#include <tlocMath/types/tlocVector.inl.h>
+#include <tlocMath/types/tlocVector.opt.inl.h>
 
 namespace tloc { namespace math { namespace types {
 

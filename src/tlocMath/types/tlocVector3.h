@@ -62,6 +62,7 @@ namespace tloc { namespace math { namespace types {
     using base_type::operator[];
     using base_type::Length;
     using base_type::LengthSquared;
+    using base_type::IsParallel;
 
   public:
     static const this_type ZERO;
@@ -108,9 +109,5 @@ namespace tloc { namespace math { namespace types {
   const Vector_T<T, 3> Vector_T<T, 3>::NEG_UNIT_Z (0, 0, T(-1));
 
 };};};
-
-#ifdef TLOC_FULL_SOURCE
-#include "tlocVector3.inl.h"
-#endif
 
 #endif

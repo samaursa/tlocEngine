@@ -106,6 +106,8 @@ namespace tloc { namespace math { namespace types {
     value_type  Dot(const this_type& a_vector) const;
     value_type  DotAbs(const this_type& a_vector) const;
 
+    bool        IsParallel(const this_type& a_vector) const;
+
     this_type   Midpoint(const this_type& a_vector) const;
     void        Midpoint(const this_type& a_vector1,
                          const this_type& a_vector2);

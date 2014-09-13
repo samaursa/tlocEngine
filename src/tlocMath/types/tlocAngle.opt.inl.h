@@ -1,5 +1,5 @@
-#ifndef _TLOC_MATH_ANGLE_INL_
-#define _TLOC_MATH_ANGLE_INL_
+#ifndef _TLOC_MATH_ANGLE_OPT_INL_
+#define _TLOC_MATH_ANGLE_OPT_INL_
 
 #ifndef _TLOC_MATH_ANGLE_H_
 #error "Must include header before including the inline file"

@@ -121,24 +121,34 @@ namespace tloc { namespace graphics { namespace gl {
     gfx_t::gl_uint  Generate();
     void            Destroy(gfx_t::gl_uint a_name);
     
-  }
+  };
 
   // ///////////////////////////////////////////////////////////////////////
   // Texture Units
 
-  // Texture image units start from GL_TEXTURE0 and go all the way to
-  // GL_TEXTURE0 + max_units - 1
-  core_err::Error      GetNextAvailableTextureImageUnit(gfx_t::gl_int& a_texImgUnitOut);
-  void                 ActivateTextureImageUnit(gfx_t::gl_int a_texImgUnit);
-  bool                 IsValidTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+  namespace texture_units {
 
-  // A reserved texture image unit is not returned by GetNextAvailableTextureImageUnit()
-  core_err::Error      ReserveNextAvailableTextureImageUnit(gfx_t::gl_int& a_texImgUnitOut);
-  void                 ReleaseTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+    typedef tl_size               num_tex_img_units_used;
 
-  // Texture units start from 0 to max_units - 1
-  bool                 IsValidTextureUnit(gfx_t::gl_int a_texUnit);
- gfx_t::gl_int         GetTextureUnitFromTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+    namespace image_units { 
+
+      // Texture image units start from GL_TEXTURE0 and go all the way to
+      // GL_TEXTURE0 + max_units - 1
+      core_err::Error         GetNext(gfx_t::gl_int& a_texImgUnitOut);
+      void                    Activate(gfx_t::gl_int a_texImgUnit);
+      bool                    IsValid(gfx_t::gl_int a_texImgUnit);
+      num_tex_img_units_used  ResetCount();
+
+      // A reserved texture image unit is not returned by GetNextAvailableTextureImageUnit()
+      core_err::Error      Reserve(gfx_t::gl_int& a_texImgUnitOut);
+      void                 Release(gfx_t::gl_int a_texImgUnit);
+    };
+
+    // Texture units start from 0 to max_units - 1
+    bool                 IsValid(gfx_t::gl_int a_texUnit);
+    gfx_t::gl_int        FromTextureImageUnit(gfx_t::gl_int a_texImgUnit);
+
+  };
 
 };};};
 

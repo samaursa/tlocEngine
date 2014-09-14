@@ -16,12 +16,14 @@ function(tloc_install_library target_name include_folder)
     file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
       "file(COPY \"${TLOC_ENGINE_PATH}/src/${include_folder}\" 
       DESTINATION \"${TLOC_ENGINE_INSTALL_PATH}/include/\" 
+      FILE_PERMISSIONS OWNER_READ
       FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.cpp\"
       )")
   else()
     file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
       "file(COPY \"${TLOC_ENGINE_PATH}/src/${include_folder}\" 
       DESTINATION \"${TLOC_ENGINE_INSTALL_PATH}/include/\" 
+      FILE_PERMISSIONS OWNER_READ
       FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.opt.inl.h\" EXCLUDE
       )")
   endif()

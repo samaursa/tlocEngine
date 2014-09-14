@@ -2,6 +2,7 @@
 #define TLOC_GL_OBJECT_H
 
 #include <tlocGraphics/tlocGraphicsBase.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/error/tlocError.h>
@@ -21,7 +22,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ObjectBase
   {
   public:
-    typedef u32 object_handle; // GLuint is u32
+    typedef gfx_t::gl_handle              object_handle;
 
     bool IsValid();
 

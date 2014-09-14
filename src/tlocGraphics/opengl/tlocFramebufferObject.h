@@ -84,9 +84,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     typedef RenderbufferObject                            rbo_type;
     typedef TextureObject                                 to_type;
+    typedef TextureObjectShadow                           to_shadow_type;
 
     typedef core_conts::Array<rbo_type>                   rbo_cont;
     typedef core_conts::Array<to_type>                    to_cont;
+    typedef core_conts::Array<to_shadow_type>             to_shadow_cont;
 
     typedef rbo_cont::iterator                            rbo_cont_iterator;
     typedef rbo_cont::const_iterator                      rbo_cont_const_iterator;
@@ -124,6 +126,8 @@ namespace tloc { namespace graphics { namespace gl {
       (rbo_cont, GetRenderBufferObjects, m_renderbufferObjects);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (to_cont, GetTextureobjects, m_textureObjets);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (to_shadow_cont, GetTextureobjectsShadow, m_textureObjetsShadow);
 
   protected:
     // This constructor should be only be used by platforms that require a
@@ -142,6 +146,10 @@ namespace tloc { namespace graphics { namespace gl {
                         attachment_value_type a_attachment,
                         const to_type& a_to);
 
+    error_type DoAttach(target_value_type a_target,
+                        attachment_value_type a_attachment,
+                        const to_shadow_type& a_to);
+
   private:
     void DoCheckInternalFormatAgainstTargetAttachment
       ( p_framebuffer_object::target::value_type a_target,
@@ -153,9 +161,15 @@ namespace tloc { namespace graphics { namespace gl {
         p_framebuffer_object::attachment::value_type a_attachment,
         const to_type& a_to);
 
+    void DoCheckInternalFormatAgainstTargetAttachment
+      ( p_framebuffer_object::target::value_type a_target,
+        p_framebuffer_object::attachment::value_type a_attachment,
+        const to_shadow_type& a_to);
+
   private:
-    rbo_cont  m_renderbufferObjects;
-    to_cont   m_textureObjets;
+    rbo_cont        m_renderbufferObjects;
+    to_cont         m_textureObjets;
+    to_shadow_cont  m_textureObjetsShadow;
   };
 
   // -----------------------------------------------------------------------
@@ -180,7 +194,7 @@ namespace tloc { namespace graphics { namespace gl {
       ((Loki::Conversion<T_Attachment, AttachmentParamsBase>::exists), Invalid_attachment_param);
 
     tloc::type_traits::AssertTypeIsSupported<T_RenderOrTexturebuffer,
-      RenderbufferObject, TextureObject>();
+      RenderbufferObject, TextureObject, TextureObjectShadow>();
 
     // -----------------------------------------------------------------------
     // Internal attach method

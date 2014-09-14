@@ -83,6 +83,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple4b>, GL_BOOL_VEC4);
 
   TLOC_DECL_TL_TO_GL(TextureObject, GL_SAMPLER_2D);
+  TLOC_DECL_TL_TO_GL(TextureObjectShadow, GL_SAMPLER_2D_SHADOW);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
   TLOC_DECL_TL_TO_GL(Tuple2u32, GL_UNSIGNED_INT_VEC2);
@@ -254,22 +255,23 @@ namespace tloc { namespace graphics { namespace gl {
   // Uniform
   TLOC_SHADER_VARIABLE_EXPLICIT(Uniform);
 
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,             Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,    Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,                 Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,                 Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,                Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,       Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObjectShadow, Uniform);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(u32,              Uniform);

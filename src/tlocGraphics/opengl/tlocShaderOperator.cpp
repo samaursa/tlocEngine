@@ -551,6 +551,7 @@ namespace tloc { namespace graphics { namespace gl {
           break;
         }
       case GL_SAMPLER_2D:
+      case GL_SAMPLER_2D_SHADOW:
         {
           using namespace texture_units;
 
@@ -566,7 +567,7 @@ namespace tloc { namespace graphics { namespace gl {
           { image_units::GetNext(texImgUnit); }
 
           image_units::Activate(texImgUnit);
-          m.Bind(p_texture_object::target::Tex2D::s_glParamName);
+          m.Bind();
           glUniform1i(a_info.m_location,
                       FromTextureImageUnit(texImgUnit));
           break;

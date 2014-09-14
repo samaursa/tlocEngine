@@ -681,7 +681,8 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject::
     ReserveTextureUnit()
   {
-    return gl::ReserveNextAvailableTextureImageUnit(m_reservedTexImageUnit);
+    using namespace gl::texture_units;
+    return image_units::Reserve(m_reservedTexImageUnit);
   }
 
   void
@@ -690,7 +691,8 @@ namespace tloc { namespace graphics { namespace gl {
   {
     if (HasReservedTextureUnit())
     {
-      gl::ReleaseTextureImageUnit(m_reservedTexImageUnit);
+      using namespace gl::texture_units;
+      image_units::Release(m_reservedTexImageUnit);
       m_reservedTexImageUnit = -1;
     }
   }

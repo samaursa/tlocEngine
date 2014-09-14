@@ -552,6 +552,8 @@ namespace tloc { namespace graphics { namespace gl {
         }
       case GL_SAMPLER_2D:
         {
+          using namespace texture_units;
+
           const TextureObject& m =
             isShared
             ? *a_uniform.GetValueAsArrayPtr<TextureObject>()
@@ -561,12 +563,12 @@ namespace tloc { namespace graphics { namespace gl {
           if (m.HasReservedTextureUnit())
           { texImgUnit = m.GetReservedTexImageUnit(); }
           else
-          { GetNextAvailableTextureImageUnit(texImgUnit); }
+          { image_units::GetNext(texImgUnit); }
 
-          ActivateTextureImageUnit(texImgUnit);
+          image_units::Activate(texImgUnit);
           m.Bind(p_texture_object::target::Tex2D::s_glParamName);
           glUniform1i(a_info.m_location,
-                      GetTextureUnitFromTextureImageUnit(texImgUnit));
+                      FromTextureImageUnit(texImgUnit));
           break;
         }
       default:

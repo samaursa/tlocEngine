@@ -83,6 +83,15 @@ namespace tloc { namespace graphics { namespace renderer {
 
     };
 
+    namespace cull_face
+    {
+      typedef s32                     value_type;
+
+      struct Front                    { static const value_type s_glParamName; };
+      struct Back                     { static const value_type s_glParamName; };
+      struct FrontAndBack             { static const value_type s_glParamName; };
+    };
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -100,6 +109,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef p_renderer::enable_disable::value_type    enable_value_type;
     typedef p_renderer::enable_disable::value_type    disable_value_type;
     typedef p_renderer::clear::value_type             clear_value_type;
+    typedef p_renderer::cull_face::value_type         cull_face_value_type;
     typedef core::Pair<blend_function_value_type,
                        blend_function_value_type>     blend_pair_type;
 
@@ -141,6 +151,9 @@ namespace tloc { namespace graphics { namespace renderer {
       template <typename T_ClearValue>
       this_type& AddClearBit();
 
+      template <typename T_Face>
+      this_type& Cull();
+
       TLOC_DECL_AND_DEF_GETTER
         (depth_function_value_type, GetDepthFunction, m_depthFunction);
       TLOC_DECL_AND_DEF_GETTER
@@ -151,6 +164,8 @@ namespace tloc { namespace graphics { namespace renderer {
         (disable_cont, GetFeaturesToDisable, m_disableFeatures);
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
         (clear_value_type, GetClearBits, m_clearBits);
+      TLOC_DECL_AND_DEF_GETTER
+        (cull_face_value_type, GetFaceToCull, m_faceToCull);
 
       TLOC_DECL_AND_DEF_GETTER(color_type, GetClearColor, m_clearColor);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(color_type, SetClearColor, m_clearColor);
@@ -170,6 +185,7 @@ namespace tloc { namespace graphics { namespace renderer {
       enable_cont                 m_enableFeatures;
       disable_cont                m_disableFeatures;
       clear_value_type            m_clearBits;
+      cull_face_value_type        m_faceToCull;
     };
 
   public:
@@ -317,6 +333,24 @@ namespace tloc { namespace graphics { namespace renderer {
        ColorBufferBit, DepthBufferBit, StencilBufferBit>();
 
     m_clearBits |= T_ClearValue::s_glParamName;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DepthPrecision>
+  template <typename T_Face> 
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
+    Renderer_T<T_DepthPrecision>::Params::
+    Cull()
+  {
+    using namespace p_renderer::cull_face;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_Face,
+       Front, Back, FrontAndBack>();
+
+    m_faceToCull = T_Face::s_glParamName;
     return *this;
   }
 

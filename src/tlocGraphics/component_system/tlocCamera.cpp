@@ -39,7 +39,9 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(k_component_type, "Camera")
     , m_frustum(GetDefaultFrustum())
     , m_vpMat(matrix_type::IDENTITY)
-  { }
+  { 
+    m_target.first = false;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -49,6 +51,27 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_frustum(a_frustum)
     , m_vpMat(matrix_type::IDENTITY)
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Camera::
+    LookAt(point_type a_target)
+  {
+    m_target.first = true;
+    m_target.second = a_target;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    Camera::
+    DoIsTargetUpdated()
+  {
+    bool flag = m_target.first;
+    m_target.first = false;
+    return flag;
+  }
 
 };};};
 

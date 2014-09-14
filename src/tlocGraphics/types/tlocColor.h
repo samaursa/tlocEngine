@@ -290,6 +290,7 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     static const this_type COLOR_BLACK;
+    static const this_type COLOR_GREY;
     static const this_type COLOR_WHITE;
     static const this_type COLOR_RED;
     static const this_type COLOR_GREEN;
@@ -305,6 +306,10 @@ namespace tloc { namespace graphics { namespace types {
   template <typename T>
   const Color_T<T, 4>
     Color_T<T, 4>::COLOR_BLACK = Color_T<T, 4>(0, 0, 0, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_GREY = Color_T<T, 4>(128, 128, 128, 255);
 
   template <typename T>
   const Color_T<T, 4>
@@ -398,6 +403,7 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     static const this_type COLOR_BLACK;
+    static const this_type COLOR_GREY;
     static const this_type COLOR_WHITE;
     static const this_type COLOR_RED;
     static const this_type COLOR_GREEN;
@@ -413,6 +419,10 @@ namespace tloc { namespace graphics { namespace types {
   template <typename T>
   const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_BLACK = Color_T<T, 3>(0, 0, 0);
+
+  template <typename T>
+  const Color_T<T, 3>
+    Color_T<T, 3>::COLOR_GREY = Color_T<T, 4>(128, 128, 128);
 
   template <typename T>
   const typename Color_T<T, 3>::this_type

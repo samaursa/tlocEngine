@@ -16,7 +16,6 @@ namespace tloc { namespace graphics { namespace gl {
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
 
-      const value_type Auto::s_glParamName = GL_NONE;
       const value_type Tex1D::s_glParamName = GL_TEXTURE_1D;
       const value_type Tex2D::s_glParamName = GL_TEXTURE_2D;
       const value_type Tex3D::s_glParamName = GL_TEXTURE_3D;
@@ -32,11 +31,21 @@ namespace tloc { namespace graphics { namespace gl {
       const value_type
         Tex2DMultiSampleArray::s_glParamName = GL_TEXTURE_2D_MULTISAMPLE_ARRAY;
 
+      const value_type Tex1DShadow::s_glParamName = GL_TEXTURE_1D;
+      const value_type Tex2DShadow::s_glParamName = GL_TEXTURE_2D;
+
+      const value_type TexRectangleShadow::s_glParamName     = GL_TEXTURE_RECTANGLE;
+      const value_type TexCubeMapShadow::s_glParamName       = GL_TEXTURE_CUBE_MAP;
+
+      const value_type Tex1DArrayShadow::s_glParamName = GL_TEXTURE_1D_ARRAY;
+      const value_type Tex2DArrayShadow::s_glParamName = GL_TEXTURE_2D_ARRAY;
+      const value_type TexCubeMapArrayShadow::s_glParamName = GL_TEXTURE_CUBE_MAP_ARRAY;
+
 #elif defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL_ES
 
-      const value_type Auto::s_glParamName = GL_NONE;
-      const value_type Tex2D::s_glParamName      = GL_TEXTURE_2D;
-      const value_type TexCubeMap::s_glParamName = GL_TEXTURE_CUBE_MAP;
+      const value_type Tex2D::s_glParamName       = GL_TEXTURE_2D;
+      const value_type Tex2DShadow::s_glParamName = GL_TEXTURE_2D;
+      const value_type TexCubeMap::s_glParamName  = GL_TEXTURE_CUBE_MAP;
 
       const value_type Tex1D::s_glParamName = 0;
       const value_type Tex3D::s_glParamName = 0;
@@ -272,6 +281,9 @@ namespace tloc { namespace graphics { namespace gl {
   namespace {
 
     // -----------------------------------------------------------------------
+    // 
+
+    // -----------------------------------------------------------------------
     // Return the 'target' of image (see glTexImage2D doc)
 
     template <typename T_ColorType, typename T_Storage>
@@ -471,7 +483,14 @@ namespace tloc { namespace graphics { namespace gl {
   // ///////////////////////////////////////////////////////////////////////
   // TextureObject::Params
 
-  TextureObject::Params::
+#define TEXTURE_OBJECT_TEMPS  typename T_Target
+#define TEXTURE_OBJECT_PARAMS T_Target
+#define TEXTURE_OBJECT_TYPE   typename TextureObject_T<TEXTURE_OBJECT_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
+  TextureObject_T<TEXTURE_OBJECT_PARAMS>::Params::
     Params()
     : m_internalFormatChannels(0)
     , m_formatChannels(0)
@@ -486,7 +505,6 @@ namespace tloc { namespace graphics { namespace gl {
     // defaults
     Wrap_S<ClampToEdge>().Wrap_T<ClampToEdge>();
     MinFilter<Linear>().MagFilter<Linear>();
-    TextureType<target::Auto>();
     InternalFormat<internal_format::Auto>();
     Format<format::Auto>();
     Type<type::Auto>();
@@ -495,18 +513,18 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <TEXTURE_OBJECT_TEMPS>
   void
-    TextureObject::Params::
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::Params::
     AutoGenerateMipMaps(bool a_autoGenMipMaps)
   { m_autoGenMipMaps = a_autoGenMipMaps; }
 
   //////////////////////////////////////////////////////////////////////////
   // TextureObject
 
-  typedef TextureObject::error_type   error_type;
-
-  TextureObject::
-    TextureObject(const Params& a_params)
+  template <TEXTURE_OBJECT_TEMPS>
+  TextureObject_T<TEXTURE_OBJECT_PARAMS>::
+    TextureObject_T(const Params& a_params)
     : m_params(a_params)
     , m_dim(0)
     , m_reservedTexImageUnit(-1)
@@ -516,8 +534,11 @@ namespace tloc { namespace graphics { namespace gl {
     SetHandle(handle);
   }
 
-  TextureObject::
-    ~TextureObject()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
+  TextureObject_T<TEXTURE_OBJECT_PARAMS>::
+    ~TextureObject_T()
   {
     if (IsLastRef())
     {
@@ -527,21 +548,27 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
-  error_type
-    TextureObject::
-    Bind(texture_type a_target) const
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
+  TEXTURE_OBJECT_TYPE::error_type
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
+    Bind() const
   {
     object_handle handle = GetHandle();
 
-    glBindTexture(a_target, handle);
+    glBindTexture(GetTargetType(), handle);
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glBindTexture()");
     
     return ErrorSuccess;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   template <typename T_ColorType, typename T_Storage>
-  error_type
-    TextureObject::
+  TEXTURE_OBJECT_TYPE::error_type
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     Initialize(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image)
   {
     using gfx_t::gl_int;
@@ -553,10 +580,9 @@ namespace tloc { namespace graphics { namespace gl {
     m_dim[0] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[0]);
     m_dim[1] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[1]);
 
-    const gl_int target = m_params.GetTextureType() == 
-      p_texture_object::target::Auto::s_glParamName
-      ? DoGetTarget(a_image)
-      : m_params.GetTextureType();
+    const gl_int target = GetTargetType();
+    TLOC_LOG_GFX_WARN_IF(target != DoGetTarget(a_image)) <<
+      "TextureObject_T<>::target_type is different than incoming image";
 
     const gl_int internalFormat = m_params.GetInternalFormat() == 
       p_texture_object::internal_format::Auto::s_glParamName
@@ -583,7 +609,6 @@ namespace tloc { namespace graphics { namespace gl {
       ? DoGetAlignment(color_type())
       : m_params.GetAlignment();
 
-    m_params.m_textureType = target;
     m_params.m_internalFormat = internalFormat;
     m_params.m_internalFormatChannels = internalFormatChannels;
     m_params.m_format = format;
@@ -594,9 +619,12 @@ namespace tloc { namespace graphics { namespace gl {
     return Update(a_image);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   template <typename T_ColorType, typename T_Storage>
-  error_type
-    TextureObject::
+  TEXTURE_OBJECT_TYPE::error_type
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     Update(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image) const
   {
     TLOC_ASSERT(a_image.GetWidth() == m_dim[0] && 
@@ -608,7 +636,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef typename image_type::pixel_container_type           pix_cont_type;
     typedef typename image_type::color_type                     color_type;
 
-    const gl_int target = m_params.GetTextureType();
+    const gl_int target = GetTargetType();
     const gl_int internalFormat = m_params.GetInternalFormat();
     const gl_int format = m_params.GetFormat();
     const gl_int type   = m_params.GetType();
@@ -643,7 +671,7 @@ namespace tloc { namespace graphics { namespace gl {
     glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glPixelStorei()");
 
-    Bind(target);
+    Bind();
     glTexImage2D(target, 0, internalFormat,
                  core_utils::CastNumber<GLsizei>(m_dim[0]),
                  core_utils::CastNumber<GLsizei>(m_dim[1]),
@@ -652,7 +680,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (m_params.IsAutoGenMipMaps())
     {
-      glGenerateMipmap(m_params.GetTextureType());
+      glGenerateMipmap(target);
       TLOC_LOG_GFX_WARN_IF(gl::Error().Failed())
         << "Error in glGenerateMipmap() for Texture with handle(" << GetHandle()
         << ") - Is texture valid and power of two?";
@@ -663,13 +691,16 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   void
-    TextureObject::
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     UpdateParameters() const
   {
-    texture_type texType = m_params.GetTextureType();
+    const p_texture_object::target::value_type 
+      texType = GetTargetType();
 
-    TLOC_ASSERT(texType != GL_NONE, "Update parameters on a GL_NONE texture");
     glTexParameteri(texType, GL_TEXTURE_WRAP_S, m_params.GetWrap_S());
     glTexParameteri(texType, GL_TEXTURE_WRAP_T, m_params.GetWrap_T());
     glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
@@ -677,16 +708,22 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glTexParameteri()");
   }
 
-  TextureObject::error_type
-    TextureObject::
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
+  TEXTURE_OBJECT_TYPE::error_type
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     ReserveTextureUnit()
   {
     using namespace gl::texture_units;
     return image_units::Reserve(m_reservedTexImageUnit);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   void
-    TextureObject::
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     ReleaseTextureUnit()
   {
     if (HasReservedTextureUnit())
@@ -697,12 +734,23 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   bool
-    TextureObject::
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     HasReservedTextureUnit() const
   {
     return m_reservedTexImageUnit != -1;
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // explicit instantiations
+
+  using namespace p_texture_object::target;
+
+  template class TextureObject_T<Tex2D>;
+  template class TextureObject_T<Tex2DShadow>;
 
 };};};
 
@@ -714,7 +762,10 @@ using namespace tloc::gfx_med;
 
 #define TLOC_EXPLICITLY_INSTANTIATE_IMAGE(_imageType_)\
 template TextureObject::error_type TextureObject::Initialize(const _imageType_&);\
-template TextureObject::error_type TextureObject::Update(const _imageType_&) const
+template TextureObject::error_type TextureObject::Update(const _imageType_&) const;\
+\
+template TextureObjectShadow::error_type TextureObjectShadow::Initialize(const _imageType_&);\
+template TextureObjectShadow::error_type TextureObjectShadow::Update(const _imageType_&) const
 
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(Image);
 
@@ -750,3 +801,6 @@ using namespace tloc::gfx_gl;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObjectShadow);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectShadow);

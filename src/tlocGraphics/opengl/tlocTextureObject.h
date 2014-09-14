@@ -17,7 +17,6 @@ namespace tloc { namespace graphics { namespace gl {
     {
       typedef gfx_t::gl_int             value_type;
 
-      struct Auto                  { static const value_type s_glParamName; };
       struct Tex1D                 { static const value_type s_glParamName; };
       struct Tex2D                 { static const value_type s_glParamName; };
       struct Tex3D                 { static const value_type s_glParamName; };
@@ -31,7 +30,18 @@ namespace tloc { namespace graphics { namespace gl {
       struct Tex2DArray            { static const value_type s_glParamName; };
       struct TexCubeMapArray       { static const value_type s_glParamName; };
       struct Tex2DMultiSampleArray { static const value_type s_glParamName; };
+
+      struct Tex1DShadow           { static const value_type s_glParamName; };
+      struct Tex2DShadow           { static const value_type s_glParamName; };
+
+      struct TexRectangleShadow    { static const value_type s_glParamName; };
+      struct TexCubeMapShadow      { static const value_type s_glParamName; };
+
+      struct Tex1DArrayShadow      { static const value_type s_glParamName; };
+      struct Tex2DArrayShadow      { static const value_type s_glParamName; };
+      struct TexCubeMapArrayShadow { static const value_type s_glParamName; };
     };
+
     namespace wrap_technique
     {
       typedef gfx_t::gl_int             value_type;
@@ -121,13 +131,14 @@ namespace tloc { namespace graphics { namespace gl {
   // ///////////////////////////////////////////////////////////////////////
   // TextureObject
 
-  class TextureObject
-    : public Object_T<TextureObject, p_object::OnlyID>
+  template <typename T_Target>
+  class TextureObject_T
+    : public Object_T<TextureObject_T<T_Target>, p_object::OnlyID>
   {
   public:
     struct Params
     {
-      friend class TextureObject;
+      template <typename T_Target> friend class TextureObject_T;
 
       typedef Params                                        this_type;
       typedef p_texture_object::target::value_type          texture_type;
@@ -286,7 +297,6 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_T, m_wrap_t);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMinFilter, m_minFilter);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMagFilter, m_magFilter);
-      TLOC_DECL_AND_DEF_GETTER (texture_type, GetTextureType, m_textureType);
       TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
       TLOC_DECL_AND_DEF_GETTER (size_type, GetInternalFormatChannels, m_internalFormatChannels);
       TLOC_DECL_AND_DEF_GETTER (format_value_type, GetFormat, m_format);
@@ -300,7 +310,6 @@ namespace tloc { namespace graphics { namespace gl {
       wrap_value_type             m_wrap_t;
       filter_value_type           m_minFilter;
       filter_value_type           m_magFilter;
-      texture_type                m_textureType;
       internal_format_value_type  m_internalFormat;
       size_type                   m_internalFormatChannels;
       format_value_type           m_format;
@@ -314,25 +323,25 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T> friend class ObjectRefCounted;
 
   public:
-    typedef TextureObject                                 this_type;
+    typedef T_Target                                      target_type;
+    typedef TextureObject_T<target_type>                  this_type;
     typedef Object_T<this_type, p_object::OnlyID>         base_type;
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
     typedef s32                                           texture_image_unit_type;
-    typedef p_texture_object::target::value_type          texture_type;
-    typedef media::Image                                  image_type;
+    typedef p_texture_object::target::value_type          target_value_type;
     typedef types::Dimension2u32                          dimension_type;
 
   public:
-    TextureObject(const Params& a_params = Params());
-    ~TextureObject();
+    TextureObject_T(const Params& a_params = Params());
+    ~TextureObject_T();
 
     template <typename T_ColorType, typename T_Storage>
     error_type  Initialize(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image);
     template <typename T_ColorType, typename T_Storage>
     error_type  Update(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image) const;
 
-    error_type  Bind(texture_type a_target) const;
+    error_type  Bind() const;
 
     void        UpdateParameters() const;
 
@@ -347,6 +356,9 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(texture_image_unit_type, GetReservedTexImageUnit, 
                              m_reservedTexImageUnit);
 
+    TLOC_DECL_AND_DEF_GETTER(target_value_type, GetTargetType, 
+                             target_type::s_glParamName);
+
   private:
     Params                    m_params;
     dimension_type            m_dim;
@@ -354,33 +366,15 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   //------------------------------------------------------------------------
-  // Template method definitions
-
-  template <typename T_Target>
-  void
-    TextureObject::Params::
-    TextureType()
-  {
-    using namespace p_texture_object::target;
-
-    // TODO: Support the rest of the image formats
-    //type_traits::AssertTypeIsSupported
-    //  <T_Target,
-    //   Tex1D, Tex2D, Tex3D,
-    //   TexRectangle, TexCubeMap, TexBuffer, Tex2DMultiSample,
-    //   Tex1DArray, Tex2DArray, TexCubeMapArray, Tex2DMultiSampleArray>();
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Target,
-      Auto, Tex2D, TexCubeMap>();
-    m_textureType = T_Target::s_glParamName;
-  }
-
-  //------------------------------------------------------------------------
   // typedefs
 
+  typedef TextureObject_T<p_texture_object::target::Tex2D>        TextureObject;
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject, texture_object);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject, texture_object);
+
+  typedef TextureObject_T<p_texture_object::target::Tex2DShadow>  TextureObjectShadow;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObjectShadow, texture_object_shadow);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectShadow, texture_object_shadow);
 
 };};};
 

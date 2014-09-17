@@ -71,7 +71,10 @@ namespace tloc { namespace graphics { namespace component_system {
       (core_str::String, SetVertexDataAttributeName, m_vertexDataName);
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsUniformModelMatrixEnabled, m_enableUniModelMat);
-    TLOC_DECL_AND_DEF_SETTER(bool, EnableUniformModelMatrix, m_enableUniModelMat);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, EnableUniformModelMatrix, m_enableUniModelMat);
+
+    TLOC_DECL_AND_DEF_GETTER(bool, IsUniformPosDataEnabled, m_enableUniPosData);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, EnablePosDataModelMatrix, m_enableUniPosData);
 
   protected:
 
@@ -84,9 +87,8 @@ namespace tloc { namespace graphics { namespace component_system {
                gfx_t::gl_sizei a_numVertices);
 
     public:
-      entity_ptr        m_entity;
-      uniform_array     m_uniforms;
-      attribute_array   m_attributes;
+      entity_ptr                m_entity;
+      gl::shader_operator_vptr  m_shaderOp;
 
       gfx_t::gl_int     m_drawCommand;
       gfx_t::gl_sizei   m_numVertices;
@@ -128,6 +130,7 @@ namespace tloc { namespace graphics { namespace component_system {
     core_str::String          m_modelMatName;
     core_str::String          m_vertexDataName;
 
+    bool                      m_enableUniPosData;
     bool                      m_enableUniModelMat;
   };
 
@@ -147,6 +150,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_mvpName("u_mvp")
     , m_modelMatName("u_modelMat")
     , m_vertexDataName("a_vPos")
+    , m_enableUniPosData(true)
     , m_enableUniModelMat(false)
   { }
 

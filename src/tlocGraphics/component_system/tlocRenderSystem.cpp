@@ -56,7 +56,7 @@ namespace tloc { namespace graphics { namespace component_system {
     Pre_Initialize()
   {
     m_shaderOp->reserve_attributes(9);
-    m_shaderOp->reserve_uniforms(2);
+    m_shaderOp->reserve_uniforms(3);
 
     m_tData.resize(m_tData.capacity());
     m_tData[0] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord"));
@@ -158,17 +158,20 @@ namespace tloc { namespace graphics { namespace component_system {
     Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
     m_uniMvpMat->SetValueAs(tFinalMat);
 
+    // position data
+    m_vData->SetEnabled(m_enableUniPosData);
+
     // model matrix uniform
     if (m_enableUniModelMat) { m_uniModelMat->SetValueAs(tMatrix); }
     else { m_uniModelMat->SetEnabled(false); }
 
-    // texture co-ordinates attributes
+    // texture coordinates attributes
     const tl_size numTexCoordsSupported = m_tData.size();
 
     for (tl_size i = 0; i < numTexCoordsSupported; ++i)
     { m_tData[i]->SetEnabled(false); }
 
-    // populate the texture co-orindate attributes
+    // populate the texture coordinate attributes
     if (ent->HasComponent(components::texture_coords))
     {
       typedef gfx_cs::TextureCoords::set_index        set_index;
@@ -196,27 +199,6 @@ namespace tloc { namespace graphics { namespace component_system {
                                      gl::p_shader_variable_ti::Pointer());
         }
       }
-    }
-
-    // -----------------------------------------------------------------------
-    // Prepare user shader operator
-
-    gl::shader_operator_vso userShaderOp;
-
-    {
-      uniform_array::const_iterator itr = a_di.m_uniforms.begin(),
-                                    itrEnd = a_di.m_uniforms.end();
-
-      for (; itr != itrEnd; ++itr)
-      { userShaderOp->AddUniform(**itr); }
-    }
-
-    {
-      attribute_array::const_iterator itr = a_di.m_attributes.begin(),
-                                      itrEnd = a_di.m_attributes.end();
-
-      for (; itr != itrEnd; ++itr)
-      { userShaderOp->AddAttribute(**itr); }
     }
 
     // -----------------------------------------------------------------------
@@ -269,15 +251,19 @@ namespace tloc { namespace graphics { namespace component_system {
     if (attribErr.Succeeded())
     { m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
 
-    // prepare and enable user uniforms/attributes
-    uniformErr = userShaderOp->PrepareAllUniforms(*m_shaderPtr);
-    attribErr = userShaderOp->PrepareAllAttributes(*m_shaderPtr);
+    // prepare/enable user's shader operator
+    if (a_di.m_shaderOp)
+    {
+      // prepare and enable user uniforms/attributes
+      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
+      attribErr = a_di.m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
 
-    if (uniformErr.Succeeded())
-    { userShaderOp->EnableAllUniforms(*m_shaderPtr); }
+      if (uniformErr.Succeeded())
+      { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-    if (attribErr.Succeeded())
-    { userShaderOp->EnableAllAttributes(*m_shaderPtr); }
+      if (attribErr.Succeeded())
+      { a_di.m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
+    }
 
     // -----------------------------------------------------------------------
     // Render

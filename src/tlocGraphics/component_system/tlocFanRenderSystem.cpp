@@ -53,46 +53,46 @@ namespace tloc { namespace graphics { namespace component_system {
     using namespace core::component_system;
     using math_t::degree_f32;
 
-    if (a_ent->HasComponent(components::material))
+    if (a_ent->HasComponent<gfx_cs::Material>() == false)
+    { return; }
+
+    gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
+    gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
+
+    //------------------------------------------------------------------------
+    // Prepare the Fan
+
+    typedef math::types::Circlef32 circle_type;
+    using namespace math::types;
+
+    m_vertList->clear();
+
+    const circle_type& circ = fanPtr->GetEllipseRef();
+
+    const size_type numSides = fanPtr->GetNumSides();
+    const f32 angleInterval = 360.0f / numSides;
+
+    // Push the center vertex
     {
-      gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
-      gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
-
-      //------------------------------------------------------------------------
-      // Prepare the Fan
-
-      typedef math::types::Circlef32 circle_type;
-      using namespace math::types;
-
-      m_vertList->clear();
-
-      const circle_type& circ = fanPtr->GetEllipseRef();
-
-      const size_type numSides = fanPtr->GetNumSides();
-      const f32 angleInterval = 360.0f/numSides;
-
-      // Push the center vertex
-      {
-        Vec2f32 newCoord = circ.GetPosition();
-        m_vertList->push_back
-          (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
-      }
-
-      for (f32 i = 0; i <= numSides; ++i)
-      {
-        Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
-        m_vertList->push_back
-          (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>() );
-      }
-
-      const tl_size numVertices = m_vertList->size();
-
-      DoGetVertexDataAttribute()->
-        SetVertexArray(m_vertList.get(), gl::p_shader_variable_ti::Pointer() );
-
-      base_type::DrawInfo di(a_ent, GL_TRIANGLE_FAN, numVertices);
-      base_type::DoDrawEntity(di);
+      Vec2f32 newCoord = circ.GetPosition();
+      m_vertList->push_back
+        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
     }
+
+    for (f32 i = 0; i <= numSides; ++i)
+    {
+      Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
+      m_vertList->push_back
+        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
+    }
+
+    const tl_size numVertices = m_vertList->size();
+
+    DoGetVertexDataAttribute()->
+      SetVertexArray(m_vertList.get(), gl::p_shader_variable_ti::Pointer());
+
+    base_type::DrawInfo di(a_ent, GL_TRIANGLE_FAN, numVertices);
+    base_type::DoDrawEntity(di);
   }
 
 };};};

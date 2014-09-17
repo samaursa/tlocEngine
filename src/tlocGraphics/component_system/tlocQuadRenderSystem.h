@@ -46,8 +46,6 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    attribute_ptr                 m_vData;
-
     // Cache
     vec3_cont_vso                 m_quadList;
   };

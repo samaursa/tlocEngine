@@ -8,8 +8,10 @@
 
 #include <tlocMath/types/tlocMatrix4.h>
 
+#include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/tlocGraphicsBase.h>
 #include <tlocGraphics/renderer/tlocRenderer.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -32,19 +34,20 @@ namespace tloc { namespace graphics { namespace component_system {
       renderer_type::value_type::render_one_frame_uptr    rof_uptr;
     typedef math::types::Mat4f32                          matrix_type;
 
+    typedef gl::uniform_vptr                              uniform_ptr;
+    typedef gl::attribute_vptr                            attribute_ptr;
+
+    typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
+
+
+    typedef core_conts::Array<uniform_ptr>                uniform_array;
+    typedef core_conts::Array<attribute_ptr>              attribute_array;
+
+    typedef core_conts::ArrayFixed<attribute_ptr, 8>     attribute_ptr_cont;
+
   public:
-    template <size_type T_VarSize>
-    RenderSystem_TI(event_manager_ptr              a_eventMgr,
-                    entity_manager_ptr             a_entityMgr,
-                    const core_ds::Variadic
-                      <component_type, T_VarSize>&  a_typeFlags);
 
     void         SetCamera(const_entity_ptr a_cameraEntity);
-
-    virtual error_type InitializeEntity(entity_ptr a_ent);
-
-    virtual void Pre_ProcessActiveEntities(f64);
-    virtual void Post_ProcessActiveEntities(f64);
 
     TLOC_DECL_AND_DEF_GETTER(const_entity_ptr, GetCamera, m_sharedCam);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
@@ -52,12 +55,80 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
 
-  private:
-    const_entity_ptr      m_sharedCam;
-    renderer_type         m_renderer;
-    rof_uptr              m_renderOneFrame;
-    matrix_type           m_vpMatrix;
+  public:
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetMVPMatrixUniformName, m_mvpName);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetModelMatrixUniformName, m_modelMatName);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetVertexDataAttributeName, m_vertexDataName);
 
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetMVPMatrixUniformName, m_mvpName);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetModelMatrixUniformName, m_modelMatName);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetVertexDataAttributeName, m_vertexDataName);
+
+    TLOC_DECL_AND_DEF_GETTER(bool, IsUniformModelMatrixEnabled, m_enableUniModelMat);
+    TLOC_DECL_AND_DEF_SETTER(bool, EnableUniformModelMatrix, m_enableUniModelMat);
+
+  protected:
+
+    struct DrawInfo
+    {
+    public:
+      DrawInfo();
+      DrawInfo(entity_ptr a_ent, 
+               gfx_t::gl_int a_drawCommand, 
+               gfx_t::gl_sizei a_numVertices);
+
+    public:
+      entity_ptr        m_entity;
+      uniform_array     m_uniforms;
+      attribute_array   m_attributes;
+
+      gfx_t::gl_int     m_drawCommand;
+      gfx_t::gl_sizei   m_numVertices;
+
+    };
+
+  protected:
+    template <size_type T_VarSize>
+    RenderSystem_TI(event_manager_ptr              a_eventMgr,
+                    entity_manager_ptr             a_entityMgr,
+                    const core_ds::Variadic
+                      <component_type, T_VarSize>&  a_typeFlags);
+
+    virtual error_type        Pre_Initialize();
+    virtual error_type        InitializeEntity(entity_ptr a_ent);
+
+    virtual void              Pre_ProcessActiveEntities(f64);
+    virtual void              Post_ProcessActiveEntities(f64);
+
+    void                      DoDrawEntity(const DrawInfo& a_di);
+
+    TLOC_DECL_AND_DEF_GETTER(attribute_ptr, DoGetVertexDataAttribute, m_vData);
+
+  private:
+    const_shader_prog_ptr     m_shaderPtr;
+
+    const_entity_ptr          m_sharedCam;
+    renderer_type             m_renderer;
+    rof_uptr                  m_renderOneFrame;
+    matrix_type               m_vpMatrix;
+    attribute_ptr_cont        m_tData;
+
+    gl::shader_operator_vso   m_shaderOp;
+    uniform_ptr               m_uniMvpMat;
+    uniform_ptr               m_uniModelMat;
+    attribute_ptr             m_vData;
+
+    core_str::String          m_mvpName;
+    core_str::String          m_modelMatName;
+    core_str::String          m_vertexDataName;
+
+    bool                      m_enableUniModelMat;
   };
 
   // -----------------------------------------------------------------------
@@ -73,6 +144,10 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr, a_typeFlags)
     , m_sharedCam(nullptr)
     , m_renderer(nullptr)
+    , m_mvpName("u_mvp")
+    , m_modelMatName("u_modelMat")
+    , m_vertexDataName("a_vPos")
+    , m_enableUniModelMat(false)
   { }
 
 };};};

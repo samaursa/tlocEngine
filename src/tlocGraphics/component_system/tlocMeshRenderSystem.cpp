@@ -166,7 +166,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { so_mesh->EnableAllAttributes(*m_shaderPtr); }
 
     glDrawArrays(GL_TRIANGLES, 0,
-                 core_utils::CastNumber<GLsizei, tl_size>(numVertices));
+                 core_utils::CastNumber<GLsizei>(numVertices));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -230,7 +230,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { m_linesOperator->EnableAllAttributes(*m_shaderPtr); }
 
     glDrawArrays(GL_LINES, 0,
-      core_utils::CastNumber<gfx_t::gl_sizei, tl_size>(m_lineList->size()));
+      core_utils::CastNumber<gfx_t::gl_sizei>(m_lineList->size()));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

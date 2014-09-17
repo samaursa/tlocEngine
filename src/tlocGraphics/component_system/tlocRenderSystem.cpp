@@ -180,7 +180,7 @@ namespace tloc { namespace graphics { namespace component_system {
         << "Requested " << numTexCoords << " but only " << numTexCoordsSupported
         << " supported";
 
-      for (tl_size i = 0; i < numTexCoords || i < numTexCoordsSupported; ++i)
+      for (tl_size i = 0; i < numTexCoords && i < numTexCoordsSupported; ++i)
       {
         gfx_cs::texture_coords_sptr texCoordPtr =
           ent->GetComponent<gfx_cs::TextureCoords>(i);

@@ -25,8 +25,11 @@ namespace tloc { namespace graphics { namespace gl {
     struct Pointer {};
   };
 
+  class ShaderVariableBase { };
+
   template <typename T_Derived>
-  class ShaderVariable_TI
+  class ShaderVariable_TI 
+    : ShaderVariableBase
   {
   public:
     typedef core::types::Any                 value_type;
@@ -209,6 +212,24 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   namespace algos { namespace shader_variable {
+
+    namespace transform {
+
+      struct Enable
+      {
+        template <typename T>
+        void operator()(ShaderVariable_TI<T>& a_sv) const
+        { a_sv.SetEnabled(true); }
+      };
+
+      struct Disable
+      {
+        template <typename T>
+        void operator()(ShaderVariable_TI<T>& a_sv) const
+        { a_sv.SetEnabled(false); }
+      };
+
+    };
 
     namespace compare {
 

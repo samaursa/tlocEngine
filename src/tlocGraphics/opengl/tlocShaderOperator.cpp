@@ -1386,10 +1386,10 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_UNUSED_2(a_sVar, a_cVar);
     TLOC_ASSERT(a_cVar->GetName().compare(a_sVar.m_name.get()) == 0,
       "Mismatched shader variable name - was variable name changed AFTER caching?"
-      " Requires reaching by calling PrepareAll*ShaderVariableType*() again");
+      " Requires caching by calling PrepareAll*ShaderVariableType*() again");
     TLOC_ASSERT(a_sVar.m_type == a_cVar->GetType(),
       "Mismatched shader variable type - was variable type changed AFTER caching?"
-      " Requires reaching by calling PrepareAll*ShaderVariableType*() again");
+      " Requires caching by calling PrepareAll*ShaderVariableType*() again");
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

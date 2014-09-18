@@ -39,7 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
   {
-    base_type::EnablePosDataModelMatrix(false);
+    base_type::SetEnabledAttributePosData(false);
     return base_type::Pre_Initialize();
   }
 

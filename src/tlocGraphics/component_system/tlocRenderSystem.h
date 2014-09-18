@@ -15,9 +15,33 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  class RenderSystemBase
+  {
+  public:
+
+    TLOC_DECL_GETTER(bool, IsUniformModelMatrixEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformModelMatrix);
+
+    TLOC_DECL_GETTER(bool, IsAttributePosDataEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledAttributePosData);
+
+    TLOC_DECL_GETTER(bool, IsUniformMVPMatrixEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformMVPMatrix);
+
+    TLOC_DECL_GETTER(bool, IsUniformVPEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformVPMatrix);
+
+  protected:
+    RenderSystemBase();
+
+  private:
+    core_utils::Checkpoints   m_flags;
+  };
+
   template <typename T_RendererSptr>
   class RenderSystem_TI
     : public core_cs::EntityProcessingSystem
+    , public RenderSystemBase
   {
   public:
     TLOC_STATIC_ASSERT(
@@ -28,6 +52,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     typedef core_cs::EntityProcessingSystem               base_type;
+    typedef RenderSystemBase                              other_base_type;
 
     typedef T_RendererSptr                                renderer_type;
     typedef typename
@@ -57,24 +82,22 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetMVPMatrixUniformName, m_mvpName);
+      (core_str::String, GetMVPMatrixUniformName, m_mvpMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetModelMatrixUniformName, m_modelMatName);
+      (core_str::String, GetVPMatrixUniformName, m_vpMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetVertexDataAttributeName, m_vertexDataName);
+      (core_str::String, GetModelMatrixUniformName, m_modelMat.second);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetVertexDataAttributeName, m_vertexData.second);
 
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetMVPMatrixUniformName, m_mvpName);
+      (core_str::String, SetMVPMatrixUniformName, m_mvpMat.second);
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetModelMatrixUniformName, m_modelMatName);
+      (core_str::String, SetVPMatrixUniformName, m_mvpMat.second);
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetVertexDataAttributeName, m_vertexDataName);
-
-    TLOC_DECL_AND_DEF_GETTER(bool, IsUniformModelMatrixEnabled, m_enableUniModelMat);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, EnableUniformModelMatrix, m_enableUniModelMat);
-
-    TLOC_DECL_AND_DEF_GETTER(bool, IsUniformPosDataEnabled, m_enableUniPosData);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, EnablePosDataModelMatrix, m_enableUniPosData);
+      (core_str::String, SetModelMatrixUniformName, m_modelMat.second);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetVertexDataAttributeName, m_vertexData.second);
 
   protected:
 
@@ -110,7 +133,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void                      DoDrawEntity(const DrawInfo& a_di);
 
-    TLOC_DECL_AND_DEF_GETTER(attribute_ptr, DoGetVertexDataAttribute, m_vData);
+    TLOC_DECL_AND_DEF_GETTER(attribute_ptr, DoGetVertexDataAttribute, 
+                             m_vertexData.first);
+
+  private:
+    typedef core::Pair<uniform_ptr, core_str::String>     uniform_string_pair;
+    typedef core::Pair<attribute_ptr, core_str::String>   attribute_string_pair;
 
   private:
     const_shader_prog_ptr     m_shaderPtr;
@@ -122,16 +150,11 @@ namespace tloc { namespace graphics { namespace component_system {
     attribute_ptr_cont        m_tData;
 
     gl::shader_operator_vso   m_shaderOp;
-    uniform_ptr               m_uniMvpMat;
-    uniform_ptr               m_uniModelMat;
-    attribute_ptr             m_vData;
 
-    core_str::String          m_mvpName;
-    core_str::String          m_modelMatName;
-    core_str::String          m_vertexDataName;
-
-    bool                      m_enableUniPosData;
-    bool                      m_enableUniModelMat;
+    uniform_string_pair       m_mvpMat;
+    uniform_string_pair       m_vpMat;
+    uniform_string_pair       m_modelMat;
+    attribute_string_pair     m_vertexData;
   };
 
   // -----------------------------------------------------------------------
@@ -147,11 +170,6 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr, a_typeFlags)
     , m_sharedCam(nullptr)
     , m_renderer(nullptr)
-    , m_mvpName("u_mvp")
-    , m_modelMatName("u_modelMat")
-    , m_vertexDataName("a_vPos")
-    , m_enableUniPosData(true)
-    , m_enableUniModelMat(false)
   { }
 
 };};};

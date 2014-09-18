@@ -15,6 +15,87 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  namespace {
+
+    enum {
+
+      k_enableAttrPosData = 0,
+      k_enableUniMVP,
+      k_enableUniModelMat,
+      k_enableCameraVP,
+
+      k_count
+    };
+
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // RenderSystemBase
+
+  RenderSystemBase::
+    RenderSystemBase()
+    : m_flags(k_count)
+  { 
+    SetEnabledUniformMVPMatrix(true);
+    SetEnabledAttributePosData(true);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystemBase::
+    IsUniformModelMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableUniModelMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystemBase::
+    SetEnabledUniformModelMatrix(bool a_value)
+  { m_flags[k_enableUniModelMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystemBase::
+    IsAttributePosDataEnabled() const
+  { return m_flags.IsMarked(k_enableAttrPosData); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystemBase::
+    SetEnabledAttributePosData(bool a_value)
+  { m_flags[k_enableAttrPosData] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystemBase::
+    IsUniformMVPMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableUniMVP); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystemBase::
+    SetEnabledUniformMVPMatrix(bool a_value)
+  { m_flags[k_enableUniMVP] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystemBase::
+    IsUniformVPEnabled() const
+  { return m_flags.IsMarked(k_enableCameraVP); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystemBase::
+    SetEnabledUniformVPMatrix(bool a_value)
+  { m_flags[k_enableCameraVP] = a_value; }
+
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_I
 
@@ -46,7 +127,6 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_numVertices(a_numVertices)
   { }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_TO
 
@@ -55,6 +135,22 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
   {
+    // -----------------------------------------------------------------------
+
+    if (m_mvpMat.second.empty())
+    { m_mvpMat.second = "u_mvp"; }
+
+    if (m_vpMat.second.empty())
+    { m_vpMat.second = "u_vpMat"; }
+
+    if (m_modelMat.second.empty())
+    { m_modelMat.second = "u_modelMat"; }
+
+    if (m_vertexData.second.empty())
+    { m_vertexData.second = "a_vPos"; }
+
+    // -----------------------------------------------------------------------
+
     m_shaderOp->reserve_attributes(9);
     m_shaderOp->reserve_uniforms(3);
 
@@ -71,9 +167,14 @@ namespace tloc { namespace graphics { namespace component_system {
     for (tl_size i = 0; i < m_tData.size(); ++i)
     { m_tData[i]->SetEnabled(false); }
 
-    m_uniMvpMat   = m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpName));
-    m_uniModelMat = m_shaderOp->AddUniform(gl::Uniform().SetName(m_modelMatName));
-    m_vData       = m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexDataName));
+    m_mvpMat.first      = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpMat.second));
+    m_vpMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_vpMat.second));
+    m_modelMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_modelMat.second));
+    m_vertexData.first  = 
+      m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
 
     return ErrorSuccess;
   }
@@ -155,17 +256,33 @@ namespace tloc { namespace graphics { namespace component_system {
       tMatrix = t->GetTransformation().Cast<Mat4f32>();
     }
 
-    Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
-    m_uniMvpMat->SetValueAs(tFinalMat);
+    // -----------------------------------------------------------------------
+    // populate and enable uniforms/attributes as needed
+
+    const Mat4f32 viewProjMat = GetViewProjectionMatrix();
+    if (other_base_type::IsUniformVPEnabled())
+    { m_vpMat.first->SetValueAs(viewProjMat); }
+    else
+    { m_vpMat.first->SetEnabled(false); }
+
+    Mat4f32 tFinalMat = viewProjMat * tMatrix;
+    if (other_base_type::IsUniformMVPMatrixEnabled())
+    { m_mvpMat.first->SetValueAs(tFinalMat); }
+    else
+    { m_mvpMat.first->SetEnabled(false); }
 
     // position data
-    m_vData->SetEnabled(m_enableUniPosData);
+    m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
 
     // model matrix uniform
-    if (m_enableUniModelMat) { m_uniModelMat->SetValueAs(tMatrix); }
-    else { m_uniModelMat->SetEnabled(false); }
+    if (other_base_type::IsUniformModelMatrixEnabled()) 
+    { m_modelMat.first->SetValueAs(tMatrix); }
+    else 
+    { m_modelMat.first->SetEnabled(false); }
 
-    // texture coordinates attributes
+    // -----------------------------------------------------------------------
+    // texture coordinates
+
     const tl_size numTexCoordsSupported = m_tData.size();
 
     for (tl_size i = 0; i < numTexCoordsSupported; ++i)

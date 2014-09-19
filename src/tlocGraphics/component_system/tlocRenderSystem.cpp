@@ -261,13 +261,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const Mat4f32 viewProjMat = GetViewProjectionMatrix();
     if (other_base_type::IsUniformVPEnabled())
-    { m_vpMat.first->SetValueAs(viewProjMat); }
+    { 
+      m_vpMat.first->SetValueAs(viewProjMat);
+      m_vpMat.first->SetEnabled(true);
+    }
     else
     { m_vpMat.first->SetEnabled(false); }
 
     Mat4f32 tFinalMat = viewProjMat * tMatrix;
     if (other_base_type::IsUniformMVPMatrixEnabled())
-    { m_mvpMat.first->SetValueAs(tFinalMat); }
+    { 
+      m_mvpMat.first->SetValueAs(tFinalMat);
+      m_mvpMat.first->SetEnabled(true);
+    }
     else
     { m_mvpMat.first->SetEnabled(false); }
 
@@ -276,7 +282,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // model matrix uniform
     if (other_base_type::IsUniformModelMatrixEnabled()) 
-    { m_modelMat.first->SetValueAs(tMatrix); }
+    { 
+      m_modelMat.first->SetValueAs(tMatrix);
+      m_modelMat.first->SetEnabled(true);
+    }
     else 
     { m_modelMat.first->SetEnabled(false); }
 

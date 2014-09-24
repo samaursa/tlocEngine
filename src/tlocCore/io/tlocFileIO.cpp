@@ -181,6 +181,8 @@ namespace tloc { namespace core { namespace io {
     FileIO_T<FILE_IO_PARAMS>::
     Write(BufferArg a_string) const
   {
+    TLOC_ASSERT(IsOpen(), "Attempting to write/append to a file that is not open");
+
     if (fprintf(m_file, "%s", a_string.GetPtr()) >= 0)
     { return ErrorSuccess; }
     else
@@ -266,5 +268,42 @@ namespace tloc { namespace core { namespace io {
   template class FileIO_T<p_file_io::Read_And_Write, p_file_io::Binary>;
   template class FileIO_T<p_file_io::Read_And_Write_Empty, p_file_io::Binary>;
   template class FileIO_T<p_file_io::Read_And_Append, p_file_io::Binary>;
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  namespace f_file_io {
+
+    template <typename T_FileFormat>
+    typename FileIO_T<p_file_io::Read, T_FileFormat>::error_type
+      OpenAndGetContents(const core_io::Path& a_filePath, 
+                         core_str::String& a_contentOut)
+    {
+      typedef FileIO_T<p_file_io::Read, T_FileFormat>       file_io_type;
+
+      file_io_type f(a_filePath);
+
+      core_err::Error err = ErrorSuccess;
+      err = f.Open();
+
+      if (err.Failed())
+      { return TLOC_ERROR(common_error_types::error_file_not_found); }
+
+      f.GetContents(a_contentOut);
+      f.Close();
+
+      return err;
+    }
+
+    // -----------------------------------------------------------------------
+    // explicit instantiate OpenAndGetContents
+
+#define TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(_fileFormat_)\
+  template FileIO_T<p_file_io::Read, _fileFormat_>::error_type\
+  OpenAndGetContents<_fileFormat_>(const core_io::Path&, core_str::String&)
+
+    TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::Ascii);
+    TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::Binary);
+
+  };
 
 };};};

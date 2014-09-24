@@ -99,6 +99,17 @@ namespace tloc { namespace core { namespace io {
   typedef FileIO_T<p_file_io::Read_And_Append,
                  p_file_io::Binary>                  FileIO_ReadAndAppendB;
 
+  // ///////////////////////////////////////////////////////////////////////
+
+  namespace f_file_io {
+
+    template <typename T_FileFormat>
+    typename FileIO_T<p_file_io::Read, T_FileFormat>::error_type
+      OpenAndGetContents(const core_io::Path& a_filePath, 
+                         core_str::String& a_contentOut);
+
+  };
+
 };};};
 
 #endif

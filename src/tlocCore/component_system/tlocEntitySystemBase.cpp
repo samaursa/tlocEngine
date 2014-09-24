@@ -116,7 +116,7 @@ namespace tloc { namespace core { namespace component_system {
 
             entity_count_cont::iterator entItr = 
               core::find_if_all(m_activeEntities, 
-              core::algos::compare::pair::MakeFirst(ent));
+              core::algos::pair::compare::MakeFirst(ent));
 
             if (entItr == m_activeEntities.end())
             {
@@ -143,7 +143,7 @@ namespace tloc { namespace core { namespace component_system {
           {
             entity_count_cont::iterator entItr = 
               core::find_if_all(m_activeEntities, 
-              core::algos::compare::pair::MakeFirst(ent));
+              core::algos::pair::compare::MakeFirst(ent));
 
             if (entItr != m_activeEntities.end())
             {

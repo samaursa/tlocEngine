@@ -52,7 +52,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (staticText->IsUpdateRequired())
     {
       text_quads_cont::const_iterator itr = core::find_if_all
-        (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
+        (m_allText, core::algos::pair::compare::MakeFirst(const_entity_ptr(a_ent)));
 
       TLOC_ASSERT(itr != m_allText.end(), 
                   "StaticText should be stored in m_allText container");

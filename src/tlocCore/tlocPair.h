@@ -54,9 +54,9 @@ namespace tloc { namespace core {
   template <typename T1, typename T2>
   TL_FI bool operator<=(const Pair<T1, T2>& a, const Pair<T1, T2>& b);
 
-  namespace algos { namespace compare {
+  namespace algos { namespace pair {
 
-    namespace pair {
+    namespace compare {
 
     // ///////////////////////////////////////////////////////////////////////
     // Compare the first value

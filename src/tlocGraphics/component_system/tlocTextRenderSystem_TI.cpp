@@ -168,7 +168,7 @@ namespace tloc { namespace graphics { namespace component_system {
     tl_int lineNumber = 0;
     for ( ; itr != itrEnd; ++itr)
     {
-      if (str[count] == L'\n')
+      if (core_str::g_newlineStrW.find(str[count]) != core_str::StringW::npos)
       {
         DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
         prevItr = itr + 1;

@@ -43,7 +43,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_conts::Array<core_str::String>     string_array;
 
     string_array  allLines;
-    core_str::Tokenize(a_fileContents.c_str(), '\n', allLines);
+    core_str::Tokenize(a_fileContents.c_str(), core_str::g_newline, allLines);
 
     string_array::iterator itr = allLines.begin();
     string_array::iterator itrEnd = allLines.end();

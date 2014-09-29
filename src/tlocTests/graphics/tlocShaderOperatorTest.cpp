@@ -378,14 +378,14 @@ namespace TestingShaderOperator
     // Note that removing uniforms does not affect cache
     gl::ShaderOperator::uniform_iterator uniItr =
       core::find_if(so->begin_uniforms(), so->end_uniforms(),
-        core::algos::compare::pair::MakeFirst(so->begin_uniforms()->first));
+        core::algos::pair::compare::MakeFirst(so->begin_uniforms()->first));
 
     so->RemoveUniform(uniItr);
     CHECK(so->GetNumberOfUniforms() == numUniforms - 1);
 
     uniItr =
       core::find_if(so->begin_uniforms(), so->end_uniforms(),
-        core::algos::compare::pair::MakeFirst(so->begin_uniforms()->first));
+        core::algos::pair::compare::MakeFirst(so->begin_uniforms()->first));
 
     so->RemoveUniform(uniItr);
     CHECK(so->GetNumberOfUniforms() == numUniforms - 2);
@@ -914,7 +914,7 @@ namespace TestingShaderOperator
 
     gl::ShaderOperator::attribute_iterator attrItr =
       core::find_if(so->begin_attributes(), so->end_attributes(),
-        core::algos::compare::pair::MakeFirst(so->begin_attributes()->first));
+        core::algos::pair::compare::MakeFirst(so->begin_attributes()->first));
 
     // Note that removing uniforms does not affect cache
     so->RemoveAttribute(attrItr);
@@ -922,7 +922,7 @@ namespace TestingShaderOperator
 
     attrItr =
       core::find_if(so->begin_attributes(), so->end_attributes(),
-        core::algos::compare::pair::MakeFirst(so->begin_attributes()->first));
+        core::algos::pair::compare::MakeFirst(so->begin_attributes()->first));
 
     so->RemoveAttribute(attrItr);
     CHECK(so->GetNumberOfAttributes() == numAttributes - 2);

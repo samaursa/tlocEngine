@@ -71,6 +71,11 @@ namespace TestingFileIO
     const char* appendedWords = " Appended words.";
 
     io::FileIO_AppendA fileAppend( (core_io::Path(path)) );
+
+    TLOC_TEST_ASSERT
+    { fileAppend.Write(appendedWords); }
+    TLOC_TEST_ASSERT_CHECK();
+
     REQUIRE(fileAppend.Open() == ErrorSuccess);
     REQUIRE(fileAppend.Write(appendedWords) == ErrorSuccess);
     REQUIRE(fileAppend.Close() == ErrorSuccess);
@@ -80,6 +85,10 @@ namespace TestingFileIO
     fileReader.GetContents(appendedFileContents);
     CHECK(appendedFileContents.compare(String(sentence) + appendedWords) == 0);
     REQUIRE(fileReader.Close() == ErrorSuccess);
+
+    using namespace core_io::f_file_io;
+    CHECK(OpenAndGetContents<core_io::p_file_io::Ascii>
+          (core_io::Path(path), appendedFileContents) == ErrorSuccess);
 
     CHECK(fileReader.Delete() == common_error_types::error_success );
 

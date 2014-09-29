@@ -168,7 +168,7 @@ namespace tloc { namespace graphics { namespace component_system {
     tl_int lineNumber = 0;
     for ( ; itr != itrEnd; ++itr)
     {
-      if (str[count] == L'\n')
+      if (core_str::g_newlineStrW.find(str[count]) != core_str::StringW::npos)
       {
         DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
         prevItr = itr + 1;
@@ -438,7 +438,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // remove the cached entity
     text_quads_cont::iterator itr = 
-      find_if_all(m_allText, core::algos::compare::pair::MakeFirst(a_ent));
+      find_if_all(m_allText, core::algos::pair::compare::MakeFirst(a_ent));
 
     if (itr != m_allText.end())
     { m_allText.erase(itr); }
@@ -489,7 +489,7 @@ namespace tloc { namespace graphics { namespace component_system {
       DoReInitializeEntity(*itr);
 
       text_quads_cont::const_iterator itrRes = core::find_if_all
-        (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(*itr)));
+        (m_allText, core::algos::pair::compare::MakeFirst(const_entity_ptr(*itr)));
 
       DoAlignText(*itrRes);
     }

@@ -125,6 +125,18 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   // ///////////////////////////////////////////////////////////////////////
+  // VertexBufferObject
+  
+  namespace vertex_buffer_object {
+    
+    void            Bind(gfx_t::gl_enum a_target, gfx_t::gl_uint a_name);
+    void            UnBind(gfx_t::gl_enum a_target);
+    gfx_t::gl_uint  Generate();
+    void            Destroy(gfx_t::gl_uint a_name);
+    
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
   // Texture Units
 
   namespace texture_units {

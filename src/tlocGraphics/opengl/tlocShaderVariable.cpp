@@ -112,6 +112,8 @@ namespace tloc { namespace graphics { namespace gl {
     , m_enabled(true)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     ShaderVariable_TI(const this_type& a_other)
@@ -123,9 +125,13 @@ namespace tloc { namespace graphics { namespace gl {
     , m_enabled(a_other.m_enabled)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::~ShaderVariable_TI()
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SHADER_VARIABLE_TEMP>
   void
@@ -141,6 +147,8 @@ namespace tloc { namespace graphics { namespace gl {
     swap(m_enabled, a_other.m_enabled);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
@@ -152,6 +160,8 @@ namespace tloc { namespace graphics { namespace gl {
     m_value.Assign(a_value);
     return *(static_cast<derived_type*>(this));
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SHADER_VARIABLE_TEMP>
   template <typename T>
@@ -167,6 +177,8 @@ namespace tloc { namespace graphics { namespace gl {
     return *(static_cast<derived_type*>(this));
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
@@ -180,6 +192,8 @@ namespace tloc { namespace graphics { namespace gl {
     m_value.Assign(a_array);
     return *(static_cast<derived_type*>(this));
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SHADER_VARIABLE_TEMP>
   template <typename T>
@@ -196,6 +210,8 @@ namespace tloc { namespace graphics { namespace gl {
     return *(static_cast<derived_type*>(this));
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
@@ -211,6 +227,8 @@ namespace tloc { namespace graphics { namespace gl {
     return *(static_cast<derived_type*>(this));
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::SetName(const string_type& a_value)
@@ -218,6 +236,8 @@ namespace tloc { namespace graphics { namespace gl {
     m_name = a_value;
     return *(static_cast<derived_type*>(this));
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SHADER_VARIABLE_TEMP>
   bool
@@ -227,11 +247,15 @@ namespace tloc { namespace graphics { namespace gl {
     return m_type != GL_NONE;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <SHADER_VARIABLE_TEMP>
   void
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     ResetValue()
   { m_value.Reset(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <SHADER_VARIABLE_TEMP>
   void

@@ -187,6 +187,8 @@ namespace tloc { namespace graphics { namespace gl {
 #else
       glBindVertexArray(a_name);
 #endif
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glBindVertexArray() failed");
     }
     
     void
@@ -204,6 +206,9 @@ namespace tloc { namespace graphics { namespace gl {
 #else
       glGenVertexArrays(1, &handle);
 #endif
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glGenVertexArray() failed");
+
       return handle;
     }
     
@@ -215,6 +220,51 @@ namespace tloc { namespace graphics { namespace gl {
 #else
       glDeleteVertexArrays(1, &a_name);
 #endif
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteVertexArrays() failed";
+    }
+    
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexBufferObject
+  
+  namespace vertex_buffer_object {
+    
+    void            
+      Bind(gfx_t::gl_enum a_target, gfx_t::gl_uint a_name)
+    {
+      glBindBuffer(a_target, a_name);
+
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glBindBuffer() failed");
+    }
+    
+    void
+      UnBind(gfx_t::gl_enum a_target)
+    {
+      Bind(a_target, 0);
+    }
+    
+    gfx_t::gl_uint
+      Generate()
+    {
+      gfx_t::gl_uint handle;
+      glGenBuffers(1, &handle);
+
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glGenBuffers() failed");
+
+      return handle;
+    }
+    
+    void
+      Destroy(gfx_t::gl_uint a_name)
+    {
+      glDeleteBuffers(1, &a_name);
+
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteBuffers() failed";
     }
     
   }

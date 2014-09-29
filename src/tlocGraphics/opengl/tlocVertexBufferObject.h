@@ -14,6 +14,32 @@ namespace tloc { namespace graphics { namespace gl {
   {
     namespace target {
 
+      typedef gfx_t::gl_int             value_type;
+
+      struct ArrayBuffer              { static const value_type s_glParamName; };
+      struct CopyReadBuffer           { static const value_type s_glParamName; };
+      struct CopyWriteBuffer          { static const value_type s_glParamName; };
+      struct ElementArrayBuffer       { static const value_type s_glParamName; };
+      struct PixelPackBuffer          { static const value_type s_glParamName; };
+      struct PixelUnpackBuffer        { static const value_type s_glParamName; };
+      struct TextureBuffer            { static const value_type s_glParamName; };
+      struct TransformFeedbackBuffer  { static const value_type s_glParamName; };
+    };
+
+    namespace usage {
+
+      typedef gfx_t::gl_int             value_type;
+
+      struct StreamDraw             { static const value_type s_glParamName; };
+      struct StreamRead             { static const value_type s_glParamName; };
+      struct StreamCopy             { static const value_type s_glParamName; };
+      struct StaticDraw             { static const value_type s_glParamName; };
+      struct StaticRead             { static const value_type s_glParamName; };
+      struct StaticCopy             { static const value_type s_glParamName; };
+      struct DynamicDraw            { static const value_type s_glParamName; };
+      struct DynamicRead            { static const value_type s_glParamName; };
+      struct DynamicCopy            { static const value_type s_glParamName; };
+
     };
   };
 
@@ -28,20 +54,36 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Object_T<this_type, p_object::OnlyID>           base_type;
 
   public:
-    struct Bind
+
+    template <typename T_Target, typename T_Usage>
+    struct Bind_T
       : public core_bclass::NonCopyable_I
     {
     public:
       typedef core_sptr::VirtualPtr<VertexBufferObject>     vbo_ptr;
+      typedef T_Target                                      target_type;
 
     public:
-      Bind(const vbo_ptr  a_vbo);
-      ~Bind();
+      Bind_T(vbo_ptr  a_vbo);
+      ~Bind_T();
+
+      void Data();
 
     private:
-      void DoBind() const;
+      vbo_ptr   m_vbo;
     };
-    TLOC_TYPEDEF_UNIQUE_PTR(Bind, bind);
+
+  public:
+
+    typedef Bind_T<p_vbo::target::ArrayBuffer>          bind_array_buffer;
+    typedef Bind_T<p_vbo::target::ElementArrayBuffer>   bind_element_array_buffer;
+    typedef Bind_T<p_vbo::target::PixelPackBuffer>      bind_pixel_pack_buffer;
+    typedef Bind_T<p_vbo::target::PixelUnpackBuffer>    bind_pixel_unpack_buffer;
+
+    TLOC_TYPEDEF_UNIQUE_PTR(bind_array_buffer, bind_array_buffer);
+    TLOC_TYPEDEF_UNIQUE_PTR(bind_element_array_buffer, bind_element_array_buffer);
+    TLOC_TYPEDEF_UNIQUE_PTR(bind_pixel_pack_buffer, bind_pixel_pack_buffer);
+    TLOC_TYPEDEF_UNIQUE_PTR(bind_pixel_unpack_buffer, bind_pixel_unpack_buffer);
 
   public:
     VertexBufferObject();

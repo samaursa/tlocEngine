@@ -235,9 +235,10 @@ namespace tloc { namespace graphics { namespace gl {
       Bind(gfx_t::gl_enum a_target, gfx_t::gl_uint a_name)
     {
       glBindBuffer(a_target, a_name);
-
-      gl::Error err; TLOC_UNUSED(err);
-      TLOC_ASSERT(err.Succeeded(), "glBindBuffer() failed");
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_ASSERT(err.Succeeded(), "glBindBuffer() failed");
+      }
     }
     
     void
@@ -251,9 +252,10 @@ namespace tloc { namespace graphics { namespace gl {
     {
       gfx_t::gl_uint handle;
       glGenBuffers(1, &handle);
-
-      gl::Error err; TLOC_UNUSED(err);
-      TLOC_ASSERT(err.Succeeded(), "glGenBuffers() failed");
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_ASSERT(err.Succeeded(), "glGenBuffers() failed");
+      }
 
       return handle;
     }
@@ -262,9 +264,10 @@ namespace tloc { namespace graphics { namespace gl {
       Destroy(gfx_t::gl_uint a_name)
     {
       glDeleteBuffers(1, &a_name);
-
-      gl::Error err; TLOC_UNUSED(err);
-      TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteBuffers() failed";
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteBuffers() failed";
+      }
     }
     
   }
@@ -342,8 +345,10 @@ namespace tloc { namespace graphics { namespace gl {
           TLOC_ASSERT_LOW_LEVEL(IsValid(a_texImgUnit), "Invalid texture unit");
 
           glActiveTexture(a_texImgUnit);
-          gl::Error err; TLOC_UNUSED(err);
-          TLOC_ASSERT(err.Succeeded(), "glActiveTexture() failed");
+          {
+            gl::Error err; TLOC_UNUSED(err);
+            TLOC_ASSERT(err.Succeeded(), "glActiveTexture() failed");
+          }
           return;
         }
 

@@ -32,8 +32,8 @@ namespace tloc { namespace graphics { namespace gl {
     : ShaderVariableBase
   {
   public:
-    typedef core::types::Any                 value_type;
-    typedef core::string::String             string_type;
+    typedef core_t::Any                      value_type;
+    typedef core_str::String                 string_type;
     typedef u32                              gl_type;
     typedef T_Derived                        derived_type;
     typedef ShaderVariable_TI<derived_type>  this_type;
@@ -97,19 +97,19 @@ namespace tloc { namespace graphics { namespace gl {
     derived_type& DoSetValueAs(const T& a_value);
 
     template <typename T>
-    derived_type& DoSetValueAs(core::smart_ptr::VirtualPtr<T> a_value);
+    derived_type& DoSetValueAs(core_sptr::VirtualPtr<T> a_value);
 
     template <typename T>
-    derived_type& DoSetValueAs(const core::containers::Array<T>& a_array,
+    derived_type& DoSetValueAs(const core_conts::Array<T>& a_array,
                                copy_array_policy);
 
     template <typename T>
-    derived_type& DoSetValueAs(core::containers::Array<T>& a_array,
+    derived_type& DoSetValueAs(core_conts::Array<T>& a_array,
                                swap_array_policy);
 
     template <typename T>
-    derived_type& DoSetValueAs(core::smart_ptr::VirtualPtr
-                                <core::containers::Array<T> > a_array);
+    derived_type& DoSetValueAs(core_sptr::VirtualPtr
+                                <core_conts::Array<T> > a_array);
 
   private:
     gl_type       m_type;

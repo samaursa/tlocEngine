@@ -10,6 +10,7 @@
 
 #include <tlocGraphics/opengl/tlocAttribute.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
+#include <tlocGraphics/opengl/tlocVertexBufferObject.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 
@@ -25,27 +26,34 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                 size_type;
     typedef tl_int                  index_type;
 
-    typedef Uniform                 uniform_type;
     typedef Attribute               attribute_type;
-    typedef uniform_vptr            uniform_ptr_type;
-    typedef const_uniform_vptr      const_uniform_ptr_type;
-    typedef attribute_vptr          attribute_ptr_type;
-    typedef const_attribute_vptr    const_attribute_ptr_type;
-    typedef uniform_vso             uniform_vso;
     typedef attribute_vso           attribute_vso;
-    typedef uniform_vptr            uniform_ptr;
     typedef attribute_vptr          attribute_ptr;
+    typedef const_attribute_vptr    const_attribute_ptr;
+
+    typedef Uniform                 uniform_type;
+    typedef uniform_vso             uniform_vso;
+    typedef uniform_vptr            uniform_ptr;
+    typedef const_uniform_vptr      const_uniform_ptr;
+
+    typedef VertexBufferObject      vbo_type;
+    typedef vbo_vso                 vbo_vso;
+    typedef vbo_vptr                vbo_ptr;
+    typedef const_vbo_vptr          const_vbo_ptr;
 
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
     typedef core::Pair<uniform_vso, index_type>           uniform_pair_type;
     typedef core::Pair<attribute_vso, index_type>         attribute_pair_type;
 
-    typedef core::containers::Array<uniform_pair_type>	  uniform_cont_type;
+    typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
 
-    typedef core::containers::Array<attribute_pair_type>  attribute_cont_type;
+    typedef core_conts::Array<attribute_pair_type>        attribute_cont_type;
     typedef attribute_cont_type::iterator                 attribute_iterator;
+
+    typedef core_conts::Array<vbo_vso>                    vbo_cont_type;
+    typedef vbo_cont_type::iterator                       vbo_iterator;
 
     typedef core_conts::tl_array<index_type>::type        index_cont_type;
     typedef index_cont_type::iterator                     index_iterator;
@@ -56,12 +64,15 @@ namespace tloc { namespace graphics { namespace gl {
 
     uniform_ptr   AddUniform(const uniform_type& a_uniform);
     attribute_ptr AddAttribute(const attribute_type& a_attribute);
+    vbo_ptr       AddVertexBufferObject(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
     void RemoveAttribute(const attribute_iterator& a_attribute);
+    void RemoveVertexBufferObject(const vbo_iterator& a_vbo);
 
     void RemoveAllUniforms();
     void RemoveAllAttributes();
+    void RemoveAllVertexBufferObjects();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -74,6 +85,7 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     error_type PrepareAllUniforms(const ShaderProgram& a_shaderProgram);
     error_type PrepareAllAttributes(const ShaderProgram& a_shaderProgram);
+    error_type PrepareAllVertexBufferObjects(const ShaderProgram& a_shaderProgram);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -83,12 +95,16 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram) const;
     void EnableAllAttributes(const ShaderProgram& a_shaderProgram) const;
+    void EnableAllVertexBufferObjects(const ShaderProgram& a_shaderProgram) const;
 
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
 
     attribute_iterator begin_attributes();
     attribute_iterator end_attributes();
+
+    vbo_iterator begin_vertexBufferObjects();
+    vbo_iterator end_vertexBufferObjects();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -106,13 +122,23 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     void reserve_attributes(size_type a_capacity);
 
+    ///-------------------------------------------------------------------------
+    /// @brief
+    /// see reserve_uniforms()
+    ///-------------------------------------------------------------------------
+    void reserve_vertexBufferObjects(size_type a_capacity);
+
     // The following functions will destroy the uniform/attribute cache which
     // was setup when Prepare*() methods were called
     void ClearAttributesCache();
     void ClearUniformsCache();
+    void ClearVertexBufferObjectsCache();
+
     void ClearCache();
+
     bool IsAttributesCached();
     bool IsUniformsCached();
+    bool IsVertexBufferObjectsCached();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
                              m_uniforms.size());
@@ -122,6 +148,7 @@ namespace tloc { namespace graphics { namespace gl {
   private:
     uniform_cont_type           m_uniforms;
     attribute_cont_type         m_attributes;
+    vbo_cont_type               m_VBOs;
     core::utils::Checkpoints    m_flags;
     index_cont_type             m_enabledVertexAttrib;
   };

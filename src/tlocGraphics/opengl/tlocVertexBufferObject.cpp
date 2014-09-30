@@ -2,6 +2,7 @@
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
+#include <tlocGraphics/opengl/tlocAttribute.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -48,9 +49,36 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_VBO_BIND_TEMPS>
+  template <typename T_Usage, typename T_Type>
   void
     VertexBufferObject::Bind_T<TLOC_VBO_BIND_PARAMS>::
-    Data(
+    DoData(const core_conts::Array<T_Type>& a_array)
+  {
+    TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
+
+    using namespace core_conts; using namespace core_sptr;
+
+    // temporarily create an attribute to get the required information
+    gl::Attribute temp;
+    VirtualPtr<const Array<T_Type> > arrayPtr(&a_array);
+
+    temp.SetValueAs(arrayPtr, p_shader_variable_ti::Pointer());
+
+    const p_vbo::target::value_type target = target_type::s_glParamName;
+    const p_vbo::usage::value_type usage = typename T_Usage::s_glParamName;
+
+    const size_type arraySize = a_array.size();
+
+    m_vbo->DoSetType(temp.GetType());
+    m_vbo->DoSetDataSize(arraySize);
+    m_vbo->DoSetUsage(usage);
+
+    glBufferData(target, sizeof(T_Type) * arraySize, &a_array[0], usage);
+    {
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
+    }
+  }
 
   // -----------------------------------------------------------------------
   // explicit instantiations
@@ -59,7 +87,6 @@ namespace tloc { namespace graphics { namespace gl {
   template struct VertexBufferObject::Bind_T<p_vbo::target::ElementArrayBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::PixelPackBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::PixelUnpackBuffer>;
-
 
   // ///////////////////////////////////////////////////////////////////////
   // VertexBufferObject
@@ -72,3 +99,8 @@ namespace tloc { namespace graphics { namespace gl {
   { }
 
 };};};
+
+using namespace tloc::gfx_gl;
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexBufferObject);

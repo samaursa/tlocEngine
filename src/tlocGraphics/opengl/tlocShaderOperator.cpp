@@ -1411,7 +1411,7 @@ namespace tloc { namespace graphics { namespace gl {
       if (itr->first->IsEnabled() == false)
       { continue; }
 
-      const_uniform_ptr_type  uniformPtr = itr->first.get();
+      const_uniform_ptr  uniformPtr = itr->first.get();
 
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
@@ -1450,7 +1450,7 @@ namespace tloc { namespace graphics { namespace gl {
       if (itr->first->IsEnabled() == false)
       { continue; }
 
-      const_attribute_ptr_type attribPtr = itr->first.get();
+      const_attribute_ptr attribPtr = itr->first.get();
 
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
@@ -1612,5 +1612,6 @@ using namespace tloc::gfx_gl;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ShaderOperator);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(ShaderOperator);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_vptr);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(attribute_vptr);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(ShaderOperator::uniform_pair_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(ShaderOperator::attribute_pair_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(vbo_vso);

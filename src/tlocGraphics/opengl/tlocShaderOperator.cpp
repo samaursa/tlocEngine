@@ -73,6 +73,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       k_uniformsCached = 0,
       k_attributesCached,
+      k_VBOsCached,
       k_count
     };
 
@@ -1343,9 +1344,24 @@ namespace tloc { namespace graphics { namespace gl {
     return m_attributes.back().first.get();
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ShaderOperator::vbo_ptr
+    ShaderOperator::
+    AddVBO(const vbo_type& a_vbo)
+  {
+    TLOC_ASSERT(a_vbo.GetName().size() > 0, "VBO name is empty");
+
+    m_VBOs.push_back(vbo_vso(MakeArgs(a_vbo)) );
+    m_flags.Unmark(k_VBOsCached);
+
+    return m_VBOs.back().get();
+  }
+
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  void 
+    ShaderOperator::
     RemoveUniform(const uniform_iterator& a_uniform)
   {
     m_uniforms.erase(a_uniform);
@@ -1353,7 +1369,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  void 
+    ShaderOperator::
     RemoveAttribute(const attribute_iterator& a_attribute)
   {
     m_attributes.erase(a_attribute);
@@ -1361,7 +1378,17 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  void 
+    ShaderOperator::
+    RemoveVBO(const vbo_iterator& a_vbo)
+  {
+    m_VBOs.erase(a_vbo);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    ShaderOperator::
     RemoveAllUniforms()
   {
     m_flags.Unmark(k_uniformsCached);
@@ -1370,11 +1397,22 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  void 
+    ShaderOperator::
     RemoveAllAttributes()
   {
     m_flags.Unmark(k_attributesCached);
     m_attributes.clear();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    ShaderOperator::
+    RemoveAllVBOs()
+  {
+    m_flags.Unmark(k_VBOsCached);
+    m_VBOs.clear();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1480,6 +1518,10 @@ namespace tloc { namespace graphics { namespace gl {
                 "Shader not enabled - did you forget to call Enable()?");
 
     error_type retError = ErrorSuccess;
+
+    // bail early
+    if (GetNumberOfUniforms() == 0) { return retError; }
+
     if (m_flags.ReturnAndMark(k_uniformsCached) == false)
     {
       const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
@@ -1504,6 +1546,10 @@ namespace tloc { namespace graphics { namespace gl {
                 "Shader not enabled - did you forget to call Enable()?");
 
     error_type retError = ErrorSuccess;
+
+    // bail early
+    if (GetNumberOfAttributes() == 0) { return retError; }
+
     if (m_flags.ReturnAndMark(k_attributesCached) == false)
     {
       const glsl_var_info_cont_type&
@@ -1518,6 +1564,27 @@ namespace tloc { namespace graphics { namespace gl {
 
     return retError;
 
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ShaderOperator::error_type
+    ShaderOperator::
+    PrepareAllVBOs(const ShaderProgram& a_shaderProgram)
+  {
+    TLOC_ASSERT(a_shaderProgram.IsLinked(),
+                "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(a_shaderProgram.IsEnabled(),
+                "Shader not enabled - did you forget to call Enable()?");
+
+    error_type retError = ErrorSuccess;
+
+    // bail early
+    if (GetNumberOfVBOs() == 0) { return retError; }
+
+    if (m_flags.ReturnAndMark(k_VBOsCached) == false)
+    {
+    }
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

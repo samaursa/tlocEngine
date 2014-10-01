@@ -33,6 +33,10 @@ namespace tloc { namespace graphics { namespace gl {
     Bind_T(const vbo_ptr a_vbo)
     : m_vbo(a_vbo)
   {
+    TLOC_ASSERT (a_vbo->GetTarget() == GL_NONE || 
+                 target_type::s_glParamName == a_vbo->GetTarget(), 
+                 "Previous Bind() operation on this buffer used a different target.");
+
     object_handle handle = a_vbo->GetHandle();
     gl::vertex_buffer_object::Bind(target_type::s_glParamName, handle);
   }
@@ -70,8 +74,9 @@ namespace tloc { namespace graphics { namespace gl {
     const size_type arraySize = a_array.size();
 
     m_vbo->DoSetType(temp.GetType());
-    m_vbo->DoSetDataSize(arraySize);
     m_vbo->DoSetUsage(usage);
+    m_vbo->DoSetTarget(target);
+    m_vbo->DoSetDataSize(arraySize);
 
     glBufferData(target, sizeof(T_Type) * arraySize, &a_array[0], usage);
     {
@@ -104,3 +109,7 @@ using namespace tloc::gfx_gl;
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexBufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_array_buffer);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_element_array_buffer);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_pack_buffer);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack_buffer);

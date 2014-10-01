@@ -11,6 +11,7 @@
 #include <tlocGraphics/opengl/tlocAttribute.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
 #include <tlocGraphics/opengl/tlocVertexBufferObject.h>
+#include <tlocGraphics/opengl/tlocVertexArrayObject.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 
@@ -41,10 +42,16 @@ namespace tloc { namespace graphics { namespace gl {
     typedef vbo_vptr                vbo_ptr;
     typedef const_vbo_vptr          const_vbo_ptr;
 
+    typedef VertexArrayObject       vao_type;
+    typedef vao_vso                 vao_vso;
+    typedef vao_vptr                vao_ptr;
+    typedef const_vao_vptr          const_vao_ptr;
+
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
     typedef core::Pair<uniform_vso, index_type>           uniform_pair_type;
     typedef core::Pair<attribute_vso, index_type>         attribute_pair_type;
+    typedef core::Pair<vbo_vso, index_type>               vbo_pair_type;
 
     typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
@@ -64,15 +71,15 @@ namespace tloc { namespace graphics { namespace gl {
 
     uniform_ptr   AddUniform(const uniform_type& a_uniform);
     attribute_ptr AddAttribute(const attribute_type& a_attribute);
-    vbo_ptr       AddVertexBufferObject(const vbo_type& a_vbo);
+    vbo_ptr       AddVBO(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
     void RemoveAttribute(const attribute_iterator& a_attribute);
-    void RemoveVertexBufferObject(const vbo_iterator& a_vbo);
+    void RemoveVBO(const vbo_iterator& a_vbo);
 
     void RemoveAllUniforms();
     void RemoveAllAttributes();
-    void RemoveAllVertexBufferObjects();
+    void RemoveAllVBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -85,7 +92,7 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     error_type PrepareAllUniforms(const ShaderProgram& a_shaderProgram);
     error_type PrepareAllAttributes(const ShaderProgram& a_shaderProgram);
-    error_type PrepareAllVertexBufferObjects(const ShaderProgram& a_shaderProgram);
+    error_type PrepareAllVBOs(const ShaderProgram& a_shaderProgram);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -95,7 +102,7 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram) const;
     void EnableAllAttributes(const ShaderProgram& a_shaderProgram) const;
-    void EnableAllVertexBufferObjects(const ShaderProgram& a_shaderProgram) const;
+    void EnableAllVBOs(const ShaderProgram& a_shaderProgram) const;
 
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
@@ -103,8 +110,8 @@ namespace tloc { namespace graphics { namespace gl {
     attribute_iterator begin_attributes();
     attribute_iterator end_attributes();
 
-    vbo_iterator begin_vertexBufferObjects();
-    vbo_iterator end_vertexBufferObjects();
+    vbo_iterator begin_VBOs();
+    vbo_iterator end_VBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -132,18 +139,20 @@ namespace tloc { namespace graphics { namespace gl {
     // was setup when Prepare*() methods were called
     void ClearAttributesCache();
     void ClearUniformsCache();
-    void ClearVertexBufferObjectsCache();
+    void ClearVBOs();
 
     void ClearCache();
 
     bool IsAttributesCached();
     bool IsUniformsCached();
-    bool IsVertexBufferObjectsCached();
+    bool IsVBOsCached();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
                              m_uniforms.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributes,
                              m_attributes.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfVBOs,
+                             m_VBOs.size());
 
   private:
     uniform_cont_type           m_uniforms;
@@ -151,6 +160,7 @@ namespace tloc { namespace graphics { namespace gl {
     vbo_cont_type               m_VBOs;
     core::utils::Checkpoints    m_flags;
     index_cont_type             m_enabledVertexAttrib;
+    vao_vso                     m_vao;
   };
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);

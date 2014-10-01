@@ -97,7 +97,30 @@ namespace tloc { namespace graphics { namespace gl {
 
 #undef TLOC_DECL_TL_TO_GL
 
-  //------------------------------------------------------------------------
+  // ///////////////////////////////////////////////////////////////////////
+  // ShaderVariableBase
+
+  ShaderVariableBase::
+    ShaderVariableBase()
+    : m_type(GL_NONE)
+    , m_enabled(true)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ShaderVariableBase::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    swap(m_type, a_other.m_type);
+    swap(m_value, a_other.m_value);
+    swap(m_name, a_other.m_name);
+    swap(m_enabled, a_other.m_enabled);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // ShaderVariable
 
 #define SHADER_VARIABLE_TEMP    typename T_Derived
@@ -106,10 +129,9 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::ShaderVariable_TI()
-    : m_type(GL_NONE)
+    : base_type()
     , m_isArray(false)
     , m_isArrayPtr(false)
-    , m_enabled(true)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -117,12 +139,9 @@ namespace tloc { namespace graphics { namespace gl {
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     ShaderVariable_TI(const this_type& a_other)
-    : m_type(a_other.m_type)
-    , m_value(a_other.m_value)
-    , m_name(a_other.m_name)
+    : base_type(a_other)
     , m_isArray(a_other.m_isArray)
     , m_isArrayPtr(a_other.m_isArrayPtr)
-    , m_enabled(a_other.m_enabled)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -139,12 +158,10 @@ namespace tloc { namespace graphics { namespace gl {
     swap(this_type& a_other)
   {
     using core::swap;
-    swap(m_type, a_other.m_type);
-    swap(m_value, a_other.m_value);
-    swap(m_name, a_other.m_name);
+
+    base_type::swap(a_other);
     swap(m_isArray, a_other.m_isArray);
     swap(m_isArrayPtr, a_other.m_isArrayPtr);
-    swap(m_enabled, a_other.m_enabled);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -154,10 +171,10 @@ namespace tloc { namespace graphics { namespace gl {
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::DoSetValueAs(const T& a_value)
   {
-    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
+    TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
-    m_type = tlToGl<T>::k_glType;
-    m_value.Assign(a_value);
+    DoSetType(tlToGl<T>::k_glType);
+    DoGetValueRef().Assign(a_value);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -169,10 +186,10 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     DoSetValueAs(VirtualPtr<T> a_value)
   {
-    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
+    TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
-    m_type = tlToGl<T>::k_glType;
-    m_value.Assign(a_value);
+    DoSetType(tlToGl<T>::k_glType);
+    DoGetValueRef().Assign(a_value);
     m_isArrayPtr = true;
     return *(static_cast<derived_type*>(this));
   }
@@ -185,11 +202,11 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     DoSetValueAs(const Array<T>& a_array, copy_array_policy)
   {
-    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_array),
+    TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_array),
       "Cannot change uniform TYPE after construction");
-    m_type = tlToGl<T>::k_glType;
+    DoSetType(tlToGl<T>::k_glType);
     m_isArray = true;
-    m_value.Assign(a_array);
+    DoGetValueRef().Assign(a_array);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -201,12 +218,12 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     DoSetValueAs(Array<T>& a_array, swap_array_policy)
   {
-    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_array),
+    TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_array),
       "Cannot change uniform TYPE after construction");
-    m_type = tlToGl<T>::k_glType;
+    DoSetType(tlToGl<T>::k_glType);
     m_isArray = true;
-    m_value.Assign(Array<T>());
-    m_value.Cast<Array<T> >().swap(a_array);
+    DoGetValueRef().Assign(Array<T>());
+    DoGetValueRef().Cast<Array<T> >().swap(a_array);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -218,12 +235,12 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     DoSetValueAs(VirtualPtr<Array<T> > a_array)
   {
-    TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_array),
+    TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_array),
       "Cannot change uniform TYPE after construction");
-    m_type = tlToGl<T>::k_glType;
+    DoSetType(tlToGl<T>::k_glType);
     m_isArray = true;
     m_isArrayPtr = true;
-    m_value.Assign(a_array);
+    DoGetValueRef().Assign(a_array);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -233,7 +250,7 @@ namespace tloc { namespace graphics { namespace gl {
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::SetName(const string_type& a_value)
   {
-    m_name = a_value;
+    base_type::SetName(a_value);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -244,7 +261,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     IsValidType() const
   {
-    return m_type != GL_NONE;
+    return GetType() != GL_NONE;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -253,7 +270,7 @@ namespace tloc { namespace graphics { namespace gl {
   void
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     ResetValue()
-  { m_value.Reset(); }
+  { DoGetValueRef().Reset(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -262,12 +279,12 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
     Reset()
   {
-    m_type        = GL_NONE;
+    DoSetType(GL_NONE);
     m_isArray     = false;
     m_isArrayPtr  = false;
 
-    m_value.Reset();
-    m_name.clear();
+    DoGetValueRef().Reset();
+    SetName("");
   }
 
   //------------------------------------------------------------------------

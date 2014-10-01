@@ -25,16 +25,43 @@ namespace tloc { namespace graphics { namespace gl {
     struct Pointer {};
   };
 
-  class ShaderVariableBase { };
+  class ShaderVariableBase 
+  { 
+  public:
+    typedef ShaderVariableBase               this_type;
+    typedef core_t::Any                      value_type;
+    typedef core_str::String                 string_type;
+    typedef u32                              gl_type;
+
+  public:
+    ShaderVariableBase();
+
+    void swap(this_type& a_other);
+
+    TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, SetEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
+
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
+
+  protected:
+    TLOC_DECL_AND_DEF_SETTER(gl_type, DoSetType, m_type);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(value_type, DoGetValueRef, m_value);
+
+  private:
+    gl_type       m_type;
+    value_type    m_value;
+    string_type   m_name;
+    bool          m_enabled;
+  };
 
   template <typename T_Derived>
   class ShaderVariable_TI 
     : ShaderVariableBase
   {
   public:
-    typedef core_t::Any                      value_type;
-    typedef core_str::String                 string_type;
-    typedef u32                              gl_type;
+    typedef ShaderVariableBase               base_type;
     typedef T_Derived                        derived_type;
     typedef ShaderVariable_TI<derived_type>  this_type;
 
@@ -76,13 +103,8 @@ namespace tloc { namespace graphics { namespace gl {
     void          ResetValue();
     void          Reset();
 
-    TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isArrayPtr);
-    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, SetEnabled, m_enabled);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
-
 
   protected:
     ShaderVariable_TI();
@@ -112,12 +134,8 @@ namespace tloc { namespace graphics { namespace gl {
                                 <core_conts::Array<T> > a_array);
 
   private:
-    gl_type       m_type;
-    value_type    m_value;
-    string_type   m_name;
     bool          m_isArray;
     bool          m_isArrayPtr;
-    bool          m_enabled;
   };
 
   //------------------------------------------------------------------------

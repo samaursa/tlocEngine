@@ -40,37 +40,18 @@ namespace tloc { namespace graphics { namespace gl {
     void swap(this_type& a_other);
 
     template <typename T>
-    derived_type& SetValueAs(const T& a_value)
-    {
-      return base_type::SetValueAs(a_value);
-    }
+    derived_type& SetValueAs(const T& a_value);
 
     template <typename T, typename T_Technique>
-    derived_type& SetValueAs(core::containers::Array<T>& a_array,
-                             T_Technique)
-    {
-      // Constant = GLSL's view of a constant attribute
-      TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
-        Constant_attribute_arrays_are_illegal_use_SetVertexArray_instead);
-    }
+    derived_type& SetValueAs(core_conts::Array<T>& a_array, T_Technique);
 
     template <typename T, typename T_Technique>
-    derived_type&
-      SetVertexArray(core::containers::Array<T>& a_array, T_Technique)
-    {
-      m_isAttribArray = true;
-      return base_type::SetValueAs(a_array, T_Technique());
-    }
+    derived_type& SetVertexArray(core_conts::Array<T>& a_array, T_Technique);
 
     template <typename T>
-    derived_type&
-      SetVertexArray
-      (core::smart_ptr::VirtualPtr<core::containers::Array<T> > a_array,
-       p_shader_variable_ti::Pointer)
-    {
-      m_isAttribArray = true;
-      return base_type::SetValueAs(a_array, p_shader_variable_ti::Pointer());
-    }
+    derived_type& SetVertexArray 
+      (core_sptr::VirtualPtr<core_conts::Array<T> > a_array, 
+       p_shader_variable_ti::Pointer);
 
     void Reset();
 
@@ -78,88 +59,159 @@ namespace tloc { namespace graphics { namespace gl {
 
   protected:
     template <typename T>
-    void DoCheckTypeCompatibility() const
-    {
-      using namespace core::containers;
-      using namespace core::data_structs;
-      using namespace math::types;
-      using namespace graphics::types;
-
-      tloc::type_traits::AssertTypeIsSupported
-        <T,
-         f32,
-         Vec2f32, Vec3f32, Vec4f32,
-         s32,
-         Tuple2s32, Tuple3s32, Tuple4s32,
-         u32,
-         Tuple2u32, Tuple3u32, Tuple4u32,
-         Array<f32>,
-         Array<Vec2f32>,
-         Array<Vec3f32>,
-         Array<Vec4f32>,
-         Array<s32>,
-         Array<Tuple2s32>,
-         Array<Tuple3s32>,
-         Array<Tuple4s32>,
-         Array<u32>,
-         Array<Tuple2u32>,
-         Array<Tuple3u32>,
-         Array<Tuple4u32>
-        >();
-    }
+    void DoCheckTypeCompatibility() const;
 
     template <typename T>
-    void DoCheckNonArrayTypes() const
-    {
-      using namespace core::data_structs;
-      using namespace math::types;
-      using namespace graphics::types;
-
-      tloc::type_traits::AssertTypeIsSupported
-        <T,
-         f32,
-         Vec2f32, Vec3f32, Vec4f32,
-         s32,
-         Tuple2s32, Tuple3s32, Tuple4s32,
-         u32,
-         Tuple2u32, Tuple3u32, Tuple4u32
-        >();
-    }
+    void DoCheckNonArrayTypes() const;
 
     template <typename T>
-    void DoCheckVertexArrayTypes() const
-    {
-    }
+    void DoCheckVertexArrayTypes() const;
 
     template <typename T>
-    void DoCheckArrayTypes() const
-    {
-      using namespace core::data_structs;
-      using namespace core::containers;
-      using namespace math::types;
-      using namespace graphics::types;
-
-      tloc::type_traits::AssertTypeIsSupported
-        <Array<T>,
-         Array<f32>,
-         Array<Vec2f32>,
-         Array<Vec3f32>,
-         Array<Vec4f32>,
-         Array<s32>,
-         Array<Tuple2s32>,
-         Array<Tuple3s32>,
-         Array<Tuple4s32>,
-         Array<u32>,
-         Array<Tuple2u32>,
-         Array<Tuple3u32>,
-         Array<Tuple4u32>
-        >();
-    }
+    void DoCheckArrayTypes() const;
 
   private:
     bool    m_isAttribArray;
 
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T>
+  Attribute::derived_type& 
+    Attribute::
+    SetValueAs(const T& a_value)
+  { return base_type::SetValueAs(a_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_Technique>
+  Attribute::derived_type& 
+    Attribute::
+    SetValueAs(core::containers::Array<T>& a_array, T_Technique)
+  {
+    // Constant = GLSL's view of a constant attribute
+    TLOC_STATIC_ASSERT((Loki::IsSameType<T, DummyStruct>::value),
+      Constant_attribute_arrays_are_illegal_use_SetVertexArray_instead);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_Technique>
+  Attribute::derived_type&
+    Attribute::
+    SetVertexArray(core::containers::Array<T>& a_array, T_Technique)
+  {
+    m_isAttribArray = true;
+    return base_type::SetValueAs(a_array, T_Technique());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Attribute::derived_type&
+    Attribute::
+    SetVertexArray(core_sptr::VirtualPtr<core_conts::Array<T> > a_array, 
+                   p_shader_variable_ti::Pointer)
+  {
+    m_isAttribArray = true;
+    return base_type::SetValueAs(a_array, p_shader_variable_ti::Pointer());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  void 
+    Attribute::
+    DoCheckTypeCompatibility() const
+  {
+    using namespace core::containers;
+    using namespace core::data_structs;
+    using namespace math::types;
+    using namespace graphics::types;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T,
+       f32,
+       Vec2f32, Vec3f32, Vec4f32,
+       s32,
+       Tuple2s32, Tuple3s32, Tuple4s32,
+       u32,
+       Tuple2u32, Tuple3u32, Tuple4u32,
+       Array<f32>,
+       Array<Vec2f32>,
+       Array<Vec3f32>,
+       Array<Vec4f32>,
+       Array<s32>,
+       Array<Tuple2s32>,
+       Array<Tuple3s32>,
+       Array<Tuple4s32>,
+       Array<u32>,
+       Array<Tuple2u32>,
+       Array<Tuple3u32>,
+       Array<Tuple4u32>
+      >();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  void 
+    Attribute::
+    DoCheckNonArrayTypes() const
+  {
+    using namespace core::data_structs;
+    using namespace math::types;
+    using namespace graphics::types;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T,
+       f32,
+       Vec2f32, Vec3f32, Vec4f32,
+       s32,
+       Tuple2s32, Tuple3s32, Tuple4s32,
+       u32,
+       Tuple2u32, Tuple3u32, Tuple4u32
+      >();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  void 
+    Attribute::
+    DoCheckVertexArrayTypes() const
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  void 
+    Attribute::
+    DoCheckArrayTypes() const
+  {
+    using namespace core::data_structs;
+    using namespace core::containers;
+    using namespace math::types;
+    using namespace graphics::types;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <Array<T>,
+       Array<f32>,
+       Array<Vec2f32>,
+       Array<Vec3f32>,
+       Array<Vec4f32>,
+       Array<s32>,
+       Array<Tuple2s32>,
+       Array<Tuple3s32>,
+       Array<Tuple4s32>,
+       Array<u32>,
+       Array<Tuple2u32>,
+       Array<Tuple3u32>,
+       Array<Tuple4u32>
+      >();
+  }
 
   //------------------------------------------------------------------------
   // typedefs

@@ -104,9 +104,6 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetTarget, m_usage);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
 
-    TLOC_DECL_AND_DEF_SETTER(BufferArg, SetName, m_name);
-    TLOC_DECL_AND_DEF_GETTER(string_type, GetName, m_name);
-
   private:
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetType, m_type);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetUsage, m_usage);

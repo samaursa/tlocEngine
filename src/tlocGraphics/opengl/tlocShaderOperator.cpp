@@ -1438,8 +1438,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     RemoveAllUniforms()
   {
-    m_flags.Unmark(k_uniformsCached);
     m_uniforms.clear();
+    ClearUniformsCache();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1448,8 +1448,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     RemoveAllAttributes()
   {
-    m_flags.Unmark(k_attributesCached);
     m_attributes.clear();
+    ClearAttributesCache();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1458,8 +1458,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     RemoveAllVBOs()
   {
-    m_flags.Unmark(k_VBOsCached);
     m_VBOs.clear();
+    ClearVBOsCache();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1579,11 +1579,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type retError = ErrorSuccess;
 
-    // bail early
-    if (GetNumberOfUniforms() == 0) { return retError; }
-
     if (m_flags.ReturnAndMark(k_uniformsCached) == false)
     {
+      // bail early
+      if (GetNumberOfUniforms() == 0) { return retError; }
+
       const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
       // no need to check for attrib index since glEnableAttribArray applies
@@ -1607,11 +1607,12 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type retError = ErrorSuccess;
 
-    // bail early
-    if (GetNumberOfAttributes() == 0) { return retError; }
-
     if (m_flags.ReturnAndMark(k_attributesCached) == false)
     {
+
+      // bail early
+      if (GetNumberOfAttributes() == 0) { return retError; }
+
       const glsl_var_info_cont_type&
         attrCont = a_shaderProgram.GetAttributeInfoRef();
 
@@ -1651,11 +1652,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type retError = ErrorSuccess;
 
-    // bail early
-    if (GetNumberOfVBOs() == 0) { return retError; }
-
     if (m_flags.ReturnAndMark(k_VBOsCached) == false)
     {
+      // bail early
+      if (GetNumberOfVBOs() == 0) { return retError; }
+
+      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
+
       VertexArrayObject::Bind vaoBind(*m_vao);
 
       const glsl_var_info_cont_type& 
@@ -1732,7 +1735,10 @@ namespace tloc { namespace graphics { namespace gl {
 
   void ShaderOperator::
     ClearAttributesCache()
-  { m_flags.Unmark(k_attributesCached); }
+  { 
+    m_enabledVertexAttrib.clear();
+    m_flags.Unmark(k_attributesCached);
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1743,10 +1749,20 @@ namespace tloc { namespace graphics { namespace gl {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void ShaderOperator::
+    ClearVBOsCache()
+  { 
+    m_enabledVertexAttrib.clear();
+    m_flags.Unmark(k_VBOsCached);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void ShaderOperator::
     ClearCache()
   {
     ClearAttributesCache();
     ClearUniformsCache();
+    ClearVBOsCache();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

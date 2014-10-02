@@ -25,29 +25,33 @@ namespace tloc { namespace graphics { namespace gl {
     struct Pointer {};
   };
 
-  class ShaderVariableBase 
+  // ///////////////////////////////////////////////////////////////////////
+  // ShaderVariableI
+
+  class ShaderVariable_I 
   { 
   public:
-    typedef ShaderVariableBase               this_type;
+    typedef ShaderVariable_I                 this_type;
     typedef core_t::Any                      value_type;
     typedef core_str::String                 string_type;
     typedef u32                              gl_type;
 
   public:
-    ShaderVariableBase();
+    ShaderVariable_I();
 
     void swap(this_type& a_other);
 
     TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, SetEnabled, m_enabled);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
 
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
     TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
 
   protected:
     TLOC_DECL_AND_DEF_SETTER(gl_type, DoSetType, m_type);
     TLOC_DECL_AND_DEF_GETTER_DIRECT(value_type, DoGetValueRef, m_value);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(value_type, DoGetValueRef, m_value);
 
   private:
     gl_type       m_type;
@@ -56,17 +60,20 @@ namespace tloc { namespace graphics { namespace gl {
     bool          m_enabled;
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // ShaderVariable_TI<>
+
   template <typename T_Derived>
   class ShaderVariable_TI 
-    : ShaderVariableBase
+    : public ShaderVariable_I
   {
   public:
-    typedef ShaderVariableBase               base_type;
-    typedef T_Derived                        derived_type;
-    typedef ShaderVariable_TI<derived_type>  this_type;
+    typedef ShaderVariable_I                  base_type;
+    typedef T_Derived                         derived_type;
+    typedef ShaderVariable_TI<derived_type>   this_type;
 
-    typedef p_shader_variable_ti::CopyArray  copy_array_policy;
-    typedef p_shader_variable_ti::SwapArray  swap_array_policy;
+    typedef p_shader_variable_ti::CopyArray   copy_array_policy;
+    typedef p_shader_variable_ti::SwapArray   swap_array_policy;
 
   public:
     template <typename T>
@@ -158,7 +165,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(!m_isArrayPtr, "Variable is shared - use GetValueAsShared<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
-    return m_value.Cast<T>();
+    return DoGetValueRef().Cast<T>();
   }
 
   template <typename T_Derived>
@@ -171,7 +178,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_isArrayPtr, "Variable is NOT shared - use GetValueAs<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
-    return m_value.Cast<VirtualPtr<T> >();
+    return  DoGetValueRef().Cast<VirtualPtr<T> >();
   }
 
   template <typename T_Derived>

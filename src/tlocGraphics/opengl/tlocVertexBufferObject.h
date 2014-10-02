@@ -61,22 +61,11 @@ namespace tloc { namespace graphics { namespace gl {
       : public core_bclass::NonCopyable_I
     {
     public:
-      typedef core_sptr::VirtualPtr<VertexBufferObject>     vbo_ptr;
       typedef T_Target                                      target_type;
 
     public:
-      Bind_T(vbo_ptr  a_vbo);
+      Bind_T(const this_type&  a_vbo);
       ~Bind_T();
-
-      template <typename T_Usage, typename T_Type>
-      void Data(const core_conts::Array<T_Type>& a_array);
-
-    private:
-      template <typename T_Usage, typename T_Type>
-      void DoData(const core_conts::Array<T_Type>& a_array);
-
-    private:
-      vbo_ptr   m_vbo;
     };
 
   public:
@@ -99,6 +88,9 @@ namespace tloc { namespace graphics { namespace gl {
     VertexBufferObject();
     ~VertexBufferObject();
 
+    template <typename T_Target, typename T_Usage, typename T_Type>
+    void Data(const core_conts::Array<T_Type>& a_array);
+
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetUsage, m_usage);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetTarget, m_usage);
@@ -111,18 +103,67 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetDataSize, m_dataSize);
 
   private:
+    template <typename T_Target, typename T_Type>
+    void DoData(gfx_t::gl_int a_usage, const core_conts::Array<T_Type>& a_array);
+
+  private:
     gfx_t::gl_enum  m_type;
     gfx_t::gl_enum  m_usage;
     gfx_t::gl_enum  m_target;
     gfx_t::gl_sizei m_dataSize;
-    string_type     m_name;
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_Target, typename T_Usage, typename T_Type>
+  void
+    VertexBufferObject::
+    Data(const core_conts::Array<T_Type>& a_array)
+  {
+    type_traits::AssertTypeIsSupported<T_Usage, 
+      p_vbo::usage::StreamDraw, p_vbo::usage::StreamRead,
+      p_vbo::usage::StreamCopy, p_vbo::usage::StaticDraw,
+      p_vbo::usage::StaticRead, p_vbo::usage::StaticCopy,
+      p_vbo::usage::DynamicDraw, p_vbo::usage::DynamicRead,
+      p_vbo::usage::DynamicCopy>();
+
+    type_traits::AssertTypeIsSupported<T_Type, f32, 
+       Vec2f32, Vec3f32, Vec4f32>();
+
+    DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
+  }
 
   // -----------------------------------------------------------------------
   // typedefs
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(VertexBufferObject, vbo);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(VertexBufferObject, vbo);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // AttributeVBO
+
+  class AttributeVBO
+    : public VertexBufferObject
+  {
+  public:
+    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
+
+  private:
+    string_type     m_name;
+    bool            m_enabled;
+
+  };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(AttributeVBO, attributeVBO);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(AttributeVBO, attributeVBO);
 
 };};};
 

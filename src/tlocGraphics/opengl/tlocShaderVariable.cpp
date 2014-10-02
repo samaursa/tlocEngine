@@ -98,10 +98,10 @@ namespace tloc { namespace graphics { namespace gl {
 #undef TLOC_DECL_TL_TO_GL
 
   // ///////////////////////////////////////////////////////////////////////
-  // ShaderVariableBase
+  // ShaderVariable_I
 
-  ShaderVariableBase::
-    ShaderVariableBase()
+  ShaderVariable_I::
+    ShaderVariable_I()
     : m_type(GL_NONE)
     , m_enabled(true)
   { }
@@ -109,7 +109,7 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    ShaderVariableBase::
+    ShaderVariable_I::
     swap(this_type& a_other)
   {
     using core::swap;
@@ -121,7 +121,7 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  // ShaderVariable
+  // ShaderVariable_TI
 
 #define SHADER_VARIABLE_TEMP    typename T_Derived
 #define SHADER_VARIABLE_PARAMS  T_Derived

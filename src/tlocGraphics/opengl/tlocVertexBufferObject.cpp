@@ -30,14 +30,13 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <TLOC_VBO_BIND_TEMPS>
   VertexBufferObject::Bind_T<TLOC_VBO_BIND_PARAMS>::
-    Bind_T(const vbo_ptr a_vbo)
-    : m_vbo(a_vbo)
+    Bind_T(const this_type& a_vbo)
   {
-    TLOC_ASSERT (a_vbo->GetTarget() == GL_NONE || 
-                 target_type::s_glParamName == a_vbo->GetTarget(), 
+    TLOC_ASSERT (a_vbo.GetTarget() == GL_NONE || 
+                 target_type::s_glParamName == a_vbo.GetTarget(), 
                  "Previous Bind() operation on this buffer used a different target.");
 
-    object_handle handle = a_vbo->GetHandle();
+    object_handle handle = a_vbo.GetHandle();
     gl::vertex_buffer_object::Bind(target_type::s_glParamName, handle);
   }
 
@@ -48,41 +47,6 @@ namespace tloc { namespace graphics { namespace gl {
     ~Bind_T()
   {
     gl::vertex_buffer_object::UnBind(target_type::s_glParamName);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VBO_BIND_TEMPS>
-  template <typename T_Usage, typename T_Type>
-  void
-    VertexBufferObject::Bind_T<TLOC_VBO_BIND_PARAMS>::
-    DoData(const core_conts::Array<T_Type>& a_array)
-  {
-    TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
-
-    using namespace core_conts; using namespace core_sptr;
-
-    // temporarily create an attribute to get the required information
-    gl::Attribute temp;
-    VirtualPtr<const Array<T_Type> > arrayPtr(&a_array);
-
-    temp.SetValueAs(arrayPtr, p_shader_variable_ti::Pointer());
-
-    const p_vbo::target::value_type target = target_type::s_glParamName;
-    const p_vbo::usage::value_type usage = typename T_Usage::s_glParamName;
-
-    const size_type arraySize = a_array.size();
-
-    m_vbo->DoSetType(temp.GetType());
-    m_vbo->DoSetUsage(usage);
-    m_vbo->DoSetTarget(target);
-    m_vbo->DoSetDataSize(arraySize);
-
-    glBufferData(target, sizeof(T_Type) * arraySize, &a_array[0], usage);
-    {
-      gl::Error err; TLOC_UNUSED(err);
-      TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
-    }
   }
 
   // -----------------------------------------------------------------------
@@ -103,13 +67,82 @@ namespace tloc { namespace graphics { namespace gl {
     , m_dataSize(0)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Target, typename T_Type>
+  void
+    VertexBufferObject::
+    DoData(gfx_t::gl_int a_usage, 
+           const core_conts::Array<T_Type>& a_array)
+  {
+    TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
+
+    using namespace core_conts; using namespace core_sptr;
+
+    Bind_T<T_Target> b(*this);
+
+    // temporarily create an attribute to get the required information
+    core_conts::Array<T_Type> tempArray;
+
+    gl::Attribute temp;
+    VirtualPtr<Array<T_Type> > arrayPtr(&tempArray);
+
+    temp.SetVertexArray(arrayPtr, p_shader_variable_ti::Pointer());
+
+    const size_type arraySize = a_array.size();
+
+    const gfx_t::gl_int target = typename T_Target::s_glParamName;
+
+    DoSetType(temp.GetType());
+    DoSetTarget(target);
+    DoSetUsage(a_usage);
+    DoSetDataSize(arraySize);
+
+    glBufferData(target, sizeof(T_Type) * arraySize, &a_array[0], a_usage);
+    {
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
+    }
+  }
+
+
 };};};
 
+using namespace tloc;
 using namespace tloc::gfx_gl;
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(_type_)\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::ArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::CopyReadBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::CopyWriteBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::ElementArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::PixelPackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::PixelUnpackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::TextureBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template void VertexBufferObject::\
+  DoData<p_vbo::target::TransformFeedbackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&)
+
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec2f32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec3f32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec4f32);
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexBufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(AttributeVBO);
+
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_array_buffer);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_element_array_buffer);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_pack_buffer);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack_buffer);
+
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(AttributeVBO);

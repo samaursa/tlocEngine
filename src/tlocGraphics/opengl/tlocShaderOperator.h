@@ -44,7 +44,6 @@ namespace tloc { namespace graphics { namespace gl {
 
     typedef VertexArrayObject         vao_type;
     typedef vao_vso                   vao_vso;
-    typedef vao_vptr                  vao_ptr;
     typedef const_vao_vptr            const_vao_ptr;
 
     typedef vao_type::Bind            vao_bind_type;
@@ -142,7 +141,7 @@ namespace tloc { namespace graphics { namespace gl {
     // was setup when Prepare*() methods were called
     void ClearAttributesCache();
     void ClearUniformsCache();
-    void ClearVBOs();
+    void ClearVBOsCache();
 
     void ClearCache();
 
@@ -163,7 +162,7 @@ namespace tloc { namespace graphics { namespace gl {
     vbo_cont_type               m_VBOs;
     core::utils::Checkpoints    m_flags;
     index_cont_type             m_enabledVertexAttrib;
-    vao_vso                     m_vao;
+    vao_sptr                    m_vao;
   };
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);

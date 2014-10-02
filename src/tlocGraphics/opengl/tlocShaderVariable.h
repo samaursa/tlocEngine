@@ -154,7 +154,7 @@ namespace tloc { namespace graphics { namespace gl {
     GetValueAs(T& a_out) const
   {
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
-    a_out = m_value.Cast<T>();
+    a_out = DoGetValueRef().Cast<T>();
   }
 
   template <typename T_Derived>

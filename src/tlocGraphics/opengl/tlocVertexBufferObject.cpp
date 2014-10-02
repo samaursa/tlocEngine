@@ -69,6 +69,18 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  VertexBufferObject::
+    ~VertexBufferObject()
+  {
+    if (IsLastRef() && GetHandle() != 0)
+    {
+      object_handle handle = GetHandle();
+      gfx_gl::vertex_buffer_object::Destroy(handle);
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T_Target, typename T_Type>
   void
     VertexBufferObject::

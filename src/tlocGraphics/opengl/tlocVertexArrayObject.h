@@ -26,7 +26,6 @@ namespace tloc { namespace graphics { namespace gl {
       ~Bind();
     };
     TLOC_TYPEDEF_ALL_SMART_PTRS(Bind, bind);
-    TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Bind, bind);
 
   public:
     VertexArrayObject();
@@ -36,7 +35,8 @@ namespace tloc { namespace graphics { namespace gl {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(VertexArrayObject, vao);
+  TLOC_TYPEDEF_SHARED_PTR(VertexArrayObject, vao);
+  TLOC_TYPEDEF_VIRTUAL_PTR(VertexArrayObject, vao);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(VertexArrayObject, vao);
 
 };};};

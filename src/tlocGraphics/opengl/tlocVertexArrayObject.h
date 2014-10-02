@@ -22,13 +22,11 @@ namespace tloc { namespace graphics { namespace gl {
       : public core_bclass::NonCopyable_I
     {
     public:
-      typedef core_sptr::VirtualPtr<VertexArrayObject>      vao_ptr;
-
-    public:
-      Bind(const vao_ptr a_vao);
+      Bind(const this_type& a_vao);
       ~Bind();
     };
-    TLOC_TYPEDEF_UNIQUE_PTR(Bind, bind);
+    TLOC_TYPEDEF_ALL_SMART_PTRS(Bind, bind);
+    TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Bind, bind);
 
   public:
     VertexArrayObject();

@@ -22,30 +22,33 @@ namespace tloc { namespace graphics { namespace gl {
   class ShaderOperator
   {
   public:
-    typedef ShaderOperator          this_type;
-    typedef core::error::Error      error_type;
-    typedef tl_size                 size_type;
-    typedef tl_int                  index_type;
+    typedef ShaderOperator            this_type;
+    typedef core::error::Error        error_type;
+    typedef tl_size                   size_type;
+    typedef tl_int                    index_type;
 
-    typedef Attribute               attribute_type;
-    typedef attribute_vso           attribute_vso;
-    typedef attribute_vptr          attribute_ptr;
-    typedef const_attribute_vptr    const_attribute_ptr;
+    typedef Attribute                 attribute_type;
+    typedef attribute_vso             attribute_vso;
+    typedef attribute_vptr            attribute_ptr;
+    typedef const_attribute_vptr      const_attribute_ptr;
 
-    typedef Uniform                 uniform_type;
-    typedef uniform_vso             uniform_vso;
-    typedef uniform_vptr            uniform_ptr;
-    typedef const_uniform_vptr      const_uniform_ptr;
+    typedef Uniform                   uniform_type;
+    typedef uniform_vso               uniform_vso;
+    typedef uniform_vptr              uniform_ptr;
+    typedef const_uniform_vptr        const_uniform_ptr;
 
-    typedef VertexBufferObject      vbo_type;
-    typedef vbo_vso                 vbo_vso;
-    typedef vbo_vptr                vbo_ptr;
-    typedef const_vbo_vptr          const_vbo_ptr;
+    typedef AttributeVBO              vbo_type;
+    typedef attributeVBO_vso          vbo_vso;
+    typedef attributeVBO_vptr         vbo_ptr;
+    typedef const_attributeVBO_vptr   const_vbo_ptr;
 
-    typedef VertexArrayObject       vao_type;
-    typedef vao_vso                 vao_vso;
-    typedef vao_vptr                vao_ptr;
-    typedef const_vao_vptr          const_vao_ptr;
+    typedef VertexArrayObject         vao_type;
+    typedef vao_vso                   vao_vso;
+    typedef vao_vptr                  vao_ptr;
+    typedef const_vao_vptr            const_vao_ptr;
+
+    typedef vao_type::Bind            vao_bind_type;
+    typedef vao_type::bind_sptr       vao_bind_ptr;
 
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
@@ -59,7 +62,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core_conts::Array<attribute_pair_type>        attribute_cont_type;
     typedef attribute_cont_type::iterator                 attribute_iterator;
 
-    typedef core_conts::Array<vbo_vso>                    vbo_cont_type;
+    typedef core_conts::Array<vbo_pair_type>              vbo_cont_type;
     typedef vbo_cont_type::iterator                       vbo_iterator;
 
     typedef core_conts::tl_array<index_type>::type        index_cont_type;
@@ -102,7 +105,7 @@ namespace tloc { namespace graphics { namespace gl {
     ///-------------------------------------------------------------------------
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram) const;
     void EnableAllAttributes(const ShaderProgram& a_shaderProgram) const;
-    void EnableAllVBOs(const ShaderProgram& a_shaderProgram) const;
+    vao_bind_ptr EnableAllVBOs(const ShaderProgram& a_shaderProgram) const;
 
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();

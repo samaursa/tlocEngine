@@ -4,6 +4,7 @@
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/logging/tlocLogger.h>
 #include <tlocCore/utilities/tlocUtils.h>
+#include <tlocCore/containers/tlocArray.inl.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -30,8 +31,6 @@ namespace tloc { namespace graphics { namespace gl {
   using namespace core::smart_ptr;
   using namespace core::data_structs;
 
-  typedef core::Pair<ShaderOperator::error_type, GLint> ErrorShaderVarIndexPair;
-
   namespace
   {
     typedef core::containers::
@@ -47,10 +46,10 @@ namespace tloc { namespace graphics { namespace gl {
     {
       typedef tl_int    data_type;
 
-      GLint   m_location;
-      GLint   m_arraySize;
-      bool    m_isArray;
-      void*   m_data;
+      gfx_t::gl_int     m_location;
+      gfx_t::gl_int     m_arraySize;
+      bool              m_isArray;
+      void*             m_data;
     };
 
     struct GLSLUniformCacher : GLSLCacher_I
@@ -98,6 +97,10 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_PARAM_VAR(GLint, VertexAttribArrayIndex, m_vertexAttribArrayIndex);
       TLOC_DECL_PARAM_VAR(GLint, Location, m_location);
     };
+    typedef core_conts::Array<DoSetReturn>              do_set_return_cont;
+
+    typedef core::Pair<ShaderOperator::error_type, 
+                       do_set_return_cont >             ErrorShaderVarIndexPair;
 
     //------------------------------------------------------------------------
     // Functions
@@ -575,7 +578,7 @@ namespace tloc { namespace graphics { namespace gl {
         }
       default:
         {
-          TLOC_ASSERT_FALSE("Unsupported shader variable type!");
+          TLOC_ASSERT_FALSE("Unsupported Uniform type!");
         }
       }
 
@@ -1205,7 +1208,51 @@ namespace tloc { namespace graphics { namespace gl {
 #endif
       default:
         {
-          TLOC_ASSERT_FALSE("Unsupported shader variable type!");
+          TLOC_ASSERT_FALSE("Unsupported Attribute type!");
+        }
+      }
+
+      return toRet;
+    }
+
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    DoSetReturn
+      DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attribute)
+    {
+      using namespace core;
+
+      DoSetReturn toRet;
+
+      switch(a_info.m_type)
+      {
+      case GL_FLOAT:
+        {
+          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          gl::vertex_attrib_array::Enable(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
+        }
+      case GL_FLOAT_VEC2:
+        {
+          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          gl::vertex_attrib_array::Enable(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        }
+      case GL_FLOAT_VEC3:
+        {
+          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          gl::vertex_attrib_array::Enable(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        }
+      case GL_FLOAT_VEC4:
+        {
+          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          gl::vertex_attrib_array::Enable(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
+        }
+      default:
+        {
+          TLOC_ASSERT_FALSE("Unsupported AttributeVBO type!");
         }
       }
 
@@ -1228,7 +1275,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     ShaderOperator::error_type retError = ErrorSuccess;
 
-    DoSetReturn variableLocation;
+    core_conts::Array<DoSetReturn> variableLocations;
 
     svc_iterator itr, itrEnd;
     for (itr = a_shaderUserVars.begin(), itrEnd = a_shaderUserVars.end();
@@ -1241,7 +1288,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       if (shaderVarPtr->GetType() == GL_NONE)
       {
-        TLOC_LOG_GFX_WARN() << "glUniform*/glAttribute* ("
+        TLOC_LOG_GFX_WARN() << "Uniform*/Attribute*/AttributeVBO ("
           << shaderVarPtr->GetName()
           << ") Does not have a type. Did you forget to populate it with data?";
         shaderVarPtr->SetEnabled(false);
@@ -1263,8 +1310,8 @@ namespace tloc { namespace graphics { namespace gl {
               itrInfo->m_location != g_unableToFindIndex)
           {
             itr->second = index;
-            variableLocation =
-              DoSet(a_shaderVarsInfo[itr->second], *shaderVarPtr);
+            variableLocations.push_back
+              (DoSet(a_shaderVarsInfo[itr->second], *shaderVarPtr));
 
             TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
               << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
@@ -1290,7 +1337,7 @@ namespace tloc { namespace graphics { namespace gl {
       }
     }
 
-    return core::MakePair(retError, variableLocation.m_location);
+    return core::MakePair(retError, variableLocations);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1355,7 +1402,7 @@ namespace tloc { namespace graphics { namespace gl {
     m_VBOs.push_back(vbo_vso(MakeArgs(a_vbo)) );
     m_flags.Unmark(k_VBOsCached);
 
-    return m_VBOs.back().get();
+    return m_VBOs.back().first.get();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1469,7 +1516,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
   void ShaderOperator::
     EnableAllAttributes(const ShaderProgram& a_shaderProgram) const
   {
@@ -1504,6 +1550,20 @@ namespace tloc { namespace graphics { namespace gl {
           << ") cannot be set. Did you forget to call PrepareAllAttributes?";
       }
     }
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ShaderOperator::vao_bind_ptr
+    ShaderOperator::
+    EnableAllVBOs(const ShaderProgram& a_shaderProgram) const
+  {
+    TLOC_ASSERT(a_shaderProgram.IsLinked(),
+                "Shader not linked - did you forget to call Link()?");
+    TLOC_ASSERT(m_flags.IsMarked(k_attributesCached),
+      "Attributes not loaded - did you forget to call PrepareAllAttributes()?");
+
+    return core_sptr::MakeShared<vao_bind_type>(*m_vao);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1558,8 +1618,20 @@ namespace tloc { namespace graphics { namespace gl {
       ErrorShaderVarIndexPair errAndIndex = DoPrepareVariables(m_attributes, attrCont);
       retError = errAndIndex.first;
 
-      if (errAndIndex.second >= 0)
-      { m_enabledVertexAttrib.push_back(errAndIndex.second); }
+      for (do_set_return_cont::iterator itr = errAndIndex.second.begin(),
+           itrEnd = errAndIndex.second.end(); itr != itrEnd; ++itr)
+      {
+        index_type index = itr->m_vertexAttribArrayIndex;
+
+        TLOC_LOG_GFX_WARN_IF
+          (core::find_all(m_enabledVertexAttrib, index) 
+          != m_enabledVertexAttrib.end()) << "Vertex attribute at index " 
+          << index << " over-ridden by gl::Attribute";
+
+
+        if (index >= 0)
+        { m_enabledVertexAttrib.push_back(index); }
+      }
     }
 
     return retError;
@@ -1584,7 +1656,30 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (m_flags.ReturnAndMark(k_VBOsCached) == false)
     {
+      VertexArrayObject::Bind vaoBind(*m_vao);
+
+      const glsl_var_info_cont_type& 
+        attrCont = a_shaderProgram.GetAttributeInfoRef();
+
+      ErrorShaderVarIndexPair errAndIndex = DoPrepareVariables(m_VBOs, attrCont);
+      retError = errAndIndex.first;
+
+      for (do_set_return_cont::iterator itr = errAndIndex.second.begin(),
+           itrEnd = errAndIndex.second.end(); itr != itrEnd; ++itr)
+      {
+        index_type index = itr->m_vertexAttribArrayIndex;
+
+        TLOC_LOG_GFX_WARN_IF
+          (core::find_all(m_enabledVertexAttrib, index) 
+          != m_enabledVertexAttrib.end()) << "Vertex attribute at index " 
+          << index << " over-ridden by gl::AttributeVBO";
+
+        if (index >= 0)
+        { m_enabledVertexAttrib.push_back(index); }
+      }
     }
+
+    return retError;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

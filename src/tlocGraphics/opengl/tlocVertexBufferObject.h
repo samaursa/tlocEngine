@@ -4,6 +4,10 @@
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/containers/tlocArray.h>
 
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocVector4.h>
+
 #include <tlocGraphics/opengl/tlocObject.h>
 
 namespace tloc { namespace graphics { namespace gl {
@@ -129,7 +133,7 @@ namespace tloc { namespace graphics { namespace gl {
       p_vbo::usage::DynamicCopy>();
 
     type_traits::AssertTypeIsSupported<T_Type, f32, 
-       Vec2f32, Vec3f32, Vec4f32>();
+       math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32>();
 
     DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
   }

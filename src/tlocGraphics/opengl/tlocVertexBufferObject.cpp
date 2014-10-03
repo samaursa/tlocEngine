@@ -19,6 +19,20 @@ namespace tloc { namespace graphics { namespace gl {
       const value_type TransformFeedbackBuffer::s_glParamName = GL_TRANSFORM_FEEDBACK_BUFFER;
 
     };
+
+    namespace usage {
+
+      const value_type StreamDraw::s_glParamName = GL_STREAM_DRAW;
+      const value_type StreamRead::s_glParamName = GL_STREAM_READ;
+      const value_type StreamCopy::s_glParamName = GL_STREAM_COPY;
+      const value_type StaticDraw::s_glParamName = GL_STATIC_DRAW;
+      const value_type StaticRead::s_glParamName = GL_STATIC_READ;
+      const value_type StaticCopy::s_glParamName = GL_STATIC_COPY;
+      const value_type DynamicDraw::s_glParamName = GL_DYNAMIC_DRAW;
+      const value_type DynamicRead::s_glParamName = GL_DYNAMIC_READ;
+      const value_type DynamicCopy::s_glParamName = GL_DYNAMIC_COPY;
+
+    };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -62,10 +76,15 @@ namespace tloc { namespace graphics { namespace gl {
 
   VertexBufferObject::
     VertexBufferObject()
-    : m_type(GL_NONE)
+    : base_type()
+    , m_type(GL_NONE)
     , m_usage(GL_NONE)
+    , m_target(GL_NONE)
     , m_dataSize(0)
-  { }
+  { 
+    object_handle handle = gfx_gl::vertex_buffer_object::Generate();
+    SetHandle(handle);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -82,7 +101,7 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_Target, typename T_Type>
-  void
+  VertexBufferObject::this_type&
     VertexBufferObject::
     DoData(gfx_t::gl_int a_usage, 
            const core_conts::Array<T_Type>& a_array)
@@ -115,8 +134,18 @@ namespace tloc { namespace graphics { namespace gl {
       gl::Error err; TLOC_UNUSED(err);
       TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
     }
+
+    return *this;
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // AttributeVBO
+
+  AttributeVBO::
+    AttributeVBO()
+    : base_type()
+    , m_enabled(true)
+  { }
 
 };};};
 
@@ -124,21 +153,21 @@ using namespace tloc;
 using namespace tloc::gfx_gl;
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(_type_)\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::ArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::CopyReadBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::CopyWriteBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::ElementArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::PixelPackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::PixelUnpackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::TextureBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template void VertexBufferObject::\
+  template VertexBufferObject::this_type& VertexBufferObject::\
   DoData<p_vbo::target::TransformFeedbackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&)
 
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);

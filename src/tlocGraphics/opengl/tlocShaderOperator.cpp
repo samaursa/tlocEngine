@@ -1231,24 +1231,28 @@ namespace tloc { namespace graphics { namespace gl {
           AttributeVBO::bind_array_buffer vboBind(a_attribute);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
+          break;
         }
       case GL_FLOAT_VEC2:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attribute);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
+          break;
         }
       case GL_FLOAT_VEC3:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attribute);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
+          break;
         }
       case GL_FLOAT_VEC4:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attribute);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
+          break;
         }
       default:
         {
@@ -1654,10 +1658,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (m_flags.ReturnAndMark(k_VBOsCached) == false)
     {
+      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
+
       // bail early
       if (GetNumberOfVBOs() == 0) { return retError; }
-
-      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
 
       VertexArrayObject::Bind vaoBind(*m_vao);
 
@@ -1776,6 +1780,12 @@ namespace tloc { namespace graphics { namespace gl {
   bool ShaderOperator::
     IsUniformsCached()
   { return m_flags[k_uniformsCached]; }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool ShaderOperator::
+    IsVBOsCached()
+  { return m_flags[k_VBOsCached]; }
 
 };};};
 

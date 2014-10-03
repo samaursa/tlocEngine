@@ -24,6 +24,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math_t::Rectangle_T
       <real_type, 
        math_t::p_rectangle::position::Center>         rect_type;
+    typedef gfx_gl::ShaderOperator                    so_type;
 
   public:
     Quad();
@@ -32,8 +33,11 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(rect_type, GetRectangleRef, m_rect);
     TLOC_DECL_AND_DEF_COMPONENT_SETTER(rect_type, SetRectangle, m_rect);
 
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(so_type, GetShaderOperator, m_shaderOp);
+
   private:
-    rect_type m_rect;
+    rect_type       m_rect;
+    so_type         m_shaderOp;
   };
 
   //------------------------------------------------------------------------

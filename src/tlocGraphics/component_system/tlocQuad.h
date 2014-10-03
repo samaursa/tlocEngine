@@ -9,6 +9,7 @@
 #include <tlocCore/component_system/tlocComponent.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 

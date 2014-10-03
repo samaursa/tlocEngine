@@ -123,6 +123,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
         TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
           << "Unable to prepare all attributes";
+
+        err = so->PrepareAllVBOs(*sp);
+
+        TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
+          << "Unable to prepare all AttributeVBOs";
       }
       sp->Disable();
     }

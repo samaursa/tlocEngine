@@ -36,6 +36,7 @@ namespace tloc { namespace graphics { namespace component_system {
   error_type QuadRenderSystem::InitializeEntity(entity_ptr a_ent)
   { 
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
+    gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
 
     //------------------------------------------------------------------------
     // Prepare the Quad
@@ -58,10 +59,13 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_gl::ShaderOperator& so =  quadPtr->GetShaderOperator();
 
     gfx_gl::AttributeVBO vbo;
-    vbo.Data<gfx_gl::p_vbo::target::ArrayBuffer, 
-             gfx_gl::p_vbo::usage::StreamDraw>(*m_quadList);
+    vbo.SetName("a_vPos")
+       .Data<gfx_gl::p_vbo::target::ArrayBuffer, 
+             gfx_gl::p_vbo::usage::StaticDraw>(*m_quadList);
 
     so.AddVBO(vbo);
+
+    matPtr->GetShaderOperators().push_back(gfx_gl::shader_operator_vso(MakeArgs(so)));
 
     base_type::InitializeEntity(a_ent);
     return ErrorSuccess;
@@ -75,32 +79,32 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_ent->HasComponent<gfx_cs::Material>() == false)
     { return; }
 
-    gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
+    //gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
-    //------------------------------------------------------------------------
-    // Prepare the Quad
+    ////------------------------------------------------------------------------
+    //// Prepare the Quad
 
-    typedef math::types::Rectf32_c    rect_type;
-    using math::types::Mat4f32;
-    using math::types::Vec4f32;
+    //typedef math::types::Rectf32_c    rect_type;
+    //using math::types::Mat4f32;
+    //using math::types::Vec4f32;
 
-    const rect_type& rect = quadPtr->GetRectangleRef();
+    //const rect_type& rect = quadPtr->GetRectangleRef();
 
-    m_quadList->at(0) = vec3_type(rect.GetValue<rect_type::right>(),
-                                  rect.GetValue<rect_type::top>(), 0);
-    m_quadList->at(1) = vec3_type(rect.GetValue<rect_type::left>(),
-                                  rect.GetValue<rect_type::top>(), 0);
-    m_quadList->at(2) = vec3_type(rect.GetValue<rect_type::right>(),
-                                  rect.GetValue<rect_type::bottom>(), 0);
-    m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
-                                  rect.GetValue<rect_type::bottom>(), 0);
+    //m_quadList->at(0) = vec3_type(rect.GetValue<rect_type::right>(),
+    //                              rect.GetValue<rect_type::top>(), 0);
+    //m_quadList->at(1) = vec3_type(rect.GetValue<rect_type::left>(),
+    //                              rect.GetValue<rect_type::top>(), 0);
+    //m_quadList->at(2) = vec3_type(rect.GetValue<rect_type::right>(),
+    //                              rect.GetValue<rect_type::bottom>(), 0);
+    //m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
+    //                              rect.GetValue<rect_type::bottom>(), 0);
 
-    const tl_size numVertices = m_quadList->size();
+    //const tl_size numVertices = m_quadList->size();
 
-    DoGetVertexDataAttribute()->
-      SetVertexArray(m_quadList.get(), gl::p_shader_variable_ti::Pointer());
+    //DoGetVertexDataAttribute()->
+    //  SetVertexArray(m_quadList.get(), gl::p_shader_variable_ti::Pointer());
 
-    base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, numVertices);
+    base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
     base_type::DoDrawEntity(di);
   }
 

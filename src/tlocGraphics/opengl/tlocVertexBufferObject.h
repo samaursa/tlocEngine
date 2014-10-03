@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     namespace target {
 
-      typedef gfx_t::gl_int             value_type;
+      typedef gfx_t::gl_enum             value_type;
 
       struct ArrayBuffer              { static const value_type s_glParamName; };
       struct CopyReadBuffer           { static const value_type s_glParamName; };
@@ -33,7 +33,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace usage {
 
-      typedef gfx_t::gl_int             value_type;
+      typedef gfx_t::gl_enum             value_type;
 
       struct StreamDraw             { static const value_type s_glParamName; };
       struct StreamRead             { static const value_type s_glParamName; };
@@ -93,22 +93,23 @@ namespace tloc { namespace graphics { namespace gl {
     ~VertexBufferObject();
 
     template <typename T_Target, typename T_Usage, typename T_Type>
-    void Data(const core_conts::Array<T_Type>& a_array);
+    this_type& Data(const core_conts::Array<T_Type>& a_array);
 
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetUsage, m_usage);
-    TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetTarget, m_usage);
+    TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetTarget, m_target);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
 
   private:
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetType, m_type);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetUsage, m_usage);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetTarget, m_usage);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetTarget, m_target);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetDataSize, m_dataSize);
 
   private:
     template <typename T_Target, typename T_Type>
-    void DoData(gfx_t::gl_int a_usage, const core_conts::Array<T_Type>& a_array);
+    this_type& DoData(gfx_t::gl_int a_usage, 
+                      const core_conts::Array<T_Type>& a_array);
 
   private:
     gfx_t::gl_enum  m_type;
@@ -121,7 +122,7 @@ namespace tloc { namespace graphics { namespace gl {
   // template definitions
 
   template <typename T_Target, typename T_Usage, typename T_Type>
-  void
+  VertexBufferObject::this_type&
     VertexBufferObject::
     Data(const core_conts::Array<T_Type>& a_array)
   {
@@ -135,7 +136,7 @@ namespace tloc { namespace graphics { namespace gl {
     type_traits::AssertTypeIsSupported<T_Type, f32, 
        math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32>();
 
-    DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
+    return DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
   }
 
   // -----------------------------------------------------------------------
@@ -150,6 +151,13 @@ namespace tloc { namespace graphics { namespace gl {
   class AttributeVBO
     : public VertexBufferObject
   {
+  public:
+    typedef VertexBufferObject                      base_type;
+    typedef AttributeVBO                            this_type;
+
+  public:
+    AttributeVBO();
+
   public:
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);

@@ -173,8 +173,8 @@ namespace tloc { namespace graphics { namespace component_system {
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_vpMat.second));
     m_modelMat.first    = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_modelMat.second));
-    m_vertexData.first  = 
-      m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
+    //m_vertexData.first  = 
+    //  m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
 
     return ErrorSuccess;
   }
@@ -278,7 +278,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { m_mvpMat.first->SetEnabled(false); }
 
     // position data
-    m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
+    //m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
 
     // model matrix uniform
     if (other_base_type::IsUniformModelMatrixEnabled()) 
@@ -334,6 +334,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     error_type uniformErr = ErrorSuccess;
     error_type attribErr = ErrorSuccess;
+    error_type vboErr = ErrorSuccess;
 
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
@@ -351,23 +352,34 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_shaderPtr = sp;
 
-      typedef mat_type::shader_op_cont::const_iterator  shader_op_itr;
+      typedef mat_type::shader_op_cont::iterator  shader_op_itr;
 
-      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
+      mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
-        gl::const_shader_operator_vptr so = itr->get();
+        gl::shader_operator_vptr so = itr->get();
+
+        if (so->IsAttributesCached() == false)
+        { so->PrepareAllAttributes(*m_shaderPtr); }
+
+        if (so->IsUniformsCached() == false)
+        { so->PrepareAllUniforms(*m_shaderPtr); }
+
+        if (so->IsVBOsCached() == false)
+        { so->PrepareAllVBOs(*m_shaderPtr); }
 
         so->EnableAllUniforms(*m_shaderPtr);
         so->EnableAllAttributes(*m_shaderPtr);
+        so->EnableAllVBOs(*m_shaderPtr);
       }
 
       // shader switch requires us to re-prepare the attributes/uniforms
       m_shaderOp->ClearCache();
       uniformErr = m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       attribErr = m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
+      vboErr = m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
     }
 
     // Add the mvp
@@ -377,23 +389,32 @@ namespace tloc { namespace graphics { namespace component_system {
     if (attribErr.Succeeded())
     { m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
 
+    if (vboErr.Succeeded())
+    { m_shaderOp->EnableAllVBOs(*m_shaderPtr); }
+
     // prepare/enable user's shader operator
     if (a_di.m_shaderOp)
     {
       // prepare and enable user uniforms/attributes
       uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       attribErr = a_di.m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
+      vboErr = a_di.m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
 
       if (uniformErr.Succeeded())
       { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
       if (attribErr.Succeeded())
       { a_di.m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
+
+      if (vboErr.Succeeded())
+      { a_di.m_shaderOp->EnableAllVBOs(*m_shaderPtr); }
     }
 
     // -----------------------------------------------------------------------
     // Render
 
+    gl::vertex_array_object::Bind(1);
+    gl::vertex_array_object::Bind(2);
     glDrawArrays(a_di.m_drawCommand, 0,
                  core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
   }

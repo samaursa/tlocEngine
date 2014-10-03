@@ -7,6 +7,7 @@
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
+#include <tlocGraphics/opengl/tlocVertexArrayObject.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
@@ -23,6 +24,8 @@ namespace tloc { namespace graphics { namespace component_system {
       k_enableUniMVP,
       k_enableUniModelMat,
       k_enableCameraVP,
+      k_enableScaleMat,
+      k_useVBOs,
 
       k_count
     };
@@ -38,6 +41,7 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     SetEnabledUniformMVPMatrix(true);
     SetEnabledAttributePosData(true);
+    SetEnabledUseVBOs(true);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -96,6 +100,34 @@ namespace tloc { namespace graphics { namespace component_system {
     SetEnabledUniformVPMatrix(bool a_value)
   { m_flags[k_enableCameraVP] = a_value; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystemBase::
+    IsUniformScaleMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableScaleMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystemBase::
+    SetEnabledUniformScaleMatrix(bool a_value)
+  { m_flags[k_enableScaleMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystemBase::
+    IsUseVBOsEnabled() const
+  { return m_flags.IsMarked(k_useVBOs); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystemBase::
+    SetEnabledUseVBOs(bool a_value)
+  { m_flags[k_useVBOs] = a_value; }
+
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_I
 
@@ -146,13 +178,16 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_modelMat.second.empty())
     { m_modelMat.second = "u_modelMat"; }
 
+    if (m_scaleMat.second.empty())
+    { m_scaleMat.second = "u_scaleMat"; }
+
     if (m_vertexData.second.empty())
     { m_vertexData.second = "a_vPos"; }
 
     // -----------------------------------------------------------------------
 
     m_shaderOp->reserve_attributes(9);
-    m_shaderOp->reserve_uniforms(3);
+    m_shaderOp->reserve_uniforms(4);
 
     m_tData.resize(m_tData.capacity());
     m_tData[0] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord"));
@@ -167,14 +202,17 @@ namespace tloc { namespace graphics { namespace component_system {
     for (tl_size i = 0; i < m_tData.size(); ++i)
     { m_tData[i]->SetEnabled(false); }
 
+    m_vertexData.first  = 
+      m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
+
     m_mvpMat.first      = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpMat.second));
     m_vpMat.first       = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_vpMat.second));
     m_modelMat.first    = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_modelMat.second));
-    //m_vertexData.first  = 
-    //  m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
+    m_scaleMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_scaleMat.second));
 
     return ErrorSuccess;
   }
@@ -245,15 +283,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_cs::material_sptr matPtr = ent->GetComponent<gfx_cs::Material>();
 
-    using math_t::Mat4f32; using math_t::Vec4f32;
+    using math_t::Mat4f32; using math_t::Mat3f32; using math_t::Vec4f32;
 
-    Mat4f32 tMatrix;
+    Mat4f32 tMatrix; Mat3f32 scaleMat;
     if (ent->HasComponent(components::scene_node))
     { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
     else if (ent->HasComponent(math_cs::components::transform))
     { 
       math_cs::transform_f32_sptr t = ent->GetComponent<math_cs::Transformf32>();
       tMatrix = t->GetTransformation().Cast<Mat4f32>();
+      scaleMat.MakeIdentity();
+      scaleMat[0] = t->GetScale()[0];
+      scaleMat[4] = t->GetScale()[1];
+      scaleMat[8] = t->GetScale()[2];
     }
 
     // -----------------------------------------------------------------------
@@ -278,7 +320,13 @@ namespace tloc { namespace graphics { namespace component_system {
     { m_mvpMat.first->SetEnabled(false); }
 
     // position data
-    //m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
+    if (other_base_type::IsUseVBOsEnabled() == false)
+    {
+      m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
+      m_vertexData.first->SetEnabled(true);
+    }
+    else
+    { m_vertexData.first->SetEnabled(false); }
 
     // model matrix uniform
     if (other_base_type::IsUniformModelMatrixEnabled()) 
@@ -288,6 +336,15 @@ namespace tloc { namespace graphics { namespace component_system {
     }
     else 
     { m_modelMat.first->SetEnabled(false); }
+
+    // scale matrix uniform
+    if (other_base_type::IsUniformScaleMatrixEnabled()) 
+    { 
+      m_scaleMat.first->SetValueAs(scaleMat);
+      m_scaleMat.first->SetEnabled(true);
+    }
+    else 
+    { m_scaleMat.first->SetEnabled(false); }
 
     // -----------------------------------------------------------------------
     // texture coordinates
@@ -336,6 +393,11 @@ namespace tloc { namespace graphics { namespace component_system {
     error_type attribErr = ErrorSuccess;
     error_type vboErr = ErrorSuccess;
 
+    // we just need to store the Binds, when they are destroyed, they will 
+    // unbind the VAOs
+    typedef core_conts::Array<gl::VertexArrayObject::bind_sptr>   vao_bind_cont;
+    vao_bind_cont vaoBinds;
+
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
     if (m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
@@ -367,19 +429,25 @@ namespace tloc { namespace graphics { namespace component_system {
         if (so->IsUniformsCached() == false)
         { so->PrepareAllUniforms(*m_shaderPtr); }
 
-        if (so->IsVBOsCached() == false)
-        { so->PrepareAllVBOs(*m_shaderPtr); }
-
         so->EnableAllUniforms(*m_shaderPtr);
         so->EnableAllAttributes(*m_shaderPtr);
-        so->EnableAllVBOs(*m_shaderPtr);
+
+        if (IsUseVBOsEnabled())
+        { 
+          if (so->IsVBOsCached() == false)
+          { so->PrepareAllVBOs(*m_shaderPtr); }
+
+          vaoBinds.push_back(so->EnableAllVBOs(*m_shaderPtr));
+        }
       }
 
       // shader switch requires us to re-prepare the attributes/uniforms
       m_shaderOp->ClearCache();
       uniformErr = m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       attribErr = m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
-      vboErr = m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
+
+      if (IsUseVBOsEnabled())
+      { vboErr = m_shaderOp->PrepareAllVBOs(*m_shaderPtr); }
     }
 
     // Add the mvp
@@ -389,8 +457,8 @@ namespace tloc { namespace graphics { namespace component_system {
     if (attribErr.Succeeded())
     { m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
 
-    if (vboErr.Succeeded())
-    { m_shaderOp->EnableAllVBOs(*m_shaderPtr); }
+    if (IsUseVBOsEnabled() && vboErr.Succeeded())
+    { vaoBinds.push_back(m_shaderOp->EnableAllVBOs(*m_shaderPtr)); }
 
     // prepare/enable user's shader operator
     if (a_di.m_shaderOp)
@@ -398,7 +466,6 @@ namespace tloc { namespace graphics { namespace component_system {
       // prepare and enable user uniforms/attributes
       uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       attribErr = a_di.m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
-      vboErr = a_di.m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
 
       if (uniformErr.Succeeded())
       { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
@@ -406,15 +473,18 @@ namespace tloc { namespace graphics { namespace component_system {
       if (attribErr.Succeeded())
       { a_di.m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
 
-      if (vboErr.Succeeded())
-      { a_di.m_shaderOp->EnableAllVBOs(*m_shaderPtr); }
+      if (IsUseVBOsEnabled())
+      { 
+        vboErr = a_di.m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
+
+        if (vboErr.Succeeded())
+        { vaoBinds.push_back(a_di.m_shaderOp->EnableAllVBOs(*m_shaderPtr)); }
+      }
     }
 
     // -----------------------------------------------------------------------
     // Render
 
-    gl::vertex_array_object::Bind(1);
-    gl::vertex_array_object::Bind(2);
     glDrawArrays(a_di.m_drawCommand, 0,
                  core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
   }

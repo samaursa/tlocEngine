@@ -1567,7 +1567,9 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_flags.IsMarked(k_attributesCached),
       "Attributes not loaded - did you forget to call PrepareAllAttributes()?");
 
-    return core_sptr::MakeShared<vao_bind_type>(*m_vao);
+    if (m_vao) { return core_sptr::MakeShared<vao_bind_type>(*m_vao); }
+    
+    return nullptr;
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1658,10 +1660,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (m_flags.ReturnAndMark(k_VBOsCached) == false)
     {
-      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
-
       // bail early
       if (GetNumberOfVBOs() == 0) { return retError; }
+
+      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
 
       VertexArrayObject::Bind vaoBind(*m_vao);
 

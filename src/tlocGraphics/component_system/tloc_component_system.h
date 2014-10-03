@@ -12,6 +12,7 @@
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/component_system/tlocPrimitive.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocRenderable_TI.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocStaticText.h>
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>

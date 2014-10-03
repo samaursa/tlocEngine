@@ -77,6 +77,8 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocPrimitive.h 
   component_system/tlocRenderSystem.h
   component_system/tlocRenderSystem.cpp
+  component_system/tlocRenderable_TI.h
+  component_system/tlocRenderable_TI.cpp
   component_system/tlocSceneGraphSystem.h
   component_system/tlocSceneGraphSystem.cpp
   component_system/tlocStaticText.h

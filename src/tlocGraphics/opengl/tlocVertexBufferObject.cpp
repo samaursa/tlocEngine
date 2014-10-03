@@ -67,9 +67,13 @@ namespace tloc { namespace graphics { namespace gl {
   // explicit instantiations
 
   template struct VertexBufferObject::Bind_T<p_vbo::target::ArrayBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::CopyReadBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::CopyWriteBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::ElementArrayBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::PixelPackBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::PixelUnpackBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::TextureBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::TransformFeedbackBuffer>;
 
   // ///////////////////////////////////////////////////////////////////////
   // VertexBufferObject

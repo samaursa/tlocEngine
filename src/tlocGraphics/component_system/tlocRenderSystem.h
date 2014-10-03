@@ -31,6 +31,12 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_GETTER(bool, IsUniformVPEnabled);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformVPMatrix);
 
+    TLOC_DECL_GETTER(bool, IsUniformScaleMatrixEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformScaleMatrix);
+
+    TLOC_DECL_GETTER(bool, IsUseVBOsEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUseVBOs);
+
   protected:
     RenderSystemBase();
 
@@ -88,6 +94,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetModelMatrixUniformName, m_modelMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetScaleMatrixUniformName, m_modelMat.second);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetVertexDataAttributeName, m_vertexData.second);
 
     TLOC_DECL_AND_DEF_SETTER
@@ -96,6 +104,8 @@ namespace tloc { namespace graphics { namespace component_system {
       (core_str::String, SetVPMatrixUniformName, m_mvpMat.second);
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetModelMatrixUniformName, m_modelMat.second);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetScaleMatrixUniformName, m_modelMat.second);
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetVertexDataAttributeName, m_vertexData.second);
 
@@ -154,6 +164,7 @@ namespace tloc { namespace graphics { namespace component_system {
     uniform_string_pair       m_mvpMat;
     uniform_string_pair       m_vpMat;
     uniform_string_pair       m_modelMat;
+    uniform_string_pair       m_scaleMat;
     attribute_string_pair     m_vertexData;
   };
 

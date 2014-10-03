@@ -503,8 +503,8 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_texture_object::alignment;
 
     // defaults
-    Wrap_S<ClampToEdge>().Wrap_T<ClampToEdge>();
-    MinFilter<Linear>().MagFilter<Linear>();
+    Wrap_S<ClampToEdge>().template Wrap_T<ClampToEdge>();
+    MinFilter<Linear>().template MagFilter<Linear>();
     InternalFormat<internal_format::Auto>();
     Format<format::Auto>();
     Type<type::Auto>();

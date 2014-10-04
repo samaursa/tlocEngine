@@ -1,13 +1,15 @@
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_RENDER_SYSTEM_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_RENDER_SYSTEM_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_RENDER_SYSTEM_TI_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_RENDER_SYSTEM_TI_H_
 
+#include <tlocCore/data_structures/tlocVariadic.h>
+#include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
-#include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/types/tlocMatrix4.h>
 
+#include <tlocGraphics/component_system/tlocRenderSystem_I.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/tlocGraphicsBase.h>
 #include <tlocGraphics/renderer/tlocRenderer.h>
@@ -15,39 +17,10 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class RenderSystemBase
-  {
-  public:
-
-    TLOC_DECL_GETTER(bool, IsUniformModelMatrixEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformModelMatrix);
-
-    TLOC_DECL_GETTER(bool, IsAttributePosDataEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledAttributePosData);
-
-    TLOC_DECL_GETTER(bool, IsUniformMVPMatrixEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformMVPMatrix);
-
-    TLOC_DECL_GETTER(bool, IsUniformVPEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformVPMatrix);
-
-    TLOC_DECL_GETTER(bool, IsUniformScaleMatrixEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformScaleMatrix);
-
-    TLOC_DECL_GETTER(bool, IsUseVBOsEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUseVBOs);
-
-  protected:
-    RenderSystemBase();
-
-  private:
-    core_utils::Checkpoints   m_flags;
-  };
-
   template <typename T_RendererSptr>
   class RenderSystem_TI
     : public core_cs::EntityProcessingSystem
-    , public RenderSystemBase
+    , public RenderSystem_I
   {
   public:
     TLOC_STATIC_ASSERT(
@@ -58,7 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     typedef core_cs::EntityProcessingSystem               base_type;
-    typedef RenderSystemBase                              other_base_type;
+    typedef RenderSystem_I                                other_base_type;
 
     typedef T_RendererSptr                                renderer_type;
     typedef typename

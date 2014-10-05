@@ -120,7 +120,7 @@ namespace tloc { namespace core { namespace types {
       void ComplexType_T<COMPLEX_TYPE_PARAMS>
         ::Move(void* const* a_source, void** a_dest)
       {
-        (*(reinterpret_cast<value_type**>(a_dest)) )->~value_type();
+        (*(reinterpret_cast<value_type**>(a_dest)) )->~T();
         **(reinterpret_cast<value_type**>(a_dest)) = *CastSource(a_source);
       }
 

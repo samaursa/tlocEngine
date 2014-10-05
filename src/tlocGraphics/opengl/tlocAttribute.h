@@ -18,6 +18,7 @@
 #include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocMatrix4.h>
 
+#include <tlocGraphics/types/tlocVertex.h>
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
 
 namespace tloc { namespace graphics { namespace gl {
@@ -28,8 +29,8 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     template <typename T_Derived> friend class ShaderVariable_TI;
 
-    typedef Attribute                     this_type;
-    typedef ShaderVariable_TI<this_type>  base_type;
+    typedef Attribute                               this_type;
+    typedef ShaderVariable_TI<this_type>            base_type;
 
   public:
     Attribute();
@@ -57,6 +58,18 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsAttribArray, m_isAttribArray);
 
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetSecondName, m_name2);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetSecondName, m_name2);
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetThirdName, m_name3);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetThirdName, m_name3);
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetFourthName, m_name4);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetFourthName, m_name4);
+
+    using base_type::GetName;
+    const string_type& GetName(tl_int a_nameIndex) const;
+
   protected:
     template <typename T>
     void DoCheckTypeCompatibility() const;
@@ -71,7 +84,10 @@ namespace tloc { namespace graphics { namespace gl {
     void DoCheckArrayTypes() const;
 
   private:
-    bool    m_isAttribArray;
+    bool          m_isAttribArray;
+    string_type   m_name2;
+    string_type   m_name3;
+    string_type   m_name4;
 
   };
 
@@ -150,7 +166,21 @@ namespace tloc { namespace graphics { namespace gl {
        Array<u32>,
        Array<Tuple2u32>,
        Array<Tuple3u32>,
-       Array<Tuple4u32>
+       Array<Tuple4u32>,
+       Array<Vert2fp>,
+       Array<Vert2fpn>,
+       Array<Vert2fpc>,
+       Array<Vert2fpt>,
+       Array<Vert2fpnc>,
+       Array<Vert2fpnt>,
+       Array<Vert2fpnct>,
+       Array<Vert3fp>,
+       Array<Vert3fpn>,
+       Array<Vert3fpc>,
+       Array<Vert3fpt>,
+       Array<Vert3fpnc>,
+       Array<Vert3fpnt>,
+       Array<Vert3fpnct>
       >();
   }
 

@@ -38,6 +38,25 @@ namespace tloc { namespace graphics { namespace gl {
     base_type::Reset();
   }
 
+  const Attribute::string_type&
+    Attribute::
+    GetName(tl_int a_nameIndex) const
+  {
+    TLOC_ASSERT(a_nameIndex >= 0 && a_nameIndex <=3, 
+                "Attributes only have upto four possible names");
+    switch(a_nameIndex)
+    {
+    case 1:
+      return m_name2;
+    case 2:
+      return m_name3;
+    case 3:
+      return m_name4;
+    }
+
+    return base_type::GetName(a_nameIndex);
+  }
+
 };};};
 
 //------------------------------------------------------------------------

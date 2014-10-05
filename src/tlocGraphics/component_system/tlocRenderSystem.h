@@ -17,7 +17,15 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  template <typename T_RendererSptr>
+  namespace p_render_system {
+
+    struct Attribute    {};
+    struct AttributeVBO {};
+
+  };
+
+  template <typename T_RendererSptr, 
+            typename T_AttributeType = p_render_system::AttributeVBO>
   class RenderSystem_TI
     : public core_cs::EntityProcessingSystem
     , public RenderSystem_I
@@ -144,9 +152,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // template definitions
 
-  template <typename T_RendererSptr>
+  template <typename T_RendererSptr, typename T_AttributeType>
   template <tl_size T_VarSize>
-  RenderSystem_TI<T_RendererSptr>::
+  RenderSystem_TI<T_RendererSptr, T_AttributeType>::
     RenderSystem_TI(event_manager_ptr a_eventMgr,
                    entity_manager_ptr a_entityMgr,
                    const core_ds::Variadic

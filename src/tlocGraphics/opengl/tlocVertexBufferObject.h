@@ -9,6 +9,7 @@
 #include <tlocMath/types/tlocVector4.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -57,6 +58,26 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef VertexBufferObject                              this_type;
     typedef Object_T<this_type, p_object::OnlyID>           base_type;
+    typedef gfx_t::gl_enum                                  gl_enum_type;
+
+  public:
+    struct StrideInfo
+    {
+    public:
+      typedef StrideInfo                                    this_type;
+    typedef tl_size                                         size_type;
+      typedef gfx_t::gl_sizei                               gl_size_type;
+      typedef gfx_t::gl_int                                 gl_int_type;
+
+    public:
+      StrideInfo();
+
+      // size param in glVertexAttribPointer
+      TLOC_DECL_PARAM_VAR(gl_int_type, NumElements, m_numElements);
+      TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
+      TLOC_DECL_PARAM_VAR(size_type, DataStartIndex, m_dataStartIndex);
+    };
+    typedef core_conts::Array<StrideInfo>                   stride_info_cont;
 
   public:
 
@@ -95,16 +116,16 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_Target, typename T_Usage, typename T_Type>
     this_type& Data(const core_conts::Array<T_Type>& a_array);
 
-    TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetType, m_type);
-    TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetUsage, m_usage);
-    TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_enum, GetTarget, m_target);
+    TLOC_DECL_AND_DEF_GETTER(gl_enum_type, GetType, m_type);
+    TLOC_DECL_AND_DEF_GETTER(gl_enum_type, GetUsage, m_usage);
+    TLOC_DECL_AND_DEF_GETTER(gl_enum_type, GetTarget, m_target);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
 
   private:
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetType, m_type);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetUsage, m_usage);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetTarget, m_target);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gfx_t::gl_enum, DoSetDataSize, m_dataSize);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetType, m_type);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetUsage, m_usage);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetTarget, m_target);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetDataSize, m_dataSize);
 
   private:
     template <typename T_Target, typename T_Type>
@@ -112,10 +133,11 @@ namespace tloc { namespace graphics { namespace gl {
                       const core_conts::Array<T_Type>& a_array);
 
   private:
-    gfx_t::gl_enum  m_type;
-    gfx_t::gl_enum  m_usage;
-    gfx_t::gl_enum  m_target;
-    gfx_t::gl_sizei m_dataSize;
+    gl_enum_type      m_type;
+    gl_enum_type      m_usage;
+    gl_enum_type      m_target;
+    gfx_t::gl_sizei     m_dataSize;
+    stride_info_cont    m_strideInfo;
   };
 
   // -----------------------------------------------------------------------
@@ -133,8 +155,11 @@ namespace tloc { namespace graphics { namespace gl {
       p_vbo::usage::DynamicDraw, p_vbo::usage::DynamicRead,
       p_vbo::usage::DynamicCopy>();
 
-    type_traits::AssertTypeIsSupported<T_Type, f32, 
-       math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32>();
+    type_traits::AssertTypeIsSupported<T_Type, 
+        f32, math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+        gfx_t::Vert3fp, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+       >();
 
     return DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
   }
@@ -165,8 +190,13 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
     TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
 
+    const string_type& GetName(tl_int a_nameIndex) const;
+
   private:
     string_type     m_name;
+    string_type     m_name2;
+    string_type     m_name3;
+    string_type     m_name4;
     bool            m_enabled;
 
   };

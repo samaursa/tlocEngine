@@ -19,8 +19,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_TI
 
-#define RENDER_SYSTEM_TEMPS   typename T_RendererSptr
-#define RENDER_SYSTEM_PARAMS  T_RendererSptr
+#define RENDER_SYSTEM_TEMPS   typename T_RendererSptr, typename T_AttributeType
+#define RENDER_SYSTEM_PARAMS  T_RendererSptr, T_AttributeType
 #define RENDER_SYSTEM_TYPE    typename RenderSystem_TI<RENDER_SYSTEM_PARAMS>
 
   // ///////////////////////////////////////////////////////////////////////

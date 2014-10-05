@@ -100,13 +100,16 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core_conts::Array<DoSetReturn>              do_set_return_cont;
 
     typedef core::Pair<ShaderOperator::error_type, 
-                       do_set_return_cont >             ErrorShaderVarIndexPair;
+                       DoSetReturn >                    ErrorShaderVarIndexPair;
+
+    typedef core::Pair<ShaderOperator::error_type, 
+                       do_set_return_cont >             ErrorShaderVarIndexContPair;
 
     //------------------------------------------------------------------------
     // Functions
 
     DoSetReturn
-      DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform)
+      DoSet(const ShaderVariableInfo& a_info, const Uniform& a_uniform, tl_size)
     {
       using namespace core;
 
@@ -588,8 +591,11 @@ namespace tloc { namespace graphics { namespace gl {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     DoSetReturn
-      DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute)
+      DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute, 
+            tl_size a_interleaveIndex)
     {
+      TLOC_UNUSED(a_interleaveIndex);
+
       using namespace core;
 
       bool isArray = a_attribute.IsArray();
@@ -1218,7 +1224,8 @@ namespace tloc { namespace graphics { namespace gl {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     DoSetReturn
-      DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attribute)
+      DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attribute, 
+            tl_size)
     {
       using namespace core;
 
@@ -1266,7 +1273,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <typename T_ShaderVariableContainer,
   typename T_ShaderVariableInfoContainer>
-  ErrorShaderVarIndexPair
+  ErrorShaderVarIndexContPair
   DoPrepareVariables(T_ShaderVariableContainer& a_shaderUserVars,
                      const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
   {
@@ -1299,45 +1306,56 @@ namespace tloc { namespace graphics { namespace gl {
         continue;
       }
 
-      // this is over-ridden with the correct location if found
-      itr->second = g_unableToFindIndex;
-
-      ShaderOperator::index_type index = 0;
-      svcInfo_const_iterator itrInfo, itrInfoEnd;
-      for (itrInfo = a_shaderVarsInfo.begin(),
-           itrInfoEnd = a_shaderVarsInfo.end();
-           itrInfo != itrInfoEnd; ++itrInfo)
+      // attributes can have upto four names due to interleaving (see the
+      // Vertex_T<> class) - this includes VBOs
+      for (tl_size interleaveIndex = 0; 
+           interleaveIndex < itr->second.size(); 
+           ++interleaveIndex)
       {
-        if ( shaderVarPtr->GetName().compare(itrInfo->m_name.get()) == 0)
+        // this is over-ridden with the correct location if found
+        itr->second[interleaveIndex] = g_unableToFindIndex;
+
+        ShaderOperator::index_type index = 0;
+        svcInfo_const_iterator itrInfo, itrInfoEnd;
+        for (itrInfo = a_shaderVarsInfo.begin(),
+             itrInfoEnd = a_shaderVarsInfo.end();
+             itrInfo != itrInfoEnd; ++itrInfo)
         {
-          if ( shaderVarPtr->GetType() == itrInfo->m_type &&
-              itrInfo->m_location != g_unableToFindIndex)
+          if ( shaderVarPtr->GetName(interleaveIndex).compare(itrInfo->m_name.get()) == 0)
           {
-            itr->second = index;
-            variableLocations.push_back
-              (DoSet(a_shaderVarsInfo[itr->second], *shaderVarPtr));
+            if ( shaderVarPtr->GetType() == itrInfo->m_type &&
+                itrInfo->m_location != g_unableToFindIndex)
+            {
+              itr->second[interleaveIndex] = index;
 
-            TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
-              << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
-            break;
+              DoSetReturn doSetRet = 
+                DoSet(a_shaderVarsInfo[itr->second[interleaveIndex] ], 
+                      *shaderVarPtr, interleaveIndex);
+
+              variableLocations.push_back(doSetRet);
+
+              TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
+                << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
+              break;
+            }
+            else
+            {
+              TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
+                << shaderVarPtr->GetName();
+              retError = ErrorFailure;
+              break;
+            }
           }
-          else
-          {
-            TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
-              << shaderVarPtr->GetName();
-            retError = ErrorFailure;
-            break;
-          }
+          ++index;
         }
-        ++index;
-      }
 
-      // We could not find the user specified uniform in the shader
-      if (itrInfo == itrInfoEnd)
-      {
-        TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
-          << shaderVarPtr->GetName();
-        retError = ErrorFailure;
+        // We could not find the user specified uniform in the shader
+        if (itrInfo == itrInfoEnd)
+        {
+          TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
+            << shaderVarPtr->GetName();
+          retError = ErrorFailure;
+        }
       }
     }
 
@@ -1388,6 +1406,34 @@ namespace tloc { namespace graphics { namespace gl {
     AddAttribute(const attribute_type& a_attribute)
   {
     TLOC_ASSERT(a_attribute.GetName().size() > 0, "Attribute name is empty");
+
+    const gfx_t::gl_int type = a_attribute.GetType();
+
+    if (type == TLOC_GL_POSITION2F_NORMAL3F ||
+        type == TLOC_GL_POSITION3F_NORMAL3F ||
+        type == TLOC_GL_POSITION2F_TEXTURE2F ||
+        type == TLOC_GL_POSITION3F_TEXTURE2F ||
+        type == TLOC_GL_POSITION2F_COLOR4F ||
+        type == TLOC_GL_POSITION3F_COLOR4F)
+    {
+      TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
+    }
+    else if (type == TLOC_GL_POSITION2F_NORMAL3F_COLOR4F ||
+             type == TLOC_GL_POSITION3F_NORMAL3F_COLOR4F ||
+             type == TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F ||
+             type == TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F)
+    {
+      TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
+      TLOC_ASSERT(a_attribute.GetThirdName().size() > 0, "Third attribute name is empty");
+    }
+    else if (type == TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F ||
+             type == TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F )
+    {
+      TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
+      TLOC_ASSERT(a_attribute.GetThirdName().size() > 0, "Third attribute name is empty");
+      TLOC_ASSERT(a_attribute.GetFourthName().size() > 0, " attribute name is empty");
+    }
+
     m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)),
                                           index_type(-1)) );
     m_flags.Unmark(k_attributesCached);
@@ -1504,12 +1550,12 @@ namespace tloc { namespace graphics { namespace gl {
 
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
-      if (itr->second >= 0)
+      if (itr->second[0] >= 0)
       {
-        DoAssertVariablesMatch(uniCont[itr->second], uniformPtr);
-        DoSet(uniCont[itr->second], *uniformPtr);
+        DoAssertVariablesMatch(uniCont[itr->second[0] ], uniformPtr);
+        DoSet(uniCont[itr->second[0] ], *uniformPtr, 0);
       }
-      else if (itr->second == g_invalidIndex)
+      else if (itr->second[0] == g_invalidIndex)
       {
         TLOC_LOG_GFX_WARN()
           << "Uniform (" << itr->first->GetName()
@@ -1542,16 +1588,20 @@ namespace tloc { namespace graphics { namespace gl {
 
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
-      if (itr->second >= 0)
+      for (size_type interleavedIndex = 0; 
+           interleavedIndex < index_cont_4::k_capacity; ++interleavedIndex)
       {
-        DoAssertVariablesMatch(attrCont[itr->second], attribPtr);
-        DoSet(attrCont[itr->second], *attribPtr);
-      }
-      else if (itr->second == g_invalidIndex)
-      {
-        TLOC_LOG_GFX_WARN()
-          << "Attribute (" << itr->first->GetName()
-          << ") cannot be set. Did you forget to call PrepareAllAttributes?";
+        if (itr->second[interleavedIndex] >= 0)
+        {
+          DoAssertVariablesMatch(attrCont[itr->second[0] ], attribPtr);
+          DoSet(attrCont[itr->second[interleavedIndex] ], *attribPtr, interleavedIndex);
+        }
+        else if (itr->second[interleavedIndex] == g_invalidIndex)
+        {
+          TLOC_LOG_GFX_WARN()
+            << "Attribute (" << itr->first->GetName()
+            << ") cannot be set. Did you forget to call PrepareAllAttributes?";
+        }
       }
     }
   }
@@ -1622,7 +1672,7 @@ namespace tloc { namespace graphics { namespace gl {
       const glsl_var_info_cont_type&
         attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-      ErrorShaderVarIndexPair errAndIndex = DoPrepareVariables(m_attributes, attrCont);
+      ErrorShaderVarIndexContPair errAndIndex = DoPrepareVariables(m_attributes, attrCont);
       retError = errAndIndex.first;
 
       for (do_set_return_cont::iterator itr = errAndIndex.second.begin(),
@@ -1670,7 +1720,7 @@ namespace tloc { namespace graphics { namespace gl {
       const glsl_var_info_cont_type& 
         attrCont = a_shaderProgram.GetAttributeInfoRef();
 
-      ErrorShaderVarIndexPair errAndIndex = DoPrepareVariables(m_VBOs, attrCont);
+      ErrorShaderVarIndexContPair errAndIndex = DoPrepareVariables(m_VBOs, attrCont);
       retError = errAndIndex.first;
 
       for (do_set_return_cont::iterator itr = errAndIndex.second.begin(),

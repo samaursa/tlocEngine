@@ -6,6 +6,7 @@
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
 #include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -85,6 +86,41 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(TextureObject, GL_SAMPLER_2D);
   TLOC_DECL_TL_TO_GL(TextureObjectShadow, GL_SAMPLER_2D_SHADOW);
 
+  // -----------------------------------------------------------------------
+  // 2LoC types
+
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fp,       GL_FLOAT_VEC2);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fpn,      TLOC_GL_POSITION2F_NORMAL3F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fpc,      TLOC_GL_POSITION2F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fpt,      TLOC_GL_POSITION2F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fpnc,     TLOC_GL_POSITION2F_NORMAL3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fpnt,     TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert2fpnct,    TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F);
+
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fp,       GL_FLOAT_VEC3);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpn,      TLOC_GL_POSITION3F_NORMAL3F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpc,      TLOC_GL_POSITION3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpt,      TLOC_GL_POSITION3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnc,     TLOC_GL_POSITION3F_NORMAL3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnt,     TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnct,    TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F);
+
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fp>,       GL_FLOAT_VEC2);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpn>,      TLOC_GL_POSITION2F_NORMAL3F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpc>,      TLOC_GL_POSITION2F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpt>,      TLOC_GL_POSITION2F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpnc>,     TLOC_GL_POSITION2F_NORMAL3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpnt>,     TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpnct>,    TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F);
+
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fp>,       GL_FLOAT_VEC3);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpn>,      TLOC_GL_POSITION3F_NORMAL3F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpc>,      TLOC_GL_POSITION3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpt>,      TLOC_GL_POSITION3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnc>,     TLOC_GL_POSITION3F_NORMAL3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnt>,     TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnct>,    TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F);
+
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
   TLOC_DECL_TL_TO_GL(Tuple2u32, GL_UNSIGNED_INT_VEC2);
   TLOC_DECL_TL_TO_GL(Tuple3u32, GL_UNSIGNED_INT_VEC3);
@@ -118,6 +154,15 @@ namespace tloc { namespace graphics { namespace gl {
     swap(m_value, a_other.m_value);
     swap(m_name, a_other.m_name);
     swap(m_enabled, a_other.m_enabled);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const ShaderVariable_I::string_type&
+    ShaderVariable_I::GetName(tl_int a_nameIndex) const
+  {
+    TLOC_ASSERT(a_nameIndex == 0, "ShaderVariable only has one name");
+    return m_name;
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -329,6 +374,22 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,               Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,               Attribute);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,               Attribute);
+
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fp,        Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fpn,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fpc,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fpt,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fpnc,      Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fpnt,      Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert2fpnct,     Attribute);
+
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fp,        Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fpn,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fpc,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fpt,       Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fpnc,      Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fpnt,      Attribute);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(gfx_t::Vert3fpnct,     Attribute);
 
 
 #if defined (TLOC_OS_WIN)

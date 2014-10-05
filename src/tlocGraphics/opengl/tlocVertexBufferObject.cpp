@@ -6,6 +6,161 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  namespace {
+
+    typedef VertexBufferObject::StrideInfo                stride_info;
+    typedef VertexBufferObject::stride_info_cont          stride_info_cont;
+    typedef f32                                           real_type;
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<f32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(1).StrideInBytes(0)
+                   .DataStartIndex(0));
+
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<math_t::Vec2f32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(2).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<math_t::Vec3f32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<math_t::Vec4f32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(4).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fp>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpt>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*5)
+                   .DataStartIndex(0));
+
+      si.push_back(stride_info().NumElements(2).StrideInBytes(sizeof(real_type)*5)
+                   .DataStartIndex(3));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpn>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*6)
+                   .DataStartIndex(0));
+
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*6)
+                   .DataStartIndex(3));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpnc>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*10)
+                   .DataStartIndex(0));
+
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*10)
+                   .DataStartIndex(3));
+
+      si.push_back(stride_info().NumElements(4).StrideInBytes(sizeof(real_type)*10)
+                   .DataStartIndex(6));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpnt>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*8)
+                   .DataStartIndex(0));
+
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*8)
+                   .DataStartIndex(3));
+
+      si.push_back(stride_info().NumElements(2).StrideInBytes(sizeof(real_type)*8)
+                   .DataStartIndex(6));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpnct>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(0));
+
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(3));
+
+      si.push_back(stride_info().NumElements(4).StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(6));
+
+      si.push_back(stride_info().NumElements(2).StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(9));
+      
+      return si;
+    }
+
+  };
+
   namespace p_vbo {
     namespace target {
 
@@ -74,6 +229,16 @@ namespace tloc { namespace graphics { namespace gl {
   template struct VertexBufferObject::Bind_T<p_vbo::target::PixelUnpackBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::TextureBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::TransformFeedbackBuffer>;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexBufferObject::StrideInfo
+
+  VertexBufferObject::StrideInfo::
+    StrideInfo()
+    : m_numElements(0)
+    , m_strideInBytes(0)
+    , m_dataStartIndex(0)
+  { }
 
   // ///////////////////////////////////////////////////////////////////////
   // VertexBufferObject
@@ -151,6 +316,28 @@ namespace tloc { namespace graphics { namespace gl {
     , m_enabled(true)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const AttributeVBO::string_type&
+    AttributeVBO::
+    GetName(tl_int a_nameIndex) const
+  {
+    switch(a_nameIndex)
+    {
+    case 0:
+      return m_name;
+    case 1:
+      return m_name2;
+    case 2:
+      return m_name3;
+    case 3:
+      return m_name4;
+    default:
+      TLOC_ASSERT_FALSE("AttributeVBOs only have upto 4 possible names");
+      return m_name;
+    }
+  }
+
 };};};
 
 using namespace tloc;
@@ -178,6 +365,12 @@ TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec2f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec3f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec4f32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fp);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpt);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpn);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpnc);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpnt);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpnct);
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexBufferObject);
@@ -191,3 +384,6 @@ TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack_buf
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(AttributeVBO);
+
+#include <tlocCore/containers/tlocArray.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(VertexBufferObject::StrideInfo);

@@ -31,10 +31,10 @@ namespace tloc { namespace graphics { namespace gl {
   class ShaderVariable_I 
   { 
   public:
-    typedef ShaderVariable_I                 this_type;
-    typedef core_t::Any                      value_type;
-    typedef core_str::String                 string_type;
-    typedef u32                              gl_type;
+    typedef ShaderVariable_I                        this_type;
+    typedef core_t::Any                             value_type;
+    typedef core_str::String                        string_type;
+    typedef u32                                     gl_type;
 
   public:
     ShaderVariable_I();
@@ -47,6 +47,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
     TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
+
+    const string_type& GetName(tl_int a_nameIndex) const;
 
   protected:
     TLOC_DECL_AND_DEF_SETTER(gl_type, DoSetType, m_type);

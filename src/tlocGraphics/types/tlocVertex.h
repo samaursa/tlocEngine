@@ -87,6 +87,9 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T_Attrib1                           attrib_1_type;
+
+  public:
+    ~Vertex1_T() {}
   };
 
   template <class T_Attrib1, class T_Attrib2>
@@ -95,6 +98,9 @@ namespace tloc { namespace graphics { namespace types {
   public:
     typedef T_Attrib1                           attrib_1_type;
     typedef T_Attrib1                           attrib_2_type;
+
+  public:
+    ~Vertex2_T() {}
   };
 
   template <class T_Attrib1, class T_Attrib2, class T_Attrib3>
@@ -104,6 +110,9 @@ namespace tloc { namespace graphics { namespace types {
     typedef T_Attrib1                           attrib_1_type;
     typedef T_Attrib1                           attrib_2_type;
     typedef T_Attrib3                           attrib_3_type;
+
+  public:
+    ~Vertex3_T() {}
   };
 
   template <class T_Attrib1, class T_Attrib2, class T_Attrib3, class T_Attrib4>
@@ -115,6 +124,9 @@ namespace tloc { namespace graphics { namespace types {
     typedef T_Attrib1                           attrib_2_type;
     typedef T_Attrib3                           attrib_3_type;
     typedef T_Attrib4                           attrib_4_type;
+
+  public:
+    ~Vertex4_T() {}
   };
 
   //------------------------------------------------------------------------
@@ -125,6 +137,8 @@ namespace tloc { namespace graphics { namespace types {
   typedef Vertex1_T<p_vertex_t::VertexPos2f>                 Vert2fp;
   typedef Vertex2_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f>                Vert2fpn;
+  typedef Vertex2_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexCol>                   Vert2fpc;
   typedef Vertex2_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::TexCoord>                    Vert2fpt;
   typedef Vertex3_T<p_vertex_t::VertexPos2f,
@@ -145,6 +159,8 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::VertexNorm3f>                Vert3fpn;
   typedef Vertex2_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::TexCoord>                    Vert3fpt;
+  typedef Vertex2_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexCol>                   Vert3fpc;
   typedef Vertex3_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol>                   Vert3fpnc;
@@ -155,6 +171,26 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert3fpnct;
+
+  // -----------------------------------------------------------------------
+  // custom GL type enumerators
+
+#define TLOC_GL_POSITION2F                                0x1
+#define TLOC_GL_POSITION2F_NORMAL3F                       0x2
+#define TLOC_GL_POSITION2F_TEXTURE2F                      0x3
+#define TLOC_GL_POSITION2F_COLOR4F                        0x4
+#define TLOC_GL_POSITION2F_NORMAL3F_COLOR4F               0x5
+#define TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F             0x6
+#define TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F     0x7
+
+#define TLOC_GL_POSITION3F                                0x8
+#define TLOC_GL_POSITION3F_NORMAL3F                       0x9
+#define TLOC_GL_POSITION3F_TEXTURE2F                      0xA
+#define TLOC_GL_POSITION3F_COLOR4F                        0xB
+#define TLOC_GL_POSITION3F_NORMAL3F_COLOR4F               0xC
+#define TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F             0xD
+#define TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F     0xE
+
 
 };};};
 

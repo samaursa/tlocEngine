@@ -22,10 +22,12 @@ namespace tloc { namespace graphics { namespace gl {
   class ShaderOperator
   {
   public:
-    typedef ShaderOperator            this_type;
-    typedef core::error::Error        error_type;
-    typedef tl_size                   size_type;
-    typedef tl_int                    index_type;
+    typedef ShaderOperator                          this_type;
+    typedef core::error::Error                      error_type;
+    typedef tl_size                                 size_type;
+    typedef tl_int                                  index_type;
+    typedef core_conts::ArrayFixed<index_type, 1>   index_cont_1;
+    typedef core_conts::ArrayFixed<index_type, 4>   index_cont_4;
 
     typedef Attribute                 attribute_type;
     typedef attribute_vso             attribute_vso;
@@ -51,9 +53,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
-    typedef core::Pair<uniform_vso, index_type>           uniform_pair_type;
-    typedef core::Pair<attribute_vso, index_type>         attribute_pair_type;
-    typedef core::Pair<vbo_vso, index_type>               vbo_pair_type;
+    typedef core::Pair<uniform_vso, index_cont_1>         uniform_pair_type;
+    typedef core::Pair<attribute_vso, index_cont_4>       attribute_pair_type;
+    typedef core::Pair<vbo_vso, index_cont_4>             vbo_pair_type;
 
     typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;

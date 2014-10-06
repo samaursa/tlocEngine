@@ -191,6 +191,28 @@ namespace tloc { namespace graphics { namespace types {
 #define TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F             0xD
 #define TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F     0xE
 
+  namespace f_vertex {
+
+    struct VertexAttribPointerInfo 
+    {
+      typedef s32                                       gl_int;
+      typedef s32                                       gl_sizei;
+      typedef tl_size                                   size_type;
+
+      VertexAttribPointerInfo();
+
+      VertexAttribPointerInfo(gl_int a_size, gl_sizei a_stride, 
+                              size_type a_pointerIndex);
+
+      gl_int          m_size;
+      gl_sizei        m_stride;
+      size_type       m_pointerIndex;
+    };
+
+    VertexAttribPointerInfo 
+      GetCustomGLTypeInfo(tl_int a_customGlType, tl_size a_interleaveIndex = 0);
+
+  };
 
 };};};
 

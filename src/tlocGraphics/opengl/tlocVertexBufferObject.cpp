@@ -267,6 +267,13 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const VertexBufferObject::StrideInfo&
+    VertexBufferObject::
+    GetStrideInfo(size_type a_interleaveIndex) const
+  { return m_strideInfo[a_interleaveIndex]; }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_Target, typename T_Type>
@@ -297,6 +304,8 @@ namespace tloc { namespace graphics { namespace gl {
     DoSetTarget(target);
     DoSetUsage(a_usage);
     DoSetDataSize(arraySize);
+
+    m_strideInfo = DoGetStrideInfo(a_array);
 
     glBufferData(target, sizeof(T_Type) * arraySize, &a_array[0], a_usage);
     {

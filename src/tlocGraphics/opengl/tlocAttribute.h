@@ -239,7 +239,21 @@ namespace tloc { namespace graphics { namespace gl {
        Array<u32>,
        Array<Tuple2u32>,
        Array<Tuple3u32>,
-       Array<Tuple4u32>
+       Array<Tuple4u32>,
+       Array<Vert2fp>,
+       Array<Vert2fpn>,
+       Array<Vert2fpc>,
+       Array<Vert2fpt>,
+       Array<Vert2fpnc>,
+       Array<Vert2fpnt>,
+       Array<Vert2fpnct>,
+       Array<Vert3fp>,
+       Array<Vert3fpn>,
+       Array<Vert3fpc>,
+       Array<Vert3fpt>,
+       Array<Vert3fpnc>,
+       Array<Vert3fpnt>,
+       Array<Vert3fpnct>
       >();
   }
 

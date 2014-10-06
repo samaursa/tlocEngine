@@ -594,8 +594,6 @@ namespace tloc { namespace graphics { namespace gl {
       DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute, 
             tl_size a_interleaveIndex)
     {
-      TLOC_UNUSED(a_interleaveIndex);
-
       using namespace core;
 
       bool isArray = a_attribute.IsArray();
@@ -655,6 +653,7 @@ namespace tloc { namespace graphics { namespace gl {
           }
           break;
         }
+      case TLOC_GL_POSITION2F:
       case GL_FLOAT_VEC2:
         {
           typedef Vec2f32                     data_type;
@@ -706,6 +705,7 @@ namespace tloc { namespace graphics { namespace gl {
           }
           break;
         }
+      case TLOC_GL_POSITION3F:
       case GL_FLOAT_VEC3:
         {
           typedef Vec3f32                     data_type;
@@ -1212,8 +1212,51 @@ namespace tloc { namespace graphics { namespace gl {
           break;
         }
 #endif
+
+      case TLOC_GL_POSITION2F_NORMAL3F:
+      case TLOC_GL_POSITION2F_TEXTURE2F:
+      case TLOC_GL_POSITION2F_COLOR4F:
+      case TLOC_GL_POSITION2F_NORMAL3F_COLOR4F:
+      case TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F:
+      case TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F:
+
+      case TLOC_GL_POSITION3F_NORMAL3F:
+      case TLOC_GL_POSITION3F_TEXTURE2F:
+      case TLOC_GL_POSITION3F_COLOR4F:
+      case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F:
+      case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F:
+      case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
+        {
+            typedef f32                     data_type;
+            typedef Array<data_type>        array_type;
+            typedef SharedPtr<array_type>   shared_type;
+
+            array_type const & fa =
+              isShared
+              ? *a_attribute.GetValueAsArrayPtr<array_type>()
+              : a_attribute.GetValueAs<array_type>();
+
+            if (fa.size() > 0)
+            {
+              // handle TLOC_GL types
+              gfx_t::f_vertex::VertexAttribPointerInfo vapInfo = 
+                gfx_t::f_vertex::GetCustomGLTypeInfo(a_info.m_type, a_interleaveIndex);
+
+              data_type const * faraw = reinterpret_cast<data_type const*>( &( fa[vapInfo.m_pointerIndex] ) );
+
+              glVertexAttribPointer (a_info.m_location, 
+                                     vapInfo.m_size, 
+                                     GL_FLOAT, 
+                                     GL_FALSE, 
+                                     sizeof(f32) * vapInfo.m_stride, 
+                                     faraw);
+              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+              toRet.VertexAttribArrayIndex(a_info.m_location);
+            }
+        }
       default:
         {
+
           TLOC_ASSERT_FALSE("Unsupported Attribute type!");
         }
       }
@@ -1224,8 +1267,8 @@ namespace tloc { namespace graphics { namespace gl {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     DoSetReturn
-      DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attribute, 
-            tl_size)
+      DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attributeVBO,
+            tl_size a_interleaveIndex)
     {
       using namespace core;
 
@@ -1235,31 +1278,58 @@ namespace tloc { namespace graphics { namespace gl {
       {
       case GL_FLOAT:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC2:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC3:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC4:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attribute);
+          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
           break;
+        }
+      case TLOC_GL_POSITION2F_NORMAL3F:
+      case TLOC_GL_POSITION2F_TEXTURE2F:
+      case TLOC_GL_POSITION2F_COLOR4F:
+      case TLOC_GL_POSITION2F_NORMAL3F_COLOR4F:
+      case TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F:
+      case TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F:
+
+      case TLOC_GL_POSITION3F_NORMAL3F:
+      case TLOC_GL_POSITION3F_TEXTURE2F:
+      case TLOC_GL_POSITION3F_COLOR4F:
+      case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F:
+      case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F:
+      case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
+       {
+          // handle TLOC_GL types
+          gfx_t::f_vertex::VertexAttribPointerInfo vapInfo =
+            gfx_t::f_vertex::GetCustomGLTypeInfo(a_info.m_type, a_interleaveIndex);
+
+          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
+          gl::vertex_attrib_array::Enable(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 
+                                vapInfo.m_size, 
+                                GL_FLOAT, 
+                                GL_FALSE, 
+                                sizeof(f32) * vapInfo.m_stride, 
+                                (void*)(sizeof(f32) * vapInfo.m_pointerIndex));
         }
       default:
         {
@@ -1328,9 +1398,7 @@ namespace tloc { namespace graphics { namespace gl {
             {
               itr->second[interleaveIndex] = index;
 
-              DoSetReturn doSetRet = 
-                DoSet(a_shaderVarsInfo[itr->second[interleaveIndex] ], 
-                      *shaderVarPtr, interleaveIndex);
+              DoSetReturn doSetRet = DoSet(*itrInfo, *shaderVarPtr, interleaveIndex);
 
               variableLocations.push_back(doSetRet);
 
@@ -1393,7 +1461,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
     m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)),
-                                        index_type(-1)) );
+                                        index_cont_1(1, -1)) );
     m_flags.Unmark(k_uniformsCached);
 
     return m_uniforms.back().first.get();
@@ -1435,7 +1503,7 @@ namespace tloc { namespace graphics { namespace gl {
     }
 
     m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)),
-                                          index_type(-1)) );
+                                          index_cont_4(4, -1)) );
     m_flags.Unmark(k_attributesCached);
 
     return m_attributes.back().first.get();
@@ -1449,7 +1517,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     TLOC_ASSERT(a_vbo.GetName().size() > 0, "VBO name is empty");
 
-    m_VBOs.push_back(vbo_vso(MakeArgs(a_vbo)) );
+    m_VBOs.push_back(core::MakePair(vbo_vso(MakeArgs(a_vbo)), index_cont_1(1, -1)) );
     m_flags.Unmark(k_VBOsCached);
 
     return m_VBOs.back().first.get();
@@ -1594,7 +1662,9 @@ namespace tloc { namespace graphics { namespace gl {
         if (itr->second[interleavedIndex] >= 0)
         {
           DoAssertVariablesMatch(attrCont[itr->second[0] ], attribPtr);
-          DoSet(attrCont[itr->second[interleavedIndex] ], *attribPtr, interleavedIndex);
+          DoSet(attrCont[itr->second[interleavedIndex] ], 
+                *attribPtr, 
+                interleavedIndex);
         }
         else if (itr->second[interleavedIndex] == g_invalidIndex)
         {

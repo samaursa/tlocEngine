@@ -2,6 +2,18 @@
 
 #include <tlocCore/data_structures/tlocProtectedBuffer.inl.h>
 
+namespace tloc { namespace graphics { namespace gl {
+
+  ShaderVariableInfo::
+    ShaderVariableInfo()
+    : m_nameLength(0)
+    , m_arraySize(0)
+    , m_location(-1)
+    , m_type(0)
+  { }
+
+};};};
+
 // ///////////////////////////////////////////////////////////////////////
 // Explicit instantiations
 

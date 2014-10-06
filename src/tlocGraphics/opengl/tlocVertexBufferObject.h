@@ -65,7 +65,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
     public:
       typedef StrideInfo                                    this_type;
-    typedef tl_size                                         size_type;
+      typedef tl_size                                       size_type;
       typedef gfx_t::gl_sizei                               gl_size_type;
       typedef gfx_t::gl_int                                 gl_int_type;
 
@@ -121,6 +121,8 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type, GetTarget, m_target);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
 
+    const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
+
   private:
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetType, m_type);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetUsage, m_usage);
@@ -133,9 +135,9 @@ namespace tloc { namespace graphics { namespace gl {
                       const core_conts::Array<T_Type>& a_array);
 
   private:
-    gl_enum_type      m_type;
-    gl_enum_type      m_usage;
-    gl_enum_type      m_target;
+    gl_enum_type        m_type;
+    gl_enum_type        m_usage;
+    gl_enum_type        m_target;
     gfx_t::gl_sizei     m_dataSize;
     stride_info_cont    m_strideInfo;
   };
@@ -158,7 +160,7 @@ namespace tloc { namespace graphics { namespace gl {
     type_traits::AssertTypeIsSupported<T_Type, 
         f32, math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
         gfx_t::Vert3fp, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
        >();
 
     return DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);

@@ -1477,6 +1477,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     const gfx_t::gl_int type = a_attribute.GetType();
 
+    index_cont_4 indexes(1, -1);
+
     if (type == TLOC_GL_POSITION2F_NORMAL3F ||
         type == TLOC_GL_POSITION3F_NORMAL3F ||
         type == TLOC_GL_POSITION2F_TEXTURE2F ||
@@ -1485,6 +1487,7 @@ namespace tloc { namespace graphics { namespace gl {
         type == TLOC_GL_POSITION3F_COLOR4F)
     {
       TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
+      indexes.resize(2, -1);
     }
     else if (type == TLOC_GL_POSITION2F_NORMAL3F_COLOR4F ||
              type == TLOC_GL_POSITION3F_NORMAL3F_COLOR4F ||
@@ -1493,6 +1496,7 @@ namespace tloc { namespace graphics { namespace gl {
     {
       TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
       TLOC_ASSERT(a_attribute.GetThirdName().size() > 0, "Third attribute name is empty");
+      indexes.resize(3, -1);
     }
     else if (type == TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F ||
              type == TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F )
@@ -1500,10 +1504,11 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
       TLOC_ASSERT(a_attribute.GetThirdName().size() > 0, "Third attribute name is empty");
       TLOC_ASSERT(a_attribute.GetFourthName().size() > 0, " attribute name is empty");
+      indexes.resize(4, -1);
     }
 
-    m_attributes.push_back(core::MakePair(attribute_vso(MakeArgs(a_attribute)),
-                                          index_cont_4(4, -1)) );
+    m_attributes.push_back
+      (core::MakePair(attribute_vso(MakeArgs(a_attribute)), indexes) );
     m_flags.Unmark(k_attributesCached);
 
     return m_attributes.back().first.get();
@@ -1657,7 +1662,7 @@ namespace tloc { namespace graphics { namespace gl {
       // we don't warn for g_unableToFindIndex because the user has already
       // been warned about that
       for (size_type interleavedIndex = 0; 
-           interleavedIndex < index_cont_4::k_capacity; ++interleavedIndex)
+           interleavedIndex < itr->second.size(); ++interleavedIndex)
       {
         if (itr->second[interleavedIndex] >= 0)
         {

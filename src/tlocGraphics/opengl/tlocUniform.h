@@ -18,6 +18,7 @@
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 namespace tloc { namespace graphics { namespace gl {
 

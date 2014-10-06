@@ -1,6 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
@@ -135,9 +136,208 @@ namespace TestingAttributeVariable
       a.SetName("TestVarArray2");
       CHECK( a.IsValidType() );
       CHECK( a.IsAttribArray() );
-      CHECK( a.IsValidType() );
       CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(2));
       CHECK( a.GetValueAs<Array<f32> >()[1] == Approx(2));
+    }
+
+    SECTION("Arrays with interleaving", "")
+    {
+      gl::Attribute a;
+      a.SetName("TestVarArray");
+
+      Array<gfx_t::Vert2fp> array;
+
+      {
+        gfx_t::Vert2fp v; v.SetPosition(math_t::Vec2f32(0, 0));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert2fp v; v.SetPosition(math_t::Vec2f32(1, 0));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert2fp v; v.SetPosition(math_t::Vec2f32(0.5f, 0.5f));
+        array.push_back(v);
+      }
+
+      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK( a.IsValidType() );
+      CHECK( a.IsAttribArray() );
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fp> >()[0].GetPosition() == 
+            math_t::Vec2f32(0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fp> >()[1].GetPosition() == 
+            math_t::Vec2f32(1, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fp> >()[2].GetPosition() == 
+            math_t::Vec2f32(0.5f, 0.5f));
+    }
+
+    SECTION("Arrays with interleaving", "")
+    {
+      gl::Attribute a;
+      a.SetName("TestVarArray");
+
+      Array<gfx_t::Vert2fpnct> array;
+
+      {
+        gfx_t::Vert2fpnct v; 
+        v.SetPosition(math_t::Vec2f32(0, 0));
+        v.SetNormal(math_t::Vec3f32(1, 0, 0));
+        v.SetColor(gfx_t::Color(255, 0, 0, 0));
+        v.SetTexCoord(math_t::Vec2f32(1.0f, 0.0f));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert2fpnct v; 
+        v.SetPosition(math_t::Vec2f32(1, 0));
+        v.SetNormal(math_t::Vec3f32(0, 1, 0));
+        v.SetColor(gfx_t::Color(0, 255, 0, 0));
+        v.SetTexCoord(math_t::Vec2f32(0.0f, 1.0f));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert2fpnct v; 
+        v.SetPosition(math_t::Vec2f32(1, 1));
+        v.SetNormal(math_t::Vec3f32(0, 0, 1));
+        v.SetColor(gfx_t::Color(0, 0, 255, 0));
+        v.SetTexCoord(math_t::Vec2f32(1.0f, 1.0f));
+        array.push_back(v);
+      }
+
+      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK( a.IsValidType() );
+      CHECK( a.IsAttribArray() );
+
+      TLOC_TEST_ASSERT
+      { a.GetValueAs<Array<gfx_t::Vert2fpnc> >(); }
+      TLOC_TEST_ASSERT_CHECK();
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[0].GetPosition() == 
+            math_t::Vec2f32(0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[1].GetPosition() == 
+            math_t::Vec2f32(1, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[2].GetPosition() == 
+            math_t::Vec2f32(1.0f, 1.0f));
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[0].GetNormal() == 
+            math_t::Vec3f32(1, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[1].GetNormal() == 
+            math_t::Vec3f32(0, 1, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[2].GetNormal() == 
+            math_t::Vec3f32(0, 0, 1));
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[0].GetColor() == 
+            gfx_t::Color(255, 0, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[1].GetColor() == 
+            gfx_t::Color(0, 255, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[2].GetColor() == 
+            gfx_t::Color(0, 0, 255, 0));
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[0].GetTexCoord() == 
+            math_t::Vec2f32(1.0f, 0.0f));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[1].GetTexCoord() == 
+            math_t::Vec2f32(0.0f, 1.0f));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fpnct> >()[2].GetTexCoord() == 
+            math_t::Vec2f32(1.0f, 1.0f));
+    }
+
+    SECTION("Arrays with interleaving", "")
+    {
+      gl::Attribute a;
+      a.SetName("TestVarArray");
+
+      Array<gfx_t::Vert3fpnct> array;
+
+      {
+        gfx_t::Vert3fpnct v; 
+        v.SetPosition(math_t::Vec3f32(0, 0, 0));
+        v.SetNormal(math_t::Vec3f32(1, 0, 0));
+        v.SetColor(gfx_t::Color(255, 0, 0, 0));
+        v.SetTexCoord(math_t::Vec2f32(1.0f, 0.0f));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert3fpnct v; 
+        v.SetPosition(math_t::Vec3f32(1, 0, 0));
+        v.SetNormal(math_t::Vec3f32(0, 1, 0));
+        v.SetColor(gfx_t::Color(0, 255, 0, 0));
+        v.SetTexCoord(math_t::Vec2f32(0.0f, 1.0f));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert3fpnct v; 
+        v.SetPosition(math_t::Vec3f32(1, 1, 1));
+        v.SetNormal(math_t::Vec3f32(0, 0, 1));
+        v.SetColor(gfx_t::Color(0, 0, 255, 0));
+        v.SetTexCoord(math_t::Vec2f32(1.0f, 1.0f));
+        array.push_back(v);
+      }
+
+      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK( a.IsValidType() );
+      CHECK( a.IsAttribArray() );
+
+      TLOC_TEST_ASSERT
+      { a.GetValueAs<Array<gfx_t::Vert3fpnc> >(); }
+      TLOC_TEST_ASSERT_CHECK();
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[0].GetPosition() == 
+            math_t::Vec3f32(0, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[1].GetPosition() == 
+            math_t::Vec3f32(1, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[2].GetPosition() == 
+            math_t::Vec3f32(1, 1, 1));
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[0].GetNormal() == 
+            math_t::Vec3f32(1, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[1].GetNormal() == 
+            math_t::Vec3f32(0, 1, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[2].GetNormal() == 
+            math_t::Vec3f32(0, 0, 1));
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[0].GetColor() == 
+            gfx_t::Color(255, 0, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[1].GetColor() == 
+            gfx_t::Color(0, 255, 0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[2].GetColor() == 
+            gfx_t::Color(0, 0, 255, 0));
+
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[0].GetTexCoord() == 
+            math_t::Vec2f32(1.0f, 0.0f));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[1].GetTexCoord() == 
+            math_t::Vec2f32(0.0f, 1.0f));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert3fpnct> >()[2].GetTexCoord() == 
+            math_t::Vec2f32(1.0f, 1.0f));
+    }
+
+    SECTION("Arrays with interleaving", "")
+    {
+      gl::Attribute a;
+      a.SetName("TestVarArray");
+
+      Array<gfx_t::Vert2fp> array;
+
+      {
+        gfx_t::Vert2fp v; v.SetPosition(math_t::Vec2f32(0, 0));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert2fp v; v.SetPosition(math_t::Vec2f32(1, 0));
+        array.push_back(v);
+      }
+      {
+        gfx_t::Vert2fp v; v.SetPosition(math_t::Vec2f32(0.5f, 0.5f));
+        array.push_back(v);
+      }
+
+      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
+      CHECK( a.IsValidType() );
+      CHECK( a.IsAttribArray() );
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fp> >()[0].GetPosition() == 
+            math_t::Vec2f32(0, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fp> >()[1].GetPosition() == 
+            math_t::Vec2f32(1, 0));
+      CHECK( a.GetValueAs<Array<gfx_t::Vert2fp> >()[2].GetPosition() == 
+            math_t::Vec2f32(0.5f, 0.5f));
     }
   }
 

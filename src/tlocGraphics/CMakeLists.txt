@@ -200,6 +200,7 @@ set(TLOC_GRAPHICS_TYPES
   types/tlocColor.h 
   types/tlocDimension.h 
   types/tlocVertex.h 
+  types/tlocVertex.cpp
   types/tloc_types.cpp 
   types/tloc_types.h 
   types/tloc_types.inl.h

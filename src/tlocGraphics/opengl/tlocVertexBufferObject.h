@@ -3,6 +3,7 @@
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/memory/tlocBufferArg.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -58,26 +59,6 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef VertexBufferObject                              this_type;
     typedef Object_T<this_type, p_object::OnlyID>           base_type;
-    typedef gfx_t::gl_enum                                  gl_enum_type;
-
-  public:
-    struct StrideInfo
-    {
-    public:
-      typedef StrideInfo                                    this_type;
-      typedef tl_size                                       size_type;
-      typedef gfx_t::gl_sizei                               gl_size_type;
-      typedef gfx_t::gl_int                                 gl_int_type;
-
-    public:
-      StrideInfo();
-
-      // size param in glVertexAttribPointer
-      TLOC_DECL_PARAM_VAR(gl_int_type, NumElements, m_numElements);
-      TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
-      TLOC_DECL_PARAM_VAR(size_type, DataStartIndex, m_dataStartIndex);
-    };
-    typedef core_conts::Array<StrideInfo>                   stride_info_cont;
 
   public:
 
@@ -112,6 +93,54 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     VertexBufferObject();
     ~VertexBufferObject();
+  };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(VertexBufferObject, vbo);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(VertexBufferObject, vbo);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // AttributeVBO
+
+  class AttributeVBO
+    : public VertexBufferObject
+  {
+  public:
+    typedef VertexBufferObject                              base_type;
+    typedef AttributeVBO                                    this_type;
+    typedef gfx_t::gl_enum                                  gl_enum_type;
+      typedef core_conts::Array<string_type>                string_cont;
+
+  public:
+    struct StrideInfo
+    {
+    public:
+      typedef StrideInfo                                    this_type;
+      typedef tl_size                                       size_type;
+      typedef gfx_t::gl_sizei                               gl_size_type;
+      typedef gfx_t::gl_int                                 gl_int_type;
+
+    public:
+      StrideInfo();
+
+      // size param in glVertexAttribPointer
+      TLOC_DECL_PARAM_VAR(gl_int_type, NumElements, m_numElements);
+      TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
+      TLOC_DECL_PARAM_VAR(size_type, DataStartIndex, m_dataStartIndex);
+    };
+    typedef core_conts::Array<StrideInfo>                   stride_info_cont;
+
+  public:
+    AttributeVBO();
+
+  public:
+    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
+
+    const string_type& GetName(tl_int a_nameIndex = 0) const;
+    this_type&         AddName(BufferArg a_name);
 
     template <typename T_Target, typename T_Usage, typename T_Type>
     this_type& Data(const core_conts::Array<T_Type>& a_array);
@@ -135,19 +164,26 @@ namespace tloc { namespace graphics { namespace gl {
                       const core_conts::Array<T_Type>& a_array);
 
   private:
+    VertexBufferObject  m_vbo;
     gl_enum_type        m_type;
     gl_enum_type        m_usage;
     gl_enum_type        m_target;
     gfx_t::gl_sizei     m_dataSize;
+    string_cont         m_names;
+
     stride_info_cont    m_strideInfo;
+
+  private:
+    bool                m_enabled;
+
   };
 
   // -----------------------------------------------------------------------
   // template definitions
 
   template <typename T_Target, typename T_Usage, typename T_Type>
-  VertexBufferObject::this_type&
-    VertexBufferObject::
+  AttributeVBO::this_type&
+    AttributeVBO::
     Data(const core_conts::Array<T_Type>& a_array)
   {
     type_traits::AssertTypeIsSupported<T_Usage, 
@@ -165,43 +201,6 @@ namespace tloc { namespace graphics { namespace gl {
 
     return DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
   }
-
-  // -----------------------------------------------------------------------
-  // typedefs
-
-  TLOC_TYPEDEF_ALL_SMART_PTRS(VertexBufferObject, vbo);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(VertexBufferObject, vbo);
-
-  // ///////////////////////////////////////////////////////////////////////
-  // AttributeVBO
-
-  class AttributeVBO
-    : public VertexBufferObject
-  {
-  public:
-    typedef VertexBufferObject                      base_type;
-    typedef AttributeVBO                            this_type;
-
-  public:
-    AttributeVBO();
-
-  public:
-    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
-
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
-    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
-
-    const string_type& GetName(tl_int a_nameIndex) const;
-
-  private:
-    string_type     m_name;
-    string_type     m_name2;
-    string_type     m_name3;
-    string_type     m_name4;
-    bool            m_enabled;
-
-  };
 
   // -----------------------------------------------------------------------
   // typedefs

@@ -64,8 +64,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     so->AddVBO(vbo);
 
-    base_type::InitializeEntity(a_ent);
-    return ErrorSuccess;
+    return base_type::InitializeEntity(a_ent);
   }
 
   error_type QuadRenderSystem::ShutdownEntity(entity_ptr)
@@ -86,7 +85,6 @@ namespace tloc { namespace graphics { namespace component_system {
     }
     else
     {
-
       //------------------------------------------------------------------------
       // Prepare the Quad
 

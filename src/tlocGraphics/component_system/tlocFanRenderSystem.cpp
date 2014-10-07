@@ -56,7 +56,6 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_ent->HasComponent<gfx_cs::Material>() == false)
     { return; }
 
-    gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
     gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
     //------------------------------------------------------------------------

@@ -1279,28 +1279,28 @@ namespace tloc { namespace graphics { namespace gl {
       case GL_FLOAT:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
-          gl::vertex_attrib_array::Enable(a_info.m_location);
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC2:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
-          gl::vertex_attrib_array::Enable(a_info.m_location);
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC3:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
-          gl::vertex_attrib_array::Enable(a_info.m_location);
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC4:
         {
           AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
-          gl::vertex_attrib_array::Enable(a_info.m_location);
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
@@ -1319,6 +1319,8 @@ namespace tloc { namespace graphics { namespace gl {
       case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
        {
           // handle TLOC_GL types
+          // the interleaveIndex = the index of the interleaved attribute
+          // e.g: if it is 0 (Position3F), 1(Normal3F) etc.
           gfx_t::f_vertex::VertexAttribPointerInfo vapInfo =
             gfx_t::f_vertex::GetCustomGLTypeInfo(a_info.m_type, a_interleaveIndex);
 

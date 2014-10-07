@@ -157,6 +157,7 @@ namespace tloc { namespace graphics { namespace gl {
                              m_attributes.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfVBOs,
                              m_VBOs.size());
+    TLOC_DECL_AND_DEF_GETTER(const_vao_vptr, GetVAO, core_sptr::ToVirtualPtr(m_vao));
 
   private:
     uniform_cont_type           m_uniforms;

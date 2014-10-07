@@ -275,16 +275,14 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // Prepare shader
 
+    typedef core_conts::Array<gl::const_vao_vptr>   vao_cont;
+    vao_cont VAOs;
+
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
     error_type uniformErr = ErrorSuccess;
     error_type attribErr = ErrorSuccess;
     error_type vboErr = ErrorSuccess;
-
-    // we just need to store the Binds, when they are destroyed, they will 
-    // unbind the VAOs
-    typedef core_conts::Array<gl::VertexArrayObject::bind_sptr>   vao_bind_cont;
-    vao_bind_cont vaoBinds;
 
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
@@ -325,7 +323,7 @@ namespace tloc { namespace graphics { namespace component_system {
           if (so->IsVBOsCached() == false)
           { so->PrepareAllVBOs(*m_shaderPtr); }
 
-          vaoBinds.push_back(so->EnableAllVBOs(*m_shaderPtr));
+          VAOs.push_back(so->GetVAO());
         }
       }
 
@@ -346,7 +344,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
 
     if (IsUseVBOsEnabled() && vboErr.Succeeded())
-    { vaoBinds.push_back(m_shaderOp->EnableAllVBOs(*m_shaderPtr)); }
+    { VAOs.push_back(m_shaderOp->GetVAO()); }
 
     // prepare/enable user's shader operator
     if (a_di.m_shaderOp)
@@ -366,12 +364,23 @@ namespace tloc { namespace graphics { namespace component_system {
         vboErr = a_di.m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
 
         if (vboErr.Succeeded())
-        { vaoBinds.push_back(a_di.m_shaderOp->EnableAllVBOs(*m_shaderPtr)); }
+        { VAOs.push_back(a_di.m_shaderOp->GetVAO()); }
       }
     }
 
     // -----------------------------------------------------------------------
     // Render
+
+    // we just need to store the Binds, when they are destroyed, they will 
+    // unbind the VAOs
+    typedef core_conts::Array<gl::VertexArrayObject::bind_sptr>   vao_bind_cont;
+    vao_bind_cont vaoBinds(VAOs.size());
+
+    for (tl_size i = 0; i < vaoBinds.size(); ++i)
+    { 
+      if (VAOs[i])
+      { vaoBinds[i] = core_sptr::MakeShared<gl::VertexArrayObject::Bind>(*VAOs[i]); }
+    }
 
     glDrawArrays(a_di.m_drawCommand, 0,
                  core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));

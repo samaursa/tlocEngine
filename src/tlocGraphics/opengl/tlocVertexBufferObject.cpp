@@ -8,9 +8,9 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace {
 
-    typedef VertexBufferObject::StrideInfo                stride_info;
-    typedef VertexBufferObject::stride_info_cont          stride_info_cont;
-    typedef f32                                           real_type;
+    typedef AttributeVBO::StrideInfo                stride_info;
+    typedef AttributeVBO::stride_info_cont          stride_info_cont;
+    typedef f32                                     real_type;
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -201,10 +201,6 @@ namespace tloc { namespace graphics { namespace gl {
   VertexBufferObject::Bind_T<TLOC_VBO_BIND_PARAMS>::
     Bind_T(const this_type& a_vbo)
   {
-    TLOC_ASSERT (a_vbo.GetTarget() == GL_NONE || 
-                 target_type::s_glParamName == a_vbo.GetTarget(), 
-                 "Previous Bind() operation on this buffer used a different target.");
-
     object_handle handle = a_vbo.GetHandle();
     gl::vertex_buffer_object::Bind(target_type::s_glParamName, handle);
   }
@@ -230,15 +226,6 @@ namespace tloc { namespace graphics { namespace gl {
   template struct VertexBufferObject::Bind_T<p_vbo::target::TextureBuffer>;
   template struct VertexBufferObject::Bind_T<p_vbo::target::TransformFeedbackBuffer>;
 
-  // ///////////////////////////////////////////////////////////////////////
-  // VertexBufferObject::StrideInfo
-
-  VertexBufferObject::StrideInfo::
-    StrideInfo()
-    : m_numElements(0)
-    , m_strideInBytes(0)
-    , m_dataStartIndex(0)
-  { }
 
   // ///////////////////////////////////////////////////////////////////////
   // VertexBufferObject
@@ -246,10 +233,6 @@ namespace tloc { namespace graphics { namespace gl {
   VertexBufferObject::
     VertexBufferObject()
     : base_type()
-    , m_type(GL_NONE)
-    , m_usage(GL_NONE)
-    , m_target(GL_NONE)
-    , m_dataSize(0)
   { 
     object_handle handle = gfx_gl::vertex_buffer_object::Generate();
     SetHandle(handle);
@@ -267,18 +250,37 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexBufferObject::StrideInfo
+
+  AttributeVBO::StrideInfo::
+    StrideInfo()
+    : m_numElements(0)
+    , m_strideInBytes(0)
+    , m_dataStartIndex(0)
+  { }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const VertexBufferObject::StrideInfo&
-    VertexBufferObject::
+  const AttributeVBO::StrideInfo&
+    AttributeVBO::
     GetStrideInfo(size_type a_interleaveIndex) const
   { return m_strideInfo[a_interleaveIndex]; }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // AttributeVBO
+
+  AttributeVBO::
+    AttributeVBO()
+    : base_type()
+    , m_enabled(true)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_Target, typename T_Type>
-  VertexBufferObject::this_type&
-    VertexBufferObject::
+  AttributeVBO::this_type&
+    AttributeVBO::
     DoData(gfx_t::gl_int a_usage, 
            const core_conts::Array<T_Type>& a_array)
   {
@@ -286,7 +288,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     using namespace core_conts; using namespace core_sptr;
 
-    Bind_T<T_Target> b(*this);
+    Bind_T<T_Target> b(m_vbo);
 
     // temporarily create an attribute to get the required information
     core_conts::Array<T_Type> tempArray;
@@ -316,36 +318,19 @@ namespace tloc { namespace graphics { namespace gl {
     return *this;
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // AttributeVBO
-
-  AttributeVBO::
-    AttributeVBO()
-    : base_type()
-    , m_enabled(true)
-  { }
-
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const AttributeVBO::string_type&
     AttributeVBO::
     GetName(tl_int a_nameIndex) const
-  {
-    switch(a_nameIndex)
-    {
-    case 0:
-      return m_name;
-    case 1:
-      return m_name2;
-    case 2:
-      return m_name3;
-    case 3:
-      return m_name4;
-    default:
-      TLOC_ASSERT_FALSE("AttributeVBOs only have upto 4 possible names");
-      return m_name;
-    }
-  }
+  { return m_names[a_nameIndex]; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  AttributeVBO::this_type&
+    AttributeVBO::
+    AddName(BufferArg a_name)
+  { m_names.push_back(a_name.GetPtr()); return *this; }
 
 };};};
 
@@ -353,21 +338,21 @@ using namespace tloc;
 using namespace tloc::gfx_gl;
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(_type_)\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::ArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::CopyReadBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::CopyWriteBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::ElementArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::PixelPackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::PixelUnpackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::TextureBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template VertexBufferObject::this_type& VertexBufferObject::\
+  template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::TransformFeedbackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&)
 
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);
@@ -395,4 +380,4 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(AttributeVBO);
 
 #include <tlocCore/containers/tlocArray.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(VertexBufferObject::StrideInfo);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(AttributeVBO::StrideInfo);

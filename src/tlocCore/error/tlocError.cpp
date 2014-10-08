@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace error {
 
@@ -145,10 +146,13 @@ namespace tloc { namespace core { namespace error {
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
-    ~Error_T()
+    ~Error_T() TLOC_DTOR_ASSERT
   {
     if (GetErrorCode() == common_error_types::error_success)
     { m_errorCheckedByUser = true; }
+
+    TLOC_LOG_CORE_ERR_IF(m_errorCheckedByUser == false)
+      << "Ignored an error from: " << m_file << "(" << m_line << ")";
 
     TLOC_ASSERT(m_errorCheckedByUser, "Ignored an error!");
   }

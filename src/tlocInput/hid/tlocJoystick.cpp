@@ -53,7 +53,7 @@ namespace tloc { namespace input { namespace hid {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  bool
+  JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
     SendButtonPress(const joystick_event_type& a_event,
                     tl_int a_buttonIndex) const
@@ -62,17 +62,17 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnButtonPress( core_utils::GetMemoryAddress(this), a_event,
-                         a_buttonIndex) == true)
-      { return true; }
+                         a_buttonIndex).IsVeto())
+      { return core_dispatch::f_event::Veto(); }
     }
 
-    return false;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  bool
+  JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
     SendButtonRelease(const joystick_event_type& a_event,
                       tl_int a_buttonIndex) const
@@ -81,17 +81,17 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnButtonRelease( core_utils::GetMemoryAddress(this), a_event,
-                           a_buttonIndex) == true)
-      { return true; }
+                           a_buttonIndex).IsVeto())
+      { return core_dispatch::f_event::Veto(); }
     }
 
-    return false;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  bool
+  JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
     SendAxisChange(const joystick_event_type& a_event,
                    tl_int a_axisIndex,
@@ -101,17 +101,17 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnAxisChange( core_utils::GetMemoryAddress(this), a_event,
-                        a_axisIndex, a_axis) == true)
-      { return true; }
+                        a_axisIndex, a_axis).IsVeto())
+      { return core_dispatch::f_event::Veto(); }
     }
 
-    return false;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  bool
+  JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
     SendSliderChange(const joystick_event_type& a_event,
                      tl_int a_sliderIndex,
@@ -121,17 +121,17 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnSliderChange( core_utils::GetMemoryAddress(this), a_event,
-                          a_sliderIndex, a_slider) == true)
-      { return true; }
+                          a_sliderIndex, a_slider).IsVeto())
+      { return core_dispatch::f_event::Veto(); }
     }
 
-    return false;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <JOYSTICK_TEMP>
-  bool
+  JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
     SendPOVChange(const joystick_event_type& a_event,
                   tl_int a_povIndex,
@@ -141,11 +141,11 @@ namespace tloc { namespace input { namespace hid {
     {
       if (m_allObservers[i]->
           OnPOVChange( core_utils::GetMemoryAddress(this), a_event,
-                       a_povIndex, a_pov) == true)
-      { return true; }
+                       a_povIndex, a_pov).IsVeto())
+      { return core_dispatch::f_event::Veto(); }
     }
 
-    return false;
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -181,3 +181,10 @@ namespace tloc { namespace input { namespace hid {
 #endif
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::input_hid;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(JoystickB);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(JoystickI);

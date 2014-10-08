@@ -14,6 +14,7 @@
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
+#include <tlocGraphics/types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -24,8 +25,11 @@ namespace tloc { namespace graphics { namespace gl {
     struct Pointer {};
   };
 
+  class ShaderVariableBase { };
+
   template <typename T_Derived>
-  class ShaderVariable_TI
+  class ShaderVariable_TI 
+    : ShaderVariableBase
   {
   public:
     typedef core::types::Any                 value_type;
@@ -50,6 +54,9 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T>
     derived_type& SetValueAs(const T& a_value);
 
+    template <typename T, tl_int T_Size>
+    derived_type& SetValueAs(const gfx_t::Color_T<T, T_Size> a_color);
+
     template <typename T>
     derived_type& SetValueAs(core::smart_ptr::VirtualPtr<T> a_value);
 
@@ -72,7 +79,10 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(gl_type, GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
     TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isArrayPtr);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, SetEnabled, m_enabled);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
+
 
   protected:
     ShaderVariable_TI();
@@ -107,6 +117,7 @@ namespace tloc { namespace graphics { namespace gl {
     string_type   m_name;
     bool          m_isArray;
     bool          m_isArrayPtr;
+    bool          m_enabled;
   };
 
   //------------------------------------------------------------------------
@@ -117,7 +128,7 @@ namespace tloc { namespace graphics { namespace gl {
   void ShaderVariable_TI<T_Derived>::
     GetValueAs(T& a_out) const
   {
-    static_cast<derived_type*>(this)->template DoCheckTypeCompatibility<T>();
+    static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     a_out = m_value.Cast<T>();
   }
 
@@ -160,6 +171,16 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   template <typename T_Derived>
+  template <typename T, tl_int T_Size>
+  typename ShaderVariable_TI<T_Derived>::derived_type&
+    ShaderVariable_TI<T_Derived>::
+    SetValueAs(const gfx_t::Color_T<T, T_Size> a_color)
+  {
+    return SetValueAs(a_color.template GetAs<gfx_t::p_color::format::RGBA,
+                                             math_t::Vector_T<f32, T_Size> >() );
+  }
+
+  template <typename T_Derived>
   template <typename T>
   typename ShaderVariable_TI<T_Derived>::derived_type&
     ShaderVariable_TI<T_Derived>::
@@ -191,6 +212,24 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   namespace algos { namespace shader_variable {
+
+    namespace transform {
+
+      struct Enable
+      {
+        template <typename T>
+        void operator()(ShaderVariable_TI<T>& a_sv) const
+        { a_sv.SetEnabled(true); }
+      };
+
+      struct Disable
+      {
+        template <typename T>
+        void operator()(ShaderVariable_TI<T>& a_sv) const
+        { a_sv.SetEnabled(false); }
+      };
+
+    };
 
     namespace compare {
 

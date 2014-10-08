@@ -6,6 +6,37 @@
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 #import <tlocGraphics/window/tlocOpenGLViewControllerIphone.h>
 
+//////////////////////////////////////////////////////////////////////////
+// helper function to figure out which device we have currently
+
+#include <sys/utsname.h>
+NSString *machineName()
+{
+  struct utsname systemInfo;
+  if (uname(&systemInfo) < 0) {
+    return nil;
+  } else {
+    return [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
+  }
+}
+
+// detects iPad mini by machine id
+BOOL isIpadMini()
+{
+  NSString *machName = machineName();
+  if (machName == nil) return NO;
+  
+  BOOL isMini = NO;
+  if (    [machName isEqualToString:@"iPad2,5"]
+      || [machName isEqualToString:@"iPad2,6"]
+      || [machName isEqualToString:@"iPad2,7"])
+  {
+    isMini = YES;
+  }
+  return isMini;
+}
+
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
 #define WINDOW_IMPL_IPHONE_PARAMS Window_T<>
@@ -152,6 +183,36 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   {
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     return static_cast<size_type>(height);
+  }
+  
+  WINDOW_IMPL_IPHONE_TYPE::dim_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetDPI() const
+  {
+    // no future proof method for detecting iOS devices DPI.
+    // see: http://stackoverflow.com/a/7922666/368599
+    // and: http://stackoverflow.com/a/15730844/368599
+    
+    float scale = 1;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+      scale = [[UIScreen mainScreen] scale];
+    }
+    float dpi;
+    if (isIpadMini())
+    {
+      dpi = 163;
+    }
+    else
+    {
+      if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        dpi = 132 * scale;
+      } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        dpi = 163 * scale;
+      } else {
+        dpi = 160 * scale;
+      }
+    }
+    
+    return core_ds::MakeTuple(dpi, dpi).Cast<core_ds::Tuple2size>();
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetActive(bool a_active)

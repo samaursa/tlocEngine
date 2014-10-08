@@ -45,7 +45,7 @@ namespace tloc { namespace animation { namespace component_system {
 
     for (tl_size i = 0; i < size; ++i)
     {
-      transform_animation_vptr texAnim =
+      transform_animation_sptr texAnim =
         a_ent->GetComponent<anim_cs::TransformAnimation>(i);
       texAnim->SetStartTime(0);
     }
@@ -76,7 +76,7 @@ namespace tloc { namespace animation { namespace component_system {
   {
     using namespace core::component_system;
 
-    transform_animation_vptr transAnim =
+    transform_animation_sptr transAnim =
       a_ent->GetComponent<anim_cs::TransformAnimation>(0);
 
     transAnim->SetTotalTime(transAnim->GetTotalTime() + a_deltaT);
@@ -99,7 +99,7 @@ namespace tloc { namespace animation { namespace component_system {
     if (a_ent->HasComponent(components::transform_animation) &&
         transAnim->IsKFSequenceChanged())
     {
-      math_cs::transform_vptr transPtr =
+      math_cs::transform_sptr transPtr =
         a_ent->GetComponent<math_cs::Transform>(0);
 
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
@@ -190,20 +190,20 @@ namespace tloc { namespace animation { namespace component_system {
       case k_ease_in_sin:
         {
           interpolatedVal =
-            delta * -1.0f * Mathf32::Cos(mu * (Mathf32::PI * 0.5f)) +
+            delta * -1.0f * math::Cos(math_t::MakeRadian(mu * (Mathf32::PI * 0.5f))) +
             delta + first;
           break;
         }
       case k_ease_out_sin:
         {
           interpolatedVal =
-            delta * Mathf32::Sin(mu * (Mathf32::PI * 0.5f)) + first;
+            delta * math::Sin(math_t::MakeRadian(mu * (Mathf32::PI * 0.5f))) + first;
           break;
         }
       case k_ease_in_out_sin:
         {
           interpolatedVal =
-            delta * -0.5f * (Mathf32::Cos(Mathf32::PI * mu) - 1.0f) +
+            delta * -0.5f * (math::Cos(math_t::MakeRadian(Mathf32::PI * mu)) - 1.0f) +
             first;
           break;
         }
@@ -232,3 +232,4 @@ namespace tloc { namespace animation { namespace component_system {
 using namespace tloc::anim_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimationSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(TransformAnimationSystem);

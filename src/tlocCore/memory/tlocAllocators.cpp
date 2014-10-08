@@ -19,7 +19,28 @@ ALLOCATOR_DECL_THROW(std::bad_alloc)
   return ptr; // Not throwing on purpose
 }
 
+void* operator new[] (std::size_t size)
+ALLOCATOR_DECL_THROW(std::bad_alloc)
+{
+  void *ptr = TL_MALLOC(size);
+  return ptr; // Not throwing on purpose
+}
+
 void operator delete (void* ptr)
+ALLOCATOR_DECL_NO_THROW()
+{
+  using namespace tloc;
+
+  if (ptr)
+  {
+    if (core_mem::tracking::priv::DoIsMemoryAddressTracked(ptr))
+    { core_mem::tracking::priv::DoUntrackMemoryAddress(ptr); }
+
+    TL_FREE(ptr);
+  }
+}
+
+void operator delete[] (void* ptr)
 ALLOCATOR_DECL_NO_THROW()
 {
   using namespace tloc;
@@ -40,7 +61,28 @@ ALLOCATOR_DECL_NO_THROW()
   return ptr; // Not throwing on purpose
 }
 
+void* operator new[] (std::size_t size, const std::nothrow_t&)
+ALLOCATOR_DECL_NO_THROW()
+{
+  void *ptr = TL_MALLOC(size);
+  return ptr; // Not throwing on purpose
+}
+
 void operator delete (void* ptr, const std::nothrow_t&)
+ALLOCATOR_DECL_NO_THROW()
+{
+  using namespace tloc;
+
+  if (ptr)
+  {
+    if (core_mem::tracking::priv::DoIsMemoryAddressTracked(ptr))
+    { core_mem::tracking::priv::DoUntrackMemoryAddress(ptr); }
+
+    TL_FREE(ptr);
+  }
+}
+
+void operator delete[] (void* ptr, const std::nothrow_t&)
 ALLOCATOR_DECL_NO_THROW()
 {
   using namespace tloc;
@@ -289,6 +331,15 @@ namespace tloc { namespace core { namespace memory {
             "Unable to find a_ptrAddress assigned to memAddress it is tracking");
 
           itrMemAddress->second.erase(itr);
+          
+          // is this the marked memory address which was only tracked because
+          // a VirtualPtr began tracking a raw pointer? If yes, untrack
+          // see TrackPointerToMemoryAddress() for push_back of nullptr
+          if (itrMemAddress->second.size() == 1 && 
+              *itrMemAddress->second.begin() == nullptr)
+          {
+            UntrackMemoryAddress(a_memAddress);
+          }
         }
 
         m_pointerToAddresses.erase(a_ptrAddress);
@@ -654,12 +705,16 @@ namespace tloc { namespace core { namespace memory {
     return MemoryTracker::Get().GetNumberOfPointersToMemAddresses(a_memAddress);
   }
 
+};};};};};
+
+namespace tloc { namespace core { namespace memory { namespace tracking {
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     DoEnableLogging()
   {
-    MemoryTracker::Get().EnableLogging(true);
+    priv::MemoryTracker::Get().EnableLogging(true);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -667,9 +722,9 @@ namespace tloc { namespace core { namespace memory {
   void
     DoDisableLogging()
   {
-    MemoryTracker::Get().EnableLogging( true );
+    priv::MemoryTracker::Get().EnableLogging( true );
   }
 
-};};};};};
+};};};};
 
 #endif

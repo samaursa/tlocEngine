@@ -57,7 +57,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   TransformAnimation::
     TransformAnimation()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "TransformAnimation")
     , m_currentSeq(0)
   { }
 
@@ -321,6 +321,5 @@ namespace tloc { namespace animation { namespace component_system {
 using namespace tloc::anim_cs;
 
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimation);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(TransformAnimation);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimation);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(TransformAnimation);

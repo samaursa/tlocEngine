@@ -1,7 +1,6 @@
 #ifndef _TLOC_CORE_LOGGER_LOGGER_H_
 #define _TLOC_CORE_LOGGER_LOGGER_H_
 
-#include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
@@ -12,6 +11,9 @@
 #include <tlocCore/tlocStaticAssert.h>
 
 namespace tloc { namespace core { namespace logging {
+
+  // -----------------------------------------------------------------------
+  // Logger classes
 
   namespace p_logger
   {
@@ -25,29 +27,38 @@ namespace tloc { namespace core { namespace logging {
     {
       class Console
       {
-      protected:
+      public:
+        typedef Log_I::severity_type                      severity_type;
+
+      public:
         Console(BufferArg a_loggerName);
 
-        void DoWrite(BufferArg a_formattedLog);
+        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
       };
 
       // usually for outputting to a window other than the console
       class Output
       {
-      protected:
+      public:
+        typedef Log_I::severity_type                      severity_type;
+
+      public:
         Output(BufferArg a_loggerName);
 
-        void DoWrite(BufferArg a_formattedLog);
+        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
       };
 
       class File
       {
-      protected:
+      public:
+        typedef Log_I::severity_type                      severity_type;
+
+      public:
         File(BufferArg a_fileName);
 
-        void DoWrite(BufferArg a_formattedLog);
+        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
 
-        core_io::FileIO_AppendA m_file;
+        mutable core_io::FileIO_AppendA m_file;
       };
     };
 
@@ -58,7 +69,7 @@ namespace tloc { namespace core { namespace logging {
       public:
         typedef core_str::String                      str_type;
 
-      protected:
+      public:
         Default(BufferArg a_loggerName);
 
         str_type DoFormat(const Log_I& a_log) const;
@@ -123,6 +134,10 @@ namespace tloc { namespace core { namespace logging {
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(severity_type, SetSeverity, m_severity);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);
 
+    void ResetBreakOnSeverity();
+    TLOC_DECL_AND_DEF_GETTER(severity_type, GetBreakOnSeverity, m_breakOnSeverity);
+    TLOC_DECL_AND_DEF_SETTER(severity_type, SetBreakOnSeverity, m_breakOnSeverity);
+
   private:
     void DoAddLog(const Log_I& a_log, p_logger::update_policy::Immediate);
     void DoAddLog(const Log_I& a_log, p_logger::update_policy::OnFlush);
@@ -135,6 +150,7 @@ namespace tloc { namespace core { namespace logging {
     log_cont                  m_logs;
     core_utils::Checkpoints   m_flags;
     severity_type             m_severity;
+    severity_type             m_breakOnSeverity;
   };
 
   // -----------------------------------------------------------------------
@@ -164,7 +180,8 @@ namespace tloc { namespace core { namespace logging {
   // ///////////////////////////////////////////////////////////////////////
   // Log
 
-  template <typename T_Logger>
+  template <typename T_Logger, 
+            typename T_BuildConfig = core_cfg::BuildConfig::build_config_type>
   class Log_T
     : public Log_I
   {
@@ -179,7 +196,7 @@ namespace tloc { namespace core { namespace logging {
 
   public:
     typedef Log_I                                     base_type;
-    typedef Log_T                                     this_type;
+    typedef Log_T<T_Logger, T_BuildConfig>            this_type;
     typedef base_type::severity_type                  severity_type;
 
   public:
@@ -187,7 +204,10 @@ namespace tloc { namespace core { namespace logging {
           BufferArg a_fileName, const tl_ulong a_lineNumber);
     ~Log_T();
 
-    this_type& operator << (BufferArg a_string);
+    this_type& operator << (BufferArg  a_string);
+    this_type& operator << (BufferArgW a_string);
+    this_type& operator << (char8     a_value);
+    this_type& operator << (char32    a_value);
     this_type& operator << (tl_int    a_value);
     this_type& operator << (tl_long   a_value);
     this_type& operator << (tl_uint   a_value);
@@ -210,13 +230,51 @@ namespace tloc { namespace core { namespace logging {
     return Log_T<T_Logger>(a_logger, a_severity, a_fileName, a_lineNumber);
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Log_T<Release>
+
+  template <typename T_Logger>
+  class Log_T<T_Logger, core_cfg::p_build_config::Release>
+  {
+    TLOC_STATIC_ASSERT(
+      (Loki::IsSameType<T_Logger, LoggerConsoleImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerConsoleOnFlush>::value ||
+       Loki::IsSameType<T_Logger, LoggerOutputImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerOutputOnFlush>::value ||
+       Loki::IsSameType<T_Logger, LoggerFileImmediate>::value ||
+       Loki::IsSameType<T_Logger, LoggerFileOnFlush>::value),
+       Unsupported_logger_type);
+
+  public:
+    typedef Log_I                                     base_type;
+    typedef Log_T<T_Logger, 
+                  core_cfg::p_build_config::Release>  this_type;
+    typedef base_type::severity_type                  severity_type;
+
+  public:
+    Log_T(T_Logger* , severity_type ,
+          BufferArg , const tl_ulong ) {}
+    ~Log_T() {}
+
+    this_type& operator << (BufferArg  )  { return *this; }
+    this_type& operator << (BufferArgW )  { return *this; }
+    this_type& operator << (char8      )  { return *this; }
+    this_type& operator << (char32     )  { return *this; }
+    this_type& operator << (tl_int     )  { return *this; }
+    this_type& operator << (tl_long    )  { return *this; }
+    this_type& operator << (tl_uint    )  { return *this; }
+    this_type& operator << (tl_ulong   )  { return *this; }
+    this_type& operator << (tl_float   )  { return *this; }
+    this_type& operator << (tl_double  )  { return *this; }
+  };
+
   // -----------------------------------------------------------------------
   // typedefs
 
   typedef Log_T<LoggerConsoleImmediate>                 LogConsoleImmediate;
   typedef Log_T<LoggerConsoleOnFlush>                   LogConsoleOnFlush;
-  typedef Log_T<LoggerOutputImmediate>             LogOutputImmediate;
-  typedef Log_T<LoggerOutputOnFlush>               LogOutputOnFlush;
+  typedef Log_T<LoggerOutputImmediate>                  LogOutputImmediate;
+  typedef Log_T<LoggerOutputOnFlush>                    LogOutputOnFlush;
   typedef Log_T<LoggerFileImmediate>                    LogFileImmediate;
   typedef Log_T<LoggerFileOnFlush>                      LogFileOnFlush;
 
@@ -238,6 +296,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO(_logger_)\
   TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS(_logger_)\
+  TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG(_logger_)\
   TLOC_LOG(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN(_logger_)\
@@ -247,6 +307,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_IF(_expr_, _logger_)\
   TLOC_LOG_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_IF(_expr_, _logger_)\
+  TLOC_LOG_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_IF(_expr_, _logger_)\
   TLOC_LOG_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_IF(_expr_, _logger_)\
@@ -256,6 +318,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_FILENAME_ONLY(_logger_)\
   TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_FILENAME_ONLY(_logger_)\
+  TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_FILENAME_ONLY(_logger_)\
   TLOC_LOG_FILENAME_ONLY(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_FILENAME_ONLY(_logger_)\
@@ -265,6 +329,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_FILENAME_ONLY_IF(_expr_, _logger_)\
+  TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_FILENAME_ONLY_IF(_expr_, _logger_)\
   TLOC_LOG_FILENAME_ONLY_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_FILENAME_ONLY_IF(_expr_, _logger_)\
@@ -274,6 +340,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_NO_FILENAME(_logger_)\
   TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_NO_FILENAME(_logger_)\
+  TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_NO_FILENAME(_logger_)\
   TLOC_LOG_NO_FILENAME(_logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_NO_FILENAME(_logger_)\
@@ -283,6 +351,8 @@ namespace tloc { namespace core { namespace logging {
 
 #define TLOC_LOG_INFO_NO_FILENAME_IF(_expr_, _logger_)\
   TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_info)
+#define TLOC_LOG_SUCCESS_NO_FILENAME_IF(_expr_, _logger_)\
+  TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_success)
 #define TLOC_LOG_DEBUG_NO_FILENAME_IF(_expr_, _logger_)\
   TLOC_LOG_NO_FILENAME_IF(_expr_, _logger_, tloc::core::logging::Log_I::k_debug)
 #define TLOC_LOG_WARN_NO_FILENAME_IF(_expr_, _logger_)\

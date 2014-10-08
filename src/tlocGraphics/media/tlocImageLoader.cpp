@@ -44,10 +44,10 @@ namespace tloc { namespace graphics { namespace media {
 
   template <IMAGE_LOADER_TEMP>
   IMAGE_LOADER_TYPE::error_type ImageLoader_TI<IMAGE_LOADER_PARAMS>::
-    DoLoadImageFromMemory(const_uchar8_ptr a_buffer, dimention_type a_dim,
+    DoLoadImageFromMemory(const_color_ptr a_buffer, dimention_type a_dim,
                           size_type a_channels)
   {
-    return m_image.LoadFromMemory(a_buffer, a_dim, a_channels);
+    return m_image.Load(a_buffer, a_dim, a_channels);
   }
 
   //------------------------------------------------------------------------

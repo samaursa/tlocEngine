@@ -43,7 +43,7 @@ namespace TestingTransform
       CHECK_VEC3F(t.GetPosition(), 1, 2, 5);
 
       tf32::orientation_type ori;
-      ori.MakeRotationX(90);
+      ori.MakeRotationX(90.0f);
       t.SetOrientation(ori);
 
       CHECK_MATRIX3F(t.GetOrientation(),
@@ -120,6 +120,39 @@ namespace TestingTransform
       CHECK_MATRIX3F(ori, 1, 0, 0,
                           0, 1, 0,
                           0, 0, 1);
+    }
+  }
+
+  TEST_CASE("math/component_system/Transform/LookAt", "")
+  {
+    typedef math::component_system::Transformf32  tf32;
+
+    tf32 t;
+
+    SECTION("LookAt() - target direction not parallel to up", "")
+    {
+      t.LookAt(Vec3f32(2, 0, 0));
+
+      const Vec3f32 left(t.GetOrientation().GetCol(0));
+      const Vec3f32 up(t.GetOrientation().GetCol(1));
+      const Vec3f32 dir(t.GetOrientation().GetCol(2));
+
+      CHECK(dir[0]  == Approx(1.0f));
+      CHECK(up[1]   == Approx(1.0f));
+      CHECK(left[2] == Approx(-1.0f));
+    }
+
+    SECTION("LookAt() - target direction parallel to up", "")
+    {
+      t.LookAt(Vec3f32(0, 1, 0));
+
+      const Vec3f32 left(t.GetOrientation().GetCol(0));
+      const Vec3f32 up(t.GetOrientation().GetCol(1));
+      const Vec3f32 dir(t.GetOrientation().GetCol(2));
+
+      CHECK(dir[1]  == Approx(1.0f));
+      CHECK(up[2]   == Approx(-1.0f));
+      CHECK(left[0] == Approx(1.0f));
     }
   }
 };

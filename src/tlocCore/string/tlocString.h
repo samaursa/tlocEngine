@@ -437,9 +437,13 @@ namespace tloc { namespace core { namespace string {
   char8
     CharWideToAscii(const char32 a_in);
   tl_size
-    CharAsciiToWide(char32* a_out, const char8* a_in, tl_int a_inSize);
+    CharAsciiToWide(char32* a_out, const char8* a_in, tl_size a_inSize);
   tl_size
-    CharWideToAscii(char8* a_out, const char32* a_in, tl_int a_inSize);
+    CharWideToAscii(char8* a_out, const char32* a_in, tl_size a_inSize);
+  StringW
+    CharAsciiToWide(const String a_in);
+  String
+    CharWideToAscii(const StringW a_in);
 
   template <typename T, typename T_StringContainer>
   void
@@ -451,51 +455,88 @@ namespace tloc { namespace core { namespace string {
 
   bool
     IsCntrl(char8 a_char);
+  bool
+    IsCntrl(char32 a_char);
 
   bool
     IsBlank(char8 a_char);
+  bool
+    IsBlank(char32 a_char);
 
   bool
     IsSpace(char8 a_char);
+  bool
+    IsSpace(char32 a_char);
 
   bool
     IsUpper(char8 a_char);
+  bool
+    IsUpper(char32 a_char);
 
   bool
     IsLower(char8 a_char);
+  bool
+    IsLower(char32 a_char);
 
   bool
     IsAlpha(char8 a_char);
+  bool
+    IsAlpha(char32 a_char);
 
   bool
     IsDigit(char8 a_char);
+  bool
+    IsDigit(char32 a_char);
 
   bool
     IsNumber(const char8* a_char);
+  bool
+    IsNumber(const char32* a_char);
 
   bool
     IsRealNumber(const char8* a_char);
+  bool
+    IsRealNumber(const char32* a_char);
 
   bool
     IsNegNumber(const char8* a_char);
+  bool
+    IsNegNumber(const char32* a_char);
 
   bool
     IsNegRealNumber(const char8* a_char);
+  bool
+    IsNegRealNumber(const char32* a_char);
 
   bool
     IsPosNumber(const char8* a_char);
+  bool
+    IsPosNumber(const char32* a_char);
 
   bool
     IsPosRealNumber(const char8* a_char);
+  bool
+    IsPosRealNumber(const char32* a_char);
 
   bool
     IsXDigit(char8 a_char);
+  bool
+    IsXDigit(char32 a_char);
 
   bool
     IsAlNum(char8 a_char);
+  bool
+    IsAlNum(char32 a_char);
 
   bool
     IsPunct(char8 a_char);
+  bool
+    IsPunct(char32 a_char);
+
+  bool
+    IsNewline(char8 a_char);
+  bool
+    IsNewline(char32 a_char);
 
   //````````````````````````````````````````````````````````````````````````
   // Global operators (not providing <, > as they can be confusing/error-prone
@@ -534,32 +575,68 @@ namespace tloc { namespace core { namespace string {
   extern char8 g_controls[];
   extern String g_controlsStr;
 
+  extern char32   g_controlsW[];
+  extern StringW  g_controlsStrW;
+
   extern char8 g_blank[];
   extern String g_blankStr;
+
+  extern char32   g_blankW[];
+  extern StringW  g_blankStrW;
 
   extern char8 g_space[];
   extern String g_spaceStr;
 
+  extern char32   g_spaceW[];
+  extern StringW  g_spaceStrW;
+
   extern char8 g_upper[];
   extern String g_upperStr;
+
+  extern char32   g_upperW[];
+  extern StringW  g_upperStrW;
 
   extern char8 g_lower[];
   extern String g_lowerStr;
 
+  extern char32   g_lowerW[];
+  extern StringW  g_lowerStrW;
+
   extern char8 g_alpha[];
   extern String g_alphaStr;
+
+  extern char32   g_alphaW[];
+  extern StringW  g_alphaStrW;
 
   extern char8 g_digit[];
   extern String g_digitStr;
 
+  extern char32   g_digitW[];
+  extern StringW  g_digitStrW;
+
   extern char8 g_xdigit[];
   extern String g_xdigitStr;
+
+  extern char32   g_xdigitW[];
+  extern StringW  g_xdigitStrW;
 
   extern char8 g_alnum[];
   extern String g_alnumStr;
 
+  extern char32   g_alnumW[];
+  extern StringW  g_alnumStrW;
+
   extern char8 g_punct[];
   extern String g_punctStr;
+
+  extern char32   g_punctW[];
+  extern StringW  g_punctStrW;
+
+  extern char8 g_newline[];
+  extern String g_newlineStr;
+
+  extern char32   g_newlineW[];
+  extern StringW  g_newlineStrW;
 
 };};};
 

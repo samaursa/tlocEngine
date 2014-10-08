@@ -47,7 +47,7 @@ namespace tloc { namespace core { namespace base_classes {
 
   protected:
     InitializeAndDestroyBase_TI();
-    ~InitializeAndDestroyBase_TI();
+    ~InitializeAndDestroyBase_TI() TLOC_DTOR_ASSERT;
 
   protected:
     core_utils::Checkpoints         m_flags;
@@ -66,10 +66,11 @@ namespace tloc { namespace core { namespace base_classes {
 
   template <typename T_DerivedClass>
   InitializeAndDestroyBase_TI<T_DerivedClass>::
-    ~InitializeAndDestroyBase_TI()
+    ~InitializeAndDestroyBase_TI() TLOC_DTOR_ASSERT
   {
-    if (IsDestroyed() == false)
-    { Destroy(); }
+    // To avoid getting the user to call Destroy(), you may want the derived
+    // classes to call Destroy() in their destructor
+    AssertIsDestroyed();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

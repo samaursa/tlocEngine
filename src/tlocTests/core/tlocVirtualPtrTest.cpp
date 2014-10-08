@@ -59,21 +59,21 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/ctors", "")
   {
-    SECTION("default ctor", "")
+    //SECTION("default ctor", "")
     {
       VirtualPtr<int> p;
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
-    SECTION("nullptr ctor", "")
+    //SECTION("nullptr ctor", "")
     {
       VirtualPtr<int> p(nullptr);
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
-    SECTION("raw pointer ctor", "")
+    //SECTION("raw pointer ctor", "")
     {
       int* a = new int();
 
@@ -83,10 +83,31 @@ namespace TestingVirtualPtr
 
       delete a;
 
-      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
+      TLOC_TEST_ASSERT
+      {
+        a = p.get();
+      }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
-    SECTION("this_type copy ctor", "")
+    //SECTION("raw pointer ctor", "")
+    {
+      int* a = new int[2];
+
+      VirtualPtr<int> p(a);
+      CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
+      CHECK( (p.get() == a) );
+
+      delete[] a;
+
+      TLOC_TEST_ASSERT
+      {
+        a = p.get();
+      }
+      TLOC_TEST_ASSERT_CHECK();
+    }
+
+    //SECTION("this_type copy ctor", "")
     {
       int* a = new int();
 
@@ -105,7 +126,7 @@ namespace TestingVirtualPtr
       delete a;
     }
 
-    SECTION("VirtualPtr<T_Other> copy ctor", "")
+    //SECTION("VirtualPtr<T_Other> copy ctor", "")
     {
       SharedStruct* s = new SharedStruct(10);
 
@@ -120,7 +141,7 @@ namespace TestingVirtualPtr
       delete s;
     }
 
-    SECTION("SharedPtr<> copy ctor", "")
+    //SECTION("SharedPtr<> copy ctor", "")
     {
       SharedPtr<int> sptr(new int(10));
 
@@ -132,7 +153,7 @@ namespace TestingVirtualPtr
       //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("UniquePtr<> copy ctor", "")
+    //SECTION("UniquePtr<> copy ctor", "")
     {
       UniquePtr<int> sptr(new int(10));
 
@@ -147,7 +168,7 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/operators", "")
   {
-    SECTION("operator=(this_type)", "")
+    //SECTION("operator=(this_type)", "")
     {
       VirtualPtr<int> vp;
       vp = VirtualPtr<int>(new int(10));
@@ -155,12 +176,12 @@ namespace TestingVirtualPtr
       CHECK(*vp == 10);
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
 
-      vp = new int(20);
+      vp.reset(new int(20));
       CHECK(*vp == 20);
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
     }
 
-    SECTION("operator=(SharedPtr)", "")
+    //SECTION("operator=(SharedPtr)", "")
     {
       SharedPtr<int>      sp(new int(20));
       VirtualPtr<int>     vp;
@@ -179,7 +200,7 @@ namespace TestingVirtualPtr
       //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("operator=(UniquePtr)", "")
+    //SECTION("operator=(UniquePtr)", "")
     {
       UniquePtr<int>      sp(new int(20));
       VirtualPtr<int>     vp;
@@ -198,7 +219,7 @@ namespace TestingVirtualPtr
       //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
     }
 
-    SECTION("operator==", "")
+    //SECTION("operator==", "")
     {
       VirtualPtr<int> vp;
       CHECK( (vp == nullptr) );
@@ -237,7 +258,7 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/casts", "")
   {
-    SECTION("static_pointer_cast<>()", "")
+    //SECTION("static_pointer_cast<>()", "")
     {
       SharedStruct localVar(2);
 
@@ -249,7 +270,7 @@ namespace TestingVirtualPtr
       CheckUseCount(vp2, 2, core_cfg::BuildConfig::build_config_type());
     }
 
-    SECTION("const_pointer_cast<>()", "")
+    //SECTION("const_pointer_cast<>()", "")
     {
       SharedStruct localVar(2);
 
@@ -301,31 +322,31 @@ namespace TestingVirtualPtr
     core_sptr::VirtualStackObjectBase_TI<tl_int>        vso; *vso = 30;
     const core_sptr::VirtualStackObjectBase_TI<tl_int>  constVso = vso;
 
-    SECTION("ToConvert(SharedPtr)", "")
+    //SECTION("ToConvert(SharedPtr)", "")
     {
       VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(sptr);
       CHECK(*vp == 10);
     }
 
-    SECTION("ToConvert(UniquePtr)", "")
+    //SECTION("ToConvert(UniquePtr)", "")
     {
       VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(uptr);
       CHECK(*vp == 20);
     }
 
-    SECTION("ToConvert(VirtualStackObject)", "")
+    //SECTION("ToConvert(VirtualStackObject)", "")
     {
       VirtualPtr<tl_int> vp = core_sptr::ToVirtualPtr(vso);
       CHECK(*vp == 30);
     }
 
-    SECTION("ToConvert(VirtualStackObject)", "")
+    //SECTION("ToConvert(VirtualStackObject)", "")
     {
       VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
       CHECK(*vp == 30);
     }
 
-    SECTION("ToConvert(VirtualPtr)", "")
+    //SECTION("ToConvert(VirtualPtr)", "")
     {
       VirtualPtr<const tl_int> vp = core_sptr::ToVirtualPtr(constVso);
       vp = core_sptr::ToVirtualPtr(vp);

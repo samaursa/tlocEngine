@@ -49,10 +49,18 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_SETTER(gl::Attribute, SetNormAttribute, m_normAttr);
     TLOC_DECL_AND_DEF_SETTER(gl::Attribute, SetTCoordAttribute, m_tcoordAttr);
 
+    TLOC_DECL_AND_DEF_SETTER(bool, SetTexCoordsEnabled, m_texCoordsEnabled);
+    TLOC_DECL_AND_DEF_SETTER(bool, SetNormalsEnabled, m_normalsEnabled);
+
+    TLOC_DECL_AND_DEF_GETTER(bool, IsTexCoordsEnabled, m_texCoordsEnabled);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsNormalsEnabled, m_normalsEnabled);
+
   private:
     gl::attribute_vso  m_posAttr;
     gl::attribute_vso  m_normAttr;
     gl::attribute_vso  m_tcoordAttr;
+
+    bool               m_texCoordsEnabled, m_normalsEnabled;
   };
 
   //------------------------------------------------------------------------

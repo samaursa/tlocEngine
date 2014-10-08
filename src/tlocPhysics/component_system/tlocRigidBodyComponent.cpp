@@ -8,14 +8,14 @@ namespace tloc { namespace physics { namespace component_system{
 
   RigidBody::
     RigidBody()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "RigidBody")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   RigidBody::
     RigidBody(rigid_body_def_sptr a_rigidBodyDef)
-    : base_type(k_component_type)
+    : base_type(k_component_type, "RigidBody")
     , m_rigidBodyDef(a_rigidBodyDef)
   {
   }
@@ -29,6 +29,5 @@ namespace tloc { namespace physics { namespace component_system{
 
 using namespace tloc::phys_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RigidBody);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RigidBody);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(RigidBody);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(RigidBody);

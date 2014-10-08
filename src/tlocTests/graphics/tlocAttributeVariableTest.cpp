@@ -24,6 +24,7 @@ namespace TestingAttributeVariable
       gl::Attribute a;
       a.SetName("TestVar");
       a.SetValueAs(v);
+      a.SetEnabled(false);
 
       CHECK(gl::algos::shader_variable::compare::Name("TestVar")(a));
       CHECK_FALSE(gl::algos::shader_variable::compare::Name("TestVars")(a));
@@ -33,6 +34,13 @@ namespace TestingAttributeVariable
         CHECK( acopy.GetType() == a.GetType() );
         CHECK( (acopy.GetName().compare(a.GetName()) == 0) );
         CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
+
+        CHECK_FALSE( acopy.IsEnabled() );
+        CHECK_FALSE( a.IsEnabled() );
+
+        acopy.SetEnabled(true);
+        CHECK( acopy.IsEnabled() );
+        CHECK_FALSE( a.IsEnabled() );
       }
 
       {
@@ -167,6 +175,39 @@ namespace TestingAttributeVariable
       CHECK( a.GetValueAs<Vec4f32>()[1] == Approx(1.0f));
       CHECK( a.GetValueAs<Vec4f32>()[2] == Approx(2.0f));
       CHECK( a.GetValueAs<Vec4f32>()[3] == Approx(3.0f));
+    }
+
+    {
+      gl::Attribute a;
+      a.SetValueAs(gfx_t::color_rg(255, 255));
+      CHECK( a.GetValueAs<Vec2f32>()[0] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec2f32>()[1] == Approx(1.0f));
+    }
+
+    {
+      gl::Attribute a;
+      a.SetValueAs(gfx_t::color_rgb(255, 255, 255));
+      CHECK( a.GetValueAs<Vec3f32>()[0] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec3f32>()[2] == Approx(1.0f));
+    }
+
+    {
+      gl::Attribute a;
+      a.SetValueAs(gfx_t::Color(255, 255, 255, 255));
+      CHECK( a.GetValueAs<Vec4f32>()[0] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec4f32>()[1] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec4f32>()[2] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec4f32>()[3] == Approx(1.0f));
+    }
+
+    {
+      gl::Attribute a;
+      a.SetValueAs(gfx_t::color_f32_rgba(1.0f, 0.5f, 0.0f, 1.0f));
+      CHECK( a.GetValueAs<Vec4f32>()[0] == Approx(1.0f));
+      CHECK( a.GetValueAs<Vec4f32>()[1] == Approx(0.5f));
+      CHECK( a.GetValueAs<Vec4f32>()[2] == Approx(0.0f));
+      CHECK( a.GetValueAs<Vec4f32>()[3] == Approx(1.0f));
     }
 
 #if defined (TLOC_OS_WIN)

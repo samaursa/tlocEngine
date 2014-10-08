@@ -111,6 +111,14 @@ namespace tloc { namespace graphics { namespace renderer {
 
     };
 
+    namespace cull_face {
+
+      const value_type Front::s_glParamName            = GL_FRONT;
+      const value_type Back::s_glParamName             = GL_BACK;
+      const value_type FrontAndBack::s_glParamName     = GL_FRONT_AND_BACK;
+
+    };
+
   };
 
   //------------------------------------------------------------------------
@@ -129,6 +137,7 @@ namespace tloc { namespace graphics { namespace renderer {
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
     , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
     , m_clearBits(0)
+    , m_faceToCull(GL_NONE)
   {
     using namespace p_renderer;
 
@@ -220,6 +229,19 @@ namespace tloc { namespace graphics { namespace renderer {
     for (enable_cont::const_iterator itr = m_params.GetFeaturesToEnable().begin(),
       itrEnd = m_params.GetFeaturesToEnable().end(); itr != itrEnd; ++itr)
     {
+      if (*itr == p_renderer::enable_disable::CullFace::s_glParamName)
+      {
+        if (m_params.GetFaceToCull() != GL_NONE)
+        { glCullFace(m_params.GetFaceToCull()); }
+        else
+        {
+          TLOC_LOG_GFX_WARN() << 
+            "Face culling enabled but not specified (Front, Back or FrontAndBack";
+        }
+
+        TLOC_ASSERT(gl::Error().Succeeded(), "glEnable returned an error");
+      }
+
       glEnable(*itr);
       TLOC_ASSERT(gl::Error().Succeeded(), "glEnable returned an error");
     }
@@ -262,6 +284,7 @@ namespace tloc { namespace graphics { namespace renderer {
     DoEnd() const
   {
     m_fboBinder.reset();
+    gfx_gl::texture_units::image_units::ResetCount();
 
     return ErrorSuccess;
   }

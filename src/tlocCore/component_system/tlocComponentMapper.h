@@ -15,14 +15,14 @@ namespace tloc { namespace core { namespace component_system {
   class ComponentMapper
   {
   public:
-    typedef component_ptr_array                 component_list;
+    typedef component_sptr_array                component_list;
     typedef typename component_list::size_type  size_type;
 
     ComponentMapper(component_list const& a_list) : m_compList(a_list) {}
 
     size_type size() const { return m_compList.size(); }
 
-    core_sptr::VirtualPtr<T> operator[](size_type a_index)
+    core_sptr::SharedPtr<T> operator[](size_type a_index)
     {
       return core_sptr::static_pointer_cast<T>(m_compList[a_index]);
     }

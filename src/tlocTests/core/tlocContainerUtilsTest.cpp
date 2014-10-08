@@ -9,7 +9,7 @@ namespace TestingContainerUtilsTest
 
   TEST_CASE("core/containers/ContainerUtils", "")
   {
-    SECTION("ArraySize", "")
+    //SECTION("ArraySize", "")
     {
       tl_int            a1[10];
       const tl_float    f1[22] = {0};
@@ -20,7 +20,7 @@ namespace TestingContainerUtilsTest
       CHECK(ArraySize(d1) == 1);
     }
 
-    SECTION("Index2D", "")
+    //SECTION("Index2D", "")
     {
       CHECK( (Index2D<10, 10, 0, 0>::k_value == 0) );
       CHECK( (Index2D<10, 10, 1, 0>::k_value == 1) );
@@ -38,7 +38,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Index2D<5, 10, 0, 1>::k_value == 5) );
     }
 
-    SECTION("Index2D Compile and Runtime", "")
+    //SECTION("Index2D Compile and Runtime", "")
     {
       CHECK( (Index2D<10, 10>::Get(0, 0) == 0) );
       CHECK( (Index2D<10, 10>::Get(1, 0) == 1) );
@@ -56,7 +56,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Index2D<5, 10>::Get(0, 1) == 5) );
     }
 
-    SECTION("Index2D Runtime", "")
+    //SECTION("Index2D Runtime", "")
     {
       CHECK( (GetIndex(core_ds::MakeTuple(10, 10),
                        core_ds::MakeTuple(0, 0)) == 0) );
@@ -86,7 +86,7 @@ namespace TestingContainerUtilsTest
         							 core_ds::MakeTuple(0, 1)) == 5) );
     }
 
-    SECTION("Index3D", "")
+    //SECTION("Index3D", "")
     {
       CHECK( (Index3D<10, 10, 10, 0, 0, 0>::k_value == 0) );
       CHECK( (Index3D<10, 10, 10, 1, 0, 0>::k_value == 1) );
@@ -101,7 +101,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Index3D<5, 10, 10, 0, 0, 1>::k_value == 50) );
     }
 
-    SECTION("Index3D Compile and Runtime", "")
+    //SECTION("Index3D Compile and Runtime", "")
     {
       CHECK( (Index3D<10, 10, 10>::Get(0, 0, 0) == 0) );
       CHECK( (Index3D<10, 10, 10>::Get(1, 0, 0) == 1) );
@@ -116,7 +116,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Index3D<5, 10, 10>::Get(0, 0, 1) == 50) );
     }
 
-    SECTION("Index3D Runtime", "")
+    //SECTION("Index3D Runtime", "")
     {
       CHECK( (GetIndex(core_ds::MakeTuple(10, 10, 10),
                        core_ds::MakeTuple(0, 0, 0)) == 0) );
@@ -141,7 +141,7 @@ namespace TestingContainerUtilsTest
         							 core_ds::MakeTuple(0, 0, 1)) == 50) );
     }
 
-    SECTION("Coord2D", "")
+    //SECTION("Coord2D", "")
     {
       CHECK( (Coord2D<10, 10, 0>::k_x == 0) );
       CHECK( (Coord2D<10, 10, 0>::k_y == 0) );
@@ -168,7 +168,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Coord2D<5, 10, 5>::k_y == 1) );
     }
 
-    SECTION("Coord2D Compile and Runtime", "")
+    //SECTION("Coord2D Compile and Runtime", "")
     {
       CHECK( (Coord2D<10, 10>::Get(0)[0] == 0) );
       CHECK( (Coord2D<10, 10>::Get(0)[1] == 0) );
@@ -195,7 +195,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Coord2D<5, 10>::Get(5)[1] == 1) );
     }
 
-    SECTION("Coord2D Runtime", "")
+    //SECTION("Coord2D Runtime", "")
     {
       CHECK( (GetCoord(core_ds::MakeTuple(10, 10), 0)[0] == 0) );
       CHECK( (GetCoord(core_ds::MakeTuple(10, 10), 0)[1] == 0) );
@@ -222,7 +222,7 @@ namespace TestingContainerUtilsTest
       CHECK( (GetCoord(core_ds::MakeTuple(5, 10), 5)[1] == 1) );
     }
 
-    SECTION("Coord3D", "")
+    //SECTION("Coord3D", "")
     {
       CHECK( (Coord3D<10, 10, 10, 0>::k_x == 0) );
       CHECK( (Coord3D<10, 10, 10, 0>::k_y == 0) );
@@ -265,7 +265,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Coord3D<5, 10, 10, 50>::k_z == 1) );
     }
 
-    SECTION("Coord3D Compile and Runtime", "")
+    //SECTION("Coord3D Compile and Runtime", "")
     {
       CHECK( (Coord3D<10, 10, 10>::Get(0)[0] == 0) );
       CHECK( (Coord3D<10, 10, 10>::Get(0)[1] == 0) );
@@ -308,7 +308,7 @@ namespace TestingContainerUtilsTest
       CHECK( (Coord3D<5, 10, 10>::Get(50)[2] == 1) );
     }
 
-    SECTION("Coord3D Runtime", "")
+    //SECTION("Coord3D Runtime", "")
     {
       CHECK( (GetCoord(core_ds::MakeTuple(10, 10, 10), 0)[0] == 0) );
       CHECK( (GetCoord(core_ds::MakeTuple(10, 10, 10), 0)[1] == 0) );

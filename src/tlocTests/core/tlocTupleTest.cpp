@@ -41,7 +41,7 @@ namespace TestingTuple
     CHECK_TUP(p, 5, 5, 5, 5);
 
     // Check Size
-    CHECK(p.GetSize() == 4);
+    CHECK(p.size() == 4);
 
     Tuple<tl_int, 4> q(8);
     p.Swap(q);
@@ -54,7 +54,7 @@ namespace TestingTuple
     CHECK_TUP(p, 1, 2, 3, 4);
 
     // Check Size
-    CHECK(q.GetSize() == 4);
+    CHECK(q.size() == 4);
 
     Tuple<tl_int, 4> r(numberSet);
     CHECK_TUP(r, 1, 2, 3, 4);
@@ -65,7 +65,7 @@ namespace TestingTuple
     CHECK_TUP(r, 1, 2, 3, 4);
 
     // Check Size
-    CHECK(r.GetSize() == 4);
+    CHECK(r.size() == 4);
 
     Tuple<tl_int, 4> s(r);
     CHECK_TUP(s, 1, 2, 3, 4);
@@ -76,7 +76,7 @@ namespace TestingTuple
     CHECK_TUP(s, 1, 2, 3, 4);
 
     // Check Size
-    CHECK (q.GetSize() == 4);
+    CHECK (q.size() == 4);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/VariadicCtor",
@@ -84,7 +84,7 @@ namespace TestingTuple
   {
     Tuple<tl_int, 4> p(Variadic4s(1, 2, 3, 4));
 
-    CHECK(p.GetSize() == 4);
+    CHECK(p.size() == 4);
     CHECK(p[0] == 1);
     CHECK(p[1] == 2);
     CHECK(p[2] == 3);
@@ -161,6 +161,9 @@ namespace TestingTuple
 
   TEST_CASE("Core/DataStructures/Tuple/MakeTuple", "")
   {
+    Tuple<s32, 1> tup1 = core_ds::MakeTuple(1);
+    CHECK(tup1[0] == 1);
+
     Tuple<s32, 2> tup2 = core_ds::MakeTuple(1, 2);
     CHECK(tup2[0] == 1);
     CHECK(tup2[1] == 2);
@@ -175,6 +178,13 @@ namespace TestingTuple
     CHECK(tup4[1] == 2);
     CHECK(tup4[2] == 3);
     CHECK(tup4[3] == 4);
+
+    Tuple<s32, 5> tup5 = core_ds::MakeTuple(1, 2, 3, 4, 5);
+    CHECK(tup5[0] == 1);
+    CHECK(tup5[1] == 2);
+    CHECK(tup5[2] == 3);
+    CHECK(tup5[3] == 4);
+    CHECK(tup5[4] == 5);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Simple Arithmetic", "")

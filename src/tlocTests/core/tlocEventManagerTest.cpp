@@ -65,29 +65,39 @@ namespace TestingEventManager
       WARN("Increment attemp on invalid event");
     }
 
-    virtual bool OnEvent(const EventBase& a_event)
+    virtual EventReturn OnEvent(const EventBase& a_event)
     {
       events::value_type eventType = a_event.GetType();
+
+      EventReturn evtRet(false, false);
+
       switch(eventType)
       {
       case entity_events::create_entity:
       case entity_events::destroy_entity:
       case entity_events::insert_component:
+        evtRet.m_componentInSystem = true;
       case entity_events::remove_component:
         {
           IncrementEventCount(eventType);
-          return false; // we do not want to veto the event just so that other
+          return evtRet; // we do not want to veto the event just so that other
                         // listeners get the chance to read the event
         }
       default:
         {
-          return false;
+          return evtRet;
         }
       }
     }
 
     container_type m_eventsToTest;
   };
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EventTracker, event_tracker);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(EventTracker, event_tracker);
+
+  // ///////////////////////////////////////////////////////////////////////
+  // CompToTest
 
   class CompToTest
     : public core::component_system::Component_T<CompToTest, components::listener>
@@ -96,65 +106,78 @@ namespace TestingEventManager
     typedef core::component_system::Component_T
       <CompToTest, components::listener>            base_type;
   public:
-    CompToTest() : base_type(k_component_type)
+    CompToTest() : base_type(k_component_type, "CompToTest")
     {}
   };
 
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(CompToTest, comp_to_test);
+  TLOC_TYPEDEF_SHARED_PTR(CompToTest, comp_to_test);
+
+  using core_sptr::MakeShared;
 
   TEST_CASE("Core/component_system/EventManager/General", "")
   {
-    EventTracker globalTracker;
-    EventTracker tracker;
+    event_tracker_vso globalTracker;
+    event_tracker_vso tracker, tracker2;
 
-    entity_vso        dummyEnt(0);
-    comp_to_test_vso  transComp;
-    component_vso     dummyComp(*transComp);
+    entity_vso         dummyEnt( MakeArgs(0) );
+    comp_to_test_sptr  transComp = MakeShared<CompToTest>();
+    component_sptr     dummyComp = MakeShared<component_sptr::value_type>(*transComp);
 
     EventManager mgr;
-    mgr.AddGlobalListener(&globalTracker);
-    mgr.AddListener(&tracker, entity_events::create_entity);
+    mgr.AddGlobalListener(globalTracker.get().get());
+    mgr.AddListener(tracker.get().get(), entity_events::create_entity);
 
     events::value_type currentEvent = entity_events::create_entity;
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 0);
-    CHECK(tracker.GetEventCount(currentEvent) == 0);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 0);
+    CHECK(tracker->GetEventCount(currentEvent) == 0);
 
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
-    CHECK(tracker.GetEventCount(currentEvent) == 1);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 1);
+    CHECK(tracker->GetEventCount(currentEvent) == 1);
 
     currentEvent = entity_events::destroy_entity;
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
-    CHECK(tracker.GetEventCount(currentEvent) == 0);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 1);
+    CHECK(tracker->GetEventCount(currentEvent) == 0);
 
     currentEvent = entity_events::insert_component;
-    mgr.AddListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp.get()));
+    mgr.AddListener(tracker.get().get(), entity_events::insert_component);
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 1);
-    CHECK(tracker.GetEventCount(currentEvent) == 1);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 1);
+    CHECK(tracker->GetEventCount(currentEvent) == 1);
 
-    mgr.RemoveListener(&tracker, entity_events::insert_component);
-    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp.get()));
+    mgr.RemoveListener(tracker.get().get(), entity_events::insert_component);
+    mgr.DispatchNow(EntityComponentEvent(currentEvent, dummyEnt.get(), transComp));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
-    CHECK(tracker.GetEventCount(currentEvent) == 1); // no change
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 1); // no change
 
     currentEvent = entity_events::create_entity;
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
 
-    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
-    CHECK(tracker.GetEventCount(currentEvent) == 2);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 2);
 
     mgr.RemoveAllListeners();
 
     mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()));
-    CHECK(globalTracker.GetEventCount(currentEvent) == 2);
-    CHECK(tracker.GetEventCount(currentEvent) == 2);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 2);
+
+    // dispatching to selective listeners
+    CHECK(tracker2->GetEventCount(currentEvent) == 0);
+    EventManager::listeners_list toDispatch;
+    toDispatch.push_back(tracker2.get().get());
+    mgr.DispatchNow(EntityEvent(currentEvent, dummyEnt.get()),
+                    toDispatch);
+    CHECK(tracker2->GetEventCount(currentEvent) == 1);
+    CHECK(globalTracker->GetEventCount(currentEvent) == 2);
+    CHECK(tracker->GetEventCount(currentEvent) == 2);
 
   }
 };

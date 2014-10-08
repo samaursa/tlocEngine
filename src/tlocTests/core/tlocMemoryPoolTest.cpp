@@ -146,14 +146,14 @@ namespace TestingMemoryPool
   typename T_Elem1::value_type::pointer
     GetValue(T_Elem1& a, p_on_stack, p_wrapper)
   {
-    return a->GetValue();
+    return a->GetValuePtr();
   }
 
   template <typename T_Elem1>
   typename T_Elem1::value_type::pointer
     GetValue(T_Elem1& a, p_on_heap, p_wrapper)
   {
-    return a->GetValue();
+    return a->GetValuePtr();
   }
 
   template <typename T_Elem1>
@@ -302,6 +302,7 @@ namespace TestingMemoryPool
     typedef typename pool_type::policy_allocation_type p_alloc_type;
     typedef typename pool_type::policy_indexing_type   p_index_type;
     typedef typename pool_type::pointer                pointer;
+    typedef typename pool_type::iterator               iterator;
     typedef typename pointer::value_type               value_type;
 
     pool_type pool(AllPools::k_poolSize);
@@ -338,9 +339,6 @@ namespace TestingMemoryPool
 
       const value_type elementToCheck = *elementToCheckPtr;
 
-      // if we don't reset the pointer, recycling will throw an assertion since we
-      // are still holding onto the pointer
-      elementToCheckPtr.reset();
       pool.RecycleAtIndex(indexToRecycle);
 
       for (typename T_PoolType::iterator itr = pool.begin(), itrEnd = pool.end();
@@ -359,6 +357,22 @@ namespace TestingMemoryPool
     }
 recycle_test_finished:
     CHECK(recycleTestPassed);
+
+    for (tl_int i = 0; i < AllPools::k_poolSize; ++i)
+    {
+      SetValue(pool.GetNext(), i, p_alloc_type(), p_index_type() );
+    }
+
+    iterator itr = pool.RecycleElement(pool.begin());
+    CHECK(itr == pool.begin());
+    CHECK(pool.GetAvail() == 1);
+    
+    itr = pool.RecycleElement(pool.begin());
+    CHECK(itr == pool.begin());
+    CHECK(pool.GetAvail() == 2);
+
+    pool.RecycleAll();
+    CHECK(pool.GetAvail() == pool.GetTotal());
   }
 
   TEST_CASE_METHOD(AllPools, "Core/MemoryPool/GetAndRecycle", "")

@@ -24,7 +24,7 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef T                                         value_type;
     typedef Circle_T<value_type>                      this_type;
-    typedef Vector2<value_type>                       point_type;
+    typedef Vector_T<value_type, 2>                   point_type;
     typedef Ray_T<value_type, 2>                      ray_type;
     typedef tl_size                                   size_type;
 

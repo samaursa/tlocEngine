@@ -2,6 +2,7 @@
 #define _TLOC_CORE_NULL_PTR_H_
 
   #ifdef TLOC_CXX03
+namespace std {
     //////////////////////////////////////////////////////////////////////////
     // C++11 NULL define (this will be removed when compiling as C++11)
 
@@ -25,6 +26,10 @@
     };
 
     extern nullptr_t nullptr;
+};
+  #else
+    #include <cstddef>
+    using std::nullptr_t;
   #endif
 
 #endif

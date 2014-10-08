@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #ifndef TLOC_DISABLE_ASSERT_ANY
@@ -195,8 +196,8 @@ namespace tloc { namespace core { namespace types {
   {
     // Can't do this check - static variable address is not shared across
     // multple binaries (i.e. lib and exe)
-    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
-    //                "Type T does not match the original type");
+    TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
+                    "Type T does not match the original type");
     TLOC_ASSERT_LOW_LEVEL(m_object != nullptr, "Any not assigned a value!");
     T* ret = reinterpret_cast<T*>(m_policy->GetValue(&m_object));
     return *ret;
@@ -211,8 +212,8 @@ namespace tloc { namespace core { namespace types {
   {
     // Can't do this check - static variable address is not shared across
     // multple binaries (i.e. lib and exe)
-    //TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
-    //                "Type T does not match the original type");
+    TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
+                    "Type T does not match the original type");
     T const * ret = reinterpret_cast<T const*>(m_policy->GetValue(&m_object));
     return *ret;
   }

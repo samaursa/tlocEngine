@@ -1,6 +1,5 @@
 #include "tlocUniform.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 
 namespace tloc { namespace graphics { namespace gl {
@@ -14,16 +13,32 @@ namespace tloc { namespace graphics { namespace gl {
     : base_type(a_other)
   { }
 
-  Uniform::this_type& Uniform::
-    operator=(const this_type& a_other)
+  Uniform::this_type&
+    Uniform::
+    operator=(this_type a_other)
   {
-    base_type::operator=(a_other);
+    swap(a_other);
     return *this;
   }
 
-  //------------------------------------------------------------------------
-  // typedefs
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Uniform);
+  void
+    Uniform::
+    swap(this_type& a_other)
+  {
+    base_type::swap(a_other);
+  }
 
 };};};
+
+//------------------------------------------------------------------------
+// typedefs
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
+
+using namespace tloc::gfx_gl;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Uniform);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Uniform);
+
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(uniform_sptr);

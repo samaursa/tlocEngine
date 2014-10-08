@@ -3,6 +3,53 @@
 #include <tlocCore/memory/tlocMemory.h>
 #include <tlocCore/memory/tlocMemory.inl.h>
 
+// -----------------------------------------------------------------------
+// ObjectCreator tester objects
+
+struct ObjectDefaultCtor
+{ };
+
+struct Object1Param
+{
+  Object1Param(tloc::tl_int a)
+    : m_a(a)
+  { }
+
+  tloc::tl_int m_a;
+};
+
+struct Object2Param
+{
+  Object2Param(tloc::tl_int a, tloc::tl_float b)
+    : m_a(a)
+    , m_b(b)
+  { }
+
+  tloc::tl_int    m_a;
+  tloc::tl_float  m_b;
+};
+
+struct Object3Param
+{
+  Object3Param(tloc::tl_int a, tloc::tl_float b, tloc::tl_double c)
+    : m_a(a)
+    , m_b(b)
+    , m_c(c)
+  { }
+
+  tloc::tl_int    m_a;
+  tloc::tl_float  m_b;
+  tloc::tl_double m_c;
+};
+
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+
+TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_DEF(ObjectDefaultCtor);
+TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_1PARAM(Object1Param, tl_int);
+TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_2PARAM(Object2Param, tl_int, tl_float);
+TLOC_DECL_AND_DEF_CREATE_OBJECT_CTOR_3PARAM(Object3Param, tl_int, tl_float, tl_double);
+
 namespace TestingMemory
 {
   using namespace tloc;
@@ -103,4 +150,48 @@ namespace TestingMemory
     TestUninitializedFillN<ComplexType<tl_int> >();
   }
 
+  TEST_CASE("core/memory/ObjectCretor", "")
+  {
+    //SECTION("On Stack", "")
+    {
+      core_mem::CreateObject<ObjectDefaultCtor>().OnStack();
+
+      Object1Param o1 =
+        core_mem::CreateObject<Object1Param>().OnStack(5);
+      CHECK(o1.m_a == 5);
+
+      Object2Param o2 =
+        core_mem::CreateObject<Object2Param>().OnStack(5, 10.0f);
+      CHECK(o2.m_a == 5);
+      CHECK(o2.m_b == Approx(10.0f));
+
+      Object3Param o3 =
+        core_mem::CreateObject<Object3Param>().OnStack(5, 10.0f, 5.0);
+      CHECK(o3.m_a == 5);
+      CHECK(o3.m_b == Approx(10.0f));
+      CHECK(o3.m_c == Approx(5.0));
+    }
+
+    //SECTION("On Heap", "")
+    {
+      core_mem::CreateObject<ObjectDefaultCtor>().OnHeap();
+
+      core_sptr::VirtualPtr<Object1Param> o1 =
+        core_mem::CreateObject<Object1Param>().OnHeap(5);
+      CHECK(o1->m_a == 5);
+
+      core_sptr::VirtualPtr<Object2Param> o2 =
+        core_mem::CreateObject<Object2Param>().OnHeap(5, 10.0f);
+      CHECK(o2->m_a == 5);
+      CHECK(o2->m_b == Approx(10.0f));
+
+      core_sptr::VirtualPtr<Object3Param> o3 =
+        core_mem::CreateObject<Object3Param>().OnHeap(5, 10.0f, 5.0);
+      CHECK(o3->m_a == 5);
+      CHECK(o3->m_b == Approx(10.0f));
+      CHECK(o3->m_c == Approx(5.0));
+    }
+  }
+
 };
+

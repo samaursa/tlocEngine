@@ -1,6 +1,7 @@
 set(TLOC_PHYSICS
   tlocDepVersionCheck.cpp 
   tlocPhysicsBase.h 
+  tlocPhysicsBase.cpp
   tloc_physics.cpp 
   tloc_physics.h 
   tloc_physics.inl.h
@@ -54,7 +55,7 @@ add_definitions(-DGLEW_STATIC)
 
 include_directories(
   ${TLOC_ENGINE_PATH}/src/3rdParty/
-  ${TLOC_DEP_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
 )
 
 add_library(tlocPhysics STATIC
@@ -69,7 +70,11 @@ add_dependencies(tlocPhysics
   tlocMath
   )
 
+set_platform_specific_properties(tlocPhysics)
+
 # Filters to organize the source files
 source_group(box2d            FILES ${TLOC_PHYSICS_BOX2D})
 source_group(component_system FILES ${TLOC_PHYSICS_COMPONENT_SYSTEM})
 source_group(error            FILES ${TLOC_PHYSICS_ERROR})
+
+tloc_install_library(tlocPhysics tlocPhysics)

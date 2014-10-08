@@ -3,8 +3,9 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
@@ -38,11 +39,11 @@ namespace tloc { namespace math { namespace component_system {
     typedef T_Real                    real_type;
     typedef Transform_T<real_type>    this_type;
 
-    typedef types::Matrix4<real_type> transform_type;
-    typedef types::Vector3<real_type> position_type;
-    typedef types::Vector3<real_type> scale_type;
-    typedef types::Vector3<real_type> pivot_type;
-    typedef types::Matrix3<real_type> orientation_type;
+    typedef types::Matrix_T<real_type, 4> transform_type;
+    typedef types::Vector_T<real_type, 3> position_type;
+    typedef types::Vector_T<real_type, 3> scale_type;
+    typedef types::Vector_T<real_type, 3> pivot_type;
+    typedef types::Matrix_T<real_type, 3> orientation_type;
 
     typedef core::component_system::Component_T
       <this_type, components::transform>    base_type;
@@ -65,6 +66,7 @@ namespace tloc { namespace math { namespace component_system {
                                         scale_type::ONE);
 
     this_type         Invert() const;
+    void              LookAt(position_type a_target);
 
     TLOC_DECL_AND_DEF_GETTER(scale_type, GetScale, m_scale);
     TLOC_DECL_AND_DEF_SETTER(scale_type, SetScale, m_scale);
@@ -81,13 +83,17 @@ namespace tloc { namespace math { namespace component_system {
   typedef Transform_T<f32>        Transformf32;
   typedef Transform_T<f64>        Transformf64;
 
-  TLOC_TYPEDEF_SHARED_PTR(Transform, transform);
-  TLOC_TYPEDEF_SHARED_PTR(Transformf32, transform_f32);
-  TLOC_TYPEDEF_SHARED_PTR(Transformf64, transform_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transform, transform);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf32, transform_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Transformf64, transform_f64);
 
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_sptr, transform_sptr);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_f32_sptr, transform_f32_sptr);
-  TLOC_TYPEDEF_COMPONENT_POOL(transform_f64_sptr, transform_f64_sptr);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transform, transform);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transformf32, transform_f32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Transformf64, transform_f64);
+
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf32, transform_f32);
+  TLOC_TYPEDEF_COMPONENT_POOL(Transformf64, transform_f64);
 
 };};};
 

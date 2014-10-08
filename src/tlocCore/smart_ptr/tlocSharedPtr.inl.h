@@ -6,9 +6,9 @@
 #endif
 
 #include "tlocSharedPtr.h"
-#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 
@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <SHARED_PTR_TEMPS>
   SharedPtr<SHARED_PTR_PARAMS>::
-    SharedPtr(nullptr_t)
+  SharedPtr(std::nullptr_t)
     : m_rawPtr(nullptr)
     , m_refCount(nullptr)
   { }
@@ -38,7 +38,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_rawPtr)
     , m_refCount(a_rawPtr ? new ref_count_type(0) : nullptr)
   {
-    priv::DoStartTrackingPtr( (void*)a_rawPtr);
     DoAddRef();
   }
 
@@ -48,7 +47,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr(a_other.m_rawPtr)
     , m_refCount(a_other.m_refCount)
   {
-    null_copy_policy_type::CheckNullBeforeCopy(m_rawPtr);
+    null_copy_policy_type::CheckNullBeforeCopy((void*)m_rawPtr);
     // Mainly for containers
     DoAddRef();
   }
@@ -73,8 +72,11 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other, typename T_OtherPolicy>
   SHARED_PTR_TYPE::this_type&
     SharedPtr<SHARED_PTR_PARAMS>::
-    operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other)
+    operator= (SharedPtr<T_Other, T_OtherPolicy> a_other)
   {
+    // NOTE: Cannot use copy-and-swap here because a_other is a different type
+    // and therefore not swappable unless we want to expose everything and
+    // then do some ugly casts
     DoRemoveRef();
     m_rawPtr = a_other.get();
     m_refCount = a_other.DoExposeCounter();
@@ -152,7 +154,13 @@ namespace tloc { namespace core { namespace smart_ptr {
   void SharedPtr<SHARED_PTR_PARAMS>::DoAddRef()
   {
     if (m_refCount)
-    { ++*m_refCount; }
+    {
+      if (*m_refCount == 0)
+      { 
+        core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr ); }
+
+      ++*m_refCount;
+    }
   }
 
   template <SHARED_PTR_TEMPS>
@@ -163,7 +171,8 @@ namespace tloc { namespace core { namespace smart_ptr {
       --*m_refCount;
       if (use_count() == 0)
       {
-        priv::DoStopTrackingPtr( (void*)m_rawPtr);
+        core_mem::tracking::priv::DoUntrackMemoryAddress( (void*)m_rawPtr);
+
         delete m_rawPtr;
         delete m_refCount;
       }

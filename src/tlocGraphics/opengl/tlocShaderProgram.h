@@ -3,11 +3,12 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
-
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/types/tlocStrongType.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocShader.h>
@@ -28,7 +29,8 @@ namespace tloc { namespace graphics { namespace gl {
     struct ActiveUniformMaxLength  { static const tl_int s_glStatusName; };
   };
 
-  class ShaderProgram : public Object_T<ShaderProgram, p_object::WithError>
+  class ShaderProgram
+    : public Object_T<ShaderProgram, p_object::WithError>
   {
   public:
     template <typename T> friend class ObjectRefCounted;
@@ -44,12 +46,14 @@ namespace tloc { namespace graphics { namespace gl {
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
 
-    typedef tl_size                         size_type;
-    typedef s32                             gl_result_type;
+    typedef tl_size                                       size_type;
+    typedef s32                                           gl_result_type;
 
-    typedef ShaderVariableInfo              glsl_var_info_type;
+    typedef ShaderVariableInfo                            glsl_var_info_type;
     typedef core::containers::tl_array
-            <ShaderVariableInfo>::type      glsl_var_info_cont_type;
+            <ShaderVariableInfo>::type                    glsl_var_info_cont_type;
+
+    typedef core_t::StrongType_T<bool, 0>                 force_enable;
 
   public:
     ShaderProgram();
@@ -74,20 +78,24 @@ namespace tloc { namespace graphics { namespace gl {
 
     template <typename T_ProgramIvParam>
     gl_result_type  Get() const;
-    error_type      Enable() const;
+    error_type      Enable(force_enable a_fe = force_enable(false)) const;
     bool            IsEnabled() const;
     error_type      Disable() const;
+
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (object_handle, GetLastShaderHandle, s_lastShaderHandle);
 
   private:
     template <typename T_ProgramIvParam>
     gl_result_type  DoGet() const;
 
   private:
-    core::utils::Checkpoints         m_flags;
     glsl_var_info_cont_type          m_attributeInfo;
     glsl_var_info_cont_type          m_uniformInfo;
-
+    core::utils::Checkpoints         m_flags;
     s32                              m_currTextureUnit;
+
+    static object_handle             s_lastShaderHandle;
 
   };
 
@@ -117,7 +125,8 @@ namespace tloc { namespace graphics { namespace gl {
   //------------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(ShaderProgram, shader_program);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderProgram, shader_program);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderProgram, shader_program);
 
 };};};
 

@@ -3,8 +3,9 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
@@ -30,13 +31,15 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core_cs::Component_T<SceneNode, components::scene_node>  base_type;
 
-    typedef SceneNode                                          this_type;
-    typedef this_type*                                    pointer;
+    typedef SceneNode                                     this_type;
+    typedef core_sptr::VirtualPtr<this_type>              pointer;
+    typedef core_sptr::VirtualPtr<const this_type>        const_pointer;
     typedef this_type&                                    reference;
 
     typedef core_err::Error                               error_type;
 
-    typedef const core_cs::Entity*                        entity_ptr_type;
+    typedef core_cs::const_entity_vptr                   const_entity_ptr;
+    typedef core_cs::entity_vptr                         entity_ptr;
 
     typedef core_conts::tl_array<pointer>::type   node_cont_type;
     typedef node_cont_type::iterator              node_cont_iterator;
@@ -47,11 +50,20 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     SceneNode();
-    explicit SceneNode(entity_ptr_type a_entity);
+    explicit SceneNode(entity_ptr a_entity);
 
-    void        AddChild(pointer a_childNode);
-    bool        HasChild(pointer a_childNode);
-    void        RemoveChild(pointer a_childNode);
+    this_type&                AddChild(pointer a_childNode);
+    bool                      HasChild(pointer a_childNode);
+    this_type&                RemoveChild(pointer a_childNode);
+
+    this_type&                RemoveParent();
+    this_type&                SetParent(pointer a_parentNode);
+
+    entity_ptr                GetEntity();
+    const_entity_ptr          GetEntity() const;
+
+    pointer                   GetParent();
+    const_pointer             GetParent() const;
 
     node_cont_iterator        begin();
     node_cont_iterator        end();
@@ -60,27 +72,26 @@ namespace tloc { namespace graphics { namespace component_system {
     node_cont_const_iterator  end() const;
     node_cont_type::size_type size() const;
 
-    bool IsParentDisabled() const;
+    bool                      IsParentDisabled() const;
 
-    TLOC_DECL_SETTER(transform_type, SetWorldTransform);
+    TLOC_DECL_SETTER_CHAIN(transform_type, SetWorldTransform);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (transform_type, GetWorldTransform, m_worldTransform);
     TLOC_DECL_AND_DEF_GETTER(index_type, GetLevel, m_level);
 
-    TLOC_DECL_AND_DEF_GETTER(entity_ptr_type, GetEntity, m_entity);
-    TLOC_DECL_AND_DEF_GETTER(pointer, GetParent, m_parent);
+    TLOC_DECL_AND_DEF_GETTER(bool, HasParent, m_parent != nullptr);
 
     TLOC_DECL_GETTER(bool, IsHierarchyUpdateRequired);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetHierarchyUpdateRequired);
+    TLOC_DECL_SETTER_BY_VALUE_CHAIN(bool, SetHierarchyUpdateRequired);
 
     TLOC_DECL_GETTER(bool, IsTransformUpdateRequired);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetTransformUpdateRequired);
+    TLOC_DECL_SETTER_BY_VALUE_CHAIN(bool, SetTransformUpdateRequired);
 
   private:
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(index_type, DoSetLevel, m_level);
 
   private:
-    entity_ptr_type         m_entity;
+    entity_ptr              m_entity;
 
     pointer                 m_parent;
     node_cont_type          m_children;
@@ -132,7 +143,7 @@ namespace tloc { namespace graphics { namespace component_system {
   struct SceneNodeCompare
   {
   public:
-    typedef SceneNode::entity_ptr_type             entity_ptr_type;
+    typedef SceneNode::entity_ptr             entity_ptr_type;
     typedef SceneNode::pointer                     node_ptr_type;
 
   public:
@@ -153,8 +164,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(SceneNode, scene_node);
-  TLOC_TYPEDEF_COMPONENT_POOL(scene_node_sptr, scene_node_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(SceneNode, scene_node);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(SceneNode, scene_node);
+  TLOC_TYPEDEF_COMPONENT_POOL(SceneNode, scene_node);
 
 };};};
 

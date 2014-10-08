@@ -11,6 +11,8 @@
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
 
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
+
 #include "tlocWindow.h"
 #include "tlocWindowImpl.h"
 
@@ -27,11 +29,12 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // TODO: Static assert to prevent other platforms from using this class
 
-    typedef core::PlatformInfo<>::platform_type     platform_type;
+    typedef core_plat::PlatformInfo::platform_type  platform_type;
     typedef WindowImpl<Window_T<> >                 this_type;
     typedef WindowImplBase<Window_T<> >             base_type;
     typedef GraphicsMode<platform_type>             graphics_mode;
     typedef base_type::parent_window_type           parent_window_type;
+    typedef parent_window_type::dim_type            dim_type;
 
     // Note: We are using tlocAny to replace Objective-C types in this case
     // since any source file (cpp) that included this header would have to be
@@ -41,6 +44,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef tl_size                                 size_type;
     typedef core_t::Any /*(OpenGLView*) */          view_handle_type;
     typedef core_t::Any /*(OpenGLViewController*) */view_controller_handle_type;
+
+    typedef gl::FramebufferObject                   fbo_type;
+    typedef gl::framebuffer_object_sptr             fbo_sptr;
 
   public:
 
@@ -67,11 +73,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///-------------------------------------------------------------------------
     /// Creates the actual window with the specified properties
     ///
-    /// @param  a_mode The graphics mode
-    /// @param  a_prop The window properties.
+    /// @param  a_mode     The graphics mode
+    /// @param  a_settings The window settings.
     ///-------------------------------------------------------------------------
-    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-                const window_style_type& a_style);
+    void Create(const graphics_mode& a_mode, const WindowSettings& a_settings);
 
     ///-------------------------------------------------------------------------
     /// Gets the width.
@@ -104,6 +109,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The maximum height.
     ///-------------------------------------------------------------------------
     size_type GetMaxHeight() const;
+    
+    ///-------------------------------------------------------------------------
+    /// Gets the height.
+    ///
+    /// @return The height.
+    ///-------------------------------------------------------------------------
+    dim_type GetDPI() const;
 
     void ProcessEvents();
 
@@ -120,6 +132,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @param  a_active true to set this window as active.
     ///-------------------------------------------------------------------------
     void SetActive(bool a_active);
+    
+    bool HasValidContext() const;
 
     ///-------------------------------------------------------------------------
     /// Enable/disable vertical sync
@@ -200,6 +214,11 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @return The OpenGLView handle
     ///-------------------------------------------------------------------------
     view_handle_type GetOpenGLViewHandle();
+
+    ///-------------------------------------------------------------------------
+    /// Called by Window_T<> when setting up the window
+    ///-------------------------------------------------------------------------
+    fbo_sptr DoGetFramebuffer();
 
   private:
 

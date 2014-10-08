@@ -1,5 +1,8 @@
 #include "tlocFrustum.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
+#include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
 
 #include <tlocMath/tloc_math.h>
 #include <tlocMath/tloc_math.inl.h>
@@ -43,7 +46,7 @@ namespace tloc { namespace math { namespace proj {
   template <FRUSTUM_TEMPS>
   FRUSTUM_TYPE::ray_type
     Frustum_TI<FRUSTUM_PARAMS>::
-    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+    GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const
   {
 
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
@@ -53,7 +56,7 @@ namespace tloc { namespace math { namespace proj {
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 
-    using math_t::Vector3;
+    using math_t::Vector_T;
 
     const real_type z_eye
       = - (projMatrix.Get(2,3) / (a_xyzNDC[2] + projMatrix.Get(2, 2)) );
@@ -68,8 +71,8 @@ namespace tloc { namespace math { namespace proj {
       (-z_eye / projMatrix.Get(1, 1)) *
        (a_xyzNDC[1] + projMatrix.Get(1, 2) + (projMatrix.Get(1, 3) / z_eye) );
 
-    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(rayOrigin);
+    Vector_T<real_type, 3> rayOrigin(x_eye, y_eye, z_eye);
+    Vector_T<real_type, 3> rayDir(rayOrigin);
     rayDir.Normalize();
 
     return ray_type(typename ray_type::origin(rayOrigin),
@@ -81,17 +84,6 @@ namespace tloc { namespace math { namespace proj {
 
   template class Frustum_TI<f32>;
   template class Frustum_TI<f64>;
-
-  //------------------------------------------------------------------------
-  // Instantiate tuple for the number of planes we have
-
-  using core::data_structs::Tuple;
-
-  template class Tuple<Frustum_TI<f32>::real_type,
-                       p_frustum::PlaneCount::k_planeIndex>;
-
-  template class Tuple<Frustum_TI<f64>::real_type,
-                       p_frustum::PlaneCount::k_planeIndex>;
 
   //////////////////////////////////////////////////////////////////////////
   // Frustum<Perspective>
@@ -109,6 +101,7 @@ namespace tloc { namespace math { namespace proj {
     : m_fov(a_fov)
   {
     m_aspectRatio = m_fov.GetAspectRatio();
+    SetNear(5.0f).SetFar(100.0f).SetConvergence(1.0f).SetInteraxial(0);
   }
 
   template <FRUSTUM_PERSP_TEMPS>
@@ -116,27 +109,11 @@ namespace tloc { namespace math { namespace proj {
     Params(const Params& a_other)
     : m_near(a_other.m_near)
     , m_far (a_other.m_far)
+    , m_convergence(a_other.m_convergence)
+    , m_interaxial(a_other.m_interaxial)
     , m_aspectRatio(a_other.m_aspectRatio)
     , m_fov(a_other.m_fov)
   { }
-
-  template <FRUSTUM_PERSP_TEMPS>
-  FRUSTUM_PERSP_TYPE::Params&
-    Frustum_T<FRUSTUM_PERSP_PARAMS>::Params::
-    SetNear(real_type a_near)
-  {
-    m_near = a_near;
-    return *this;
-  }
-
-  template <FRUSTUM_PERSP_TEMPS>
-  FRUSTUM_PERSP_TYPE::Params&
-    Frustum_T<FRUSTUM_PERSP_PARAMS>::Params::
-    SetFar(real_type a_far)
-  {
-    m_far = a_far;
-    return *this;
-  }
 
   //------------------------------------------------------------------------
   // Frustum
@@ -166,8 +143,8 @@ namespace tloc { namespace math { namespace proj {
     this->DoDefinePlanes
       (plane_args(a_near, a_far, top, bottom, left, right));
 
-    typename ar_type::width width(Math<real_type>::Abs(right - left));
-    typename ar_type::height height(Math<real_type>::Abs(top - bottom));
+    typename ar_type::width width(math::Abs(right - left));
+    typename ar_type::height height(math::Abs(top - bottom));
 
     pyth_type pythHalfAngle =
       pyth_type( typename pyth_type::base(a_near),
@@ -212,16 +189,23 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = this->template GetPlane<Top>();
-    real_type pBott   = this->template GetPlane<Bottom>();
-    real_type pLeft   = this->template GetPlane<Left>();
-    real_type pRight  = this->template GetPlane<Right>();
-    real_type pNear   = this->template GetPlane<Near>();
-    real_type pFar    = this->template GetPlane<Far>();
+    const real_type pTop    = GetPlane<Top>();
+    const real_type pBott   = GetPlane<Bottom>();
+    const real_type pLeft   = GetPlane<Left>();
+    const real_type pRight  = GetPlane<Right>();
+    const real_type pNear   = GetPlane<Near>();
+    const real_type pFar    = GetPlane<Far>();
 
-    real_type RminLReci = 1 / (pRight - pLeft);
-    real_type TminBReci = 1 / (pTop - pBott);
-    real_type FminNReci = 1 / (pFar - pNear);
+    TLOC_ASSERT(math::IsEqual<real_type>( (pRight - pLeft), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(math::IsEqual<real_type>( (pTop - pBott), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(math::IsEqual<real_type>( (pFar - pNear), 0.0f) == false,
+                "Divide by zero");
+
+    const real_type RminLReci = 1 / (pRight - pLeft);
+    const real_type TminBReci = 1 / (pTop - pBott);
+    const real_type FminNReci = 1 / (pFar - pNear);
 
     matrix_type& projMatrix = this->DoGetProjectionMatrix();
 
@@ -233,12 +217,24 @@ namespace tloc { namespace math { namespace proj {
     projMatrix(3, 2) = -1;
     projMatrix(2, 3) = -2 * pFar * pNear  * FminNReci;
     projMatrix(3, 3) = 0;
+
+    // for stereo camera
+    const real_type pConv     = this->GetParams().GetConvergence();
+    const real_type pInter    = this->GetParams().GetInteraxial();
+
+    TLOC_ASSERT( math::IsEqual<real_type>(pConv, 0) == false,
+                 "Divide by zero");
+
+    const real_type pConvInv  = 1 / pConv;
+
+    projMatrix(0, 2) += (pNear * pInter) * pConvInv * RminLReci;
+    projMatrix(0, 3) += (pNear * pInter) * RminLReci;
   }
 
   template <FRUSTUM_PERSP_TEMPS>
   FRUSTUM_PERSP_TYPE::ray_type
     Frustum_T<FRUSTUM_PERSP_PARAMS>::
-    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+    GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const
   {
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
                 a_xyzNDC[1] >= -1.0f && a_xyzNDC[1] <= 1.0f &&
@@ -250,7 +246,7 @@ namespace tloc { namespace math { namespace proj {
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 
-    using math_t::Vector3;
+    using math_t::Vector_T;
     /* For details, see Saad's Master's thesis Appendix H */
 
     // We need to go from NDC -> Clip -> Eye
@@ -271,8 +267,8 @@ namespace tloc { namespace math { namespace proj {
     real_type y_eye = (-z_eye / projMatrix.Get(1, 1)) *
                       (a_xyzNDC[1] + projMatrix.Get(1, 2));
 
-    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(rayOrigin);
+    Vector_T<real_type, 3> rayOrigin(x_eye, y_eye, z_eye);
+    Vector_T<real_type, 3> rayDir(rayOrigin);
     rayDir.Normalize();
 
     return ray_type(typename ray_type::origin(rayOrigin),
@@ -327,16 +323,23 @@ namespace tloc { namespace math { namespace proj {
   {
     using namespace p_frustum;
 
-    real_type pTop    = this->template GetPlane<Top>();
-    real_type pBott   = this->template GetPlane<Bottom>();
-    real_type pLeft   = this->template GetPlane<Left>();
-    real_type pRight  = this->template GetPlane<Right>();
-    real_type pNear   = this->template GetPlane<Near>();
-    real_type pFar    = this->template GetPlane<Far>();
+    const real_type pTop    = GetPlane<Top>();
+    const real_type pBott   = GetPlane<Bottom>();
+    const real_type pLeft   = GetPlane<Left>();
+    const real_type pRight  = GetPlane<Right>();
+    const real_type pNear   = GetPlane<Near>();
+    const real_type pFar    = GetPlane<Far>();
 
-    real_type RminLReci = 1 / (pRight - pLeft);
-    real_type TminBReci = 1 / (pTop - pBott);
-    real_type FminNReci = 1 / (pFar - pNear);
+    TLOC_ASSERT(math::IsEqual<real_type>( (pRight - pLeft), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(math::IsEqual<real_type>( (pTop - pBott), 0.0f) == false,
+                "Divide by zero");
+    TLOC_ASSERT(math::IsEqual<real_type>( (pFar - pNear), 0.0f) == false,
+                "Divide by zero");
+
+    const real_type RminLReci = 1 / (pRight - pLeft);
+    const real_type TminBReci = 1 / (pTop - pBott);
+    const real_type FminNReci = 1 / (pFar - pNear);
 
     matrix_type& projMatrix = this->DoGetProjectionMatrix();
 
@@ -354,19 +357,19 @@ namespace tloc { namespace math { namespace proj {
   template <FRUSTUM_ORTHO_TEMPS>
   FRUSTUM_ORTHO_TYPE::ray_type
     Frustum_T<FRUSTUM_ORTHO_PARAMS>::
-    GetRay(const types::Vector3<real_type>& a_xyzNDC) const
+    GetRay(const types::Vector_T<real_type, 3>& a_xyzNDC) const
   {
     TLOC_ASSERT(a_xyzNDC[0] >= -1.0f && a_xyzNDC[0] <= 1.0f &&
                 a_xyzNDC[1] >= -1.0f && a_xyzNDC[1] <= 1.0f &&
                 a_xyzNDC[2] >= -1.0f && a_xyzNDC[2] <= 1.0f,
                 "Vector not in Normalized Device Co-ordinates");
 
-    real_type pFar  = this->template GetPlane<p_frustum::Far>();
-    real_type pNear = this->template GetPlane<p_frustum::Near>();
+    real_type pFar  = GetPlane<p_frustum::Far>();
+    real_type pNear = GetPlane<p_frustum::Near>();
 
     const matrix_type& projMatrix = this->GetProjectionMatrix();
 
-    using math_t::Vector3;
+    using math_t::Vector_T;
     /* For details, see Saad's Master's thesis Appendix H */
 
     // We need to go from NDC -> Clip -> Eye
@@ -385,8 +388,8 @@ namespace tloc { namespace math { namespace proj {
     real_type y_eye = (a_xyzNDC[1] - projMatrix.Get(1, 3)) /
                        projMatrix.Get(1, 1);
 
-    Vector3<real_type> rayOrigin(x_eye, y_eye, z_eye);
-    Vector3<real_type> rayDir(0, 0, -1);
+    Vector_T<real_type, 3> rayOrigin(x_eye, y_eye, z_eye);
+    Vector_T<real_type, 3> rayDir(0, 0, -1);
 
     return ray_type(typename ray_type::origin(rayOrigin),
                     typename ray_type::direction(rayDir));
@@ -400,3 +403,15 @@ namespace tloc { namespace math { namespace proj {
 
 
 };};};
+
+//------------------------------------------------------------------------
+// Instantiate tuple for the number of planes we have
+
+using namespace tloc;
+using namespace math_proj;
+using core::data_structs::Tuple;
+
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(Frustum_TI<f32>::real_type,
+                                  p_frustum::PlaneCount::k_planeIndex);
+TLOC_EXPLICITLY_INSTANTIATE_TUPLE(Frustum_TI<f64>::real_type,
+                                  p_frustum::PlaneCount::k_planeIndex);

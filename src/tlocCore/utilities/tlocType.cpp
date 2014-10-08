@@ -1,6 +1,9 @@
 #include "tlocType.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/tlocAssert.h>
 
 #include <limits>
 
@@ -139,9 +142,11 @@ namespace tloc { namespace core { namespace utils {
   template _type_  CastNumber(u64);\
   template _type_  CastNumber(f32);\
   template _type_  CastNumber(f64);\
+  template _type_  CastNumber(f128);\
   template _type_  CastNumber(tl_long);\
   template _type_  CastNumber(tl_ulong)
 
+  INSTANTIATE_CAST_NUMBER(char32);
   INSTANTIATE_CAST_NUMBER(s8);
   INSTANTIATE_CAST_NUMBER(u8);
   INSTANTIATE_CAST_NUMBER(s16);
@@ -152,6 +157,7 @@ namespace tloc { namespace core { namespace utils {
   INSTANTIATE_CAST_NUMBER(u64);
   INSTANTIATE_CAST_NUMBER(f32);
   INSTANTIATE_CAST_NUMBER(f64);
+  INSTANTIATE_CAST_NUMBER(f128);
   INSTANTIATE_CAST_NUMBER(tl_long);
   INSTANTIATE_CAST_NUMBER(tl_ulong);
 

@@ -2,6 +2,8 @@
 #define TLOC_QUEUE_H
 
 #include <tlocCore/tlocCoreBase.h>
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/containers/tlocList.h>
 

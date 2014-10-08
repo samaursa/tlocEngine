@@ -21,6 +21,9 @@ namespace tloc { namespace core { namespace containers {
   class ArrayFixed
   {
   public:
+    enum { k_capacity = T_Capacity };
+
+  public:
     //------------------------------------------------------------------------
     // typedefs (similar to vector)
     typedef ArrayFixed<T, T_Capacity>                     this_type;
@@ -105,7 +108,7 @@ namespace tloc { namespace core { namespace containers {
     bool             full() const;
 
     void             resize(size_type a_newSize);
-    void             resize(size_type a_newSize, value_type& a_value);
+    void             resize(size_type a_newSize, const value_type& a_value);
 
     //------------------------------------------------------------------------
     // Modifiers

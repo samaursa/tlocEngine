@@ -6,12 +6,14 @@ set(TLOC_TESTS_GRAPHICS
   tlocGLGeneralTest.cpp
   tlocGLObjectTest.cpp
   tlocGraphicsModesTest.cpp
+  tlocImageTest.cpp
   tlocImageLoaderTest.cpp
   tlocQuadTest.cpp
   tlocObjLoaderTest.cpp
   tlocShaderComponentTest.cpp
   tlocShaderOperatorTest.cpp
   tlocShaderProgramTest.cpp
+  tlocSpriteTest.cpp
   tlocSpriteLoaderTest.cpp
   tlocTestCommon.cpp
   tlocTextureCoordsTest.cpp
@@ -29,6 +31,14 @@ set(TLOC_TESTS_GRAPHICS_ASSETS
 
 set(TLOC_CURRENT_EXEC_NAME tlocTestsGraphics)
 
+include_directories(
+  ${TLOC_DEP_INSTALL_PATH}/include/FreeType/
+  )
+
+link_directories(
+  ${TLOC_DEP_INSTALL_PATH}/lib/
+  )
+
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}
   ${TLOC_TESTS_GRAPHICS}
@@ -40,6 +50,7 @@ add_dependencies(${TLOC_CURRENT_EXEC_NAME}
   tlocGraphics
   tlocMath
   tlocInput
+  tlocPrefab
   )
 
 target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
@@ -47,6 +58,8 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocGraphics
   tlocMath
   tlocInput
+  tlocPrefab
+  FreeType
   )
 
 if(MSVC)
@@ -65,6 +78,8 @@ if(APPLE)
   set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES
                         RESOURCE "${TLOC_TESTS_GRAPHICS_ASSETS}")
 endif()
+
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
 
 # Filters to organize the source files
 #source_group(assets FILES ${TLOC_TESTS_GRAPHICS_ASSETS})

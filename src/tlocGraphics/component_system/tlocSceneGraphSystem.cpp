@@ -1,12 +1,13 @@
 #include "tlocSceneGraphSystem.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
 
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
@@ -25,19 +26,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   struct NodeCompareFromEntity
   {
-    typedef SceneNode*                            node_ptr_type;
-    typedef core_cs::Entity*                      entity_ptr_type;
+    typedef scene_node_sptr                               node_ptr_type;
+    typedef core_cs::EntitySystemBase::entity_count_pair  entity_ptr_type;
 
     bool
-      operator()(entity_ptr_type a_first, entity_ptr_type a_second)
+      operator()(entity_ptr_type a, entity_ptr_type b)
     {
-      TLOC_ASSERT(a_first->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(a.first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
-      TLOC_ASSERT(a_second->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(b.first->HasComponent(SceneNode::k_component_type),
         "Entity should have a 'Node' component");
 
-      SceneNode* firstNode = a_first->GetComponent<SceneNode>();
-      SceneNode* secondNode = a_second->GetComponent<SceneNode>();
+      node_ptr_type firstNode = a.first->GetComponent<SceneNode>();
+      node_ptr_type secondNode = b.first->GetComponent<SceneNode>();
 
       return firstNode->GetLevel() < secondNode->GetLevel();
     }
@@ -47,8 +48,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // SceneGraphSystem
 
   SceneGraphSystem::
-    SceneGraphSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
+    SceneGraphSystem(event_manager_ptr a_eventMgr,
+                     entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::scene_node))
   { }
@@ -57,16 +58,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    DeactivateHierarchy(const entity_type* a_parent)
+    DeactivateHierarchy(const_entity_ptr a_node)
   {
-    TLOC_ASSERT_NOT_NULL(a_parent);
+    TLOC_ASSERT_NOT_NULL(a_node);
 
-    a_parent->Deactivate();
+    a_node->Deactivate();
 
-    if (a_parent->HasComponent(components::scene_node) == false)
+    if (a_node->HasComponent<gfx_cs::SceneNode>() == false)
     { return; }
 
-    SceneNode* node = a_parent->GetComponent<SceneNode>();
+    scene_node_sptr node = a_node->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
@@ -79,7 +80,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    ActivateHierarchy(const entity_type* a_parent)
+    ActivateHierarchy(const_entity_ptr a_parent)
   {
     TLOC_ASSERT_NOT_NULL(a_parent);
 
@@ -88,7 +89,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_parent->HasComponent(components::scene_node) == false)
     { return; }
 
-    SceneNode* node = a_parent->GetComponent<SceneNode>();
+    scene_node_sptr node = a_parent->GetComponent<SceneNode>();
 
     for (SceneNode::node_cont_iterator
          itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
@@ -118,22 +119,26 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type
     SceneGraphSystem::
-    InitializeEntity(const entity_manager* , const entity_type* a_ent)
+    InitializeEntity(entity_ptr a_ent)
   {
-    // LOG: Warning
-    TLOC_ASSERT(a_ent->HasComponent(math_cs::Transform::k_component_type),
-      "Node component requires Transform component");
+    TLOC_LOG_CORE_WARN_IF(a_ent->
+      HasComponent(math_cs::Transform::k_component_type) == false)
+      << "Node component requires math_cs::Transform component";
 
-    SceneNode* node = a_ent->GetComponent<SceneNode>();
+    scene_node_sptr node = a_ent->GetComponent<SceneNode>();
 
     // get the level of this node relative to its parents. If the parent
     // already has a level and update hierarchy is not required, then find
     // the level from there
 
-    SceneNode* parent = node->GetParent();
+    scene_node_vptr parent = node->GetParent();
 
     if (parent)
     {
+      // check if the parent is disabled, if yes, disable us as well
+      if (parent->GetEntity()->IsActive() == false)
+      { a_ent->Deactivate(); }
+
       if (parent->IsHierarchyUpdateRequired())
       {
         SceneNode::index_type nodeLevel = 0;
@@ -168,7 +173,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   error_type
     SceneGraphSystem::
-    ShutdownEntity(const entity_manager* , const entity_type* )
+    ShutdownEntity(entity_ptr)
   {
     return ErrorSuccess;
   }
@@ -184,14 +189,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SceneGraphSystem::
-    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64 )
+    ProcessEntity(entity_ptr a_ent, f64 )
   {
-    using math_cs::Transform;
+    using namespace math_cs;
 
-    Transform* localTransform = a_ent->GetComponent<Transform>();
-    SceneNode* node = a_ent->GetComponent<SceneNode>();
+    transform_sptr localTransform = a_ent->GetComponent<Transform>();
+    scene_node_sptr node = a_ent->GetComponent<SceneNode>();
 
-    SceneNode*         nodeParent = node->GetParent();
+    scene_node_vptr nodeParent = node->GetParent();
 
     if (nodeParent == nullptr)
     {
@@ -214,9 +219,14 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // Explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneGraphSystem);
-
 };};};
+
+// ///////////////////////////////////////////////////////////////////////
+// Explicit instantiations
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SceneGraphSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(SceneGraphSystem);

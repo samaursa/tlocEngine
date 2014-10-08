@@ -10,6 +10,7 @@ function(add_common_libraries EXEC_NAME)
     tlocPhysics
     tlocPrefab
     tlocAnimation
+    FreeType
     Box2D
     )
 
@@ -19,24 +20,9 @@ function(add_common_libraries EXEC_NAME)
     target_link_libraries(${EXEC_NAME}
       glu32.lib
       OpenGL32.lib
+      dinput8.lib
       )
 
-    # Find dinput.lib and add it as a link target
-    if(${ARCH_DIR} MATCHES "x86")
-      find_library(DIRECT_INPUT_LIB
-        NAMES dinput8.lib
-        PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
-        )
-    else()
-      find_library(DIRECT_INPUT_LIB
-        NAMES dinput8.lib
-        PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
-        )
-    endif()
-
-    target_link_libraries(${EXEC_NAME}
-      ${DIRECT_INPUT_LIB}
-      )
   endif()
 
   if(TLOC_COMPILER_XCODE)
@@ -50,7 +36,7 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
     if(USER_IOS_PLIST_PATH)
       set(PLIST_PATH ${USER_IOS_PLIST_PATH})
     else()
-      set(PLIST_PATH "${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist")
+      set(PLIST_PATH "${TLOC_ENGINE_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
     endif()
 
     set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -63,88 +49,18 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
   endif()
 endfunction()
 
-# This will load the default C++ configurations for supported compilers which enables
-# RTTI, Exception handling etc.
-function(load_default_configurations)
-  set(CMAKE_CXX_FLAGS_DEBUG          ${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} PARENT_SCOPE)
-  set(CMAKE_CXX_FLAGS_RELEASE        ${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} PARENT_SCOPE)
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} PARENT_SCOPE)
-
-  if(TLOC_COMPILER_MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG           "/DTLOC_DEBUG /Od /Gm  /EHsc /RTC1 /MTd /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELEASE         "/DTLOC_RELEASE /O2 /Ob2 /Oi /Ot /GL /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /EHsc /MT /Gy /GR /W4 /WX /c /Zi /TP" PARENT_SCOPE)
-  elseif(TLOC_COMPILER_XCODE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-rtti -Wno-unused-function -g" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-rtti -Wno-unused-function" PARENT_SCOPE)
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-rtti -Wno-unused-function -g" PARENT_SCOPE)
-  else()
-    message("Configuration not applied because compiler is unsupported (or not detected properly)")
-  endif()
-endfunction()
-
-function(tloc_enable_exceptions)
-  add_definitions(
-    -DTLOC_ENABLE_CPPUNWIND 
-    )
-endfunction()
-
-function(tloc_enable_rtti)
-  add_definitions(
-    -DTLOC_ENABLE_CPPRTTI 
-    )
-endfunction()
-
-function(tloc_enable_stl)
-  add_definitions(
-    -DTLOC_USING_STL 
-    )
-endfunction()
-
 # -----------------------------------------------------------------------------
+# compiler flags
 
-# Remove MinSizeRel
-set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo CACHE TYPE INTERNAL FORCE)
-
-add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-
-# Define TLOC_CXX03 if C++11 is NOT supported (force XCode to C++03 for now)
-if(NOT TLOC_COMPILER_C11 OR TLOC_COMPILER_XCODE)
-  add_definitions(-DTLOC_CXX03)
-endif()
-
-# Backup the default flags
-SET(CMAKE_CXX_FLAGS_DEFAULT                 ${CMAKE_CXX_FLAGS})
-set(CMAKE_CXX_FLAGS_DEBUG_DEFAULT           ${CMAKE_CXX_FLAGS_DEBUG})
-set(CMAKE_CXX_FLAGS_RELEASE_DEFAULT         ${CMAKE_CXX_FLAGS_RELEASE})
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT  ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
-
-if(TLOC_COMPILER_MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG           "/DTLOC_DEBUG /Od /Gm /RTC1 /MTd /GR- /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELEASE         "/DTLOC_RELEASE /O2 /Ob2 /Oi /Ot /GL /MT /Gy /GR- /W4 /WX /c /Zi /TP")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/DTLOC_RELEASE_DEBUGINFO /O2 /Ob2 /Oi /Ot /Gm /MT /Gy /GR- /W4 /WX /c /Zi /TP")
-
-  #turn off exceptions for all configurations
-  string(REGEX REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  string(REGEX REPLACE "/Zm1000" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-  string(REGEX REPLACE "/GX" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-elseif(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTLOC_DEBUG -fno-exceptions -fno-rtti -Wno-unused-function -g")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTLOC_RELEASE -fno-exceptions -fno-rtti -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTLOC_RELEASE_DEBUGINFO -fno-exceptions -fno-rtti -Wno-unused-function -g")
-  set(CMAKE_EXE_LINKER_FLAGS "-framework Foundation -framework OpenGLES -framework AudioToolbox -framework CoreGraphics -framework QuartzCore -framework UIKit -framework OpenAL")
-else()
-  message("Configuration not applied because compiler is unsupported (or not detected properly)")
-endif()
+tloc_add_definitions_strict()
 
 # common includes
 include_directories(
-  ${TLOC_ENGINE_PATH}/src/
-  ${TLOC_DEP_PATH}/include/
-  ${TLOC_DEP_PATH}/include/Box2D/
-  ${TLOC_DEP_PATH}/include/CATCH/
+  ${TLOC_ENGINE_INSTALL_PATH}/
+  ${TLOC_ENGINE_INSTALL_PATH}/include/
+  ${TLOC_DEP_INSTALL_PATH}/include/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/CATCH/
   ${USER_PATH}/src/
 
   ${CMAKE_SOURCE_DIR}/src/
@@ -152,15 +68,8 @@ include_directories(
 
 # common link directories
 link_directories(
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocCore/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocGraphics/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocMath/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocInput/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPhysics/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocPrefab/
-  ${TLOC_ENGINE_BUILD_PATH}/src/tlocAnimation/
-
-  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_ENGINE_INSTALL_PATH}/lib/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 # -----------------------------------------------------------------------------
@@ -200,12 +109,30 @@ foreach(exec ${USER_EXECUTABLE_PROJECTS})
 endforeach()
 message(STATUS "-- Executables -- DONE")
 
+# -----------------------------------------------------------------------------
+# compiler flags
+#
+# NOTE: For tests we need regular compiler flags which enable RTTI and 
+#       exceptions
+
+tloc_add_definitions()
+
+# -----------------------------------------------------------------------------
+# Add all test executables
+
 message("")
 message(STATUS "-- Tests --")
 foreach(test ${USER_TEST_PROJECTS})
   message(STATUS "Adding ${test} executable project")
   set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
   set(USER_CURRENT_PROJECT_NAME ${test})
+
+# test projects require exceptions and rtti to be enabled - build fails in xcode only
+if(TLOC_COMPILER_XCODE)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+endif()
   
   add_subdirectory(${test})
 
@@ -219,6 +146,20 @@ message(STATUS "-- Tests -- DONE")
 
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
+
+if(NOT DISTRIBUTION_BUILD)
+  SET(ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets/)
+else()
+  SET(ASSETS_PATH "../../assets/")
+
+  add_custom_target(tlocAssetsCopier ALL)
+  add_custom_command(TARGET tlocAssetsCopier POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_SOURCE_DIR}/assets"
+      "${USER_INSTALL_PATH}/assets")
+
+endif()
+
 FILE(WRITE ${USER_ASSETS_PATH} "
 #pragma once
 
@@ -231,13 +172,13 @@ FILE(WRITE ${USER_ASSETS_PATH} "
 # import <Foundation/Foundation.h>
 #endif
 
-#define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+#define TLOC_ASSETS_PATH \"${ASSETS_PATH}\"
 
 #if defined(TLOC_OS_WIN)
 
 inline const char* GetAssetsPath()
 {
-  static const char* assetPath = \"${CMAKE_SOURCE_DIR}/assets/\";
+static const char* assetPath = \"${ASSETS_PATH}\";
   return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)

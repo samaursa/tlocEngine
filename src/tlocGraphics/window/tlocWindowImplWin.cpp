@@ -3,7 +3,9 @@
 #include "glext.h"
 #include "wglext.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
@@ -25,6 +27,23 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   const wchar_t g_className[]                                = L"TLOC_Window";
   WindowImpl<WINDOW_IMPL_WIN_PARAMS>* g_currFullScreenWindow = nullptr;
   WINDOW_IMPL_WIN_TYPE::size_type g_currWindowCount          = 0;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Windows has a default framebuffer with the id of 0. We will therefore
+  // manually set that ID on FramebufferObject so that we have a FBO with
+  // an ID of 0. To do that we need to inherit from FBO because its constructor
+  // to construct an FBO with an ID is protected for this very purpose
+
+  class WindowsFramebufferObject
+    : public gl::FramebufferObject
+  {
+  public:
+    typedef gl::FramebufferObject           base_type;
+  public:
+    WindowsFramebufferObject()
+      : base_type(gl::p_framebuffer_object::Default())
+    { }
+  };
 
   //////////////////////////////////////////////////////////////////////////
   // WindowImpl<>
@@ -60,7 +79,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     else
     {
       // Window is external, which we are not handling yet
-      TLOC_ASSERT(false, "External windows are not supported yet");
+      TLOC_ASSERT_FALSE("External windows are not supported yet");
     }
   }
 
@@ -88,9 +107,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     if (m_handle)
     {
-      m_windowSettings.m_depthBits = 0;
-      m_windowSettings.m_stencilBits = 0;
-      m_windowSettings.m_antiAlias = 0;
+      m_windowSettings.SetDepthBits(0);
+      m_windowSettings.SetStencilBits(0);
+      m_windowSettings.SetAntiAlias(0);
 
       DoCreateContext(graphics_mode(props), m_windowSettings);
 
@@ -111,8 +130,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
-    Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-           const window_style_type& a_style)
+    Create(const graphics_mode& a_mode, const WindowSettings& a_settings)
   {
     m_graphicsMode    = a_mode;
     m_windowSettings  = a_settings;
@@ -122,36 +140,43 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const graphics_mode::Properties modeProps = a_mode.GetProperties();
 
     // Center the window to the screen regardless of the given size
+
     HDC       screenDC = GetDC(TLOC_NULL);
-    tl_int    left		 = (GetDeviceCaps(screenDC, HORZRES) - modeProps.m_width)  / 2;
-    tl_int    top			 = (GetDeviceCaps(screenDC, VERTRES) - modeProps.m_height) / 2;
+
+    const tl_size horDeviceCap = core_utils::CastNumber<tl_size>
+      (GetDeviceCaps(screenDC, HORZRES));
+    const tl_size verDeviceCap = core_utils::CastNumber<tl_size>
+      (GetDeviceCaps(screenDC, VERTRES));
+
+    tl_size   left		 = (horDeviceCap - modeProps.m_width)  / 2;
+    tl_size   top			 = (verDeviceCap - modeProps.m_height) / 2;
     size_type width		 = modeProps.m_width;
     size_type height	 = modeProps.m_height;
-    // LOG: Window resolution greater than screen's resolution
     ReleaseDC(TLOC_NULL, screenDC);
 
-    // If width and height are bigger than screen, warn the user
-    // LOG: This should be a log warning
-    TLOC_ASSERT(width <= GetMaxWidth(), "Screen width not supported");
-    TLOC_ASSERT(height <= GetMaxHeight(), "Screen height not supported");
+    TLOC_LOG_GFX_WARN_IF(width > GetMaxWidth() || height > GetMaxHeight())
+      << "Screen width/height not supported: "
+      << width << ", " << height;
 
+    using namespace p_window_settings;
     DWORD win32Style = WS_VISIBLE;
-    if (a_style == WindowSettings::style_none)
+    if (a_settings.GetStyleBits() == style::None::s_glParamName)
     {
       win32Style |= WS_POPUP;
     }
     else
     {
-      if (a_style& WindowSettings::style_titlebar)
+      if (a_settings.GetStyleBits() & style::TitleBar::s_glParamName)
       { win32Style |= WS_CAPTION | WS_MINIMIZEBOX; }
-      if (a_style& WindowSettings::style_resize)
+      if (a_settings.GetStyleBits() & style::Resize::s_glParamName)
       { win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX; }
-      if (a_style& WindowSettings::style_close)
+      if (a_settings.GetStyleBits() & style::Close::s_glParamName)
       { win32Style |= WS_SYSMENU; }
     }
 
     // Adjust the window's width and height given the requested resolution
-    const bool fullScreen = (a_style & WindowSettings::style_fullscreen) != 0;
+    const bool fullScreen = (a_settings.GetStyleBits() &
+                             style::FullScreen::s_glParamName) != 0;
     if (fullScreen == false)
     {
       RECT rect = {0, 0,
@@ -164,8 +189,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // Create the actual window
     const size_type wTitleSize = 256; char32 wTitle[wTitleSize];
-    tl_int retIndex =
-      CharAsciiToWide(wTitle, a_settings.m_title.c_str(), wTitleSize );
+    tl_size retIndex =
+      CharAsciiToWide(wTitle, a_settings.GetTitle().c_str(), wTitleSize );
     wTitle[retIndex] = L'\0';
     m_handle = CreateWindowW(g_className, wTitle, win32Style, (s32)left,
       (s32)top, (s32)width, (s32)height, TLOC_NULL, TLOC_NULL,
@@ -174,8 +199,31 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     if (fullScreen)
     { DoSwitchToFullscreen(a_mode); }
 
-    // LOG: Grab log from GetLastError
-    TLOC_ASSERT(m_handle, "CreateWindowW failed.");
+    if (m_handle == TLOC_NULL)
+    {
+      DWORD hresult = GetLastError();
+      LPTSTR errorText = NULL;
+
+      // Convoluted error string retrieval: http://stackoverflow.com/a/455533/368599
+      FormatMessage(
+        // use system message tables to retrieve error text
+        FORMAT_MESSAGE_FROM_SYSTEM
+        // allocate buffer on local heap for error text
+        |FORMAT_MESSAGE_ALLOCATE_BUFFER
+        // Important! will fail otherwise, since we're not
+        // (and CANNOT) pass insertion parameters
+        |FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,    // unused with FORMAT_MESSAGE_FROM_SYSTEM
+        hresult,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR)&errorText,  // output
+        0, // minimum size for output buffer
+        NULL);   // arguments - see note
+
+      TLOC_LOG_GFX_ERR() << "CreateWindowW failed: " << errorText;
+      LocalFree(errorText);
+    }
+
     DoCreateContext(a_mode, m_windowSettings);
 
     ++g_currWindowCount;
@@ -202,6 +250,17 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return GetGraphicsMode().GetProperties().m_height;
   }
 
+  WINDOW_IMPL_WIN_TYPE::dim_type
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    GetDPI() const
+  {
+    HDC screen = GetDC(TLOC_NULL);
+    tl_size dpiX = core_utils::CastNumber<tl_size>( GetDeviceCaps(screen, LOGPIXELSX) );
+    tl_size dpiY = core_utils::CastNumber<tl_size>( GetDeviceCaps(screen, LOGPIXELSY) );
+
+    return core_ds::MakeTuple(dpiX, dpiY);
+  }
+
   WINDOW_IMPL_WIN_TYPE::size_type
     WindowImpl<WINDOW_IMPL_WIN_PARAMS>::GetMaxWidth() const
   {
@@ -222,24 +281,27 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
       if (m_deviceContext && m_OpenGLContext && (wglGetCurrentContext() != m_OpenGLContext))
       {
+        priv::SetCurrentActiveWindow(m_parentWindow);
         wglMakeCurrent(m_deviceContext, m_OpenGLContext);
       }
       else
-      {
-        // LOG: Window already active
-      }
+      { TLOC_LOG_GFX_WARN() << "Window already active"; }
     }
     else
     {
       if (wglGetCurrentContext() == m_OpenGLContext)
       {
+        priv::SetNonActiveWindow(m_parentWindow);
         wglMakeCurrent(TLOC_NULL, TLOC_NULL);
       }
       else
-      {
-        // LOG: Window is already inactive
-      }
+      { TLOC_LOG_GFX_WARN() << "Window already inactive"; }
     }
+  }
+
+  bool WindowImpl<WINDOW_IMPL_WIN_PARAMS>::HasValidContext() const
+  {
+    return m_OpenGLContext != TLOC_NULL;
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::ProcessEvents()
@@ -272,7 +334,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     if (wglSwapIntervalEXT) { wglSwapIntervalEXT(a_enable ? 1 : 0); }
     else
     {
-      // LOG: Could not enable vertical sync (unsupported procedure).
+      TLOC_LOG_GFX_WARN()
+        << "Could not enable vertical sync (unsupported procedure)";
     }
   }
 
@@ -332,6 +395,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     // We have a name clash, make sure we are looking in the global scope
     ::SwapBuffers(m_deviceContext);
+  }
+
+  WINDOW_IMPL_WIN_TYPE::fbo_sptr
+    WindowImpl<WINDOW_IMPL_WIN_PARAMS>::
+    DoGetFramebuffer()
+  {
+    return fbo_sptr(new WindowsFramebufferObject());
   }
 
   //------------------------------------------------------------------------
@@ -456,7 +526,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     TLOC_ASSERT(m_deviceContext, "Failed to get window's device context");
 
     s32 bestFormat = 0;
-    if (a_settings.m_antiAlias > 0)
+    if (a_settings.GetAntiAlias() > 0)
     {
       // Since we don't have GLEW yet, we will have to manually get the function
       // which will in turn give us the pixel format
@@ -472,8 +542,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
           WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
           WGL_ACCELERATION_ARB, GL_TRUE,
           WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-          WGL_SAMPLE_BUFFERS_ARB, (a_settings.m_antiAlias ? GL_TRUE : GL_FALSE),
-          WGL_SAMPLES_ARB, (a_settings.m_antiAlias),
+          WGL_SAMPLE_BUFFERS_ARB, (a_settings.GetAntiAlias() ? GL_TRUE : GL_FALSE),
+          WGL_SAMPLES_ARB, (a_settings.GetAntiAlias()),
           0, 0
         };
 
@@ -488,19 +558,22 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
         if (isValid == false || numFormats == 0)
         {
-          if (a_settings.m_antiAlias > 2)
+          if (a_settings.GetAntiAlias() > 2)
           {
-            // LOG: Failed to find a format that supports the required AA,
-            // trying lower levels.
-            a_settings.m_antiAlias = pixAttribs[11] = 2;
+            TLOC_LOG_GFX_WARN() << "Failed to find a format that supports the "
+              << "required AA, trying lower levels";
+
+            a_settings.SetAntiAlias(2);
+            pixAttribs[11] = a_settings.GetAntiAlias();
             isValid = wglChoosePixelFormatARB(m_deviceContext, pixAttribs,
               attributeList, maxFormatsToReturn, formats, &numFormats) != 0;
           }
 
           if (isValid == false || numFormats == 0)
           {
-            // LOG: Cannot find pixel format supporting any AA, disabling AA
-            a_settings.m_antiAlias = 0;
+            TLOC_LOG_GFX_WARN() << "Cannot find pixel format supporting any AA"
+              << ", disabling AA";
+            a_settings.SetAntiAlias(0);
           }
         }
 
@@ -513,8 +586,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       }
       else
       {
-        // LOG: AA not supported and will be disabled
-        a_settings.m_antiAlias = 0;
+        TLOC_LOG_GFX_WARN() << "AA not supported and will be disabled";
+        a_settings.SetAntiAlias(0);
       }
     }
 
@@ -530,8 +603,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       pixelDesc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
       pixelDesc.iPixelType = PFD_TYPE_RGBA;
       pixelDesc.cColorBits = static_cast<BYTE>(a_gMode.GetProperties().m_bitsPerPixel);
-      pixelDesc.cDepthBits = static_cast<BYTE>(a_settings.m_depthBits);
-      pixelDesc.cStencilBits = static_cast<BYTE>(a_settings.m_stencilBits);
+      pixelDesc.cDepthBits = static_cast<BYTE>(a_settings.GetDepthBits());
+      pixelDesc.cStencilBits = static_cast<BYTE>(a_settings.GetStencilBits());
       pixelDesc.cAlphaBits = a_gMode.GetProperties().m_bitsPerPixel == 32 ? 8 : 0;
 
       bestFormat = ChoosePixelFormat(m_deviceContext, &pixelDesc);
@@ -546,8 +619,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     DescribePixelFormat(m_deviceContext, bestFormat, pixFormatSize, &pixFormat);
 
-    a_settings.m_depthBits   = pixFormat.cDepthBits;
-    a_settings.m_stencilBits = pixFormat.cStencilBits;
+    a_settings.SetDepthBits(pixFormat.cDepthBits);
+    a_settings.SetStencilBits(pixFormat.cStencilBits);
 
     bool setPixelFormatResult =
       SetPixelFormat(m_deviceContext, bestFormat, &pixFormat) != 0;
@@ -558,9 +631,9 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     m_OpenGLContext = wglCreateContext(m_deviceContext);
     TLOC_ASSERT(m_OpenGLContext, "Failed to create OpenGL context");
 
-    SetActive(true);
+    m_parentWindow->SetActive(true);
 
-    if (a_settings.m_antiAlias > 0)
+    if (a_settings.GetAntiAlias() > 0)
     {
       glEnable(GL_MULTISAMPLE_ARB);
     }
@@ -572,16 +645,16 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     const graphics_mode::Properties& props = a_gMode.GetProperties();
 
     DEVMODE devMode;
-    devMode.dmSize       = sizeof(DEVMODE);
-    devMode.dmPelsWidth  = (DWORD)props.m_width;
-    devMode.dmPelsHeight = (DWORD)props.m_height;
-    devMode.dmBitsPerPel = (DWORD)props.m_bitsPerPixel;
+    devMode.dmSize       = sizeof(devMode);
+    devMode.dmPelsWidth  = core_utils::CastNumber<DWORD>(props.m_width);
+    devMode.dmPelsHeight = core_utils::CastNumber<DWORD>(props.m_height);
+    devMode.dmBitsPerPel = core_utils::CastNumber<DWORD>(props.m_bitsPerPixel);
     devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
 
     s32 result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
-    if (result == DISP_CHANGE_SUCCESSFUL)
+    if (result != DISP_CHANGE_SUCCESSFUL)
     {
-      // LOG: Could not change display to fullscreen
+      TLOC_LOG_GFX_WARN() << "Could not change display to full-screen";
       return;
     }
 
@@ -614,9 +687,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     // SFML: Destroy the OpenGL context
     if (m_OpenGLContext)
     {
-      SetActive(false);
+      if (m_parentWindow->IsActive() == false)
+      { m_parentWindow->SetActive(true); }
+
       wglDeleteContext(m_OpenGLContext);
       m_OpenGLContext = TLOC_NULL;
+
+      m_parentWindow->SetActive(false);
     }
 
     if (m_deviceContext)

@@ -1,9 +1,9 @@
 #include "tlocShaderVariable.h"
 
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
 #include <tlocGraphics/opengl/tlocAttribute.h>
 
@@ -92,6 +92,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple2u32>, GL_UNSIGNED_INT_VEC2);
   TLOC_DECL_TL_TO_GL(Array<Tuple3u32>, GL_UNSIGNED_INT_VEC3);
   TLOC_DECL_TL_TO_GL(Array<Tuple4u32>, GL_UNSIGNED_INT_VEC4);
+
+  TLOC_DECL_TL_TO_GL(TextureObjectShadow, GL_SAMPLER_2D_SHADOW);
+#elif defined (TLOC_OS_IPHONE)
+  TLOC_DECL_TL_TO_GL(TextureObjectShadow, GL_SAMPLER_2D_SHADOW_EXT);
 #endif
 
 #undef TLOC_DECL_TL_TO_GL
@@ -105,13 +109,40 @@ namespace tloc { namespace graphics { namespace gl {
 
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::ShaderVariable_TI()
-    : m_isArray(false)
-    , m_isShared(false)
+    : m_type(GL_NONE)
+    , m_isArray(false)
+    , m_isArrayPtr(false)
+    , m_enabled(true)
+  { }
+
+  template <SHADER_VARIABLE_TEMP>
+  ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    ShaderVariable_TI(const this_type& a_other)
+    : m_type(a_other.m_type)
+    , m_value(a_other.m_value)
+    , m_name(a_other.m_name)
+    , m_isArray(a_other.m_isArray)
+    , m_isArrayPtr(a_other.m_isArrayPtr)
+    , m_enabled(a_other.m_enabled)
   { }
 
   template <SHADER_VARIABLE_TEMP>
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::~ShaderVariable_TI()
   { }
+
+  template <SHADER_VARIABLE_TEMP>
+  void
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+    swap(m_type, a_other.m_type);
+    swap(m_value, a_other.m_value);
+    swap(m_name, a_other.m_name);
+    swap(m_isArray, a_other.m_isArray);
+    swap(m_isArrayPtr, a_other.m_isArrayPtr);
+    swap(m_enabled, a_other.m_enabled);
+  }
 
   template <SHADER_VARIABLE_TEMP>
   template <typename T>
@@ -129,13 +160,13 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
-    DoSetValueAs(SharedPtr<T> a_value)
+    DoSetValueAs(VirtualPtr<T> a_value)
   {
     TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
     m_value.Assign(a_value);
-    m_isShared = true;
+    m_isArrayPtr = true;
     return *(static_cast<derived_type*>(this));
   }
 
@@ -172,13 +203,13 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T>
   SHADER_VARIABLE_TYPE::derived_type&
     ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
-    DoSetValueAs(SharedPtr<Array<T> > a_array)
+    DoSetValueAs(VirtualPtr<Array<T> > a_array)
   {
     TLOC_ASSERT(m_value.IsEmpty() || m_value.IsSameType(a_array),
       "Cannot change uniform TYPE after construction");
     m_type = tlToGl<T>::k_glType;
     m_isArray = true;
-    m_isShared = true;
+    m_isArrayPtr = true;
     m_value.Assign(a_array);
     return *(static_cast<derived_type*>(this));
   }
@@ -191,6 +222,33 @@ namespace tloc { namespace graphics { namespace gl {
     return *(static_cast<derived_type*>(this));
   }
 
+  template <SHADER_VARIABLE_TEMP>
+  bool
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    IsValidType() const
+  {
+    return m_type != GL_NONE;
+  }
+
+  template <SHADER_VARIABLE_TEMP>
+  void
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    ResetValue()
+  { m_value.Reset(); }
+
+  template <SHADER_VARIABLE_TEMP>
+  void
+    ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::
+    Reset()
+  {
+    m_type        = GL_NONE;
+    m_isArray     = false;
+    m_isArrayPtr  = false;
+
+    m_value.Reset();
+    m_name.clear();
+  }
+
   //------------------------------------------------------------------------
   // Explicit instantiation
 
@@ -200,22 +258,23 @@ namespace tloc { namespace graphics { namespace gl {
   // Uniform
   TLOC_SHADER_VARIABLE_EXPLICIT(Uniform);
 
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,             Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,    Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,                 Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,                 Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,                Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,       Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObjectShadow, Uniform);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(u32,              Uniform);

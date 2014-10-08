@@ -21,7 +21,7 @@ endif()
 
 # Generate tlocFilePaths.h file
 FILE(WRITE ${CMAKE_SOURCE_DIR}/src/tlocVersion/tlocVersionFilePath.h "
-#define VERSION_FILE_NAME \"${CMAKE_SOURCE_DIR}/src/tlocVersion.h\"
+#define VERSION_FILE_NAME \"${CMAKE_SOURCE_DIR}/INSTALL/tlocVersion.h\"
 ")
 
 add_executable(
@@ -32,7 +32,7 @@ add_executable(
 
 # Run the generated executable after build
 add_custom_target(tlocVersionTool ALL
-  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tlocVersion 
+  COMMAND ${TLOC_ENGINE_INSTALL_PATH}/bin/${CMAKE_CFG_INTDIR}/tlocVersion 
   DEPENDS tlocVersion
  )
 

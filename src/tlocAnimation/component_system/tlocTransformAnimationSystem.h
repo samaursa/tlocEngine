@@ -3,8 +3,9 @@
 
 #include <tlocAnimation/tlocAnimationBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -17,29 +18,17 @@ namespace tloc { namespace animation { namespace component_system {
   {
   public:
     typedef core::component_system::EntityProcessingSystem  base_type;
-    using base_type::component_type;
-    using base_type::error_type;
-
-    using base_type::event_manager;
-    using base_type::entity_manager;
-    using base_type::entity_type;
-    using base_type::event_type;
-    using base_type::event_value_type;
 
   public:
-    TransformAnimationSystem(event_manager_sptr a_eventMgr,
-                             entity_manager_sptr  a_entityMgr);
+    TransformAnimationSystem(event_manager_ptr a_eventMgr,
+                             entity_manager_ptr  a_entityMgr);
 
     virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(const entity_manager* a_mgr,
-                                        const entity_type* a_ent);
-    virtual error_type ShutdownEntity(const entity_manager* a_mgr,
-                                      const entity_type* a_ent);
+    virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ShutdownEntity(entity_ptr a_ent);
 
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
-    virtual void ProcessEntity(const entity_manager* a_mgr,
-                               const entity_type* a_ent,
-                               f64 a_deltaT);
+    virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
     virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
@@ -54,7 +43,8 @@ namespace tloc { namespace animation { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(TransformAnimationSystem, transform_animation_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TransformAnimationSystem, transform_animation_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(TransformAnimationSystem, transform_animation_system);
 
 };};};
 

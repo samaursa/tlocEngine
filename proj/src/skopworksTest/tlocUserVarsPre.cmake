@@ -22,11 +22,3 @@ set(USER_PROJECT_DEPENDENCIES
 set(USER_EXECUTABLE_LINK_LIBRARIES
   "skopworksLib"
   )
-
-# Tests require default compiler configurations. These can also be used for projects
-# that require these options to be enabled.
-load_default_configurations()
-tloc_enable_exceptions()
-tloc_enable_rtti()
-tloc_enable_stl()
-

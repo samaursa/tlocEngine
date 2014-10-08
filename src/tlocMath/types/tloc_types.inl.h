@@ -5,8 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
-#include <tlocMath/types/tlocAngle.inl.h>
-
 #include <tlocMath/types/tloc_matrix.inl.h>
 #include <tlocMath/types/tloc_vector.inl.h>
 

@@ -11,11 +11,11 @@ set(TLOC_TESTS_PHYSICS
 set(TLOC_CURRENT_EXEC_NAME tlocTestsPhysics)
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
 link_directories(
-  ${TLOC_DEP_BUILD_PATH}/src/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
@@ -43,5 +43,7 @@ if(APPLE)
     set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES
       MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
 endif()
+
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
 
 # Filters to organize the source files

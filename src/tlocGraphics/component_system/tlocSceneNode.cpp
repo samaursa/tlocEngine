@@ -1,6 +1,8 @@
 #include "tlocSceneNode.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/tlocAssert.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
@@ -21,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   SceneNode::
     SceneNode()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "SceneNode")
     , m_entity(nullptr)
     , m_parent(nullptr)
     , m_level(0)
@@ -34,8 +36,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   SceneNode::
-    SceneNode(entity_ptr_type a_entity)
-    : base_type(k_component_type)
+    SceneNode(entity_ptr a_entity)
+    : base_type(k_component_type, "SceneNode")
     , m_entity(a_entity)
     , m_parent(nullptr)
     , m_level(0)
@@ -47,25 +49,26 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     AddChild(pointer a_childNode)
   {
-
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
 
     a_childNode->SetHierarchyUpdateRequired(true);
-    a_childNode->m_parent = this;
+    a_childNode->m_parent.reset(this);
     m_children.push_back(a_childNode);
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     RemoveChild(pointer a_childNode)
   {
-    TLOC_ASSERT(a_childNode->GetParent() == this,
+    TLOC_ASSERT(a_childNode->GetParent().get() == this,
       "'this' is not the parent of the child");
 
     node_cont_iterator itr = core::find_all(m_children, a_childNode);
@@ -77,7 +80,59 @@ namespace tloc { namespace graphics { namespace component_system {
     (*itr)->SetHierarchyUpdateRequired(true);
 
     m_children.erase(itr);
+
+    return *this;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::this_type&
+    SceneNode::
+    RemoveParent()
+  {
+    TLOC_ASSERT_NOT_NULL(m_parent);
+    m_parent->RemoveChild(pointer(this));
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::this_type&
+    SceneNode::
+    SetParent(pointer a_parentNode)
+  {
+    a_parentNode->AddChild(pointer(this));
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::entity_ptr
+    SceneNode::
+    GetEntity()
+  { return m_entity; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::const_entity_ptr
+    SceneNode::
+    GetEntity() const
+  { return m_entity; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::pointer
+    SceneNode::
+    GetParent()
+  { return m_parent; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  SceneNode::const_pointer
+    SceneNode::
+    GetParent() const
+  { return m_parent; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -124,7 +179,7 @@ namespace tloc { namespace graphics { namespace component_system {
     IsParentDisabled() const
   {
     // Disable us if our parent is disabled
-    SceneNode* p = GetParent();
+    const_pointer p = GetParent();
     while(p)
     {
       if (p->GetEntity()->IsActive() == false)
@@ -145,17 +200,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     SetWorldTransform(const transform_type& a_transform)
   {
     m_worldTransform = a_transform;
     SetTransformUpdateRequired(true);
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     SceneNode::
     IsHierarchyUpdateRequired() const
   {
@@ -164,14 +221,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     SetHierarchyUpdateRequired(bool a_updateRequired)
-  { m_flags[k_hierarchyUpdate] = a_updateRequired; }
+  { m_flags[k_hierarchyUpdate] = a_updateRequired; return *this; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  const bool
+  bool
     SceneNode::
     IsTransformUpdateRequired() const
   {
@@ -180,16 +237,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  SceneNode::this_type&
     SceneNode::
     SetTransformUpdateRequired(bool a_updateRequired)
-  { m_flags[k_transformUpdate] = a_updateRequired; }
-
-  // ///////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(SceneNode);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(scene_node_sptr);
+  { m_flags[k_transformUpdate] = a_updateRequired; return *this; }
 
 };};};
+
+
+// ///////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+using namespace tloc::gfx_cs;
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SceneNode);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(SceneNode);

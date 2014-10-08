@@ -26,7 +26,7 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_ParamList>
   TouchSurface<TOUCH_SURFACE_PARAMS>::TouchSurface(const T_ParamList& a_paramList)
   {
-    m_impl.reset( new impl_type(this, a_paramList) );
+    m_impl.reset( new impl_type(*this, a_paramList) );
   }
 
   template <TOUCH_SURFACE_TEMP>
@@ -60,7 +60,7 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnTouchPress( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->OnTouchPress( (tl_size)this, a_event).IsVeto())
       {
         break;
       }
@@ -73,7 +73,7 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnTouchRelease( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->OnTouchRelease( (tl_size)this, a_event).IsVeto())
       {
         break;
       }
@@ -86,7 +86,7 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnTouchMove( (tl_size)this, a_event) == true)
+      if (m_allObservers[i]->OnTouchMove( (tl_size)this, a_event).IsVeto())
       {
         break;
       }
@@ -129,3 +129,10 @@ namespace tloc { namespace input { namespace hid {
 #endif
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::input_hid;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TouchSurfaceB);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TouchSurfaceI);

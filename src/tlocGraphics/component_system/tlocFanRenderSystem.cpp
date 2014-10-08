@@ -1,14 +1,15 @@
 #include "tlocFanRenderSystem.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 
-#include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
@@ -27,78 +28,51 @@ namespace tloc { namespace graphics { namespace component_system {
   typedef FanRenderSystem::error_type    error_type;
 
   //////////////////////////////////////////////////////////////////////////
-  // QuadRenderSystem
+  // FanRenderSystem
 
-  FanRenderSystem::FanRenderSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
-     : base_type(a_eventMgr, a_entityMgr,
-                 Variadic<component_type, 1>(components::fan))
-     , m_sharedCam(nullptr)
-     , m_vertList(new vec3_cont_type())
+  FanRenderSystem::
+    FanRenderSystem(event_manager_ptr a_eventMgr,
+                    entity_manager_ptr a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr,
+                Variadic<component_type, 1>(components::fan))
   {
-    //
     m_vertList->reserve(30);
 
-    m_vData = gl::attribute_sptr(new gl::Attribute());
     m_vData->SetName("a_vPos");
-
-    m_uniVpMat.reset(new gl::Uniform());
     m_uniVpMat->SetName("u_mvp");
-
-    m_tData = gl::attribute_sptr(new gl::Attribute());
     m_tData->SetName("a_tCoord");
-
-    m_mvpOperator = gl::shader_operator_sptr(new gl::ShaderOperator());
   }
 
-  void FanRenderSystem::AttachCamera(const entity_type* a_cameraEntity)
-  {
-    m_sharedCam = a_cameraEntity;
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
-      "The passed entity is not a camera!");
+  error_type
+    FanRenderSystem::
+    InitializeEntity(entity_ptr a_ent)
+  { 
+    base_type::InitializeEntity(a_ent);
+    return ErrorSuccess;
   }
 
-  error_type FanRenderSystem::Pre_Initialize()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    FanRenderSystem::
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
-  error_type FanRenderSystem::InitializeEntity(const entity_manager*,
-                                               const entity_type* )
-  { return ErrorSuccess; }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  error_type FanRenderSystem::ShutdownEntity(const entity_manager*,
-                                             const entity_type*)
-  { return ErrorSuccess; }
-
-  void FanRenderSystem::Pre_ProcessActiveEntities(f64)
-  {
-    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
-    {
-      m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
-    }
-    else
-    {
-      m_vpMatrix.MakeIdentity();
-    }
-  }
-
-  void FanRenderSystem::ProcessEntity(const entity_manager*,
-                                      const entity_type* a_ent,
-                                      f64)
+  void
+    FanRenderSystem::
+    ProcessEntity(entity_ptr a_ent, f64)
   {
     using namespace core::component_system;
     using math_t::degree_f32;
 
-    typedef gfx_cs::Material::shader_op_ptr          shader_op_ptr;
-
-    const entity_type* ent = a_ent;
-
-    if (ent->HasComponent(components::material))
+    if (a_ent->HasComponent(components::material))
     {
-      gfx_cs::Material* matPtr = ent->GetComponent<gfx_cs::Material>();
-
-      gfx_cs::Fan* fanPtr = ent->GetComponent<gfx_cs::Fan>();
+      gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
+      gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
       //------------------------------------------------------------------------
       // Prepare the Fan
@@ -113,20 +87,20 @@ namespace tloc { namespace graphics { namespace component_system {
       const size_type numSides = fanPtr->GetNumSides();
       const f32 angleInterval = 360.0f/numSides;
 
-      math_cs::Transform* posPtr = ent->GetComponent<math_cs::Transform>();
+      math_cs::transform_sptr posPtr = a_ent->GetComponent<math_cs::Transform>();
 
       Mat4f32 tMatrix;
-      if (ent->HasComponent(components::scene_node))
-      { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+      if (a_ent->HasComponent(components::scene_node))
+      { tMatrix = a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
       else
       { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
 
-      Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
+      Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
 
       m_uniVpMat->SetValueAs(tFinalMat);
 
       m_mvpOperator->RemoveAllUniforms();
-      m_mvpOperator->AddUniform(m_uniVpMat);
+      m_mvpOperator->AddUniform(*m_uniVpMat);
 
       // Push the center vertex
       {
@@ -144,53 +118,60 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const tl_size numVertices = m_vertList->size();
 
-      m_vData->SetVertexArray(m_vertList, gl::p_shader_variable_ti::Shared());
+      m_vData->SetVertexArray(core_sptr::ToVirtualPtr(m_vertList),
+                              gl::p_shader_variable_ti::Pointer());
 
-      shader_op_ptr so_fan = shader_op_ptr(new shader_op_ptr::value_type());
-      so_fan->AddAttribute(m_vData);
+      m_so_fan->RemoveAllAttributes();
+      m_so_fan->AddAttribute(*m_vData);
 
-      if (ent->HasComponent(components::texture_coords))
+      if (a_ent->HasComponent(components::texture_coords))
       {
         typedef gfx_cs::TextureCoords::set_index    set_index;
 
-        gfx_cs::TextureCoords* texCoordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>();
+        gfx_cs::texture_coords_sptr texCoordPtr =
+          a_ent->GetComponent<gfx_cs::TextureCoords>();
 
         if (texCoordPtr->GetNumSets())
         {
-          gfx_cs::TextureCoords::cont_type_sptr
+          gfx_cs::TextureCoords::cont_type_ptr
             texCoordCont = texCoordPtr->GetCoords
             (set_index(texCoordPtr->GetCurrentSet()) );
 
-          m_tData->SetVertexArray
-            (texCoordCont, gl::p_shader_variable_ti::Shared() );
+          m_tData->SetVertexArray(texCoordCont,
+                                  gl::p_shader_variable_ti::Pointer() );
 
-          so_fan->AddAttribute(m_tData);
+          m_so_fan->AddAttribute(*m_tData);
         }
       }
 
       //------------------------------------------------------------------------
       // Enable the shader
 
-      gfx_cs::Material::shader_prog_ptr sp = matPtr->GetShaderProgRef();
+      Material::const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
       // Don't 're-enable' the shader if it was already enabled by the previous
       // entity
-      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get() )
+      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
       {
         if (m_shaderPtr)
         { m_shaderPtr->Disable(); }
 
-        sp->Enable();
+        if (sp->Enable().Failed())
+        { 
+          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
+            << " could not be enabled.";
+          return;
+        }
+
         m_shaderPtr = sp;
 
-      typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
-      const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
+        typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
+        const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
 
-      for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
-           itr != itrEnd; ++itr)
-      {
-        gfx_cs::Material::shader_op_ptr so = *itr;
+        for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
+          itr != itrEnd; ++itr)
+        {
+          gl::const_shader_operator_vptr so = itr->get();
 
           so->EnableAllUniforms(*m_shaderPtr);
           so->EnableAllAttributes(*m_shaderPtr);
@@ -198,31 +179,39 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       // Add the mvp
-      m_mvpOperator->PrepareAllUniforms(*m_shaderPtr);
-      m_mvpOperator->EnableAllUniforms(*m_shaderPtr);
+      if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
+      { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      so_fan->PrepareAllAttributes(*m_shaderPtr);
-      so_fan->EnableAllAttributes(*m_shaderPtr);
+      if (m_so_fan->PrepareAllAttributes(*m_shaderPtr).Succeeded())
+      { m_so_fan->EnableAllAttributes(*m_shaderPtr); }
 
       glDrawArrays(GL_TRIANGLE_FAN, 0,
                    core_utils::CastNumber<GLsizei, tl_size>(numVertices));
     }
   }
 
-  void FanRenderSystem::Post_ProcessActiveEntities(f64)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    FanRenderSystem::
+    Post_ProcessActiveEntities(f64)
   {
-    // No materials/entities may have been loaded initially
-    // (m_shaderPtr would have remained NULL)
-    if (m_shaderPtr)
-    {
-      m_shaderPtr->Disable();
-      m_shaderPtr.reset();
-    }
+    m_shaderPtr.reset();
+
+    base_type::Post_ProcessActiveEntities(f64());
   }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  template class core_sptr::SharedPtr<FanRenderSystem>;
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FanRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(FanRenderSystem);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec2_cont_type);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec3_cont_type);

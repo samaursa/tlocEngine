@@ -9,9 +9,9 @@ namespace TestingQuad
 
   TEST_CASE("Graphics/component_system/Quad", "")
   {
-    using math::types::Rectf32;
+    using math_t::Rectf32_c;
 
-    Rectf32 r(Rectf32::width(1.0f), Rectf32::height(2.0f));
+    Rectf32_c r(Rectf32_c::width(1.0f), Rectf32_c::height(2.0f));
     Quad q(r);
     CHECK(q.GetRectangleRef() == r);
   }

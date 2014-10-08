@@ -47,6 +47,10 @@ namespace TestingStackArray
 
   TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/Ctors", "")
   {
+    CHECK( (ArrayFixed<tl_int, 4>::k_capacity) == 4);
+    CHECK( (ArrayFixed<tl_int, 10>::k_capacity) == 10);
+    CHECK( (ArrayFixed<tl_int, 50>::k_capacity) == 50);
+
     // Empty Vector of ints
     ArrayFixed<tl_int, 4> first;
 
@@ -400,6 +404,11 @@ namespace TestingStackArray
     ints.resize(resizeSize);
     CHECK(ints.size() == resizeSize);
     CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 5);
+
+    ints.clear();
+    ints.resize(resizeSize, 0);
+    CHECK(ints.size() == resizeSize);
+    CHECK_STACK_ARRAY_BY_INDEX(tl_int, ints, 0);
   }
 
   TEST_CASE_METHOD(StackArrayFixture, "Core/Container/StackArray/Assign",

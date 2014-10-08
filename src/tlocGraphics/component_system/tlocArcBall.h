@@ -3,7 +3,8 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
@@ -22,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef ArcBall                                       this_type;
     typedef Component_T<this_type, components::arcball>   base_type;
     typedef f32                                           real_type;
-    typedef math_t::Vector3<real_type>                    vec_type;
+    typedef math_t::Vector_T<real_type, 3>                    vec_type;
     typedef math_t::radian_f32                            angle_type;
 
   public:
@@ -54,8 +55,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_SHARED_PTR(ArcBall, arcball);
-  TLOC_TYPEDEF_COMPONENT_POOL(arcball_sptr, arcball_sptr);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ArcBall, arcball);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ArcBall, arcball);
+  TLOC_TYPEDEF_COMPONENT_POOL(ArcBall, arcball);
 
 };};};
 

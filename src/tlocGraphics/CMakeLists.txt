@@ -141,12 +141,14 @@ set(TLOC_GRAPHICS_MEDIA
   )
 
 set(TLOC_GRAPHICS_OPENGL 
-  opengl/tlocAttribute.cpp 
-  opengl/tlocAttribute.h 
+  opengl/tlocAttributeVBO.cpp 
+  opengl/tlocAttributeVBO.h 
   opengl/tlocError.cpp 
   opengl/tlocError.h 
   opengl/tlocFramebufferObject.h
   opengl/tlocFramebufferObject.cpp
+  opengl/tlocGLTypes.h
+  opengl/tlocGLTypes.cpp
   opengl/tlocObject.cpp 
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 

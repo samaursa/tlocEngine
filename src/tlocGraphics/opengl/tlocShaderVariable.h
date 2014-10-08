@@ -238,6 +238,8 @@ namespace tloc { namespace graphics { namespace gl {
     return DoSetValueAs(a_array);
   }
 
+  // -----------------------------------------------------------------------
+
   namespace algos { namespace shader_variable {
 
     namespace transform {

@@ -16,6 +16,11 @@
 #include <tlocGraphics/opengl/tlocShaderVariableInfo.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
+// GL_SAMPLER_2D_SHADOW only exists in the extentions in OpenGLES 2.0
+#if !defined(GL_SAMPLER_2D_SHADOW) && defined(GL_SAMPLER_2D_SHADOW_EXT)
+#define GL_SAMPLER_2D_SHADOW  GL_SAMPLER_2D_SHADOW_EXT
+#endif
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace {

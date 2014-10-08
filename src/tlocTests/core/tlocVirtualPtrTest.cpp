@@ -83,7 +83,28 @@ namespace TestingVirtualPtr
 
       delete a;
 
-      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
+      TLOC_TEST_ASSERT
+      {
+        a = p.get();
+      }
+      TLOC_TEST_ASSERT_CHECK();
+    }
+
+    //SECTION("raw pointer ctor", "")
+    {
+      int* a = new int[2];
+
+      VirtualPtr<int> p(a);
+      CHECK( CheckUseCount(p, 1, core_cfg::BuildConfig::build_config_type()) );
+      CHECK( (p.get() == a) );
+
+      delete[] a;
+
+      TLOC_TEST_ASSERT
+      {
+        a = p.get();
+      }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
     //SECTION("this_type copy ctor", "")

@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace string {
 
   template <typename T>
   template <typename T_InputIterator>
-  StringBase<typename T>::
+  StringBase<T>::
     StringBase(const T_InputIterator aPtrBegin,
                const T_InputIterator aPtrEnd)
   {

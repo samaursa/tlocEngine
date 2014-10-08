@@ -60,6 +60,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     typedef typename parent_type::policy_type           policy_type;
     typedef typename base_type::button_code_type        button_code_type;
 
+    typedef core_dispatch::Event                        event_type;
+
   public:
     JoystickImpl_T(parent_type& a_parent,
                    const joystick_params_type& a_params);
@@ -88,10 +90,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     void  DoReset(InputPolicy::Buffered) { }
     void  DoReset(InputPolicy::Immediate) { }
 
-    bool  DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered);
-    bool  DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate);
-    bool  DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered);
-    bool  DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate);
+    event_type  DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered);
+    event_type  DoButtonEvent(tl_int a_button, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate);
+    event_type  DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered);
+    event_type  DoChangePOV(tl_int a_pov, DIDEVICEOBJECTDATA& a_di, InputPolicy::Immediate);
 
     //! Enumerate axis callback
     static BOOL CALLBACK DIEnumDeviceObjectsCallback

@@ -291,7 +291,7 @@ namespace tloc { namespace math { namespace types {
     typedef core::Pair<bool,
       typename ray_3d_type::vec_type>               intersect_ret_type;
 
-    typedef math_t::Vector3<real_type>              dir_vec_type;
+    typedef math_t::Vector_T<real_type, 3>              dir_vec_type;
 
     typedef core_t::StrongType_T<bool, 0>      from_origin;
     typedef core_t::StrongType_T<bool, 1>      double_sided;

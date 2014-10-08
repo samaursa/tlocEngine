@@ -1,5 +1,5 @@
 #include "tlocVector2.h"
-#include "tlocVector2.inl.h"
+#include "tlocVector2.opt.inl.h"
 
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArray.inl.h>
@@ -9,9 +9,9 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Explicit template instantiations
 
-  template class Vector2<tloc::f32>;
-  template class Vector2<tloc::f64>;
-  template class Vector2<tloc::f128>;
+  template class Vector_T<tloc::f32, 2>;
+  template class Vector_T<tloc::f64, 2>;
+  template class Vector_T<tloc::f128, 2>;
 
 };};};
 

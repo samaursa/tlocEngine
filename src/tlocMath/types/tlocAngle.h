@@ -1,6 +1,7 @@
 #ifndef _TLOC_MATH_ANGLE_H_
 #define _TLOC_MATH_ANGLE_H_
 
+#include <tlocCore/base_classes/tlocPolicyBase.h>
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/utilities/tlocUtils.h>
@@ -9,14 +10,16 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, class T_Derived>
   class Angle_T
+    : public core_bclass::PolicyBase_TI<T_Derived>
   {
   public:
     TLOC_STATIC_ASSERT_IS_ARITH(T);
 
   public:
-    typedef T                                     value_type;
-    typedef T_Derived                             derived_type;
-    typedef Angle_T<value_type, derived_type>     this_type;
+    typedef T                                         value_type;
+    typedef T_Derived                                 derived_type;
+    typedef Angle_T<value_type, derived_type>         this_type;
+    typedef core_bclass::PolicyBase_TI<derived_type>  base_type;
 
   public:
     Angle_T(value_type a_angle = 0);
@@ -24,27 +27,27 @@ namespace tloc { namespace math { namespace types {
     template <typename T_AngleType>
     Angle_T(T_AngleType a_angle);
 
-    this_type&    operator=(value_type a_angle);
-    this_type&    operator=(const this_type& a_other);
+    derived_type&    operator=(value_type a_angle);
+    derived_type&    operator=(const this_type& a_other);
 
     template <typename T_AngleType>
-    this_type&    operator=(const T_AngleType& a_angle);
+    derived_type&    operator=(const T_AngleType& a_angle);
 
     template <typename T_AngleType>
     value_type    GetAs() const;
     TLOC_DECL_AND_DEF_GETTER(value_type, Get, m_angle);
 
-    this_type   operator+  (this_type a_other) const;
-    this_type&  operator+= (this_type a_other) ;
+    derived_type   operator+  (this_type a_other) const;
+    derived_type&  operator+= (this_type a_other) ;
 
-    this_type   operator-  (this_type a_other) const;
-    this_type&  operator-= (this_type a_other) ;
+    derived_type   operator-  (this_type a_other) const;
+    derived_type&  operator-= (this_type a_other) ;
 
-    this_type   operator*  (this_type a_other) const;
-    this_type&  operator*= (this_type a_other) ;
+    derived_type   operator*  (this_type a_other) const;
+    derived_type&  operator*= (this_type a_other) ;
 
-    this_type   operator/  (this_type a_other) const;
-    this_type&  operator/= (this_type a_other) ;
+    derived_type   operator/  (this_type a_other) const;
+    derived_type&  operator/= (this_type a_other) ;
 
     bool operator <  (this_type a_other) const;
     bool operator == (this_type a_other) const;
@@ -59,13 +62,17 @@ namespace tloc { namespace math { namespace types {
     void DoSetAngleCtor(T_AngleType, angle_type);
 
     value_type    m_angle;
+
+  private:
+    using base_type::This;
   };
 
   //////////////////////////////////////////////////////////////////////////
   // Radian
 
   template <typename T>
-  class Radian_T : protected Angle_T<T, Radian_T<T> >
+  class Radian_T
+    : public Angle_T<T, Radian_T<T> >
   {
   public:
     template <typename U, class V> friend class Angle_T;
@@ -120,7 +127,8 @@ namespace tloc { namespace math { namespace types {
   // Degree
 
   template <typename T>
-  class Degree_T : protected Angle_T<T, Degree_T<T> >
+  class Degree_T
+    : public Angle_T<T, Degree_T<T> >
   {
   public:
     template <typename U, class V> friend class Angle_T;
@@ -224,6 +232,33 @@ namespace tloc { namespace math { namespace types {
         T_AngleType_must_be_a_real_number_or_derived_from_Angle_T);
   }
 
+  // -----------------------------------------------------------------------
+
+  template <typename T>
+  Radian_T<T>
+    MakeRadian(T a_angle)
+  {
+    return Radian_T<T>(a_angle);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Radian_T<T>
+    MakeRadian(Degree_T<T> a_angle)
+  {
+    return Radian_T<T>(a_angle);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Radian_T<T>
+    MakeRadian(Radian_T<T> a_angle)
+  {
+    return a_angle;
+  }
+
   //------------------------------------------------------------------------
   // Degree
 
@@ -237,6 +272,33 @@ namespace tloc { namespace math { namespace types {
       ( Loki::Conversion<T_AngleType, base_type>::exists2Way ||
         Loki::TypeTraits<T_AngleType>::isArith),
         T_AngleType_must_be_derived_from_Angle_T);
+  }
+
+  // -----------------------------------------------------------------------
+
+  template <typename T>
+  Degree_T<T>
+    MakeDegree(T a_angle)
+  {
+    return Degree_T<T>(a_angle);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Degree_T<T>
+    MakeDegree(Radian_T<T> a_angle)
+  {
+    return Degree_T<T>(a_angle);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  Degree_T<T>
+    MakeDegree(Degree_T<T> a_angle)
+  {
+    return a_angle;
   }
 
   //////////////////////////////////////////////////////////////////////////

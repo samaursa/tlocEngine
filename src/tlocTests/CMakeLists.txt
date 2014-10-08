@@ -12,10 +12,13 @@ set(tlocAllTests
   tlocTestsMath
   tlocTestsPhysics
   tlocTestsAnimation
+  tlocTestsPrefab
   )
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/CATCH/
+  ${TLOC_DEP_INSTALL_PATH}
+  ${TLOC_DEP_INSTALL_PATH}/include/CATCH/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
 add_subdirectory(core)
@@ -24,6 +27,7 @@ add_subdirectory(input)
 add_subdirectory(math)
 add_subdirectory(physics)
 add_subdirectory(animation)
+add_subdirectory(prefab)
 
 if(TLOC_COMPILER_MSVC)
   foreach(testProj ${tlocAllTests})
@@ -38,11 +42,13 @@ if(TLOC_COMPILER_MSVC)
         PROPERTIES
         FOLDER tlocTests
         )
-      # Make tlocVersion and tlocVersionTool as dependencies for all projects
-      add_dependencies(${testProj}
-        tlocVersion
-        tlocVersionTool
-        )
+      if(NOT DISTRIBUTION_BUILD)
+        # Make tlocVersion and tlocVersionTool as dependencies for all projects
+        add_dependencies(${testProj}
+          tlocVersion
+          tlocVersionTool
+          )
+      endif()
     else()
       message("Test project ${testProj} not generated successfully.")
     endif()

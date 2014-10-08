@@ -95,6 +95,25 @@ namespace tloc { namespace core { namespace component_system {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  ComponentPoolManager::size_type
+    ComponentPoolManager::
+    RecycleAllUnused()
+  { 
+    size_type count = 0;
+    for (cont_type::iterator itr = m_pools.begin(), itrEnd = m_pools.end();
+         itr != itrEnd; ++itr)
+    {
+      if (*itr != nullptr)
+      { 
+        count += (*itr)->RecycleAllUnused();
+      }
+    }
+
+    return count;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void ComponentPoolManager::
     DoResize(size_type a_index)
   {

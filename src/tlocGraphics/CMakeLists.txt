@@ -39,13 +39,6 @@ set(TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG
     ${3RD_PARTY_PATH}/lodepng/lodepng.c
     )
 
-set(TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK
-    ${3RD_PARTY_PATH}/RectangleBinPack/Rect.h
-    ${3RD_PARTY_PATH}/RectangleBinPack/Rect.cpp
-    ${3RD_PARTY_PATH}/RectangleBinPack/GuillotineBinPack.h
-    ${3RD_PARTY_PATH}/RectangleBinPack/GuillotineBinPack.cpp
-    )
-
 set(TLOC_GRAPHICS_APPLICATION 
   )
 
@@ -59,6 +52,12 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocCameraSystem.h
   component_system/tlocCameraSystem.cpp
   component_system/tlocComponentType.h 
+  component_system/tlocDebugTransformRenderSystem.h 
+  component_system/tlocDebugTransformRenderSystem.cpp
+  component_system/tlocDynamicText.h
+  component_system/tlocDynamicText.cpp
+  component_system/tlocDynamicTextRenderSystem.h
+  component_system/tlocDynamicTextRenderSystem.cpp
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
   component_system/tlocFanRenderSystem.cpp 
@@ -84,6 +83,11 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocStaticText.cpp
   component_system/tlocStaticTextRenderSystem.h
   component_system/tlocStaticTextRenderSystem.cpp
+  component_system/tlocText_I.h
+  component_system/tlocText_I.cpp
+  component_system/tlocTextAlignment.h
+  component_system/tlocTextRenderSystem_TI.h
+  component_system/tlocTextRenderSystem_TI.cpp
   component_system/tlocTextureAnimator.h
   component_system/tlocTextureAnimator.cpp
   component_system/tlocTextureAnimatorSystem.h
@@ -112,6 +116,8 @@ set(TLOC_GRAPHICS_MEDIA
   media/tloc_media.inl.h
   media/tlocFont.h
   media/tlocFont.cpp
+  media/tlocFontSize.h
+  media/tlocFontSize.cpp
   media/tlocFreeType.h
   media/tlocFreeType.cpp
   media/tlocGlyph.h
@@ -160,6 +166,10 @@ set(TLOC_GRAPHICS_OPENGL
   opengl/tlocUniform.cpp 
   opengl/tlocUniform.h 
   opengl/tlocUniformExplicitMacros.h 
+  opengl/tlocVertexArrayObject.h
+  opengl/tlocVertexArrayObject.cpp
+  opengl/tlocVertexBufferObject.h
+  opengl/tlocVertexBufferObject.cpp
   opengl/tloc_opengl.cpp 
   opengl/tloc_opengl.h 
   opengl/tloc_opengl.inl.h
@@ -249,7 +259,7 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/FreeType/
+  ${TLOC_DEP_INSTALL_PATH}/include/FreeType/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/GLEW/
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
@@ -273,6 +283,7 @@ add_library(tlocGraphics STATIC
   )
 
 add_dependencies(tlocGraphics
+  3rdParty
   tlocCore
   tlocMath
   )
@@ -294,5 +305,5 @@ source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSIO
 source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
 source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
 source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
-source_group(3rd_party/RectBinPacking FILES ${TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK})
 
+tloc_install_library(tlocGraphics tlocGraphics)

@@ -12,10 +12,11 @@ namespace tloc { namespace core { namespace logging {
   {
     namespace severity
     {
-      class Info    { static const tl_int s_value = 0; };
-      class Debug   { static const tl_int s_value = 1; };
-      class Warning { static const tl_int s_value = 2; };
-      class Error   { static const tl_int s_value = 3; };
+      struct Info    { static const tl_int s_value = 0; };
+      struct Success { static const tl_int s_value = 1; };
+      struct Debug   { static const tl_int s_value = 2; };
+      struct Warning { static const tl_int s_value = 3; };
+      struct Error   { static const tl_int s_value = 4; };
     };
   };
 
@@ -32,6 +33,7 @@ namespace tloc { namespace core { namespace logging {
     enum
     {
       k_info,
+      k_success,
       k_debug,
       k_warning,
       k_error,
@@ -45,7 +47,10 @@ namespace tloc { namespace core { namespace logging {
     Log_I();
     Log_I(const this_type& a_other);
 
-    this_type& operator << (BufferArg a_string);
+    this_type& operator << (BufferArg  a_string);
+    this_type& operator << (BufferArgW a_string);
+    this_type& operator << (char8     a_value);
+    this_type& operator << (char32    a_value);
     this_type& operator << (tl_int    a_value);
     this_type& operator << (tl_long   a_value);
     this_type& operator << (tl_uint   a_value);

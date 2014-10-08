@@ -22,10 +22,17 @@ namespace TestingUniformVariable
 
       gl::Uniform u;
       u.SetValueAs(v);
+      u.SetEnabled(false);
 
       {
         gl::Uniform ucopy(u);
         CHECK( (ucopy.GetValueAs<Vec2f32>() == v) );
+        CHECK_FALSE( ucopy.IsEnabled() );
+        CHECK_FALSE( u.IsEnabled() );
+
+        ucopy.SetEnabled(true);
+        CHECK( ucopy.IsEnabled() );
+        CHECK_FALSE( u.IsEnabled() );
       }
 
       {
@@ -55,6 +62,9 @@ namespace TestingUniformVariable
       CHECK_FALSE( uCopy2.IsArrayPtr());
       CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( uCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+
+      Array<f32> arrayToGetBack;
+      u.GetValueAs(arrayToGetBack);
     }
 
     SECTION("Array pointers", "")
@@ -216,6 +226,39 @@ namespace TestingUniformVariable
       CHECK( u.GetValueAs<Vec4f32>()[1] == Approx(1.0f));
       CHECK( u.GetValueAs<Vec4f32>()[2] == Approx(2.0f));
       CHECK( u.GetValueAs<Vec4f32>()[3] == Approx(3.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::color_rg(255, 255));
+      CHECK( u.GetValueAs<Vec2f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec2f32>()[1] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::color_rgb(255, 255, 255));
+      CHECK( u.GetValueAs<Vec3f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec3f32>()[2] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::Color(255, 255, 255, 255));
+      CHECK( u.GetValueAs<Vec4f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[1] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[2] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[3] == Approx(1.0f));
+    }
+
+    {
+      gl::Uniform u;
+      u.SetValueAs(gfx_t::color_f32_rgba(1.0f, 0.5f, 0.0f, 1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[0] == Approx(1.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[1] == Approx(0.5f));
+      CHECK( u.GetValueAs<Vec4f32>()[2] == Approx(0.0f));
+      CHECK( u.GetValueAs<Vec4f32>()[3] == Approx(1.0f));
     }
 
     {

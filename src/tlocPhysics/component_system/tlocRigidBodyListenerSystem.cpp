@@ -50,7 +50,7 @@ namespace tloc { namespace physics { namespace component_system {
       ComponentMapper<rb_listener_component>
         rbListenerComponentsMapped = *a_rbListenerComponents;
 
-      rigid_body_listener_vptr rbListenerComponent =
+      rigid_body_listener_sptr rbListenerComponent =
         rbListenerComponentsMapped[0];
 
       return rbListenerComponent->GetRigidBodyListener();
@@ -227,3 +227,4 @@ namespace tloc { namespace physics { namespace component_system {
 using namespace tloc::phys_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(RigidBodyListenerSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(RigidBodyListenerSystem);

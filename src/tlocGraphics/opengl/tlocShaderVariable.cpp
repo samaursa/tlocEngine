@@ -92,6 +92,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_DECL_TL_TO_GL(Array<Tuple2u32>, GL_UNSIGNED_INT_VEC2);
   TLOC_DECL_TL_TO_GL(Array<Tuple3u32>, GL_UNSIGNED_INT_VEC3);
   TLOC_DECL_TL_TO_GL(Array<Tuple4u32>, GL_UNSIGNED_INT_VEC4);
+
+  TLOC_DECL_TL_TO_GL(TextureObjectShadow, GL_SAMPLER_2D_SHADOW);
+#elif defined (TLOC_OS_IPHONE)
+  TLOC_DECL_TL_TO_GL(TextureObjectShadow, GL_SAMPLER_2D_SHADOW_EXT);
 #endif
 
 #undef TLOC_DECL_TL_TO_GL
@@ -108,6 +112,7 @@ namespace tloc { namespace graphics { namespace gl {
     : m_type(GL_NONE)
     , m_isArray(false)
     , m_isArrayPtr(false)
+    , m_enabled(true)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -118,6 +123,7 @@ namespace tloc { namespace graphics { namespace gl {
     , m_name(a_other.m_name)
     , m_isArray(a_other.m_isArray)
     , m_isArrayPtr(a_other.m_isArrayPtr)
+    , m_enabled(a_other.m_enabled)
   { }
 
   template <SHADER_VARIABLE_TEMP>
@@ -135,6 +141,7 @@ namespace tloc { namespace graphics { namespace gl {
     swap(m_name, a_other.m_name);
     swap(m_isArray, a_other.m_isArray);
     swap(m_isArrayPtr, a_other.m_isArrayPtr);
+    swap(m_enabled, a_other.m_enabled);
   }
 
   template <SHADER_VARIABLE_TEMP>
@@ -251,22 +258,23 @@ namespace tloc { namespace graphics { namespace gl {
   // Uniform
   TLOC_SHADER_VARIABLE_EXPLICIT(Uniform);
 
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,              Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,        Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,             Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,          Uniform);
-  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,    Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(f32,                 Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec2f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec3f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Vec4f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(s32,                 Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4s32,           Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(bool,                Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple2b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple3b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Tuple4b,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat2f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,             Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,       Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObjectShadow, Uniform);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(u32,              Uniform);

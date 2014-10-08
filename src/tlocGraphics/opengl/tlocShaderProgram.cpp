@@ -146,6 +146,14 @@ namespace tloc { namespace graphics { namespace gl {
   //////////////////////////////////////////////////////////////////////////
   // Shader Program
 
+  // -----------------------------------------------------------------------
+  // static vars
+
+  ShaderProgram::object_handle
+    ShaderProgram::s_lastShaderHandle = 0;
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderProgram::ShaderProgram() : m_flags(k_count)
   {
     SetHandle(glCreateProgram());
@@ -165,7 +173,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::AttachShaders
     (Variadic<Shader_I*, T_Size> a_shaderComponents)
   {
-    for (size_type i = 0; i < a_shaderComponents.GetSize(); ++i)
+    for (size_type i = 0; i < a_shaderComponents.size(); ++i)
     {
       glAttachShader(GetHandle(), a_shaderComponents[i]->GetHandle());
       TLOC_ASSERT(gl::Error().Succeeded(), "Could not attach shader");
@@ -267,14 +275,22 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   ShaderProgram::error_type
-    ShaderProgram::Enable() const
+    ShaderProgram::Enable(force_enable a_fe) const
   {
+    if (s_lastShaderHandle == GetHandle() && !a_fe)
+    { return ErrorSuccess; }
+
+    // disable all previously enabled vertex attributes
+    gl::vertex_attrib_array::DisableAll();
+
     glUseProgram(GetHandle());
     gl::Error err;
     if (err.Failed())
     {
       return TLOC_ERROR(error::error_shader_program_enable);
     }
+
+    s_lastShaderHandle = GetHandle();
 
     return ErrorSuccess;
   }
@@ -295,6 +311,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderProgram::Disable() const
   {
     glUseProgram(0);
+    s_lastShaderHandle = 0;
 
     if (gl::Error().Failed())
     {

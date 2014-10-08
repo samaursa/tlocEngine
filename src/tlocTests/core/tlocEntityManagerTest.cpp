@@ -21,7 +21,7 @@ namespace TestingEntityManager
   struct EmptyComponent1 : public Component
   {
     EmptyComponent1()
-      : Component(components::listener)
+      : Component(components::listener, "EmptyComponent1")
     { }
 
     ~EmptyComponent1()
@@ -37,7 +37,7 @@ namespace TestingEntityManager
   struct EmptyComponent2 : public Component
   {
     EmptyComponent2()
-      : Component(components::listener + 1)
+      : Component(components::listener + 1, "EmptyComponent2")
     { }
 
     ~EmptyComponent2()
@@ -57,7 +57,7 @@ namespace TestingEntityManager
                     , m_totalEvents(0)
     {}
 
-    virtual bool OnEvent(const EventBase& a_event)
+    virtual EventReturn OnEvent(const EventBase& a_event)
     {
       m_totalEvents++;
 
@@ -67,26 +67,26 @@ namespace TestingEntityManager
       case entity_events::create_entity:
         {
           m_entEventCounter++;
-          return true;
+          return EventReturn(true, false);
         }
       case entity_events::destroy_entity:
         {
           m_entEventCounter--;
-          return true;
+          return EventReturn(true, false);
         }
       case entity_events::insert_component:
         {
           m_compEventCounter++;
-          return true;
+          return EventReturn(true, true);
         }
       case entity_events::remove_component:
         {
           m_compEventCounter--;
-          return true;
+          return EventReturn(true, false);
         }
       default:
         {
-          return false;
+          return EventReturn(false, false);
         }
       }
     }
@@ -95,25 +95,31 @@ namespace TestingEntityManager
     tl_int  m_compEventCounter;
     tl_int  m_totalEvents;
   };
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EntityTracker, entity_tracker);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(EntityTracker, entity_tracker);
+
+  using core_sptr::MakeShared;
 
   TEST_CASE("Core/component_system/EntityManager/CreateDestroy", "")
   {
-    SECTION("CreateEntity() and DestroyEntity()", "")
+    //SECTION("CreateEntity() and DestroyEntity()", "")
     {
       const tl_uint entityCount = 100;
 
-      EntityTracker   entTrack;
-      event_manager_vso  evtMgr;
-      evtMgr->AddGlobalListener(&entTrack);
+      entity_tracker_vso  entTrack, entTrack2;
+      event_manager_vso   evtMgr;
+      evtMgr->AddGlobalListener(entTrack.get().get());
+      evtMgr->AddListener(entTrack2.get().get(), entity_events::insert_component);
+      evtMgr->AddListener(entTrack2.get().get(), entity_events::remove_component);
 
       EntityManager   eMgr(evtMgr.get());
 
       EntityManager::entity_ptr_type newEnt = eMgr.CreateEntity();
       CHECK( (newEnt != nullptr) );
-      CHECK(entTrack.m_entEventCounter == 1);
+      CHECK(entTrack->m_entEventCounter == 1);
 
       eMgr.DestroyEntity(newEnt);
-      CHECK(entTrack.m_entEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 0);
 
       bool stressTestPassed = true;
       EntityManager::entity_cont myList;
@@ -125,7 +131,7 @@ namespace TestingEntityManager
         if (newEnt == nullptr) { stressTestPassed = false; break; }
       }
       CHECK(eMgr.GetUnusedEntities() == 0);
-      CHECK(entTrack.m_entEventCounter == entityCount);
+      CHECK(entTrack->m_entEventCounter == entityCount);
       CHECK(stressTestPassed);
 
       for (EntityManager::entity_cont::iterator itr = myList.begin(),
@@ -141,36 +147,48 @@ namespace TestingEntityManager
       myList.clear();
 
       eMgr.Update();
-      CHECK(entTrack.m_entEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 0);
       CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
 
       newEnt = eMgr.CreateEntity();
-      CHECK(entTrack.m_entEventCounter == 1);
-      CHECK(entTrack.m_compEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 1);
+      CHECK(entTrack->m_compEventCounter == 0);
 
-      component_vso testComp = component_vso(Component(components::listener));
-      eMgr.InsertComponent(newEnt, testComp.get());
-      CHECK(entTrack.m_compEventCounter == 1);
+      component_sptr testComp = MakeShared<Component>(Component(components::listener, "temp"));
+      { // dispatch to all
+        eMgr.InsertComponent(EntityManager::Params()
+                             .Entity(newEnt).Component(testComp).Orphan(true));
+        CHECK(entTrack->m_compEventCounter == 1);
+        CHECK(entTrack2->m_compEventCounter == 1);
+      }
 
-      component_vso invalidComp = component_vso( Component(components::listener + 1) );
+      { // dispatch selectively
+        component_sptr testComp2 = MakeShared<Component>(Component(components::listener, "temp"));
+        eMgr.InsertComponent(EntityManager::Params(newEnt, testComp2).Orphan(true)
+                             .DispatchTo(entTrack2.get().get()) );
+          CHECK(entTrack->m_compEventCounter == 1);
+          CHECK(entTrack2->m_compEventCounter == 2);
+      }
 
-      CHECK_FALSE(eMgr.RemoveComponent(newEnt, invalidComp.get()));
+      component_sptr invalidComp = MakeShared<Component>(Component(components::listener + 1, "temp"));
+
+      CHECK_FALSE(eMgr.RemoveComponent( core::MakePair(newEnt, invalidComp)) );
       eMgr.Update();
-      CHECK(entTrack.m_compEventCounter == 1);
+      CHECK(entTrack->m_compEventCounter == 1);
 
-      CHECK(eMgr.RemoveComponent(newEnt, testComp.get()));
+      CHECK(eMgr.RemoveComponent( core::MakePair(newEnt, testComp)) );
       eMgr.Update();
-      CHECK(entTrack.m_compEventCounter == 0);
+      CHECK(entTrack->m_compEventCounter == 0);
 
       eMgr.DestroyEntity(newEnt);
       newEnt.reset();
 
       eMgr.Update();
-      CHECK(entTrack.m_entEventCounter == 0);
+      CHECK(entTrack->m_entEventCounter == 0);
       CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
     }
 
-    SECTION("Destructor memory leak", "")
+    //SECTION("Destructor memory leak", "")
     {
       // The dtor was calling DestroyEntity but was not doing an update to
       // clean the entities causing memory leaks
@@ -182,8 +200,16 @@ namespace TestingEntityManager
       {
         // component VSOs come first because they cannot be destroyed before
         // EntityManager has a chance to clean up its VirtualPtrs to the VSOs
-        empty_comp1_vso c1, c2, c3;
-        empty_comp2_vso c4, c5, c6;
+        empty_comp1_sptr c1, c2, c3;
+        empty_comp2_sptr c4, c5, c6;
+
+        c1 = MakeShared<EmptyComponent1>();
+        c2 = MakeShared<EmptyComponent1>();
+        c3 = MakeShared<EmptyComponent1>();
+
+        c4 = MakeShared<EmptyComponent2>();
+        c5 = MakeShared<EmptyComponent2>();
+        c6 = MakeShared<EmptyComponent2>();
 
         // VSO creates some temps, so we start from that count
         c1dtorCount = EmptyComponent1::m_dtor;
@@ -191,9 +217,9 @@ namespace TestingEntityManager
 
         const tl_uint entityCount = 100;
 
-        EntityTracker   entTrack;
-        event_manager_vso evtMgr;
-        evtMgr->AddGlobalListener(&entTrack);
+        entity_tracker_vso  entTrack;
+        event_manager_vso   evtMgr;
+        evtMgr->AddGlobalListener(entTrack.get().get());
 
         EntityManager   eMgr(evtMgr.get());
 
@@ -201,17 +227,23 @@ namespace TestingEntityManager
         for (tl_uint i = 0; i < entityCount / 2; ++i)
         {
           EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
-          eMgr.InsertComponent(ent, c1.get());
-          eMgr.InsertComponent(ent, c2.get());
-          eMgr.InsertComponent(ent, c3.get());
+          eMgr.InsertComponent(EntityManager::Params()
+                               .Entity(ent).Component(c1).Orphan(true));
+          eMgr.InsertComponent(EntityManager::Params()
+                               .Entity(ent).Component(c2).Orphan(true));
+          eMgr.InsertComponent(EntityManager::Params()
+                               .Entity(ent).Component(c3).Orphan(true));
         }
 
         for (tl_uint i = entityCount / 2; i < entityCount; ++i)
         {
           EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
-          eMgr.InsertComponent(ent, c4.get());
-          eMgr.InsertComponent(ent, c5.get());
-          eMgr.InsertComponent(ent, c6.get());
+          eMgr.InsertComponent(EntityManager::Params()
+                               .Entity(ent).Component(c4).Orphan(true));
+          eMgr.InsertComponent(EntityManager::Params()
+                               .Entity(ent).Component(c5).Orphan(true));
+          eMgr.InsertComponent(EntityManager::Params()
+                               .Entity(ent).Component(c6).Orphan(true));
         }
       }
 

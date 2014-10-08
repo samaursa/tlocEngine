@@ -3,8 +3,6 @@
 #include <tlocMath/tloc_math.h>
 #include <tlocPrefab/tloc_prefab.h>
 
-#include <tlocCore/memory/tlocLinkMe.cpp>
-
 #include <gameAssetsPath.h>
 
 using namespace tloc;
@@ -16,10 +14,13 @@ public:
     : m_endProgram(false)
   { }
 
-  void OnWindowEvent(const gfx_win::WindowEvent& a_event)
+  core_dispatch::Event 
+    OnWindowEvent(const gfx_win::WindowEvent& a_event)
   {
     if (a_event.m_type == gfx_win::WindowEvent::close)
     { m_endProgram = true; }
+
+    return core_dispatch::f_event::Continue();
   }
 
   bool  m_endProgram;
@@ -41,7 +42,10 @@ int TLOC_MAIN(int argc, char *argv[])
   // Initialize OpenGL for the current platform
 
   if (gfx_gl::InitializePlatform() != ErrorSuccess)
-  { printf("\nRenderer failed to initialize"); return 1; }
+  { 
+    TLOC_LOG_GFX_ERR() << "Renderer failed to initialize"; 
+    return 1;
+  }
 
   //------------------------------------------------------------------------
   // A component pool manager manages all the components in a particular
@@ -51,7 +55,7 @@ int TLOC_MAIN(int argc, char *argv[])
   //------------------------------------------------------------------------
   // All systems in the engine require an event manager and an entity manager
   core_cs::event_manager_vso  eventMgr;
-  core_cs::entity_manager_vso entityMgr(eventMgr.get());
+  core_cs::entity_manager_vso entityMgr( MakeArgs(eventMgr.get()) );
 
   //------------------------------------------------------------------------
   // To render a fan, we need a fan render system - this is a specialized
@@ -91,7 +95,6 @@ int TLOC_MAIN(int argc, char *argv[])
   // gl::Uniform supports quite a few types, including a TextureObject
   gfx_gl::texture_object_vso to;
   to->Initialize(png.GetImage());
-  to->Activate();
 
   gfx_gl::uniform_vso  u_to;
   u_to->SetName("s_texture").SetValueAs(*to);
@@ -133,7 +136,7 @@ int TLOC_MAIN(int argc, char *argv[])
 
   //------------------------------------------------------------------------
   // Exiting
-  printf("\nExiting normally");
+  TLOC_LOG_CORE_INFO() << "Exiting normally";
 
   return 0;
 

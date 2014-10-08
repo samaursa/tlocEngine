@@ -24,6 +24,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef ComponentPool_I                         this_type;
     typedef containers::tl_array<this_type*>::type  cont_type;
+    typedef tl_size                                 size_type;
 
   public:
     friend class ComponentPoolManager;
@@ -38,6 +39,8 @@ namespace tloc { namespace core { namespace component_system {
     template <typename T_PoolType>
     T_PoolType const *  GetAs() const
     { return static_cast<T_PoolType const *>(this); }
+
+    virtual size_type RecycleAllUnused() = 0;
 
   protected:
     ComponentPool_I();
@@ -57,13 +60,13 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
     typedef ComponentPool_I                                 base_type;
-    typedef core::memory::MemoryPoolIndexed<T_Component>    pool_base_type;
-
     typedef T_Component                                     value_type;
+    typedef core_sptr::SharedPtr<value_type>                pointer;
+
     typedef ComponentPool_TI<value_type>                    this_type;
 
     typedef core::memory::MemoryPoolIndexed
-            <value_type>                                    pool_type;
+            <pointer>                                       pool_type;
     typedef typename pool_type::iterator                    iterator;
     typedef typename pool_type::final_value_type            final_value_type;
     typedef typename pool_type::const_iterator              const_iterator;
@@ -85,7 +88,7 @@ namespace tloc { namespace core { namespace component_system {
     /// Will recycle all the components that are not in use (i.e. their
     /// reference count is 1).
     ///-------------------------------------------------------------------------
-    void              RecycleAllUnused();
+    size_type         RecycleAllUnused();
     size_type         GetUsed() const;
 
   protected:
@@ -146,6 +149,10 @@ namespace tloc { namespace core { namespace component_system {
     component_pool_ptr  GetPool(component_type a_type);
 
     template <typename T_Component>
+    core_sptr::VirtualPtr<ComponentPool_TI<T_Component> >
+                        GetOrCreatePool();
+
+    template <typename T_Component>
     void                DestroyPool();
     void                DestroyPool(component_type a_type);
 
@@ -163,7 +170,7 @@ namespace tloc { namespace core { namespace component_system {
     // Returns the number of 'created pools - destroyed pools'
     size_type           GetNumActivePools() const;
 
-    // Add a function GetPool<T> where T is the pool type
+    size_type           RecycleAllUnused();
 
   private:
     // a_index = component's ID which will be used to resize the array to the
@@ -217,6 +224,24 @@ namespace tloc { namespace core { namespace component_system {
 
     component_pool_ptr cp = GetPool(compNumber);
     return core_sptr::static_pointer_cast<ComponentPool_TI<T_Component> >(cp);
+  }
+
+  template <typename T_Component>
+  core_sptr::VirtualPtr<ComponentPool_TI<T_Component> >
+    ComponentPoolManager::
+    GetOrCreatePool()
+  {
+    const tl_int compNumber =
+      p_component_pool_manager::ComponentID<T_Component>::k_value;
+
+    core_sptr::VirtualPtr<ComponentPool_TI<T_Component> > toRet;
+
+    if (Exists(compNumber))
+    { toRet = GetPool<T_Component>(); }
+    else
+    { toRet = CreateNewPool<T_Component>(); }
+
+    return toRet;
   }
 
   template <typename T_Component>

@@ -28,7 +28,8 @@ namespace TestingWindow
       }
     }
 
-    void OnWindowEvent(const WindowEvent& a_event)
+    core_dispatch::Event 
+      OnWindowEvent(const WindowEvent& a_event)
     {
       INFO("Unknown event was passed.");
       REQUIRE(a_event.m_type < WindowEvent::events_count);
@@ -38,6 +39,8 @@ namespace TestingWindow
 
       CHECK(a_event.GetWidth() == g_windowSizeX);
       CHECK(a_event.GetHeight() == g_windowSizeY);
+
+      return core_dispatch::f_event::Continue();
     }
 
     s32 m_windowEventCount;
@@ -90,7 +93,20 @@ namespace TestingWindow
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == g_windowSizeX);
       CHECK(win2.GetHeight() == g_windowSizeY);
+      CHECK(win2.GetDimensions()[0] == g_windowSizeX);
+      CHECK(win2.GetDimensions()[1] == g_windowSizeY);
       CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
+
+      {
+        // windows specific DPI check
+        HDC screen = GetDC(TLOC_NULL);
+
+        tl_int dpiX = GetDeviceCaps(screen, LOGPIXELSX);
+        tl_int dpiY = GetDeviceCaps(screen, LOGPIXELSY);
+
+        CHECK(win2.GetDPI()[0] == core_utils::CastNumber<tl_size>(dpiX));
+        CHECK(win2.GetDPI()[1] == core_utils::CastNumber<tl_size>(dpiY));
+      }
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);
       win2.Register(&callbacks);

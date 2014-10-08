@@ -32,8 +32,8 @@ namespace tloc { namespace core { namespace memory { namespace priv {
     MemoryPoolIndexedWrapper();
     MemoryPoolIndexedWrapper(const wrapper_type& a_rhs);
 
-    pointer         GetValue();
-    const_pointer   GetValue() const;
+    pointer         GetValuePtr();
+    const_pointer   GetValuePtr() const;
     void            SetValue(const value_type& a_value);
     void            SetValue(const_pointer a_value);
 

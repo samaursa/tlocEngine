@@ -113,7 +113,7 @@ namespace TestingAllocators
 
   TEST_CASE("core/memory/priv/MemoryTracker", "")
   {
-    SECTION("Tracking/Untracking memory addresses", "")
+    //SECTION("Tracking/Untracking memory addresses", "")
     {
       for (tl_size i = 0; i < g_repCount; ++i)
       {
@@ -129,7 +129,7 @@ namespace TestingAllocators
       }
     }
 
-    SECTION("Tracking connected memory addresses", "")
+    //SECTION("Tracking connected memory addresses", "")
     {
       for (tl_size i = 0; i < g_repCount; ++i)
       {

@@ -10,6 +10,7 @@
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 #include <tlocCore/smart_ptr/tlocSharedPtr.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include "tlocInputImpl.h"
 #include "tlocInputTypes.h"
@@ -25,7 +26,7 @@ namespace tloc { namespace input {
   /// This manager follows the RAII principle.
   ///-------------------------------------------------------------------------
   template <typename T_Policy = InputPolicy::Buffered,
-            typename T_Platform = typename core::PlatformInfo<>::platform_type>
+            typename T_Platform = typename core_plat::PlatformInfo::platform_type>
   class InputManager
   {
   public:
@@ -52,7 +53,8 @@ namespace tloc { namespace input {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID
+    core_sptr::VirtualPtr<T_InputObject>  
+      CreateHID
       (param_options::value_type a_params = param_options::TL_WIN_DISCL_DEFAULT)
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
@@ -99,7 +101,8 @@ namespace tloc { namespace input {
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject* GetHID(size_type a_index = 0)
+    core_sptr::VirtualPtr<T_InputObject> 
+      GetHID(size_type a_index = 0)
     {
       p_hid::IsInputTypeSupported<T_InputObject>();
       return DoGetHID<T_InputObject>(a_index);
@@ -125,10 +128,12 @@ namespace tloc { namespace input {
     size_type DoGetTotalHID(input_type a_inputType);
 
     template <typename T_InputObject>
-    T_InputObject*  DoCreateHID(param_options::value_type a_params);
+    core_sptr::VirtualPtr<T_InputObject>  
+      DoCreateHID(param_options::value_type a_params);
 
     template <typename T_InputObject>
-    T_InputObject* DoGetHID(size_type a_index);
+    core_sptr::VirtualPtr<T_InputObject> 
+      DoGetHID(size_type a_index);
 
   private:
     typedef priv::InputManagerImpl<this_type>       impl_type;

@@ -5,6 +5,7 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
 
 #include <tlocMath/tlocMath.h>
@@ -337,8 +338,16 @@ namespace tloc { namespace math {
     value_type absDiff = math::Abs<value_type>(a_end - a_begin);
     value_type remainder = math::Remainder(absDiff, m_stepSize);
 
-    if (math::Approx(remainder, (value_type)0) == false)
+    if (math::IsEqual(remainder, (value_type)0) == false)
     { m_elementCount++; }
+  }
+
+  template <RANGE_T_TEMP>
+  bool
+    Range_T<RANGE_T_PARAMS>::
+    IsInRange(value_type a_value) const
+  {
+    return a_value >= front() && a_value <= back();
   }
 
   template <RANGE_T_TEMP>

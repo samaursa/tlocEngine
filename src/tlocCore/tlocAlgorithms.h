@@ -3,9 +3,11 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/iterators/tlocIterator.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 //------------------------------------------------------------------------
 // Fine grain control to enable/disable assertions in algorithms
@@ -39,7 +41,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container, typename T_Function>
   T_Function
-    for_each_all(T_Container a_container, T_Function a_func);
+    for_each_all(T_Container& a_container, T_Function a_func);
 
   template <typename T_InputIterator, typename T_Function>
   T_Function

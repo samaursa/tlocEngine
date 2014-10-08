@@ -25,6 +25,7 @@ xcuserdata/**
 *.vcproj
 CMakeFiles/**
 build*/
+INSTALL/
 *.res
 *.swp
 tlocAssetsPath.h

@@ -6,6 +6,7 @@
 #endif
 
 #include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/tlocAssert.h>
 
 namespace tloc { namespace core {
   //////////////////////////////////////////////////////////////////////////
@@ -17,7 +18,7 @@ namespace tloc { namespace core {
   template <typename T_Container>
   back_insert_iterator<T_Container>::
     back_insert_iterator( T_Container& aContainer )
-    : m_container(aContainer)
+    : m_container(&aContainer)
   {
   }
 
@@ -50,15 +51,7 @@ namespace tloc { namespace core {
     back_insert_iterator<T_Container>::
     operator=( const_reference aValue )
   {
-    m_container.push_back(aValue);
-    return *this;
-  }
-
-  template <typename T_Container>
-  back_insert_iterator<T_Container>&
-    back_insert_iterator<T_Container>::
-    operator=( const this_type& aOther )
-  {
+    m_container->push_back(aValue);
     return *this;
   }
 

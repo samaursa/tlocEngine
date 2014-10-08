@@ -315,6 +315,20 @@ namespace TestingVector3f
     CHECK_VEC3F(e, 0, 0, -1); //-V550
   }
 
+  TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/IsParallel", "")
+  {
+    a = Vec3f(1, 0, 0);
+    b = Vec3f(1, 0, 0);
+    c = Vec3f(-1, 0, 0);
+    d = Vec3f(0, 1, 0);
+    e = Vec3f(0, -1, 0);
+
+    CHECK(a.IsParallel(b));
+    CHECK(a.IsParallel(c));
+    CHECK_FALSE(a.IsParallel(d));
+    CHECK_FALSE(a.IsParallel(e));
+  }
+
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/ComparisonsAndChecks",
     "Tests == and != comparisons as well as checks")
   {

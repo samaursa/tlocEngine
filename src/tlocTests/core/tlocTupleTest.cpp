@@ -41,7 +41,7 @@ namespace TestingTuple
     CHECK_TUP(p, 5, 5, 5, 5);
 
     // Check Size
-    CHECK(p.GetSize() == 4);
+    CHECK(p.size() == 4);
 
     Tuple<tl_int, 4> q(8);
     p.Swap(q);
@@ -54,7 +54,7 @@ namespace TestingTuple
     CHECK_TUP(p, 1, 2, 3, 4);
 
     // Check Size
-    CHECK(q.GetSize() == 4);
+    CHECK(q.size() == 4);
 
     Tuple<tl_int, 4> r(numberSet);
     CHECK_TUP(r, 1, 2, 3, 4);
@@ -65,7 +65,7 @@ namespace TestingTuple
     CHECK_TUP(r, 1, 2, 3, 4);
 
     // Check Size
-    CHECK(r.GetSize() == 4);
+    CHECK(r.size() == 4);
 
     Tuple<tl_int, 4> s(r);
     CHECK_TUP(s, 1, 2, 3, 4);
@@ -76,7 +76,7 @@ namespace TestingTuple
     CHECK_TUP(s, 1, 2, 3, 4);
 
     // Check Size
-    CHECK (q.GetSize() == 4);
+    CHECK (q.size() == 4);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/VariadicCtor",
@@ -84,7 +84,7 @@ namespace TestingTuple
   {
     Tuple<tl_int, 4> p(Variadic4s(1, 2, 3, 4));
 
-    CHECK(p.GetSize() == 4);
+    CHECK(p.size() == 4);
     CHECK(p[0] == 1);
     CHECK(p[1] == 2);
     CHECK(p[2] == 3);
@@ -130,6 +130,8 @@ namespace TestingTuple
     Tuple<tl_int, 4> a4_same(10), a4_one(20), a4_zero(30);
     Tuple<tl_int, 5> a5(2);
 
+    Tuple<tl_uint, 4> u4(10);
+
     a4_one = a3.ConvertTo<Tuple<tl_int, 4>, p_tuple::overflow_one>();
     CHECK_TUP(a4_one, 0, 0, 0, 1);
     a4_one = a3.ConvertTo<Tuple<tl_int, 4>, p_tuple::overflow_zero>();
@@ -139,6 +141,9 @@ namespace TestingTuple
     CHECK_TUP(a4_same, 2, 2, 2, 2);
     a4_same = a3.ConvertTo<Tuple<tl_int, 4> >(); // default overflow policy is overflow_one
     CHECK_TUP(a4_same, 0, 0, 0, 1);
+
+    u4 = a3.ConvertTo<Tuple<tl_uint, 4> >();
+    CHECK_TUP(u4, 0, 0, 0, 1);
   }
 
   TEST_CASE("Core/DataStructures/Tuple/Implicit conversion",
@@ -152,5 +157,51 @@ namespace TestingTuple
 
     a4 = a4.Cast<Tuple<s32, 4> >();
     CHECK_TUP(a4, 1, 2, 3, 9);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/MakeTuple", "")
+  {
+    Tuple<s32, 1> tup1 = core_ds::MakeTuple(1);
+    CHECK(tup1[0] == 1);
+
+    Tuple<s32, 2> tup2 = core_ds::MakeTuple(1, 2);
+    CHECK(tup2[0] == 1);
+    CHECK(tup2[1] == 2);
+
+    Tuple<s32, 3> tup3 = core_ds::MakeTuple(1, 2, 3);
+    CHECK(tup3[0] == 1);
+    CHECK(tup3[1] == 2);
+    CHECK(tup3[2] == 3);
+
+    Tuple<s32, 4> tup4 = core_ds::MakeTuple(1, 2, 3, 4);
+    CHECK(tup4[0] == 1);
+    CHECK(tup4[1] == 2);
+    CHECK(tup4[2] == 3);
+    CHECK(tup4[3] == 4);
+
+    Tuple<s32, 5> tup5 = core_ds::MakeTuple(1, 2, 3, 4, 5);
+    CHECK(tup5[0] == 1);
+    CHECK(tup5[1] == 2);
+    CHECK(tup5[2] == 3);
+    CHECK(tup5[3] == 4);
+    CHECK(tup5[4] == 5);
+  }
+
+  TEST_CASE("Core/DataStructures/Tuple/Simple Arithmetic", "")
+  {
+    Tuple4f tup   = core_ds::MakeTuple(1.0f, 3.0f, 5.0f, 1.0f);
+    Tuple4f tup2  = core_ds::MakeTuple(5.0f, -2.0f, 8.0f, 2.0f);
+
+    Tuple4f resAdd  = Add(tup, tup2);
+    Tuple4f resSub  = Subtract(tup, tup2);
+    Tuple4f resMul  = Multiply(3.0f, tup);
+    Tuple4f resDiv  = Divide(1.0f, tup);
+    Tuple4f resDiv2 = Divide(2.0f, tup2);
+
+    CHECK_TUP(resAdd, 6.0f, 1.0f, 13.0f, 3.0f);
+    CHECK_TUP(resSub, -4.0f, 5.0f, -3.0f, -1.0f);
+    CHECK_TUP(resMul, 3.0f, 9.0f, 15.0f, 3.0f);
+    CHECK_TUP(resDiv, 1.0f, 3.0f, 5.0f, 1.0f);
+    CHECK_TUP(resDiv2, 5.0f / 2.0f, -2.0f / 2.0f, 8.0f / 2.0f, 2.0f / 2.0f);
   }
 };

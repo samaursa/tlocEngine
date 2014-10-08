@@ -2,6 +2,7 @@
 
 #include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 #include <tlocMath/tlocRange.inl.h>
 
 //------------------------------------------------------------------------
@@ -30,7 +31,7 @@ namespace tloc { namespace input { namespace hid {
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
     : m_clamped(true)
   {
-    m_impl.reset(new impl_type(this, a_paramList));
+    m_impl.reset(new impl_type(*this, a_paramList));
   }
 
   template <MOUSE_TEMP>
@@ -56,8 +57,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->
-          OnButtonPress( (tl_size)this, a_event, a_buttonCode) == true)
+      if (m_allObservers[i]->OnButtonPress(core_utils::GetMemoryAddress(this),
+                                           a_event, a_buttonCode).IsVeto())
       {
         break;
       }
@@ -71,8 +72,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->
-          OnButtonRelease( (tl_size)this, a_event, a_buttonCode) == true)
+      if (m_allObservers[i]->OnButtonRelease(core_utils::GetMemoryAddress(this),
+                                             a_event, a_buttonCode).IsVeto())
       {
         break;
       }
@@ -85,11 +86,9 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->
-          OnMouseMove( (tl_size)this, a_event) == true)
-      {
-        break;
-      }
+      if (m_allObservers[i]->OnMouseMove(core_utils::GetMemoryAddress(this),
+                                         a_event).IsVeto())
+      { break; }
     }
   }
 
@@ -153,3 +152,10 @@ namespace tloc { namespace input { namespace hid {
 #endif
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::input_hid;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(MouseB);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(MouseI);

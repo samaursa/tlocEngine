@@ -2,18 +2,10 @@
 #include "tlocEntity.inl.h"
 
 #include <tlocCore/containers/tlocContainers.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 
-namespace tloc { namespace core { namespace component_system {
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Entity);
-
-  template class containers::ArrayBase<Entity::component_list>;
-  template class containers::Array<Entity::component_list>;
-
-  template class containers::ArrayBase<Entity*>;
-  template class containers::Array<Entity*>;
-
-  template class containers::ArrayBase<entity_sptr>;
-  template class containers::Array<entity_sptr>;
-};};};
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core_cs::Entity::component_list);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core_cs::entity_vptr);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::core_cs::const_entity_vptr);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::Entity);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::core_cs::Entity);

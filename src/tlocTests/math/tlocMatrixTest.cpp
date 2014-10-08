@@ -1,10 +1,8 @@
 #include "tlocTestCommon.h"
 
 #include <tlocMath/types/tlocMatrix.h>
-#include <tlocMath/types/tlocMatrix.inl.h>
-
 #include <tlocMath/types/tlocVector3.h>
-#include <tlocMath/types/tlocVector3.inl.h>
+#include <tlocMath/types/tlocVector4.h>
 
 namespace TestingMatrix
 {
@@ -71,7 +69,7 @@ namespace TestingMatrix
       b.SetCol(2, col3);
     }
 
-    Matrix<tl_float, 3> a, b, c, d, e;
+    Matrix_TI<tl_float, 3> a, b, c, d, e;
   };
 
 #define CHECK_MATRIX3F(mat,x1,y1,z1,x2,y2,z2,x3,y3,z3) \
@@ -84,26 +82,26 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General",
     "Test general/basic functionality")
   {
-    Matrix<tl_float, 3> e(1);
+    Matrix_TI<tl_float, 3> e(1);
     CHECK_MATRIX3F(e, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-    Matrix<tl_float, 3> f(e);
+    Matrix_TI<tl_float, 3> f(e);
     CHECK_MATRIX3F(f, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
     tl_float rawArray[9] = {1,2,3,4,5,6,7,8,9};
 
-    Matrix<tl_float, 3> g(rawArray, Matrix<tl_float, 3>::k_RowMajor);
+    Matrix_TI<tl_float, 3> g(rawArray, Matrix_TI<tl_float, 3>::k_RowMajor);
     CHECK_MATRIX3F(g, 1, 4, 7, 2, 5, 8, 3, 6, 9);
 
-    Matrix<tl_float, 3> h(rawArray, Matrix<tl_float, 3>::k_ColMajor);
+    Matrix_TI<tl_float, 3> h(rawArray, Matrix_TI<tl_float, 3>::k_ColMajor);
     CHECK_MATRIX3F(h, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     c.MakeZero();
     c.MakeIdentity();
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
-    Matrix<tl_float, 3> i(Variadic9f(rawArray),
-                          Matrix<tl_float, 3>::k_ColMajor);
+    Matrix_TI<tl_float, 3> i(Variadic9f(rawArray),
+                          Matrix_TI<tl_float, 3>::k_ColMajor);
     CHECK_MATRIX3F(i, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   }
 
@@ -115,7 +113,7 @@ namespace TestingMatrix
     c.MakeDiagonal(numbers);
     CHECK_MATRIX3F(c, 1, 0, 0, 0, 2, 0, 0, 0, 3);
 
-    c.MakeDiagonal(Vector3<tl_float>(5, 6, 7));;
+    c.MakeDiagonal(Vector_T<tl_float, 3>(5, 6, 7));;
     CHECK_MATRIX3F(c, 5, 0, 0, 0, 6, 0, 0, 0, 7);
   }
 
@@ -191,18 +189,18 @@ namespace TestingMatrix
     //------------------------------------------------------------------------
     c.MakeZero(); d.MakeZero();
     tl_float numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    c.Set(numArray, Matrix<tl_float, 3>::k_RowMajor);
+    c.Set(numArray, Matrix_TI<tl_float, 3>::k_RowMajor);
     d = c;
     e.Mul(c, d);
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
 
-    Matrix<tl_float, 4> m(1);
+    Matrix_TI<tl_float, 4> m(1);
     m(0, 0) = 0.43301266f; m(0, 1) = -0.75f;        m(0, 2) = 0.5f;
     m(1, 0) = 0.78914917f; m(1, 1) = 0.047367137f;  m(1, 2) = -0.6123724f;
     m(2, 0) = 0.43559578f; m(2, 1) = 0.65973961f;   m(2, 2) = 0.6123724f;
     m(3, 0) = 0;           m(3, 1) = 0;             m(3, 2) = 0;
 
-    Vector<tl_float, 4> v4(0), v4res;
+    Vector_T<tl_float, 4> v4(0), v4res;
     v4[2] = -1; v4[3] = 1;
 
     m.Mul(v4, v4res);
@@ -248,7 +246,7 @@ namespace TestingMatrix
     //------------------------------------------------------------------------
     c.MakeZero(); d.MakeZero();
     tl_float numArray[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    c.Set(numArray, Matrix<tl_float, 3>::k_RowMajor);
+    c.Set(numArray, Matrix_TI<tl_float, 3>::k_RowMajor);
     d = c;
     e = c * d;
     CHECK_MATRIX3F(e, 30, 66, 102, 36, 81, 126, 42, 96, 150);
@@ -302,7 +300,7 @@ namespace TestingMatrix
     "Test accessors")
   {
     tl_float diagArray[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
-    d.Set(diagArray, Matrix<tl_float, 3>::k_ColMajor);
+    d.Set(diagArray, Matrix_TI<tl_float, 3>::k_ColMajor);
 
     Vec3f diagVec;
     d.GetDiagonal(diagVec);

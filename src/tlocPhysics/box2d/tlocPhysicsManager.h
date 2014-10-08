@@ -6,7 +6,7 @@
 
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/base_classes/tlocTemplateDispatchDefaults.h>
+#include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/error/tlocError.h>
@@ -31,15 +31,17 @@ namespace tloc { namespace physics { namespace box2d {
   ///-------------------------------------------------------------------------
   struct ContactEvent
   {
-    typedef core::component_system::Entity entity_type;
+    typedef core_cs::Entity              entity_type;
+    typedef core_cs::entity_vptr         entity_ptr;
+    typedef core_cs::const_entity_vptr   const_entity_ptr;
 
     ContactEvent
-      (const entity_type* a_entityA = nullptr,
-       const entity_type* a_entityB = nullptr)
+      (const_entity_ptr a_entityA = nullptr,
+       const_entity_ptr a_entityB = nullptr)
        : m_entityA(a_entityA), m_entityB(a_entityB) {}
 
-    const entity_type* m_entityA;
-    const entity_type* m_entityB;
+    const_entity_ptr m_entityA;
+    const_entity_ptr m_entityB;
   };
 
   struct ContactCallbacks
@@ -50,9 +52,9 @@ namespace tloc { namespace physics { namespace box2d {
 
   template <typename T>
   struct ContactCallbackGroupT :
-    public core::base_classes::CallbackGroupTArray<T, ContactCallbacks>::type
+    public core::dispatch::CallbackGroupTArray<T, ContactCallbacks>::type
   {
-    typedef typename core::base_classes::
+    typedef typename core::dispatch::
       CallbackGroupTArray<T, ContactCallbacks>::type        base_type;
 
     typedef typename base_type::size_type                   size_type;
@@ -91,12 +93,12 @@ namespace tloc { namespace physics { namespace box2d {
   /// events to callback classes registered to it.
   ///-------------------------------------------------------------------------
   class PhysicsManager
-    : public core::base_classes::
+    : public core::dispatch::
       DispatcherBaseArray<ContactCallbacks, ContactCallbackGroupT>::type
   {
   public:
     typedef PhysicsManager                              this_type;
-    typedef core::base_classes::DispatcherBaseArray
+    typedef core::dispatch::DispatcherBaseArray
       <ContactCallbacks, ContactCallbackGroupT>::type   base_type;
 
     typedef base_type::size_type  size_type;

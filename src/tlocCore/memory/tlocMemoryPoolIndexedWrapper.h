@@ -1,38 +1,55 @@
-///-------------------------------------------------------------------------
-/// @brief WARNING: This class is NOT meant to be used on its own and thus is
-///                 not meant to be included
-///-------------------------------------------------------------------------
+#ifndef _TLOC_CORE_MEMORY_MEMORY_POOL_INDEXED_WRAPPER_H_
+#define _TLOC_CORE_MEMORY_MEMORY_POOL_INDEXED_WRAPPER_H_
 
-// Try to catch illegal includes
-#ifndef TLOC_MEMORY_POOL_H
-  #error This class is meant to be used by MemoryPool only
+#include <tlocCore/tlocBase.h>
+#include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+#include <tlocCore/utilities/tlocUtils.h>
+
+namespace tloc { namespace core { namespace memory { namespace priv {
+
+  template <typename T_Elem>
+  class MemoryPoolIndexedWrapper
+  {
+  public:
+    typedef T_Elem                                      value_type;
+    // we assume that wrapper_value_type is a VirtualStackOBject, therefore
+    // ptr_type is the VirtualPointer for this VirtualStackObject
+    typedef core_sptr::
+      VirtualStackObjectBase_TI<value_type>              value_type_vso;
+
+    typedef typename
+      value_type_vso::pointer                           pointer;
+    typedef typename
+      value_type_vso::const_pointer                     const_pointer;
+
+    typedef tl_int                                      index_type;
+    typedef MemoryPoolIndexedWrapper<value_type>        wrapper_type;
+
+    template <class T_1, tl_uint T_2,
+    class T_3, class T_4> friend class        MemoryPoolIndexed;
+
+    MemoryPoolIndexedWrapper();
+    MemoryPoolIndexedWrapper(const wrapper_type& a_rhs);
+
+    pointer         GetValuePtr();
+    const_pointer   GetValuePtr() const;
+    void            SetValue(const value_type& a_value);
+    void            SetValue(const_pointer a_value);
+
+    wrapper_type&   operator=(wrapper_type a_other);
+    bool            operator==(const wrapper_type& a_rhs);
+
+    TLOC_DECL_AND_DEF_GETTER(index_type, GetIndex, m_index);
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(index_type, DoGetIndexRef, m_index);
+
+    void swap(wrapper_type& a_rhs);
+
+  private:
+    value_type_vso  m_element;
+    index_type      m_index;
+  };
+
+};};};};
+
 #endif
-
-template <typename T_Elem, typename T_SizeType>
-class Wrapper
-{
-public:
-  typedef T_Elem                                      wrapper_value_type;
-  typedef T_SizeType                                  index_type;
-  typedef this_type                                   parent_type;
-  typedef Wrapper<wrapper_value_type, index_type>     wrapper_type;
-
-  template <class T_1, tl_uint T_2,
-            class T_3, class T_4> friend class        MemoryPoolIndexed;
-
-  Wrapper();
-  Wrapper(const wrapper_type& a_rhs);
-
-  wrapper_value_type&       GetValue();
-  const wrapper_value_type& GetValue() const;
-  void                      SetValue(const wrapper_value_type& a_value);
-
-  index_type        GetIndex() const;
-  bool operator ==(wrapper_type& a_rhs);
-
-private:
-  void DoSwap(wrapper_type& a_rhs);
-
-  wrapper_value_type  m_element;
-  index_type          m_index;
-};

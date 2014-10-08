@@ -33,6 +33,12 @@ target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
   tlocMath
   )
 
+if(MSVC)
+  target_link_libraries(${TLOC_CURRENT_EXEC_NAME}
+    dinput8.lib
+    )
+endif()
+
 if(APPLE)
   set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}")
   set(PRODUCT_NAME    "\${PRODUCT_NAME}")
@@ -41,23 +47,6 @@ if(APPLE)
       MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
 endif()
 
-# Find dinput.lib and add it as a link target
-if(WIN32)
-  if(${ARCH_DIR} MATCHES "x86")
-    find_library(DIRECT_INPUT_LIB
-      NAMES dinput8.lib
-      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/Win32/lib
-      )
-  else()
-    find_library(DIRECT_INPUT_LIB
-      NAMES dinput8.lib
-      PATHS ${TLOC_DEP_PATH}/src/WinSDK/WinSDK/x64/lib
-      )
-  endif()
-
-  target_link_libraries(tlocTestsInput
-    ${DIRECT_INPUT_LIB}
-    )
-endif()
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
 
 # Filters to organize the source files

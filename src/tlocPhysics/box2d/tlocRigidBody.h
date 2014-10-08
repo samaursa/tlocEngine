@@ -40,22 +40,22 @@ namespace tloc { namespace physics { namespace box2d {
     friend class component_system::RigidBodySystem;
 
   public:
-    typedef RigidBody             this_type;
-    typedef b2Body                rigid_body_internal_type;
-    typedef core::error::Error    error_type;
+    typedef core_err::Error                     error_type;
+    typedef core_cs::entity_vptr                entity_ptr;
+    typedef core_cs::const_entity_vptr          const_entity_ptr;
 
-    typedef tl_float              float_type;
-    typedef math::types::Vec2f    vec_type;
-    typedef math::types::Mat2f    matrix_type;
-    typedef math::types::Radian   angle_type;
+    typedef RigidBody                           this_type;
+    typedef b2Body                              rigid_body_internal_type;
+
+    typedef tl_float                            float_type;
+    typedef math::types::Vec2f                  vec_type;
+    typedef math::types::Mat2f                  matrix_type;
+    typedef math::types::Radian                 angle_type;
 
     typedef RigidBodyDef                       rigid_body_def_type;
-
-    typedef rigid_body_def_type::rigid_body_type_type
-                                               rigid_body_type_type;
-
+    typedef rigid_body_def_type::
+              rigid_body_type_type             rigid_body_type_type;
     typedef RigidBodyShapeDef                  rigid_body_shape_def_type;
-
     typedef World                              world_type;
 
   public:
@@ -144,14 +144,14 @@ namespace tloc { namespace physics { namespace box2d {
     RigidBody();
 
     error_type DoInitialize(rigid_body_internal_type* a_rigidBody,
-                            const entity_type* a_parent);
+                            const_entity_ptr a_parent);
     error_type DoShutdown();
 
   protected:
     rigid_body_internal_type* DoGetInternalRigidBody();
 
     const entity_type* DoGetParent();
-    void DoSetParent(const entity_type* a_parent);
+    void DoSetParent(const_entity_ptr a_parent);
     void DoSetParentNull();
 
   private:

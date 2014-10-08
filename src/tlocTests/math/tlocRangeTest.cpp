@@ -250,11 +250,23 @@ namespace TestingRange
     CHECK( (RangeNeg1to1<f32, p_range::Inclusive>().Get().front()) == Approx(-1.0f));
     CHECK( (RangeNeg1to1<f32, p_range::Inclusive>().Get().back()) == Approx(1.0f));
 
+    CHECK(Range0to128<s16>().Get().front() == 0);
+    CHECK(Range0to128<s16>().Get().back() == 127);
+
+    CHECK( (Range0to128<s16, p_range::Inclusive>().Get().front()) == 0);
+    CHECK( (Range0to128<s16, p_range::Inclusive>().Get().back()) == 128);
+
     CHECK(Range0to128<s32>().Get().front() == 0);
     CHECK(Range0to128<s32>().Get().back() == 127);
 
     CHECK( (Range0to128<s32, p_range::Inclusive>().Get().front()) == 0);
     CHECK( (Range0to128<s32, p_range::Inclusive>().Get().back()) == 128);
+
+    CHECK(Range0to256<s16>().Get().front() == 0);
+    CHECK(Range0to256<s16>().Get().back() == 255);
+
+    CHECK( (Range0to256<s16, p_range::Inclusive>().Get().front()) == 0);
+    CHECK( (Range0to256<s16, p_range::Inclusive>().Get().back()) == 256);
 
     CHECK(Range0to256<s32>().Get().front() == 0);
     CHECK(Range0to256<s32>().Get().back() == 255);
@@ -265,9 +277,30 @@ namespace TestingRange
 
   TEST_CASE("math/range/NegativeRange", "")
   {
-    range_s8 r(-5, 5);
-    CHECK(r.size() == 10);
-    CHECK(r.front() == -5);
-    CHECK(r.back() == 4);
+    SECTION("range_s8", "Negative range")
+    {
+      range_s8 r(-5, 5);
+      CHECK(r.size() == 10);
+      CHECK(r.front() == -5);
+      CHECK(r.back() == 4);
+
+      CHECK(r.IsInRange(-5));
+      CHECK(r.IsInRange(4));
+      CHECK_FALSE(r.IsInRange(5));
+      CHECK_FALSE(r.IsInRange(-6));
+      CHECK_FALSE(r.IsInRange(6));
+    }
+
+    SECTION("range_f32", "Negative range")
+    {
+      range_f32 rf32(-1.0f, 1.2f, range_f32::step_size(0.1f));
+      CHECK(rf32.front() == Approx(-1.0f));
+      CHECK(rf32.back() == Approx(1.1f));
+
+      CHECK(rf32.IsInRange(-1.0f));
+      CHECK(rf32.IsInRange(1.1f));
+      CHECK_FALSE(rf32.IsInRange(1.2f));
+      CHECK_FALSE(rf32.IsInRange(-1.01f));
+    }
   }
 }

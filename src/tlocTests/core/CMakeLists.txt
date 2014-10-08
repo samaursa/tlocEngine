@@ -1,14 +1,20 @@
 set(TLOC_TESTS_CORE
   main.cpp
   tlocAlgorithmsTest.cpp
+  tlocAllocatorsTest.cpp
   tlocAnyTest.cpp
+  tlocArgsTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
+  tlocAssertTest.cpp
+  tlocBaseClassesTest.cpp
   tlocBufferArgTest.cpp
   tlocCheckPointsTest.cpp
   tlocComponentPoolManagerTest.cpp
   tlocContainerTraitsTest.cpp
+  tlocContainerUtilsTest.cpp
   tlocEntityManagerTest.cpp
+  tlocEntitySystemBaseTest.cpp
   tlocEntityTest.cpp
   tlocErrorTest.cpp
   tlocEventManagerTest.cpp
@@ -17,12 +23,15 @@ set(TLOC_TESTS_CORE
   tlocGroupIDTest.cpp
   tlocHashMapTest.cpp
   tlocHashtableTest.cpp
+  tlocInitializeAndDestroyTest.cpp
   tlocIteratorTest.cpp
   tlocListTest.cpp
+  tlocLoggerTest.cpp
   tlocMemoryPoolTest.cpp
   tlocMemoryTest.cpp
   tlocObjectCounterTest.cpp
   tlocPair.cpp
+  tlocParamListTest.cpp
   tlocPathTest.cpp
   tlocProtectedBufferTest.cpp
   tlocQueueTest.cpp
@@ -42,7 +51,10 @@ set(TLOC_TESTS_CORE
   tlocTypeTraitsTest.cpp
   tlocUniquePtrTest.cpp
   tlocUtilsTest.cpp
+  tlocUCIDTest.cpp
   tlocVariadicTest.cpp
+  tlocVirtualPtrTest.cpp
+  tlocVirtualStackObjectTest.cpp
   )
 #-------------------------------------------
 # Project setup
@@ -69,5 +81,7 @@ if(APPLE)
     set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
       MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
 endif()
+
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
 
 # Filters to organize the source files

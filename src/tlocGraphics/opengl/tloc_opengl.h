@@ -15,9 +15,14 @@
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
+#include <tlocGraphics/opengl/tlocFramebufferObject.h>
+#include <tlocGraphics/opengl/tlocRenderbufferObject.h>
+#include <tlocGraphics/opengl/tlocVertexArrayObject.h>
+#include <tlocGraphics/opengl/tlocVertexBufferObject.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
+#include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocOpenGLExt.h>
 
 #endif

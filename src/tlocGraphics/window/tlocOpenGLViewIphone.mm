@@ -7,20 +7,39 @@
 #import <QuartzCore/CAEAGLLayer.h>
 #import <OpenGLES/EAGLDrawable.h>
 
+#include <tlocGraphics/opengl/tlocError.h>
+
+using namespace tloc;
+using namespace input;
+using namespace input_hid;
+using namespace gfx;
+using namespace gfx_gl;
+
+typedef FramebufferObject         fbo_type;
+typedef framebuffer_object_sptr   fbo_sptr;
+
+typedef RenderbufferObject          rbo_type;
+typedef render_buffer_object_sptr   rbo_sptr;
+
+typedef hid::priv::TouchSurfaceDeviceBase       touch_surface_device_base;
+typedef hid::priv::TouchSurfaceDeviceBuffered   touch_surface_device_b;
+typedef hid::priv::TouchSurfaceDeviceImmediate  touch_surface_device_i;
+
+typedef touch_surface_device_b::touch_handle_type touch_handle_buffered_type;
+typedef touch_surface_device_i::touch_handle_type touch_handle_immediate_type;
+
 //////////////////////////////////////////////////////////////////////////
 // OpenGLView extended interface
 
 @interface OpenGLView() {
+
   EAGLContext* m_context;
-  
-  GLuint m_viewFrameBuffer;
-  
-  GLuint m_viewRenderBuffer, m_depthRenderBuffer;
-  
-  GLenum m_depthBufferFormat;
-  
-  tloc::input::hid::priv::TouchSurfaceDeviceImmediate* m_touchObserverImmediate;
-  tloc::input::hid::priv::TouchSurfaceDeviceBuffered* m_touchObserverBuffered;
+
+  fbo_sptr m_fbo;
+  rbo_sptr m_rboColor;
+
+  touch_surface_device_i* m_touchObserverImmediate;
+  touch_surface_device_b* m_touchObserverBuffered;
 }
 
 @end
@@ -31,12 +50,6 @@
 @implementation OpenGLView
 
 @synthesize context = m_context;
-
-typedef tloc::input::hid::priv::TouchSurfaceDeviceBuffered::touch_handle_type
-                                              touch_handle_buffered_type;
-
-typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
-                                              touch_handle_immediate_type;
 
 - (id)initWithFrame:(CGRect)a_frame
         screenScale:(CGFloat)a_scale
@@ -61,8 +74,8 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
       colorFormat = kEAGLColorFormatRGB565;
     }
     
-    TLOC_ASSERT(colorFormat, "Color format not supported. \
-                Bits per pixel can only be 32 bit or 8 bit ");
+    TLOC_ASSERT(colorFormat, "Color format not supported."
+                "Bits per pixel can only be 32 bit or 8 bit ");
     
     // CAEGLLayer => rendering layer
     CAEAGLLayer* eaglLayer = (CAEAGLLayer*)self.layer;
@@ -96,69 +109,66 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
     {
       self.contentScaleFactor = [UIScreen mainScreen].scale;
     }
-    
-    // Remember: No allocation preformed here, only handle returned.
-    glGenFramebuffers(1, &m_viewFrameBuffer);
-    glGenRenderbuffers(1, &m_viewRenderBuffer);
-    
-    // Instead of creating storage for the renderbuffer we tell the context 
-    // that our "layer" is what we want to use as storage.
-    glBindFramebuffer(GL_FRAMEBUFFER, m_viewFrameBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, m_viewRenderBuffer);
-    [m_context renderbufferStorage:GL_RENDERBUFFER 
-                      fromDrawable:(CAEAGLLayer*)self.layer];
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, 
-                              GL_COLOR_ATTACHMENT0, 
-                              GL_RENDERBUFFER, 
-                              m_viewRenderBuffer);
-    
-    m_depthBufferFormat = 0;
-    
+      
+    // Note: We are not initializing the rbo, because it creates its own
+    // storage. In this case CAEAGLLayer provides us storage (which will render
+    // to the screen)
+    GLint renderBufferWidth = 0;
+    GLint renderBufferHeight = 0;
+
+    rbo_type::Params rboParams;
+    m_rboColor.reset(new RenderbufferObject(rboParams));
+    m_rboColor->InitializeWithoutStorage();
+    {
+      RenderbufferObject::Bind b(m_rboColor.get());
+      [m_context renderbufferStorage:GL_RENDERBUFFER
+                        fromDrawable:(CAEAGLLayer*)self.layer];
+
+      [OpenGLView DoGetCurrentRenderBufferWidth:&renderBufferWidth
+                                      andHeight:&renderBufferHeight];
+    }
+
+    using namespace gfx_gl::p_framebuffer_object;
+    m_fbo.reset(new fbo_type);
+
+    m_fbo->Attach<p_framebuffer_object::target::Framebuffer,
+    p_framebuffer_object::attachment::ColorAttachment<0> >(*m_rboColor);
+
     if ((a_depthBits) || (a_stencilBits))
     {
+      typedef RenderbufferObject::Params rbo_params;
+      rbo_params rboDepthParams;
+      rboDepthParams.Dimensions
+        (core_ds::MakeTuple(renderBufferWidth, renderBufferHeight));
+
       // NOTE: If a Stencil buffer is requested, it must be packed with a
       // coupling depth buffer. 
       // NOTE: iOS only supports a 24bit depth buffer and an 8 bit stencil 
       // buffer.
-      if (a_stencilBits == 8 && (a_depthBits == 24 || a_depthBits == 0)) 
+      using namespace gfx_gl::p_renderbuffer_object;
+      if (a_stencilBits == 8 && (a_depthBits == 24 || a_depthBits == 0))
       {
-        m_depthBufferFormat = GL_DEPTH24_STENCIL8_OES;
+        rboDepthParams.InternalFormat<internal_format::Depth24Stencil8>();
       }
       else if (a_depthBits == 24)
       {
-        m_depthBufferFormat = GL_DEPTH_COMPONENT24_OES;
+        rboDepthParams.InternalFormat<internal_format::DepthComponent24>();
       }
-      
-      TLOC_ASSERT(m_depthBufferFormat,
-                  "Depth/Stencil buffer format not supported. A 24 bit Depth \
-                  buffer, and/or 8 bit Stencil buffer are currently supported");
-      
-      GLint renderBufferWidth = 0;
-      GLint renderBufferHeight = 0;
-      
-      [OpenGLView DoGetCurrentRenderBufferWidth:&renderBufferWidth 
-                                      andHeight:&renderBufferHeight];
-      
-      glGenRenderbuffers(1, &m_depthRenderBuffer);
-      glBindRenderbuffer(GL_RENDERBUFFER, m_depthRenderBuffer);
-      glRenderbufferStorage(GL_RENDERBUFFER, m_depthBufferFormat, 
-                            renderBufferWidth, renderBufferHeight);
-      if (a_depthBits) 
+
+      render_buffer_object_sptr rboDepth;
+      rboDepth.reset(new RenderbufferObject(rboDepthParams));
+      rboDepth->Initialize();
+
+      if (a_depthBits)
       {
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
-                                  GL_RENDERBUFFER, m_depthRenderBuffer);
+        m_fbo->Attach<target::Framebuffer, attachment::Depth>(*rboDepth);
       }
       if (a_stencilBits) 
       {
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, 
-                                  GL_RENDERBUFFER, m_depthRenderBuffer);
+        m_fbo->Attach<target::Framebuffer, attachment::Stencil>(*rboDepth);
       }
-      
     }
-    
-    TLOC_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
-                "Framebuffer creation has failed");
-    
+
     // This is so we can properly resize our view when orientation changes.
     self.autoresizingMask = 0;
     
@@ -173,7 +183,7 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
 
 - (void)SwapBuffers
 {
-  glBindRenderbuffer(GL_RENDERBUFFER, m_viewRenderBuffer);
+  RenderbufferObject::Bind b(m_rboColor.get());
   [m_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
@@ -182,63 +192,68 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
   [EAGLContext setCurrentContext:m_context];
 }
 
+- (bool)HasValidContext
+{
+  return m_context != nil;
+}
+
 - (void)UpdateRenderBufferDimensions
 {
-  glBindFramebuffer(GL_FRAMEBUFFER, m_viewFrameBuffer);
-  glBindRenderbuffer(GL_RENDERBUFFER, 0);
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, 
-                            GL_COLOR_ATTACHMENT0, 
-                            GL_RENDERBUFFER, 
-                            0);
-  glDeleteRenderbuffers(1, &m_viewRenderBuffer);
-  
-  glGenRenderbuffers(1, &m_viewRenderBuffer);
-  glBindRenderbuffer(GL_RENDERBUFFER, m_viewRenderBuffer);
-  [m_context renderbufferStorage:GL_RENDERBUFFER 
-                    fromDrawable:(CAEAGLLayer*)self.layer];
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, 
-                            GL_COLOR_ATTACHMENT0, 
-                            GL_RENDERBUFFER, 
-                            m_viewRenderBuffer);
-  
-  if (m_depthRenderBuffer != 0) 
-  {
-    GLint renderBufferWidth = 0;
-    GLint renderBufferHeight = 0;
-    
-    [OpenGLView DoGetCurrentRenderBufferWidth:&renderBufferWidth 
-                                    andHeight:&renderBufferHeight];
-    
-    glBindRenderbuffer(GL_RENDERBUFFER, m_depthRenderBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, m_depthBufferFormat, 
-                          renderBufferWidth, renderBufferHeight);
-  }
+//  fbo_type::Bind(m_fbo);
+//  m_fbo
+//  glBindFramebuffer(GL_FRAMEBUFFER, m_viewFrameBuffer);
+//  glBindRenderbuffer(GL_RENDERBUFFER, 0);
+//  glFramebufferRenderbuffer(GL_FRAMEBUFFER, 
+//                            GL_COLOR_ATTACHMENT0, 
+//                            GL_RENDERBUFFER, 
+//                            0);
+//  glDeleteRenderbuffers(1, &m_viewRenderBuffer);
+//
+//  glGenRenderbuffers(1, &m_viewRenderBuffer);
+//  glBindRenderbuffer(GL_RENDERBUFFER, m_viewRenderBuffer);
+//  [m_context renderbufferStorage:GL_RENDERBUFFER 
+//                    fromDrawable:(CAEAGLLayer*)self.layer];
+//  glFramebufferRenderbuffer(GL_FRAMEBUFFER, 
+//                            GL_COLOR_ATTACHMENT0, 
+//                            GL_RENDERBUFFER, 
+//                            m_viewRenderBuffer);
+//  
+//  if (m_depthRenderBuffer != 0) 
+//  {
+//    GLint renderBufferWidth = 0;
+//    GLint renderBufferHeight = 0;
+//    
+//    [OpenGLView DoGetCurrentRenderBufferWidth:&renderBufferWidth
+//                                    andHeight:&renderBufferHeight];
+//    
+//    glBindRenderbuffer(GL_RENDERBUFFER, m_depthRenderBuffer);
+//    glRenderbufferStorage(GL_RENDERBUFFER, m_depthBufferFormat, 
+//                          renderBufferWidth, renderBufferHeight);
+//  }
 }
 
 - (void)RegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (touch_surface_device_base*)a_touchDevice
 {
   if (m_touchObserverBuffered == NULL)
   {
     m_touchObserverBuffered =
-      static_cast
-        <tloc::input::hid::priv::TouchSurfaceDeviceBuffered*>(a_touchDevice);
+      static_cast <touch_surface_device_b*>(a_touchDevice);
   }
 }
 
 - (void)RegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (touch_surface_device_base*)a_touchDevice
 {
   if (m_touchObserverImmediate == NULL)
   {
     m_touchObserverImmediate =
-      static_cast
-        <tloc::input::hid::priv::TouchSurfaceDeviceImmediate*>(a_touchDevice);
+      static_cast <touch_surface_device_i*>(a_touchDevice);
   }
 }
 
 - (bool)UnRegisterTouchSurfaceDeviceBuffered:
-    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (touch_surface_device_base*)a_touchDevice
 {
   if (a_touchDevice == m_touchObserverBuffered)
   {
@@ -252,7 +267,7 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
 }
 
 - (bool)UnRegisterTouchSurfaceDeviceImmediate:
-    (tloc::input::hid::priv::TouchSurfaceDeviceBase*)a_touchDevice
+    (touch_surface_device_base*)a_touchDevice
 {
   if (a_touchDevice == m_touchObserverImmediate)
   {
@@ -337,12 +352,16 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
   }
 }
 
+- (fbo_sptr)GetFramebuffer
+{
+  return m_fbo;
+}
+
 //------------------------------------------------------------------------
 // Private inherited functions
 
 - (void)dealloc
 {
-  [self DoDestroyFramebuffer];
   if ([EAGLContext currentContext] == m_context )
   {
     [EAGLContext setCurrentContext:nil];
@@ -358,18 +377,6 @@ typedef tloc::input::hid::priv::TouchSurfaceDeviceImmediate::touch_handle_type
 
 //------------------------------------------------------------------------
 // Private helper functions
-
-- (void)DoDestroyFramebuffer
-{
-  // Delete all frame/render buffers
-  glDeleteFramebuffers(1, &m_viewFrameBuffer);
-  glDeleteRenderbuffers(1, &m_viewRenderBuffer);
-  
-  if (m_depthRenderBuffer) 
-  {
-    glDeleteRenderbuffers(1, &m_depthRenderBuffer);
-  }
-}
 
 + (void)DoGetCurrentRenderBufferWidth:(GLint*)a_width andHeight:(GLint*)a_height
 {

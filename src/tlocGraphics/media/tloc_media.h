@@ -7,5 +7,6 @@
 #include <tlocGraphics/media/tlocImageLoader.h>
 #include <tlocGraphics/media/tlocObjLoader.h>
 #include <tlocGraphics/media/tlocSpriteLoader.h>
+#include <tlocGraphics/media/tlocFont.h>
 
 #endif

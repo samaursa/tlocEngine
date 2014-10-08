@@ -1,5 +1,6 @@
 #include "tlocPythagoras.h"
 
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/tlocMath.inl.h>
@@ -16,14 +17,14 @@ namespace tloc { namespace math { namespace utils {
     template <typename T>
     T GetHypo(T a_base, T a_oppos)
     {
-      return Math<T>::Sqrt( (a_base * a_base) + (a_oppos * a_oppos) );
+      return math::Sqrt( (a_base * a_base) + (a_oppos * a_oppos) );
     }
 
     template <typename T>
     T GetOther(T a_hypo, T a_other)
     {
       TLOC_ASSERT_LOW_LEVEL(a_hypo > a_other, "Triangle is not right-angled");
-      return Math<T>::Sqrt( (a_hypo * a_hypo) - (a_other * a_other) );
+      return math::Sqrt( (a_hypo * a_hypo) - (a_other * a_other) );
     }
 
     //------------------------------------------------------------------------
@@ -100,8 +101,7 @@ namespace tloc { namespace math { namespace utils {
                T_TYPE::cont_type& m_sides)
     {
       TYPEDEF_TYPES();
-      hypotenuse hypo = hypotenuse(a_base /
-        Math<value_type>::Cos(a_angle.template GetAs<Radian_T<value_type> >()) );
+      hypotenuse hypo = hypotenuse(a_base / math::Cos(math_t::MakeRadian(a_angle)) );
       DoSet<T>(a_base, hypo, m_sides);
     }
 
@@ -111,8 +111,7 @@ namespace tloc { namespace math { namespace utils {
                T_TYPE::cont_type& m_sides)
     {
       TYPEDEF_TYPES();
-      hypotenuse hypo = hypotenuse(a_oppos /
-        Math<value_type>::Sin(a_angle.template GetAs<Radian_T<value_type> >()) );
+      hypotenuse hypo = hypotenuse(a_oppos / math::Sin(math_t::MakeRadian(a_angle)) );
       DoSet<T>(a_oppos, hypo, m_sides);
     }
 
@@ -122,8 +121,7 @@ namespace tloc { namespace math { namespace utils {
                T_TYPE::cont_type& m_sides)
     {
       TYPEDEF_TYPES();
-      opposite oppos = opposite(a_hypo *
-        Math<value_type>::Sin(a_angle.template GetAs<Radian_T<value_type> >()) );
+      opposite oppos = opposite(a_hypo * math::Sin(math_t::MakeRadian(a_angle)) );
       DoSet<T>(oppos, a_hypo, m_sides);
     }
 
@@ -165,8 +163,7 @@ namespace tloc { namespace math { namespace utils {
     GetAngle() const
   {
     return Radian_T<value_type>
-      ( Math<value_type>::ACos(m_sides[base::k_index] /
-                               m_sides[hypotenuse::k_index]) );
+      ( math::ACos(m_sides[base::k_index] / m_sides[hypotenuse::k_index]) );
   }
 
   template <PYTHAGORAS_TEMP>

@@ -3,7 +3,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocArcBall.h>
@@ -23,8 +22,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // ArcBallSystem
 
   ArcBallSystem::
-    ArcBallSystem
-    (event_manager_sptr a_eventMgr, entity_manager_sptr a_entityMgr)
+    ArcBallSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::arcball))
   { }
@@ -33,8 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     ArcBallSystem::
-    ProcessEntity(const entity_manager* ,
-                  const entity_type* a_ent, f64 )
+    ProcessEntity(entity_ptr a_ent, f64 )
   {
     using math_utils::Pythagorasf32;
 
@@ -48,8 +45,8 @@ namespace tloc { namespace graphics { namespace component_system {
     pos_type posWorld;
     ori_type oriWorld;
 
-    math_cs::Transform* t = a_ent->GetComponent<math_cs::Transform>();
-    gfx_cs::ArcBall* arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
+    math_cs::transform_sptr t = a_ent->GetComponent<math_cs::Transform>();
+    gfx_cs::arcball_sptr arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
 
     if (a_ent->HasComponent(gfx_cs::components::scene_node))
     {
@@ -106,3 +103,13 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiations
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ArcBallSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(ArcBallSystem);

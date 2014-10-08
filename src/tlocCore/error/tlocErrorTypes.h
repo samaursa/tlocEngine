@@ -32,6 +32,7 @@ namespace tloc {
     {
       error_success                     = core::error::error_groups::error_common,
       error_failure,
+      error_null_pointer,
       error_initialize,
       error_already_initialized,
       error_no_data,                    // used for NULL
@@ -40,6 +41,7 @@ namespace tloc {
       error_path_incorrect,
       error_file_not_found,
       error_file_corrupt,
+      error_file_write,
       error_invalid_handle,
     };
   };

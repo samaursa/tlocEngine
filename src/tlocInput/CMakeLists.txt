@@ -1,19 +1,33 @@
 set(TLOC_INPUT 
   tlocDepVersionCheck.cpp 
   tlocInputBase.h 
+  tlocInputBase.cpp
   tlocInputImpl.h 
   tlocInputManager.cpp 
   tlocInputManager.h 
   tlocInputTypes.h 
+  tlocInputTypes.cpp
   tloc_input.cpp 
   tloc_input.h 
   tloc_input.inl.h
+  )
+
+set(TLOC_INPUT_COMPONENT_SYSTEM
+  component_system/tloc_component_system.h
+  component_system/tloc_component_system.inl.h
+  component_system/tloc_component_system.cpp
+  component_system/tlocComponentType.h
+  component_system/tlocArcballControl.h
+  component_system/tlocArcballControl.cpp
+  component_system/tlocArcballControlSystem.h
+  component_system/tlocArcballControlSystem.cpp
   )
 
 set(TLOC_INPUT_HID 
   hid/tlocJoystick.cpp 
   hid/tlocJoystick.h 
   hid/tlocJoystickImpl.h 
+  hid/tlocJoystickImpl.cpp
   hid/tlocKeyboard.cpp 
   hid/tlocKeyboard.h 
   hid/tlocKeyboardImpl.h 
@@ -43,7 +57,8 @@ if(APPLE)
 
   set(TLOC_INPUT_HID
     ${TLOC_INPUT_HID}
-    hid/tlocJoystickIphone.h 
+    hid/tlocJoystickImplIphone.h 
+    hid/tlocJoystickImplIphone.mm
     hid/tlocTouchSurfaceImplIphone.h 
     hid/tlocTouchSurfaceImplIphone.mm 
     hid/tlocMouseImplIphone.h 
@@ -78,6 +93,7 @@ endif()
 add_library(tlocInput STATIC
   ${TLOC_INPUT}
   ${TLOC_INPUT_HID}
+  ${TLOC_INPUT_COMPONENT_SYSTEM}
   )
 
 add_dependencies(tlocInput
@@ -86,5 +102,10 @@ add_dependencies(tlocInput
   tlocMath
   )
 
+set_platform_specific_properties(tlocInput)
+
 # Filters to organize the source files
 source_group(hid FILES ${TLOC_INPUT_HID})
+source_group(component_system FILES ${TLOC_INPUT_COMPONENT_SYSTEM})
+
+tloc_install_library(tlocInput tlocInput)

@@ -7,7 +7,6 @@
 
 #include "tlocUniquePtr.h"
 #include <tlocCore/smart_ptr/tlocSmartPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocSmartPtrTracker.h>
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
@@ -35,14 +34,16 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   {
-    priv::DoStartTrackingPtr( (void*)a_rawPtr);
+    core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
   }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(const this_type& a_other)
     : m_rawPtr( const_cast<this_type*>(&a_other)->release() )
-  { }
+  { 
+    core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
+  }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
@@ -70,6 +71,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   UNIQUE_PTR_TYPE::pointer  UniquePtr<UNIQUE_PTR_PARAMS>::
     release(pointer a_ptr)
   {
+    core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
     pointer toReturn = m_rawPtr;
     m_rawPtr = a_ptr;
     return toReturn;
@@ -126,12 +128,17 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     if (m_rawPtr)
     {
-      priv::DoStopTrackingPtr( (void*)m_rawPtr);
+      core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
+
       delete m_rawPtr;
       m_rawPtr = nullptr;
     }
   }
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(_type_)\
+  template class tloc::core_sptr::UniquePtr<_type_>;\
+  template class tloc::core_sptr::UniquePtr<const _type_>
 
 #endif

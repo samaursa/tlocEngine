@@ -9,13 +9,13 @@
 #include <tlocCore/types/tlocTemplateParams.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/types/tlocAny.h>
 
 #include <tlocInput/tlocInputManager.h>
 #include <tlocInput/tlocInputImpl.h>
 #include <tlocInput/tlocInputTypes.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <tlocCore/platform/tlocPlatformSpecificIncludes.h>
 #include <InitGuid.h> // Required to circumvent linking errors for dxguid.lib
 #define DIRECTINPUT_VERSION 0x0800 // removes the default warning
 #include <WinSDK/dinput.h>
@@ -35,7 +35,7 @@ namespace tloc { namespace input { namespace priv {
     GUID                  m_productGuid;
     GUID                  m_deviceGuid;
     core::string::String  m_deviceName;
-    void*                 m_devicePtr;
+    core_t::Any           m_devicePtr;
   };
 
   template <typename T_ParentInputManager>
@@ -54,9 +54,7 @@ namespace tloc { namespace input { namespace priv {
     typedef typename parent_type::size_type           size_type;
     typedef typename parent_type::input_type          input_type;
 
-    InputManagerImpl(parent_type* a_parent,
-                     param_type a_params);
-
+    InputManagerImpl(parent_type& a_parent, param_type a_params);
     ~InputManagerImpl();
 
     ///-------------------------------------------------------------------------
@@ -73,7 +71,8 @@ namespace tloc { namespace input { namespace priv {
     /// @return The new input type
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject*  CreateHID(param_options::value_type a_params);
+    core_sptr::VirtualPtr<T_InputObject>  
+      CreateHID(param_options::value_type a_params);
 
     ///-------------------------------------------------------------------------
     /// Updates the given a_inputType. Pass only one type.
@@ -92,7 +91,8 @@ namespace tloc { namespace input { namespace priv {
     /// @return The HID of type a_inputType at the specified index
     ///-------------------------------------------------------------------------
     template <typename T_InputObject>
-    T_InputObject* GetHID(size_type a_index);
+    core_sptr::VirtualPtr<T_InputObject>  
+      GetHID(size_type a_index);
 
     ///-------------------------------------------------------------------------
     /// Get the number of a given HID type.

@@ -5,6 +5,7 @@
 # include <tlocGraphics/window/tlocWindowImplWin.h>
 #elif defined(TLOC_OS_IPHONE)
 # include <tlocGraphics/window/tlocWindowImplIphone.h>
+# import <UIKit/UIKit.h>
 #endif
 #include <tlocGraphics/window/tlocWindow.h>
 
@@ -27,7 +28,8 @@ namespace TestingWindow
       }
     }
 
-    void OnWindowEvent(const WindowEvent& a_event)
+    core_dispatch::Event 
+      OnWindowEvent(const WindowEvent& a_event)
     {
       INFO("Unknown event was passed.");
       REQUIRE(a_event.m_type < WindowEvent::events_count);
@@ -37,6 +39,8 @@ namespace TestingWindow
 
       CHECK(a_event.GetWidth() == g_windowSizeX);
       CHECK(a_event.GetHeight() == g_windowSizeY);
+
+      return core_dispatch::f_event::Continue();
     }
 
     s32 m_windowEventCount;
@@ -57,11 +61,15 @@ namespace TestingWindow
     typedef Window::graphics_mode graphics_mode;
 
     Window win;
-    CHECK(win.IsValid() == false);
-    CHECK(win.IsCreated() == false);
+    CHECK_FALSE(win.IsValid() );
+    CHECK_FALSE(win.IsCreated() );
+    CHECK_FALSE(win.HasValidContext() );
+    CHECK_FALSE(win.IsActive() );
     win.Create();
-    CHECK(win.IsValid() == true);
-    CHECK(win.IsCreated() == true);
+    CHECK(win.IsValid() );
+    CHECK(win.HasValidContext() );
+    CHECK(win.IsActive() );
+    CHECK(win.IsCreated() );
 
     win.SetMouseVisibility(false);
     CHECK(GetCursor() == TLOC_NULL);
@@ -72,16 +80,33 @@ namespace TestingWindow
       g_windowSizeX = 200; g_windowSizeY = 200;
 
       Window win2;
-      CHECK(win2.IsValid() == false);
-      CHECK(win2.IsCreated() == false);
+      CHECK_FALSE(win2.IsValid() );
+      CHECK_FALSE(win2.IsCreated() );
+      CHECK_FALSE(win2.HasValidContext() );
+      CHECK_FALSE(win2.IsActive() );
       win2.Create(graphics_mode
         (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
-        WindowSettings("Test"), WindowSettings::style_titlebar);
+        WindowSettings("Test").ClearStyles().AddStyle<p_window_settings::style::TitleBar>());
       CHECK(win2.IsValid() == true);
+      CHECK(win2.HasValidContext());
+      CHECK(win2.IsActive());
       CHECK(win2.IsCreated() == true);
       CHECK(win2.GetWidth() == g_windowSizeX);
       CHECK(win2.GetHeight() == g_windowSizeY);
+      CHECK(win2.GetDimensions()[0] == g_windowSizeX);
+      CHECK(win2.GetDimensions()[1] == g_windowSizeY);
       CHECK(win2.GetAspectRatio().Get() == Approx(1.0f));
+
+      {
+        // windows specific DPI check
+        HDC screen = GetDC(TLOC_NULL);
+
+        tl_int dpiX = GetDeviceCaps(screen, LOGPIXELSX);
+        tl_int dpiY = GetDeviceCaps(screen, LOGPIXELSY);
+
+        CHECK(win2.GetDPI()[0] == core_utils::CastNumber<tl_size>(dpiX));
+        CHECK(win2.GetDPI()[1] == core_utils::CastNumber<tl_size>(dpiY));
+      }
 
       CHECK(IsWindow(win.GetWindowHandle()) == 1);
       win2.Register(&callbacks);
@@ -107,7 +132,7 @@ namespace TestingWindow
     }
   }
 
-  TEST_CASE("./Graphics/Window/Fullscreen", "")
+  TEST_CASE("Graphics/Window/Fullscreen", "")
   {
     typedef Window::graphics_mode graphics_mode;
 
@@ -118,7 +143,8 @@ namespace TestingWindow
     CHECK(win3.IsCreated() == false);
     win3.Create(graphics_mode
       (graphics_mode::Properties(g_windowSizeX, g_windowSizeY)),
-      WindowSettings("Testing"), WindowSettings::style_fullscreen);
+      WindowSettings("Testing").ClearStyles()
+      .AddStyle<p_window_settings::style::FullScreen>());
     CHECK(win3.IsValid() == true);
     CHECK(win3.IsCreated() == true);
   }
@@ -153,10 +179,11 @@ namespace TestingWindow
       CHECK(win1.IsValid() == false);
       CHECK(win1.IsCreated() == false);
       win1.Create(graphics_mode(graphics_mode::Properties(200, 200)),
-                  WindowSettings("Test"), WindowSettings::style_titlebar);
+                  WindowSettings("Test").
+                  AddStyle<p_window_settings::style::TitleBar>());
       CHECK(win1.IsValid() == true);
       CHECK(win1.IsCreated() == true);
-      CHECK( (win1.GetWindowHandle().Cast<void*>() != nullptr) );
+      CHECK( (win1.GetWindowHandle().Cast<UIWindow*>() != nullptr) );
     }
 
     {
@@ -164,10 +191,11 @@ namespace TestingWindow
       CHECK(win2.IsValid() == false);
       CHECK(win2.IsCreated() == false);
       win2.Create(graphics_mode(graphics_mode::Properties(300, 300)),
-                  WindowSettings("Testing"), WindowSettings::style_fullscreen);
+                  WindowSettings("Testing").
+                  AddStyle<p_window_settings::style::FullScreen>());
       CHECK(win2.IsValid() == true);
       CHECK(win2.IsCreated() == true);
-      CHECK( (win2.GetWindowHandle().Cast<void*>() != nullptr) );
+      CHECK( (win2.GetWindowHandle().Cast<UIWindow*>() != nullptr) );
     }
   }
 
@@ -178,7 +206,8 @@ namespace TestingWindow
     CHECK(win.IsValid() == false);
     CHECK(win.IsCreated() == false);
     win.Create(graphics_mode(graphics_mode::Properties(200, 200)),
-                WindowSettings("Test"), WindowSettings::style_titlebar);
+               WindowSettings("Test").
+               AddStyle<p_window_settings::style::TitleBar>());
     CHECK(win.IsValid() == true);
     CHECK(win.IsCreated() == true);
 

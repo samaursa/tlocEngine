@@ -1,6 +1,5 @@
 #include "tlocProjectionComponent.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace math { namespace component_system {
@@ -32,20 +31,22 @@ namespace tloc { namespace math { namespace component_system {
   };
 
   Projection::Projection()
-    : base_type(k_component_type)
+    : base_type(k_component_type, "Projection")
     , m_frustum(GetDefaultFrustum())
   { }
 
   Projection::Projection(const frustum_type& a_frustum)
-    : base_type(components::projection)
+    : base_type(k_component_type, "Projection")
     , m_frustum(a_frustum)
   { }
 
-  //------------------------------------------------------------------------
-  // Explicit Instantiations
-
-  // SmartPtr
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Projection);
-  TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(projection_sptr);
-
 };};};
+
+//------------------------------------------------------------------------
+// Explicit Instantiations
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+// SmartPtr
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::math_cs::Projection);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(tloc::math_cs::Projection);

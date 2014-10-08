@@ -1,7 +1,6 @@
 #include "tlocKeyframe.h"
 #include "tlocKeyframe.inl.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 namespace tloc { namespace animation { namespace types {
@@ -10,8 +9,7 @@ namespace tloc { namespace animation { namespace types {
   // explicit instantiations
 
 #define TLOC_EXPLICITLY_INSTANTIATE_KEYFRAME_T(_type_)\
-  template class Keyframe_T<_type_>;\
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR( core_conts::Array<Keyframe_T<_type_> >)
+  template class Keyframe_T<_type_>
 
   // -----------------------------------------------------------------------
   // Keyframe_T explicit instantiations

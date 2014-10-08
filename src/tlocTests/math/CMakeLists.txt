@@ -16,6 +16,7 @@ set(TLOC_TESTS_MATH
   tlocRayTest.cpp
   tlocRectangleTest.cpp
   tlocScaleTest.cpp
+  tlocStatFunctionTest.cpp
   tlocTestCommon.cpp
   tlocTestCommon.h
   tlocTransformTest.cpp
@@ -51,5 +52,7 @@ if(APPLE)
     set_target_properties(${TLOC_CURRENT_EXEC_NAME} PROPERTIES 
       MACOSX_BUNDLE_INFO_PLIST ${TLOC_ENGINE_PATH}/platform/iOS/tlocEngine.plist)
 endif()
+
+set_platform_specific_properties(${TLOC_CURRENT_EXEC_NAME})
 
 # Filters to organize the source files

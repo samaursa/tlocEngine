@@ -12,6 +12,7 @@ namespace tloc { namespace core { namespace io {
   class Path
   {
   public:
+    typedef Path                  this_type;
     typedef string::String        string_type;
 
   public:
@@ -41,8 +42,11 @@ namespace tloc { namespace core { namespace io {
     bool FolderExists() const;
     bool HasFilename() const;
 
-    TLOC_DECL_AND_DEF_GETTER(char*, GetPath, m_path.c_str());
+    TLOC_DECL_AND_DEF_GETTER(const char*, GetPath, m_path.c_str());
     void SetPath(const BufferArg& a_path);
+
+    bool operator==(const this_type& a_other) const;
+    TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
   private:
     void DoFixPath();

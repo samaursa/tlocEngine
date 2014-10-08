@@ -1,5 +1,8 @@
 #include "tlocError.h"
+
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace error {
 
@@ -48,6 +51,14 @@ namespace tloc { namespace core { namespace error {
     Ignore() const
   {
     static_cast<const derived_type*>(this)->DoIgnore();
+  }
+
+  template <ERROR_TI_TEMP>
+  void Error_TI<ERROR_TI_PARAMS>::
+    Check() const
+  {
+    derived_type temp(*static_cast<const derived_type*>(this));
+    TLOC_UNUSED(temp);
   }
 
   template <ERROR_TI_TEMP>
@@ -111,7 +122,7 @@ namespace tloc { namespace core { namespace error {
 
 #define ERROR_T_TEMP    typename T_BuildConfig
 #define ERROR_T_PARAMS  T_BuildConfig
-#define ERROR_T_TYPE    typename Error_T<ERROR_TI_PARAMS>
+#define ERROR_T_TYPE    typename Error_T<ERROR_T_PARAMS>
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
@@ -135,16 +146,20 @@ namespace tloc { namespace core { namespace error {
 
   template <ERROR_T_TEMP>
   Error_T<ERROR_T_PARAMS>::
-    ~Error_T()
+    ~Error_T() TLOC_DTOR_ASSERT
   {
     if (GetErrorCode() == common_error_types::error_success)
     { m_errorCheckedByUser = true; }
+
+    TLOC_LOG_CORE_ERR_IF(m_errorCheckedByUser == false)
+      << "Ignored an error from: " << m_file << "(" << m_line << ")";
 
     TLOC_ASSERT(m_errorCheckedByUser, "Ignored an error!");
   }
 
   template <ERROR_T_TEMP>
-  void Error_T<ERROR_T_PARAMS>::
+  ERROR_T_TYPE::this_type&
+    Error_T<ERROR_T_PARAMS>::
     operator =(const this_type& a_other)
   {
     DoSetErrorCode(a_other.GetErrorCode() );
@@ -152,6 +167,8 @@ namespace tloc { namespace core { namespace error {
     m_file = a_other.m_file;
     a_other.Ignore();
     m_errorCheckedByUser = false;
+
+    return *this;
   }
 
   template <ERROR_T_TEMP>

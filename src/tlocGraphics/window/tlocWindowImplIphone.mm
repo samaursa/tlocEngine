@@ -6,27 +6,62 @@
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 #import <tlocGraphics/window/tlocOpenGLViewControllerIphone.h>
 
+//////////////////////////////////////////////////////////////////////////
+// helper function to figure out which device we have currently
+
+#include <sys/utsname.h>
+NSString *machineName()
+{
+  struct utsname systemInfo;
+  if (uname(&systemInfo) < 0) {
+    return nil;
+  } else {
+    return [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
+  }
+}
+
+// detects iPad mini by machine id
+BOOL isIpadMini()
+{
+  NSString *machName = machineName();
+  if (machName == nil) return NO;
+  
+  BOOL isMini = NO;
+  if (    [machName isEqualToString:@"iPad2,5"]
+      || [machName isEqualToString:@"iPad2,6"]
+      || [machName isEqualToString:@"iPad2,7"])
+  {
+    isMini = YES;
+  }
+  return isMini;
+}
+
 namespace tloc { namespace graphics { namespace win { namespace priv {
 
 #define WINDOW_IMPL_IPHONE_PARAMS Window_T<>
 #define WINDOW_IMPL_IPHONE_TYPE WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>
 
-  ///
+  //////////////////////////////////////////////////////////////////////////
   // Helper functions
 
-  OpenGLView* GetOpenGLView(const core_t::Any& a_any)
-  {
-    return a_any.Cast<OpenGLView*>();
-  }
+  namespace {
 
-  UIWindow* GetUIWindow(const core_t::Any& a_any)
-  {
-    return a_any.Cast<UIWindow*>();
-  }
+    OpenGLView* GetOpenGLView(const core_t::Any& a_any)
+    {
+      return a_any.Cast<OpenGLView*>();
+    }
+    
+    UIWindow* GetUIWindow(const core_t::Any& a_any)
+    {
+      return a_any.Cast<UIWindow*>();
+    }
+    
+    OpenGLViewController* GetViewController(const core_t::Any& a_any)
+    {
+      return a_any.Cast<OpenGLViewController*>();
+    }
 
-  OpenGLViewController* GetViewController(const core_t::Any& a_any)
-  {
-    return a_any.Cast<OpenGLViewController*>();
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -71,8 +106,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::
-    Create(const graphics_mode& a_mode, const WindowSettings& a_settings,
-           const window_style_type& a_style)
+    Create(const graphics_mode& a_mode, const WindowSettings& a_settings)
   {
     // TODO: Since we save the settings, make it able to switch between
     // full screen and the user requested size
@@ -87,7 +121,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     UIScreen* currentScreen = [UIScreen mainScreen];
 
     [UIApplication sharedApplication].statusBarHidden =
-      !(a_style & WindowSettings::style_titlebar);
+      (a_settings.GetStyleBits() &
+       p_window_settings::style::TitleBar::s_glParamName) == false;
 
     // The window must take the screens bounds. This is since our view
     // automatically adjusts its size even when there is a title bar present.
@@ -99,13 +134,13 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     graphics_mode::Properties modeProps = m_graphicsMode.GetProperties();
     
     CGRect viewFrame = m_handle.Cast<UIWindow*>().bounds;
-
+    
     m_view = [[OpenGLView alloc] initWithFrame:viewFrame
                                    screenScale:screenScale
                                  retainBacking:NO
                                   bitsPerPixel:modeProps.m_bitsPerPixel 
-                                  bitsPerDepth:a_settings.m_depthBits 
-                                bitsPerStencil:a_settings.m_stencilBits];
+                                  bitsPerDepth:a_settings.GetDepthBits() 
+                                bitsPerStencil:a_settings.GetStencilBits()];
     
     m_viewController = [[OpenGLViewController alloc] initWithWindow:this];
     
@@ -149,6 +184,36 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     CGFloat height = [UIScreen mainScreen].bounds.size.height;
     return static_cast<size_type>(height);
   }
+  
+  WINDOW_IMPL_IPHONE_TYPE::dim_type
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetDPI() const
+  {
+    // no future proof method for detecting iOS devices DPI.
+    // see: http://stackoverflow.com/a/7922666/368599
+    // and: http://stackoverflow.com/a/15730844/368599
+    
+    float scale = 1;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+      scale = [[UIScreen mainScreen] scale];
+    }
+    float dpi;
+    if (isIpadMini())
+    {
+      dpi = 163;
+    }
+    else
+    {
+      if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        dpi = 132 * scale;
+      } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        dpi = 163 * scale;
+      } else {
+        dpi = 160 * scale;
+      }
+    }
+    
+    return core_ds::MakeTuple(dpi, dpi).Cast<core_ds::Tuple2size>();
+  }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetActive(bool a_active)
   {
@@ -176,6 +241,18 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         // LOG: Window is already inactive
       }
     }
+  }
+  
+  bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::HasValidContext() const
+  {
+    OpenGLView* view = GetOpenGLView(m_view);
+    
+    if (view != nil)
+    {
+      return [view HasValidContext];
+    }
+    
+    return false;
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::ProcessEvents()
@@ -257,6 +334,12 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::GetOpenGLViewHandle()
   {
     return m_view;
+  }
+
+  WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::fbo_sptr
+    WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::DoGetFramebuffer()
+  {
+    return [GetOpenGLView(m_view) GetFramebuffer];
   }
 
 };};};};

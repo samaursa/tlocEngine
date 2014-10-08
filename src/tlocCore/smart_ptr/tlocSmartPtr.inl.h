@@ -9,12 +9,6 @@
 
 namespace tloc { namespace core { namespace smart_ptr {
 
-  TL_I SmartPtr::SmartPtr()
-  { /* Intentionally Empty */ }
-
-  TL_I SmartPtr::~SmartPtr()
-  { /* Intentionally Empty */ }
-
 };};};
 
 #endif

@@ -6,6 +6,8 @@
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
+#include <tlocCore/memory/tlocAllocators.h>
+#include <tlocCore/tlocArgs.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 
@@ -14,23 +16,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     namespace null_copy
     {
       struct Allow
-      {
-        template <typename T_Ptr>
-        void CheckNullBeforeCopy(T_Ptr )
-        { /* Intentionally Empty */ }
-
-      };
+      { void CheckNullBeforeCopy(void* a_ptr ); };
 
       struct Disallow
-      {
-        template <typename T_Ptr>
-        void CheckNullBeforeCopy(T_Ptr a_rawPtr)
-        {
-          TLOC_ASSERT_LOW_LEVEL(a_rawPtr != nullptr,
-            "Copy of NULL SharedPtr is disabled");
-          TLOC_UNUSED(a_rawPtr);
-        }
-      };
+      { void CheckNullBeforeCopy(void* a_rawPtr); };
     };
   };
 
@@ -54,7 +43,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     typedef T&                      reference;
     typedef T const &               const_reference;
 
-    typedef tl_int                  ref_count_type;
+    typedef tl_long                 ref_count_type;
 
     typedef SharedPtr<value_type, null_copy_policy_type>   this_type;
 
@@ -69,7 +58,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     ~SharedPtr();
 
     template <typename T_Other, typename T_OtherPolicy>
-    this_type& operator= (const SharedPtr<T_Other, T_OtherPolicy>& a_other);
+    this_type& operator= (SharedPtr<T_Other, T_OtherPolicy> a_other);
     this_type& operator= (this_type a_other);
 
     ///-------------------------------------------------------------------------
@@ -87,7 +76,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     ///
     /// @return Can be a NULL ptr
     ///-------------------------------------------------------------------------
-    ref_count_type* DoExposeCounter() const;
+    ref_count_type*   DoExposeCounter() const;
 
     pointer   operator->() const;
     reference operator*() const;
@@ -100,8 +89,6 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename Y>
     void           reset(Y* a_ptr);
 
-    template <typename T_Other>
-    void           swap(SharedPtr<T_Other, null_copy_policy_type>& a_other);
     void           swap(this_type& a_other);
 
     //------------------------------------------------------------------------
@@ -145,6 +132,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     : m_rawPtr  (a_other.get() )
     , m_refCount(a_other.DoExposeCounter() )
   {
+    using namespace core_mem::tracking::priv;
+
+    // add the connected address only if it is not already added from other casts
+    if (DoIsMemoryAddressTracked((void*)m_rawPtr) == false)
+    { 
+      DoTrackConnectedMemoryAddress( (void*) a_other.get(), (void*) m_rawPtr);
+    }
+
     // Mainly for containers
     DoAddRef();
   }
@@ -157,18 +152,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     this_type(a_ptr).swap(*this);
   }
 
-  template <typename T, typename T_NullCopyPolicy>
-  template <typename T_Other>
-  void SharedPtr<T, T_NullCopyPolicy>::
-    swap(SharedPtr<T_Other, T_NullCopyPolicy>& a_other)
-  {
-    using core::swap;
-
-    swap(m_rawPtr, a_other.m_rawPtr);
-    swap(m_refCount, a_other.m_refCount);
-  }
-
-  //////////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------------
   // Global operators
 
   template <class T, class U>
@@ -250,7 +234,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool operator >=(nullptr_t, const SharedPtr<T>& b)
   { return !(nullptr < b); }
 
-  //////////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------------
   // casting
 
   template <typename T, typename T_NullCopyPolicy, typename U>
@@ -296,14 +280,124 @@ namespace tloc { namespace core { namespace smart_ptr {
     return static_pointer_cast<T, p_shared_ptr::null_copy::Allow>(a_sp);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename T_NullCopyPolicy>
+  tl_size GetUseCount(const SharedPtr<T, T_NullCopyPolicy>& a_sptr)
+  { return a_sptr.use_count(); }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MakeShared
+
+  template <typename T>
+  SharedPtr<T>
+    MakeShared()
+  { return SharedPtr<T>(new T()); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1>
+  SharedPtr<T>
+    MakeShared(const P1& a)
+  { return SharedPtr<T>(new T(a)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b)
+  { return SharedPtr<T>(new T(a, b)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c)
+  { return SharedPtr<T>(new T(a, b, c)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d)
+  { return SharedPtr<T>(new T(a, b, c, d)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e)
+  { return SharedPtr<T>(new T(a, b, c, d, e)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f)
+  { return SharedPtr<T>(new T(a, b, c, d, e, f)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g)
+  { return SharedPtr<T>(new T(a, b, c, d, e, f, g)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g, const P8& h)
+  { return SharedPtr<T>(new T(a, b, c, d, e, f, g, h)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8,
+            typename P9>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g, const P8& h,
+               const P9& i)
+  { return SharedPtr<T>(new T(a, b, c, d, e, f, g, h, i)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8,
+            typename P9, typename P10>
+  SharedPtr<T>
+    MakeShared(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g, const P8& h,
+               const P9& i, const P10& j)
+  { return SharedPtr<T>(new T(a, b, c, d, e, f, g, h, i, j)); }
+
 };};};
 
 #define TLOC_TYPEDEF_SHARED_PTR(_type_, _typedef_)\
   typedef tloc::core_sptr::SharedPtr<_type_>  _typedef_##_sptr;\
-  typedef tloc::core_sptr::SharedPtr<const _type_>  _typedef_##_const_sptr;\
+  typedef tloc::core_sptr::SharedPtr<const _type_>  const_##_typedef_##_sptr;\
   typedef tloc::core_sptr::SharedPtr<_type_, \
   tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_sptr_nonullcopy;\
   typedef tloc::core_sptr::SharedPtr<const _type_, \
-  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  _typedef_##_const_sptr_nonullcopy
+  tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  const_##_typedef_##_sptr_nonullcopy
 
 #endif

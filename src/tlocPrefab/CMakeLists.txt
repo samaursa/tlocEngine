@@ -1,5 +1,6 @@
 set(TLOC_PREFAB 
   tlocPrefabBase.h 
+  tlocPrefabBase.cpp
   tloc_prefab.cpp 
   tloc_prefab.h 
   tloc_prefab.inl.h 
@@ -18,6 +19,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocCamera.h 
   graphics/tlocCuboid.h
   graphics/tlocCuboid.cpp
+  graphics/tlocDynamicText.h
+  graphics/tlocDynamicText.cpp
   graphics/tlocFan.cpp 
   graphics/tlocFan.h 
   graphics/tlocMaterial.h
@@ -30,6 +33,10 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
+  graphics/tlocStaticText.h
+  graphics/tlocStaticText.cpp
+  graphics/tlocTextureCoords.h
+  graphics/tlocTextureCoords.cpp
   graphics/tloc_graphics.cpp 
   graphics/tloc_graphics.h 
   graphics/tloc_graphics.inl.h 
@@ -39,12 +46,16 @@ set(TLOC_PREFAB_INPUT
   input/tloc_input.cpp 
   input/tloc_input.h 
   input/tloc_input.inl.h 
+  input/tlocArcBallControl.h
+  input/tlocArcBallControl.cpp
   )
 
 set(TLOC_PREFAB_MATH
   math/tloc_math.cpp 
   math/tloc_math.h 
-  math/tloc_math.inl.h 
+  math/tloc_math.inl.h
+  math/tlocTransform.h
+  math/tlocTransform.cpp
   )
 
 set(TLOC_PREFAB_PHYSICS
@@ -67,7 +78,7 @@ set(TLOC_PREFAB_ANIMATION
 # Project setup
 
 include_directories(
-  ${TLOC_DEP_PATH}/include/Box2D/
+  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
 add_library(tlocPrefab STATIC
@@ -89,6 +100,8 @@ add_dependencies(tlocPrefab
   tlocPrefab
   )
 
+set_platform_specific_properties(tlocPrefab)
+
 # Filters to organize the source files
 source_group(core             FILES ${TLOC_PREFAB_CORE})
 source_group(graphics         FILES ${TLOC_PREFAB_GRAPHICS})
@@ -96,3 +109,5 @@ source_group(input            FILES ${TLOC_PREFAB_INPUT})
 source_group(math             FILES ${TLOC_PREFAB_MATH})
 source_group(physics          FILES ${TLOC_PREFAB_PHYSICS})
 source_group(animation        FILES ${TLOC_PREFAB_ANIMATION})
+
+tloc_install_library(tlocPrefab tlocPrefab)

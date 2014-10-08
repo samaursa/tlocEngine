@@ -61,7 +61,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     using base_type::m_params;
     using base_type::m_currentTouches;
 
-    TouchSurfaceImpl(parent_type* a_parent, 
+    TouchSurfaceImpl(parent_type& a_parent,
                      const touch_surface_param_type& a_params);
     ~TouchSurfaceImpl();
 

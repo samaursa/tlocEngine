@@ -3,7 +3,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
@@ -22,8 +21,8 @@ namespace tloc { namespace animation { namespace component_system {
   // TransformAnimationSystem
 
   TransformAnimationSystem::
-    TransformAnimationSystem(event_manager_sptr a_eventMgr,
-                             entity_manager_sptr a_entityMgr)
+    TransformAnimationSystem(event_manager_ptr a_eventMgr,
+                             entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::transform_animation))
   { }
@@ -39,17 +38,15 @@ namespace tloc { namespace animation { namespace component_system {
 
   error_type
     TransformAnimationSystem::
-    InitializeEntity(const entity_manager*, const entity_type* a_ent)
+    InitializeEntity(entity_ptr a_ent)
   {
-    const entity_type* ent = a_ent;
-
     const tl_size size =
-      ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
+      a_ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
 
     for (tl_size i = 0; i < size; ++i)
     {
-      anim_cs::TransformAnimation* texAnim =
-        ent->GetComponent<anim_cs::TransformAnimation>(i);
+      transform_animation_sptr texAnim =
+        a_ent->GetComponent<anim_cs::TransformAnimation>(i);
       texAnim->SetStartTime(0);
     }
 
@@ -60,7 +57,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   error_type
     TransformAnimationSystem::
-    ShutdownEntity(const entity_manager*, const entity_type*)
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -75,14 +72,12 @@ namespace tloc { namespace animation { namespace component_system {
 
   void
     TransformAnimationSystem::
-    ProcessEntity(const entity_manager* , const entity_type* a_ent, f64 a_deltaT)
+    ProcessEntity(entity_ptr a_ent, f64 a_deltaT)
   {
     using namespace core::component_system;
 
-    const entity_type* ent = a_ent;
-
-    anim_cs::TransformAnimation* transAnim =
-      ent->GetComponent<anim_cs::TransformAnimation>(0);
+    transform_animation_sptr transAnim =
+      a_ent->GetComponent<anim_cs::TransformAnimation>(0);
 
     transAnim->SetTotalTime(transAnim->GetTotalTime() + a_deltaT);
 
@@ -101,17 +96,19 @@ namespace tloc { namespace animation { namespace component_system {
       diff = transAnim->GetTotalTime() - transAnim->GetStartTime();
     }
 
-    if (ent->HasComponent(components::transform_animation) &&
-        transAnim->IsTransformSetChanged())
+    if (a_ent->HasComponent(components::transform_animation) &&
+        transAnim->IsKFSequenceChanged())
     {
-      math_cs::Transform* transPtr =
-        ent->GetComponent<math_cs::Transform>(0);
+      math_cs::transform_sptr transPtr =
+        a_ent->GetComponent<math_cs::Transform>(0);
 
       typedef anim_cs::TransformAnimation::kf_seq_type    kf_seq;
       typedef kf_seq::keyframe_type                       kf_type;
 
-      kf_seq& currKfSeq =
-        transAnim->GetKeyframeSequence(transAnim->GetCurrentKFSequence());
+      kf_seq& currKfSeq = transAnim->GetCurrentKeyframeSequence();
+
+      if (currKfSeq.size() == 0)
+      { return; }
 
       const kf_seq::size_type currFrame = currKfSeq.GetCurrentFrame();
       const kf_seq::size_type totalFrames = currKfSeq.GetFramesBetweenCurrentPair();
@@ -193,25 +190,25 @@ namespace tloc { namespace animation { namespace component_system {
       case k_ease_in_sin:
         {
           interpolatedVal =
-            delta * -1.0f * Mathf32::Cos(mu * (Mathf32::PI * 0.5f)) +
+            delta * -1.0f * math::Cos(math_t::MakeRadian(mu * (Mathf32::PI * 0.5f))) +
             delta + first;
           break;
         }
       case k_ease_out_sin:
         {
           interpolatedVal =
-            delta * Mathf32::Sin(mu * (Mathf32::PI * 0.5f)) + first;
+            delta * math::Sin(math_t::MakeRadian(mu * (Mathf32::PI * 0.5f))) + first;
           break;
         }
       case k_ease_in_out_sin:
         {
           interpolatedVal =
-            delta * -0.5f * (Mathf32::Cos(Mathf32::PI * mu) - 1.0f) +
+            delta * -0.5f * (math::Cos(math_t::MakeRadian(Mathf32::PI * mu)) - 1.0f) +
             first;
           break;
         }
       default:
-        TLOC_ASSERT(false, "Unsupported interpolation type");
+        TLOC_ASSERT_FALSE("Unsupported interpolation type");
       }
 
       transPtr->SetTransformation(interpolatedVal);
@@ -225,9 +222,14 @@ namespace tloc { namespace animation { namespace component_system {
     Post_ProcessActiveEntities(f64)
   { }
 
-  //////////////////////////////////////////////////////////////////////////
-  // explicit instantiations
-
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(TransformAnimationSystem);
-
 };};};
+
+//////////////////////////////////////////////////////////////////////////
+// explicit instantiations
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::anim_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TransformAnimationSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(TransformAnimationSystem);

@@ -7,30 +7,11 @@
 
 #include "tlocComponentPoolManager.h"
 #include <tlocCore/memory/tlocMemoryPool.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc { namespace core { namespace component_system {
-
-  namespace
-  {
-    template <typename T_Iterator, typename T_BuildConfig>
-    void DoAssertElementsNotInUse(T_Iterator a_begin, T_Iterator a_end,
-                                  T_BuildConfig)
-    {
-      for (; a_begin != a_end; ++a_begin)
-      {
-        // User count should be <= 1 (i.e. we are the only ones with a reference
-        // to the pointer
-        TLOC_ASSERT(a_begin->GetValue().use_count() <= 1,
-                    "Element still in use!");
-      }
-    }
-
-    template <typename T_Iterator>
-    void DoAssertElementsNotInUse(T_Iterator, T_Iterator,
-                                  configs::p_build_config::Release)
-    { /* Intentioanlly Empty */ }
-  }
 
 #define COMPONENT_POOL_TEMPS  typename T_Component
 #define COMPONENT_POOL_PARAMS T_Component
@@ -44,15 +25,18 @@ namespace tloc { namespace core { namespace component_system {
   template <COMPONENT_POOL_TEMPS>
   ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     ~ComponentPool_TI()
-  {
-    DoAssertElementsNotInUse(begin(), end(),
-                             configs::BuildConfig::GetBuildConfigType());
-  }
+  { }
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     GetNext()
   { return m_pool.GetNext(); }
+
+  template <COMPONENT_POOL_TEMPS>
+  COMPONENT_POOL_TYPE::final_value_type&
+    ComponentPool_TI<COMPONENT_POOL_PARAMS>::
+    GetNextValue()
+  { return m_pool.GetNextValue(); }
 
   template <COMPONENT_POOL_TEMPS>
   COMPONENT_POOL_TYPE::iterator ComponentPool_TI<COMPONENT_POOL_PARAMS>::
@@ -75,19 +59,31 @@ namespace tloc { namespace core { namespace component_system {
   { return m_pool.end(); }
 
   template <COMPONENT_POOL_TEMPS>
-  void ComponentPool_TI<COMPONENT_POOL_PARAMS>::
+  COMPONENT_POOL_TYPE::size_type
+    ComponentPool_TI<COMPONENT_POOL_PARAMS>::
     RecycleAllUnused()
   {
     iterator itr    = begin();
     iterator itrEnd = end();
 
-    for (; itr != itrEnd; ++itr)
+    size_type count = 0;
+
+    for (; itr != itrEnd; )
     {
-      if (itr->GetValue().use_count() == 1)
+      pointer ptr = *(*itr)->GetValuePtr();
+      // count of 2 == 1 above + 1 in memory pool == unused
+      if ( ptr.use_count() == 2)
       {
-        m_pool.RecycleElement(itr);
+        itr = m_pool.RecycleElement(itr);
+        itrEnd = m_pool.end();
+
+        ++count;
       }
+      else
+      { ++itr; }
     }
+
+    return count;
   }
 
   template <COMPONENT_POOL_TEMPS>
@@ -95,13 +91,15 @@ namespace tloc { namespace core { namespace component_system {
     GetUsed() const
   { return m_pool.GetUsed(); }
 
-  //------------------------------------------------------------------------
-  // explicit instantiation helpers
+};};};
+
+
+//------------------------------------------------------------------------
+// explicit instantiation helpers
 
 #define TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(_type_)\
-  template class core_cs::ComponentPool_TI<_type_>;\
-  TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(core_cs::ComponentPool_TI<_type_>)
-
-};};};
+template class tloc::core_cs::ComponentPool_TI<_type_>;\
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_DYN_USING_WRAPPER(tloc::core_sptr::SharedPtr<_type_>);\
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::ComponentPool_TI<_type_>);\
 
 #endif

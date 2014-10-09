@@ -45,6 +45,10 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
     bool                        HasComponent(component_type a_type) const;
+
+    template <typename T_ComponentType>
+    const component_list&
+                                GetComponents() const;
     const component_list&       GetComponents(component_type a_type) const;
 
     template <typename T_ComponentType>
@@ -99,6 +103,19 @@ namespace tloc { namespace core { namespace component_system {
     typedef ComponentMapper<T_ComponentType> cmapper;
     cmapper temp = GetComponents(T_ComponentType::k_component_type);
     return temp[a_index];
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_ComponentType>
+  const Entity::component_list&
+    Entity::GetComponents() const
+  {
+    TLOC_STATIC_ASSERT( 
+      (Loki::Conversion<T_ComponentType*, core_cs::Component*>::exists),
+      T_ComponentType_is_not_a_valid_component);
+
+    return GetComponents(T_ComponentType::k_component_type);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

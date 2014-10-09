@@ -8,9 +8,8 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 
-#include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/opengl/tlocAttributeVBO.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
-#include <tlocGraphics/opengl/tlocVertexBufferObject.h>
 #include <tlocGraphics/opengl/tlocVertexArrayObject.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -28,11 +27,6 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_int                                  index_type;
     typedef core_conts::ArrayFixed<index_type, 1>   index_cont_1;
     typedef core_conts::ArrayFixed<index_type, 4>   index_cont_4;
-
-    typedef Attribute                 attribute_type;
-    typedef attribute_vso             attribute_vso;
-    typedef attribute_vptr            attribute_ptr;
-    typedef const_attribute_vptr      const_attribute_ptr;
 
     typedef Uniform                   uniform_type;
     typedef uniform_vso               uniform_vso;
@@ -54,14 +48,10 @@ namespace tloc { namespace graphics { namespace gl {
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
     typedef core::Pair<uniform_vso, index_cont_1>         uniform_pair_type;
-    typedef core::Pair<attribute_vso, index_cont_4>       attribute_pair_type;
     typedef core::Pair<vbo_vso, index_cont_4>             vbo_pair_type;
 
     typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
-
-    typedef core_conts::Array<attribute_pair_type>        attribute_cont_type;
-    typedef attribute_cont_type::iterator                 attribute_iterator;
 
     typedef core_conts::Array<vbo_pair_type>              vbo_cont_type;
     typedef vbo_cont_type::iterator                       vbo_iterator;
@@ -74,16 +64,13 @@ namespace tloc { namespace graphics { namespace gl {
     ~ShaderOperator();
 
     uniform_ptr   AddUniform(const uniform_type& a_uniform);
-    attribute_ptr AddAttribute(const attribute_type& a_attribute);
-    vbo_ptr       AddVBO(const vbo_type& a_vbo);
+    vbo_ptr       AddAttributeVBO(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
-    void RemoveAttribute(const attribute_iterator& a_attribute);
-    void RemoveVBO(const vbo_iterator& a_vbo);
+    void RemoveAttributeVBO(const vbo_iterator& a_vbo);
 
     void RemoveAllUniforms();
-    void RemoveAllAttributes();
-    void RemoveAllVBOs();
+    void RemoveAllAttributeVBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -95,8 +82,7 @@ namespace tloc { namespace graphics { namespace gl {
     /// @return all uniforms.
     ///-------------------------------------------------------------------------
     error_type PrepareAllUniforms(const ShaderProgram& a_shaderProgram);
-    error_type PrepareAllAttributes(const ShaderProgram& a_shaderProgram);
-    error_type PrepareAllVBOs(const ShaderProgram& a_shaderProgram);
+    error_type PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -105,17 +91,12 @@ namespace tloc { namespace graphics { namespace gl {
     /// @param  a_shaderProgram The shader program.
     ///-------------------------------------------------------------------------
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram) const;
-    void EnableAllAttributes(const ShaderProgram& a_shaderProgram) const;
-    vao_bind_ptr EnableAllVBOs(const ShaderProgram& a_shaderProgram) const;
 
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
 
-    attribute_iterator begin_attributes();
-    attribute_iterator end_attributes();
-
-    vbo_iterator begin_VBOs();
-    vbo_iterator end_VBOs();
+    vbo_iterator begin_attributeVBOs();
+    vbo_iterator end_attributeVBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -131,37 +112,26 @@ namespace tloc { namespace graphics { namespace gl {
     /// @brief
     /// see reserve_uniforms()
     ///-------------------------------------------------------------------------
-    void reserve_attributes(size_type a_capacity);
-
-    ///-------------------------------------------------------------------------
-    /// @brief
-    /// see reserve_uniforms()
-    ///-------------------------------------------------------------------------
-    void reserve_vertexBufferObjects(size_type a_capacity);
+    void reserve_attributeVBOs(size_type a_capacity);
 
     // The following functions will destroy the uniform/attribute cache which
     // was setup when Prepare*() methods were called
-    void ClearAttributesCache();
     void ClearUniformsCache();
-    void ClearVBOsCache();
+    void ClearAttributeVBOsCache();
 
     void ClearCache();
 
-    bool IsAttributesCached();
     bool IsUniformsCached();
-    bool IsVBOsCached();
+    bool IsAttributeVBOsCached();
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
                              m_uniforms.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributes,
-                             m_attributes.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfVBOs,
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributeVBOs,
                              m_VBOs.size());
     TLOC_DECL_AND_DEF_GETTER(const_vao_vptr, GetVAO, core_sptr::ToVirtualPtr(m_vao));
 
   private:
     uniform_cont_type           m_uniforms;
-    attribute_cont_type         m_attributes;
     vbo_cont_type               m_VBOs;
     core::utils::Checkpoints    m_flags;
     index_cont_type             m_enabledVertexAttrib;
@@ -192,12 +162,12 @@ namespace tloc { namespace graphics { namespace gl {
         value_type m_name;
       };
 
-      struct AttributeName
+      struct AttributeVBOName
       {
-        typedef ShaderOperator::attribute_pair_type     pair_type;
+        typedef ShaderOperator::vbo_pair_type           pair_type;
         typedef BufferArg                               value_type;
 
-        AttributeName(value_type a_attributeName)
+        AttributeVBOName(value_type a_attributeName)
           : m_name(a_attributeName)
         { }
 

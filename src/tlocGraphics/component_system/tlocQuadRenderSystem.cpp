@@ -55,14 +55,14 @@ namespace tloc { namespace graphics { namespace component_system {
     m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
                                   rect.GetValue<rect_type::bottom>(), 0);
 
-    gfx_gl::shader_operator_vso& so =  quadPtr->GetShaderOperator();
+    const gfx_gl::shader_operator_vptr so =  quadPtr->GetShaderOperator().get();
 
     gfx_gl::AttributeVBO vbo;
-    vbo.SetName("a_vPos")
-       .Data<gfx_gl::p_vbo::target::ArrayBuffer, 
-             gfx_gl::p_vbo::usage::StaticDraw>(*m_quadList);
+    vbo.AddName("a_vPos")
+       .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                   gfx_gl::p_vbo::usage::StaticDraw>(*m_quadList);
 
-    so->AddVBO(vbo);
+    so->AddAttributeVBO(vbo);
 
     return base_type::InitializeEntity(a_ent);
   }
@@ -78,34 +78,7 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
-
-    if (base_type::IsUseVBOsEnabled())
-    {
-      di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
-    }
-    else
-    {
-      //------------------------------------------------------------------------
-      // Prepare the Quad
-
-      typedef math::types::Rectf32_c    rect_type;
-      using math::types::Mat4f32;
-      using math::types::Vec4f32;
-
-      const rect_type& rect = quadPtr->GetRectangleRef();
-
-      m_quadList->at(0) = vec3_type(rect.GetValue<rect_type::right>(),
-                                    rect.GetValue<rect_type::top>(), 0);
-      m_quadList->at(1) = vec3_type(rect.GetValue<rect_type::left>(),
-                                    rect.GetValue<rect_type::top>(), 0);
-      m_quadList->at(2) = vec3_type(rect.GetValue<rect_type::right>(),
-                                    rect.GetValue<rect_type::bottom>(), 0);
-      m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
-                                    rect.GetValue<rect_type::bottom>(), 0);
-
-      DoGetVertexDataAttribute()->
-        SetVertexArray(m_quadList.get(), gl::p_shader_variable_ti::Pointer());
-    }
+    di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
 
     base_type::DoDrawEntity(di);
   }

@@ -14,11 +14,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(vertex_storage_policy::k_component_id, "Mesh")
     , m_texCoordsEnabled(true)
     , m_normalsEnabled(true)
-  {
-    m_posAttr->SetName("a_vPos");
-    m_normAttr->SetName("a_vNorm");
-    m_tcoordAttr->SetName("a_tCoord");
-  }
+  { }
 
   //////////////////////////////////////////////////////////////////////////
   // explicit instantiation

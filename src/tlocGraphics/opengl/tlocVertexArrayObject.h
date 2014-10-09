@@ -28,6 +28,18 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_TYPEDEF_ALL_SMART_PTRS(Bind, bind);
 
   public:
+    struct LateBind
+    {
+    public:
+      void Bind(const this_type& a_vao);
+
+    private:
+      bind_uptr m_bind;
+    };
+    TLOC_TYPEDEF_ALL_SMART_PTRS(LateBind, late_bind);
+    TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(LateBind, late_bind);
+
+  public:
     VertexArrayObject();
     ~VertexArrayObject();
   };

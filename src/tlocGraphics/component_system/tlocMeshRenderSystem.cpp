@@ -53,35 +53,38 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::InitializeEntity(a_ent);
 
     mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
-
-    gl::attribute_vso posAttr, normAttr, tcoordAttr;
+    
+    const gfx_gl::shader_operator_vptr so = meshType->GetShaderOperator().get();
 
     { // Positions
-      posAttr->SetVertexArray(meshType->GetPositions(),
-                              gl::p_shader_variable_ti::Pointer());
-      posAttr->SetName("a_vPos");
-      meshType->SetPosAttribute(*posAttr);
+      gfx_gl::AttributeVBO vbo;
+      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetPositions());
+      vbo.AddName("a_vPos");
+      so->AddAttributeVBO(vbo);
     }
 
     // Normals
     if (meshType->IsNormalsEnabled())
     {
-      normAttr->SetVertexArray(meshType->GetNormals(),
-                              gl::p_shader_variable_ti::Pointer());
-      normAttr->SetName("a_vNorm");
-      meshType->SetNormAttribute(*normAttr);
+      gfx_gl::AttributeVBO vbo;
+      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetNormals());
+      vbo.AddName("a_vNorm");
+      so->AddAttributeVBO(vbo);
     }
 
     // TexCoords
     if (meshType->IsTexCoordsEnabled())
     {
-      tcoordAttr->SetVertexArray(meshType->GetTCoords(),
-                              gl::p_shader_variable_ti::Pointer());
-      tcoordAttr->SetName("a_tCoord");
-      meshType->SetTCoordAttribute(*tcoordAttr);
+      gfx_gl::AttributeVBO vbo;
+      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetTCoords());
+      vbo.AddName("a_tCoord");
+      so->AddAttributeVBO(vbo);
     }
 
-    return ErrorSuccess;
+    return base_type::InitializeEntity(a_ent);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -107,15 +110,6 @@ namespace tloc { namespace graphics { namespace component_system {
     mesh_ptr                meshPtr = a_ent->GetComponent<Mesh_T>();
 
     const tl_size numVertices = meshPtr->size();
-
-    so_mesh->RemoveAllAttributes();
-    so_mesh->AddAttribute(*meshPtr->GetPosAttribute());
-
-    if (meshPtr->IsTexCoordsEnabled())
-    { so_mesh->AddAttribute(*meshPtr->GetTCoordAttribute()); }
-
-    if (meshPtr->IsNormalsEnabled())
-    { so_mesh->AddAttribute(*meshPtr->GetNormAttribute()); }
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLES, numVertices);
     di.m_shaderOp = so_mesh.get();

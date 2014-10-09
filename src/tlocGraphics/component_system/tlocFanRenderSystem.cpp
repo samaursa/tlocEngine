@@ -23,9 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
                     entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::fan))
-  {
-    m_vertList->reserve(30);
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -33,8 +31,47 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem::
     InitializeEntity(entity_ptr a_ent)
   { 
-    base_type::InitializeEntity(a_ent);
-    return ErrorSuccess;
+    using namespace core::component_system;
+    using math_t::degree_f32;
+
+    gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
+
+    //------------------------------------------------------------------------
+    // Prepare the Fan
+
+    typedef math::types::Circlef32 circle_type;
+    using namespace math::types;
+
+    vec3_cont_type vertList;
+
+    const circle_type& circ   = fanPtr->GetEllipseRef();
+    const size_type numSides  = fanPtr->GetNumSides();
+    const f32 angleInterval   = 360.0f / numSides;
+
+    // Push the center vertex
+    {
+      Vec2f32 newCoord = circ.GetPosition();
+      vertList.push_back
+        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
+    }
+
+    for (f32 i = 0; i <= numSides; ++i)
+    {
+      Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
+      vertList.push_back
+        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
+    }
+
+    const gfx_gl::shader_operator_vptr so =  fanPtr->GetShaderOperator().get();
+
+    gfx_gl::AttributeVBO vbo;
+    vbo.AddName("a_vPos")
+       .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                   gfx_gl::p_vbo::usage::StaticDraw>(vertList);
+
+    so->AddAttributeVBO(vbo);
+
+    return base_type::InitializeEntity(a_ent);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -50,45 +87,12 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64)
   {
-    using namespace core::component_system;
-    using math_t::degree_f32;
-
     if (a_ent->HasComponent<gfx_cs::Material>() == false)
     { return; }
 
     gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
-    //------------------------------------------------------------------------
-    // Prepare the Fan
-
-    typedef math::types::Circlef32 circle_type;
-    using namespace math::types;
-
-    m_vertList->clear();
-
-    const circle_type& circ = fanPtr->GetEllipseRef();
-
-    const size_type numSides = fanPtr->GetNumSides();
-    const f32 angleInterval = 360.0f / numSides;
-
-    // Push the center vertex
-    {
-      Vec2f32 newCoord = circ.GetPosition();
-      m_vertList->push_back
-        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
-    }
-
-    for (f32 i = 0; i <= numSides; ++i)
-    {
-      Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
-      m_vertList->push_back
-        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
-    }
-
-    const tl_size numVertices = m_vertList->size();
-
-    DoGetVertexDataAttribute()->
-      SetVertexArray(m_vertList.get(), gl::p_shader_variable_ti::Pointer());
+    const tl_size numVertices = fanPtr->GetNumSides() + 1;
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_FAN, numVertices);
     base_type::DoDrawEntity(di);

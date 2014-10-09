@@ -69,29 +69,25 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_scaleMat.second.empty())
     { m_scaleMat.second = "u_scaleMat"; }
 
-    if (m_vertexData.second.empty())
-    { m_vertexData.second = "a_vPos"; }
-
     // -----------------------------------------------------------------------
 
-    m_shaderOp->reserve_attributes(9);
     m_shaderOp->reserve_uniforms(4);
 
-    m_tData.resize(m_tData.capacity());
-    m_tData[0] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord"));
-    m_tData[1] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord2"));
-    m_tData[2] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord3"));
-    m_tData[3] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord4"));
-    m_tData[4] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord5"));
-    m_tData[5] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord6"));
-    m_tData[6] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord7"));
-    m_tData[7] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord8"));
+    //m_tData.resize(m_tData.capacity());
+    //m_tData[0] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord"));
+    //m_tData[1] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord2"));
+    //m_tData[2] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord3"));
+    //m_tData[3] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord4"));
+    //m_tData[4] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord5"));
+    //m_tData[5] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord6"));
+    //m_tData[6] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord7"));
+    //m_tData[7] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord8"));
 
-    for (tl_size i = 0; i < m_tData.size(); ++i)
-    { m_tData[i]->SetEnabled(false); }
+    //for (tl_size i = 0; i < m_tData.size(); ++i)
+    //{ m_tData[i]->SetEnabled(false); }
 
-    m_vertexData.first  = 
-      m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
+    //m_vertexData.first  = 
+    //  m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
 
     m_mvpMat.first      = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpMat.second));
@@ -118,6 +114,47 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
       "The passed entity is not a camera!");
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void 
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    DoInitializeTexCoords(entity_ptr a_ent, shader_operator_ptr a_so)
+  {
+    // populate the texture coordinate attributes
+    if (a_ent->HasComponent(components::texture_coords))
+    {
+      gfx_cs::texture_coords_sptr tcPtr =
+        a_ent->GetComponent<gfx_cs::TextureCoords>();
+
+      const size_type numTexCoords =
+        a_ent->GetComponents<gfx_cs::TextureCoords>().size();
+
+      typedef gfx_cs::TextureCoords::set_index        set_index;
+
+      for (tl_size i = 0; i < numTexCoords; ++i)
+      {
+        if (tcPtr->GetNumSets())
+        {
+          gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
+            tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
+
+          gfx_gl::AttributeVBO vbo;
+
+          // hard coded tex-coord names
+          if (i != 0)
+          { vbo.AddName(core_str::Format("a_tCoord%i", i + 1)); }
+          else
+          { vbo.AddName(core_str::Format("a_tCoord")); }
+
+          vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
+                         gfx_gl::p_vbo::usage::StaticRead>(*texCoordCont);
+        }
+      }
+    }
+  }
+
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -207,15 +244,6 @@ namespace tloc { namespace graphics { namespace component_system {
     else
     { m_mvpMat.first->SetEnabled(false); }
 
-    // position data
-    if (other_base_type::IsUseVBOsEnabled() == false)
-    {
-      m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
-      m_vertexData.first->SetEnabled(true);
-    }
-    else
-    { m_vertexData.first->SetEnabled(false); }
-
     // model matrix uniform
     if (other_base_type::IsUniformModelMatrixEnabled()) 
     { 
@@ -235,44 +263,6 @@ namespace tloc { namespace graphics { namespace component_system {
     { m_scaleMat.first->SetEnabled(false); }
 
     // -----------------------------------------------------------------------
-    // texture coordinates
-
-    const tl_size numTexCoordsSupported = m_tData.size();
-
-    for (tl_size i = 0; i < numTexCoordsSupported; ++i)
-    { m_tData[i]->SetEnabled(false); }
-
-    // populate the texture coordinate attributes
-    if (ent->HasComponent(components::texture_coords))
-    {
-      typedef gfx_cs::TextureCoords::set_index        set_index;
-
-      const tl_size numTexCoords =
-        ent->GetComponents(gfx_cs::TextureCoords::k_component_type).size();
-
-      TLOC_LOG_GFX_WARN_IF(numTexCoords > numTexCoordsSupported) 
-        << "Requested " << numTexCoords << " but only " << numTexCoordsSupported
-        << " supported";
-
-      for (tl_size i = 0; i < numTexCoords && i < numTexCoordsSupported; ++i)
-      {
-        gfx_cs::texture_coords_sptr texCoordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>(i);
-
-        if (texCoordPtr && texCoordPtr->GetNumSets())
-        {
-          gfx_cs::TextureCoords::cont_type_ptr
-            texCoordCont = texCoordPtr->GetCoords
-            (set_index(texCoordPtr->GetCurrentSet()));
-
-          m_tData[i]->SetEnabled(true);
-          m_tData[i]->SetVertexArray(texCoordCont,
-                                     gl::p_shader_variable_ti::Pointer());
-        }
-      }
-    }
-
-    // -----------------------------------------------------------------------
     // Prepare shader
 
     typedef core_conts::Array<gl::const_vao_vptr>   vao_cont;
@@ -281,7 +271,6 @@ namespace tloc { namespace graphics { namespace component_system {
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
     error_type uniformErr = ErrorSuccess;
-    error_type attribErr = ErrorSuccess;
     error_type vboErr = ErrorSuccess;
 
     // Don't 're-enable' the shader if it was already enabled by the previous
@@ -309,41 +298,28 @@ namespace tloc { namespace graphics { namespace component_system {
       {
         gl::shader_operator_vptr so = itr->get();
 
-        if (so->IsAttributesCached() == false)
-        { so->PrepareAllAttributes(*m_shaderPtr); }
-
         if (so->IsUniformsCached() == false)
         { so->PrepareAllUniforms(*m_shaderPtr); }
 
         so->EnableAllUniforms(*m_shaderPtr);
-        so->EnableAllAttributes(*m_shaderPtr);
 
-        if (IsUseVBOsEnabled())
-        { 
-          if (so->IsVBOsCached() == false)
-          { so->PrepareAllVBOs(*m_shaderPtr); }
+        if (so->IsAttributeVBOsCached() == false)
+        { so->PrepareAllAttributeVBOs(*m_shaderPtr); }
 
-          VAOs.push_back(so->GetVAO());
-        }
+        VAOs.push_back(so->GetVAO());
       }
 
       // shader switch requires us to re-prepare the attributes/uniforms
       m_shaderOp->ClearCache();
       uniformErr = m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
-      attribErr = m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
-
-      if (IsUseVBOsEnabled())
-      { vboErr = m_shaderOp->PrepareAllVBOs(*m_shaderPtr); }
+      vboErr = m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr);
     }
 
     // Add the mvp
     if (uniformErr.Succeeded())
     { m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-    if (attribErr.Succeeded())
-    { m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
-
-    if (IsUseVBOsEnabled() && vboErr.Succeeded())
+    if (vboErr.Succeeded())
     { VAOs.push_back(m_shaderOp->GetVAO()); }
 
     // prepare/enable user's shader operator
@@ -351,21 +327,14 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       // prepare and enable user uniforms/attributes
       uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
-      attribErr = a_di.m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
 
       if (uniformErr.Succeeded())
       { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-      if (attribErr.Succeeded())
-      { a_di.m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
+      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr);
 
-      if (IsUseVBOsEnabled())
-      { 
-        vboErr = a_di.m_shaderOp->PrepareAllVBOs(*m_shaderPtr);
-
-        if (vboErr.Succeeded())
-        { VAOs.push_back(a_di.m_shaderOp->GetVAO()); }
-      }
+      if (vboErr.Succeeded())
+      { VAOs.push_back(a_di.m_shaderOp->GetVAO()); }
     }
 
     // -----------------------------------------------------------------------
@@ -373,13 +342,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // we just need to store the Binds, when they are destroyed, they will 
     // unbind the VAOs
-    typedef core_conts::Array<gl::VertexArrayObject::bind_sptr>   vao_bind_cont;
-    vao_bind_cont vaoBinds(VAOs.size());
+    typedef core_conts::Array<gl::VertexArrayObject::late_bind_sptr>   vao_bind_cont;
+    vao_bind_cont vaoBinds; vaoBinds.resize(VAOs.size());
 
     for (tl_size i = 0; i < vaoBinds.size(); ++i)
     { 
       if (VAOs[i])
-      { vaoBinds[i] = core_sptr::MakeShared<gl::VertexArrayObject::Bind>(*VAOs[i]); }
+      { 
+        vaoBinds[i] = core_sptr::MakeShared<gl::VertexArrayObject::LateBind>(); 
+        vaoBinds[i]->Bind(*VAOs[i]);
+      }
     }
 
     glDrawArrays(a_di.m_drawCommand, 0,

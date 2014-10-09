@@ -52,9 +52,9 @@ namespace tloc { namespace prefab { namespace graphics {
     { so->AddUniform(**itr); }
 
     for (const_attribute_itr 
-         itr = m_attributes.begin(), itrEnd = m_attributes.end();
+         itr = m_attributesVBO.begin(), itrEnd = m_attributesVBO.end();
          itr != itrEnd; ++itr)
-    { so->AddAttribute(**itr); }
+    { so->AddAttributeVBO(**itr); }
 
     mat->AddShaderOperator(*so);
 
@@ -158,9 +158,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Material&
     Material::
-    AddAttribute(const attribute_ptr_type& a_attribute)
+    AddAttributeVBO(const attributeVBO_ptr_type& a_attribute)
   {
-    m_attributes.push_back(a_attribute);
+    m_attributesVBO.push_back(a_attribute);
     return *this;
   }
 
@@ -169,4 +169,4 @@ namespace tloc { namespace prefab { namespace graphics {
 #include <tlocCore/containers/tlocArray.inl.h>
 
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::uniform_ptr_type);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::attribute_ptr_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::attributeVBO_ptr_type);

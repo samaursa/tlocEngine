@@ -4,6 +4,7 @@
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/memory/tlocBufferArg.h>
+#include <tlocCore/data_structures/tlocTuple.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -68,6 +69,7 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_Target, typename T_Usage, typename T_Type>
     this_type& SetValueAs(const core_conts::Array<T_Type>& a_array);
 
+    TLOC_DECL_AND_DEF_GETTER(VertexBufferObject, GetVBO, m_vbo);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetUsage, m_usage);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetTarget, m_target);
@@ -117,9 +119,14 @@ namespace tloc { namespace graphics { namespace gl {
       p_vbo::usage::DynamicCopy>();
 
     type_traits::AssertTypeIsSupported<T_Type, 
-        s32, f32, math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
-        gfx_t::Vert3fp, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+        s32, f32, 
+
+        core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+
+        math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+        gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
        >();
 
     return DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);

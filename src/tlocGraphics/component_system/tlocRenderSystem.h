@@ -47,15 +47,10 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math::types::Mat4f32                          matrix_type;
 
     typedef gl::uniform_vptr                              uniform_ptr;
-    typedef gl::attribute_vptr                            attribute_ptr;
-
+    typedef gl::shader_operator_vptr                      shader_operator_ptr;
     typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
 
-
     typedef core_conts::Array<uniform_ptr>                uniform_array;
-    typedef core_conts::Array<attribute_ptr>              attribute_array;
-
-    typedef core_conts::ArrayFixed<attribute_ptr, 8>     attribute_ptr_cont;
 
   public:
 
@@ -76,8 +71,6 @@ namespace tloc { namespace graphics { namespace component_system {
       (core_str::String, GetModelMatrixUniformName, m_modelMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetScaleMatrixUniformName, m_modelMat.second);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetVertexDataAttributeName, m_vertexData.second);
 
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetMVPMatrixUniformName, m_mvpMat.second);
@@ -87,8 +80,6 @@ namespace tloc { namespace graphics { namespace component_system {
       (core_str::String, SetModelMatrixUniformName, m_modelMat.second);
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetScaleMatrixUniformName, m_modelMat.second);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetVertexDataAttributeName, m_vertexData.second);
 
   protected:
 
@@ -117,6 +108,8 @@ namespace tloc { namespace graphics { namespace component_system {
                       <component_type, T_VarSize>&  a_typeFlags);
 
     virtual error_type        Pre_Initialize();
+    void                      DoInitializeTexCoords(entity_ptr a_ent, 
+                                                    shader_operator_ptr a_so);
     virtual error_type        InitializeEntity(entity_ptr a_ent);
 
     virtual void              Pre_ProcessActiveEntities(f64);
@@ -124,12 +117,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void                      DoDrawEntity(const DrawInfo& a_di);
 
-    TLOC_DECL_AND_DEF_GETTER(attribute_ptr, DoGetVertexDataAttribute, 
-                             m_vertexData.first);
-
   private:
     typedef core::Pair<uniform_ptr, core_str::String>     uniform_string_pair;
-    typedef core::Pair<attribute_ptr, core_str::String>   attribute_string_pair;
 
   private:
     const_shader_prog_ptr     m_shaderPtr;
@@ -138,7 +127,6 @@ namespace tloc { namespace graphics { namespace component_system {
     renderer_type             m_renderer;
     rof_uptr                  m_renderOneFrame;
     matrix_type               m_vpMatrix;
-    attribute_ptr_cont        m_tData;
 
     gl::shader_operator_vso   m_shaderOp;
 
@@ -146,7 +134,6 @@ namespace tloc { namespace graphics { namespace component_system {
     uniform_string_pair       m_vpMat;
     uniform_string_pair       m_modelMat;
     uniform_string_pair       m_scaleMat;
-    attribute_string_pair     m_vertexData;
   };
 
   // -----------------------------------------------------------------------

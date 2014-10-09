@@ -11,7 +11,6 @@ namespace tloc { namespace graphics { namespace component_system {
       k_enableUniModelMat,
       k_enableCameraVP,
       k_enableScaleMat,
-      k_useVBOs,
 
       k_count
     };
@@ -27,7 +26,6 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     SetEnabledUniformMVPMatrix(true);
     SetEnabledAttributePosData(true);
-    SetEnabledUseVBOs(true);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -99,19 +97,5 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_I::
     SetEnabledUniformScaleMatrix(bool a_value)
   { m_flags[k_enableScaleMat] = a_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  bool
-    RenderSystem_I::
-    IsUseVBOsEnabled() const
-  { return m_flags.IsMarked(k_useVBOs); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    RenderSystem_I::
-    SetEnabledUseVBOs(bool a_value)
-  { m_flags[k_useVBOs] = a_value; }
 
 };};};

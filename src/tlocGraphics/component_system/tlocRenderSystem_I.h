@@ -24,9 +24,6 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_GETTER(bool, IsUniformScaleMatrixEnabled);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformScaleMatrix);
 
-    TLOC_DECL_GETTER(bool, IsUseVBOsEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUseVBOs);
-
   protected:
     RenderSystem_I();
 

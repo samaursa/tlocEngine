@@ -133,8 +133,10 @@ namespace tloc { namespace graphics { namespace types {
 
   // -----------------------------------------------------------------------
 
-  template <typename T>
-  gl_enum Get()
-  { return tlToGl<T>::k_glType; };
+  namespace type_to_gl {
+    template <typename T>
+    gl_enum Get()
+    { return tlToGl<T>::k_glType; };
+  }
 
 };};};

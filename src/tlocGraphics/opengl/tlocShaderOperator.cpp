@@ -71,7 +71,6 @@ namespace tloc { namespace graphics { namespace gl {
     enum flags
     {
       k_uniformsCached = 0,
-      k_attributesCached,
       k_VBOsCached,
       k_count
     };
@@ -591,682 +590,6 @@ namespace tloc { namespace graphics { namespace gl {
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     DoSetReturn
-      DoSet(const ShaderVariableInfo& a_info, const Attribute& a_attribute, 
-            tl_size a_interleaveIndex)
-    {
-      using namespace core;
-
-      bool isArray = a_attribute.IsArray();
-      bool isShared = a_attribute.IsArrayPtr();
-      bool isVertexArray = a_attribute.IsAttribArray();
-
-      DoSetReturn toRet;
-
-      switch(a_info.m_type)
-      {
-      case GL_FLOAT:
-        {
-          if (isArray == false)
-          {
-            const f32& f =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<f32>()
-              : a_attribute.GetValueAs<f32>();
-            glVertexAttrib1f(a_info.m_location, f);
-          }
-          else if (isVertexArray)
-          {
-            typedef f32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef f32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttrib1fv(a_info.m_location, faraw);
-            }
-          }
-          break;
-        }
-      case TLOC_GL_POSITION2F:
-      case GL_FLOAT_VEC2:
-        {
-          typedef Vec2f32                     data_type;
-
-          if (isArray == false)
-          {
-            const Vec2f32& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Vec2f32>()
-              : a_attribute.GetValueAs<Vec2f32>();
-            glVertexAttrib2f(a_info.m_location, v[0], v[1]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttrib2fv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-      case TLOC_GL_POSITION3F:
-      case GL_FLOAT_VEC3:
-        {
-          typedef Vec3f32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Vec3f32>()
-              : a_attribute.GetValueAs<Vec3f32>();
-            glVertexAttrib3f(a_info.m_location, v[0], v[1], v[2]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              f32       const * farawFloat = reinterpret_cast<f32 const*>(faraw);
-              glVertexAttrib3fv(a_info.m_location, farawFloat);
-            }
-          }
-          break;
-        }
-      case GL_FLOAT_VEC4:
-        {
-          typedef Vec4f32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Vec4f32>()
-              : a_attribute.GetValueAs<Vec4f32>();
-            glVertexAttrib4f(a_info.m_location, v[0], v[1], v[2], v[3]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttrib4fv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
-      case GL_INT:
-        {
-          if (isArray == false)
-          {
-            const s32& f =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<s32>()
-              : a_attribute.GetValueAs<s32>();
-            glVertexAttribI1i(a_info.m_location, f);
-          }
-          else if (isVertexArray)
-          {
-            typedef s32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 1, GL_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef s32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI1iv(a_info.m_location, faraw);
-            }
-          }
-          break;
-        }
-      case GL_INT_VEC2:
-        {
-          typedef Tuple2s32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Tuple2s32>()
-              : a_attribute.GetValueAs<Tuple2s32>();
-            glVertexAttribI2i(a_info.m_location, v[0], v[1]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 2, GL_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttribI2iv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-      case GL_INT_VEC3:
-        {
-          typedef Tuple3s32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Tuple3s32>()
-              : a_attribute.GetValueAs<Tuple3s32>();
-            glVertexAttribI3i(a_info.m_location, v[0], v[1], v[2]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 3, GL_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttribI3iv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-      case GL_INT_VEC4:
-        {
-          typedef Tuple4s32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Tuple4s32>()
-              : a_attribute.GetValueAs<Tuple4s32>();
-            glVertexAttribI4i(a_info.m_location, v[0], v[1], v[2], v[3]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 4, GL_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttribI4iv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-      case GL_UNSIGNED_INT:
-        {
-          if (isArray == false)
-          {
-            const u32& f =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<u32>()
-              : a_attribute.GetValueAs<u32>();
-            glVertexAttribI1ui(a_info.m_location, f);
-          }
-          else if (isVertexArray)
-          {
-            typedef u32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 1, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef u32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribI1uiv(a_info.m_location, faraw);
-            }
-          }
-          break;
-        }
-      case GL_UNSIGNED_INT_VEC2:
-        {
-          typedef Tuple2u32                     data_type;
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Tuple2u32>()
-              : a_attribute.GetValueAs<Tuple2u32>();
-            glVertexAttribI2ui(a_info.m_location, v[0], v[1]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttribI2uiv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-      case GL_UNSIGNED_INT_VEC3:
-        {
-          typedef Tuple3u32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Tuple3u32>()
-              : a_attribute.GetValueAs<Tuple3u32>();
-            glVertexAttribI3ui(a_info.m_location, v[0], v[1], v[2]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttribI3uiv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-      case GL_UNSIGNED_INT_VEC4:
-        {
-          typedef Tuple4u32                     data_type;
-
-          if (isArray == false)
-          {
-            const data_type& v =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<Tuple4u32>()
-              : a_attribute.GetValueAs<Tuple4u32>();
-            glVertexAttribI4ui(a_info.m_location, v[0], v[1], v[2], v[3]);
-          }
-          else if (isVertexArray)
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              glVertexAttribPointer
-                (a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-          }
-          else
-          {
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
-              data_type::value_type const * farawFlat =
-                reinterpret_cast<data_type::value_type const*>(faraw);
-              glVertexAttribI4uiv(a_info.m_location, farawFlat);
-            }
-          }
-          break;
-        }
-#endif
-
-      case TLOC_GL_POSITION2F_NORMAL3F:
-      case TLOC_GL_POSITION2F_TEXTURE2F:
-      case TLOC_GL_POSITION2F_COLOR4F:
-      case TLOC_GL_POSITION2F_NORMAL3F_COLOR4F:
-      case TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F:
-      case TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F:
-
-      case TLOC_GL_POSITION3F_NORMAL3F:
-      case TLOC_GL_POSITION3F_TEXTURE2F:
-      case TLOC_GL_POSITION3F_COLOR4F:
-      case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F:
-      case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F:
-      case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
-        {
-            typedef f32                     data_type;
-            typedef Array<data_type>        array_type;
-            typedef SharedPtr<array_type>   shared_type;
-
-            array_type const & fa =
-              isShared
-              ? *a_attribute.GetValueAsArrayPtr<array_type>()
-              : a_attribute.GetValueAs<array_type>();
-
-            if (fa.size() > 0)
-            {
-              // handle TLOC_GL types
-              gfx_t::f_vertex::VertexAttribPointerInfo vapInfo = 
-                gfx_t::f_vertex::GetCustomGLTypeInfo(a_info.m_type, a_interleaveIndex);
-
-              data_type const * faraw = reinterpret_cast<data_type const*>( &( fa[vapInfo.m_pointerIndex] ) );
-
-              glVertexAttribPointer (a_info.m_location, 
-                                     vapInfo.m_size, 
-                                     GL_FLOAT, 
-                                     GL_FALSE, 
-                                     sizeof(f32) * vapInfo.m_stride, 
-                                     faraw);
-              gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
-              toRet.VertexAttribArrayIndex(a_info.m_location);
-            }
-        }
-      default:
-        {
-
-          TLOC_ASSERT_FALSE("Unsupported Attribute type!");
-        }
-      }
-
-      return toRet;
-    }
-
-    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    DoSetReturn
       DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attributeVBO,
             tl_size a_interleaveIndex)
     {
@@ -1276,30 +599,58 @@ namespace tloc { namespace graphics { namespace gl {
 
       switch(a_info.m_type)
       {
+      case GL_INT:
+        {
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
+          break;
+        }
+      case GL_INT_VEC2:
+        {
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 2, GL_INT, GL_FALSE, 0, 0);
+          break;
+        }
+      case GL_INT_VEC3:
+        {
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 3, GL_INT, GL_FALSE, 0, 0);
+          break;
+        }
+      case GL_INT_VEC4:
+        {
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
+          glVertexAttribPointer(a_info.m_location, 4, GL_INT, GL_FALSE, 0, 0);
+          break;
+        }
       case GL_FLOAT:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC2:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC3:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC4:
         {
-          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::EnableIfDisabled(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
           break;
@@ -1324,7 +675,7 @@ namespace tloc { namespace graphics { namespace gl {
           gfx_t::f_vertex::VertexAttribPointerInfo vapInfo =
             gfx_t::f_vertex::GetCustomGLTypeInfo(a_info.m_type, a_interleaveIndex);
 
-          AttributeVBO::bind_array_buffer vboBind(a_attributeVBO);
+          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 
                                 vapInfo.m_size, 
@@ -1469,58 +820,11 @@ namespace tloc { namespace graphics { namespace gl {
     return m_uniforms.back().first.get();
   }
 
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  ShaderOperator::attribute_ptr
-    ShaderOperator::
-    AddAttribute(const attribute_type& a_attribute)
-  {
-    TLOC_ASSERT(a_attribute.GetName().size() > 0, "Attribute name is empty");
-
-    const gfx_t::gl_int type = a_attribute.GetType();
-
-    index_cont_4 indexes(1, -1);
-
-    if (type == TLOC_GL_POSITION2F_NORMAL3F ||
-        type == TLOC_GL_POSITION3F_NORMAL3F ||
-        type == TLOC_GL_POSITION2F_TEXTURE2F ||
-        type == TLOC_GL_POSITION3F_TEXTURE2F ||
-        type == TLOC_GL_POSITION2F_COLOR4F ||
-        type == TLOC_GL_POSITION3F_COLOR4F)
-    {
-      TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
-      indexes.resize(2, -1);
-    }
-    else if (type == TLOC_GL_POSITION2F_NORMAL3F_COLOR4F ||
-             type == TLOC_GL_POSITION3F_NORMAL3F_COLOR4F ||
-             type == TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F ||
-             type == TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F)
-    {
-      TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
-      TLOC_ASSERT(a_attribute.GetThirdName().size() > 0, "Third attribute name is empty");
-      indexes.resize(3, -1);
-    }
-    else if (type == TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F ||
-             type == TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F )
-    {
-      TLOC_ASSERT(a_attribute.GetSecondName().size() > 0, "Second attribute name is empty");
-      TLOC_ASSERT(a_attribute.GetThirdName().size() > 0, "Third attribute name is empty");
-      TLOC_ASSERT(a_attribute.GetFourthName().size() > 0, " attribute name is empty");
-      indexes.resize(4, -1);
-    }
-
-    m_attributes.push_back
-      (core::MakePair(attribute_vso(MakeArgs(a_attribute)), indexes) );
-    m_flags.Unmark(k_attributesCached);
-
-    return m_attributes.back().first.get();
-  }
-
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   ShaderOperator::vbo_ptr
     ShaderOperator::
-    AddVBO(const vbo_type& a_vbo)
+    AddAttributeVBO(const vbo_type& a_vbo)
   {
     TLOC_ASSERT(a_vbo.GetName().size() > 0, "VBO name is empty");
 
@@ -1543,16 +847,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   void 
     ShaderOperator::
-    RemoveAttribute(const attribute_iterator& a_attribute)
-  {
-    m_attributes.erase(a_attribute);
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void 
-    ShaderOperator::
-    RemoveVBO(const vbo_iterator& a_vbo)
+    RemoveAttributeVBO(const vbo_iterator& a_vbo)
   {
     m_VBOs.erase(a_vbo);
   }
@@ -1571,20 +866,10 @@ namespace tloc { namespace graphics { namespace gl {
 
   void 
     ShaderOperator::
-    RemoveAllAttributes()
-  {
-    m_attributes.clear();
-    ClearAttributesCache();
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void 
-    ShaderOperator::
-    RemoveAllVBOs()
+    RemoveAllAttributeVBOs()
   {
     m_VBOs.clear();
-    ClearVBOsCache();
+    ClearAttributeVBOsCache();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1641,66 +926,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
-    EnableAllAttributes(const ShaderProgram& a_shaderProgram) const
-  {
-    TLOC_ASSERT(a_shaderProgram.IsLinked(),
-                "Shader not linked - did you forget to call Link()?");
-    TLOC_ASSERT(m_flags.IsMarked(k_attributesCached),
-      "Attributes not loaded - did you forget to call PrepareAllAttributes()?");
-
-    const glsl_var_info_cont_type&
-      attrCont = a_shaderProgram.GetAttributeInfoRef();
-
-    attribute_cont_type::const_iterator itr, itrEnd;
-    for (itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    {
-      if (itr->first->IsEnabled() == false)
-      { continue; }
-
-      const_attribute_ptr attribPtr = itr->first.get();
-
-      // we don't warn for g_unableToFindIndex because the user has already
-      // been warned about that
-      for (size_type interleavedIndex = 0; 
-           interleavedIndex < itr->second.size(); ++interleavedIndex)
-      {
-        if (itr->second[interleavedIndex] >= 0)
-        {
-          DoAssertVariablesMatch(attrCont[itr->second[0] ], attribPtr);
-          DoSet(attrCont[itr->second[interleavedIndex] ], 
-                *attribPtr, 
-                interleavedIndex);
-        }
-        else if (itr->second[interleavedIndex] == g_invalidIndex)
-        {
-          TLOC_LOG_GFX_WARN()
-            << "Attribute (" << itr->first->GetName()
-            << ") cannot be set. Did you forget to call PrepareAllAttributes?";
-        }
-      }
-    }
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  ShaderOperator::vao_bind_ptr
-    ShaderOperator::
-    EnableAllVBOs(const ShaderProgram& a_shaderProgram) const
-  {
-    TLOC_ASSERT(a_shaderProgram.IsLinked(),
-                "Shader not linked - did you forget to call Link()?");
-    TLOC_ASSERT(m_flags.IsMarked(k_attributesCached),
-      "Attributes not loaded - did you forget to call PrepareAllAttributes()?");
-
-    if (m_vao) { return core_sptr::MakeShared<vao_bind_type>(*m_vao); }
-    
-    return nullptr;
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
   ShaderOperator::error_type
     ShaderOperator::
     PrepareAllUniforms(const ShaderProgram& a_shaderProgram)
@@ -1731,52 +956,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderOperator::error_type
     ShaderOperator::
-    PrepareAllAttributes(const ShaderProgram& a_shaderProgram)
-  {
-    TLOC_ASSERT(a_shaderProgram.IsLinked(),
-                "Shader not linked - did you forget to call Link()?");
-    TLOC_ASSERT(a_shaderProgram.IsEnabled(),
-                "Shader not enabled - did you forget to call Enable()?");
-
-    error_type retError = ErrorSuccess;
-
-    if (m_flags.ReturnAndMark(k_attributesCached) == false)
-    {
-
-      // bail early
-      if (GetNumberOfAttributes() == 0) { return retError; }
-
-      const glsl_var_info_cont_type&
-        attrCont = a_shaderProgram.GetAttributeInfoRef();
-
-      ErrorShaderVarIndexContPair errAndIndex = DoPrepareVariables(m_attributes, attrCont);
-      retError = errAndIndex.first;
-
-      for (do_set_return_cont::iterator itr = errAndIndex.second.begin(),
-           itrEnd = errAndIndex.second.end(); itr != itrEnd; ++itr)
-      {
-        index_type index = itr->m_vertexAttribArrayIndex;
-
-        TLOC_LOG_GFX_WARN_IF
-          (core::find_all(m_enabledVertexAttrib, index) 
-          != m_enabledVertexAttrib.end()) << "Vertex attribute at index " 
-          << index << " over-ridden by gl::Attribute";
-
-
-        if (index >= 0)
-        { m_enabledVertexAttrib.push_back(index); }
-      }
-    }
-
-    return retError;
-
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  ShaderOperator::error_type
-    ShaderOperator::
-    PrepareAllVBOs(const ShaderProgram& a_shaderProgram)
+    PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram)
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
@@ -1788,7 +968,7 @@ namespace tloc { namespace graphics { namespace gl {
     if (m_flags.ReturnAndMark(k_VBOsCached) == false)
     {
       // bail early
-      if (GetNumberOfVBOs() == 0) { return retError; }
+      if (GetNumberOfAttributeVBOs() == 0) { return retError; }
 
       if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
 
@@ -1820,34 +1000,34 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::uniform_iterator ShaderOperator::
+  ShaderOperator::uniform_iterator 
+    ShaderOperator::
     begin_uniforms()
-  {
-    return m_uniforms.begin();
-  }
+  { return m_uniforms.begin(); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::uniform_iterator ShaderOperator::
+  ShaderOperator::uniform_iterator 
+    ShaderOperator::
     end_uniforms()
+  { return m_uniforms.end(); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ShaderOperator::vbo_iterator 
+    ShaderOperator::
+    begin_attributeVBOs()
   {
-    return m_uniforms.end();
+    return m_VBOs.begin();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::attribute_iterator ShaderOperator::
-    begin_attributes()
+  ShaderOperator::vbo_iterator
+    ShaderOperator::
+    end_attributeVBOs()
   {
-    return m_attributes.begin();
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  ShaderOperator::attribute_iterator ShaderOperator::
-    end_attributes()
-  {
-    return m_attributes.end();
+    return m_VBOs.end();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1861,28 +1041,21 @@ namespace tloc { namespace graphics { namespace gl {
 
   void
     ShaderOperator::
-    reserve_attributes(size_type a_capacity)
-  { m_attributes.reserve(a_capacity); }
+    reserve_attributeVBOs(size_type a_capacity)
+  { m_VBOs.reserve(a_capacity); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
-    ClearAttributesCache()
-  { 
-    m_enabledVertexAttrib.clear();
-    m_flags.Unmark(k_attributesCached);
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void ShaderOperator::
+  void 
+    ShaderOperator::
     ClearUniformsCache()
   { m_flags.Unmark(k_uniformsCached); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
-    ClearVBOsCache()
+  void 
+    ShaderOperator::
+    ClearAttributeVBOsCache()
   { 
     m_enabledVertexAttrib.clear();
     m_flags.Unmark(k_VBOsCached);
@@ -1890,30 +1063,26 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void ShaderOperator::
+  void 
+    ShaderOperator::
     ClearCache()
   {
-    ClearAttributesCache();
     ClearUniformsCache();
-    ClearVBOsCache();
+    ClearAttributeVBOsCache();
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool ShaderOperator::
-    IsAttributesCached()
-  { return m_flags[k_attributesCached]; }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  bool ShaderOperator::
+  bool 
+    ShaderOperator::
     IsUniformsCached()
   { return m_flags[k_uniformsCached]; }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool ShaderOperator::
-    IsVBOsCached()
+  bool 
+    ShaderOperator::
+    IsAttributeVBOsCached()
   { return m_flags[k_VBOsCached]; }
 
 };};};
@@ -1930,5 +1099,4 @@ using namespace tloc::gfx_gl;
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ShaderOperator);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(ShaderOperator);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(ShaderOperator::uniform_pair_type);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(ShaderOperator::attribute_pair_type);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(vbo_vso);

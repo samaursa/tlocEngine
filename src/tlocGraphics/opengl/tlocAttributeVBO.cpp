@@ -14,6 +14,54 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<s32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(1).StrideInBytes(0)
+                   .DataStartIndex(0));
+
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<core_ds::Tuple2s32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(2).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<core_ds::Tuple3s32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<core_ds::Tuple4s32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(4).StrideInBytes(0)
+                   .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
       DoGetStrideInfo(const core_conts::Array<f32>&)
     {
       stride_info_cont si;
@@ -67,6 +115,21 @@ namespace tloc { namespace graphics { namespace gl {
       stride_info_cont si;
       si.push_back(stride_info().NumElements(3).StrideInBytes(0)
                    .DataStartIndex(0));
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpc>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(0));
+
+      si.push_back(stride_info().NumElements(4).StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(3));
       
       return si;
     }
@@ -158,35 +221,6 @@ namespace tloc { namespace graphics { namespace gl {
       return si;
     }
 
-  };
-
-  namespace p_vbo {
-    namespace target {
-
-      const value_type ArrayBuffer::s_glParamName = GL_ARRAY_BUFFER;
-      const value_type CopyReadBuffer::s_glParamName = GL_COPY_READ_BUFFER;
-      const value_type CopyWriteBuffer::s_glParamName = GL_COPY_WRITE_BUFFER;
-      const value_type ElementArrayBuffer::s_glParamName = GL_ELEMENT_ARRAY_BUFFER;
-      const value_type PixelPackBuffer::s_glParamName = GL_PIXEL_PACK_BUFFER;
-      const value_type PixelUnpackBuffer::s_glParamName = GL_PIXEL_UNPACK_BUFFER;
-      const value_type TextureBuffer::s_glParamName = GL_TEXTURE_BUFFER;
-      const value_type TransformFeedbackBuffer::s_glParamName = GL_TRANSFORM_FEEDBACK_BUFFER;
-
-    };
-
-    namespace usage {
-
-      const value_type StreamDraw::s_glParamName = GL_STREAM_DRAW;
-      const value_type StreamRead::s_glParamName = GL_STREAM_READ;
-      const value_type StreamCopy::s_glParamName = GL_STREAM_COPY;
-      const value_type StaticDraw::s_glParamName = GL_STATIC_DRAW;
-      const value_type StaticRead::s_glParamName = GL_STATIC_READ;
-      const value_type StaticCopy::s_glParamName = GL_STATIC_COPY;
-      const value_type DynamicDraw::s_glParamName = GL_DYNAMIC_DRAW;
-      const value_type DynamicRead::s_glParamName = GL_DYNAMIC_READ;
-      const value_type DynamicCopy::s_glParamName = GL_DYNAMIC_COPY;
-
-    };
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -286,11 +320,16 @@ using namespace tloc::gfx_gl;
   template AttributeVBO::this_type& AttributeVBO::\
   DoData<p_vbo::target::TransformFeedbackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&)
 
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple2s32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple3s32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple4s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec2f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec3f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec4f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fp);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpc);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpt);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpn);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpnc);

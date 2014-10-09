@@ -28,6 +28,16 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   // ///////////////////////////////////////////////////////////////////////
+  // LateBind
+
+  void 
+    VertexArrayObject::LateBind::
+    Bind(const this_type& a_vao)
+  {
+    m_bind.reset(new VertexArrayObject::Bind(a_vao));
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // VertexArrayObject
 
   VertexArrayObject::
@@ -63,3 +73,6 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(VertexArrayObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexArrayObject);
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexArrayObject::Bind);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexArrayObject::LateBind);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(VertexArrayObject::LateBind);

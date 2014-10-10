@@ -5,6 +5,7 @@
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -71,6 +72,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     so->AddAttributeVBO(vbo);
 
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>())
+    { base_type::DoInitializeTexCoords(a_ent, so); }
+
     return base_type::InitializeEntity(a_ent);
   }
 
@@ -92,9 +96,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
-    const tl_size numVertices = fanPtr->GetNumSides() + 1;
+    const tl_size numVertices = fanPtr->GetNumSides() + 2;
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_FAN, numVertices);
+    di.m_shaderOp = core_sptr::ToVirtualPtr(fanPtr->GetShaderOperator());
     base_type::DoDrawEntity(di);
   }
 

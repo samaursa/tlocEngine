@@ -151,12 +151,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_gl::AttributeVBO vbo;
     vbo.AddName("a_vPos")
+       .AddName("a_color")
        .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                    gfx_gl::p_vbo::usage::StaticDraw>(m_lineList);
 
     m_linesOperator->AddAttributeVBO(vbo);
 
-    return ErrorSuccess;
+    return base_type::Pre_Initialize();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -189,10 +190,59 @@ namespace tloc { namespace graphics { namespace component_system {
     DebugTransformRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64 )
   {
-    base_type::DrawInfo di(a_ent, GL_LINES, m_lineList.size());
-    di.m_shaderOp = core_sptr::ToVirtualPtr(m_linesOperator.get());
+      using math::types::Mat4f32;
+      using math::types::Vec4f32;
 
-    base_type::DoDrawEntity(di);
+      using namespace core::component_system;
+      typedef math::component_system::Transform     transform_type;
+
+      math_cs::transform_f32_sptr t = a_ent->GetComponent<math_cs::Transformf32>();
+
+      Mat4f32 tMatrix;
+      if (a_ent->HasComponent(components::scene_node))
+      { tMatrix = a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+      else
+      { tMatrix = t->GetTransformation().Cast<Mat4f32>(); }
+
+      Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
+
+      // Generate the mvp matrix
+      m_uniVpMat->SetValueAs(tFinalMat);
+
+      gfx_cs::material_sptr matPtr = m_linesMaterial->GetComponent<gfx_cs::Material>();
+      const_shader_prog_ptr sp = matPtr->GetShaderProg();
+
+      error_type uniformErr = ErrorSuccess;
+      error_type attribErr = ErrorSuccess;
+
+      // Don't 're-enable' the shader if it was already enabled by the previous
+      // entity
+      if (m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
+      {
+        if (m_shaderPtr)
+        { m_shaderPtr->Disable(); }
+
+        m_shaderPtr = sp;
+
+        if (sp->Enable().Failed())
+        {
+          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle()
+            << " could not be enabled.";
+          return;
+        }
+
+        uniformErr = m_linesOperator->PrepareAllUniforms(*m_shaderPtr);
+        attribErr = m_linesOperator->PrepareAllAttributeVBOs(*m_shaderPtr);
+      }
+
+      // Add the mvp
+      if (uniformErr.Succeeded())
+      { m_linesOperator->EnableAllUniforms(*m_shaderPtr); }
+
+      gfx_gl::VertexArrayObject::Bind b(*m_linesOperator->GetVAO());
+
+      glDrawArrays(GL_LINES, 0,
+                   core_utils::CastNumber<gfx_t::gl_sizei>(m_lineList.size()));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

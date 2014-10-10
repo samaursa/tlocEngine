@@ -73,22 +73,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_shaderOp->reserve_uniforms(4);
 
-    //m_tData.resize(m_tData.capacity());
-    //m_tData[0] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord"));
-    //m_tData[1] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord2"));
-    //m_tData[2] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord3"));
-    //m_tData[3] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord4"));
-    //m_tData[4] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord5"));
-    //m_tData[5] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord6"));
-    //m_tData[6] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord7"));
-    //m_tData[7] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord8"));
-
-    //for (tl_size i = 0; i < m_tData.size(); ++i)
-    //{ m_tData[i]->SetEnabled(false); }
-
-    //m_vertexData.first  = 
-    //  m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
-
     m_mvpMat.first      = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpMat.second));
     m_vpMat.first       = 
@@ -150,6 +134,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
           vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
                          gfx_gl::p_vbo::usage::StaticRead>(*texCoordCont);
+
+          a_so->AddAttributeVBO(vbo);
         }
       }
     }

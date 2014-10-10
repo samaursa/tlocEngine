@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace types {
   Color_TI<T, T_Size>::
     SetAs(const core_ds::Tuple<U, k_size>& a_colorInChannels)
   {
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <U, u8, s32, s64, f32, f64>();
 
     DoSetAs(a_colorInChannels);
@@ -172,7 +172,7 @@ namespace tloc { namespace graphics { namespace types {
     GetAs() const
   {
     using namespace p_color::format;
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
 
     return DoGetAs<T_ColorFormat>();
@@ -208,10 +208,10 @@ namespace tloc { namespace graphics { namespace types {
     using tloc::math::types::Vec4f32;
     using tloc::math::types::Vec4f64;
 
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
 
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_VectorType,
       core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
       core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>,

@@ -11,14 +11,23 @@ namespace tloc { namespace graphics { namespace gl {
     typedef AttributeVBO::stride_info_cont          stride_info_cont;
     typedef f32                                     real_type;
 
+    using namespace gfx_t;
+    using namespace core_conts;
+    using namespace core_ds;
+    using namespace math_t;
+
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<s32>&)
+      DoGetStrideInfo(const Array<s32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(1).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(1)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<s32> >())
+                   );
 
       return si;
     }
@@ -26,11 +35,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<core_ds::Tuple2s32>&)
+      DoGetStrideInfo(const Array<Tuple2s32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(2).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Tuple2s32> >())
+                   );
       
       return si;
     }
@@ -38,11 +51,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<core_ds::Tuple3s32>&)
+      DoGetStrideInfo(const Array<Tuple3s32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Tuple3s32> >())
+                   );
       
       return si;
     }
@@ -50,11 +67,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<core_ds::Tuple4s32>&)
+      DoGetStrideInfo(const Array<Tuple4s32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(4).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Tuple4s32> >())
+                   );
       
       return si;
     }
@@ -62,11 +83,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<f32>&)
+      DoGetStrideInfo(const Array<f32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(1).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(1)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<f32> >())
+                   );
 
       return si;
     }
@@ -74,11 +99,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<math_t::Vec2f32>&)
+      DoGetStrideInfo(const Array<Vec2f32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(2).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vec2f32> >())
+                   );
       
       return si;
     }
@@ -86,11 +115,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<math_t::Vec3f32>&)
+      DoGetStrideInfo(const Array<Vec3f32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vec3f32> >())
+                   );
       
       return si;
     }
@@ -98,11 +131,15 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
-      DoGetStrideInfo(const core_conts::Array<math_t::Vec4f32>&)
+      DoGetStrideInfo(const Array<Vec4f32>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(4).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vec4f32> >())
+                   );
       
       return si;
     }
@@ -113,8 +150,12 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fp>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(0)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fp::attrib_1_type::value_type> >())
+                   );
       
       return si;
     }
@@ -125,11 +166,19 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpc>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*7)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fpc::attrib_1_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(4).StrideInBytes(sizeof(real_type)*7)
-                   .DataStartIndex(3));
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert3fpc::attrib_2_type::value_type> >())
+                   );
       
       return si;
     }
@@ -140,11 +189,19 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpt>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*5)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*5)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fpt::attrib_1_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(2).StrideInBytes(sizeof(real_type)*5)
-                   .DataStartIndex(3));
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*5)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert3fpt::attrib_2_type::value_type> >())
+                   );
       
       return si;
     }
@@ -155,11 +212,19 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpn>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*6)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*6)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fpn::attrib_1_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*6)
-                   .DataStartIndex(3));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*6)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert3fpn::attrib_2_type::value_type> >())
+                   );
       
       return si;
     }
@@ -170,14 +235,26 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpnc>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*10)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*10)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnc::attrib_1_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*10)
-                   .DataStartIndex(3));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*10)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnc::attrib_2_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(4).StrideInBytes(sizeof(real_type)*10)
-                   .DataStartIndex(6));
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(sizeof(real_type)*10)
+                   .DataStartIndex(6)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnc::attrib_3_type::value_type> >())
+                   );
       
       return si;
     }
@@ -188,14 +265,26 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpnt>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*8)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*8)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnt::attrib_1_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*8)
-                   .DataStartIndex(3));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*8)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnt::attrib_2_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(2).StrideInBytes(sizeof(real_type)*8)
-                   .DataStartIndex(6));
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*8)
+                   .DataStartIndex(6)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnt::attrib_3_type::value_type> >())
+                   );
       
       return si;
     }
@@ -206,17 +295,33 @@ namespace tloc { namespace graphics { namespace gl {
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3fpnct>&)
     {
       stride_info_cont si;
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*12)
-                   .DataStartIndex(0));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnct::attrib_1_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(3).StrideInBytes(sizeof(real_type)*12)
-                   .DataStartIndex(3));
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnct::attrib_2_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(4).StrideInBytes(sizeof(real_type)*12)
-                   .DataStartIndex(6));
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(6)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnct::attrib_3_type::value_type> >())
+                   );
 
-      si.push_back(stride_info().NumElements(2).StrideInBytes(sizeof(real_type)*12)
-                   .DataStartIndex(9));
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*12)
+                   .DataStartIndex(9)
+                   .GLType(type_to_gl::Get<Array<Vert3fpnct::attrib_4_type::value_type> >())
+                   );
       
       return si;
     }
@@ -233,6 +338,17 @@ namespace tloc { namespace graphics { namespace gl {
     , m_dataStartIndex(0)
   { }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // AttributeVBO
+
+  AttributeVBO::
+    AttributeVBO()
+    : m_usage(GL_NONE)
+    , m_target(GL_NONE)
+    , m_enabled(true)
+    , m_dirty(true)
+  { }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const AttributeVBO::StrideInfo&
@@ -240,14 +356,14 @@ namespace tloc { namespace graphics { namespace gl {
     GetStrideInfo(size_type a_interleaveIndex) const
   { return m_strideInfo[a_interleaveIndex]; }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // AttributeVBO
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  AttributeVBO::
-    AttributeVBO()
-    : m_enabled(true)
-    , m_dirty(true)
-  { }
+  AttributeVBO::gl_enum_type
+    AttributeVBO::
+    GetInterleavedType(size_type a_interleaveIndex) const
+  {
+    return GetStrideInfo(a_interleaveIndex).m_glType;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -263,18 +379,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     VertexBufferObject::Bind_T<T_Target> b(m_vbo);
 
-    const gfx_t::gl_enum glType     = gfx_t::type_to_gl::Get<Array<T_Type> >();
-    const gfx_t::gl_int   target    = typename T_Target::s_glParamName;
-    const size_type      arraySize  = a_array.size();
+    m_type        = gfx_t::type_to_gl::Get<Array<T_Type> >();
+    m_usage       = a_usage;
+    m_target      = typename T_Target::s_glParamName;
+    m_dataSize    = a_array.size();
+    m_strideInfo  = DoGetStrideInfo(a_array);
 
-    DoSetType(glType);
-    DoSetTarget(target);
-    DoSetUsage(a_usage);
-    DoSetDataSize(arraySize);
-
-    m_strideInfo = DoGetStrideInfo(a_array);
-
-    glBufferData(target, sizeof(T_Type) * arraySize, &a_array[0], a_usage);
+    glBufferData(m_target, sizeof(T_Type) * m_dataSize, &a_array[0], a_usage);
     {
       gl::Error err; TLOC_UNUSED(err);
       TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");

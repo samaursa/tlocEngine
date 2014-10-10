@@ -50,7 +50,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 

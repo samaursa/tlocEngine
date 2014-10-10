@@ -746,8 +746,16 @@ namespace tloc { namespace graphics { namespace gl {
         {
           if ( shaderVarPtr->GetName(interleaveIndex).compare(itrInfo->m_name.get()) == 0)
           {
-            if ( shaderVarPtr->GetType() == itrInfo->m_type &&
-                itrInfo->m_location != g_unableToFindIndex)
+            gfx_t::gl_enum shaderVarType = shaderVarPtr->GetType();
+
+            if (shaderVarType >= TLOC_GL_POSITION2F &&
+                shaderVarType <= TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F)
+            {
+              shaderVarType = shaderVarPtr->GetInterleavedType(interleaveIndex);
+            }
+
+            if ( shaderVarType == itrInfo->m_type &&
+                 itrInfo->m_location != g_unableToFindIndex)
             {
               itr->second[interleaveIndex] = index;
 

@@ -26,7 +26,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef gfx_t::gl_enum                                  gl_enum_type;
     typedef core_str::String                                string_type;
     typedef core_conts::Array<string_type>                  string_cont;
-      typedef tl_size                                       size_type;
+    typedef core_conts::Array<gl_enum_type>                 gl_enum_cont;
+    typedef tl_size                                         size_type;
 
   public:
     struct StrideInfo
@@ -40,9 +41,10 @@ namespace tloc { namespace graphics { namespace gl {
       StrideInfo();
 
       // size param in glVertexAttribPointer
-      TLOC_DECL_PARAM_VAR(gl_int_type, NumElements, m_numElements);
+      TLOC_DECL_PARAM_VAR(gl_int_type,  NumElements, m_numElements);
+      TLOC_DECL_PARAM_VAR(gl_enum_type, GLType, m_glType);
       TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
-      TLOC_DECL_PARAM_VAR(size_type, DataStartIndex, m_dataStartIndex);
+      TLOC_DECL_PARAM_VAR(size_type,    DataStartIndex, m_dataStartIndex);
     };
     typedef core_conts::Array<StrideInfo>                   stride_info_cont;
 
@@ -69,19 +71,14 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_Target, typename T_Usage, typename T_Type>
     this_type& SetValueAs(const core_conts::Array<T_Type>& a_array);
 
+    gl_enum_type      GetInterleavedType(size_type a_interleaveIndex) const;
+    const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
+
     TLOC_DECL_AND_DEF_GETTER(VertexBufferObject, GetVBO, m_vbo);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetUsage, m_usage);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetTarget, m_target);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
-
-    const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
-
-  private:
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetType, m_type);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetUsage, m_usage);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetTarget, m_target);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(gl_enum_type, DoSetDataSize, m_dataSize);
 
   private:
     template <typename T_Target, typename T_Type>

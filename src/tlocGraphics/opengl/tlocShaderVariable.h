@@ -49,6 +49,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
 
     const string_type& GetName(tl_int a_nameIndex) const;
+    gl_type            GetInterleavedType(tl_int a_typeIndex) const;
 
   protected:
     TLOC_DECL_AND_DEF_SETTER(gl_type, DoSetType, m_type);

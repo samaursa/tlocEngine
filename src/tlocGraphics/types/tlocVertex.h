@@ -44,17 +44,24 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     class VertexCol
-      : public types::Color
+      : public math_t::Vec4f32
     {
     public:
-      typedef types::Color     value_type;
+      typedef math_t::Vec4f32                     value_type;
+      typedef types::Color                        color_type;
 
     public:
-      const value_type& GetColor() const
-      { return *this; }
+      value_type GetColor() const
+      { 
+        return value_type(Get(0), Get(1), Get(2), Get(3)); 
+      }
 
-      void SetColor(const value_type& a_normal)
-      { *this = static_cast<const VertexCol&>(a_normal); }
+      void SetColor(const color_type& a_normal)
+      { 
+        math_t::Vec4f32 temp;
+        a_normal.GetAs<gfx_t::p_color::format::RGBA>(temp); 
+        *data() = *temp.data();
+      }
     };
 
     class TexCoord

@@ -7,6 +7,7 @@
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -28,12 +29,18 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     m_quadList->resize(4);
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   
   QuadRenderSystem::
     ~QuadRenderSystem()
   { }
 
-  error_type QuadRenderSystem::InitializeEntity(entity_ptr a_ent)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type 
+    QuadRenderSystem::
+    InitializeEntity(entity_ptr a_ent)
   { 
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
@@ -64,13 +71,24 @@ namespace tloc { namespace graphics { namespace component_system {
 
     so->AddAttributeVBO(vbo);
 
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>())
+    { base_type::DoInitializeTexCoords(a_ent, so); }
+
     return base_type::InitializeEntity(a_ent);
   }
 
-  error_type QuadRenderSystem::ShutdownEntity(entity_ptr)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type 
+    QuadRenderSystem::
+    ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
-  void QuadRenderSystem::ProcessEntity(entity_ptr a_ent, f64)
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    QuadRenderSystem::
+    ProcessEntity(entity_ptr a_ent, f64)
   {
     if (a_ent->HasComponent<gfx_cs::Material>() == false)
     { return; }

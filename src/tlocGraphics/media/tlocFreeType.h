@@ -88,6 +88,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   private:
     ft_library_type m_library;
+    data_type       m_rawData;
     ft_face_type    m_face;
   };
 

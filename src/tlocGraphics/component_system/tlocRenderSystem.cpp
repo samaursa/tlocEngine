@@ -251,13 +251,17 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // Prepare shader
 
+    typedef mat_type::shader_op_cont::iterator      shader_op_itr;
     typedef core_conts::Array<gl::const_vao_vptr>   vao_cont;
+
     vao_cont VAOs;
 
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
     error_type uniformErr = ErrorSuccess;
     error_type vboErr = ErrorSuccess;
+
+    mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
@@ -275,10 +279,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_shaderPtr = sp;
 
-      typedef mat_type::shader_op_cont::iterator  shader_op_itr;
-
-      mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
-
       for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
            itr != itrEnd; ++itr)
       {
@@ -291,14 +291,20 @@ namespace tloc { namespace graphics { namespace component_system {
 
         if (so->IsAttributeVBOsCached() == false)
         { so->PrepareAllAttributeVBOs(*m_shaderPtr); }
-
-        VAOs.push_back(so->GetVAO());
       }
 
       // shader switch requires us to re-prepare the attributes/uniforms
       m_shaderOp->ClearCache();
       uniformErr = m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       vboErr = m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr);
+    }
+
+    // material's SOs
+    for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
+         itr != itrEnd; ++itr)
+    { 
+      gl::shader_operator_vptr so = itr->get();
+      VAOs.push_back(so->GetVAO()); 
     }
 
     // Add the mvp

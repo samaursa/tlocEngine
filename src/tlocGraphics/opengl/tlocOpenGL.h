@@ -89,15 +89,9 @@ namespace tloc { namespace graphics { namespace gl {
 
   namespace vertex_attrib_array {
 
-    bool Enable(gfx_t::gl_int a_index);
-    bool EnableIfDisabled(gfx_t::gl_int a_index);
-    bool IsEnabled(gfx_t::gl_int a_index);
-    bool Disable(gfx_t::gl_int a_index);
+    void Enable(gfx_t::gl_int a_index);
+    void Disable(gfx_t::gl_int a_index);
     void DisableAll();
-
-    // disables all attributes regardless of whether they were enabled or not
-    // in the engine (useful when mixing OpenGL code with 3rd party libraries)
-    void ForceDisableAll();
 
   }
   

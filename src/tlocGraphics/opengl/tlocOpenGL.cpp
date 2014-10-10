@@ -89,63 +89,18 @@ namespace tloc { namespace graphics { namespace gl {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    bool 
+    void
       Enable(gl_int a_index)
     {
-      if (IsEnabled(a_index) == false)
-      { 
-        g_enabledAttributes.push_back(a_index);
-        glEnableVertexAttribArray(a_index);
-        return true;
-      }
-      else
-      {
-        TLOC_LOG_GFX_WARN() << "VertexAttribArray(" << a_index << ")"
-          << " already enabled";
-        return false;
-      }
+      glEnableVertexAttribArray(a_index);
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    bool
-      EnableIfDisabled(gfx_t::gl_int a_index)
-    {
-      if (IsEnabled(a_index))
-      { return false; }
-      else
-      { return Enable(a_index); }
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    bool 
-      IsEnabled(gfx_t::gl_int a_index)
-    { 
-      return core::find_all(g_enabledAttributes, a_index) != 
-                            g_enabledAttributes.end();
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    bool 
+    void
       Disable(gfx_t::gl_int a_index)
     {
-      if (IsEnabled(a_index))
-      { 
-        g_enabledAttributes.erase
-          (core::remove_all(g_enabledAttributes, a_index), 
-                            g_enabledAttributes.end());
-
-        glDisableVertexAttribArray(a_index);
-        return true;
-      }
-      else
-      {
-        TLOC_LOG_GFX_WARN() << "VertexAttribArray(" << a_index << ")"
-          << " already disabled";
-        return false;
-      }
+      glDisableVertexAttribArray(a_index);
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -153,8 +108,9 @@ namespace tloc { namespace graphics { namespace gl {
     void
       DisableAll()
     { 
-      while(g_enabledAttributes.empty() == false)
-      { Disable(g_enabledAttributes.back()); }
+      const gfx_t::gl_sizei maxVertAttribs = Get<p_get::MaxVertexAttribs>();
+      for (gfx_t::gl_sizei i = 0; i < maxVertAttribs; ++i)
+      { Disable(i); }
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

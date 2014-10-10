@@ -280,9 +280,6 @@ namespace tloc { namespace graphics { namespace gl {
     if (s_lastShaderHandle == GetHandle() && !a_fe)
     { return ErrorSuccess; }
 
-    // disable all previously enabled vertex attributes
-    gl::vertex_attrib_array::DisableAll();
-
     glUseProgram(GetHandle());
     gl::Error err;
     if (err.Failed())

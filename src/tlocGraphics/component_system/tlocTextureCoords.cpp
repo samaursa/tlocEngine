@@ -45,6 +45,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureCoords::
     AddCoord(const vec_type& a_coord, set_index a_setIndex)
   {
+    base_type::SetUpdateRequired(true);
+
     DoResizeSetToAccomodate(a_setIndex);
     m_coordSets[a_setIndex]->push_back(a_coord);
     return m_coordSets.size() - 1;
@@ -54,6 +56,8 @@ namespace tloc { namespace graphics { namespace component_system {
     ModifyCoord(const vec_type& a_coord, size_type a_index,
                 set_index a_setIndex)
   {
+    base_type::SetUpdateRequired(true);
+
     DoResizeSetToAccomodate(a_setIndex);
     (*m_coordSets[a_setIndex])[a_index] = a_coord;
   }
@@ -62,6 +66,8 @@ namespace tloc { namespace graphics { namespace component_system {
     ModifyCoords(const cont_type& a_coords,
                  set_index a_setIndex)
   {
+    base_type::SetUpdateRequired(true);
+
     DoResizeSetToAccomodate(a_setIndex);
     (*m_coordSets[a_setIndex]) = a_coords;
   }
@@ -69,6 +75,8 @@ namespace tloc { namespace graphics { namespace component_system {
   void TextureCoords::
     RemoveCoord(size_type a_index, set_index a_setIndex)
   {
+    base_type::SetUpdateRequired(true);
+
     cont_type::iterator itr = m_coordSets[a_setIndex]->begin() + a_index;
     m_coordSets[a_setIndex]->erase(itr);
   }
@@ -76,6 +84,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void TextureCoords::
     ClearCoords(set_index a_setIndex)
   {
+    base_type::SetUpdateRequired(true);
     m_coordSets[a_setIndex]->clear();
   }
 

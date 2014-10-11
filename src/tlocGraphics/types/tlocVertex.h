@@ -60,7 +60,10 @@ namespace tloc { namespace graphics { namespace types {
       { 
         math_t::Vec4f32 temp;
         a_normal.GetAs<gfx_t::p_color::format::RGBA>(temp); 
-        *data() = *temp.data();
+        operator[](0) = temp[0];
+        operator[](1) = temp[1];
+        operator[](2) = temp[2];
+        operator[](3) = temp[3];
       }
     };
 
@@ -104,7 +107,7 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T_Attrib1                           attrib_1_type;
-    typedef T_Attrib1                           attrib_2_type;
+    typedef T_Attrib2                           attrib_2_type;
 
   public:
     ~Vertex2_T() {}
@@ -115,7 +118,7 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T_Attrib1                           attrib_1_type;
-    typedef T_Attrib1                           attrib_2_type;
+    typedef T_Attrib2                           attrib_2_type;
     typedef T_Attrib3                           attrib_3_type;
 
   public:
@@ -128,7 +131,7 @@ namespace tloc { namespace graphics { namespace types {
   {
   public:
     typedef T_Attrib1                           attrib_1_type;
-    typedef T_Attrib1                           attrib_2_type;
+    typedef T_Attrib2                           attrib_2_type;
     typedef T_Attrib3                           attrib_3_type;
     typedef T_Attrib4                           attrib_4_type;
 

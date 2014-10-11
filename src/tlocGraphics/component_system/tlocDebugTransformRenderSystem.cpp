@@ -6,6 +6,7 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
+#include <tlocGraphics/opengl/tlocError.h>
 
 #include <tlocPrefab/graphics/tlocMaterial.h>
 
@@ -91,7 +92,6 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_linesEntMgr(MakeArgs(m_linesEventMgr.get()))
     , m_linesMaterialSys(MakeArgs(m_linesEventMgr.get(), m_linesEntMgr.get()))
     , m_scale(1.0f)
-    , m_lineList(6)
   { 
     m_linesOperator->reserve_uniforms(1); // mvp 
     m_uniVpMat = m_linesOperator->AddUniform(gl::Uniform().SetName("u_mvp"));
@@ -243,6 +243,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       glDrawArrays(GL_LINES, 0,
                    core_utils::CastNumber<gfx_t::gl_sizei>(m_lineList.size()));
+
+      gl::Error err; TLOC_UNUSED(err);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

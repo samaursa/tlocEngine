@@ -26,7 +26,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                                 size_type;
     typedef tl_int                                  index_type;
     typedef core_conts::ArrayFixed<index_type, 1>   index_cont_1;
-    typedef core_conts::ArrayFixed<index_type, 4>   index_cont_4;
+    typedef core_conts::Array<index_type>           index_cont;
 
     typedef Uniform                   uniform_type;
     typedef uniform_vso               uniform_vso;
@@ -48,7 +48,7 @@ namespace tloc { namespace graphics { namespace gl {
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
     typedef core::Pair<uniform_vso, index_cont_1>         uniform_pair_type;
-    typedef core::Pair<vbo_vso, index_cont_4>             vbo_pair_type;
+    typedef core::Pair<vbo_vso, index_cont>               vbo_pair_type;
 
     typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
@@ -134,7 +134,6 @@ namespace tloc { namespace graphics { namespace gl {
     uniform_cont_type           m_uniforms;
     vbo_cont_type               m_VBOs;
     core::utils::Checkpoints    m_flags;
-    index_cont_type             m_enabledVertexAttrib;
     vao_sptr                    m_vao;
   };
 

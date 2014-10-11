@@ -5,6 +5,7 @@
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/data_structures/tlocTuple.h>
+#include <tlocCore/error/tlocError.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -13,6 +14,7 @@
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/types/tlocVertex.h>
 #include <tlocGraphics/opengl/tlocVertexBufferObject.h>
+#include <tlocGraphics/error/tlocErrorTypes.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -28,6 +30,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core_conts::Array<string_type>                  string_cont;
     typedef core_conts::Array<gl_enum_type>                 gl_enum_cont;
     typedef tl_size                                         size_type;
+    typedef core_err::Error                                 error_type;
 
   public:
     struct StrideInfo
@@ -51,6 +54,15 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     AttributeVBO();
 
+    template <typename T_Target, typename T_Usage, typename T_Type>
+    this_type&        SetValueAs(const core_conts::Array<T_Type>& a_array);
+
+    const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
+    gl_enum_type      GetInterleavedType(size_type a_interleaveIndex) const;
+
+    error_type        Validate() const;
+    bool              IsValid() const;
+
   public:
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
@@ -68,17 +80,13 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
       (string_cont::iterator, end_names, m_names.end());
 
-    template <typename T_Target, typename T_Usage, typename T_Type>
-    this_type& SetValueAs(const core_conts::Array<T_Type>& a_array);
-
-    gl_enum_type      GetInterleavedType(size_type a_interleaveIndex) const;
-    const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
-
     TLOC_DECL_AND_DEF_GETTER(VertexBufferObject, GetVBO, m_vbo);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetUsage, m_usage);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetTarget, m_target);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_names, m_names.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_strideInfo, m_strideInfo.size());
 
   private:
     template <typename T_Target, typename T_Type>

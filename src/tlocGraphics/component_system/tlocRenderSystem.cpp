@@ -57,6 +57,20 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     // -----------------------------------------------------------------------
 
+    if (m_vertexAttribName.empty())
+    { m_vertexAttribName = "a_vPos"; }
+
+    if (m_textureAttribPrefix.empty())
+    { m_textureAttribPrefix = "a_tCoord"; }
+
+    if (m_normalAttribName.empty())
+    { m_normalAttribName = "a_vNorm"; }
+
+    if (m_colorAttribName.empty())
+    { m_colorAttribName = "a_vCol"; }
+
+    // -----------------------------------------------------------------------
+
     if (m_mvpMat.second.empty())
     { m_mvpMat.second = "u_mvp"; }
 
@@ -128,12 +142,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
           // hard coded tex-coord names
           if (i != 0)
-          { vbo.AddName(core_str::Format("a_tCoord%i", i + 1)); }
+          { vbo.AddName(core_str::Format("%s%i", m_textureAttribPrefix.c_str(), i + 1)); }
           else
-          { vbo.AddName(core_str::Format("a_tCoord")); }
+          { vbo.AddName(core_str::Format( m_textureAttribPrefix.c_str() )); }
 
           vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-                         gfx_gl::p_vbo::usage::StaticRead>(*texCoordCont);
+                         gfx_gl::p_vbo::usage::StaticDraw>(*texCoordCont);
 
           a_so->AddAttributeVBO(vbo);
         }

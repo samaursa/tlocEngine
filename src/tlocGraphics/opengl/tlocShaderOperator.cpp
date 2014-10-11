@@ -597,7 +597,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       DoSetReturn toRet;
 
-      switch(a_info.m_type)
+      switch(a_attributeVBO.GetType())
       {
       case GL_INT:
         {
@@ -672,17 +672,18 @@ namespace tloc { namespace graphics { namespace gl {
           // handle TLOC_GL types
           // the interleaveIndex = the index of the interleaved attribute
           // e.g: if it is 0 (Position3F), 1(Normal3F) etc.
-          gfx_t::f_vertex::VertexAttribPointerInfo vapInfo =
-            gfx_t::f_vertex::GetCustomGLTypeInfo(a_info.m_type, a_interleaveIndex);
+          gl::AttributeVBO::StrideInfo si =
+            a_attributeVBO.GetStrideInfo(a_interleaveIndex);
 
           VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 
-                                vapInfo.m_size, 
+                                si.m_numElements,
                                 GL_FLOAT, 
                                 GL_FALSE, 
-                                sizeof(f32) * vapInfo.m_stride, 
-                                (void*)(sizeof(f32) * vapInfo.m_pointerIndex));
+                                si.m_strideInBytes, 
+                                (void*)(sizeof(f32) * si.m_dataStartIndex));
+          break;
         }
       default:
         {
@@ -802,17 +803,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderOperator::
     ~ShaderOperator()
-  {
-    for (index_iterator itr = m_enabledVertexAttrib.begin(),
-                        itrEnd = m_enabledVertexAttrib.end();
-                        itr != itrEnd; ++itr)
-    {
-      TLOC_ASSERT(*itr < gl::Get<gl::p_get::MaxVertexAttribs>(),
-        "Vertex attribute location is greater than maximum number of attributes");
-
-      glDisableVertexAttribArray(*itr);
-    }
-  }
+  { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -834,9 +825,11 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     AddAttributeVBO(const vbo_type& a_vbo)
   {
-    TLOC_ASSERT(a_vbo.GetName().size() > 0, "VBO name is empty");
+    TLOC_ASSERT(a_vbo.Validate() == ErrorSuccess, "VBO is invalid");
 
-    m_VBOs.push_back(core::MakePair(vbo_vso(MakeArgs(a_vbo)), index_cont_1(1, -1)) );
+    index_cont indexCont(a_vbo.size_names(), -1);
+
+    m_VBOs.push_back(core::MakePair(vbo_vso(MakeArgs(a_vbo)), indexCont) );
     m_flags.Unmark(k_VBOsCached);
 
     return m_VBOs.back().first.get();
@@ -987,20 +980,6 @@ namespace tloc { namespace graphics { namespace gl {
 
       ErrorShaderVarIndexContPair errAndIndex = DoPrepareVariables(m_VBOs, attrCont);
       retError = errAndIndex.first;
-
-      for (do_set_return_cont::iterator itr = errAndIndex.second.begin(),
-           itrEnd = errAndIndex.second.end(); itr != itrEnd; ++itr)
-      {
-        index_type index = itr->m_vertexAttribArrayIndex;
-
-        TLOC_LOG_GFX_WARN_IF
-          (core::find_all(m_enabledVertexAttrib, index) 
-          != m_enabledVertexAttrib.end()) << "Vertex attribute at index " 
-          << index << " over-ridden by gl::AttributeVBO";
-
-        if (index >= 0)
-        { m_enabledVertexAttrib.push_back(index); }
-      }
     }
 
     return retError;
@@ -1065,7 +1044,6 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     ClearAttributeVBOsCache()
   { 
-    m_enabledVertexAttrib.clear();
     m_flags.Unmark(k_VBOsCached);
   }
 

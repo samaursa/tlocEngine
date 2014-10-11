@@ -365,6 +365,29 @@ namespace tloc { namespace graphics { namespace gl {
     return GetStrideInfo(a_interleaveIndex).m_glType;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  AttributeVBO::error_type
+    AttributeVBO::
+    Validate() const
+  {
+    if (m_strideInfo.size() == 0)
+    { return TLOC_ERROR(gfx_err::error_attribute_vbo_has_no_data); }
+    else if (m_names.size() == 0)
+    { return TLOC_ERROR(gfx_err::error_attribute_vbo_has_no_names); }
+    else if (m_names.size() != m_strideInfo.size())
+    { return TLOC_ERROR(gfx_err::error_attribute_vbo_interleave_name_size_mismatch); }
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    AttributeVBO::
+    IsValid() const
+  { return Validate() == ErrorSuccess; }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_Target, typename T_Type>

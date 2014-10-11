@@ -1,5 +1,7 @@
 #include "tlocAttributeVBO.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
 
@@ -390,25 +392,65 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T_Target, typename T_Type>
+  template <typename T_Type>
   AttributeVBO::this_type&
     AttributeVBO::
-    DoData(gfx_t::gl_int a_usage, 
-           const core_conts::Array<T_Type>& a_array)
+    DoBufferData(gfx_t::gl_int a_target, gfx_t::gl_int a_usage, 
+                 const core_conts::Array<T_Type>& a_array)
   {
     TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
 
-    using namespace core_conts; using namespace core_sptr;
-
-    VertexBufferObject::Bind_T<T_Target> b(m_vbo);
+    VertexBufferObject::UnsafeBind b(m_vbo, a_target);
 
     m_type        = gfx_t::type_to_gl::Get<Array<T_Type> >();
     m_usage       = a_usage;
-    m_target      = typename T_Target::s_glParamName;
+    m_target      = a_target;
     m_dataSize    = a_array.size();
     m_strideInfo  = DoGetStrideInfo(a_array);
 
-    glBufferData(m_target, sizeof(T_Type) * m_dataSize, &a_array[0], a_usage);
+    glBufferData(m_target, 
+                 sizeof(T_Type) * m_dataSize, 
+                 &a_array[0], 
+                 a_usage);
+    {
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
+    }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Type>
+  const AttributeVBO::this_type&
+    AttributeVBO::
+    DoBufferSubData(const core_conts::Array<T_Type>& a_array, 
+                    offset_index a_offset_index) const
+  {
+    TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
+
+    const gl_enum_type type = gfx_t::type_to_gl::Get<Array<T_Type> >();
+    TLOC_ASSERT(type == m_type, 
+                "Attempting to update buffer with a mismatched type");
+
+    using core_utils::CastNumber;
+    const gfx_t::gl_sizei dataSize = a_array.size();
+    TLOC_ASSERT(dataSize + a_offset_index <= CastNumber<gfx_t::gl_sizei>(m_dataSize), 
+                "Attempting to update buffer will cause overflow");
+
+    TLOC_LOG_GFX_WARN_IF
+      (m_usage == p_vbo::usage::StaticDraw::s_glParamName ||
+       m_usage == p_vbo::usage::StaticRead::s_glParamName ||
+       m_usage == p_vbo::usage::StaticCopy::s_glParamName)
+        << "Attempting to update buffer created with GL_STATIC_* usage";
+
+    VertexBufferObject::UnsafeBind b(m_vbo, m_target);
+
+    glBufferSubData(m_target, 
+                    sizeof(T_Type) * a_offset_index, 
+                    sizeof(T_Type) * dataSize,
+                    &a_array[0]);
     {
       gl::Error err; TLOC_UNUSED(err);
       TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
@@ -438,21 +480,9 @@ using namespace tloc::gfx_gl;
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(_type_)\
   template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::ArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::CopyReadBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::CopyWriteBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::ElementArrayBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::PixelPackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::PixelUnpackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::TextureBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&);\
-  template AttributeVBO::this_type& AttributeVBO::\
-  DoData<p_vbo::target::TransformFeedbackBuffer, _type_>(gfx_t::gl_int, const core_conts::Array<_type_>&)
+  DoBufferData<_type_>(gfx_t::gl_int, gfx_t::gl_int, const core_conts::Array<_type_>&);\
+  template const AttributeVBO::this_type& AttributeVBO::\
+  DoBufferSubData<_type_>(const core_conts::Array<_type_>&, AttributeVBO::offset_index) const
 
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);

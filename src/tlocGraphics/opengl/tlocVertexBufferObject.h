@@ -54,19 +54,30 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Object_T<this_type, p_object::OnlyID>           base_type;
 
   public:
-
-    template <typename T_Target>
-    struct Bind_T
+    struct UnsafeBind
       : public core_bclass::NonCopyable_I
     {
     public:
-      typedef T_Target                                      target_type;
+      typedef p_vbo::target::value_type                     target_type;
 
     public:
-      Bind_T(const this_type&  a_vbo);
-      ~Bind_T();
+      UnsafeBind(const this_type& a_vbo, target_type a_target);
+      ~UnsafeBind();
+
+    private:
+      target_type m_target;
     };
 
+  public:
+    template <typename T_Target>
+    struct Bind_T
+      : public UnsafeBind
+    {
+    public:
+      Bind_T(const this_type& a_vbo);
+    };
+
+  public:
     template <typename T_Target>
     struct LateBind_T
       : public core_bclass::NonCopyable_I

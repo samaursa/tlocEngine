@@ -35,6 +35,25 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   // ///////////////////////////////////////////////////////////////////////
+  // UnsafeBind
+
+  VertexBufferObject::UnsafeBind::
+    UnsafeBind(const this_type& a_vbo, p_vbo::target::value_type a_target)
+    : m_target(a_target)
+  {
+    object_handle handle = a_vbo.GetHandle();
+    gl::vertex_buffer_object::Bind(a_target, handle);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  VertexBufferObject::UnsafeBind::
+    ~UnsafeBind()
+  {
+    gl::vertex_buffer_object::UnBind(m_target);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // Bind
 
 #define TLOC_VBO_BIND_TEMPS   typename T_Target
@@ -44,19 +63,8 @@ namespace tloc { namespace graphics { namespace gl {
   template <TLOC_VBO_BIND_TEMPS>
   VertexBufferObject::Bind_T<TLOC_VBO_BIND_PARAMS>::
     Bind_T(const this_type& a_vbo)
-  {
-    object_handle handle = a_vbo.GetHandle();
-    gl::vertex_buffer_object::Bind(target_type::s_glParamName, handle);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VBO_BIND_TEMPS>
-  VertexBufferObject::Bind_T<TLOC_VBO_BIND_PARAMS>::
-    ~Bind_T()
-  {
-    gl::vertex_buffer_object::UnBind(target_type::s_glParamName);
-  }
+    : UnsafeBind(a_vbo, T_Target::s_glParamName)
+  { }
 
   // ///////////////////////////////////////////////////////////////////////
   // LateBind

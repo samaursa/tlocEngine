@@ -19,8 +19,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_TI
 
-#define RENDER_SYSTEM_TEMPS   typename T_RendererSptr, typename T_AttributeType
-#define RENDER_SYSTEM_PARAMS  T_RendererSptr, T_AttributeType
+#define RENDER_SYSTEM_TEMPS   typename T_RendererSptr
+#define RENDER_SYSTEM_PARAMS  T_RendererSptr
 #define RENDER_SYSTEM_TYPE    typename RenderSystem_TI<RENDER_SYSTEM_PARAMS>
 
   // ///////////////////////////////////////////////////////////////////////
@@ -118,43 +118,89 @@ namespace tloc { namespace graphics { namespace component_system {
   template <RENDER_SYSTEM_TEMPS>
   void 
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-    DoInitializeTexCoords(entity_ptr a_ent, shader_operator_ptr a_so)
+    DoInitializeTexCoords(entity_ptr a_ent, shader_operator_ptr a_so) const
   {
     // populate the texture coordinate attributes
-    if (a_ent->HasComponent(components::texture_coords))
+    if (a_ent->HasComponent(components::texture_coords) == false)
+    { return; }
+
+    gfx_cs::texture_coords_sptr tcPtr =
+      a_ent->GetComponent<gfx_cs::TextureCoords>();
+
+    const size_type numTexCoords =
+      a_ent->GetComponents<gfx_cs::TextureCoords>().size();
+
+    typedef gfx_cs::TextureCoords::set_index        set_index;
+
+    for (tl_size i = 0; i < numTexCoords; ++i)
     {
-      gfx_cs::texture_coords_sptr tcPtr =
-        a_ent->GetComponent<gfx_cs::TextureCoords>();
-
-      const size_type numTexCoords =
-        a_ent->GetComponents<gfx_cs::TextureCoords>().size();
-
-      typedef gfx_cs::TextureCoords::set_index        set_index;
-
-      for (tl_size i = 0; i < numTexCoords; ++i)
+      if (tcPtr->GetNumSets())
       {
-        if (tcPtr->GetNumSets())
-        {
-          gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
-            tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
+        gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
+          tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
 
-          gfx_gl::AttributeVBO vbo;
+        gfx_gl::AttributeVBO vbo;
 
-          // hard coded tex-coord names
-          if (i != 0)
-          { vbo.AddName(core_str::Format("%s%i", m_textureAttribPrefix.c_str(), i + 1)); }
-          else
-          { vbo.AddName(core_str::Format( m_textureAttribPrefix.c_str() )); }
+        // hard coded tex-coord names
+        if (i != 0)
+        { vbo.AddName(core_str::Format("%s%i", m_textureAttribPrefix.c_str(), i + 1)); }
+        else
+        { vbo.AddName(m_textureAttribPrefix); }
 
-          vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-                         gfx_gl::p_vbo::usage::StaticDraw>(*texCoordCont);
+        vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
+                       gfx_gl::p_vbo::usage::StaticDraw>(*texCoordCont);
 
-          a_so->AddAttributeVBO(vbo);
-        }
+        a_so->AddAttributeVBO(vbo);
       }
     }
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void 
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    DoUpdateTexCoords(entity_ptr a_ent, shader_operator_ptr a_so) const
+  {
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
+    { return; }
+
+    gfx_cs::texture_coords_sptr tcPtr =
+      a_ent->GetComponent<gfx_cs::TextureCoords>();
+
+    if (tcPtr->IsUpdateRequired() == false)
+    { return; }
+
+    const size_type numTexCoords =
+      a_ent->GetComponents<gfx_cs::TextureCoords>().size();
+
+    typedef gfx_cs::TextureCoords::set_index        set_index;
+
+    for (tl_size i = 0; i < numTexCoords; ++i)
+    {
+      if (tcPtr->GetNumSets())
+      {
+        gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
+          tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
+
+        core_str::String currTextureName = 
+          core_str::Format("%s%i", m_textureAttribPrefix.c_str(), i + 1);
+        if (i == 0)
+        { currTextureName = m_textureAttribPrefix; }
+
+        using gl::algos::shader_operator::compare::AttributeVBOName;
+        gl::ShaderOperator::vbo_iterator itr = 
+          core::find_if(a_so->begin_attributeVBOs(), 
+                        a_so->end_attributeVBOs(), 
+                        AttributeVBOName(currTextureName));
+
+        if (itr != a_so->end_attributeVBOs())
+        {
+          itr->first->UpdateData(*texCoordCont);
+        }
+      }
+    }
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

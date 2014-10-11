@@ -24,8 +24,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   };
 
-  template <typename T_RendererSptr, 
-            typename T_AttributeType = p_render_system::AttributeVBO>
+  template <typename T_RendererSptr>
   class RenderSystem_TI
     : public core_cs::EntityProcessingSystem
     , public RenderSystem_I
@@ -127,7 +126,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual error_type        Pre_Initialize();
     void                      DoInitializeTexCoords(entity_ptr a_ent, 
-                                                    shader_operator_ptr a_so);
+                                                    shader_operator_ptr a_so) const;
+    void                      DoUpdateTexCoords(entity_ptr a_ent, 
+                                                shader_operator_ptr a_so) const;
     virtual error_type        InitializeEntity(entity_ptr a_ent);
 
     virtual void              Pre_ProcessActiveEntities(f64);
@@ -162,9 +163,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // template definitions
 
-  template <typename T_RendererSptr, typename T_AttributeType>
+  template <typename T_RendererSptr>
   template <tl_size T_VarSize>
-  RenderSystem_TI<T_RendererSptr, T_AttributeType>::
+  RenderSystem_TI<T_RendererSptr>::
     RenderSystem_TI(event_manager_ptr a_eventMgr,
                    entity_manager_ptr a_entityMgr,
                    const core_ds::Variadic

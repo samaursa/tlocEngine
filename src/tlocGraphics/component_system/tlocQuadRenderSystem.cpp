@@ -95,6 +95,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
+    base_type::DoUpdateTexCoords
+      (a_ent, core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator()) );
+
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
 

@@ -60,7 +60,7 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_gl::AttributeVBO vbo;
       vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                      gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetPositions());
-      vbo.AddName("a_vPos");
+      vbo.AddName(base_type::GetVertexAttributeName());
       so->AddAttributeVBO(vbo);
     }
 
@@ -70,7 +70,7 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_gl::AttributeVBO vbo;
       vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                      gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetNormals());
-      vbo.AddName("a_vNorm");
+      vbo.AddName(base_type::GetNormalAttributeName());
       so->AddAttributeVBO(vbo);
     }
 
@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_gl::AttributeVBO vbo;
       vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                      gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetTCoords());
-      vbo.AddName("a_tCoord");
+      vbo.AddName(base_type::GetTextureAttributePrefix());
       so->AddAttributeVBO(vbo);
     }
 

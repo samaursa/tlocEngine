@@ -81,6 +81,24 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetScaleMatrixUniformName, m_modelMat.second);
 
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetVertexAttributeName, m_vertexAttribName);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetTextureAttributePrefix, m_textureAttribPrefix);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetNormalAttributeName, m_normalAttribName);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetColorAttributeName, m_colorAttribName);
+
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetVertexAttributeName, m_vertexAttribName);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetTextureAttributePrefix, m_textureAttribPrefix);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetNormalAttributeName, m_normalAttribName);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetColorAttributeName, m_colorAttribName);
+
   protected:
 
     struct DrawInfo
@@ -134,6 +152,11 @@ namespace tloc { namespace graphics { namespace component_system {
     uniform_string_pair       m_vpMat;
     uniform_string_pair       m_modelMat;
     uniform_string_pair       m_scaleMat;
+
+    core_str::String          m_vertexAttribName;
+    core_str::String          m_textureAttribPrefix;
+    core_str::String          m_normalAttribName;
+    core_str::String          m_colorAttribName;
   };
 
   // -----------------------------------------------------------------------

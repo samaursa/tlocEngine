@@ -66,7 +66,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const gfx_gl::shader_operator_vptr so =  fanPtr->GetShaderOperator().get();
 
     gfx_gl::AttributeVBO vbo;
-    vbo.AddName("a_vPos")
+    vbo.AddName(base_type::GetVertexAttributeName())
        .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                    gfx_gl::p_vbo::usage::StaticDraw>(vertList);
 

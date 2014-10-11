@@ -6,6 +6,7 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/error/tlocError.h>
+#include <tlocCore/types/tlocStrongType.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -32,6 +33,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef tl_size                                         size_type;
     typedef core_err::Error                                 error_type;
 
+    typedef core_t::StrongType_T<gfx_t::gl_sizei, 0>        offset_index;
+
   public:
     struct StrideInfo
     {
@@ -56,6 +59,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     template <typename T_Target, typename T_Usage, typename T_Type>
     this_type&        SetValueAs(const core_conts::Array<T_Type>& a_array);
+
+    template <typename T_Type>
+    const this_type&  UpdateData(const core_conts::Array<T_Type>& a_array, 
+                                 offset_index a_offset = offset_index(0)) const;
 
     const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
     gl_enum_type      GetInterleavedType(size_type a_interleaveIndex) const;
@@ -89,9 +96,13 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(size_type, size_strideInfo, m_strideInfo.size());
 
   private:
-    template <typename T_Target, typename T_Type>
-    this_type& DoData(gfx_t::gl_int a_usage, 
-                      const core_conts::Array<T_Type>& a_array);
+    template <typename T_Type>
+    this_type& DoBufferData(gfx_t::gl_int a_target, gfx_t::gl_int a_usage, 
+                            const core_conts::Array<T_Type>& a_array);
+
+    template <typename T_Type>
+    const this_type& DoBufferSubData(const core_conts::Array<T_Type>& a_array, 
+                                     offset_index a_offset_index) const;
 
   private:
     VertexBufferObject  m_vbo;
@@ -134,7 +145,30 @@ namespace tloc { namespace graphics { namespace gl {
         gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
        >();
 
-    return DoData<T_Target, T_Type>(T_Usage::s_glParamName, a_array);
+    return DoBufferData<T_Type>(T_Target::s_glParamName, 
+                                T_Usage::s_glParamName, a_array);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Type>
+  const AttributeVBO::this_type&
+    AttributeVBO::
+    UpdateData(const core_conts::Array<T_Type>& a_array, 
+               offset_index a_offset_index) const
+  {
+    type_traits::AssertTypeIsSupported<T_Type, 
+        s32, f32, 
+
+        core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+
+        math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+        gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+       >();
+
+    return DoBufferSubData<T_Type>(a_array, a_offset_index);
   }
 
   // -----------------------------------------------------------------------

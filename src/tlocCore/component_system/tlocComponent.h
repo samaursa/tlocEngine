@@ -35,7 +35,7 @@ namespace tloc { namespace core { namespace component_system {
     Component()
       : base_type("Invalid Component")
       , m_type(components_group::invalid)
-      , m_updateRequired()
+      , m_updateRequired(false)
       , m_enabled(false)
     { }
 
@@ -49,7 +49,7 @@ namespace tloc { namespace core { namespace component_system {
     explicit Component(const this_type& a_other)
       : base_type(a_other) 
       , m_type(a_other.m_type)
-      , m_updateRequired(a_other.m_updateRequired)
+      , m_updateRequired(true)
       , m_enabled(a_other.m_enabled)
     { }
 

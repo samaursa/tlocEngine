@@ -9,9 +9,18 @@
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix4.h>
+
 namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core::data_structs;
+
+  typedef math::types::Vec3f32                              vec3_type;
+  typedef math::types::Mat4f32                              matrix_type;
+
+  typedef core_conts::tl_array<vec3_type>::type             vec3_cont_type;
+
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs
@@ -26,15 +35,33 @@ namespace tloc { namespace graphics { namespace component_system {
                      entity_manager_ptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
                  Variadic<component_type, 1>(components::quad))
-  {
-    m_quadList->resize(4);
-  }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   
   QuadRenderSystem::
     ~QuadRenderSystem()
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DoMakeQuadVertices(const gfx_cs::quad_sptr& a_quad, vec3_cont_type& a_out)
+  {
+    typedef math::types::Rectf32_c    rect_type;
+
+    const rect_type& rect = a_quad->GetRectangleRef();
+
+    a_out.resize(4);
+    a_out.at(0) = vec3_type(rect.GetValue<rect_type::right>(),
+                            rect.GetValue<rect_type::top>(), 0);
+    a_out.at(1) = vec3_type(rect.GetValue<rect_type::left>(),
+                            rect.GetValue<rect_type::top>(), 0);
+    a_out.at(2) = vec3_type(rect.GetValue<rect_type::right>(),
+                            rect.GetValue<rect_type::bottom>(), 0);
+    a_out.at(3) = vec3_type(rect.GetValue<rect_type::left>(),
+                            rect.GetValue<rect_type::bottom>(), 0);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -43,31 +70,17 @@ namespace tloc { namespace graphics { namespace component_system {
     InitializeEntity(entity_ptr a_ent)
   { 
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
+    quadPtr->SetUpdateRequired(false);
 
-    //------------------------------------------------------------------------
-    // Prepare the Quad
-
-    typedef math::types::Rectf32_c    rect_type;
-    using math::types::Mat4f32;
-    using math::types::Vec4f32;
-
-    const rect_type& rect = quadPtr->GetRectangleRef();
-
-    m_quadList->at(0) = vec3_type(rect.GetValue<rect_type::right>(),
-                                  rect.GetValue<rect_type::top>(), 0);
-    m_quadList->at(1) = vec3_type(rect.GetValue<rect_type::left>(),
-                                  rect.GetValue<rect_type::top>(), 0);
-    m_quadList->at(2) = vec3_type(rect.GetValue<rect_type::right>(),
-                                  rect.GetValue<rect_type::bottom>(), 0);
-    m_quadList->at(3) = vec3_type(rect.GetValue<rect_type::left>(),
-                                  rect.GetValue<rect_type::bottom>(), 0);
+    vec3_cont_type quadList;
+    DoMakeQuadVertices(quadPtr, quadList);
 
     const gfx_gl::shader_operator_vptr so =  quadPtr->GetShaderOperator().get();
 
     gfx_gl::AttributeVBO vbo;
     vbo.AddName(base_type::GetVertexAttributeName())
        .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
-                   gfx_gl::p_vbo::usage::StaticDraw>(*m_quadList);
+                   gfx_gl::p_vbo::usage::StaticDraw>(quadList);
 
     so->AddAttributeVBO(vbo);
 
@@ -84,6 +97,49 @@ namespace tloc { namespace graphics { namespace component_system {
     ShutdownEntity(entity_ptr)
   { return ErrorSuccess; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DoUpdateQuad(QuadRenderSystem& a_sys, QuadRenderSystem::entity_ptr a_ent, 
+                 gfx_cs::quad_sptr a_quadPtr)
+  {
+    //------------------------------------------------------------------------
+    // Update the quad
+
+    typedef math::types::Rectf32_c            rect_type;
+
+    const gfx_gl::shader_operator_vptr so =  a_quadPtr->GetShaderOperator().get();
+
+    using gl::algos::shader_operator::compare::AttributeVBOName;
+    gl::ShaderOperator::vbo_iterator itr = 
+      core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(), 
+                    AttributeVBOName(a_sys.GetVertexAttributeName()));
+
+    if (itr == so->end_attributeVBOs())
+    { return; }
+
+    a_quadPtr->SetUpdateRequired(false);
+
+    vec3_cont_type      quadList;
+    DoMakeQuadVertices(a_quadPtr, quadList);
+
+    itr->first->UpdateData(quadList);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    QuadRenderSystem::
+    Pre_ProcessActiveEntities(f64 a_deltaT)
+  {
+    for (core_cs::entity_ptr_array::iterator itr = m_entsToReInit.begin(),
+         itrEnd = m_entsToReInit.end(); itr != itrEnd; ++itr)
+    { InitializeEntity(*itr); }
+
+    m_entsToReInit.clear();
+    base_type::Pre_ProcessActiveEntities(a_deltaT);
+  }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void 
@@ -95,6 +151,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
+    if (quadPtr->IsUpdateRequired())
+    { DoUpdateQuad(*this, a_ent, quadPtr); }
+
     base_type::DoUpdateTexCoords
       (a_ent, core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator()) );
 
@@ -102,6 +161,16 @@ namespace tloc { namespace graphics { namespace component_system {
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
 
     base_type::DoDrawEntity(di);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    QuadRenderSystem::
+    OnComponentInsert(const core_cs::EntityComponentEvent& a_ent)
+  {
+    if (IsInitialized())
+    { m_entsToReInit.push_back(a_ent.GetEntity()); }
   }
 
 };};};
@@ -115,5 +184,3 @@ using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(QuadRenderSystem);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(QuadRenderSystem);
-
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(QuadRenderSystem::vec3_cont_type);

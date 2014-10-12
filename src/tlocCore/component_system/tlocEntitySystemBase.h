@@ -58,6 +58,7 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Gives derived classes opportunity to perform initialization.
     ///-------------------------------------------------------------------------
     error_type Initialize();
+    bool       IsInitialized() const;
 
     ///-------------------------------------------------------------------------
     /// @brief Cleans up anything done in Initialize()

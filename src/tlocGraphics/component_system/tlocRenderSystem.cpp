@@ -126,6 +126,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gfx_cs::texture_coords_sptr tcPtr =
       a_ent->GetComponent<gfx_cs::TextureCoords>();
+    tcPtr->SetUpdateRequired(false);
 
     const size_type numTexCoords =
       a_ent->GetComponents<gfx_cs::TextureCoords>().size();
@@ -148,7 +149,7 @@ namespace tloc { namespace graphics { namespace component_system {
         { vbo.AddName(m_textureAttribPrefix); }
 
         vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-                       gfx_gl::p_vbo::usage::StaticDraw>(*texCoordCont);
+                       gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
 
         a_so->AddAttributeVBO(vbo);
       }
@@ -170,6 +171,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (tcPtr->IsUpdateRequired() == false)
     { return; }
+
+    tcPtr->SetUpdateRequired(false);
 
     const size_type numTexCoords =
       a_ent->GetComponents<gfx_cs::TextureCoords>().size();

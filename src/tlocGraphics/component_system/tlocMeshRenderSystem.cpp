@@ -53,6 +53,7 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::InitializeEntity(a_ent);
 
     mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
+    meshType->SetUpdateRequired(false);
     
     const gfx_gl::shader_operator_vptr so = meshType->GetShaderOperator().get();
 

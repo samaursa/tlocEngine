@@ -57,6 +57,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (dynamicText->IsUpdateRequired())
     {
+      dynamicText->SetUpdateRequired(false);
+
       if (dynamicText->IsTextUpdated())
       {
         // -----------------------------------------------------------------------

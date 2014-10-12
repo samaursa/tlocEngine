@@ -36,6 +36,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureCoords::
     swap(this_type& a_other)
   {
+    base_type::SetUpdateRequired(true);
+
     using core::swap;
     swap(m_coordSets, a_other.m_coordSets);
     swap(m_currentSet, a_other.m_currentSet);

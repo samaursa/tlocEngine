@@ -51,6 +51,13 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  bool
+    EntitySystemBase::
+    IsInitialized() const
+  { return m_flags.IsMarked(k_systemInitialized); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void
     EntitySystemBase::
     ProcessActiveEntities(time_type a_deltaT)

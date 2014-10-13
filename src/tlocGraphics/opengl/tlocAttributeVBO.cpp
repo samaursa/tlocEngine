@@ -436,8 +436,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     using core_utils::CastNumber;
     const gfx_t::gl_sizei dataSize = a_array.size();
-    TLOC_ASSERT(dataSize + a_offset_index <= CastNumber<gfx_t::gl_sizei>(m_dataSize), 
-                "Attempting to update buffer will cause overflow");
+
+    TLOC_LOG_GFX_ERR_IF
+      (dataSize + a_offset_index > CastNumber<gfx_t::gl_sizei>(m_dataSize))
+      << "Attempting to update buffer will cause overflow";
 
     TLOC_LOG_GFX_WARN_IF
       (m_usage == p_vbo::usage::StaticDraw::s_glParamName ||

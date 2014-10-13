@@ -90,7 +90,7 @@ namespace tloc { namespace graphics { namespace component_system {
     so->AddAttributeVBO(vbo);
 
     if (a_ent->HasComponent<gfx_cs::TextureCoords>())
-    { base_type::DoInitializeTexCoords(a_ent, so); }
+    { base_type::DoInitializeTexCoords(a_ent, *so); }
 
     return base_type::InitializeEntity(a_ent);
   }

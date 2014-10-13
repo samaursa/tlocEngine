@@ -1044,6 +1044,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     ClearAttributeVBOsCache()
   { 
+    m_vao.reset();
     m_flags.Unmark(k_VBOsCached);
   }
 

@@ -94,7 +94,6 @@ namespace TestingShaderOperator
   struct fixture
   {
     typedef gl::uniform_sptr           uniform_ptr_type;
-    typedef gl::attribute_sptr         attribute_ptr_type;
     typedef gl::shader_operator_sptr   shader_op_ptr;
   };
 
@@ -721,18 +720,15 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
-    // stores all uniforms to keep 1 reference alive at all times
-    gl::attribute_sptr_cont attribCont;
-
     shader_op_ptr so(new gl::ShaderOperator());
-
     {
-      attribCont.push_back(attribute_ptr_type(new gl::Attribute()) );
-      attribute_ptr_type attribute = attribCont.back();
-      attribute->SetName("u_float");
-      attribute->SetValueAs(f32(5.0f));
+      gl::AttributeVBO attribute;
+      attribute.AddName("u_float");
 
-      so->AddAttribute(*attribute);
+      core_conts::Array<f32> array(1, 5.0f);
+      attribute.SetValueAs(array);
+
+      so->AddAttributeVBO(attribute);
       CHECK_FALSE(so->IsAttributesCached());
     }
     {

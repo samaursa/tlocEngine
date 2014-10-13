@@ -105,6 +105,13 @@ namespace tloc { namespace graphics { namespace gl {
     SetHandle(handle);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  VertexBufferObject::
+    VertexBufferObject(const this_type& a_other)
+    : base_type(a_other)
+  { }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   VertexBufferObject::
@@ -116,6 +123,23 @@ namespace tloc { namespace graphics { namespace gl {
       gfx_gl::vertex_buffer_object::Destroy(handle);
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  VertexBufferObject::this_type&
+    VertexBufferObject::
+    operator =(this_type a_other)
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    VertexBufferObject::
+    swap(this_type& a_other)
+  { base_type::swap(a_other); }
 
 };};};
 

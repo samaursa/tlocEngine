@@ -95,19 +95,32 @@ namespace tloc { namespace graphics { namespace gl {
 
   public:
 
-    typedef Bind_T<p_vbo::target::ArrayBuffer>          bind_array_buffer;
-    typedef Bind_T<p_vbo::target::ElementArrayBuffer>   bind_element_array_buffer;
-    typedef Bind_T<p_vbo::target::PixelPackBuffer>      bind_pixel_pack_buffer;
-    typedef Bind_T<p_vbo::target::PixelUnpackBuffer>    bind_pixel_unpack_buffer;
+    typedef Bind_T<p_vbo::target::ArrayBuffer>              bind_array_buffer;
+    typedef Bind_T<p_vbo::target::CopyReadBuffer>           bind_copy_read;
+    typedef Bind_T<p_vbo::target::CopyWriteBuffer>          bind_copy_write;
+    typedef Bind_T<p_vbo::target::ElementArrayBuffer>       bind_element_array_buffer;
+    typedef Bind_T<p_vbo::target::PixelPackBuffer>          bind_pixel_pack_buffer;
+    typedef Bind_T<p_vbo::target::PixelUnpackBuffer>        bind_pixel_unpack_buffer;
+    typedef Bind_T<p_vbo::target::TextureBuffer>            bind_texture_buffer;
+    typedef Bind_T<p_vbo::target::TransformFeedbackBuffer>  bind_transform_feedback_buffer;
 
-    typedef LateBind_T<p_vbo::target::ArrayBuffer>          late_bind_array_buffer;
-    typedef LateBind_T<p_vbo::target::ElementArrayBuffer>   late_bind_element_array_buffer;
-    typedef LateBind_T<p_vbo::target::PixelPackBuffer>      late_bind_pixel_pack_buffer;
-    typedef LateBind_T<p_vbo::target::PixelUnpackBuffer>    late_bind_pixel_unpack_buffer;
+    typedef LateBind_T<p_vbo::target::ArrayBuffer>              late_bind_array_buffer;
+    typedef LateBind_T<p_vbo::target::CopyReadBuffer>           late_bind_copy_read;
+    typedef LateBind_T<p_vbo::target::CopyWriteBuffer>          late_bind_copy_write;
+    typedef LateBind_T<p_vbo::target::ElementArrayBuffer>       late_bind_element_array_buffer;
+    typedef LateBind_T<p_vbo::target::PixelPackBuffer>          late_bind_pixel_pack_buffer;
+    typedef LateBind_T<p_vbo::target::PixelUnpackBuffer>        late_bind_pixel_unpack_buffer;
+    typedef LateBind_T<p_vbo::target::TextureBuffer>            late_bind_texture_buffer;
+    typedef LateBind_T<p_vbo::target::TransformFeedbackBuffer>  late_bind_transform_feedback_buffer;
 
   public:
     VertexBufferObject();
+    VertexBufferObject(const this_type& a_other);
+
     ~VertexBufferObject();
+
+    this_type& operator=(this_type a_other);
+    void       swap(this_type& a_other);
   };
 
   // -----------------------------------------------------------------------

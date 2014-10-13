@@ -478,6 +478,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
 
     const gl_enum_type type = gfx_t::type_to_gl::Get<Array<T_Type> >();
+    TLOC_UNUSED_RELEASE(type);
     TLOC_ASSERT(type == m_type, 
                 "Attempting to update buffer with a mismatched type");
 

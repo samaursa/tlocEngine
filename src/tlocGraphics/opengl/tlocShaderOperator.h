@@ -53,8 +53,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
 
-    typedef core_conts::Array<vbo_pair_type>              vbo_cont_type;
-    typedef vbo_cont_type::iterator                       vbo_iterator;
+    typedef core_conts::Array<vbo_pair_type>              attributeVBO_cont_type;
+    typedef attributeVBO_cont_type::iterator              attributeVBO_iterator;
 
     typedef core_conts::tl_array<index_type>::type        index_cont_type;
     typedef index_cont_type::iterator                     index_iterator;
@@ -67,7 +67,7 @@ namespace tloc { namespace graphics { namespace gl {
     vbo_ptr       AddAttributeVBO(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
-    void RemoveAttributeVBO(const vbo_iterator& a_vbo);
+    void RemoveAttributeVBO(const attributeVBO_iterator& a_vbo);
 
     void RemoveAllUniforms();
     void RemoveAllAttributeVBOs();
@@ -95,8 +95,8 @@ namespace tloc { namespace graphics { namespace gl {
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
 
-    vbo_iterator begin_attributeVBOs();
-    vbo_iterator end_attributeVBOs();
+    attributeVBO_iterator begin_attributeVBOs();
+    attributeVBO_iterator end_attributeVBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -132,7 +132,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   private:
     uniform_cont_type           m_uniforms;
-    vbo_cont_type               m_VBOs;
+    attributeVBO_cont_type      m_VBOs;
     core::utils::Checkpoints    m_flags;
     vao_sptr                    m_vao;
   };

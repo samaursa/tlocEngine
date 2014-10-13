@@ -848,7 +848,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   void 
     ShaderOperator::
-    RemoveAttributeVBO(const vbo_iterator& a_vbo)
+    RemoveAttributeVBO(const attributeVBO_iterator& a_vbo)
   {
     m_VBOs.erase(a_vbo);
   }
@@ -1001,7 +1001,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::vbo_iterator 
+  ShaderOperator::attributeVBO_iterator 
     ShaderOperator::
     begin_attributeVBOs()
   {
@@ -1010,7 +1010,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::vbo_iterator
+  ShaderOperator::attributeVBO_iterator
     ShaderOperator::
     end_attributeVBOs()
   {

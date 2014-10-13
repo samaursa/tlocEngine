@@ -473,7 +473,7 @@ namespace tloc { namespace graphics { namespace gl {
   const AttributeVBO::this_type&
     AttributeVBO::
     DoBufferSubData(const core_conts::Array<T_Type>& a_array, 
-                    offset_index a_offset_index) const
+                    offset_index a_offset) const
   {
     TLOC_ASSERT(a_array.empty() == false, "a_array has no elements");
 
@@ -486,7 +486,7 @@ namespace tloc { namespace graphics { namespace gl {
     const gfx_t::gl_sizei dataSize = a_array.size();
 
     TLOC_LOG_GFX_ERR_IF
-      (dataSize + a_offset_index > CastNumber<gfx_t::gl_sizei>(m_dataSize))
+      (dataSize + a_offset > CastNumber<gfx_t::gl_sizei>(m_dataSize))
       << "Attempting to update buffer will cause overflow";
 
     TLOC_LOG_GFX_WARN_IF
@@ -497,13 +497,45 @@ namespace tloc { namespace graphics { namespace gl {
 
     VertexBufferObject::UnsafeBind b(m_vbo, m_target);
 
-    glBufferSubData(m_target, 
-                    sizeof(T_Type) * a_offset_index, 
-                    sizeof(T_Type) * dataSize,
-                    &a_array[0]);
+    const gfx_t::gl_int offsetInBytes = sizeof(T_Type) * a_offset;
+    const gfx_t::gl_int sizeInBytes = sizeof(T_Type) * dataSize - offsetInBytes;
+
+    glBufferSubData(m_target, offsetInBytes, sizeInBytes, &a_array[0]);
     {
       gl::Error err; TLOC_UNUSED(err);
-      TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
+      TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glBufferSubData() failed";
+    }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Type>
+  const AttributeVBO::this_type&
+    AttributeVBO::
+    DoGetData(core_conts::Array<T_Type>& a_out, offset_index a_offset) const
+  {
+    TLOC_ASSERT
+      (a_offset < CastNumber<gfx_t::gl_sizei>(m_dataSize),
+       "a_offsetIndex is out of bounds");
+
+    a_out.resize(m_dataSize - a_offset);
+
+    const gl_enum_type type = gfx_t::type_to_gl::Get<Array<T_Type> >();
+    TLOC_UNUSED_RELEASE(type);
+    TLOC_ASSERT(type == m_type, 
+                "Mismatched types while getting the buffer");
+
+    VertexBufferObject::UnsafeBind b(m_vbo, m_target);
+
+    const gfx_t::gl_int offsetInBytes = sizeof(T_Type) * a_offset;
+    const gfx_t::gl_int sizeInBytes = sizeof(T_Type) * dataSize - offsetInBytes;
+
+    glGetBufferSubData(m_target, offsetInBytes, sizeInBytes, &a_out[0]);
+    {
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glGetBufferSubData() failed");
     }
 
     return *this;

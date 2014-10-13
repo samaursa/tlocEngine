@@ -192,7 +192,7 @@ namespace tloc { namespace graphics { namespace component_system {
         { currTextureName = m_textureAttribPrefix; }
 
         using gl::algos::shader_operator::compare::AttributeVBOName;
-        gl::ShaderOperator::vbo_iterator itr = 
+        gl::ShaderOperator::attributeVBO_iterator itr = 
           core::find_if(a_so.begin_attributeVBOs(), 
                         a_so.end_attributeVBOs(), 
                         AttributeVBOName(currTextureName));

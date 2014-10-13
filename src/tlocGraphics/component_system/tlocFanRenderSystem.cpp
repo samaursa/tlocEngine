@@ -114,7 +114,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const gfx_gl::shader_operator_vptr so =  a_fanPtr->GetShaderOperator().get();
 
     using gl::algos::shader_operator::compare::AttributeVBOName;
-    gl::ShaderOperator::vbo_iterator itr = 
+    gl::ShaderOperator::attributeVBO_iterator itr = 
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(), 
                     AttributeVBOName(a_sys.GetVertexAttributeName()));
 

@@ -85,7 +85,7 @@ namespace tloc { namespace graphics { namespace component_system {
     so->AddAttributeVBO(vbo);
 
     if (a_ent->HasComponent<gfx_cs::TextureCoords>())
-    { base_type::DoInitializeTexCoords(a_ent, so); }
+    { base_type::DoInitializeTexCoords(a_ent, *so); }
 
     return base_type::InitializeEntity(a_ent);
   }
@@ -153,9 +153,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (quadPtr->IsUpdateRequired())
     { DoUpdateQuad(*this, a_ent, quadPtr); }
-
-    base_type::DoUpdateTexCoords
-      (a_ent, core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator()) );
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());

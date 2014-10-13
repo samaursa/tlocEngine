@@ -45,6 +45,7 @@ namespace tloc { namespace graphics { namespace component_system {
       renderer_type::value_type::render_one_frame_uptr    rof_uptr;
     typedef math::types::Mat4f32                          matrix_type;
 
+    typedef gl::ShaderOperator                            so_type;
     typedef gl::uniform_vptr                              uniform_ptr;
     typedef gl::shader_operator_vptr                      shader_operator_ptr;
     typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
@@ -63,22 +64,22 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetMVPMatrixUniformName, m_mvpMat.second);
+      (core_str::String, GetMVPMatrixUniformName, m_uniMVPMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetVPMatrixUniformName, m_vpMat.second);
+      (core_str::String, GetVPMatrixUniformName, m_uniVPMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetModelMatrixUniformName, m_modelMat.second);
+      (core_str::String, GetModelMatrixUniformName, m_uniModelMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetScaleMatrixUniformName, m_modelMat.second);
+      (core_str::String, GetScaleMatrixUniformName, m_uniModelMat.second);
 
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetMVPMatrixUniformName, m_mvpMat.second);
+      (core_str::String, SetMVPMatrixUniformName, m_uniMVPMat.second);
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetVPMatrixUniformName, m_mvpMat.second);
+      (core_str::String, SetVPMatrixUniformName, m_uniMVPMat.second);
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetModelMatrixUniformName, m_modelMat.second);
+      (core_str::String, SetModelMatrixUniformName, m_uniModelMat.second);
     TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetScaleMatrixUniformName, m_modelMat.second);
+      (core_str::String, SetScaleMatrixUniformName, m_uniModelMat.second);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetVertexAttributeName, m_vertexAttribName);
@@ -126,9 +127,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual error_type        Pre_Initialize();
     void                      DoInitializeTexCoords(entity_ptr a_ent, 
-                                                    shader_operator_ptr a_so) const;
+                                                    so_type& a_so) const;
     void                      DoUpdateTexCoords(entity_ptr a_ent, 
-                                                shader_operator_ptr a_so) const;
+                                                so_type& a_so) const;
     virtual error_type        InitializeEntity(entity_ptr a_ent);
 
     virtual void              Pre_ProcessActiveEntities(f64);
@@ -149,10 +150,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     gl::shader_operator_vso   m_shaderOp;
 
-    uniform_string_pair       m_mvpMat;
-    uniform_string_pair       m_vpMat;
-    uniform_string_pair       m_modelMat;
-    uniform_string_pair       m_scaleMat;
+    uniform_string_pair       m_uniMVPMat;
+    uniform_string_pair       m_uniVPMat;
+    uniform_string_pair       m_uniModelMat;
+    uniform_string_pair       m_uniScaleMat;
 
     core_str::String          m_vertexAttribName;
     core_str::String          m_textureAttribPrefix;

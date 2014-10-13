@@ -71,30 +71,30 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // -----------------------------------------------------------------------
 
-    if (m_mvpMat.second.empty())
-    { m_mvpMat.second = "u_mvp"; }
+    if (m_uniMVPMat.second.empty())
+    { m_uniMVPMat.second = "u_mvp"; }
 
-    if (m_vpMat.second.empty())
-    { m_vpMat.second = "u_vpMat"; }
+    if (m_uniVPMat.second.empty())
+    { m_uniVPMat.second = "u_vpMat"; }
 
-    if (m_modelMat.second.empty())
-    { m_modelMat.second = "u_modelMat"; }
+    if (m_uniModelMat.second.empty())
+    { m_uniModelMat.second = "u_modelMat"; }
 
-    if (m_scaleMat.second.empty())
-    { m_scaleMat.second = "u_scaleMat"; }
+    if (m_uniScaleMat.second.empty())
+    { m_uniScaleMat.second = "u_scaleMat"; }
 
     // -----------------------------------------------------------------------
 
     m_shaderOp->reserve_uniforms(4);
 
-    m_mvpMat.first      = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpMat.second));
-    m_vpMat.first       = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_vpMat.second));
-    m_modelMat.first    = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_modelMat.second));
-    m_scaleMat.first    = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_scaleMat.second));
+    m_uniMVPMat.first      = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniMVPMat.second));
+    m_uniVPMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniVPMat.second));
+    m_uniModelMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniModelMat.second));
+    m_uniScaleMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniScaleMat.second));
 
     return ErrorSuccess;
   }
@@ -118,24 +118,24 @@ namespace tloc { namespace graphics { namespace component_system {
   template <RENDER_SYSTEM_TEMPS>
   void 
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-    DoInitializeTexCoords(entity_ptr a_ent, shader_operator_ptr a_so) const
+    DoInitializeTexCoords(entity_ptr a_ent, so_type& a_so) const
   {
     // populate the texture coordinate attributes
     if (a_ent->HasComponent(components::texture_coords) == false)
     { return; }
 
-    gfx_cs::texture_coords_sptr tcPtr =
-      a_ent->GetComponent<gfx_cs::TextureCoords>();
-    tcPtr->SetUpdateRequired(false);
-
-    const size_type numTexCoords =
+    const size_type texCoordIndex =
       a_ent->GetComponents<gfx_cs::TextureCoords>().size();
 
     typedef gfx_cs::TextureCoords::set_index        set_index;
 
-    for (tl_size i = 0; i < numTexCoords; ++i)
+    for (tl_size i = 0; i < texCoordIndex; ++i)
     {
-      if (tcPtr->GetNumSets())
+      gfx_cs::texture_coords_sptr tcPtr =
+        a_ent->GetComponent<gfx_cs::TextureCoords>(i);
+      tcPtr->SetUpdateRequired(false);
+
+      if (tcPtr->GetNumSets() != 0)
       {
         gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
           tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
@@ -151,7 +151,7 @@ namespace tloc { namespace graphics { namespace component_system {
         vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
                        gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
 
-        a_so->AddAttributeVBO(vbo);
+        a_so.AddAttributeVBO(vbo);
       }
     }
   }
@@ -161,18 +161,10 @@ namespace tloc { namespace graphics { namespace component_system {
   template <RENDER_SYSTEM_TEMPS>
   void 
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-    DoUpdateTexCoords(entity_ptr a_ent, shader_operator_ptr a_so) const
+    DoUpdateTexCoords(entity_ptr a_ent, so_type& a_so) const
   {
     if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
     { return; }
-
-    gfx_cs::texture_coords_sptr tcPtr =
-      a_ent->GetComponent<gfx_cs::TextureCoords>();
-
-    if (tcPtr->IsUpdateRequired() == false)
-    { return; }
-
-    tcPtr->SetUpdateRequired(false);
 
     const size_type numTexCoords =
       a_ent->GetComponents<gfx_cs::TextureCoords>().size();
@@ -181,7 +173,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (tl_size i = 0; i < numTexCoords; ++i)
     {
-      if (tcPtr->GetNumSets())
+      gfx_cs::texture_coords_sptr tcPtr =
+        a_ent->GetComponent<gfx_cs::TextureCoords>(i);
+
+      if (tcPtr->IsUpdateRequired() == false)
+      { continue; }
+
+      tcPtr->SetUpdateRequired(false);
+
+      if (tcPtr->GetNumSets() != 0)
       {
         gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
           tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
@@ -193,13 +193,22 @@ namespace tloc { namespace graphics { namespace component_system {
 
         using gl::algos::shader_operator::compare::AttributeVBOName;
         gl::ShaderOperator::vbo_iterator itr = 
-          core::find_if(a_so->begin_attributeVBOs(), 
-                        a_so->end_attributeVBOs(), 
+          core::find_if(a_so.begin_attributeVBOs(), 
+                        a_so.end_attributeVBOs(), 
                         AttributeVBOName(currTextureName));
 
-        if (itr != a_so->end_attributeVBOs())
+        if (itr != a_so.end_attributeVBOs())
         {
           itr->first->UpdateData(*texCoordCont);
+        }
+        else
+        {
+          gfx_gl::AttributeVBO vbo;
+          vbo.AddName(currTextureName);
+          vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
+                         gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
+
+          a_so.AddAttributeVBO(vbo);
         }
       }
     }
@@ -275,41 +284,40 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // populate and enable uniforms/attributes as needed
 
-    const Mat4f32 viewProjMat = GetViewProjectionMatrix();
     if (other_base_type::IsUniformVPEnabled())
     { 
-      m_vpMat.first->SetValueAs(viewProjMat);
-      m_vpMat.first->SetEnabled(true);
+      m_uniVPMat.first->SetValueAs(m_vpMatrix);
+      m_uniVPMat.first->SetEnabled(true);
     }
     else
-    { m_vpMat.first->SetEnabled(false); }
+    { m_uniVPMat.first->SetEnabled(false); }
 
-    Mat4f32 tFinalMat = viewProjMat * tMatrix;
+    Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
     if (other_base_type::IsUniformMVPMatrixEnabled())
     { 
-      m_mvpMat.first->SetValueAs(tFinalMat);
-      m_mvpMat.first->SetEnabled(true);
+      m_uniMVPMat.first->SetValueAs(tFinalMat);
+      m_uniMVPMat.first->SetEnabled(true);
     }
     else
-    { m_mvpMat.first->SetEnabled(false); }
+    { m_uniMVPMat.first->SetEnabled(false); }
 
     // model matrix uniform
     if (other_base_type::IsUniformModelMatrixEnabled()) 
     { 
-      m_modelMat.first->SetValueAs(tMatrix);
-      m_modelMat.first->SetEnabled(true);
+      m_uniModelMat.first->SetValueAs(tMatrix);
+      m_uniModelMat.first->SetEnabled(true);
     }
     else 
-    { m_modelMat.first->SetEnabled(false); }
+    { m_uniModelMat.first->SetEnabled(false); }
 
     // scale matrix uniform
     if (other_base_type::IsUniformScaleMatrixEnabled()) 
     { 
-      m_scaleMat.first->SetValueAs(scaleMat);
-      m_scaleMat.first->SetEnabled(true);
+      m_uniScaleMat.first->SetValueAs(scaleMat);
+      m_uniScaleMat.first->SetEnabled(true);
     }
     else 
-    { m_scaleMat.first->SetEnabled(false); }
+    { m_uniScaleMat.first->SetEnabled(false); }
 
     // -----------------------------------------------------------------------
     // Prepare shader
@@ -377,9 +385,11 @@ namespace tloc { namespace graphics { namespace component_system {
     if (vboErr.Succeeded())
     { VAOs.push_back(m_shaderOp->GetVAO()); }
 
-    // prepare/enable user's shader operator
+    // prepare/enable derived render system's shader operator
     if (a_di.m_shaderOp)
     {
+      DoUpdateTexCoords(ent, *a_di.m_shaderOp);
+      
       // prepare and enable user uniforms/attributes
       uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
 

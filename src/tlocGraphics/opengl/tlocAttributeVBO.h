@@ -57,6 +57,8 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     AttributeVBO();
 
+    this_type&        CopyFrom(const this_type& a_other);
+
     template <typename T_Target, typename T_Usage, typename T_Type>
     this_type&        SetValueAs(const core_conts::Array<T_Type>& a_array);
 
@@ -110,12 +112,12 @@ namespace tloc { namespace graphics { namespace gl {
     gl_enum_type        m_usage;
     gl_enum_type        m_target;
     gfx_t::gl_sizei     m_dataSize;
+    gfx_t::gl_sizei     m_dataTypeSize;
     string_cont         m_names;
 
     stride_info_cont    m_strideInfo;
 
     bool                m_enabled;
-    bool                m_dirty;
 
   };
 

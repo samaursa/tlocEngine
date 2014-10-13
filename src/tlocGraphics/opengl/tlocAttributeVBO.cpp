@@ -345,11 +345,57 @@ namespace tloc { namespace graphics { namespace gl {
 
   AttributeVBO::
     AttributeVBO()
-    : m_usage(GL_NONE)
+    : m_type(GL_NONE)
+    , m_usage(GL_NONE)
     , m_target(GL_NONE)
+    , m_dataSize(0)
+    , m_dataTypeSize(0)
     , m_enabled(true)
-    , m_dirty(true)
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  AttributeVBO::this_type&
+    AttributeVBO::
+    CopyFrom(const this_type& a_other)
+  {
+    TLOC_ASSERT(m_vbo.GetHandle() != a_other.GetVBO().GetHandle(),
+                "Cannot copy into the same buffer");
+
+    if (a_other.m_dataSize != 0)
+    {
+      TLOC_ASSERT(m_dataTypeSize != 0, 
+                  "AttributeVBO storing some data with sizeof(T) == 0");
+
+      // allocate the buffer
+      m_vbo = VertexBufferObject();
+      {
+        VertexBufferObject::bind_array_buffer b(GetVBO());
+        glBufferData(m_target,
+                     m_dataTypeSize * m_dataSize,
+                     TLOC_NULL,
+                     m_usage);
+        {
+          gl::Error err; TLOC_UNUSED(err);
+          TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
+        }
+      }
+
+      // start the copying process
+      VertexBufferObject::bind_copy_read  readFrom(a_other.GetVBO());
+      VertexBufferObject::bind_copy_write writeTo(GetVBO());
+
+      glCopyBufferSubData(p_vbo::target::CopyReadBuffer::s_glParamName, 
+                          p_vbo::target::CopyWriteBuffer::s_glParamName,
+                          0, 0, m_dataTypeSize * m_dataSize);
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_ASSERT(err.Succeeded(), "glBufferData() failed");
+      }
+    }
+
+    return *this;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -402,14 +448,15 @@ namespace tloc { namespace graphics { namespace gl {
 
     VertexBufferObject::UnsafeBind b(m_vbo, a_target);
 
-    m_type        = gfx_t::type_to_gl::Get<Array<T_Type> >();
-    m_usage       = a_usage;
-    m_target      = a_target;
-    m_dataSize    = a_array.size();
-    m_strideInfo  = DoGetStrideInfo(a_array);
+    m_type          = gfx_t::type_to_gl::Get<Array<T_Type> >();
+    m_dataTypeSize  = sizeof(T_Type);
+    m_usage         = a_usage;
+    m_target        = a_target;
+    m_dataSize      = a_array.size();
+    m_strideInfo    = DoGetStrideInfo(a_array);
 
     glBufferData(m_target, 
-                 sizeof(T_Type) * m_dataSize, 
+                 m_dataTypeSize * m_dataSize, 
                  &a_array[0], 
                  a_usage);
     {

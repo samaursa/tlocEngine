@@ -346,34 +346,6 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T_Platform, typename T_RBO>
-  void DoCheckSupportedDepthComponents(T_Platform, const T_RBO& a_rbo)
-  {
-    using namespace p_renderbuffer_object::internal_format;
-    using p_texture_object::internal_format::value_type;
-
-    value_type rboFormat = a_rbo.GetParams().GetFormatType();
-    TLOC_UNUSED(rboFormat);
-    TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName ||
-                rboFormat == DepthComponent24::s_glParamName ||
-                rboFormat == Depth24Stencil8::s_glParamName,
-                "Incorrect internal format for specified attachment");
-  }
-
-  template <typename T_RBO>
-  void DoCheckSupportedDepthComponents(core_plat::p_platform_info::iphone,
-                                       const T_RBO& a_rbo)
-  {
-    using namespace p_renderbuffer_object::internal_format;
-    using p_texture_object::internal_format::value_type;
-
-    value_type rboFormat = a_rbo.GetParams().GetFormatType();
-    TLOC_UNUSED(rboFormat);
-    TLOC_ASSERT(rboFormat == DepthComponent24::s_glParamName ||
-                rboFormat == Depth24Stencil8::s_glParamName,
-                "Incorrect internal format for specified attachment");
-  }
-
   void
     FramebufferObject::
     DoCheckInternalFormatAgainstTargetAttachment
@@ -407,7 +379,13 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else if (a_attachment == Depth::s_glParamName)
     {
-      DoCheckSupportedDepthComponents(core_plat::PlatformInfo::platform_type(), a_rbo);
+      value_type rboFormat = a_rbo.GetParams().GetFormatType();
+
+      TLOC_UNUSED(rboFormat);
+      TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName ||
+                  rboFormat == DepthComponent24::s_glParamName ||
+                  rboFormat == Depth24Stencil8::s_glParamName,
+                  "Incorrect internal format for specified attachment");
     }
     else if (a_attachment == Stencil::s_glParamName)
     {

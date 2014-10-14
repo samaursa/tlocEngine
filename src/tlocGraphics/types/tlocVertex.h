@@ -155,7 +155,7 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol>                   Vert2fpnc;
   typedef Vertex3_T<p_vertex_t::VertexPos2f,
-                    p_vertex_t::VertexNorm2f,
+                    p_vertex_t::VertexNorm3f,
                     p_vertex_t::TexCoord>                    Vert2fpnt;
   typedef Vertex4_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f,

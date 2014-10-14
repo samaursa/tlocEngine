@@ -85,6 +85,70 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
+      DoGetStrideInfo(const Array<u32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(1)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<u32> >())
+                   );
+
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const Array<Tuple2u32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Tuple2u32> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const Array<Tuple3u32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Tuple3u32> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const Array<Tuple4u32>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Tuple4u32> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
       DoGetStrideInfo(const Array<f32>&)
     {
       stride_info_cont si;
@@ -141,6 +205,188 @@ namespace tloc { namespace graphics { namespace gl {
                    .StrideInBytes(0)
                    .DataStartIndex(0)
                    .GLType(type_to_gl::Get<Array<Vec4f32> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fp>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(0)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fp::attrib_1_type::value_type> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fpc>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*6)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fpc::attrib_1_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(sizeof(real_type)*6)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert2fpc::attrib_2_type::value_type> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fpt>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*4)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fpt::attrib_1_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*4)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert2fpt::attrib_2_type::value_type> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fpn>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*5)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fpn::attrib_1_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*5)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert2fpn::attrib_2_type::value_type> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fpnc>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*9)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnc::attrib_1_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*9)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnc::attrib_2_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(sizeof(real_type)*9)
+                   .DataStartIndex(6)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnc::attrib_3_type::value_type> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fpnt>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnt::attrib_1_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnt::attrib_2_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*7)
+                   .DataStartIndex(6)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnt::attrib_3_type::value_type> >())
+                   );
+      
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert2fpnct>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*11)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnct::attrib_1_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .StrideInBytes(sizeof(real_type)*11)
+                   .DataStartIndex(3)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnct::attrib_2_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(4)
+                   .StrideInBytes(sizeof(real_type)*11)
+                   .DataStartIndex(6)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnct::attrib_3_type::value_type> >())
+                   );
+
+      si.push_back(stride_info()
+                   .NumElements(2)
+                   .StrideInBytes(sizeof(real_type)*11)
+                   .DataStartIndex(9)
+                   .GLType(type_to_gl::Get<Array<Vert2fpnct::attrib_4_type::value_type> >())
                    );
       
       return si;
@@ -514,10 +760,10 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T_Type>
   const AttributeVBO::this_type&
     AttributeVBO::
-    DoGetData(core_conts::Array<T_Type>& a_out, offset_index a_offset) const
+    DoGetValueAs(core_conts::Array<T_Type>& a_out, offset_index a_offset) const
   {
     TLOC_ASSERT
-      (a_offset < CastNumber<gfx_t::gl_sizei>(m_dataSize),
+      (a_offset < core_utils::CastNumber<gfx_t::gl_sizei>(m_dataSize),
        "a_offsetIndex is out of bounds");
 
     a_out.resize(m_dataSize - a_offset);
@@ -530,7 +776,7 @@ namespace tloc { namespace graphics { namespace gl {
     VertexBufferObject::UnsafeBind b(m_vbo, m_target);
 
     const gfx_t::gl_int offsetInBytes = sizeof(T_Type) * a_offset;
-    const gfx_t::gl_int sizeInBytes = sizeof(T_Type) * dataSize - offsetInBytes;
+    const gfx_t::gl_int sizeInBytes = sizeof(T_Type) * m_dataSize - offsetInBytes;
 
     glGetBufferSubData(m_target, offsetInBytes, sizeInBytes, &a_out[0]);
     {
@@ -564,16 +810,29 @@ using namespace tloc::gfx_gl;
   template AttributeVBO::this_type& AttributeVBO::\
   DoBufferData<_type_>(gfx_t::gl_int, gfx_t::gl_int, const core_conts::Array<_type_>&);\
   template const AttributeVBO::this_type& AttributeVBO::\
-  DoBufferSubData<_type_>(const core_conts::Array<_type_>&, AttributeVBO::offset_index) const
+  DoBufferSubData<_type_>(const core_conts::Array<_type_>&, AttributeVBO::offset_index) const;\
+  template const AttributeVBO::this_type& AttributeVBO::\
+  DoGetValueAs<_type_>(core_conts::Array<_type_>&, AttributeVBO::offset_index) const
 
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(s32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(u32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple2s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple3s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple4s32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple2u32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple3u32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple4u32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec2f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec3f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec4f32);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fp);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpc);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpt);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpn);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpnc);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpnt);
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpnct);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fp);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpc);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpt);

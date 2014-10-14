@@ -67,8 +67,8 @@ namespace tloc { namespace graphics { namespace gl {
                                  offset_index a_offset = offset_index(0)) const;
 
     template <typename T_Type>
-    const this_type&  GetData(core_conts::Array<T_Type>& a_out, 
-                              offset_index a_offset = offset_index(0)) const;
+    const this_type&  GetValueAs(core_conts::Array<T_Type>& a_out, 
+                                 offset_index a_offset = offset_index(0)) const;
 
     const StrideInfo& GetStrideInfo(size_type a_interleaveIndex) const;
     gl_enum_type      GetInterleavedType(size_type a_interleaveIndex) const;
@@ -111,8 +111,8 @@ namespace tloc { namespace graphics { namespace gl {
                                      offset_index a_offset) const;
 
     template <typename T_Type>
-    const this_type&  DoGetData(core_conts::Array<T_Type>& a_out, 
-                                offset_index a_offset) const;
+    const this_type&  DoGetValueAs(core_conts::Array<T_Type>& a_out, 
+                                   offset_index a_offset) const;
 
   private:
     VertexBufferObject  m_vbo;
@@ -145,11 +145,15 @@ namespace tloc { namespace graphics { namespace gl {
       p_vbo::usage::DynamicCopy>();
 
     type_traits::AssertTypeIsSupported<T_Type, 
-        s32, f32, 
+        u32, s32, f32, 
 
         core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+        core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
 
         math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+        gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
+        gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
         gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
@@ -168,11 +172,15 @@ namespace tloc { namespace graphics { namespace gl {
                offset_index a_offset_index) const
   {
     type_traits::AssertTypeIsSupported<T_Type, 
-        s32, f32, 
+        u32, s32, f32, 
 
         core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+        core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
 
         math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+        gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
+        gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
         gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
@@ -186,20 +194,24 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T_Type>
   const AttributeVBO::this_type&
     AttributeVBO::
-    GetData(core_conts::Array<T_Type>& a_out, offset_index a_offset_index) const
+    GetValueAs(core_conts::Array<T_Type>& a_out, offset_index a_offset_index) const
   {
     type_traits::AssertTypeIsSupported<T_Type, 
-        s32, f32, 
+        u32, s32, f32, 
 
         core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+        core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
 
         math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+        gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
+        gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
         gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
        >();
 
-    return DoGetData<T_Type>(a_array, a_offset_index);
+    return DoGetValueAs<T_Type>(a_out, a_offset_index);
   }
 
   // -----------------------------------------------------------------------

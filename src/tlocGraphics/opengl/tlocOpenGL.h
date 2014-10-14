@@ -18,6 +18,8 @@ namespace tloc { namespace graphics { namespace types {
 
 };};};
 
+#define TLOC_GL_UNSUPPORTED  -1
+
 namespace tloc { namespace graphics { namespace gl {
   
   // ///////////////////////////////////////////////////////////////////////

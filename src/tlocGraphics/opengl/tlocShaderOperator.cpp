@@ -732,7 +732,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef T_ShaderVariableContainer             svc;
     typedef T_ShaderVariableInfoContainer         svcInfo;
     typedef typename svc::iterator                svc_iterator;
-    typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
+    typedef typename svcInfo::iterator            svcInfo_iterator;
     typedef typename svc::value_type::
             first_type::pointer                   shader_var_ptr;
 
@@ -758,6 +758,9 @@ namespace tloc { namespace graphics { namespace gl {
         continue;
       }
 
+      // copy of a_shaderVarsInfo is used because we remove matched variables
+      svcInfo svcInfoCopy(a_shaderVarsInfo);
+
       // attributes can have upto four names due to interleaving (see the
       // Vertex_T<> class) - this includes VBOs
       for (tl_size interleaveIndex = 0; 
@@ -768,9 +771,9 @@ namespace tloc { namespace graphics { namespace gl {
         itr->second[interleaveIndex] = g_unableToFindIndex;
 
         ShaderOperator::index_type index = 0;
-        svcInfo_const_iterator itrInfo, itrInfoEnd;
-        for (itrInfo = a_shaderVarsInfo.begin(),
-             itrInfoEnd = a_shaderVarsInfo.end();
+        svcInfo_iterator itrInfo, itrInfoEnd;
+        for (itrInfo = svcInfoCopy.begin(),
+             itrInfoEnd = svcInfoCopy.end();
              itrInfo != itrInfoEnd; ++itrInfo)
         {
           if ( shaderVarPtr->GetName(interleaveIndex).compare(itrInfo->m_name.get()) == 0)
@@ -787,13 +790,14 @@ namespace tloc { namespace graphics { namespace gl {
                  itrInfo->m_location != g_unableToFindIndex)
             {
               itr->second[interleaveIndex] = index;
-
               DoSetReturn doSetRet = DoSet(*itrInfo, *shaderVarPtr, interleaveIndex);
-
               variableLocations.push_back(doSetRet);
 
               TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
                 << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
+
+              itrInfo = svcInfoCopy.erase(itrInfo);
+
               break;
             }
             else

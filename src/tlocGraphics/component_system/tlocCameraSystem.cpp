@@ -60,6 +60,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // vMVP, but since we are doing column major, it becomes PVMv
 
     m_vpMatrix = cam->GetFrustumRef().GetProjectionMatrix();
+    cam->SetProjectionMatrix(m_vpMatrix);
 
     if (a_ent->HasComponent(transform))
     {
@@ -69,6 +70,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vpMatrix = m_vpMatrix * viewMat;
 
+    cam->SetViewMatrix(viewMat);
     cam->SetViewProj(m_vpMatrix);
   }
 

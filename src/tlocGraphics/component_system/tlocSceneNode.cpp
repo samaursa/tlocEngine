@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
@@ -54,6 +55,7 @@ namespace tloc { namespace graphics { namespace component_system {
     AddChild(pointer a_childNode)
   {
     TLOC_ASSERT(a_childNode->GetParent() == nullptr, "Child already has a parent");
+    TLOC_ASSERT(a_childNode.get() != this, "Cannot add child to itself.");
 
     a_childNode->SetHierarchyUpdateRequired(true);
     a_childNode->m_parent.reset(this);

@@ -43,6 +43,11 @@ namespace tloc { namespace input { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr,
                 Variadic<component_type, 1>(components::k_arcball_control))
     , m_flags(k_count)
+    , m_xRel(0.0f)
+    , m_yRel(0.0f)
+    , m_xPos(0.0f)
+    , m_yPos(0.0f)
+    , m_currentTouch(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -274,6 +279,56 @@ namespace tloc { namespace input { namespace component_system {
     }
 
     return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::event_type
+    ArcBallControlSystem::
+    OnTouchPress(const tl_size, const TouchSurfaceEvent& a_event)
+  {
+    if (m_currentTouch == 0)
+    {
+      m_currentTouch = a_event.m_touchHandle;
+      m_flags.Mark(k_rotating);
+      m_xPos = a_event.m_X.m_abs();
+      m_yPos = a_event.m_Y.m_abs();
+    }
+
+    return core::dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::event_type
+    ArcBallControlSystem::
+    OnTouchRelease(const tl_size, const TouchSurfaceEvent& a_event)
+  {
+    if (a_event.m_touchHandle == m_currentTouch)
+    {
+      m_flags.Unmark(k_rotating);
+      m_currentTouch = 0;
+    }
+
+    return core::dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::event_type
+    ArcBallControlSystem::
+    OnTouchMove(const tl_size, const TouchSurfaceEvent& a_event)
+  {
+    if (a_event.m_touchHandle == m_currentTouch)
+    {
+      m_xRel = a_event.m_X.m_abs() - m_xPos;
+      m_yRel = a_event.m_Y.m_abs() - m_yPos;
+      m_xPos = a_event.m_X.m_abs();
+      m_yPos = a_event.m_Y.m_abs();
+      
+      m_flags.Mark(k_updated);
+    }
+    return core::dispatch::f_event::Continue();
   }
 
 };};};

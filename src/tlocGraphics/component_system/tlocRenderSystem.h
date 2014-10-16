@@ -68,6 +68,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetVPMatrixUniformName, m_uniVPMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (core_str::String, GetViewMatrixUniformName, m_uniViewMat.second);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetModelMatrixUniformName, m_uniModelMat.second);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (core_str::String, GetScaleMatrixUniformName, m_uniModelMat.second);
@@ -76,6 +78,8 @@ namespace tloc { namespace graphics { namespace component_system {
       (core_str::String, SetMVPMatrixUniformName, m_uniMVPMat.second);
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetVPMatrixUniformName, m_uniMVPMat.second);
+    TLOC_DECL_AND_DEF_SETTER
+      (core_str::String, SetViewMatrixUniformName, m_uniViewMat.second);
     TLOC_DECL_AND_DEF_SETTER
       (core_str::String, SetModelMatrixUniformName, m_uniModelMat.second);
     TLOC_DECL_AND_DEF_SETTER
@@ -147,10 +151,14 @@ namespace tloc { namespace graphics { namespace component_system {
     renderer_type             m_renderer;
     rof_uptr                  m_renderOneFrame;
     matrix_type               m_vpMatrix;
+    matrix_type               m_projMat;
+    matrix_type               m_viewMatrix;
 
     gl::shader_operator_vso   m_shaderOp;
 
     uniform_string_pair       m_uniMVPMat;
+    uniform_string_pair       m_uniViewMat;
+    uniform_string_pair       m_uniProjMat;
     uniform_string_pair       m_uniVPMat;
     uniform_string_pair       m_uniModelMat;
     uniform_string_pair       m_uniScaleMat;

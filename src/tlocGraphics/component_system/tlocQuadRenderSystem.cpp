@@ -126,20 +126,6 @@ namespace tloc { namespace graphics { namespace component_system {
     itr->first->UpdateData(quadList);
   }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    QuadRenderSystem::
-    Pre_ProcessActiveEntities(f64 a_deltaT)
-  {
-    for (core_cs::entity_ptr_array::iterator itr = m_entsToReInit.begin(),
-         itrEnd = m_entsToReInit.end(); itr != itrEnd; ++itr)
-    { InitializeEntity(*itr); }
-
-    m_entsToReInit.clear();
-    base_type::Pre_ProcessActiveEntities(a_deltaT);
-  }
-
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void 
@@ -158,16 +144,6 @@ namespace tloc { namespace graphics { namespace component_system {
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
 
     base_type::DoDrawEntity(di);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    QuadRenderSystem::
-    OnComponentInsert(const core_cs::EntityComponentEvent& a_ent)
-  {
-    if (IsInitialized())
-    { m_entsToReInit.push_back(a_ent.GetEntity()); }
   }
 
 };};};

@@ -150,16 +150,6 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::DoDrawEntity(di);
   }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    FanRenderSystem::
-    OnComponentInsert(const core_cs::EntityComponentEvent& a_ent)
-  {
-    if (IsInitialized())
-    { m_entsToReInit.push_back(a_ent.GetEntity()); }
-  }
-
 };};};
 
 //////////////////////////////////////////////////////////////////////////

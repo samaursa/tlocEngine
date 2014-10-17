@@ -157,11 +157,27 @@ namespace tloc { namespace graphics { namespace component_system {
     gl::shader_operator_vso   m_shaderOp;
 
     uniform_string_pair       m_uniMVPMat;
-    uniform_string_pair       m_uniViewMat;
-    uniform_string_pair       m_uniProjMat;
+    uniform_string_pair       m_uniMVPInverseMat;
+
     uniform_string_pair       m_uniVPMat;
+    uniform_string_pair       m_uniVPInverseMat;
+
+    uniform_string_pair       m_uniMVMat;
+    uniform_string_pair       m_uniMVInverseMat;
+
+    uniform_string_pair       m_uniProjMat;
+    uniform_string_pair       m_uniProjInverseMat;
+
+    uniform_string_pair       m_uniViewMat;
+    uniform_string_pair       m_uniViewInverseMat;
+
     uniform_string_pair       m_uniModelMat;
+    uniform_string_pair       m_uniModelInverseMat;
+
     uniform_string_pair       m_uniScaleMat;
+    uniform_string_pair       m_uniScaleInverseMat;
+
+    uniform_string_pair       m_uniNormalMat;
 
     core_str::String          m_vertexAttribName;
     core_str::String          m_textureAttribPrefix;

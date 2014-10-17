@@ -12,6 +12,7 @@
 
 #include <tlocInput/hid/tlocKeyboard.h>
 #include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
 
 namespace tloc { namespace input { namespace component_system {
 
@@ -22,6 +23,7 @@ namespace tloc { namespace input { namespace component_system {
     typedef core::component_system::EntityProcessingSystem      base_type;
     typedef core_dispatch::Event                                event_type;
     typedef tl_float                                            real_type;
+    typedef tl_size                                             size_type;
 
   public:
     ArcBallControlSystem(event_manager_ptr a_eventMgr,
@@ -53,9 +55,16 @@ namespace tloc { namespace input { namespace component_system {
     event_type    OnKeyPress(const tl_size, const input_hid::KeyboardEvent& a_event);
     event_type    OnKeyRelease(const tl_size, const input_hid::KeyboardEvent& a_event);
 
+    event_type    OnTouchPress(const tl_size, const TouchSurfaceEvent& a_event);
+    event_type    OnTouchRelease(const tl_size, const TouchSurfaceEvent& a_event);
+    event_type    OnTouchMove(const tl_size, const TouchSurfaceEvent& a_event);
+
   private:
     core_utils::Checkpoints       m_flags;
     real_type                     m_xRel, m_yRel;
+    real_type                     m_xPos, m_yPos;
+
+    TouchSurfaceEvent::touch_handle_type  m_currentTouch;
 
   };
 

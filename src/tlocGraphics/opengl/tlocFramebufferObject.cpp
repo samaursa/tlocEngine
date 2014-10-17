@@ -280,6 +280,38 @@ namespace tloc { namespace graphics { namespace gl {
     }
   }
 
+
+#elif defined (TLOC_OS_IPHONE)
+
+  namespace priv {
+    template <typename T_TextureObject>
+    void
+      DoAttach(p_framebuffer_object::target::value_type a_target,
+               p_framebuffer_object::attachment::value_type a_attachment,
+               T_TextureObject a_to)
+    {
+      if (a_to.GetTargetType() == p_texture_object::target::Tex2D::s_glParamName)
+      {
+        glFramebufferTexture2D(a_target, a_attachment,
+                               a_to.GetTargetType(), a_to.GetHandle(), 0);
+
+        gfx_t::gl_enum res = glCheckFramebufferStatus
+          (p_framebuffer_object::target::Framebuffer::s_glParamName);
+        TLOC_UNUSED(res);
+        TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
+          "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
+      }
+      else
+      {
+        TLOC_ASSERT_FALSE("Unsupported target type for specified attachment");
+      }
+    }
+  }
+
+#else
+# error "WIP"
+#endif
+
   FramebufferObject::error_type
     FramebufferObject::
     DoAttach(p_framebuffer_object::target::value_type a_target,
@@ -312,69 +344,7 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess;
   }
 
-#elif defined (TLOC_OS_IPHONE)
-
-  FramebufferObject::error_type
-    FramebufferObject::
-    DoAttach(p_framebuffer_object::target::value_type a_target,
-             p_framebuffer_object::attachment::value_type a_attachment,
-             const to_type& a_to)
-  {
-    Bind b(this);
-
-    const to_type::Params& toParams = a_to.GetParams();
-    DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
-
-    if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
-    {
-      glFramebufferTexture2D(a_target, a_attachment,
-                             toParams.GetTextureType(), a_to.GetHandle(), 0);
-
-      gfx_t::gl_enum res = glCheckFramebufferStatus
-        (p_framebuffer_object::target::Framebuffer::s_glParamName);
-      TLOC_UNUSED(res);
-      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
-        "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
-    }
-
-    m_textureObjets.push_back(a_to);
-
-    return ErrorSuccess;
-  }
-
-#else
-# error "WIP"
-#endif
-
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_Platform, typename T_RBO>
-  void DoCheckSupportedDepthComponents(T_Platform, const T_RBO& a_rbo)
-  {
-    using namespace p_renderbuffer_object::internal_format;
-    using p_texture_object::internal_format::value_type;
-
-    value_type rboFormat = a_rbo.GetParams().GetFormatType();
-    TLOC_UNUSED(rboFormat);
-    TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName ||
-                rboFormat == DepthComponent24::s_glParamName ||
-                rboFormat == Depth24Stencil8::s_glParamName,
-                "Incorrect internal format for specified attachment");
-  }
-
-  template <typename T_RBO>
-  void DoCheckSupportedDepthComponents(core_plat::p_platform_info::iphone,
-                                       const T_RBO& a_rbo)
-  {
-    using namespace p_renderbuffer_object::internal_format;
-    using p_texture_object::internal_format::value_type;
-
-    value_type rboFormat = a_rbo.GetParams().GetFormatType();
-    TLOC_UNUSED(rboFormat);
-    TLOC_ASSERT(rboFormat == DepthComponent24::s_glParamName ||
-                rboFormat == Depth24Stencil8::s_glParamName,
-                "Incorrect internal format for specified attachment");
-  }
 
   void
     FramebufferObject::
@@ -409,7 +379,13 @@ namespace tloc { namespace graphics { namespace gl {
     }
     else if (a_attachment == Depth::s_glParamName)
     {
-      DoCheckSupportedDepthComponents(core_plat::PlatformInfo::platform_type(), a_rbo);
+      value_type rboFormat = a_rbo.GetParams().GetFormatType();
+
+      TLOC_UNUSED(rboFormat);
+      TLOC_ASSERT(rboFormat == DepthComponent16::s_glParamName ||
+                  rboFormat == DepthComponent24::s_glParamName ||
+                  rboFormat == Depth24Stencil8::s_glParamName,
+                  "Incorrect internal format for specified attachment");
     }
     else if (a_attachment == Stencil::s_glParamName)
     {

@@ -127,6 +127,12 @@ namespace TestingImage
           delete[] tempPixels;
         }
 
+        TLOC_TEST_ASSERT
+        {
+          img.SetPixel(0, 0, image_stream_rgba::color_type(1, 2, 3, 4));
+        }
+        TLOC_TEST_ASSERT_CHECK();
+
         img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
         CHECK(img.IsValid());
 

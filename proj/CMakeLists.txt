@@ -83,9 +83,12 @@ endif()
 #------------------------------------------------------------------------------
 # Set binary build directories
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${USER_INSTALL_PATH}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${USER_INSTALL_PATH}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${USER_INSTALL_PATH}/bin)
+foreach (OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
+  string (TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${USER_INSTALL_PATH}/lib/${CMAKE_CFG_INTDIR})
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${USER_INSTALL_PATH}/lib/${CMAKE_CFG_INTDIR})
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${USER_INSTALL_PATH}/bin/${CMAKE_CFG_INTDIR})
+endforeach (OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
 
 #--------------------------------------------------------------------------
 # The src folder MUST exist

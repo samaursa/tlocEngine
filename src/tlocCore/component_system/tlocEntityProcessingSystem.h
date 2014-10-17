@@ -33,6 +33,11 @@ namespace tloc { namespace core { namespace component_system {
     virtual error_type InitializeEntity(entity_vptr a_ent) = 0;
     virtual error_type Post_Initialize();
 
+  protected: // Re-Initialization
+    virtual error_type Pre_ReInitialize();
+    virtual error_type ReInitializeEntity(entity_vptr a_ent);
+    virtual error_type Post_ReInitialize();
+
   protected: // Processing
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
@@ -45,6 +50,10 @@ namespace tloc { namespace core { namespace component_system {
     virtual error_type ShutdownEntity(entity_vptr a_ent) = 0;
     virtual error_type Post_Shutdown();
 
+  protected: // component insert/remove
+    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&);
+    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&);
+
   private:
     virtual void DoProcessActiveEntities (const entity_count_cont& a_entities,
                                           f64 a_deltaT);
@@ -52,6 +61,10 @@ namespace tloc { namespace core { namespace component_system {
     virtual error_type DoInitialize(const entity_count_cont& a_entities);
 
     virtual error_type DoShutdown(const entity_count_cont& a_entities);
+
+  private:
+    core_cs::entity_ptr_array     m_entsToReInit;
+    core_cs::entity_ptr_array     m_entsToShutdown;
   };
 
   //------------------------------------------------------------------------

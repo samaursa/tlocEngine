@@ -37,13 +37,52 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  error_type EntityProcessingSystem::Pre_ReInitialize()
+  { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type EntityProcessingSystem::
+    ReInitializeEntity(entity_vptr a_ent)
+  { return InitializeEntity(a_ent); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type EntityProcessingSystem::Post_ReInitialize()
+  { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool EntityProcessingSystem::CheckProcessing()
   { return true; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void EntityProcessingSystem::Pre_ProcessActiveEntities(f64)
-  { }
+  { 
+    if (m_entsToReInit.empty() == false)
+    {
+      Pre_ReInitialize();
+      for (core_cs::entity_ptr_array::iterator itr = m_entsToReInit.begin(),
+           itrEnd = m_entsToReInit.end(); itr != itrEnd; ++itr)
+      { ReInitializeEntity(*itr); }
+      Post_ReInitialize();
+
+      m_entsToReInit.clear();
+    }
+
+    if (m_entsToShutdown.empty() == false)
+    {
+      Pre_Shutdown();
+      for (core_cs::entity_ptr_array::iterator itr = m_entsToShutdown.begin(),
+           itrEnd = m_entsToShutdown.end(); itr != itrEnd; ++itr)
+      { ShutdownEntity(*itr); }
+      Post_Shutdown();
+
+      m_entsToShutdown.clear();
+    }
+
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -87,5 +126,24 @@ namespace tloc { namespace core { namespace component_system {
 
   error_type EntityProcessingSystem::Post_Shutdown()
   { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    EntityProcessingSystem::
+    OnComponentInsert(const core_cs::EntityComponentEvent& a_event)
+  {
+    if (IsInitialized())
+    { m_entsToReInit.push_back(a_event.GetEntity()); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  void 
+    EntityProcessingSystem::
+    OnComponentRemove(const core_cs::EntityComponentEvent& a_event)
+  {
+    if (IsInitialized())
+    { m_entsToShutdown.push_back(a_event.GetEntity()); }
+  }
 
 };};};

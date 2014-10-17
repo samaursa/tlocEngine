@@ -28,17 +28,10 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
-    virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
-
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&);
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
-
-  private:
-    core_cs::entity_ptr_array     m_entsToReInit;
   };
 
   //------------------------------------------------------------------------

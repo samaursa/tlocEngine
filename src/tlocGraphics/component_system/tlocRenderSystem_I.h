@@ -21,6 +21,12 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_GETTER(bool, IsUniformVPEnabled);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformVPMatrix);
 
+    TLOC_DECL_GETTER(bool, IsUniformViewEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformViewMatrix);
+
+    TLOC_DECL_GETTER(bool, IsUniformProjectionEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformProjectionMatrix);
+
     TLOC_DECL_GETTER(bool, IsUniformScaleMatrixEnabled);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledUniformScaleMatrix);
 

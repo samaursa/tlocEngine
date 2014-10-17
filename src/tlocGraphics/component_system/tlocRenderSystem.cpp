@@ -77,6 +77,12 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_uniVPMat.second.empty())
     { m_uniVPMat.second = "u_vpMat"; }
 
+    if (m_uniViewMat.second.empty())
+    { m_uniViewMat.second = "u_viewMat"; }
+
+    if (m_uniProjMat.second.empty())
+    { m_uniProjMat.second = "u_projectionMat"; }
+
     if (m_uniModelMat.second.empty())
     { m_uniModelMat.second = "u_modelMat"; }
 
@@ -85,12 +91,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // -----------------------------------------------------------------------
 
-    m_shaderOp->reserve_uniforms(4);
+    m_shaderOp->reserve_uniforms(6);
 
     m_uniMVPMat.first      = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniMVPMat.second));
     m_uniVPMat.first       = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniVPMat.second));
+    m_uniViewMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniViewMat.second));
+    m_uniProjMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniProjMat.second));
     m_uniModelMat.first    = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniModelMat.second));
     m_uniScaleMat.first    = 
@@ -238,11 +248,43 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
     {
       m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
+      m_viewMatrix = m_sharedCam->GetComponent<Camera>()->GetViewMatrix();
+      m_projMat = m_sharedCam->GetComponent<Camera>()->GetProjectionMatrix();
     }
     else
     {
       m_vpMatrix.MakeIdentity();
+      m_viewMatrix.MakeIdentity();
+      m_projMat.MakeIdentity();
     }
+
+    // -----------------------------------------------------------------------
+    // populate and enable uniforms as needed
+
+    if (other_base_type::IsUniformViewEnabled())
+    { 
+      m_uniViewMat.first->SetValueAs(m_viewMatrix);
+      m_uniViewMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniViewMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformProjectionEnabled())
+    { 
+      m_uniProjMat.first->SetValueAs(m_projMat);
+      m_uniProjMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniProjMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformVPEnabled())
+    { 
+      m_uniVPMat.first->SetValueAs(m_vpMatrix);
+      m_uniVPMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniVPMat.first->SetEnabled(false); }
+
 
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
     m_renderOneFrame.reset(new typename rof_uptr::value_type(m_renderer.get()) );
@@ -285,14 +327,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // -----------------------------------------------------------------------
     // populate and enable uniforms/attributes as needed
-
-    if (other_base_type::IsUniformVPEnabled())
-    { 
-      m_uniVPMat.first->SetValueAs(m_vpMatrix);
-      m_uniVPMat.first->SetEnabled(true);
-    }
-    else
-    { m_uniVPMat.first->SetEnabled(false); }
 
     Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
     if (other_base_type::IsUniformMVPMatrixEnabled())

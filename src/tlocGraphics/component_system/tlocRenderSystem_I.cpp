@@ -10,6 +10,8 @@ namespace tloc { namespace graphics { namespace component_system {
       k_enableUniMVP,
       k_enableUniModelMat,
       k_enableCameraVP,
+      k_enableUniView,
+      k_enableUniProj,
       k_enableScaleMat,
 
       k_count
@@ -83,6 +85,34 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_I::
     SetEnabledUniformVPMatrix(bool a_value)
   { m_flags[k_enableCameraVP] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformViewEnabled() const
+  { return m_flags.IsMarked(k_enableUniView); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformViewMatrix(bool a_value)
+  { m_flags[k_enableUniView] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformProjectionEnabled() const
+  { return m_flags.IsMarked(k_enableUniProj); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformProjectionMatrix(bool a_value)
+  { m_flags[k_enableUniProj] = a_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

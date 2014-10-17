@@ -52,6 +52,19 @@ namespace
         .Parent(core_sptr::ToVirtualPtr(ent->GetComponent<component_type>()) )
         .Create();
 
+      // testing Issue #83
+      TLOC_TEST_ASSERT
+      {
+        entity_ptr parentEnt = pref_gfx::SceneNode(entMgr.get(), compMgr.get())
+          .Create();
+
+        gfx_cs::scene_node_sptr parentEntSN = 
+          parentEnt->GetComponent<gfx_cs::SceneNode>();
+
+        parentEntSN->AddChild(core_sptr::ToVirtualPtr(parentEntSN));
+      }
+      TLOC_TEST_ASSERT_CHECK();
+
       REQUIRE(ent2->HasComponent<component_type>());
       REQUIRE(ent2->HasComponent<math_cs::Transform>());
 

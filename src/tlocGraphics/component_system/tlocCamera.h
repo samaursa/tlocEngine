@@ -44,6 +44,14 @@ namespace tloc { namespace graphics { namespace component_system {
       (matrix_type, GetViewProjRef, m_vpMat);
     TLOC_DECL_AND_DEF_SETTER(matrix_type, SetViewProj, m_vpMat);
 
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (matrix_type, GetViewMatrix, m_viewMat);
+    TLOC_DECL_AND_DEF_SETTER(matrix_type, SetViewMatrix, m_viewMat);
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (matrix_type, GetProjectionMatrix, m_projMat);
+    TLOC_DECL_AND_DEF_SETTER(matrix_type, SetProjectionMatrix, m_projMat);
+
   private:
     TLOC_DECL_GETTER_NON_CONST(bool, DoIsTargetUpdated);
     TLOC_DECL_AND_DEF_GETTER(point_type, DoGetTarget, m_target.second);
@@ -51,6 +59,8 @@ namespace tloc { namespace graphics { namespace component_system {
   private:
     frustum_type      m_frustum;
     matrix_type       m_vpMat;
+    matrix_type       m_viewMat;
+    matrix_type       m_projMat;
     target_type       m_target;
   };
 

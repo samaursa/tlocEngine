@@ -34,8 +34,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void Pre_ProcessActiveEntities(f64 ) {}
     virtual void Post_ProcessActiveEntities(f64 ) {}
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}

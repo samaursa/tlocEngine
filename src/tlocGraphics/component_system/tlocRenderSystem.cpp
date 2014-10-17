@@ -233,7 +233,7 @@ namespace tloc { namespace graphics { namespace component_system {
   template <RENDER_SYSTEM_TEMPS>
   void 
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-    Pre_ProcessActiveEntities( f64 )
+    Pre_ProcessActiveEntities( f64 a_deltaT )
   {
     if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
     {
@@ -246,6 +246,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
     m_renderOneFrame.reset(new typename rof_uptr::value_type(m_renderer.get()) );
+
+    base_type::Pre_ProcessActiveEntities(a_deltaT);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

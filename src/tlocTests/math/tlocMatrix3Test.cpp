@@ -403,9 +403,9 @@ namespace TestingMatrix3
     {
       a.Orient(Mat3f32::dir(Vec3f32(1, 0, 0)) );
 
-      Vec3f32 left = a.GetCol(0);
-      Vec3f32 up = a.GetCol(1);
-      Vec3f32 dir = a.GetCol(2);
+      Vec3f32 left(a.GetCol(0));
+      Vec3f32 up(a.GetCol(1));
+      Vec3f32 dir(a.GetCol(2));
 
       CHECK(dir[0] == Approx(1.0f));
       CHECK(up[1] == Approx(1.0f));
@@ -422,9 +422,9 @@ namespace TestingMatrix3
     {
       a.Orient( Mat3f32::dir(Vec3f32(0, 1, 0)), Mat3f32::up(Vec3f32(1, 0, 0)) );
 
-      Vec3f32 left = a.GetCol(0);
-      Vec3f32 up = a.GetCol(1);
-      Vec3f32 dir = a.GetCol(2);
+      Vec3f32 left(a.GetCol(0));
+      Vec3f32 up(a.GetCol(1));
+      Vec3f32 dir(a.GetCol(2));
 
       CHECK(dir[1] == Approx(1.0f));
       CHECK(up[0] == Approx(1.0f));

@@ -157,21 +157,22 @@ namespace tloc { namespace math { namespace component_system {
     LookAt(position_type a_target)
   {
     position_type newDir = a_target - 
-      m_transformation.GetCol(3).ConvertTo<position_type>();
+      m_transformation.GetCol(3).template ConvertTo<position_type>();
     newDir.Normalize();
 
-    orientation_type ori = m_transformation.ConvertTo<orientation_type>();
+    orientation_type ori =
+      m_transformation.template ConvertTo<orientation_type>();
 
     if (newDir.IsParallel(position_type::UNIT_Y) == false)
-    { ori.Orient(orientation_type::dir(newDir)); }
+    { ori.Orient(typename orientation_type::dir(newDir)); }
     else // parallel
     {
       position_type newUp = 
-        ori.GetCol(2).ConvertTo<position_type>().Inverse();
+        ori.GetCol(2).template ConvertTo<position_type>().Inverse();
       newUp.Normalize();
 
-      ori.Orient(orientation_type::dir(newDir), 
-                 orientation_type::up(newUp));
+      ori.Orient(typename orientation_type::dir(newDir),
+                 typename orientation_type::up(newUp));
     }
 
     m_transformation.ConvertFrom(ori, core_ds::p_tuple::overflow_same());

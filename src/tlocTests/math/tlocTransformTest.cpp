@@ -133,9 +133,9 @@ namespace TestingTransform
     {
       t.LookAt(Vec3f32(2, 0, 0));
 
-      const Vec3f32 left = t.GetOrientation().GetCol(0);
-      const Vec3f32 up = t.GetOrientation().GetCol(1);
-      const Vec3f32 dir = t.GetOrientation().GetCol(2);
+      const Vec3f32 left(t.GetOrientation().GetCol(0));
+      const Vec3f32 up(t.GetOrientation().GetCol(1));
+      const Vec3f32 dir(t.GetOrientation().GetCol(2));
 
       CHECK(dir[0]  == Approx(1.0f));
       CHECK(up[1]   == Approx(1.0f));
@@ -146,9 +146,9 @@ namespace TestingTransform
     {
       t.LookAt(Vec3f32(0, 1, 0));
 
-      const Vec3f32 left = t.GetOrientation().GetCol(0);
-      const Vec3f32 up = t.GetOrientation().GetCol(1);
-      const Vec3f32 dir = t.GetOrientation().GetCol(2);
+      const Vec3f32 left(t.GetOrientation().GetCol(0));
+      const Vec3f32 up(t.GetOrientation().GetCol(1));
+      const Vec3f32 dir(t.GetOrientation().GetCol(2));
 
       CHECK(dir[1]  == Approx(1.0f));
       CHECK(up[2]   == Approx(-1.0f));

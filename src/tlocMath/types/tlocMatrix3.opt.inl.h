@@ -669,7 +669,7 @@ namespace tloc { namespace math { namespace types {
     Orient(dir a_direction)
   {
     // assuming that the column vectors are LUD
-    Orient(a_direction, up( this->GetCol(1).ConvertTo<vec_type>() ) );
+    Orient(a_direction, up( this->GetCol(1).template ConvertTo<vec_type>() ) );
   }
 
   template <MATRIX_3_TEMP>
@@ -688,7 +688,7 @@ namespace tloc { namespace math { namespace types {
     TLOC_ASSERT(newDir.IsParallel(a_up) == false,
       "a_direction is parallel to a_up. Cannot LookAt() specified direction.");
 
-    const vec_type left = this->GetCol(0);
+    const vec_type left(this->GetCol(0));
 
     vec_type newLeft = worldUp.Cross(newDir);
     vec_type newUp   = newDir.Cross(newLeft);

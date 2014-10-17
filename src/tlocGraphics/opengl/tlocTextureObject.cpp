@@ -9,6 +9,8 @@
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
+
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace p_texture_object {
@@ -188,6 +190,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef alignment::value_type       avt;
 
     const wvt ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
+    const wvt ClampToBorder::s_glParamName     = TLOC_GL_UNSUPPORTED;
     const wvt MirroredRepeat::s_glParamName    = GL_CLAMP_TO_EDGE;
     const wvt Repeat::s_glParamName            = GL_CLAMP_TO_EDGE;
     const wvt MirrorClampToEdge::s_glParamName = GL_CLAMP_TO_EDGE;
@@ -200,67 +203,61 @@ namespace tloc { namespace graphics { namespace gl {
     const fvt LinearMipmapLinear::s_glParamName   = GL_LINEAR_MIPMAP_LINEAR;
 
     const formvt format::Auto::s_glParamName           = GL_NONE;
+    const formvt format::Red::s_glParamName            = GL_RED_EXT;
+    const formvt format::RG::s_glParamName             = GL_RG_EXT;
     const formvt format::RGB::s_glParamName            = GL_RGB;
+    const formvt format::BGR::s_glParamName            = TLOC_GL_UNSUPPORTED;
     const formvt format::RGBA::s_glParamName           = GL_RGBA;
     const formvt format::BGRA::s_glParamName           = GL_BGRA;
+    const formvt format::RedInteger::s_glParamName     = TLOC_GL_UNSUPPORTED;
+    const formvt format::RGInteger::s_glParamName      = TLOC_GL_UNSUPPORTED;
+    const formvt format::RGBInteger::s_glParamName     = TLOC_GL_UNSUPPORTED;
+    const formvt format::BGRInteger::s_glParamName     = TLOC_GL_UNSUPPORTED;
+    const formvt format::RGBAInteger::s_glParamName    = TLOC_GL_UNSUPPORTED;
+    const formvt format::BGRAInteger::s_glParamName    = TLOC_GL_UNSUPPORTED;
     const formvt format::StencilIndex::s_glParamName   = GL_STENCIL_INDEX;
     const formvt format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
 
     const size_type format::Auto::s_glChannels           = 0;
+    const size_type format::Red::s_glChannels            = 1;
+    const size_type format::RG::s_glChannels             = 2;
     const size_type format::RGB::s_glChannels            = 3;
+    const size_type format::BGR::s_glChannels            = 3;
     const size_type format::RGBA::s_glChannels           = 4;
     const size_type format::BGRA::s_glChannels           = 4;
+    const size_type format::RedInteger::s_glChannels     = 1;
+    const size_type format::RGInteger::s_glChannels      = 2;
+    const size_type format::RGBInteger::s_glChannels     = 3;
+    const size_type format::BGRInteger::s_glChannels     = 3;
+    const size_type format::RGBAInteger::s_glChannels    = 4;
+    const size_type format::BGRAInteger::s_glChannels    = 4;
     const size_type format::StencilIndex::s_glChannels   = 1;
     const size_type format::DepthComponent::s_glChannels = 1;
 
     const ifvt internal_format::Auto::s_glParamName           = GL_NONE;
+    const ifvt internal_format::Red::s_glParamName            = GL_RED_EXT;
+    const ifvt internal_format::RG::s_glParamName             = GL_RG_EXT;
     const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
     const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
     const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
+    const ifvt internal_format::DepthStencil::s_glParamName   = GL_DEPTH_STENCIL_OES;
 
     const size_type internal_format::Auto::s_glChannels           = 0;
+    const size_type internal_format::Red::s_glChannels            = 1;
+    const size_type internal_format::RG::s_glChannels             = 2;
     const size_type internal_format::RGB::s_glChannels            = 3;
     const size_type internal_format::RGBA::s_glChannels           = 4;
     const size_type internal_format::DepthComponent::s_glChannels = 1;
-
-    const wvt ClampToBorder::s_glParamName = 0;
-
-    const formvt format::Red::s_glParamName           = 0;
-    const formvt format::RG::s_glParamName            = 0;
-    const formvt format::BGR::s_glParamName           = 0;
-    const formvt format::RedInteger::s_glParamName    = 0;
-    const formvt format::RGInteger::s_glParamName     = 0;
-    const formvt format::RGBInteger::s_glParamName    = 0;
-    const formvt format::BGRInteger::s_glParamName    = 0;
-    const formvt format::RGBAInteger::s_glParamName   = 0;
-    const formvt format::BGRAInteger::s_glParamName   = 0;
-
-    const size_type format::Red::s_glChannels            = 0;
-    const size_type format::RG::s_glChannels             = 0;
-    const size_type format::BGR::s_glChannels            = 0;
-    const size_type format::RedInteger::s_glChannels     = 0;
-    const size_type format::RGInteger::s_glChannels      = 0;
-    const size_type format::RGBInteger::s_glChannels     = 0;
-    const size_type format::BGRInteger::s_glChannels     = 0;
-    const size_type format::RGBAInteger::s_glChannels    = 0;
-    const size_type format::BGRAInteger::s_glChannels    = 0;
-
-    const ifvt internal_format::Red::s_glParamName  = 0;
-    const ifvt internal_format::RG::s_glParamName   = 0;
-    const ifvt internal_format::DepthStencil::s_glParamName   = 0;
-
-    const size_type internal_format::Red::s_glChannels            = 0;
-    const size_type internal_format::RG::s_glChannels             = 0;
-    const size_type internal_format::DepthStencil::s_glChannels   = 0;
+    const size_type internal_format::DepthStencil::s_glChannels   = 1;
 
     const tvt  type::Auto::s_glParamName                      = GL_NONE;
     const tvt  type::UnsignedByte::s_glParamName              = GL_UNSIGNED_BYTE;
-    const tvt  type::Byte::s_glParamName                      = 0;
+    const tvt  type::Byte::s_glParamName                      = GL_BYTE;
     const tvt  type::UnsignedShort::s_glParamName             = GL_UNSIGNED_SHORT;
-    const tvt  type::Short::s_glParamName                     = 0;
-    const tvt  type::UnsignedInt::s_glParamName               = 0;
-    const tvt  type::Int::s_glParamName                       = 0;
-    const tvt  type::Float::s_glParamName                     = 0;
+    const tvt  type::Short::s_glParamName                     = GL_SHORT;
+    const tvt  type::UnsignedInt::s_glParamName               = GL_UNSIGNED_INT;
+    const tvt  type::Int::s_glParamName                       = GL_INT;
+    const tvt  type::Float::s_glParamName                     = GL_FLOAT;
     const tvt  type::UnsignedShort565::s_glParamName          = GL_UNSIGNED_SHORT_5_6_5;
     const tvt  type::UnsignedShort4444::s_glParamName         = GL_UNSIGNED_SHORT_4_4_4_4;
     const tvt  type::UnsignedShort5551::s_glParamName         = GL_UNSIGNED_SHORT_5_5_5_1;
@@ -270,7 +267,6 @@ namespace tloc { namespace graphics { namespace gl {
     const avt  alignment::TwoBytes::s_glParamName             = 2;
     const avt  alignment::FourBytes::s_glParamName            = 4;
     const avt  alignment::EightBytes::s_glParamName           = 8;
-
 
 #else
 # error "WIP"
@@ -503,8 +499,8 @@ namespace tloc { namespace graphics { namespace gl {
     using namespace p_texture_object::alignment;
 
     // defaults
-    Wrap_S<ClampToEdge>().Wrap_T<ClampToEdge>();
-    MinFilter<Linear>().MagFilter<Linear>();
+    Wrap_S<ClampToEdge>().template Wrap_T<ClampToEdge>();
+    MinFilter<Linear>().template MagFilter<Linear>();
     InternalFormat<internal_format::Auto>();
     Format<format::Auto>();
     Type<type::Auto>();

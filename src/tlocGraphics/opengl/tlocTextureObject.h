@@ -138,9 +138,10 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     struct Params
     {
-      template <typename T_Target> friend class TextureObject_T;
+      template <typename U_Target> friend class TextureObject_T;
 
       typedef Params                                        this_type;
+      typedef typename TextureObject_T<T_Target>::size_type size_type;
       typedef p_texture_object::target::value_type          texture_type;
       typedef p_texture_object::wrap_technique::value_type  wrap_value_type;
       typedef p_texture_object::filter::value_type          filter_value_type;
@@ -284,7 +285,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      template <typename T_Target>
+      template <typename U_Target>
       void  TextureType();
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -326,11 +327,17 @@ namespace tloc { namespace graphics { namespace gl {
     typedef T_Target                                      target_type;
     typedef TextureObject_T<target_type>                  this_type;
     typedef Object_T<this_type, p_object::OnlyID>         base_type;
-    typedef base_type::object_handle                      object_handle;
-    typedef base_type::error_type                         error_type;
+    typedef typename base_type::object_handle             object_handle;
+    typedef typename base_type::error_type                error_type;
+    typedef typename base_type::size_type                 size_type;
     typedef s32                                           texture_image_unit_type;
     typedef p_texture_object::target::value_type          target_value_type;
     typedef types::Dimension2u32                          dimension_type;
+
+  public:
+    using base_type::GetHandle;
+    using base_type::SetHandle;
+    using base_type::IsLastRef;
 
   public:
     TextureObject_T(const Params& a_params = Params());

@@ -7,6 +7,8 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/error/tlocError.h>
 
+#define TLOC_GL_UNSUPPORTED  -1
+
 namespace tloc { namespace graphics { namespace gl {
   
   // ///////////////////////////////////////////////////////////////////////

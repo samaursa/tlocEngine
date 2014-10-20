@@ -122,6 +122,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef s32                                       stencil_value_type;
 
     typedef gl::FramebufferObject                     fbo_type;
+    typedef fbo_type::bind_uptr                       fbo_bind_ptr;
     typedef gl::framebuffer_object_sptr               fbo_sptr;
     typedef fbo_type::dimension_type                  dimension_type;
     typedef core_err::Error                           error_type;
@@ -214,7 +215,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
   private:
     Params                      m_params;
-    mutable fbo_type::bind_uptr m_fboBinder;
+    mutable fbo_bind_ptr        m_fboBinder;
   };
 
   // -----------------------------------------------------------------------

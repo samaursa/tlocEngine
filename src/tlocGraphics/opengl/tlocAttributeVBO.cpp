@@ -616,7 +616,7 @@ namespace tloc { namespace graphics { namespace gl {
       // allocate the buffer
       m_vbo = VertexBufferObject();
       {
-        VertexBufferObject::bind_array_buffer b(GetVBO());
+        VertexBufferObject::bind_array b(GetVBO());
         glBufferData(m_target,
                      m_dataTypeSize * m_dataSize,
                      TLOC_NULL,

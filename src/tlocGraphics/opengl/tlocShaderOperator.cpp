@@ -781,7 +781,7 @@ namespace tloc { namespace graphics { namespace gl {
             gfx_t::gl_enum shaderVarType = shaderVarPtr->GetType();
 
             if (shaderVarType >= TLOC_GL_POSITION2F &&
-                shaderVarType <= TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F)
+                shaderVarType <= TLOC_GL_ORIENTATION4F)
             {
               shaderVarType = shaderVarPtr->GetInterleavedType(interleaveIndex);
             }

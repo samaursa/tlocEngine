@@ -61,6 +61,8 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(Mat3f32, GL_FLOAT_MAT3);
   TLOC_DECL_TL_TO_GL(Mat4f32, GL_FLOAT_MAT4);
 
+  TLOC_DECL_TL_TO_GL(Array<Mat4f32>, GL_FLOAT_VEC4);
+
   TLOC_DECL_TL_TO_GL(Array<s8>,     GL_BYTE);
   TLOC_DECL_TL_TO_GL(Array<u8>,     GL_UNSIGNED_BYTE);
   TLOC_DECL_TL_TO_GL(Array<short>,  GL_SHORT);
@@ -120,6 +122,11 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnc>,     TLOC_GL_POSITION3F_NORMAL3F_COLOR4F);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnt>,     TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnct>,    TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F);
+
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpnto>,    TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F_ORIENTATION);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnto>,    TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F_ORIENTATION);
+
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert4fo>,       GL_FLOAT_MAT4);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
   TLOC_DECL_TL_TO_GL(Tuple2u32, GL_UNSIGNED_INT_VEC2);

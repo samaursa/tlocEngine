@@ -601,84 +601,84 @@ namespace tloc { namespace graphics { namespace gl {
       {
       case GL_INT:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_INT_VEC2:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_INT_VEC3:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_INT_VEC4:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT_VEC2:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT_VEC3:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT_VEC4:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC2:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC3:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC4:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
           break;
@@ -703,7 +703,7 @@ namespace tloc { namespace graphics { namespace gl {
           gl::AttributeVBO::StrideInfo si =
             a_attributeVBO.GetStrideInfo(a_interleaveIndex);
 
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 
                                 si.m_numElements,

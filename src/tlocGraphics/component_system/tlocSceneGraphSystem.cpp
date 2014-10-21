@@ -166,7 +166,17 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_Initialize()
   {
     SortEntities();
-    return ErrorSuccess;
+    return base_type::Post_Initialize();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    SceneGraphSystem::
+    Post_ReInitialize()
+  {
+    SortEntities();
+    return base_type::Post_ReInitialize();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

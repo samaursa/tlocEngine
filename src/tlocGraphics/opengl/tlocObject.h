@@ -197,9 +197,9 @@ namespace tloc { namespace graphics { namespace gl {
   // -----------------------------------------------------------------------
   // algorithms
 
-  namespace algos { namespace compare {
+  namespace algos { namespace object {
 
-    namespace object {
+    namespace compare {
 
       struct ByHandle
       {

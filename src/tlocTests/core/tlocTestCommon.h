@@ -54,6 +54,15 @@ do {\
   CHECK(exceptionThrown);\
   tloc::core::assert::SetAssertDefaultBreak();\
   } while((void)0, 0)
+
+#define TLOC_TEST_ASSERT_REQUIRE()\
+  catch(const tloc::tests::exception::Assert&)\
+  {\
+    exceptionThrown = true;\
+  }\
+  REQUIRE(exceptionThrown);\
+  tloc::core::assert::SetAssertDefaultBreak();\
+  } while((void)0, 0)
 #else
 
 #define TLOC_TEST_ASSERT \
@@ -62,6 +71,8 @@ do {\
   if (alwaysFalse)
 
 #define TLOC_TEST_ASSERT_CHECK() } while((void)0, 0)
+
+#define TLOC_TEST_ASSERT_REQUIRE() } while((void)0, 0)
 
 #endif
 

@@ -7,7 +7,7 @@
 namespace tloc { namespace core { namespace component_system {
 
   TL_I Entity::Entity(entity_id a_id)
-    : base_type("No name assigned")
+    : base_type(core_str::Format("%p", this))
     , m_id(a_id)
     , m_index(size_type() - 1)
     , m_active(true)

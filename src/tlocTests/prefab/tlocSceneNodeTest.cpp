@@ -1,5 +1,6 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocPrefab/graphics/tlocSceneNode.h>
 
@@ -92,7 +93,42 @@ namespace
       CHECK( (ptr->GetEntity() == ent) );
     }
 
-    system->Initialize();
+    // testing Issue #83
+    gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
+
+    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Info::s_value);
+    TLOC_TEST_ASSERT
+    {
+      entity_ptr dummyEnt = entMgr->CreateEntity();
+
+      math_cs::transform_sptr t = core_sptr::MakeShared<math_cs::Transform>();
+      gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
+
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, t).Orphan(true));
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, sn));
+
+      system->Initialize();
+    }
+    TLOC_TEST_ASSERT_CHECK();
+
+    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::s_value);
+    TLOC_TEST_ASSERT
+    {
+      entity_ptr dummyEnt = entMgr->CreateEntity();
+      entity_ptr dummyEnt2 = entMgr->CreateEntity();
+
+      math_cs::transform_sptr t = core_sptr::MakeShared<math_cs::Transform>();
+      gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>(dummyEnt2);
+
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, t).Orphan(true));
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, sn));
+
+      system->Initialize();
+    }
+    TLOC_TEST_ASSERT_CHECK();
+
+    graphics::GetLogger().ResetBreakOnSeverity();
+
     system->ProcessActiveEntities();
   }
 };

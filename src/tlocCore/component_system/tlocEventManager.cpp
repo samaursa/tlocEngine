@@ -156,8 +156,6 @@ using namespace tloc::core_cs;
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(EventManager);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(EventManager);
 
-#include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
-
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 1);
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 2);
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 3);

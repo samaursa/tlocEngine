@@ -638,6 +638,12 @@ namespace tloc { namespace core { namespace string {
   extern char32   g_newlineW[];
   extern StringW  g_newlineStrW;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE(StringBase<char8>);
+  TLOC_EXTERN_TEMPLATE(StringBase<char32>);
+
 };};};
 
 namespace tloc { namespace core {

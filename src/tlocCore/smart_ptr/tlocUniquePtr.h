@@ -176,10 +176,14 @@ namespace tloc { namespace core { namespace smart_ptr {
     return a_uptr == nullptr ? 0 : 1;
   }
 
+};};};
+
 #define TLOC_TYPEDEF_UNIQUE_PTR(_type_, _typedef_)\
   typedef tloc::core_sptr::UniquePtr<_type_>  _typedef_##_uptr;\
   typedef tloc::core_sptr::UniquePtr<const _type_>  const_##_typedef_##_uptr
 
-};};};
+#define TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(_type_)\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::UniquePtr<_type_>);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::UniquePtr<const _type_>)
 
 #endif

@@ -134,7 +134,6 @@ set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tlocTuple.h
     data_structures/tlocTuple.inl.h
     data_structures/tlocTuple.cpp
-    data_structures/tlocTupleExplicitMacros.h
     data_structures/tlocVariadic.h
     data_structures/tlocVariadic.inl.h
     data_structures/tlocVariadic.cpp

@@ -1399,7 +1399,9 @@ namespace tloc { namespace core {
     {
       while (a_rangeBegin != a_rangeEnd)
       {
-        *(aDestRangeBegin++) = *(a_rangeBegin++);
+        *aDestRangeBegin = *a_rangeBegin;
+        aDestRangeBegin++;
+        a_rangeBegin++;
       }
 
       return aDestRangeBegin;

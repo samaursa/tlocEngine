@@ -39,8 +39,9 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core_cs::EntityProcessingSystem               base_type;
     typedef RenderSystem_I                                other_base_type;
-
     typedef T_RendererSptr                                renderer_type;
+    typedef RenderSystem_TI<renderer_type>                this_type;
+
     typedef typename
       renderer_type::value_type::render_one_frame_uptr    rof_uptr;
     typedef math::types::Mat4f32                          matrix_type;
@@ -129,12 +130,17 @@ namespace tloc { namespace graphics { namespace component_system {
                     const core_ds::Variadic
                       <component_type, T_VarSize>&  a_typeFlags);
 
+    virtual void              SortEntities();
+
     virtual error_type        Pre_Initialize();
     void                      DoInitializeTexCoords(entity_ptr a_ent, 
                                                     so_type& a_so) const;
     void                      DoUpdateTexCoords(entity_ptr a_ent, 
                                                 so_type& a_so) const;
     virtual error_type        InitializeEntity(entity_ptr a_ent);
+    virtual error_type        Post_Initialize();
+
+    virtual error_type        Post_ReInitialize();
 
     virtual void              Pre_ProcessActiveEntities(f64);
     virtual void              Post_ProcessActiveEntities(f64);

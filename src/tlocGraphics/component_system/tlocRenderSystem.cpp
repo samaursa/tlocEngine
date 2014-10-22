@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
 
@@ -15,6 +16,30 @@
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 
 namespace tloc { namespace graphics { namespace component_system {
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Entity Compare Materials
+
+  struct MaterialCompareFromEntity
+  {
+    typedef gfx_cs::material_sptr                         ptr_type;
+    typedef core_cs::EntitySystemBase::entity_count_pair  entity_ptr_type;
+    typedef ptr_type::value_type                          comp_type;
+
+    bool
+      operator()(entity_ptr_type a, entity_ptr_type b)
+    {
+      TLOC_ASSERT(a.first->HasComponent(comp_type::k_component_type),
+        "Entity should have a 'Material' component");
+      TLOC_ASSERT(b.first->HasComponent(comp_type::k_component_type),
+        "Entity should have a 'Material' component");
+
+      ptr_type first = a.first->GetComponent<comp_type>();
+      ptr_type second = b.first->GetComponent<comp_type>();
+
+      return first < second;
+    }
+  };
 
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_TI
@@ -49,6 +74,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
   // RenderSystem_TO
+
+  template <RENDER_SYSTEM_TEMPS>
+  void
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    SortEntities()
+  {
+    core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
+               MaterialCompareFromEntity());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDER_SYSTEM_TEMPS>
   RENDER_SYSTEM_TYPE::error_type
@@ -281,6 +317,28 @@ namespace tloc { namespace graphics { namespace component_system {
       << "a material.";
 
     return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RENDER_SYSTEM_TYPE::error_type
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    Post_Initialize()
+  {
+    SortEntities();
+    return base_type::Post_Initialize();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RENDER_SYSTEM_TYPE::error_type
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    Post_ReInitialize()
+  {
+    SortEntities();
+    return base_type::Post_ReInitialize();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

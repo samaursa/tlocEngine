@@ -40,6 +40,8 @@ namespace tloc { namespace core { namespace memory {
     void DoEnableLogging();
     void DoDisableLogging();
 
+    void DoDisableTracking();
+
     namespace priv {
 
       void DoTrackMemoryAddress(void* a_memAddress);

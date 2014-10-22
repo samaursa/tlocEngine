@@ -65,4 +65,7 @@ namespace tloc { namespace core { namespace types {
 
 };};};
 
+#define TLOC_EXTERN_TEMPLATE_STRONG_TYPE(_type_, _index_)\
+  TLOC_EXTERN_TEMPLATE(tloc::core_t::StrongType_T<_type_ TLOC_COMMA _index_>)
+
 #endif

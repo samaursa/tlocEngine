@@ -418,4 +418,7 @@ namespace tloc { namespace core { namespace data_structs {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_TUPLE(_type_, _size_)\
+  template class tloc::core_ds::Tuple<_type_, _size_>
+
 #endif

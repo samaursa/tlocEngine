@@ -2,7 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
-#include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
 
 #include <tlocMath/tloc_math.h>
 #include <tlocMath/tloc_math.inl.h>

@@ -18,15 +18,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
 
-  namespace {
-
-    const core_str::StringW
-      g_symbols = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  L"abcdefghijklmnopqrstuvwxyz" 
-                  L"1234567890!@#$%^&*()_+-=[]" 
-                  L"{}\\|;:'\",<.>/?`~";
-  };
-
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 

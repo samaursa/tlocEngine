@@ -28,15 +28,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
 
-  namespace {
-
-    const core_str::StringW
-      g_symbols = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  L"abcdefghijklmnopqrstuvwxyz" 
-                  L"1234567890!@#$%^&*()_+-=[]" 
-                  L"{}\\|;:'\",<.>/?`~";
-  };
-
 #define TLOC_TEXT_RENDER_SYSTEM_TEMPS   typename T_TextOrStaticTextComponent
 #define TLOC_TEXT_RENDER_SYSTEM_PARAMS  T_TextOrStaticTextComponent
 #define TLOC_TEXT_RENDER_SYSTEM_TYPE    typename TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>
@@ -318,6 +309,7 @@ namespace tloc { namespace graphics { namespace component_system {
       { q->Deactivate(); }
     }
 
+    DoAlignText(tqp);
     m_allText.push_back(tqp);
 
     return ErrorSuccess;

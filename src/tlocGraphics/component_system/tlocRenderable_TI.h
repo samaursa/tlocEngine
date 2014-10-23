@@ -18,10 +18,12 @@ namespace tloc { namespace graphics { namespace component_system {
     : public core_cs::Component_T<T_Component, T_ComponentEnumType>
   {
   public:
-    typedef core_cs::Component_T<T_Component, T_ComponentEnumType> base_type;
-    typedef Renderable_TI<T_Component, T_ComponentEnumType>        this_type;
+    typedef Renderable_TI<T_Component, T_ComponentEnumType>   this_type;
+    typedef
+      core_cs::Component_T<T_Component, T_ComponentEnumType>  base_type;
+    typedef typename base_type::component_type                component_type;
 
-    typedef gfx_gl::shader_operator_vso                            so_type;
+    typedef gfx_gl::shader_operator_vso                       so_type;
 
   public:
     TLOC_DECL_AND_DEF_GETTER_DIRECT(so_type, GetShaderOperator, m_shaderOp);

@@ -639,6 +639,7 @@ namespace tloc { namespace graphics { namespace gl {
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
           break;
         }
+#ifdef TLOC_OS_WIN // TODO: Change to TLOC_GFX_PLATFORM_GL
       case GL_UNSIGNED_INT_VEC2:
         {
           VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
@@ -660,6 +661,7 @@ namespace tloc { namespace graphics { namespace gl {
           glVertexAttribPointer(a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
         }
+#endif
       case GL_FLOAT:
         {
           VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());

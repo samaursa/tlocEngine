@@ -8,6 +8,15 @@ namespace tloc { namespace graphics { namespace gl {
   namespace p_vbo {
     namespace target {
 
+#if defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL
+# define GL_COPY_READ_BUFFER            TLOC_GL_UNSUPPORTED
+# define GL_COPY_WRITE_BUFFER           TLOC_GL_UNSUPPORTED
+# define GL_PIXEL_PACK_BUFFER           TLOC_GL_UNSUPPORTED
+# define GL_PIXEL_UNPACK_BUFFER         TLOC_GL_UNSUPPORTED
+# define GL_TEXTURE_BUFFER              TLOC_GL_UNSUPPORTED
+# define GL_TRANSFORM_FEEDBACK_BUFFER   TLOC_GL_UNSUPPORTED
+#endif
+
       const value_type ArrayBuffer::s_glParamName = GL_ARRAY_BUFFER;
       const value_type CopyReadBuffer::s_glParamName = GL_COPY_READ_BUFFER;
       const value_type CopyWriteBuffer::s_glParamName = GL_COPY_WRITE_BUFFER;
@@ -20,6 +29,15 @@ namespace tloc { namespace graphics { namespace gl {
     };
 
     namespace usage {
+
+#if defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL
+# define GL_STREAM_READ   TLOC_GL_UNSUPPORTED
+# define GL_STREAM_COPY   TLOC_GL_UNSUPPORTED
+# define GL_STATIC_READ   TLOC_GL_UNSUPPORTED
+# define GL_STATIC_COPY   TLOC_GL_UNSUPPORTED
+# define GL_DYNAMIC_READ  TLOC_GL_UNSUPPORTED
+# define GL_DYNAMIC_COPY  TLOC_GL_UNSUPPORTED
+#endif
 
       const value_type StreamDraw::s_glParamName = GL_STREAM_DRAW;
       const value_type StreamRead::s_glParamName = GL_STREAM_READ;
@@ -78,7 +96,7 @@ namespace tloc { namespace graphics { namespace gl {
   VertexBufferObject::LateBind_T<TLOC_VBO_LATE_BIND_PARAMS>::
     Bind(const this_type& a_vbo)
   {
-    m_bind.reset(new bind_ptr::value_type());
+    m_bind.reset(new typename bind_ptr::value_type());
   }
 
   // -----------------------------------------------------------------------

@@ -106,6 +106,7 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
     typedef Component                             base_type;
+    typedef base_type::component_type             component_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
     Component_T(component_type a_type, BufferArg a_debugName) 

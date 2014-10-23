@@ -172,7 +172,7 @@ namespace tloc { namespace graphics { namespace gl {
     DoSetType(type_to_gl::Get<T>());
     m_isArray = true;
     DoGetValueRef().Assign(Array<T>());
-    DoGetValueRef().Cast<Array<T> >().swap(a_array);
+    DoGetValueRef().template Cast<Array<T> >().swap(a_array);
     return *(static_cast<derived_type*>(this));
   }
 

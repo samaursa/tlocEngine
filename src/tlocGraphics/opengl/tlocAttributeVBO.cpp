@@ -1,9 +1,11 @@
 #include "tlocAttributeVBO.h"
 
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/platform/tlocPlatformDefines.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocError.h>
+
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -601,6 +603,11 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+#ifdef TLOC_OS_IPHONE
+  void glCopyBufferSubData(GLenum, GLenum, GLintptr, GLintptr, GLsizeiptr)
+  { TLOC_ASSERT_FALSE("Copying buffer data is NOT supported on iOS"); }
+#endif
+
   AttributeVBO::this_type&
     AttributeVBO::
     CopyFrom(const this_type& a_other)
@@ -756,6 +763,11 @@ namespace tloc { namespace graphics { namespace gl {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#ifdef TLOC_OS_IPHONE
+  void glGetBufferSubData(GLenum, GLintptr, GLsizeiptr, GLvoid*)
+  { TLOC_ASSERT_FALSE("Getting buffer data is NOT supported on iOS"); }
+#endif
 
   template <typename T_Type>
   const AttributeVBO::this_type&

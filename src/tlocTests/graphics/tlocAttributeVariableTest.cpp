@@ -8,6 +8,82 @@
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
+#if defined (TLOC_OS_WIN)
+# define CHECK_ATTRIBUTE_VBO_VALUE(_attrib_vbo_, _array_, _value_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FP(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPC(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetColor() == _vert_.GetColor())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPT(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetTexCoord() == _vert_.GetTexCoord())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPN(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNC(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal()); \
+    CHECK(_array_[0].GetColor() == _vert_.GetColor())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNT(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal()); \
+    CHECK(_array_[0].GetTexCoord() == _vert_.GetTexCoord())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNCT(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal()); \
+    CHECK(_array_[0].GetColor() == _vert_.GetColor()); \
+    CHECK(_array_[0].GetTexCoord() == _vert_.GetTexCoord())
+
+# define CHECK_ATTRIBUTE_VBO_MULTIPLE_VERT3FPNCT(_attrib_vbo_, _array_, _num_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == _num_); \
+    for (tl_int i = 0; i < _num_; ++i) \
+    { \
+      CHECK(_array_[i].GetPosition() == _vert_.GetPosition()); \
+      CHECK(_array_[i].GetNormal() == _vert_.GetNormal()); \
+      CHECK(_array_[i].GetColor() == _vert_.GetColor()); \
+      CHECK(_array_[i].GetTexCoord() == _vert_.GetTexCoord()); \
+    }
+
+#elif defined (TLOC_OS_IPHONE)
+# define CHECK_ATTRIBUTE_VBO_VALUE(_attrib_vbo_, _array_, _value_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FP(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPC(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPT(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPN(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNC(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNT(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNCT(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_MULTIPLE_VERT3FPNCT(_attrib_vbo_, _array_, _num_, _vert_)
+
+#else
+# error WIP
+#endif
+
 namespace TestingAttributeVariable
 {
   using namespace tloc;
@@ -38,10 +114,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0] == Approx(1.0f));
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Approx(1.0f));
     }
 
     SECTION("Arrays", "")
@@ -53,10 +126,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0] == Vec2f32(1.0f, 2.0f));
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Vec2f32(1.0f, 2.0f));
     }
 
     SECTION("Arrays", "")
@@ -68,10 +138,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0] == Vec3f32(1.0, 2.0f, 3.0f));
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Vec3f32(1.0, 2.0f, 3.0f));
     }
 
     SECTION("Arrays", "")
@@ -83,10 +150,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0] == Vec4f32(1.0, 2.0f, 3.0f, 4.0f));
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Vec4f32(1.0, 2.0f, 3.0f, 4.0f));
     }
 
     SECTION("Arrays", "")
@@ -102,10 +166,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
+      CHECK_ATTRIBUTE_VBO_VERT3FP(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -122,11 +183,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetColor() == v.GetColor());
+      CHECK_ATTRIBUTE_VBO_VERT3FPC(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -143,11 +200,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetTexCoord() == v.GetTexCoord());
+      CHECK_ATTRIBUTE_VBO_VERT3FPT(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -164,11 +217,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
+      CHECK_ATTRIBUTE_VBO_VERT3FPN(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -186,12 +235,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
-      CHECK(array[0].GetColor() == v.GetColor());
+      CHECK_ATTRIBUTE_VBO_VERT3FPNC(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -209,12 +253,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
-      CHECK(array[0].GetTexCoord() == v.GetTexCoord());
+      CHECK_ATTRIBUTE_VBO_VERT3FPNT(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -233,13 +272,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
-      CHECK(array[0].GetTexCoord() == v.GetTexCoord());
-      CHECK(array[0].GetColor() == v.GetColor());
+      CHECK_ATTRIBUTE_VBO_VERT3FPNCT(a, array, v);
     }
 
     SECTION("Arrays with more than 1 value", "")
@@ -258,17 +291,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 3);
-
-      for (tl_int i = 0; i < 3; ++i)
-      {
-        CHECK(array[i].GetPosition() == v.GetPosition());
-        CHECK(array[i].GetNormal() == v.GetNormal());
-        CHECK(array[i].GetTexCoord() == v.GetTexCoord());
-        CHECK(array[i].GetColor() == v.GetColor());
-      }
+      CHECK_ATTRIBUTE_VBO_MULTIPLE_VERT3FPNCT(a, array, 3, v);
     }
 
     SECTION("Arrays", "")
@@ -285,11 +308,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetColor() == v.GetColor());
+      CHECK_ATTRIBUTE_VBO_VERT3FPC(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -306,11 +325,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetTexCoord() == v.GetTexCoord());
+      CHECK_ATTRIBUTE_VBO_VERT3FPT(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -327,11 +342,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
+      CHECK_ATTRIBUTE_VBO_VERT3FPN(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -349,12 +360,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
-      CHECK(array[0].GetColor() == v.GetColor());
+      CHECK_ATTRIBUTE_VBO_VERT3FPNC(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -372,12 +378,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
-      CHECK(array[0].GetTexCoord() == v.GetTexCoord());
+      CHECK_ATTRIBUTE_VBO_VERT3FPNT(a, array, v);
     }
 
     SECTION("Arrays", "")
@@ -396,13 +397,7 @@ namespace TestingAttributeVariable
                    gl::p_vbo::usage::StaticDraw>(array);
 
       array.clear();
-      a.GetValueAs(array);
-
-      CHECK(array.size() == 1);
-      CHECK(array[0].GetPosition() == v.GetPosition());
-      CHECK(array[0].GetNormal() == v.GetNormal());
-      CHECK(array[0].GetTexCoord() == v.GetTexCoord());
-      CHECK(array[0].GetColor() == v.GetColor());
+      CHECK_ATTRIBUTE_VBO_VERT3FPNCT(a, array, v);
     }
   }
 };

@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace gl {
     GetValueAs(T& a_out) const
   {
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
-    a_out = DoGetValueRef().Cast<T>();
+    a_out = DoGetValueRef().template Cast<T>();
   }
 
   template <typename T_Derived>
@@ -168,7 +168,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(!m_isArrayPtr, "Variable is shared - use GetValueAsShared<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
-    return DoGetValueRef().Cast<T>();
+    return DoGetValueRef().template Cast<T>();
   }
 
   template <typename T_Derived>
@@ -181,7 +181,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(m_isArrayPtr, "Variable is NOT shared - use GetValueAs<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
-    return  DoGetValueRef().Cast<VirtualPtr<T> >();
+    return  DoGetValueRef().template Cast<VirtualPtr<T> >();
   }
 
   template <typename T_Derived>

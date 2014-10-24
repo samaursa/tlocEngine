@@ -9,6 +9,7 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/iterators/tlocIterator.h>
 #include <tlocCore/tlocFunctional.h>
+#include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/utilities/tlocTemplateUtils.h>
 
 //------------------------------------------------------------------------
@@ -57,6 +58,37 @@ namespace tloc { namespace core { namespace containers {
                             second_argument_type a_bucketCount) const;
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // HashTableElementBase
+
+  template <bool T_StoreHash>
+  struct HashtableElementBase_TI;
+
+  template <>
+  struct HashtableElementBase_TI<true>
+  {
+  public:
+    typedef tl_size           size_type;
+
+    HashtableElementBase_TI() : m_hash(0) { }
+
+    size_type GetHash() const { return m_hash; }
+    void      SetHash(size_type a_hash) { m_hash = a_hash; }
+
+  private:
+    size_type   m_hash;
+  };
+
+  template <>
+  struct HashtableElementBase_TI<false>
+  {
+  public:
+    typedef tl_size           size_type;
+
+    size_type GetHash() const { return 0; }
+    void      SetHash(size_type ) { }
+  };
+
   ///-------------------------------------------------------------------------
   /// @brief
   /// The standard creates a hash_node instead which is a simple linked
@@ -65,25 +97,38 @@ namespace tloc { namespace core { namespace containers {
   ///-------------------------------------------------------------------------
   template <typename T_Value, bool T_StoreHash = false>
   struct HashtableElement
+    : public HashtableElementBase_TI<T_StoreHash>
   {
+  public:
+    typedef HashtableElementBase_TI<T_StoreHash>    base_type;
     typedef tl_size                                 size_type;
     typedef const tl_size                           const_size_type;
     typedef T_Value                                 value_type;
     typedef const T_Value                           const_value_type;
 
-    typedef ConditionalTypePackage<value_type, size_type, T_StoreHash>
-                                                    value_hashcode_type;
+    typedef HashtableElement<value_type, T_StoreHash> this_type;
 
+  public:
     HashtableElement();
     HashtableElement(const value_type& a_value, const size_type& a_hash);
 
-    value_type&       m_value();
-    const_value_type& m_value() const;
-    const_size_type&  m_hashcode() const;
+    this_type operator=(const this_type& a_other)
+    {
+      m_value = a_other.m_value;
+      base_type::SetHash(a_other.GetHash());
+      return *this;
+    }
 
-    // You can access this variable directly, but it is recommended that you
-    // use the inline functions instead for clarity.
-    value_hashcode_type m_valueAndHashcode;
+    using base_type::GetHash;
+    using base_type::SetHash;
+
+    value_type&       GetValue() { return m_value; }
+    const value_type& GetValue() const { return m_value; }
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(value_type, SetValue, m_value);
+
+  private:
+    value_type        m_value;
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -274,7 +319,7 @@ namespace tloc { namespace core { namespace containers {
       typedef typename range_hasher_type::result_type          res;
 
       return (res)range_hasher_type::operator()
-        ((arg1)extract_key_type::operator()( a_elem.m_value()), (arg2)a_bucketCount);
+        ((arg1)extract_key_type::operator()( a_elem.GetValue()), (arg2)a_bucketCount);
     }
 
     key_type extract_key(const value_type& a_value) const
@@ -302,17 +347,17 @@ namespace tloc { namespace core { namespace containers {
 
     hash_code_type get_hash_code(const element_type& a_elem) const
     {
-      return get_hash_code(extract_key_type::operator()(a_elem.m_value()));
+      return get_hash_code(extract_key_type::operator()(a_elem.GetValue()));
     }
 
     bool compare (hash_code_type a_hashcode, element_type* a_elem) const
     {
-      return a_hashcode == get_hash_code(extract_key_type::operator()(a_elem->m_value()));
+      return a_hashcode == get_hash_code(extract_key_type::operator()(a_elem->GetValue()));
     }
 
     bool compare (const key_type& a_key, hash_code_type, element_type* a_elem) const
     { return key_equal::operator()
-    (a_key, extract_key_type::operator()(a_elem->m_value())); }
+    (a_key, extract_key_type::operator()(a_elem->GetValue())); }
   };
 
   template <typename T_Policy>
@@ -333,18 +378,18 @@ namespace tloc { namespace core { namespace containers {
 
     hash_code_type get_hash_code(const element_type& a_elem) const
     {
-      return a_elem.m_hashcode();
+      return a_elem.GetHash();
     }
 
     bool compare (hash_code_type a_hashcode, element_type* a_elem) const
     {
-      return a_hashcode == a_elem->m_hashcode();
+      return a_hashcode == a_elem->GetHash();
     }
 
     bool compare (const key_type& a_key, hash_code_type a_hashCode,
                   element_type* a_elem) const
-    { return (a_elem->m_hashcode() == a_hashCode) && key_equal::operator()
-    (a_key, extract_key_type::operator()(a_elem->m_value())); }
+    { return (a_elem->GetHash() == a_hashCode) && key_equal::operator()
+    (a_key, extract_key_type::operator()(a_elem->GetValue())); }
   };
 
   //------------------------------------------------------------------------

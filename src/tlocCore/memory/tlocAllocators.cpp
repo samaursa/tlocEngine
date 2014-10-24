@@ -478,7 +478,11 @@ namespace tloc { namespace core { namespace memory {
 
       static bool
         IsTrackerAvail()
-      { return s_trackerAvailable; }
+      { return s_trackerAvailable && (s_trackerDisabled == false); }
+
+      static void
+        Disable()
+      { s_trackerDisabled = true; }
 
     private:
       memAddress_map_type           m_memAddresses;
@@ -487,11 +491,15 @@ namespace tloc { namespace core { namespace memory {
       bool                          m_loggingEnabled;
 
       static bool                   s_trackerAvailable;
+      static bool                   s_trackerDisabled;
       static this_type              s_tracker;
     };
 
     template <typename T_BuildConfig>
     bool MemoryTracker_T<T_BuildConfig>::s_trackerAvailable = false;
+
+    template <typename T_BuildConfig>
+    bool MemoryTracker_T<T_BuildConfig>::s_trackerDisabled = false;
 
     template <typename T_BuildConfig>
     MemoryTracker_T<T_BuildConfig>
@@ -585,6 +593,10 @@ namespace tloc { namespace core { namespace memory {
         IsTrackerAvail()
       { return false; }
 
+      static void
+        Disable()
+      { }
+
     private:
       static this_type              s_tracker;
     };
@@ -644,7 +656,10 @@ namespace tloc { namespace core { namespace memory {
   void
     DoTrackPointerToMemoryAddress(void* a_memAddress, void* a_ptr)
   {
-    MemoryTracker::Get().TrackPointerToMemoryAddress(a_memAddress, a_ptr);
+    if (MemoryTracker::IsTrackerAvail())
+    {
+      MemoryTracker::Get().TrackPointerToMemoryAddress(a_memAddress, a_ptr);
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -652,7 +667,10 @@ namespace tloc { namespace core { namespace memory {
   void
     DoUntrackPointerToMemoryAddress(void* a_memAddress, void* a_ptr)
   {
-    MemoryTracker::Get().UntrackPointerToMemoryAddress(a_memAddress, a_ptr);
+    if (MemoryTracker::IsTrackerAvail())
+    {
+      MemoryTracker::Get().UntrackPointerToMemoryAddress(a_memAddress, a_ptr);
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -663,7 +681,12 @@ namespace tloc { namespace core { namespace memory {
     if (a_ptr == nullptr)
     { return false; }
 
-     return MemoryTracker::Get().IsPointerToValidMemoryAddress(a_ptr);
+    if (MemoryTracker::IsTrackerAvail())
+    {
+      return MemoryTracker::Get().IsPointerToValidMemoryAddress(a_ptr);
+    }
+
+    return true;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -674,7 +697,12 @@ namespace tloc { namespace core { namespace memory {
     if (a_memAddress == nullptr)
     { return false; }
 
-    return MemoryTracker::Get().IsMemoryAddressTracked(a_memAddress);
+    if (MemoryTracker::IsTrackerAvail())
+    {
+      return MemoryTracker::Get().IsMemoryAddressTracked(a_memAddress);
+    }
+
+    return false;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -723,6 +751,15 @@ namespace tloc { namespace core { namespace memory { namespace tracking {
     DoDisableLogging()
   {
     priv::MemoryTracker::Get().EnableLogging( true );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DoDisableTracking()
+  {
+    priv::MemoryTracker::Get().Disable();
+    TLOC_LOG_CORE_WARN() << "Memory tracking has been disabled";
   }
 
 };};};};

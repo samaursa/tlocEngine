@@ -400,4 +400,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   typedef tloc::core_sptr::SharedPtr<const _type_, \
   tloc::core_sptr::p_shared_ptr::null_copy::Disallow>  const_##_typedef_##_sptr_nonullcopy
 
+#define TLOC_EXTERN_TEMPLATE_SHARED_PTR(_type_)\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::SharedPtr<_type_>);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::SharedPtr<const _type_>);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::SharedPtr<_type_ TLOC_COMMA tloc::core_sptr::p_shared_ptr::null_copy::Disallow>);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::SharedPtr<const _type_ TLOC_COMMA tloc::core_sptr::p_shared_ptr::null_copy::Disallow>)
+
 #endif

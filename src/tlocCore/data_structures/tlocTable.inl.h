@@ -571,4 +571,7 @@ namespace tloc { namespace core { namespace data_structs {
 
 };};};
 
+#define TLOC_EXPLICITLY_INSTANTIATE_TABLE(_type_, _rows_, _cols_)\
+  template class tloc::core_ds::Table<_type_, _rows_, _cols_>
+
 #endif

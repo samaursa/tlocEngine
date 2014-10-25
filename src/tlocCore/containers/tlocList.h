@@ -403,6 +403,26 @@ namespace tloc { namespace core { namespace containers {
       T_DedicatedSize> type;
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+#define TLOC_EXTERN_TEMPLATE_LIST(_type_)\
+  TLOC_EXTERN_TEMPLATE(tloc::core_conts::List<_type_ TLOC_COMMA tloc::core_conts::ListNode<_type_ TLOC_COMMA tloc::core::doubly_linked_tag> >);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_conts::List<_type_ TLOC_COMMA tloc::core_conts::ListNode<_type_ TLOC_COMMA tloc::core::singly_linked_tag> >);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_conts::List<_type_ TLOC_COMMA tloc::core_conts::ListNode<_type_ TLOC_COMMA tloc::core::doubly_linked_tag> TLOC_COMMA tloc::core_conts::List_Dynamic TLOC_COMMA false>);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_conts::List<_type_ TLOC_COMMA tloc::core_conts::ListNode<_type_ TLOC_COMMA tloc::core::singly_linked_tag> TLOC_COMMA tloc::core_conts::List_Dynamic TLOC_COMMA false>)
+
+  TLOC_EXTERN_TEMPLATE_LIST(s8);
+  TLOC_EXTERN_TEMPLATE_LIST(s32);
+  TLOC_EXTERN_TEMPLATE_LIST(s64);
+
+  TLOC_EXTERN_TEMPLATE_LIST(u8);
+  TLOC_EXTERN_TEMPLATE_LIST(u32);
+  TLOC_EXTERN_TEMPLATE_LIST(u64);
+
+  TLOC_EXTERN_TEMPLATE_LIST(f32);
+  TLOC_EXTERN_TEMPLATE_LIST(f64);
+
 };};};
 
 namespace tloc { namespace core {

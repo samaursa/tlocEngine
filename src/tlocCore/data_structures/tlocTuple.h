@@ -325,6 +325,36 @@ namespace tloc { namespace core { namespace data_structs {
     return tupToRet;
   }
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+#define TLOC_EXTERN_TEMPLATE_TUPLE(_type_, _size_)\
+  TLOC_EXTERN_TEMPLATE(tloc::core_ds::Tuple<_type_ TLOC_COMMA _size_>)
+
+  TLOC_EXTERN_TEMPLATE_TUPLE(s32, 2);
+  TLOC_EXTERN_TEMPLATE_TUPLE(s32, 3);
+  TLOC_EXTERN_TEMPLATE_TUPLE(s32, 4);
+
+  TLOC_EXTERN_TEMPLATE_TUPLE(u32, 2);
+  TLOC_EXTERN_TEMPLATE_TUPLE(u32, 3);
+  TLOC_EXTERN_TEMPLATE_TUPLE(u32, 4);
+
+  TLOC_EXTERN_TEMPLATE_TUPLE(f32, 2);
+  TLOC_EXTERN_TEMPLATE_TUPLE(f32, 3);
+  TLOC_EXTERN_TEMPLATE_TUPLE(f32, 4);
+
+  TLOC_EXTERN_TEMPLATE_TUPLE(s64, 2);
+  TLOC_EXTERN_TEMPLATE_TUPLE(s64, 3);
+  TLOC_EXTERN_TEMPLATE_TUPLE(s64, 4);
+
+  TLOC_EXTERN_TEMPLATE_TUPLE(u64, 2);
+  TLOC_EXTERN_TEMPLATE_TUPLE(u64, 3);
+  TLOC_EXTERN_TEMPLATE_TUPLE(u64, 4);
+
+  TLOC_EXTERN_TEMPLATE_TUPLE(f64, 2);
+  TLOC_EXTERN_TEMPLATE_TUPLE(f64, 3);
+  TLOC_EXTERN_TEMPLATE_TUPLE(f64, 4);
+
 };};};
 
 #include "tlocTuple.inl.h"

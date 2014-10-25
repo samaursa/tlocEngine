@@ -53,7 +53,7 @@ namespace tloc { namespace core { namespace containers {
     //--------------------------------------------------------------------------
     // General
 
-    TL_FI const T_Container&    _Get_container() const;
+    TL_FI const T_Container&    DoGetContainer() const;
 
     //--------------------------------------------------------------------------
     // Assignment

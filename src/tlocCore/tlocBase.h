@@ -365,5 +365,14 @@ struct DiagnoseTemplate;
 # define COMMA() ,
 #endif
 
+// -----------------------------------------------------------------------
+// extern templates
 
+#if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE)
+# define TLOC_EXTERN_TEMPLATE(_class_with_type_)\
+    extern template _class_with_type_
+#else
+# define TLOC_EXTERN_TEMPLATE(_class_with_type_)
 #endif
+
+#endif // header guard

@@ -177,6 +177,31 @@ namespace tloc { namespace core { namespace logging {
                    p_logger::update_policy::OnFlush,
                    p_logger::format_policy::Default>      LoggerFileOnFlush;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE(Logger_T<p_logger::write_policy::Console TLOC_COMMA
+                          p_logger::update_policy::Immediate TLOC_COMMA
+                          p_logger::format_policy::Default>);
+  TLOC_EXTERN_TEMPLATE(Logger_T<p_logger::write_policy::Console TLOC_COMMA
+                          p_logger::update_policy::OnFlush TLOC_COMMA
+                          p_logger::format_policy::Default>);
+
+  TLOC_EXTERN_TEMPLATE(Logger_T<p_logger::write_policy::Output TLOC_COMMA
+                          p_logger::update_policy::Immediate TLOC_COMMA
+                          p_logger::format_policy::Default>);
+  TLOC_EXTERN_TEMPLATE(Logger_T<p_logger::write_policy::Output TLOC_COMMA
+                          p_logger::update_policy::OnFlush TLOC_COMMA
+                          p_logger::format_policy::Default>);
+
+  TLOC_EXTERN_TEMPLATE(Logger_T<p_logger::write_policy::File TLOC_COMMA
+                          p_logger::update_policy::Immediate TLOC_COMMA
+                          p_logger::format_policy::Default>);
+  TLOC_EXTERN_TEMPLATE(Logger_T<p_logger::write_policy::File TLOC_COMMA
+                          p_logger::update_policy::OnFlush TLOC_COMMA
+                          p_logger::format_policy::Default>);
+
+
   // ///////////////////////////////////////////////////////////////////////
   // Log
 
@@ -277,6 +302,16 @@ namespace tloc { namespace core { namespace logging {
   typedef Log_T<LoggerOutputOnFlush>                    LogOutputOnFlush;
   typedef Log_T<LoggerFileImmediate>                    LogFileImmediate;
   typedef Log_T<LoggerFileOnFlush>                      LogFileOnFlush;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE(Log_T<LoggerConsoleImmediate>);
+  TLOC_EXTERN_TEMPLATE(Log_T<LoggerConsoleOnFlush>);
+  TLOC_EXTERN_TEMPLATE(Log_T<LoggerOutputImmediate>);
+  TLOC_EXTERN_TEMPLATE(Log_T<LoggerOutputOnFlush>);
+  TLOC_EXTERN_TEMPLATE(Log_T<LoggerFileImmediate>);
+  TLOC_EXTERN_TEMPLATE(Log_T<LoggerFileOnFlush>);
 
 };};};
 

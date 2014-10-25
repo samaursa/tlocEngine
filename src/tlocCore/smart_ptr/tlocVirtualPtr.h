@@ -566,4 +566,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   typedef tloc::core_sptr::VirtualPtr<_type_>  _typedef_##_vptr;\
   typedef tloc::core_sptr::VirtualPtr<const _type_>  const_##_typedef_##_vptr
 
+#define TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(_type_)\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::VirtualPtr<_type_>);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_sptr::VirtualPtr<const _type_>)
+
 #endif

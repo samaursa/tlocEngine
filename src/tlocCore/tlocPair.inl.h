@@ -52,19 +52,22 @@ namespace tloc { namespace core {
   // Global operators
 
   template <typename T1, typename T2>
-  TL_FI bool operator== (const Pair<T1, T2>& a, const Pair<T1, T2>& b)
-  {
-    return ( (a.first == a.second) && (a.second == b.second) );
-  }
+  bool 
+    operator== (const Pair<T1, T2>& a, const Pair<T1, T2>& b)
+  { return ( (a.first == a.second) && (a.second == b.second) ); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T1, typename T2>
-  TL_FI bool operator!= (const Pair<T1, T2>& a, const Pair<T1, T2>& b)
-  {
-    return !(a == b);
-  }
+  bool 
+    operator!= (const Pair<T1, T2>& a, const Pair<T1, T2>& b)
+  { return !(a == b); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T1, typename T2>
-  TL_FI bool operator<(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
+  bool 
+    operator<(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
   {
     // Confusing comparison. According to the standard: In inequality
     // comparisons (<, >), the first elements are compared first, and only if
@@ -73,25 +76,30 @@ namespace tloc { namespace core {
     return (a.first<b.first) || (!(b.first<a.first)&&(a.second < b.second));
   }
 
-  template <typename T1, typename T2>
-  TL_FI bool operator>(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
-  {
-    return b < a; 
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T1, typename T2>
-  TL_FI bool operator>=(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
-  {
-    return !(a < b); 
-  }
+  bool 
+    operator>(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
+  { return b < a; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T1, typename T2>
-  TL_FI bool operator<=(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
-  {
-    return !(b < a); 
-  }
+  bool 
+    operator>=(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
+  { return !(a < b); }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T1, typename T2>
+  bool 
+    operator<=(const Pair<T1, T2>& a, const Pair<T1, T2>& b)
+  { return !(b < a); }
 
 };};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_PAIR(_firstType_, _secondType_)\
+  template class tloc::core::Pair<_firstType_, _secondType_>
 
 #endif

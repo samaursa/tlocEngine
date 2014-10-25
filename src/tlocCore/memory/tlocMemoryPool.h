@@ -252,6 +252,46 @@ namespace tloc { namespace core { namespace memory {
     index_type                m_numAvail;
   };
 
+// -----------------------------------------------------------------------
+// explicit instantiation macros
+
+#define TLOC_EXTERN_TEMPLATE_MEM_POOL(_type_, _capacity_, _policyIndexing_)\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(_type_);\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(_type_);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_mem::MemoryPoolIndexed<_type_ TLOC_COMMA _capacity_ TLOC_COMMA _policyIndexing_>)
+
+#define TLOC_EXTERN_TEMPLATE_MEM_POOL_DYN(_type_, _policyIndexing_)\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(_type_);\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(_type_);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_mem::MemoryPoolIndexed<_type_ TLOC_COMMA 0 TLOC_COMMA _policyIndexing_>)
+
+// -----------------------------------------------------------------------
+// fixed memory pools
+
+#define TLOC_EXTERN_TEMPLATE_MEM_POOL_USING_WRAPPER(_type_, _capacity_)\
+  TLOC_EXTERN_TEMPLATE_MEM_POOL(_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>);\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>)
+
+#define TLOC_EXTERN_TEMPLATE_MEM_POOL_ON_STACK_USER(_type_, _capacity_)\
+  TLOC_EXTERN_TEMPLATE_MEM_POOL(_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::allocation::On_Stack, \
+    tloc::core_mem::p_memory_pool_index::indexing::User)
+
+// -----------------------------------------------------------------------
+// dynamic memory pools
+
+#define TLOC_EXTERN_TEMPLATE_MEM_POOL_DYN_USING_WRAPPER(_type_)\
+  TLOC_EXTERN_TEMPLATE_MEM_POOL_DYN(_type_, \
+    tloc::core_mem::p_memory_pool_index::indexing::Wrapper);\
+  TLOC_EXTERN_TEMPLATE(tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>);\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::core_mem::priv::MemoryPoolIndexedWrapper<_type_>)
+
+#define TLOC_EXTERN_TEMPLATE_MEM_POOL_DYN_USER(_type_)\
+  TLOC_EXTERN_TEMPLATE_MEM_POOL_DYN(_type_, _capacity_, \
+    tloc::core_mem::p_memory_pool_index::indexing::User)
+
 };};};
 
 #endif

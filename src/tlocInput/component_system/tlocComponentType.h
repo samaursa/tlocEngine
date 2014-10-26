@@ -12,7 +12,7 @@ namespace tloc { namespace input { namespace component_system {
   {
     enum type
     {
-      k_arcball_control = core::component_system::components_group::input,
+      k_arcball_control = core::component_system::component_group::input,
 
       count
     }; typedef tl_int value_type;

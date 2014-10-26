@@ -1,34 +1,6 @@
 #include "tlocTable.h"
 #include "tlocTable.inl.h"
 
-#ifndef TLOC_FULL_SOURCE
-//------------------------------------------------------------------------
-// Instantiate table types upto 20x20
-#define CLASS_NAME tloc::Table
-#define TYPE tloc::s32
-#include "tlocTemplateTypesNxM.h"
-#undef TYPE
-
-#define TYPE tloc::f32
-#include "tlocTemplateTypesNxM.h"
-#undef TYPE
-
-#define TYPE tloc::f64
-#include "tlocTemplateTypesNxM.h"
-#undef TYPE
-
-#define TYPE tloc::f128
-#include "tlocTemplateTypesNxM.h"
-#undef TYPE
-
-#undef CLASS_NAME
-
-//------------------------------------------------------------------------
-// Include the definitions
-#include "tlocTable.inl.h"
-
-#else
-
 namespace tloc { namespace core { namespace data_structs {
 
 #define INSTANTIATE_TABLE_FOR_ALL_TYPES(_row_,_col_)\
@@ -45,5 +17,3 @@ namespace tloc { namespace core { namespace data_structs {
   INSTANTIATE_TABLE_FOR_ALL_TYPES(4, 4);
 
 };};};
-
-#endif

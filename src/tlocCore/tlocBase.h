@@ -44,32 +44,6 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// TLOC Engine No source
-//
-// The following macro can be commented out when compiling the engine which
-// allows safe removal of inline files altogether
-
-#ifndef TLOC_NO_SOURCE
-  #define TLOC_FULL_SOURCE
-#endif
-
-//------------------------------------------------------------------------
-// The following macros can be enabled to increase the size of the template
-// instantiations (that many more template types will be instantiated).
-// For example, with TLOC_TEMPLATE_TYPES_SIZE_20 defined, Table<>,
-// Matrix<>, Vector_T<> etc. classes will be instantiated such that they have
-// have a size of at least 20 rows and cols (if any). Note that for types
-// such as Table<> this will require a large type generation.
-//
-// NOTE : Only useful if giving out the code without source
-// NOTE2: If you want size to be 20, you must also define SIZE_15
-
-#ifndef TLOC_FULL_SOURCE
-//#define TLOC_TEMPLATE_TYPES_SIZE_15
-//#define TLOC_TEMPLATE_TYPES_SIZE_20
-#endif
-
-//////////////////////////////////////////////////////////////////////////
 // NULL
 // We disallow the use of NULL but some APIs require 0 as an input argument
 // which can be easily overlooked. Passing NULL in those cases is preferred.
@@ -182,7 +156,9 @@
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)
-#define TLOC_USE_CUSTOM_NEW_DELETE
+#ifndef TLOC_DISABLE_CUSTOM_NEW_DELETE
+# define TLOC_USE_CUSTOM_NEW_DELETE
+#endif
 
 #ifdef TLOC_DEBUG
 # ifndef DEBUG
@@ -369,10 +345,14 @@ struct DiagnoseTemplate;
 // extern templates
 
 #if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE)
-# define TLOC_EXTERN_TEMPLATE(_class_with_type_)\
-    extern template _class_with_type_
+# define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)\
+    extern template class _class_with_type_
+
+# define TLOC_EXTERN_TEMPLATE_STRUCT(_struct_with_type_)\
+    extern template struct _struct_with_type_
 #else
-# define TLOC_EXTERN_TEMPLATE(_class_with_type_)
+# define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)
+# define TLOC_EXTERN_TEMPLATE_STRUCT(_class_with_type_)
 #endif
 
 #endif // header guard

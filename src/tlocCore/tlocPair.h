@@ -109,7 +109,7 @@ namespace tloc { namespace core {
 };};
 
 #define TLOC_EXTERN_TEMPLATE_PAIR(_firstType_, _secondType_)\
-  TLOC_EXTERN_TEMPLATE(tloc::core::Pair<_firstType_ TLOC_COMMA _secondType_>)
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core::Pair<_firstType_ TLOC_COMMA _secondType_>)
 
 #if _MSC_VER
 #pragma warning(pop)

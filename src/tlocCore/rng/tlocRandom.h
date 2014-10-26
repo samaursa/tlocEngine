@@ -125,7 +125,7 @@ namespace tloc { namespace core { namespace rng {
   // -----------------------------------------------------------------------
   // extern template
 
-  TLOC_EXTERN_TEMPLATE(RNG_T<RngWell512>);
+  TLOC_EXTERN_TEMPLATE_CLASS(RNG_T<RngWell512>);
 
 };};};
 

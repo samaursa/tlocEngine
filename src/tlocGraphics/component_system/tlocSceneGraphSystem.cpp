@@ -6,7 +6,6 @@
 
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>

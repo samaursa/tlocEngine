@@ -21,13 +21,11 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
 
-    // The maximum number of components a system is allowed to register for
-    // events listening
-    enum { max_component_types = 4 };
-
     typedef EntitySystemBase                      this_type;
 
     typedef components::value_type                component_type;
+    typedef Component::info_type                  component_info_type;
+
     typedef tl_size                               size_type;
     typedef core::error::Error                    error_type;
 
@@ -49,8 +47,21 @@ namespace tloc { namespace core { namespace component_system {
 
     typedef f64                                   time_type;
 
-    typedef containers::tl_array_fixed
-      <component_type, max_component_types>::type       component_type_array;
+  public:
+    struct Register
+    {
+    public:
+      typedef Register                                this_type;
+      typedef core_conts::Array<component_info_type>  component_info_cont;
+      typedef component_info_cont::iterator           iterator;
+
+    public:
+      this_type&  Add(component_info_type a_info);
+
+    public:
+      component_info_cont m_registeredComps;
+    }; 
+    typedef Register                              register_type;
 
   public:
 
@@ -78,11 +89,9 @@ namespace tloc { namespace core { namespace component_system {
 
   protected:
 
-    template <tl_size T_VarSize>
     EntitySystemBase(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
-                     const data_structs::
-                      Variadic<component_type, T_VarSize>& a_typeFlags);
+                     register_type a_compsToRegister);
 
     virtual ~EntitySystemBase();
 
@@ -166,44 +175,15 @@ namespace tloc { namespace core { namespace component_system {
                                     m_activeEntities);
 
   private:
-    component_type_array    m_typeFlags;
+    register_type           m_compRegistry;
     entity_count_cont       m_activeEntities;
 
     event_manager_ptr       m_eventMgr;
     entity_manager_ptr      m_entityMgr;
 
     core_utils::Checkpoints m_flags;
-    static const tl_int     s_flagCount;
 
   };
-
-  //------------------------------------------------------------------------
-  // Template definition
-
-  template <tl_size T_VarSize>
-  EntitySystemBase::
-    EntitySystemBase(event_manager_ptr a_eventMgr,
-                     entity_manager_ptr a_entityMgr,
-                     const data_structs::
-                      Variadic<component_type, T_VarSize>& a_typeFlags)
-    : m_eventMgr(a_eventMgr)
-    , m_entityMgr(a_entityMgr)
-    , m_flags(s_flagCount)
-  {
-    TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
-    TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,
-                       Exceeded_max_components_supported);
-
-    for (tl_uint i = 0; i < a_typeFlags.size(); ++i)
-    {
-      m_typeFlags.push_back(a_typeFlags[i]);
-    }
-
-    m_eventMgr->AddListener
-      (this, entity_events::insert_component);
-    m_eventMgr->AddListener
-      (this, entity_events::remove_component);
-  }
 
   // -----------------------------------------------------------------------
   // typedefs

@@ -28,43 +28,42 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef Component                       this_type;
     typedef base_classes::DebugName         base_type;
+    typedef component_group::value_type    component_group_type;
     typedef components::value_type          component_type;
     typedef utils::ObjectCounter<Component> counter_type;
     typedef counter_type::size_type         counter_size_type;
 
-    Component()
-      : base_type("Invalid Component")
-      , m_type(components_group::invalid)
-      , m_updateRequired(false)
-      , m_enabled(false)
-    { }
-
-    explicit Component(component_type a_type, BufferArg a_debugName)
-      : base_type(a_debugName)
-      , m_type(a_type)
-      , m_updateRequired(true)
-      , m_enabled(true)
-    { }
-
-    explicit Component(const this_type& a_other)
-      : base_type(a_other) 
-      , m_type(a_other.m_type)
-      , m_updateRequired(true)
-      , m_enabled(a_other.m_enabled)
-    { }
-
-    bool operator==(const this_type& a_other) const
+  public:
+    struct Info
     {
-      return m_type == a_other.m_type &&
-             m_updateRequired == a_other.m_updateRequired &&
-             m_enabled == a_other.m_enabled;
-    }
+    public:
+      typedef Info                          this_type;
 
-    virtual ~Component() { }
+    public:
+      Info();
 
+      bool IsValid() const;
+
+      bool operator==(const this_type& a_other) const;
+      TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
+
+    public:
+      TLOC_DECL_PARAM_VAR(component_group_type, GroupIndex, m_groupIndex);
+      TLOC_DECL_PARAM_VAR(component_group_type, Type, m_type);
+    }; typedef Info                         info_type;
+
+  public:
+    Component();
+    explicit Component(info_type a_type, BufferArg a_debugName);
+    explicit Component(const this_type& a_other);
+    virtual  ~Component();
+
+    // although not theoretically needed, the compiler fails to compare two
+    // components and instead tried to use global operator== for iterators.
+    bool operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
-    TLOC_DECL_AND_DEF_GETTER(component_type, GetType, m_type);
+    TLOC_DECL_AND_DEF_GETTER(info_type, GetInfo, m_compInfo);
     TLOC_DECL_AND_DEF_GETTER(bool, IsUpdateRequired, m_updateRequired);
     TLOC_DECL_AND_DEF_GETTER(counter_size_type, GetTotalComponents,
                              counter_type::GetCurrentObjectCount());
@@ -80,9 +79,9 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_DECL_AND_DEF_SETTER(bool, SetEnabled, m_enabled);
 
   protected:
-    component_type m_type;
-    bool           m_updateRequired;
-    bool           m_enabled;
+    info_type             m_compInfo;
+    bool                  m_updateRequired;
+    bool                  m_enabled;
   };
 
   //------------------------------------------------------------------------
@@ -91,29 +90,182 @@ namespace tloc { namespace core { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Component, component);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Component, component);
 
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Component);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Component);
+
   typedef containers::tl_array<component_vptr>::type  component_ptr_array;
   typedef containers::tl_array<component_sptr>::type  component_sptr_array;
+
+  TLOC_EXTERN_TEMPLATE_ARRAY(component_vptr);
+  TLOC_EXTERN_TEMPLATE_ARRAY(component_sptr);
 
   //////////////////////////////////////////////////////////////////////////
   // Component_T<>
 
-  template <typename T_Component, tl_int T_ComponentType>
+  template <typename T_Component, 
+            tl_int T_ComponentGroup, 
+            tl_int T_ComponentType>
   class Component_T : private utils::GroupID<T_Component>,
                       public Component
   {
   public:
-    enum { k_component_type = T_ComponentType };
+    enum { k_component_group  = T_ComponentGroup };
+    enum { k_component_type   = T_ComponentType };
 
   public:
     typedef Component                             base_type;
     typedef base_type::component_type             component_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
-    Component_T(component_type a_type, BufferArg a_debugName) 
-      : Component(a_type, a_debugName) {}
+    explicit Component_T(info_type a_type, BufferArg a_debugName)
+      : base_type(a_type, a_debugName) {}
 
     using group_id_base_type::GetUniqueGroupID;
   };
+
+  // -----------------------------------------------------------------------
+
+  namespace algos { namespace component {
+
+    namespace compare {
+
+      // ///////////////////////////////////////////////////////////////////////
+      // ComponentGroup_T
+
+      template <typename T_ExtractMethod = core::use_self<Component> >
+      struct ComponentGroup_T
+      {
+        typedef Component::component_group_type     comp_group_type;
+        typedef T_ExtractMethod                     et;
+
+        ComponentGroup_T(comp_group_type a_groupIndex)
+          : m_groupIndex(a_groupIndex)
+        { }
+
+        // true if a < b
+        template <typename T>
+        bool operator()(const T& a)
+        {
+          return et()(b).GetInfo().m_groupIndex == m_groupIndex;
+        }
+
+        comp_group_type   m_groupIndex;
+      };
+
+      // -----------------------------------------------------------------------
+      // typedefs
+
+      typedef ComponentGroup_T<>                    ComponentGroup;
+      typedef ComponentGroup_T<core::use_pointee>   ComponentGroupPointer;
+
+      // -----------------------------------------------------------------------
+      // extern template 
+      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_self<Component> >);
+      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_pointee>);
+
+      // ///////////////////////////////////////////////////////////////////////
+      // ComponentType_T
+
+      template <typename T_ExtractMethod = core::use_self<Component> >
+      struct ComponentType_T
+      {
+        typedef Component::info_type                info_type;
+        typedef T_ExtractMethod                     et;
+
+        ComponentType_T(info_type a_info)
+          : m_info(a_info)
+        { }
+
+        // true if a < b
+        template <typename T>
+        bool operator()(const T& a)
+        {
+          TLOC_ASSERT(et()(a).GetInfo().m_groupIndex == m_info.m_groupIndex,
+                      "Comparing component types from different component groups");
+          return et()(a).GetInfo().m_type == m_info.m_type;
+        }
+
+        info_type   m_info;
+      };
+
+      // -----------------------------------------------------------------------
+      // typedefs
+
+      typedef ComponentType_T<>                     ComponentType;
+      typedef ComponentType_T<core::use_pointee>    ComponentTypePointer;
+
+      // -----------------------------------------------------------------------
+      // extern template 
+      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_self<Component> >);
+      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_pointee>);
+
+    };
+
+    namespace comparison {
+
+      namespace component_type
+      {
+        template <typename T_ExtractMethod = core::use_self<Component> >
+        struct LessThan_T
+        {
+          typedef T_ExtractMethod                     et;
+
+          // true if a < b
+          template <typename T>
+          bool operator()(const T& a, const T& b)
+          {
+            TLOC_ASSERT(et()(a).GetInfo().m_groupIndex == et()(b).GetInfo().m_groupIndex,
+                        "Component 'a' and 'b' are from different component groups");
+
+            return et()(a).GetInfo().m_type < 
+                   et()(b).GetInfo().m_type;
+          }
+        };
+
+        // -----------------------------------------------------------------------
+        // typedefs
+
+        typedef LessThan_T<>                          LessThan;
+        typedef LessThan_T<core::use_pointee>         LessThanPointer;
+
+        // -----------------------------------------------------------------------
+        // extern template 
+        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_self<Component> >);
+        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_pointee>);
+      };
+
+      namespace component_group
+      {
+        template <typename T_ExtractMethod = core::use_self<Component> >
+        struct LessThan_T
+        {
+          typedef T_ExtractMethod                     et;
+
+          // true if a < b
+          template <typename T>
+          bool operator()(const T& a, const T& b)
+          { 
+            return et()(a).GetInfo().m_groupIndex < 
+                   et()(b).GetInfo().m_groupIndex; 
+          }
+        };
+
+        // -----------------------------------------------------------------------
+        // typedefs
+
+        typedef LessThan_T<>                          LessThan;
+        typedef LessThan_T<core::use_pointee>         LessThanPointer;
+
+        // -----------------------------------------------------------------------
+        // extern template 
+        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_self<Component> >);
+        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_pointee>);
+      };
+
+    };
+
+  };};
+
 
 };};};
 

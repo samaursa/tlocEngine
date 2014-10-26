@@ -23,7 +23,6 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     typedef ComponentPool_I                         this_type;
-    typedef containers::tl_array<this_type*>::type  cont_type;
     typedef tl_size                                 size_type;
 
   public:

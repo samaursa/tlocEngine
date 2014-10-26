@@ -59,7 +59,6 @@ set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tlocComponentType.inl.h
     component_system/tlocComponentType.cpp
     component_system/tlocEntity.h
-    component_system/tlocEntity.inl.h
     component_system/tlocEntity.cpp
     component_system/tlocEntityEvent.h
     component_system/tlocEntityManager.h

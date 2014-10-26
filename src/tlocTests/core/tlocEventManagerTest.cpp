@@ -4,7 +4,6 @@
 
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocComponent.h>
 

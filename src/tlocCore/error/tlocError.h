@@ -183,12 +183,12 @@ namespace tloc { namespace core { namespace error {
   // -----------------------------------------------------------------------
   // extern template
 
-  TLOC_EXTERN_TEMPLATE(Error_TI<Error_T<configs::p_build_config::Debug> >);
-  TLOC_EXTERN_TEMPLATE(Error_TI<Error_T<configs::p_build_config::Release> >);
-  TLOC_EXTERN_TEMPLATE(Error_TI<Error_T<configs::p_build_config::Release_DebugInfo> >);
+  TLOC_EXTERN_TEMPLATE_CLASS(Error_TI<Error_T<configs::p_build_config::Debug> >);
+  TLOC_EXTERN_TEMPLATE_CLASS(Error_TI<Error_T<configs::p_build_config::Release> >);
+  TLOC_EXTERN_TEMPLATE_CLASS(Error_TI<Error_T<configs::p_build_config::Release_DebugInfo> >);
 
-  TLOC_EXTERN_TEMPLATE(Error_T<configs::p_build_config::Debug>);
-  TLOC_EXTERN_TEMPLATE(Error_T<configs::p_build_config::Release_DebugInfo>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Error_T<configs::p_build_config::Debug>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Error_T<configs::p_build_config::Release_DebugInfo>);
 
 };};};
 

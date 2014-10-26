@@ -360,10 +360,10 @@ namespace tloc { namespace core { namespace containers {
 
 
 #define TLOC_EXTERN_TEMPLATE_ARRAY(_type_)\
-  TLOC_EXTERN_TEMPLATE(tloc::core_conts::ArrayBase<_type_ TLOC_COMMA tloc::core_conts::Array_Unordered>);\
-  TLOC_EXTERN_TEMPLATE(tloc::core_conts::ArrayBase<_type_ TLOC_COMMA tloc::core_conts::Array_Ordered>);\
-  TLOC_EXTERN_TEMPLATE(tloc::core_conts::Array<_type_ TLOC_COMMA tloc::core_conts::Array_Unordered>);\
-  TLOC_EXTERN_TEMPLATE(tloc::core_conts::Array<_type_ TLOC_COMMA tloc::core_conts::Array_Ordered>)
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::ArrayBase<_type_ TLOC_COMMA tloc::core_conts::Array_Unordered>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::ArrayBase<_type_ TLOC_COMMA tloc::core_conts::Array_Ordered>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::Array<_type_ TLOC_COMMA tloc::core_conts::Array_Unordered>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::Array<_type_ TLOC_COMMA tloc::core_conts::Array_Ordered>)
 
   TLOC_EXTERN_TEMPLATE_ARRAY(tloc::s8);
 

@@ -11,7 +11,7 @@ namespace tloc { namespace math { namespace component_system {
   {
     enum type
     {
-      transform = core::component_system::components_group::math,
+      transform = core::component_system::component_group::math,
       projection,
 
       count

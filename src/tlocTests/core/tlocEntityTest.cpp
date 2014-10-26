@@ -10,7 +10,6 @@
 #define protected public
 #define private public
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/component_system/tlocComponent.h>
 
 namespace TestingEntity
@@ -19,15 +18,21 @@ namespace TestingEntity
   using namespace core;
   using namespace component_system;
 
-  const components::value_type  g_component = components::listener;
+  const components::value_type  g_component = 
+    components::value_type(components::k_listener);
 
   struct Component1
-    : public Component_T<Component1, g_component>
+    : public Component_T<Component1, 
+                         component_group::k_core, 
+                         components::k_listener>
   {
-    typedef Component_T<Component1, g_component>   base_type;
+    typedef Component_T<Component1, 
+                        component_group::k_core, 
+                        components::k_listener>           base_type;
 
     Component1()
-      : base_type(g_component, "Component1")
+      : base_type(Component::Info().GroupIndex(component_group::k_core)
+                    .Type(components::k_listener), "Component2")
       , m_value(0)
     { }
 
@@ -36,12 +41,17 @@ namespace TestingEntity
   TLOC_TYPEDEF_SHARED_PTR(Component1, comp1);
 
   struct Component2
-    : public Component_T<Component1, g_component + 1>
+    : public Component_T<Component1, 
+                         component_group::k_core, 
+                         components::k_listener + 1>
   {
-    typedef Component_T<Component1, g_component + 1>   base_type;
+    typedef Component_T<Component1, 
+                        component_group::k_core, 
+                        components::k_listener + 1>       base_type;
 
     Component2()
-      : Component_T(g_component + 1, "Component2")
+      : base_type(Component::Info().GroupIndex(component_group::k_core)
+                    .Type(components::k_listener + 1), "Component2")
       , m_value()
     { }
 
@@ -54,12 +64,12 @@ namespace TestingEntity
     entity_vso e( MakeArgs(0) );
 
     CHECK(e->GetID() == 0);
-    CHECK(e->GetComponentsList().size() == (tl_size)components_group::count);
+    CHECK(e->GetComponentGroupList().size() == (tl_size)component_group::k_count);
 
-    e->SetID(1);
+    e->DoSetID(1);
     CHECK(e->GetID() == 1);
 
-    e->SetIndex(1);
+    e->DoSetIndex(1);
     CHECK(e->GetIndex() == 1);
 
     comp1_sptr c1 = core_sptr::MakeShared<Component1>();
@@ -70,11 +80,11 @@ namespace TestingEntity
     CHECK_FALSE(e->HasComponent<Component1>() );
     CHECK_FALSE(e->HasComponent<Component2>() );
 
-    e->InsertComponent(c1);
+    e->DoInsertComponent(c1);
     CHECK(e->HasComponent<Component1>() );
     CHECK_FALSE(e->HasComponent<Component2>() );
 
-    e->InsertComponent(c2);
+    e->DoInsertComponent(c2);
     CHECK(e->HasComponent<Component1>() );
     CHECK(e->HasComponent<Component2>() );
 
@@ -84,13 +94,26 @@ namespace TestingEntity
     CHECK(e->GetComponent<Component1>()->m_value == 10);
     CHECK(e->GetComponent<Component2>()->m_value == 20);
 
-    Entity::component_list& clist = e->DoGetComponents(g_component);
+    {
+      Entity::const_comp_itr_pair_type itrPair =
+        e->GetComponents(Component::Info().GroupIndex(component_group::k_core)
+                                          .Type(components::k_listener));
 
-    REQUIRE(clist.size() == 1);
-    CHECK(*clist[0] == *c1);
+      tl_size dist = distance(itrPair.first, itrPair.second);
 
-    clist = e->GetComponents(g_component + 1);
-    REQUIRE(clist.size() == 1);
-    CHECK(*clist[0] == *c2);
+      REQUIRE(dist == 1);
+      CHECK(**itrPair.first == *c1);
+    }
+
+    {
+      Entity::const_comp_itr_pair_type itrPair =
+        e->GetComponents(Component::Info().GroupIndex(component_group::k_core)
+                                          .Type(components::k_listener + 1));
+
+      tl_size dist = distance(itrPair.first, itrPair.second);
+
+      REQUIRE(dist == 1);
+      CHECK(**itrPair.first == *c2);
+    }
   }
 };

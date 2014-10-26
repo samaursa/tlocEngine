@@ -40,8 +40,8 @@ namespace TestingVirtualStackObject
 
         int onStackCopy = *onStack;
         CHECK(onStackCopy == 10);
-        CHECK(onStackCopy == onStackCopy);
-        CHECK_FALSE(onStackCopy < onStackCopy);
+        CHECK(onStackCopy == *onStack);
+        CHECK_FALSE(onStackCopy < *onStack);
 
         {
           int_vso::pointer ptrToVSO(onStack.get());

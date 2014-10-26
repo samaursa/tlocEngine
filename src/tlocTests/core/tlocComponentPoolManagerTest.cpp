@@ -16,6 +16,11 @@ namespace TestingComponentPoolManager
   using namespace core;
   using namespace component_system;
 
+  enum 
+  {
+    k_group = 0
+  };
+
   enum
   {
     k_int = 0,
@@ -26,22 +31,22 @@ namespace TestingComponentPoolManager
   // test components
 
   class IntComponent
-    : public core_cs::Component_T<IntComponent, k_int>
+    : public core_cs::Component_T<IntComponent, k_group, k_int>
   {
   public:
     typedef core_cs::Component_T
-      <IntComponent, k_int>                     base_type;
+      <IntComponent, k_component_group, k_component_type>   base_type;
 
   public:
     typedef tl_int         value_type;
 
   public:
     IntComponent() 
-      : base_type(k_component_type, "IntComponent")
+      : base_type("IntComponent")
     { m_ctorCount++; }
 
     IntComponent(const IntComponent& a_other)
-      : base_type(k_component_type, "IntComponent")
+      : base_type("IntComponent")
       , m_value(a_other.m_value)
     { m_ctorCount++; }
 
@@ -65,22 +70,22 @@ namespace TestingComponentPoolManager
   //------------------------------------------------------------------------
 
   class UIntComponent
-    : public core_cs::Component_T<UIntComponent, k_uint>
+    : public core_cs::Component_T<UIntComponent, k_group, k_uint>
   {
   public:
     typedef core_cs::Component_T
-      <UIntComponent, k_uint>                   base_type;
+      <UIntComponent, k_group, k_uint>               base_type;
 
   public:
     typedef tl_uint         value_type;
 
   public:
     UIntComponent() 
-      : base_type(k_component_type, "UIntComponent")
+      : base_type("UIntComponent")
     { m_ctorCount++; }
 
     UIntComponent(const UIntComponent& a_other)
-      : base_type(k_component_type, "UIntComponent")
+      : base_type("UIntComponent")
       , m_value(a_other.m_value)
     { m_ctorCount++; }
 

@@ -120,7 +120,6 @@ namespace tloc { namespace core { namespace data_structs {
     //------------------------------------------------------------------------
     // Operators
 
-    Table& operator= (const Table& aTable);
     bool operator == (const Table& aTable);
     bool operator != (const Table& aTable);
 

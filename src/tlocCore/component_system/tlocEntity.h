@@ -125,7 +125,7 @@ namespace tloc { namespace core { namespace component_system {
   core_sptr::SharedPtr<T_Component>
     Entity::GetComponent(size_type a_index) const
   {
-    TLOC_ASSERT(HasComponent<T_ComponentTypeo>(), 
+    TLOC_ASSERT(HasComponent<T_Component>(), 
                 "Component doesn't exist in this entity");
 
     return 

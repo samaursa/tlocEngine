@@ -17,10 +17,12 @@ namespace TestingEntityManager
   using namespace tloc;
   using namespace core::component_system;
 
-  struct EmptyComponent1 : public Component
+  struct EmptyComponent1 
+    : public Component
   {
     EmptyComponent1()
-      : Component(components::listener, "EmptyComponent1")
+      : Component(info_type().GroupIndex(component_group::k_core)
+                    .Type(components::k_listener), "EmptyComponent1")
     { }
 
     ~EmptyComponent1()
@@ -33,10 +35,12 @@ namespace TestingEntityManager
 
   tl_int EmptyComponent1::m_dtor = 0;
 
-  struct EmptyComponent2 : public Component
+  struct EmptyComponent2 
+    : public Component
   {
     EmptyComponent2()
-      : Component(components::listener + 1, "EmptyComponent2")
+      : Component(info_type().GroupIndex(component_group::k_core)
+                    .Type(components::k_listener + 1), "EmptyComponent2")
     { }
 
     ~EmptyComponent2()
@@ -153,7 +157,8 @@ namespace TestingEntityManager
       CHECK(entTrack->m_entEventCounter == 1);
       CHECK(entTrack->m_compEventCounter == 0);
 
-      component_sptr testComp = MakeShared<Component>(Component(components::listener, "temp"));
+      component_sptr testComp = MakeShared<EmptyComponent1>();
+
       { // dispatch to all
         eMgr.InsertComponent(EntityManager::Params()
                              .Entity(newEnt).Component(testComp).Orphan(true));
@@ -162,14 +167,14 @@ namespace TestingEntityManager
       }
 
       { // dispatch selectively
-        component_sptr testComp2 = MakeShared<Component>(Component(components::listener, "temp"));
+        component_sptr testComp2 = MakeShared<EmptyComponent2>();
         eMgr.InsertComponent(EntityManager::Params(newEnt, testComp2).Orphan(true)
                              .DispatchTo(entTrack2.get().get()) );
           CHECK(entTrack->m_compEventCounter == 1);
           CHECK(entTrack2->m_compEventCounter == 2);
       }
 
-      component_sptr invalidComp = MakeShared<Component>(Component(components::listener + 1, "temp"));
+      component_sptr invalidComp = MakeShared<EmptyComponent2>();
 
       CHECK_FALSE(eMgr.RemoveComponent( core::MakePair(newEnt, invalidComp)) );
       eMgr.Update();

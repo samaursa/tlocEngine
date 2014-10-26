@@ -104,7 +104,6 @@ namespace tloc { namespace core { namespace data_structs {
     //------------------------------------------------------------------------
     // Operators
 
-    Tuple& operator=(const Tuple& a_other);
     bool operator == (const this_type& aTuple) const;
     bool operator != (const this_type& aTuple) const;
 

@@ -2,7 +2,6 @@
 
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/component_system/tlocTransform.h>

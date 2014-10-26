@@ -31,107 +31,127 @@ namespace tloc { namespace core { namespace component_system {
     typedef base_classes::DebugName_TI
       <core_cfg::BuildConfig::build_config_type>        base_type;
 
-    typedef components::value_type                      component_type;
+    typedef Component::info_type                        component_info_type;
+    typedef Component::component_group_type             component_group_type;
+    typedef Component::component_type                   component_type;
+
     typedef core::component_system::
                   component_sptr_array                  component_list;
-    typedef containers::tl_array<component_list>::type  component_list_list;
+    typedef component_list::value_type                  component_ptr_type;
+    typedef component_list::iterator                    component_itr_type;
+    typedef component_list::const_iterator              const_component_iterator;
+
+    typedef containers::tl_array_fixed
+      <component_list, 
+      component_group::k_count>::type                   component_group_list;
+    typedef component_group_list::iterator              component_group_iterator;
+    typedef component_group_list::const_iterator        const_component_group_iterator;
+
     typedef tl_size                                     entity_id;
     typedef tl_size                                     size_type;
 
+  public:
     Entity(entity_id  a_id);
     Entity(entity_id  a_id, BufferArg a_debugName);
 
-    bool operator==(const this_type& a_other) const;
+    bool                      operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
-    bool                        HasComponent(component_type a_type) const;
+    bool                      HasComponent(component_info_type a_info) const;
+    component_ptr_type        GetComponent(component_info_type a_info, 
+                                           size_type a_index = 0) const;
 
-    template <typename T_ComponentType>
-    const component_list&
-                                GetComponents() const;
-    const component_list&       GetComponents(component_type a_type) const;
+    template <typename T_Component>
+    bool                      HasComponent() const;
+    template <typename T_Component>
+    core_sptr::SharedPtr<T_Component>
+                              GetComponent(size_type a_index = 0) const;
 
-    template <typename T_ComponentType>
-    core_sptr::SharedPtr<T_ComponentType>
-                                GetComponent(size_type a_index = 0) const;
+    const_component_iterator  begin_components(component_group_type a_groupIndex) const;
+    const_component_iterator  end_components(component_group_type a_groupIndex) const;
 
-    template <typename T_ComponentType>
-    bool                        HasComponent() const;
+    const_component_iterator  begin_components(component_info_type a_info) const;
+    const_component_iterator  end_components(component_info_type a_info) const;
 
-    entity_id                   GetID() const;
-    size_type                   GetIndex() const;
-    const component_list_list&  GetComponentsList() const;
-
-    void                        Activate() const;
-    void                        Deactivate() const;
-    TLOC_DECL_AND_DEF_GETTER(bool,  IsActive, m_active);
+    const_component_group_iterator begin_component_groups() const;
+    const_component_group_iterator end_component_groups() const;
 
     using base_type::GetDebugName;
     using base_type::SetDebugName;
 
+    TLOC_DECL_AND_DEF_GETTER(bool,  IsActive, m_active);
+    TLOC_DECL_AND_DEF_GETTER(entity_id, GetID, m_id);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetIndex, m_index);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (component_group_list, GetComponentGroupList, m_allComponents);
+
   protected:
 
-    void                        SetID(entity_id a_id);
-    void                        SetIndex(size_type a_index);
+    component_itr_type  begin_components(component_group_type a_groupIndex);
+    component_itr_type  end_components(component_group_type a_groupIndex);
 
-    component_list&             DoGetComponents(component_type a_type);
-    void                        InsertComponent(component_sptr a_type);
+    component_itr_type  begin_components(component_info_type a_info);
+    component_itr_type  end_components(component_info_type a_info);
 
-    component_list_list&        GetComponentsList();
+    component_group_iterator begin_component_groups();
+    component_group_iterator end_component_groups();
+
+    void                DoInsertComponent(component_sptr a_component);
+    void                DoRemoveComponent(component_sptr a_component);
+
+    void                DoActivate() const;
+    void                DoDeactivate() const;
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT (component_group_list,  
+                        DoGetComponentGroupList, m_allComponents);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(entity_id, DoSetID, m_id);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(size_type, DoSetIndex, m_index);
+
+  private:
+    void                DoAssertGroupIndex(Component::info_type a_info) const;
 
   private:
 
-    entity_id           m_id;
-    size_type           m_index;
-    mutable bool        m_active;
-    component_list_list m_allComponents;
+    entity_id             m_id;
+    size_type             m_index;
+    mutable bool          m_active;
+    component_group_list  m_allComponents;
   };
 
   //------------------------------------------------------------------------
   // template definitions
 
-  template <typename T_ComponentType>
-  core_sptr::SharedPtr<T_ComponentType>
+  template <typename T_Component>
+  core_sptr::SharedPtr<T_Component>
     Entity::GetComponent(size_type a_index) const
   {
-    TLOC_STATIC_ASSERT( 
-      (Loki::Conversion<T_ComponentType*, core_cs::Component*>::exists),
-      T_ComponentType_is_not_a_valid_component);
+    TLOC_ASSERT(HasComponent<T_ComponentTypeo>(), 
+                "Component doesn't exist in this entity");
 
-    TLOC_ASSERT(HasComponent(T_ComponentType::k_component_type),
-      "Component doesn't exist in this entity");
-    typedef ComponentMapper<T_ComponentType> cmapper;
-    cmapper temp = GetComponents(T_ComponentType::k_component_type);
-    return temp[a_index];
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_ComponentType>
-  const Entity::component_list&
-    Entity::GetComponents() const
-  {
-    TLOC_STATIC_ASSERT( 
-      (Loki::Conversion<T_ComponentType*, core_cs::Component*>::exists),
-      T_ComponentType_is_not_a_valid_component);
-
-    return GetComponents(T_ComponentType::k_component_type);
+    return 
+      core_sptr::static_pointer_cast<T_Component>
+      (GetComponent(T_Component::Info()
+        .GroupIndex(T_Component::k_component_group) 
+        .Type(T_Component::k_component_type), a_index) );
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T_ComponentType>
+  template <typename T_Component>
   bool
     Entity::HasComponent() const
   { 
-    TLOC_STATIC_ASSERT( 
-      (Loki::Conversion<T_ComponentType*, core_cs::Component*>::exists),
-      T_ComponentType_is_not_a_valid_component);
-
-    return HasComponent(T_ComponentType::k_component_type);
+    return GetComponent(T_Component::Info()
+                        .GroupIndex(T_Component::k_component_group)
+                        .Type(T_Component::k_component_type));
   }
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ARRAY_FIXED(Entity::component_list, component_group::k_count);
+
+  // -----------------------------------------------------------------------
   // typedef
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Entity, entity);
@@ -140,12 +160,5 @@ namespace tloc { namespace core { namespace component_system {
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
   typedef containers::tl_array<const_entity_vptr>::type      const_entity_ptr_array;
 };};};
-
-///-------------------------------------------------------------------------
-/// @note one of the few one of the few inline files we include in the
-/// header because of linker issues (because it is not a template) ;)
-/// http://www.parashift.com/c++-faq/inline-member-fns.html
-///-------------------------------------------------------------------------
-#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #endif

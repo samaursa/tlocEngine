@@ -318,6 +318,20 @@ namespace tloc { namespace core {
     { return a.second; }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // extractor from pointers
+
+  struct use_pointee
+  {
+    template <typename T>
+    const typename PointeeType<T>::value_type& 
+      operator()(const T& a) const 
+    { 
+      typedef  typename PointeeType<T>::value_type             pointee_type;
+      return *a; 
+    }
+  };
+
 };};
 
 #endif

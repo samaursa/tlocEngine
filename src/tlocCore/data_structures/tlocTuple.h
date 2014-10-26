@@ -329,7 +329,7 @@ namespace tloc { namespace core { namespace data_structs {
   // extern template
 
 #define TLOC_EXTERN_TEMPLATE_TUPLE(_type_, _size_)\
-  TLOC_EXTERN_TEMPLATE(tloc::core_ds::Tuple<_type_ TLOC_COMMA _size_>)
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_ds::Tuple<_type_ TLOC_COMMA _size_>)
 
   TLOC_EXTERN_TEMPLATE_TUPLE(s32, 2);
   TLOC_EXTERN_TEMPLATE_TUPLE(s32, 3);

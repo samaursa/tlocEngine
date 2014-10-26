@@ -641,8 +641,8 @@ namespace tloc { namespace core { namespace string {
   // -----------------------------------------------------------------------
   // extern template
 
-  TLOC_EXTERN_TEMPLATE(StringBase<char8>);
-  TLOC_EXTERN_TEMPLATE(StringBase<char32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(StringBase<char8>);
+  TLOC_EXTERN_TEMPLATE_CLASS(StringBase<char32>);
 
 };};};
 

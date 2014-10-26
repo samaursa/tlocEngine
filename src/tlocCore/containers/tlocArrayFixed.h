@@ -212,7 +212,7 @@ namespace tloc { namespace core { namespace containers {
   // extern template
 
 #define TLOC_EXTERN_TEMPLATE_ARRAY_FIXED(_type_, _size_)\
-  TLOC_EXTERN_TEMPLATE(tloc::core_conts::ArrayFixed<_type_ TLOC_COMMA _size_>)
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::ArrayFixed<_type_ TLOC_COMMA _size_>)
 
 };};};
 

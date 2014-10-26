@@ -150,7 +150,7 @@ namespace tloc { namespace core { namespace data_structs {
   // extern template
 
 #define TLOC_EXTERN_TEMPLATE_TABLE(_type_, _rows_, _cols_)\
-  TLOC_EXTERN_TEMPLATE(tloc::core_ds::Table<_type_ TLOC_COMMA _rows_ TLOC_COMMA _cols_>)
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_ds::Table<_type_ TLOC_COMMA _rows_ TLOC_COMMA _cols_>)
 
   TLOC_EXTERN_TEMPLATE_TABLE(s32, 1, 1);
   TLOC_EXTERN_TEMPLATE_TABLE(s32, 2, 2);

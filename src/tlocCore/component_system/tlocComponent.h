@@ -117,8 +117,12 @@ namespace tloc { namespace core { namespace component_system {
     typedef base_type::component_type             component_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
-    explicit Component_T(info_type a_type, BufferArg a_debugName)
-      : base_type(a_type, a_debugName) {}
+    explicit Component_T(BufferArg a_debugName)
+      : base_type(info_type()
+                    .GroupIndex(k_component_group)
+                    .Type(k_component_type), 
+                  a_debugName) 
+    { }
 
     using group_id_base_type::GetUniqueGroupID;
   };
@@ -132,25 +136,11 @@ namespace tloc { namespace core { namespace component_system {
       // ///////////////////////////////////////////////////////////////////////
       // ComponentGroup_T
 
-      template <typename T_ExtractMethod = core::use_self<Component> >
-      struct ComponentGroup_T
+      TLOC_DECL_ALGO_WITH_CTOR_UNARY(ComponentGroup_T, Component::component_group_type);
+      TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(ComponentGroup_T)
       {
-        typedef Component::component_group_type     comp_group_type;
-        typedef T_ExtractMethod                     et;
-
-        ComponentGroup_T(comp_group_type a_groupIndex)
-          : m_groupIndex(a_groupIndex)
-        { }
-
-        // true if a < b
-        template <typename T>
-        bool operator()(const T& a)
-        {
-          return et()(b).GetInfo().m_groupIndex == m_groupIndex;
-        }
-
-        comp_group_type   m_groupIndex;
-      };
+        return extract()( b ).GetInfo().m_groupIndex == m_value;
+      }
 
       // -----------------------------------------------------------------------
       // typedefs
@@ -166,33 +156,19 @@ namespace tloc { namespace core { namespace component_system {
       // ///////////////////////////////////////////////////////////////////////
       // ComponentType_T
 
-      template <typename T_ExtractMethod = core::use_self<Component> >
-      struct ComponentType_T
+      TLOC_DECL_ALGO_WITH_CTOR_UNARY(ComponentType_T, Component::info_type);
+      TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(ComponentType_T)
       {
-        typedef Component::info_type                info_type;
-        typedef T_ExtractMethod                     et;
-
-        ComponentType_T(info_type a_info)
-          : m_info(a_info)
-        { }
-
-        // true if a < b
-        template <typename T>
-        bool operator()(const T& a)
-        {
-          TLOC_ASSERT(et()(a).GetInfo().m_groupIndex == m_info.m_groupIndex,
-                      "Comparing component types from different component groups");
-          return et()(a).GetInfo().m_type == m_info.m_type;
-        }
-
-        info_type   m_info;
-      };
+        TLOC_ASSERT(extract()( a ).GetInfo().m_groupIndex == m_value.m_groupIndex,
+                    "Comparing component types from different component groups");
+        return extract()( a ).GetInfo().m_type == m_value.m_type;
+      }
 
       // -----------------------------------------------------------------------
       // typedefs
 
       typedef ComponentType_T<>                     ComponentType;
-      typedef ComponentType_T<core::use_pointee>    ComponentTypePointer;
+      typedef ComponentType_T<core::use_pointee>    ComponentType_Deref;
 
       // -----------------------------------------------------------------------
       // extern template 
@@ -205,28 +181,21 @@ namespace tloc { namespace core { namespace component_system {
 
       namespace component_type
       {
-        template <typename T_ExtractMethod = core::use_self<Component> >
-        struct LessThan_T
+        TLOC_DECL_ALGO_BINARY(LessThan_T);
+        TLOC_DEFINE_ALGO_BINARY(LessThan_T)
         {
-          typedef T_ExtractMethod                     et;
+          TLOC_ASSERT(extract()(a).GetInfo().m_groupIndex == 
+                      extract()(b).GetInfo().m_groupIndex,
+                      "Component 'a' and 'b' are from different component groups");
 
-          // true if a < b
-          template <typename T>
-          bool operator()(const T& a, const T& b)
-          {
-            TLOC_ASSERT(et()(a).GetInfo().m_groupIndex == et()(b).GetInfo().m_groupIndex,
-                        "Component 'a' and 'b' are from different component groups");
-
-            return et()(a).GetInfo().m_type < 
-                   et()(b).GetInfo().m_type;
-          }
-        };
+          return extract()(a).GetInfo().m_type < extract()(b).GetInfo().m_type;
+        }
 
         // -----------------------------------------------------------------------
         // typedefs
 
         typedef LessThan_T<>                          LessThan;
-        typedef LessThan_T<core::use_pointee>         LessThanPointer;
+        typedef LessThan_T<core::use_pointee>         LessThan_Deref;
 
         // -----------------------------------------------------------------------
         // extern template 
@@ -236,25 +205,18 @@ namespace tloc { namespace core { namespace component_system {
 
       namespace component_group
       {
-        template <typename T_ExtractMethod = core::use_self<Component> >
-        struct LessThan_T
+        TLOC_DECL_ALGO_BINARY(LessThan_T);
+        TLOC_DEFINE_ALGO_BINARY(LessThan_T)
         {
-          typedef T_ExtractMethod                     et;
-
-          // true if a < b
-          template <typename T>
-          bool operator()(const T& a, const T& b)
-          { 
-            return et()(a).GetInfo().m_groupIndex < 
-                   et()(b).GetInfo().m_groupIndex; 
-          }
-        };
+            return extract()(a).GetInfo().m_groupIndex < 
+                   extract()(b).GetInfo().m_groupIndex; 
+        }
 
         // -----------------------------------------------------------------------
         // typedefs
 
         typedef LessThan_T<>                          LessThan;
-        typedef LessThan_T<core::use_pointee>         LessThanPointer;
+        typedef LessThan_T<core::use_pointee>         LessThan_Deref;
 
         // -----------------------------------------------------------------------
         // extern template 

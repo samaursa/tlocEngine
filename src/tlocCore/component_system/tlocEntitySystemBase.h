@@ -58,6 +58,9 @@ namespace tloc { namespace core { namespace component_system {
     public:
       this_type&  Add(component_info_type a_info);
 
+      template <typename T_Component>
+      this_type&  Add();
+
     public:
       component_info_cont m_registeredComps;
     }; 
@@ -184,6 +187,19 @@ namespace tloc { namespace core { namespace component_system {
     core_utils::Checkpoints m_flags;
 
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_Component>
+  EntitySystemBase::Register::this_type&
+    EntitySystemBase::Register::
+    Add()
+  {
+    return Add(component_info_type()
+               .GroupIndex(T_Component::k_component_group)
+               .Type(T_Component::k_component_type));
+  }
 
   // -----------------------------------------------------------------------
   // typedefs

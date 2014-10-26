@@ -4,7 +4,7 @@
 
 namespace tloc { namespace core { namespace component_system {
 
-  using algos::component::compare::ComponentTypePointer;
+  using algos::component::compare::ComponentType_Deref;
 
   // ///////////////////////////////////////////////////////////////////////
   // Entity
@@ -51,7 +51,7 @@ namespace tloc { namespace core { namespace component_system {
     const component_list& cl = m_allComponents[a_info.m_groupIndex];
 
     component_list::const_iterator itr = 
-      core::find_if_all(cl, algos::component::compare::ComponentTypePointer(a_info));
+      core::find_if_all(cl, algos::component::compare::ComponentType_Deref(a_info));
 
     return itr != cl.end();
   }
@@ -97,6 +97,32 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  Entity::const_component_iterator
+    Entity::
+    begin_components(component_info_type a_info) const
+  {
+    DoAssertGroupIndex(a_info);
+
+    const component_list& cl = m_allComponents[a_info.m_groupIndex];
+
+    return core::find_if_all(cl, ComponentType_Deref(a_info));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Entity::const_component_iterator
+    Entity::
+    end_components(component_info_type a_info) const
+  {
+    DoAssertGroupIndex(a_info);
+
+    const component_list& cl = m_allComponents[a_info.m_groupIndex];
+
+    return core::find_if(cl.rbegin(), cl.rend(), ComponentType_Deref(a_info)).base();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   Entity::component_itr_type
     Entity::
     begin_components(component_group_type a_groupIndex)
@@ -115,31 +141,6 @@ namespace tloc { namespace core { namespace component_system {
     return cl.end();
   }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  Entity::const_component_iterator
-    Entity::
-    begin_components(component_info_type a_info) const
-  {
-    DoAssertGroupIndex(a_info);
-
-    const component_list& cl = m_allComponents[a_info.m_groupIndex];
-
-    return core::find_if_all(cl, ComponentTypePointer(a_info));
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  Entity::const_component_iterator
-    Entity::
-    end_components(component_info_type a_info) const
-  {
-    DoAssertGroupIndex(a_info);
-
-    const component_list& cl = m_allComponents[a_info.m_groupIndex];
-
-    return core::find_if(cl.rbegin(), cl.rend(), ComponentTypePointer(a_info)).base();
-  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -151,7 +152,7 @@ namespace tloc { namespace core { namespace component_system {
 
     component_list& cl = m_allComponents[a_info.m_groupIndex];
 
-    return core::find_if_all(cl, ComponentTypePointer(a_info));
+    return core::find_if_all(cl, ComponentType_Deref(a_info));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -164,7 +165,7 @@ namespace tloc { namespace core { namespace component_system {
 
     component_list& cl = m_allComponents[a_info.m_groupIndex];
 
-    return core::find_if(cl.rbegin(), cl.rend(), ComponentTypePointer(a_info)).base();
+    return core::find_if(cl.rbegin(), cl.rend(), ComponentType_Deref(a_info)).base();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -208,8 +209,8 @@ namespace tloc { namespace core { namespace component_system {
     cl.push_back(a_component);
 
     // keep similar components together
-    using algos::component::comparison::component_type::LessThanPointer;
-    core::sort(cl.begin(), cl.end(), LessThanPointer());
+    using algos::component::comparison::component_type::LessThan_Deref;
+    core::sort(cl.begin(), cl.end(), LessThan_Deref());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -227,7 +228,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(itr != itrEnd, "Requested component does not exist");
 
     component_list::iterator foundItr = 
-      core::find_if(itr, itrEnd, ComponentTypePointer(a_component->GetInfo()) );
+      core::find_if(itr, itrEnd, ComponentType_Deref(a_component->GetInfo()) );
 
     m_allComponents[a_component->GetInfo().m_groupIndex].erase(foundItr);
   }
@@ -269,7 +270,7 @@ TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Entity::component_list);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(entity_vptr);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(const_entity_vptr);
 
-TLOC_EXTERN_TEMPLATE_ARRAY_FIXED(Entity::component_list, component_group::k_count);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(Entity::component_list, component_group::k_count);
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::Entity);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::core_cs::Entity);

@@ -506,17 +506,6 @@ namespace tloc { namespace core { namespace data_structs {
   // Operators
 
   template <TABLE_TEMPS>
-  Table<TABLE_PARAMS>& 
-    Table<TABLE_PARAMS>::
-    operator= (const Table& aTable)
-  {
-    memcpy(m_values, aTable.data(), sizeof(T) * k_size);
-    return *this;
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TABLE_TEMPS>
   bool 
     Table<TABLE_PARAMS>::
     operator== (const Table<TABLE_PARAMS>& aTable)

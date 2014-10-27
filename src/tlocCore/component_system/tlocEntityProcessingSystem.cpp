@@ -7,6 +7,16 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // EntityProcessingSystem
+
+  EntityProcessingSystem::
+    EntityProcessingSystem(event_manager_ptr a_eventMgr, 
+                           entity_manager_ptr a_entityMgr, 
+                           register_type a_compsToRegister)
+    : base_type(a_eventMgr, a_entityMgr, a_compsToRegister)
+  { }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type EntityProcessingSystem::Pre_Initialize()

@@ -11,23 +11,23 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     enum type
     {
-      mesh = core::component_system::component_group::graphics,
-      mesh_interleaved,
-      quad, // specialized mesh
-      fan,
-      material,
-      texture_coords,
-      texture_animator,
+      k_mesh = core::component_system::component_group::k_graphics,
+      k_mesh_interleaved,
+      k_quad, // specialized mesh
+      k_fan,
+      k_material,
+      k_texture_coords,
+      k_texture_animator,
 
-      scene_node,
+      k_scene_node,
 
-      camera,
-      arcball,
+      k_camera,
+      k_arcball,
 
-      dynamic_text,
-      static_text,
+      k_dynamic_text,
+      k_static_text,
 
-      count
+      k_count
     }; typedef tl_int value_type;
   };
 

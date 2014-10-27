@@ -37,7 +37,7 @@ namespace tloc { namespace core { namespace component_system {
 
     typedef Entity::component_list                component_cont;
     typedef Entity::entity_id                     entity_id_type;
-    typedef Entity::component_itr_type            component_iterator;
+    typedef Entity::component_iterator            component_iterator;
     typedef Entity::component_group_iterator      component_group_iterator;
 
     typedef core_t::StrongType_T<bool, 0>         orphan;

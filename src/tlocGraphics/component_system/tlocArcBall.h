@@ -17,13 +17,16 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class ArcBall
-    : public core_cs::Component_T<ArcBall, components::arcball>
+    : public core_cs::Component_T<ArcBall, 
+                                  core_cs::component_group::k_graphics, 
+                                  components::k_arcball>
   {
   public:
     typedef ArcBall                                       this_type;
-    typedef Component_T<this_type, components::arcball>   base_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>    base_type;
     typedef f32                                           real_type;
-    typedef math_t::Vector_T<real_type, 3>                    vec_type;
+    typedef math_t::Vector_T<real_type, 3>                vec_type;
     typedef math_t::radian_f32                            angle_type;
 
   public:

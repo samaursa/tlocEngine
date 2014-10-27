@@ -2027,15 +2027,13 @@ namespace tloc { namespace core {
       T_InputIterator currentItr;
       T_InputIterator currentItrPlusOne;
 
-      bool swapped;
-
       for (endOfUnsortedItr = a_last; endOfUnsortedItr != a_first; --endOfUnsortedItr)
       {
         currentItr = a_first;
         currentItrPlusOne = currentItr;
         ++currentItrPlusOne;
 
-        swapped = false;
+        bool swapped = false;
 
         for (/* */;
              currentItrPlusOne != endOfUnsortedItr;

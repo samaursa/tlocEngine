@@ -19,13 +19,16 @@ namespace tloc { namespace graphics { namespace component_system {
   class CameraSystem;
 
   class Camera
-    : public core_cs::Component_T<Camera, components::camera>
+    : public core_cs::Component_T<Camera, 
+                                  core_cs::component_group::k_graphics,
+                                  components::k_camera>
   {
   public:
     friend class CameraSystem;
 
     typedef Camera                                      this_type;
-    typedef Component_T<this_type, components::camera>  base_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>  base_type;
     typedef math_proj::frustum_f32                      frustum_type;
     typedef frustum_type::matrix_type                   matrix_type;
     typedef math_t::Vec3f32                             point_type;

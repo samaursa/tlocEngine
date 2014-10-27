@@ -11,10 +11,10 @@ namespace tloc { namespace math { namespace component_system {
   {
     enum type
     {
-      transform = core::component_system::component_group::math,
-      projection,
+      k_transform = core::component_system::component_group::k_math,
+      k_projection,
 
-      count
+      k_count
     }; typedef tl_int value_type;
   };
 

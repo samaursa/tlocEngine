@@ -16,15 +16,15 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Quad
-    : public Renderable_TI<Quad, components::quad>
+    : public Renderable_TI<Quad, components::k_quad>
   {
   public:
-    typedef Quad                                        this_type;
-    typedef Renderable_TI<this_type, components::quad>  base_type;
-    typedef f32                                         real_type;
+    typedef Quad                                          this_type;
+    typedef Renderable_TI<this_type, components::k_quad>  base_type;
+    typedef f32                                           real_type;
     typedef math_t::Rectangle_T
       <real_type, 
-       math_t::p_rectangle::position::Center>           rect_type;
+       math_t::p_rectangle::position::Center>             rect_type;
 
   public:
     Quad();

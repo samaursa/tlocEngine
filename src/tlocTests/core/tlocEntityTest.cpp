@@ -65,16 +65,16 @@ namespace TestingEntity
       : Entity(a_id, a_debugName) 
     { }
 
-    component_itr_type  begin_components(component_group_type a_groupIndex)
+    component_iterator  begin_components(component_group_type a_groupIndex)
     { return Entity::begin_components(a_groupIndex); }
 
-    component_itr_type  end_components(component_group_type a_groupIndex)
+    component_iterator  end_components(component_group_type a_groupIndex)
     { return Entity::end_components(a_groupIndex); }
 
-    component_itr_type  begin_components(component_info_type a_info)
+    component_iterator  begin_components(component_info_type a_info)
     { return Entity::begin_components(a_info); }
 
-    component_itr_type  end_components(component_info_type a_info)
+    component_iterator  end_components(component_info_type a_info)
     { return Entity::end_components(a_info); }
 
     component_group_iterator begin_component_groups()
@@ -107,13 +107,23 @@ namespace TestingEntity
     CHECK_FALSE(e->HasComponent<Component1>() );
     CHECK_FALSE(e->HasComponent<Component2>() );
 
+    CHECK(e->size_components(component_group::k_core) == 0);
+
+    CHECK(e->size_components<Component1>() == 0);
     e->DoInsertComponent(c1);
     CHECK(e->HasComponent<Component1>() );
+    CHECK(e->size_components<Component1>() == 1);
     CHECK_FALSE(e->HasComponent<Component2>() );
 
+    CHECK(e->size_components(component_group::k_core) == 1);
+
+    CHECK(e->size_components<Component2>() == 0);
     e->DoInsertComponent(c2);
+    CHECK(e->size_components<Component2>() == 1);
     CHECK(e->HasComponent<Component1>() );
     CHECK(e->HasComponent<Component2>() );
+
+    CHECK(e->size_components(component_group::k_core) == 2);
 
     CHECK(*e->GetComponent<Component1>() == *c1);
     CHECK(*e->GetComponent<Component2>() == *c2);

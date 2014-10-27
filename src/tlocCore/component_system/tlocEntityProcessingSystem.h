@@ -22,11 +22,9 @@ namespace tloc { namespace core { namespace component_system {
     { TLOC_ASSERT_FALSE("No sorting function defined for this system"); }
 
   protected:
-    template <size_type T_VarSize>
     EntityProcessingSystem(event_manager_ptr a_eventMgr,
                            entity_manager_ptr a_entityMgr,
-                           const data_structs::Variadic
-                              <component_type, T_VarSize>& a_typeFlags);
+                           register_type a_compsToRegister);
 
   protected: // Initialization
     virtual error_type Pre_Initialize();
@@ -66,18 +64,6 @@ namespace tloc { namespace core { namespace component_system {
     core_cs::entity_ptr_array     m_entsToReInit;
     core_cs::entity_ptr_array     m_entsToShutdown;
   };
-
-  //------------------------------------------------------------------------
-  // Template definitions
-
-    template <tl_size T_VarSize>
-    EntityProcessingSystem::
-      EntityProcessingSystem (event_manager_ptr a_eventMgr,
-                              entity_manager_ptr a_entityMgr,
-                              const data_structs::
-                              Variadic<component_type, T_VarSize>& a_typeFlags)
-      : EntitySystemBase(a_eventMgr, a_entityMgr, a_typeFlags)
-    { }
 
 };};};
 

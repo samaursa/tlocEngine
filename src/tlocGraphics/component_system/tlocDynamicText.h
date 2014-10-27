@@ -19,12 +19,15 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class DynamicText
-    : public core_cs::Component_T<DynamicText, components::dynamic_text>
+    : public core_cs::Component_T<DynamicText, 
+                                  core_cs::component_group::k_graphics, 
+                                  components::k_dynamic_text>
     , public Text_I
   {
   public:
-    typedef DynamicText                                            this_type;
-    typedef Component_T<this_type, components::dynamic_text>       base_type;
+    typedef DynamicText                                   this_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>    base_type;
 
   public:
     DynamicText();

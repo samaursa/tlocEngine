@@ -15,7 +15,7 @@ namespace tloc { namespace core { namespace component_system {
   ///-------------------------------------------------------------------------
   /// @brief Component mapper allows easy access to a component from a list
   ///-------------------------------------------------------------------------
-  template <typename T, typename T_ItrType>
+  template <typename T, typename T_ItrType = Entity::const_component_iterator>
   class ComponentMapper
     : core_bclass::NonCopyable_I
   {

@@ -133,6 +133,12 @@ namespace TestingEntityManager
       CHECK( (newEnt != nullptr) );
       CHECK(entTrack->m_entEventCounter == 1);
 
+      CHECK(newEnt->IsActive());
+      eMgr.DeactivateEntity(newEnt);
+      CHECK_FALSE(newEnt->IsActive());
+      eMgr.ActivateEntity(newEnt);
+      CHECK(newEnt->IsActive());
+
       eMgr.DestroyEntity(newEnt);
       CHECK(entTrack->m_entEventCounter == 0);
 

@@ -1,6 +1,5 @@
 #include "tlocMaterialSystem.h"
 
-#include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 

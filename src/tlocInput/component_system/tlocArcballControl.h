@@ -16,11 +16,14 @@
 namespace tloc { namespace input { namespace component_system {
 
   class ArcBallControl
-    : public core_cs::Component_T<ArcBallControl, components::k_arcball_control>
+    : public core_cs::Component_T<ArcBallControl, 
+                                  core_cs::component_group::k_input, 
+                                  components::k_arcball_control>
   {
   public:
     typedef ArcBallControl                                        this_type;
-    typedef Component_T<this_type, components::k_arcball_control> base_type;
+    typedef Component_T<this_type, 
+                        k_component_group, k_component_type>      base_type;
     typedef math_t::Vec2f                                         vec_type;
     typedef vec_type::value_type                                  real_type;
 

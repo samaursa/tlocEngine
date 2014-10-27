@@ -24,12 +24,14 @@ namespace tloc { namespace physics { namespace component_system {
   /// initialization.
   ///-------------------------------------------------------------------------
   class RigidBody
-    : public core::component_system::Component_T<RigidBody,
-                                                 components::k_rigidBody>
+    : public core_cs::Component_T<RigidBody, 
+                                  core_cs::component_group::k_physics,
+                                  components::k_rigidBody>
   {
   public:
+    typedef RigidBody                                       this_type;
     typedef core::component_system::Component_T
-      <RigidBody, components::k_rigidBody>                  base_type;
+      <this_type, k_component_group, k_component_type>      base_type;
     typedef box2d::rigid_body_def_sptr                      rigid_body_def_sptr;
     typedef box2d::RigidBody                                rigid_body_type;
 

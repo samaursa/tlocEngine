@@ -2,7 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/io/tlocFileIO.h>
 #include <tlocCore/logging/tlocLogger.h>

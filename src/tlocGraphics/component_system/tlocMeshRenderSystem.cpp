@@ -1,6 +1,5 @@
 #include "tlocMeshRenderSystem.h"
 
-#include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/component_system/tlocTransform.h>

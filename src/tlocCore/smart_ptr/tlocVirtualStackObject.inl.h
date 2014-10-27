@@ -53,6 +53,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator=(const this_type& a_other)
   {
     *m_value = *a_other.m_value;
+    m_cachedPtr.reset();
+    m_constCachedPtr.reset();
     return *this;
   }
 
@@ -117,7 +119,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get()
-  { return pointer(m_value); }
+  { 
+    if (m_cachedPtr == nullptr)
+    { m_cachedPtr = pointer(m_value); }
+
+    return m_cachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -125,7 +132,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     get() const
-  { return const_pointer(m_value); }
+  { 
+    if (m_constCachedPtr == nullptr)
+    { m_constCachedPtr = const_pointer(m_value); }
+
+    return m_constCachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -203,7 +215,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     get()
-  { return pointer(m_value); }
+  { 
+    if (m_cachedPtr == nullptr)
+    { m_cachedPtr = pointer(m_value); }
+
+    return m_cachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -211,7 +228,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_PARAMS>::
     get() const
-  { return const_pointer(m_value); }
+  { 
+    if (m_constCachedPtr == nullptr)
+    { m_constCachedPtr = const_pointer(m_value); }
+
+    return m_constCachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -259,6 +281,8 @@ namespace tloc { namespace core { namespace smart_ptr {
     operator=(const this_type& a_other)
   {
     *m_value = *a_other.m_value;
+    m_cachedPtr.reset();
+    m_constCachedPtr.reset();
     return *this;
   }
 
@@ -323,7 +347,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     get()
-  { return pointer(m_value); }
+  { 
+    if (m_cachedPtr == nullptr)
+    { m_cachedPtr = pointer(m_value); }
+
+    return m_cachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -331,7 +360,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     get() const
-  { return const_pointer(m_value); }
+  { 
+    if (m_constCachedPtr == nullptr)
+    { m_constCachedPtr = const_pointer(m_value); }
+
+    return m_constCachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -401,7 +435,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     get()
-  { return pointer(m_value); }
+  { 
+    if (m_cachedPtr == nullptr)
+    { m_cachedPtr = pointer(m_value); }
+
+    return m_cachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -409,7 +448,12 @@ namespace tloc { namespace core { namespace smart_ptr {
   TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_TYPE::const_pointer
     VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEFAULT_PARAMS>::
     get() const
-  { return const_pointer(m_value); }
+  { 
+    if (m_constCachedPtr == nullptr)
+    { m_constCachedPtr = const_pointer(m_value); }
+
+    return m_constCachedPtr;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

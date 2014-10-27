@@ -88,7 +88,7 @@ namespace tloc { namespace graphics { namespace component_system {
     DebugTransformRenderSystem(event_manager_ptr a_eventMgr, 
                                entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr, 
-                Variadic<component_type, 1>(math_cs::components::transform))
+                register_type().Add<math_cs::Transform>())
     , m_linesEntMgr(MakeArgs(m_linesEventMgr.get()))
     , m_linesMaterialSys(MakeArgs(m_linesEventMgr.get(), m_linesEntMgr.get()))
     , m_scale(1.0f)
@@ -199,7 +199,7 @@ namespace tloc { namespace graphics { namespace component_system {
       math_cs::transform_f32_sptr t = a_ent->GetComponent<math_cs::Transformf32>();
 
       Mat4f32 tMatrix;
-      if (a_ent->HasComponent(components::scene_node))
+      if (a_ent->HasComponent<gfx_cs::SceneNode>())
       { tMatrix = a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
       else
       { tMatrix = t->GetTransformation().Cast<Mat4f32>(); }

@@ -21,7 +21,7 @@ namespace tloc { namespace graphics { namespace component_system {
   CameraSystem::
     CameraSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::camera))
+                register_type().Add<gfx_cs::Camera>())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -60,7 +60,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vpMatrix = cam->GetFrustumRef().GetProjectionMatrix();
 
-    if (a_ent->HasComponent(transform))
+    if (a_ent->HasComponent<math_cs::Transform>())
     {
       math_cs::Transform vMatInv = camTrans->Invert();
       viewMat = vMatInv.GetTransformation().Cast<matrix_type>();

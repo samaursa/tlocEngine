@@ -48,8 +48,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI(event_manager_ptr a_eventMgr, 
                         entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(text_type::k_component_type))
-
+                register_type().Add<text_type>())
     , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
     , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
     , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
@@ -299,7 +298,7 @@ namespace tloc { namespace graphics { namespace component_system {
       // not create it but other logic relies on these characters
       // TODO: Refactor later to not create the quad in the first place
       if (core_str::IsSpace(core_str::CharWideToAscii(text[i])))
-      { q->Deactivate(); }
+      { DoGetEntityManager()->DeactivateEntity(q); }
 
       // -----------------------------------------------------------------------
       // make it a node
@@ -314,7 +313,7 @@ namespace tloc { namespace graphics { namespace component_system {
         .Paused(false).Add(q, itrSs, itrEndSs);
 
       if (a_ent->IsActive() == false)
-      { q->Deactivate(); }
+      { DoGetEntityManager()->DeactivateEntity(q); }
     }
 
     m_allText.push_back(tqp);

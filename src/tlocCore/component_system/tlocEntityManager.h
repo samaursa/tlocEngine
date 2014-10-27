@@ -20,18 +20,19 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     typedef Entity                                entity_type;
-    typedef entity_vptr                           entity_ptr_type;
+    typedef entity_vptr                           entity_ptr;
+    typedef const_entity_vptr                     const_entity_ptr;
     typedef component_sptr                        component_ptr_type;
 
     typedef containers::tl_array
-      <entity_ptr_type>::type                     entity_cont;
+      <entity_ptr>::type                          entity_cont;
     typedef containers::
       tl_array<Entity::entity_id>::type           entity_id_cont;
     typedef containers::tl_array
       <entity_cont>::type                         component_entity_cont;
 
     typedef Pair
-      <entity_ptr_type, component_ptr_type>       ent_comp_pair_type;
+      <entity_ptr, component_ptr_type>            ent_comp_pair_type;
     typedef containers::tl_array
       <ent_comp_pair_type>::type                  ent_comp_pair_cont;
 
@@ -52,11 +53,11 @@ namespace tloc { namespace core { namespace component_system {
 
     public:
       Params();
-      Params(entity_ptr_type a_ent,  component_ptr_type a_component);
+      Params(entity_ptr a_ent,  component_ptr_type a_component);
 
       this_type& DispatchTo(listeners_ptr a_system);
 
-      TLOC_DECL_PARAM_VAR(entity_ptr_type,  Entity, m_entity);
+      TLOC_DECL_PARAM_VAR(entity_ptr,  Entity, m_entity);
       TLOC_DECL_PARAM_VAR(component_ptr_type, Component, m_component);
 
       // A component is an orphan if there is no system present to receive it/
@@ -70,9 +71,11 @@ namespace tloc { namespace core { namespace component_system {
     EntityManager(event_manager_vptr a_eventManager);
     virtual ~EntityManager();
 
-    entity_ptr_type   CreateEntity();
-    void              DestroyEntity(entity_ptr_type a_entity);
-    entity_ptr_type   GetEntity(tl_int a_index);
+    entity_ptr        CreateEntity();
+    void              DeactivateEntity(entity_ptr a_entity);
+    void              ActivateEntity(entity_ptr a_entity);
+    void              DestroyEntity(entity_ptr a_entity);
+    entity_ptr        GetEntity(tl_int a_index);
 
     void              InsertComponent(const Params& a_params);
     bool              RemoveComponent(ent_comp_pair_type a_entityAndComponent);
@@ -88,7 +91,7 @@ namespace tloc { namespace core { namespace component_system {
     void DoUpdateAndCleanComponents();
     void DoUpdateAndCleanEntities();
 
-    bool DoRemoveComponent(entity_ptr_type a_entity, component_ptr_type a_component);
+    bool DoRemoveComponent(entity_ptr a_entity, component_ptr_type a_component);
 
   private:
 

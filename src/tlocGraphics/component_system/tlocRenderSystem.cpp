@@ -48,7 +48,20 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
   // ///////////////////////////////////////////////////////////////////////
-  // RenderSystem_TO
+  // RenderSystem_TI
+
+  template <RENDER_SYSTEM_TEMPS>
+  RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    RenderSystem_TI(event_manager_ptr   a_eventMgr,
+                    entity_manager_ptr  a_entityMgr,
+                    register_type       a_registerTypes)
+
+    : base_type(a_eventMgr, a_entityMgr, a_registerTypes)
+    , m_sharedCam(nullptr)
+    , m_renderer(nullptr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDER_SYSTEM_TEMPS>
   RENDER_SYSTEM_TYPE::error_type
@@ -109,7 +122,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_sharedCam = a_cameraEntity;
 
     // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
+    TLOC_ASSERT( m_sharedCam->HasComponent<gfx_cs::Camera>(),
       "The passed entity is not a camera!");
   }
 
@@ -121,11 +134,11 @@ namespace tloc { namespace graphics { namespace component_system {
     DoInitializeTexCoords(entity_ptr a_ent, so_type& a_so) const
   {
     // populate the texture coordinate attributes
-    if (a_ent->HasComponent(components::texture_coords) == false)
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
     { return; }
 
     const size_type texCoordIndex =
-      a_ent->GetComponents<gfx_cs::TextureCoords>().size();
+      a_ent->size_components<gfx_cs::TextureCoords>();
 
     typedef gfx_cs::TextureCoords::set_index        set_index;
 
@@ -167,7 +180,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { return; }
 
     const size_type numTexCoords =
-      a_ent->GetComponents<gfx_cs::TextureCoords>().size();
+      a_ent->size_components<gfx_cs::TextureCoords>();
 
     typedef gfx_cs::TextureCoords::set_index        set_index;
 
@@ -235,7 +248,7 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Pre_ProcessActiveEntities( f64 a_deltaT )
   {
-    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
+    if (m_sharedCam && m_sharedCam->HasComponent<gfx_cs::Camera>())
     {
       m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
     }
@@ -263,7 +276,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     entity_ptr  ent = a_di.m_entity;
 
-    if (ent->HasComponent(components::material) == false)
+    if (ent->HasComponent<gfx_cs::Material>() == false)
     { return; }
 
     gfx_cs::material_sptr matPtr = ent->GetComponent<gfx_cs::Material>();
@@ -271,9 +284,9 @@ namespace tloc { namespace graphics { namespace component_system {
     using math_t::Mat4f32; using math_t::Mat3f32; using math_t::Vec4f32;
 
     Mat4f32 tMatrix; Mat3f32 scaleMat;
-    if (ent->HasComponent(components::scene_node))
+    if (ent->HasComponent<gfx_cs::SceneNode>())
     { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
-    else if (ent->HasComponent(math_cs::components::transform))
+    else if (ent->HasComponent<math_cs::Transform>())
     { 
       math_cs::transform_f32_sptr t = ent->GetComponent<math_cs::Transformf32>();
       tMatrix = t->GetTransformation().Cast<Mat4f32>();

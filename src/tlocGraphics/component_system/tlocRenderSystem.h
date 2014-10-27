@@ -119,11 +119,9 @@ namespace tloc { namespace graphics { namespace component_system {
     };
 
   protected:
-    template <size_type T_VarSize>
     RenderSystem_TI(event_manager_ptr              a_eventMgr,
                     entity_manager_ptr             a_entityMgr,
-                    const core_ds::Variadic
-                      <component_type, T_VarSize>&  a_typeFlags);
+                    register_type                  a_registerTypes);
 
     virtual error_type        Pre_Initialize();
     void                      DoInitializeTexCoords(entity_ptr a_ent, 
@@ -160,21 +158,6 @@ namespace tloc { namespace graphics { namespace component_system {
     core_str::String          m_normalAttribName;
     core_str::String          m_colorAttribName;
   };
-
-  // -----------------------------------------------------------------------
-  // template definitions
-
-  template <typename T_RendererSptr>
-  template <tl_size T_VarSize>
-  RenderSystem_TI<T_RendererSptr>::
-    RenderSystem_TI(event_manager_ptr a_eventMgr,
-                   entity_manager_ptr a_entityMgr,
-                   const core_ds::Variadic
-                    <component_type, T_VarSize>&  a_typeFlags)
-    : base_type(a_eventMgr, a_entityMgr, a_typeFlags)
-    , m_sharedCam(nullptr)
-    , m_renderer(nullptr)
-  { }
 
 };};};
 

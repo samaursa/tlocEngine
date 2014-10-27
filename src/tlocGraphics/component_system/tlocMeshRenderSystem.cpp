@@ -28,8 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_ptr a_eventMgr,
                        entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>
-                (mesh_type::vertex_storage_policy::k_component_id) )
+                register_type().Add<mesh_type>())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

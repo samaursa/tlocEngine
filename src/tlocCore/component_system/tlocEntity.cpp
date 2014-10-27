@@ -67,6 +67,7 @@ namespace tloc { namespace core { namespace component_system {
 
     for (size_type i = 0; i < a_index; ++i)
     {
+      TLOC_UNUSED_RELEASE(itrEnd);
       TLOC_ASSERT(itr != itrEnd, 
                   "Component at index does not exist in this entity");
       ++itr;
@@ -280,6 +281,7 @@ namespace tloc { namespace core { namespace component_system {
     Entity::
     DoAssertGroupIndex(Component::info_type a_info) const
   {
+    TLOC_UNUSED_RELEASE(a_info);
     TLOC_ASSERT(a_info.m_groupIndex < (component_type)m_allComponents.size(),
                 "Component is from an unsupported group. See tlocComponentType.h" 
                 " for valid groups.");

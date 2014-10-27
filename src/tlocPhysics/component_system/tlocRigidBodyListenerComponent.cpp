@@ -6,12 +6,12 @@ namespace tloc { namespace physics { namespace component_system {
 
   RigidBodyListener::
     RigidBodyListener()
-    : base_type(k_component_type, "RigidBodyListener")
+    : base_type("RigidBodyListener")
   { }
 
   RigidBodyListener::
     RigidBodyListener(const rigid_body_listener_ptr& a_listener)
-    : base_type(k_component_type, "RigidBodyListener")
+    : base_type("RigidBodyListener")
     , m_rigidBodyListener(a_listener)
   { }
 

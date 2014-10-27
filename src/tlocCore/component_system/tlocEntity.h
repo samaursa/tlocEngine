@@ -1,5 +1,5 @@
-#ifndef TLOC_ENTITY_H
-#define TLOC_ENTITY_H
+#ifndef _TLOC_ENTITY_H_
+#define _TLOC_ENTITY_H_
 
 #include <tlocCore/tlocCoreBase.h>
 
@@ -11,13 +11,11 @@
 #include <tlocCore/base_classes/tlocDebugName.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
 namespace tloc { namespace core { namespace component_system {
 
-  class EntityWorld;
   class EntityManager;
 
   class Entity

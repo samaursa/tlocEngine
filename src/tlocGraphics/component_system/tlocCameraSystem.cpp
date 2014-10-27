@@ -1,7 +1,6 @@
 #include "tlocCameraSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
 
 #include <tlocGraphics/component_system/tlocCamera.h>
 

@@ -1,7 +1,6 @@
 #include "tlocArcBallControlSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
@@ -40,7 +39,7 @@ namespace tloc { namespace input { namespace component_system {
   ArcBallControlSystem::
     ArcBallControlSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::k_arcball_control))
+                register_type().Add<input_cs::ArcBallControl>())
     , m_flags(k_count)
     , m_xRel(0.0f)
     , m_yRel(0.0f)

@@ -20,25 +20,26 @@ namespace tloc { namespace physics { namespace component_system {
   /// of a RigidBody. Multiple RigidBodyShapes can be attached to one RigidBody.
   ///-------------------------------------------------------------------------
   class RigidBodyShape
-    : public core::component_system::Component_T<RigidBodyShape,
-                                                 components::k_rigidBodyShape>
+    : public core_cs::Component_T<RigidBodyShape, 
+                                  core_cs::component_group::k_physics, 
+                                  components::k_rigidBodyShape>
   {
   public:
-    typedef core::component_system::Component_T
-      <RigidBodyShape, components::k_rigidBodyShape> base_type;
+    typedef RigidBodyShape                              this_type;
+    typedef core_cs::Component_T
+      <this_type, k_component_group, k_component_type>  base_type;
 
-    typedef RigidBodyShape            this_type;
-    typedef box2d::RigidBodyShapeDef  rigid_body_shape_def_type;
+    typedef box2d::RigidBodyShapeDef                    rigid_body_shape_def;
 
   public:
     RigidBodyShape();
-    RigidBodyShape(const rigid_body_shape_def_type& a_rigidBodyShape);
+    RigidBodyShape(const rigid_body_shape_def& a_rigidBodyShape);
 
     TLOC_DECL_AND_DEF_GETTER
-      (rigid_body_shape_def_type, GetRigidBodyShape, m_rigidBodyShape);
+      (rigid_body_shape_def, GetRigidBodyShape, m_rigidBodyShape);
 
   private:
-    rigid_body_shape_def_type m_rigidBodyShape;
+    rigid_body_shape_def m_rigidBodyShape;
   };
 
   //////////////////////////////////////////////////////////////////////////

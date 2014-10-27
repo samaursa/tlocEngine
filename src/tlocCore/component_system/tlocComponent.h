@@ -55,8 +55,11 @@ namespace tloc { namespace core { namespace component_system {
   public:
     Component();
     explicit Component(info_type a_type, BufferArg a_debugName);
-    explicit Component(const this_type& a_other);
+    Component(const this_type& a_other);
     virtual  ~Component();
+
+    this_type& operator=(this_type a_other);
+    void       swap(this_type& a_other);
 
     // although not theoretically needed, the compiler fails to compare two
     // components and instead tried to use global operator== for iterators.

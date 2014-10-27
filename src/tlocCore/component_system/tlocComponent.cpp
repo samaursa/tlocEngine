@@ -70,6 +70,28 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  Component::this_type&
+    Component::
+    operator =(this_type a_other) 
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Component::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+    swap(m_compInfo, a_other.m_compInfo);
+    swap(m_updateRequired, a_other.m_updateRequired);
+    swap(m_enabled, a_other.m_enabled);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     Component::
     operator ==(const this_type& a_other) const

@@ -24,14 +24,17 @@ namespace tloc { namespace graphics { namespace component_system {
   class SceneGraphSystem;
 
   class SceneNode
-    : public core_cs::Component_T<SceneNode, components::scene_node>
+    : public core_cs::Component_T<SceneNode, 
+                                  core_cs::component_group::k_graphics, 
+                                  components::k_scene_node>
   {
     friend class SceneGraphSystem;
 
   public:
-    typedef core_cs::Component_T<SceneNode, components::scene_node>  base_type;
-
     typedef SceneNode                                     this_type;
+    typedef core_cs::Component_T
+      <this_type, k_component_group, k_component_type>    base_type;
+
     typedef core_sptr::VirtualPtr<this_type>              pointer;
     typedef core_sptr::VirtualPtr<const this_type>        const_pointer;
     typedef this_type&                                    reference;

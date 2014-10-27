@@ -110,10 +110,19 @@ namespace tloc { namespace core {
   template <typename T>
   struct equal_to_stored : unary_function<T, bool>
   {
-    equal_to_stored(const T& a_toCompareWith) : m_toCompareWith(a_toCompareWith) {}
+  public:
+    typedef equal_to_stored<T>                this_type;
 
-    void operator= (const equal_to_stored& a_other)
-    { m_toCompareWith = a_other.m_toCompareWith; }
+  public:
+    equal_to_stored(const T& a_toCompareWith) 
+      : m_toCompareWith(a_toCompareWith) 
+    { }
+
+    this_type& operator= (const equal_to_stored& a_other)
+    { 
+      m_toCompareWith = a_other.m_toCompareWith;
+      return *this;
+    }
 
     bool operator()(const T& a_x) const { return m_toCompareWith == a_x; }
 

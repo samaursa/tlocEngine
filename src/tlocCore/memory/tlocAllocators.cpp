@@ -715,7 +715,7 @@ namespace tloc { namespace core { namespace memory {
 
     bool isPointerToValidMemAddress = DoIsPointerToValidMemoryAddress(a_ptr);
 
-    TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(isPointerToValidMemAddress == false)
+    TLOC_LOG_CORE_ERR_FILENAME_ONLY_IF(isPointerToValidMemAddress == false)
       << "Pointer (" << core_utils::GetMemoryAddress(a_ptr)
       << ") is pointing to a invalid/deleted "
       << "memory address (" << core_utils::GetMemoryAddress(a_memAddress)

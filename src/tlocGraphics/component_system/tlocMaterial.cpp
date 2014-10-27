@@ -14,7 +14,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // Material
 
   Material::Material()
-    : base_type(k_component_type, "Material")
+    : base_type("Material")
   { }
 
   Material::Material(const Material& a_other)

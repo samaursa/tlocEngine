@@ -6,7 +6,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TextureCoords::
     TextureCoords()
-    : base_type(k_component_type, "TextureCoords")
+    : base_type("TextureCoords")
     , m_currentSet(0)
   { }
 
@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TextureCoords::
     TextureCoords(const cont_set_type& a_coords)
-    : base_type(k_component_type, "TextureCoords")
+    : base_type("TextureCoords")
     , m_coordSets(a_coords)
     , m_currentSet(0)
   { }

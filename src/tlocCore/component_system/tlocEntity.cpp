@@ -118,12 +118,15 @@ namespace tloc { namespace core { namespace component_system {
 
     const component_list& cl = m_allComponents[a_info.m_groupIndex];
 
-    return core::find_if(cl.rbegin(), cl.rend(), ComponentType_Deref(a_info)).base();
+    const_component_iterator toRet = 
+      core::find_if_end(cl.begin(), cl.end(), ComponentType_Deref(a_info));
+
+    return ++toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Entity::component_itr_type
+  Entity::component_iterator
     Entity::
     begin_components(component_group_type a_groupIndex)
   {
@@ -133,7 +136,7 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Entity::component_itr_type
+  Entity::component_iterator
     Entity::
     end_components(component_group_type a_groupIndex)
   {
@@ -144,7 +147,7 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Entity::component_itr_type
+  Entity::component_iterator
     Entity::
     begin_components(component_info_type a_info)
   {
@@ -157,7 +160,7 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Entity::component_itr_type
+  Entity::component_iterator
     Entity::
     end_components(component_info_type a_info)
   {
@@ -165,7 +168,7 @@ namespace tloc { namespace core { namespace component_system {
 
     component_list& cl = m_allComponents[a_info.m_groupIndex];
 
-    component_itr_type toRet = 
+    component_iterator toRet = 
       core::find_if_end(cl.begin(), cl.end(), ComponentType_Deref(a_info));
 
     return ++toRet;
@@ -184,6 +187,28 @@ namespace tloc { namespace core { namespace component_system {
     Entity::
     end_component_groups() const
   { return m_allComponents.end(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Entity::size_type
+    Entity::
+    size_components(component_group_type a_groupIndex) const
+  { return m_allComponents[a_groupIndex].size(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Entity::size_type
+    Entity::
+    size_components(component_info_type a_info) const
+  { 
+    if (HasComponent(a_info) == false)
+    { return 0; }
+
+    const_component_iterator  itr    = begin_components(a_info);
+    const_component_iterator  itrEnd = end_components(a_info);
+
+    return distance(itr, itrEnd);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -225,8 +250,8 @@ namespace tloc { namespace core { namespace component_system {
     Component::info_type info = a_component->GetInfo();
     DoAssertGroupIndex(info);
 
-    component_itr_type itr    = begin_components(info);
-    component_itr_type itrEnd = end_components(info);
+    component_iterator itr    = begin_components(info);
+    component_iterator itrEnd = end_components(info);
 
     TLOC_ASSERT(itr != itrEnd, "Requested component does not exist");
 

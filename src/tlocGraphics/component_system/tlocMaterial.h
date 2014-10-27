@@ -19,11 +19,15 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class Material
-    : public core_cs::Component_T<Material, components::material>
+    : public core_cs::Component_T<Material, 
+                                 core_cs::component_group::k_graphics, 
+                                 components::k_material>
   {
   public:
+    typedef Material                                        this_type;
     typedef core::component_system::Component_T
-      <Material, components::material>                      base_type;
+      <this_type, k_component_group, k_component_type>      base_type;
+
     typedef gl::shader_program_vptr                         shader_prog_ptr;
     typedef gl::const_shader_program_vptr                   const_shader_prog_ptr;
     typedef gl::shader_program_vso                          shader_prog_vso;

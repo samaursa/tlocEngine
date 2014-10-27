@@ -38,7 +38,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef core::component_system::
                   component_sptr_array                  component_list;
     typedef component_list::value_type                  component_ptr_type;
-    typedef component_list::iterator                    component_itr_type;
+    typedef component_list::iterator                    component_iterator;
     typedef component_list::const_iterator              const_component_iterator;
 
     typedef containers::tl_array_fixed
@@ -73,8 +73,18 @@ namespace tloc { namespace core { namespace component_system {
     const_component_iterator  begin_components(component_info_type a_info) const;
     const_component_iterator  end_components(component_info_type a_info) const;
 
+    template <typename T_Component>
+    const_component_iterator  begin_components() const;
+    template <typename T_Component>
+    const_component_iterator  end_components() const;
+
     const_component_group_iterator begin_component_groups() const;
     const_component_group_iterator end_component_groups() const;
+
+    size_type           size_components(component_group_type  a_groupIndex) const;
+    size_type           size_components(component_info_type   a_info) const;
+    template <typename T_Component>
+    size_type           size_components() const;
 
     using base_type::GetDebugName;
     using base_type::SetDebugName;
@@ -87,11 +97,16 @@ namespace tloc { namespace core { namespace component_system {
 
   protected:
 
-    component_itr_type  begin_components(component_group_type a_groupIndex);
-    component_itr_type  end_components(component_group_type a_groupIndex);
+    component_iterator  begin_components(component_group_type a_groupIndex);
+    component_iterator  end_components(component_group_type a_groupIndex);
 
-    component_itr_type  begin_components(component_info_type a_info);
-    component_itr_type  end_components(component_info_type a_info);
+    component_iterator  begin_components(component_info_type a_info);
+    component_iterator  end_components(component_info_type a_info);
+
+    template <typename T_Component>
+    component_iterator  begin_components(component_info_type a_info);
+    template <typename T_Component>
+    component_iterator  end_components(component_info_type a_info);
 
     component_group_iterator begin_component_groups();
     component_group_iterator end_component_groups();
@@ -144,6 +159,65 @@ namespace tloc { namespace core { namespace component_system {
     return HasComponent(T_Component::Info()
                         .GroupIndex(T_Component::k_component_group)
                         .Type(T_Component::k_component_type));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Component>
+  Entity::const_component_iterator  
+    Entity::
+    begin_components() const
+  {
+    return begin_components(Component::info_type()
+                            .GroupIndex(T_Component::k_component_group)
+                            .Type(T_Component::k_component_type));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Component>
+  Entity::const_component_iterator
+    Entity::
+    end_components() const
+  {
+    return end_components(Component::info_type()
+                          .GroupIndex(T_Component::k_component_group)
+                          .Type(T_Component::k_component_type));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Component>
+  Entity::size_type          
+    Entity::
+    size_components() const
+  {
+    return size_components(Component::info_type()
+                           .GroupIndex(T_Component::k_component_group)
+                           .Type(T_Component::k_component_type));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Component>
+  Entity::component_iterator  
+    Entity:: 
+    begin_components(component_info_type a_info)
+  {
+    return begin_components(Component::info_type()
+                            .GroupIndex(T_Component::k_component_group)
+                            .Type(T_Component::k_component_type));
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Component>
+  Entity::component_iterator  
+    Entity::end_components(component_info_type a_info)
+  {
+    return ent_components(Component::info_type()
+                          .GroupIndex(T_Component::k_component_group)
+                          .Type(T_Component::k_component_type));
   }
 
   // -----------------------------------------------------------------------

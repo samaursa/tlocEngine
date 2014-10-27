@@ -426,7 +426,7 @@ namespace TestingVirtualPtr
 
     DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
 
-    // Due to the multiply inherited hierarchy, the cast results in a different
+    // Due to the multiple inherited hierarchy, the cast results in a different
     // pointer address. VirtualPtr and SmartPtrTracker compensate for this.
     core_sptr::VirtualPtr<Base> b(d);
     core_sptr::VirtualPtr<Base> bb(d);
@@ -435,17 +435,19 @@ namespace TestingVirtualPtr
     // the original pointer in the SmartPtrTracker.
     DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
 
-    d.reset();
+    d.reset(); // does not change anything due to the cached pointer in VSO
 
-    // b and bb counted as 2 references
-    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
+    // b and bb counted as 2 references + 1 in VSO
+    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
     b.reset(); // should not crash
 
     // bb counted as 1 ref
-    DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
+    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
 
     bb.reset();
+    DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
 
+    dStack = core_sptr::VirtualStackObjectBase_TI<Derived>();
     DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
   }
 

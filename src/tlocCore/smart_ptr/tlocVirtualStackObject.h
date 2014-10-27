@@ -104,6 +104,8 @@ private:
   protected:
 
     value_type_uptr           m_value;
+    pointer                   m_cachedPtr;
+    mutable const_pointer     m_constCachedPtr;
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -157,6 +159,8 @@ private:
   protected:
 
     value_type_uptr           m_value;
+    pointer                   m_cachedPtr;
+    mutable const_pointer     m_constCachedPtr;
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -238,6 +242,8 @@ private:
   protected:
 
     value_type_uptr           m_value;
+    pointer                   m_cachedPtr;
+    mutable const_pointer     m_constCachedPtr;
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -314,6 +320,8 @@ private:
 
   protected:
     value_type_uptr           m_value;
+    pointer                   m_cachedPtr;
+    mutable const_pointer     m_constCachedPtr;
   };
 
   // ///////////////////////////////////////////////////////////////////////

@@ -64,6 +64,7 @@ include_directories(
   ${USER_PATH}/src/
 
   ${CMAKE_SOURCE_DIR}/src/
+  ${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/
   )
 
 # common link directories
@@ -148,8 +149,9 @@ message(STATUS "-- Tests -- DONE")
 # Generate tlocAssetPath.h file
 
 if(NOT DISTRIBUTION_BUILD)
-  SET(ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets/)
+  SET(ASSETS_PATH ${USER_ASSETS_PATH})
 else()
+  message(STATUS ${USER_ASSETS_PATH})
   SET(ASSETS_PATH "../../assets/")
 
   add_custom_target(tlocAssetsCopier ALL)
@@ -160,7 +162,8 @@ else()
 
 endif()
 
-FILE(WRITE ${USER_ASSETS_PATH} "
+FILE(WRITE "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/gameAssetsPath.h" 
+"
 #pragma once
 
 #ifndef _ASSETS_PATH_H_

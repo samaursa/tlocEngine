@@ -78,12 +78,12 @@ namespace TestingEntityManager
           m_entEventCounter--;
           return EventReturn(true, false);
         }
-      case entity_events::enable_entity:
+      case entity_events::activate_entity:
         {
           m_disableEntityCounter--;
           return EventReturn(true, false);
         }
-      case entity_events::disable_entity:
+      case entity_events::deactivate_entity:
         {
           m_disableEntityCounter++;
           return EventReturn(true, false);
@@ -129,7 +129,7 @@ namespace TestingEntityManager
 
       EntityManager   eMgr(evtMgr.get());
 
-      EntityManager::entity_ptr_type newEnt = eMgr.CreateEntity();
+      EntityManager::entity_ptr newEnt = eMgr.CreateEntity();
       CHECK( (newEnt != nullptr) );
       CHECK(entTrack->m_entEventCounter == 1);
 
@@ -267,7 +267,7 @@ namespace TestingEntityManager
         // create a few entities
         for (tl_uint i = 0; i < entityCount / 2; ++i)
         {
-          EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
+          EntityManager::entity_ptr ent = eMgr.CreateEntity();
           eMgr.InsertComponent(EntityManager::Params()
                                .Entity(ent).Component(c1).Orphan(true));
           eMgr.InsertComponent(EntityManager::Params()
@@ -278,7 +278,7 @@ namespace TestingEntityManager
 
         for (tl_uint i = entityCount / 2; i < entityCount; ++i)
         {
-          EntityManager::entity_ptr_type ent = eMgr.CreateEntity();
+          EntityManager::entity_ptr ent = eMgr.CreateEntity();
           eMgr.InsertComponent(EntityManager::Params()
                                .Entity(ent).Component(c4).Orphan(true));
           eMgr.InsertComponent(EntityManager::Params()

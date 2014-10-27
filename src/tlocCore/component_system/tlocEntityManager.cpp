@@ -84,7 +84,7 @@ namespace tloc { namespace core { namespace component_system {
     DeactivateEntity(entity_ptr a_entity)
   {
     a_entity->DoDeactivate();
-    m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, a_entity) );
+    m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, a_entity) );
   }
 
   void
@@ -92,7 +92,7 @@ namespace tloc { namespace core { namespace component_system {
     ActivateEntity(entity_ptr a_entity)
   {
     a_entity->DoDeactivate();
-    m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, a_entity) );
+    m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, a_entity) );
   }
 
   void EntityManager::

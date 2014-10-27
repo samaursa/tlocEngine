@@ -19,7 +19,7 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   EntityManager::Params::
-    Params(entity_ptr_type a_ent, component_ptr_type a_component)
+    Params(entity_ptr a_ent, component_ptr_type a_component)
     : m_entity(a_ent)
     , m_component(a_component)
     , m_orphan(false)
@@ -56,10 +56,10 @@ namespace tloc { namespace core { namespace component_system {
     for_each_all(m_entities, core_sptr::algos::virtual_ptr::DeleteAndReset());
   }
 
-  EntityManager::entity_ptr_type EntityManager::
+  EntityManager::entity_ptr EntityManager::
     CreateEntity()
   {
-    entity_ptr_type e(new Entity(m_nextId++));
+    entity_ptr e(new Entity(m_nextId++));
 
     if (m_removedEntities.size() > 0)
     {
@@ -79,8 +79,24 @@ namespace tloc { namespace core { namespace component_system {
     return e;
   }
 
+  void
+    EntityManager::
+    DeactivateEntity(entity_ptr a_entity)
+  {
+    a_entity->DoDeactivate();
+    m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, a_entity) );
+  }
+
+  void
+    EntityManager::
+    ActivateEntity(entity_ptr a_entity)
+  {
+    a_entity->DoDeactivate();
+    m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, a_entity) );
+  }
+
   void EntityManager::
-    DestroyEntity(entity_ptr_type a_entity)
+    DestroyEntity(entity_ptr a_entity)
   {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
       "Entity does not exist!");
@@ -91,7 +107,7 @@ namespace tloc { namespace core { namespace component_system {
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
   }
 
-  EntityManager::entity_ptr_type EntityManager::
+  EntityManager::entity_ptr EntityManager::
     GetEntity(tloc::tl_int a_index)
   {
     TLOC_ASSERT(a_index < (tl_int)m_entities.size(), "Index out of range!");
@@ -122,7 +138,7 @@ namespace tloc { namespace core { namespace component_system {
   bool EntityManager::
     RemoveComponent(ent_comp_pair_type  a_entComp)
   {
-    entity_ptr_type     a_entity  = a_entComp.first;
+    entity_ptr     a_entity  = a_entComp.first;
     component_ptr_type  a_comp    = a_entComp.second;
 
     component_iterator itr    = a_entity->begin_components(a_comp->GetInfo());
@@ -145,7 +161,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   bool EntityManager::
-    DoRemoveComponent(entity_ptr_type a_entity, component_ptr_type a_comp)
+    DoRemoveComponent(entity_ptr a_entity, component_ptr_type a_comp)
   {
     // LOGIC: We allow the client to remove a component. If the component
     // does not exist in the entity false. Then, remove it from the component 

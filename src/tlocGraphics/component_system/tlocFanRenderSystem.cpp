@@ -29,7 +29,7 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem(event_manager_ptr a_eventMgr,
                     entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::fan))
+                register_type().Add<gfx_cs::Fan>())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

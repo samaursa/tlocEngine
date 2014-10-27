@@ -23,9 +23,6 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem(event_manager_ptr   a_eventMgr,
                      entity_manager_ptr  a_entityMgr);
 
-    static void DeactivateHierarchy(const_entity_ptr a_parent);
-    static void ActivateHierarchy(const_entity_ptr a_parent);
-
     virtual void SortEntities();
 
     virtual error_type Pre_Initialize();
@@ -47,6 +44,21 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(SceneGraphSystem, scene_graph_system);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(SceneGraphSystem, scene_graph_system);
+
+  // -----------------------------------------------------------------------
+  // meta functions
+
+  namespace f_scene_graph
+  {
+    typedef SceneGraphSystem::entity_manager_ptr        entity_manager_ptr;
+    typedef SceneGraphSystem::entity_ptr                entity_ptr;
+
+    void 
+      DeactivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent);
+
+    void 
+      ActivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent);
+  };
 
 };};};
 

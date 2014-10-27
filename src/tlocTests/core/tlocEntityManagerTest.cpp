@@ -56,6 +56,7 @@ namespace TestingEntityManager
   struct EntityTracker : public EventListener
   {
     EntityTracker() : m_entEventCounter(0)
+                    , m_disableEntityCounter(0)
                     , m_compEventCounter(0)
                     , m_totalEvents(0)
     {}
@@ -77,6 +78,16 @@ namespace TestingEntityManager
           m_entEventCounter--;
           return EventReturn(true, false);
         }
+      case entity_events::enable_entity:
+        {
+          m_disableEntityCounter--;
+          return EventReturn(true, false);
+        }
+      case entity_events::disable_entity:
+        {
+          m_disableEntityCounter++;
+          return EventReturn(true, false);
+        }
       case entity_events::insert_component:
         {
           m_compEventCounter++;
@@ -95,6 +106,7 @@ namespace TestingEntityManager
     }
 
     tl_uint m_entEventCounter;
+    tl_int  m_disableEntityCounter;
     tl_int  m_compEventCounter;
     tl_int  m_totalEvents;
   };
@@ -107,7 +119,7 @@ namespace TestingEntityManager
   {
     //SECTION("CreateEntity() and DestroyEntity()", "")
     {
-      const tl_uint entityCount = 100;
+      const tl_uint entityCount = 1000;
 
       entity_tracker_vso  entTrack, entTrack2;
       event_manager_vso   evtMgr;
@@ -124,6 +136,9 @@ namespace TestingEntityManager
       eMgr.DestroyEntity(newEnt);
       CHECK(entTrack->m_entEventCounter == 0);
 
+      // -----------------------------------------------------------------------
+      // create entity with count entityCount
+
       bool stressTestPassed = true;
       EntityManager::entity_cont myList;
 
@@ -136,6 +151,28 @@ namespace TestingEntityManager
       CHECK(eMgr.GetUnusedEntities() == 0);
       CHECK(entTrack->m_entEventCounter == entityCount);
       CHECK(stressTestPassed);
+
+      // -----------------------------------------------------------------------
+      // enable disable entity
+
+      for (EntityManager::entity_cont::iterator itr = myList.begin(),
+        itrEnd = myList.end(); itr != itrEnd; ++itr)
+      {
+        eMgr.DeactivateEntity(*itr);
+      }
+      CHECK(entTrack->m_disableEntityCounter == entityCount);
+      CHECK(entTrack2->m_disableEntityCounter == 0); // not listening for this event
+
+      for (EntityManager::entity_cont::iterator itr = myList.begin(),
+        itrEnd = myList.end(); itr != itrEnd; ++itr)
+      {
+        eMgr.ActivateEntity(*itr);
+      }
+      CHECK(entTrack->m_disableEntityCounter == 0);
+      CHECK(entTrack2->m_disableEntityCounter == 0);
+
+      // -----------------------------------------------------------------------
+      // destroy entity
 
       for (EntityManager::entity_cont::iterator itr = myList.begin(),
         itrEnd = myList.end(); itr != itrEnd; ++itr)

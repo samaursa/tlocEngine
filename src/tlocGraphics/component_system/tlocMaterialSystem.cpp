@@ -25,7 +25,7 @@ namespace tloc { namespace graphics { namespace component_system {
     MaterialSystem(event_manager_ptr a_eventMgr,
                    entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::material))
+                register_type().Add<gfx_cs::Material>())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -43,16 +43,15 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::p_shader_program::shader_type::Vertex   vertex_shader_type;
     typedef gl::p_shader_program::shader_type::Fragment fragment_shader_type;
 
-    typedef ComponentMapper<mat_type>                   mat_mapper;
 
-    mat_mapper mat = a_ent->GetComponents(components::material);
+    size_type numMaterialComponen = a_ent->size_components<gfx_cs::Material>();
 
     // Material should have vertex and fragment shader data, for now we will
     // assume that both exist
 
-    for (mat_mapper::size_type i = 0; i < mat.size(); ++i)
+    for ( size_type i = 0; i < numMaterialComponen; ++i )
     {
-      mat_ptr matPtr = mat[i];
+      mat_ptr matPtr = a_ent->GetComponent<gfx_cs::Material>(i);
 
       gl::VertexShader          vShader;
       gl::FragmentShader        fShader;

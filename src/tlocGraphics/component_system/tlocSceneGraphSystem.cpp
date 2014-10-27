@@ -31,9 +31,9 @@ namespace tloc { namespace graphics { namespace component_system {
     bool
       operator()(entity_ptr_type a, entity_ptr_type b)
     {
-      TLOC_ASSERT(a.first->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(a.first->HasComponent<gfx_cs::SceneNode>(),
         "Entity should have a 'Node' component");
-      TLOC_ASSERT(b.first->HasComponent(SceneNode::k_component_type),
+      TLOC_ASSERT(b.first->HasComponent<gfx_cs::SceneNode>(),
         "Entity should have a 'Node' component");
 
       node_ptr_type firstNode = a.first->GetComponent<SceneNode>();
@@ -50,52 +50,8 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::scene_node))
+                register_type().Add<gfx_cs::SceneNode>())
   { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    SceneGraphSystem::
-    DeactivateHierarchy(const_entity_ptr a_node)
-  {
-    TLOC_ASSERT_NOT_NULL(a_node);
-
-    a_node->Deactivate();
-
-    if (a_node->HasComponent<gfx_cs::SceneNode>() == false)
-    { return; }
-
-    scene_node_sptr node = a_node->GetComponent<SceneNode>();
-
-    for (SceneNode::node_cont_iterator
-         itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
-    {
-      DeactivateHierarchy( (*itr)->GetEntity() );
-    }
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    SceneGraphSystem::
-    ActivateHierarchy(const_entity_ptr a_parent)
-  {
-    TLOC_ASSERT_NOT_NULL(a_parent);
-
-    a_parent->Activate();
-
-    if (a_parent->HasComponent(components::scene_node) == false)
-    { return; }
-
-    scene_node_sptr node = a_parent->GetComponent<SceneNode>();
-
-    for (SceneNode::node_cont_iterator
-         itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
-    {
-      ActivateHierarchy( (*itr)->GetEntity() );
-    }
-  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -120,8 +76,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem::
     InitializeEntity(entity_ptr a_ent)
   {
-    TLOC_LOG_CORE_WARN_IF(a_ent->
-      HasComponent(math_cs::Transform::k_component_type) == false)
+    TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<math_cs::Transform>() == false)
       << "Node component requires math_cs::Transform component";
 
     scene_node_sptr node = a_ent->GetComponent<SceneNode>();
@@ -136,7 +91,7 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       // check if the parent is disabled, if yes, disable us as well
       if (parent->GetEntity()->IsActive() == false)
-      { a_ent->Deactivate(); }
+      { DoGetEntityManager()->DeactivateEntity(a_ent); }
 
       if (parent->IsHierarchyUpdateRequired())
       {
@@ -217,6 +172,51 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities(f64)
   {
   }
+
+  // -----------------------------------------------------------------------
+  // meta functions
+
+  namespace f_scene_graph {
+    void
+      DeactivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent)
+    {
+      TLOC_ASSERT_NOT_NULL(a_parent);
+
+      a_mgr->DeactivateEntity(a_parent);
+
+      if (a_parent->HasComponent<gfx_cs::SceneNode>() == false)
+      { return; }
+
+      scene_node_sptr node = a_parent->GetComponent<SceneNode>();
+
+      for (SceneNode::node_cont_iterator
+           itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
+      {
+        DeactivateHierarchy( a_mgr, (*itr)->GetEntity());
+      }
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void
+      ActivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent)
+    {
+      TLOC_ASSERT_NOT_NULL(a_parent);
+
+      a_mgr->ActivateEntity(a_parent);
+
+      if (a_parent->HasComponent<gfx_cs::SceneNode>() == false)
+      { return; }
+
+      scene_node_sptr node = a_parent->GetComponent<SceneNode>();
+
+      for (SceneNode::node_cont_iterator
+           itr = node->begin(), itrEnd = node->end(); itr != itrEnd; ++itr)
+      {
+        ActivateHierarchy( a_mgr, (*itr)->GetEntity());
+      }
+    }
+  };
 
 };};};
 

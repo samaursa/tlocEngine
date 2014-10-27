@@ -165,7 +165,10 @@ namespace tloc { namespace core { namespace component_system {
 
     component_list& cl = m_allComponents[a_info.m_groupIndex];
 
-    return core::find_if(cl.rbegin(), cl.rend(), ComponentType_Deref(a_info)).base();
+    component_itr_type toRet = 
+      core::find_if_end(cl.begin(), cl.end(), ComponentType_Deref(a_info));
+
+    return ++toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -180,7 +183,7 @@ namespace tloc { namespace core { namespace component_system {
   Entity::const_component_group_iterator
     Entity::
     end_component_groups() const
-  { return m_allComponents.begin(); }
+  { return m_allComponents.end(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -194,7 +197,7 @@ namespace tloc { namespace core { namespace component_system {
   Entity::component_group_iterator
     Entity::
     end_component_groups()
-  { return m_allComponents.begin(); }
+  { return m_allComponents.end(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -227,8 +230,7 @@ namespace tloc { namespace core { namespace component_system {
 
     TLOC_ASSERT(itr != itrEnd, "Requested component does not exist");
 
-    component_list::iterator foundItr = 
-      core::find_if(itr, itrEnd, ComponentType_Deref(a_component->GetInfo()) );
+    component_list::iterator foundItr = core::find(itr, itrEnd, a_component);
 
     m_allComponents[a_component->GetInfo().m_groupIndex].erase(foundItr);
   }

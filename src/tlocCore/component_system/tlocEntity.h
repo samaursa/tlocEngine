@@ -141,7 +141,7 @@ namespace tloc { namespace core { namespace component_system {
   bool
     Entity::HasComponent() const
   { 
-    return GetComponent(T_Component::Info()
+    return HasComponent(T_Component::Info()
                         .GroupIndex(T_Component::k_component_group)
                         .Type(T_Component::k_component_type));
   }

@@ -133,7 +133,7 @@ namespace tloc { namespace core { namespace component_system {
 
     component_iterator foundItr = core::find(itr, itrEnd, a_comp);
 
-    if (foundItr != itrEnd)
+    if (foundItr == itrEnd)
     { return false; }
 
     m_compToRemove.push_back(MakePair(a_entity, a_comp));
@@ -160,7 +160,7 @@ namespace tloc { namespace core { namespace component_system {
         component_iterator foundItr = core::find(itr, itrEnd, a_comp);
 
         if (foundItr != itrEnd)
-        { a_entity->DoRemoveComponent(*itr); }
+        { a_entity->DoRemoveComponent(*foundItr); }
         else
         { return false; }
       }

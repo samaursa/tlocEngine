@@ -11,12 +11,6 @@ project(${TLOC_PROJECT_NAME})
 set(internal_FIXME "FIXME!")
 
 #------------------------------------------------------------------------------
-# Grab the build path
-string(REPLACE "/" ";" p2list "${PROJECT_BINARY_DIR}")
-list(REVERSE p2list)
-list(GET p2list 0 USER_BUILD_FOLDER_NAME)
-
-#------------------------------------------------------------------------------
 # Install function for libraries
 
 function(tloc_install_library target_name include_folder)
@@ -63,13 +57,27 @@ foreach(PATHDIR ${TLOC_CHECK_PATHS})
 endforeach()
 
 #--------------------------------------------------------------------------
-# User adjustable variables
-include(tlocUserVars.cmake)
-
-#--------------------------------------------------------------------------
 # Include the common platform settings file
 set(TLOC_COMMON_CMAKE_PATH "${TLOC_DEP_INSTALL_PATH}/tlocCommon.cmake")
 include(${TLOC_COMMON_CMAKE_PATH})
+
+#------------------------------------------------------------------------------
+# Over-ride the project name with the correct suffix (iff user hasn't modified
+# it already)
+tloc_get_leaf_folder_name(${CMAKE_BINARY_DIR} USER_BUILD_FOLDER_NAME)
+if(${TLOC_PROJECT_NAME} STREQUAL "game")
+  set(TLOC_PROJECT_NAME "game_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
+  project(${TLOC_PROJECT_NAME})
+endif()
+
+if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL "${CMAKE_SOURCE_DIR}/INSTALL")
+  set(USER_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
+endif()
+}
+
+#--------------------------------------------------------------------------
+# User adjustable variables
+include(tlocUserVars.cmake)
 
 #--------------------------------------------------------------------------
 # Sanity checks

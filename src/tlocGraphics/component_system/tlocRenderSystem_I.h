@@ -64,6 +64,10 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_GETTER(bool, IsAttributePosDataEnabled);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledAttributePosData);
 
+  public:
+    TLOC_DECL_GETTER(bool, IsSortingByMaterialEnabled);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingByMaterial);
+
   protected:
     RenderSystem_I();
 

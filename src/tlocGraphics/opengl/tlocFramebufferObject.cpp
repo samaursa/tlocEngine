@@ -383,40 +383,6 @@ namespace tloc { namespace graphics { namespace gl {
     return ErrorSuccess;
   }
 
-#elif defined (TLOC_OS_IPHONE)
-
-  FramebufferObject::error_type
-    FramebufferObject::
-    DoAttach(p_fbo::target::value_type a_target,
-             p_fbo::attachment::value_type a_attachment,
-             const to_type& a_to)
-  {
-    Bind b(this);
-
-    const to_type::Params& toParams = a_to.GetParams();
-    DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
-
-    if (toParams.GetTextureType() == p_texture_object::target::Tex2D::s_glParamName)
-    {
-      glFramebufferTexture2D(a_target, a_attachment,
-                             toParams.GetTextureType(), a_to.GetHandle(), 0);
-
-      gfx_t::gl_enum res = glCheckFramebufferStatus
-        (p_fbo::target::Framebuffer::s_glParamName);
-      TLOC_UNUSED(res);
-      TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
-        "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
-    }
-
-    m_textureObjets.push_back(a_to);
-
-    return ErrorSuccess;
-  }
-
-#else
-# error "WIP"
-#endif
-
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void

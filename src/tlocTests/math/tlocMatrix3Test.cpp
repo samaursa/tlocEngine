@@ -418,6 +418,20 @@ namespace TestingMatrix3
       TLOC_TEST_ASSERT_CHECK();
     }
 
+    SECTION("LookAt() bug fix Issue #110", "newLeft and newUp in Matrix3 are "
+            "not normalized due to floating point error and cause the new "
+            "transformation matrix to not be orthonormal. This tests the fix")
+    {
+      Vec3f32 dir(5, 5, 0);
+      dir.Normalize();
+      a.Orient(Mat3f32::dir(dir) );
+
+      dir = Vec3f32(-5, 2, 1);
+      dir.Normalize();
+      a.Orient(Mat3f32::dir(dir) );
+    }
+
+
     SECTION("LookAt() +x up", "")
     {
       a.Orient( Mat3f32::dir(Vec3f32(0, 1, 0)), Mat3f32::up(Vec3f32(1, 0, 0)) );

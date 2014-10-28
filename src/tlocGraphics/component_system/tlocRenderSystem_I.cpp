@@ -23,6 +23,8 @@ namespace tloc { namespace graphics { namespace component_system {
       k_enableScaleInverseMat,
       k_enableNormalMat,
 
+      k_enableSortingByMaterial,
+
       k_count
     };
 
@@ -37,6 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     SetEnabledUniformMVPMatrix(true);
     SetEnabledAttributePosData(true);
+    SetEnabledSortingByMaterial(true);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -278,5 +281,21 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_I::
     SetEnabledAttributePosData(bool a_value)
   { m_flags[k_enableAttrPosData] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // sorting
+
+  bool
+    RenderSystem_I::
+    IsSortingByMaterialEnabled() const
+  { return m_flags.IsMarked(k_enableSortingByMaterial); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledSortingByMaterial(bool a_value)
+  { m_flags[k_enableSortingByMaterial] = a_value; }
 
 };};};

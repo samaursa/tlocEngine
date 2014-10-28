@@ -80,8 +80,11 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     SortEntities()
   {
-    core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
-               MaterialCompareFromEntity());
+    if (IsSortingByMaterialEnabled())
+    {
+      core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
+                 MaterialCompareFromEntity());
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

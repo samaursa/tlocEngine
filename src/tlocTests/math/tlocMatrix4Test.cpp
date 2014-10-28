@@ -49,7 +49,7 @@ namespace TestingMatrix4
   }
 
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/General",
-    "Test general/basic functionality")
+    "Test constructors")
   {
     a.MakeZero();
     Mat4f f(a);

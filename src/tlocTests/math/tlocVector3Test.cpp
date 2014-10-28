@@ -347,5 +347,22 @@ namespace TestingVector3f
     a[2] = sqrt(-2.0f);
     CHECK_FALSE(a.IsValid());
   }
+  
+  TEST_CASE("Math/Vector3f/global operators", "")
+  {
+    Vec3f crossRes = 5.0f * Vec3f(1, 0, 0);
+    CHECK_VEC3F(crossRes, 5, 0, 0);
+
+    crossRes = 5.0f / crossRes;
+    CHECK_VEC3F(crossRes, 1, 0, 0);
+  }
+
+  TEST_CASE("Math/Vector3f/Chaining", "Issue #95 fix test where Vector_T uses "
+            "a base Vector_TI method such that it returns Vector_TI which does "
+            "not have certain functions")
+  {
+    Vec3f crossRes = (Vec3f(1, 0, 0) * 1).Cross(Vec3f(0, 1, 0));
+    CHECK_VEC3F(crossRes, 0, 0, 1);
+  }
 
 }

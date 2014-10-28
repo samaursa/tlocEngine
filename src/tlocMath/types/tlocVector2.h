@@ -16,7 +16,7 @@ namespace tloc { namespace math { namespace types {
 
   template<typename T>
   class Vector_T<T, 2> 
-    : public Vector_TI<T, 2>
+    : public Vector_TI<T, 2, Vector_T<T, 2> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
@@ -24,7 +24,7 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Vector_T<T, 2>                         this_type;
-    typedef Vector_TI<T, 2>                        base_type;
+    typedef Vector_TI<T, 2, this_type>             base_type;
 
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
@@ -92,6 +92,17 @@ namespace tloc { namespace math { namespace types {
   const Vector_T<T, 2> Vector_T<T, 2>::NEG_UNIT_X (T(-1), 0);
   template<typename T>
   const Vector_T<T, 2> Vector_T<T, 2>::NEG_UNIT_Y (0, T(-1));
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f64 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f128 TLOC_COMMA 2>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 2 TLOC_COMMA  Vec2f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 2 TLOC_COMMA  Vec2f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f128 TLOC_COMMA 2 TLOC_COMMA  Vec2f128>);
 
 };};};
 

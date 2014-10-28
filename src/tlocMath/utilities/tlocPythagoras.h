@@ -116,6 +116,13 @@ namespace tloc { namespace math { namespace utils {
   typedef Pythagoras_T<f32>         Pythagorasf32;
   typedef Pythagoras_T<f64>         Pythagorasf64;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Pythagoras_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Pythagoras_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Pythagoras_T<f64>);
+
 };};};
 
 #endif

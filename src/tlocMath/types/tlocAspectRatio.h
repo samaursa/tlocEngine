@@ -41,6 +41,13 @@ namespace tloc { namespace math { namespace types {
   typedef AspectRatio_T<f32>        aspect_ratio_f32;
   typedef AspectRatio_T<f64>        aspect_ratio_f64;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(AspectRatio_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(AspectRatio_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(AspectRatio_T<f64>);
+
 };};};
 
 #endif

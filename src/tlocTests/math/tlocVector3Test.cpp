@@ -1,7 +1,5 @@
 #include "tlocTestCommon.h"
 
-#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
-
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector2.h>
 

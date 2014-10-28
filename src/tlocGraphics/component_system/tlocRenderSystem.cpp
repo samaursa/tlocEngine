@@ -29,10 +29,10 @@ namespace tloc { namespace graphics { namespace component_system {
     bool
       operator()(entity_ptr_type a, entity_ptr_type b)
     {
-      TLOC_ASSERT(a.first->HasComponent(comp_type::k_component_type),
-        "Entity should have a 'Material' component");
-      TLOC_ASSERT(b.first->HasComponent(comp_type::k_component_type),
-        "Entity should have a 'Material' component");
+      if (a.first->HasComponent<comp_type>() == false)
+      { return true; }
+      else if (b.first->HasComponent<comp_type>() == false)
+      { return false; }
 
       ptr_type first = a.first->GetComponent<comp_type>();
       ptr_type second = b.first->GetComponent<comp_type>();

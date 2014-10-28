@@ -848,11 +848,10 @@ namespace tloc { namespace graphics { namespace gl {
 
       for ( ; itr != itrEnd; ++itr)
       {
-        tl_size numPointers = 
-          core_mem::tracking::priv::DoGetNumberOfPointersToMemoryAddress
-          (&*itr->first);
-
-        if (numPointers > 0) { return true; }
+        // 1 is cached in the VSO and 1 is when we call .get(). Any other
+        // references and we return true (so that a warning can be issued)
+        if (itr->first.get().use_count() > 2)
+        { return true; }
       }
 
       return false;

@@ -5,7 +5,6 @@
 
 namespace tloc { namespace math { namespace types {
 
-#include "tlocMatrixExplicitMacros.h"
   TLOC_EXPLICITLY_INSTANTIATE_MATRIX(f32, 2, DummyStruct);
   TLOC_EXPLICITLY_INSTANTIATE_MATRIX(f32, 3, DummyStruct);
   TLOC_EXPLICITLY_INSTANTIATE_MATRIX(f32, 4, DummyStruct);

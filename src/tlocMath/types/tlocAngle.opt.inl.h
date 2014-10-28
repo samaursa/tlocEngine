@@ -297,6 +297,7 @@ namespace tloc { namespace math { namespace types {
 // _ot_ = other_type
 #define TLOC_EXPLICITLY_INSTANTIATE_ANGLE(_vt_, _dt_, _ot_)\
   template class tloc::math_t::Angle_T<_vt_, _dt_<_vt_> >;\
+  template class tloc::math_t::_dt_<_vt_>;\
   \
   template _dt_<_vt_>& tloc::math_t::Angle_T<_vt_, _dt_<_vt_> >::operator= (const _dt_<_vt_>&);\
   template _dt_<_vt_>& tloc::math_t::Angle_T<_vt_, _dt_<_vt_> >::operator= (const _ot_<_vt_>&);\

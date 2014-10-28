@@ -12,13 +12,13 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Vector_T<T, 4> 
-    : public Vector_TI<T, 4>
+    : public Vector_TI<T, 4, Vector_T<T, 4> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
   public:
     typedef Vector_T<T, 4>                        this_type;
-    typedef Vector_TI<T, 4>                       base_type;
+    typedef Vector_TI<T, 4, this_type>            base_type;
 
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
@@ -100,6 +100,17 @@ namespace tloc { namespace math { namespace types {
   const Vector_T<T, 4> Vector_T<T, 4>::NEG_UNIT_Z (0, 0, T(-1), 0);
   template <typename T>
   const Vector_T<T, 4> Vector_T<T, 4>::NEG_UNIT_W (0, 0, 0, T(-1));
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f32 TLOC_COMMA 4>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f64 TLOC_COMMA 4>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f128 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 4 TLOC_COMMA  Vec4f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 4 TLOC_COMMA  Vec4f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f128 TLOC_COMMA 4 TLOC_COMMA  Vec4f128>);
 
 };};};
 

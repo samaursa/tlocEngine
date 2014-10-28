@@ -454,4 +454,23 @@ namespace TestingMatrix3
       TLOC_TEST_ASSERT_CHECK();
     }
   }
+
+  TEST_CASE("Math/Matrx3f/global operators", "")
+  {
+    Mat3f mat = 5.0f * Mat3f(1);
+    CHECK_MATRIX3F(mat, 5, 5, 5, 5, 5, 5, 5, 5, 5);
+
+    mat = 5.0f / mat;
+    CHECK_MATRIX3F(mat, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  }
+
+  TEST_CASE("Math/Matrix3f/Chaining", "Issue #95 fix test where Matrix_T uses "
+            "a base Matrix_TI method such that it returns Matrix_TI which does "
+            "not have certain functions")
+  {
+    Mat3f crossRes = ( Mat3f::IDENTITY * 1).Inverse();
+    CHECK_MATRIX3F(crossRes, 1, 0, 0,
+                             0, 1, 0,
+                             0, 0, 1); 
+  }
 };

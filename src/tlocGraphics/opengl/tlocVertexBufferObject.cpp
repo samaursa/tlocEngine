@@ -84,6 +84,18 @@ namespace tloc { namespace graphics { namespace gl {
     : UnsafeBind(a_vbo, T_Target::s_glParamName)
   { }
 
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template struct VertexBufferObject::Bind_T<p_vbo::target::ArrayBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::CopyReadBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::CopyWriteBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::ElementArrayBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::PixelPackBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::PixelUnpackBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::TextureBuffer>;
+  template struct VertexBufferObject::Bind_T<p_vbo::target::TransformFeedbackBuffer>;
+
   // ///////////////////////////////////////////////////////////////////////
   // LateBind
 
@@ -96,20 +108,20 @@ namespace tloc { namespace graphics { namespace gl {
   VertexBufferObject::LateBind_T<TLOC_VBO_LATE_BIND_PARAMS>::
     Bind(const this_type& a_vbo)
   {
-    m_bind.reset(new typename bind_ptr::value_type());
+    m_bind.reset(new typename bind_ptr::value_type(a_vbo));
   }
 
   // -----------------------------------------------------------------------
   // explicit instantiations
 
-  template struct VertexBufferObject::Bind_T<p_vbo::target::ArrayBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::CopyReadBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::CopyWriteBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::ElementArrayBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::PixelPackBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::PixelUnpackBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::TextureBuffer>;
-  template struct VertexBufferObject::Bind_T<p_vbo::target::TransformFeedbackBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::ArrayBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::CopyReadBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::CopyWriteBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::ElementArrayBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::PixelPackBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::PixelUnpackBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::TextureBuffer>;
+  template struct VertexBufferObject::LateBind_T<p_vbo::target::TransformFeedbackBuffer>;
 
 
   // ///////////////////////////////////////////////////////////////////////
@@ -167,10 +179,14 @@ using namespace tloc::gfx_gl;
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexBufferObject);
 
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_array_buffer);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_element_array_buffer);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_pack_buffer);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack_buffer);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_array);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_copy_read);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_copy_write);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_element_array);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_pack);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_texture);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_transform_feedback);
 
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);

@@ -91,9 +91,16 @@ namespace
     {
       entity_ptr ent = entMgr->CreateEntity();
 
-      pref_gfx::Material(entMgr.get(), compMgr.get())
-        .AssetsPath(GetAssetsPath())
-        .Add(ent, core_io::Path(shaderPathVS), core_io::Path(shaderPathFS));
+      gfx_gl::uniform_vso u1; u1->SetName("u1");
+      gfx_gl::uniform_vso u2; u2->SetName("u2");
+      gfx_gl::uniform_vso u3; u3->SetName("u3");
+
+      pref_gfx::Material matPrefab(entMgr.get(), compMgr.get());
+      matPrefab.AssetsPath(GetAssetsPath()) 
+               .AddUniform(u1.get())
+               .AddUniform(u2.get())
+               .AddUniform(u3.get())
+               .Add(ent, core_io::Path(shaderPathVS), core_io::Path(shaderPathFS));
 
       REQUIRE(ent->HasComponent<component_type>());
 
@@ -101,6 +108,12 @@ namespace
 
       CHECK(ptr->GetVertexSource().compare(vsSource) == 0);
       CHECK(ptr->GetFragmentSource().compare(fsSource) == 0);
+
+      REQUIRE(matPrefab.size_uniforms() == 3);
+      pref_gfx::Material::uniform_itr itr = matPrefab.begin_uniforms();
+      CHECK( (*itr)->GetName().compare("u1") == 0); ++itr;
+      CHECK( (*itr)->GetName().compare("u2") == 0); ++itr;
+      CHECK( (*itr)->GetName().compare("u3") == 0);
     }
 
     REQUIRE(gfx_gl::Error().Succeeded());

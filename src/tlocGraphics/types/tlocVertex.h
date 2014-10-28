@@ -6,6 +6,7 @@
 #include <tlocCore/types/tlocConditionalType.h>
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 #include <tlocGraphics/types/tlocColor.h>
 
 namespace tloc { namespace graphics { namespace types {
@@ -14,7 +15,7 @@ namespace tloc { namespace graphics { namespace types {
   namespace p_vertex_t
   {
     template <typename T>
-    class VertexPos
+    class VertexPos_T
       : public T
     {
     public:
@@ -25,11 +26,26 @@ namespace tloc { namespace graphics { namespace types {
       { return *this; }
 
       void SetPosition(const value_type& a_position)
-      { *this = static_cast<const VertexPos<T>&>(a_position); }
+      { *this = static_cast<const VertexPos_T<T>&>(a_position); }
     };
 
     template <typename T>
-    class VertexNorm
+    class VertexOrientation_T
+      : public T
+    {
+    public:
+      typedef T                                     value_type;
+
+    public:
+      const value_type& GetOrientation() const
+      { return *this; }
+
+      void SetOrientation(const value_type& a_position)
+      { *this = static_cast<const VertexOrientation_T<T>&>(a_position); }
+    };
+
+    template <typename T>
+    class VertexNorm_T
       : public T
     {
     public:
@@ -40,7 +56,7 @@ namespace tloc { namespace graphics { namespace types {
       { return *this; }
 
       void SetNormal(const value_type& a_normal)
-      { *this = static_cast<const VertexNorm<T>&>(a_normal); }
+      { *this = static_cast<const VertexNorm_T<T>&>(a_normal); }
     };
 
     class VertexCol
@@ -85,11 +101,13 @@ namespace tloc { namespace graphics { namespace types {
     //------------------------------------------------------------------------
     // Typedefs
 
-    typedef VertexPos<math::types::Vec2f32>    VertexPos2f;
-    typedef VertexPos<math::types::Vec3f32>    VertexPos3f;
+    typedef VertexPos_T<math::types::Vec2f32>             VertexPos2f;
+    typedef VertexPos_T<math::types::Vec3f32>             VertexPos3f;
 
-    typedef VertexNorm<math::types::Vec2f32>   VertexNorm2f;
-    typedef VertexNorm<math::types::Vec3f32>   VertexNorm3f;
+    typedef VertexOrientation_T<math::types::Mat4f32>     VertexOri4f;
+
+    typedef VertexNorm_T<math::types::Vec2f32>            VertexNorm2f;
+    typedef VertexNorm_T<math::types::Vec3f32>            VertexNorm3f;
   };
 
   template <class T_Attrib1>
@@ -159,6 +177,10 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::TexCoord>                    Vert2fpnt;
   typedef Vertex4_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f,
+                    p_vertex_t::TexCoord,
+                    p_vertex_t::VertexOri4f>                 Vert2fpnto;
+  typedef Vertex4_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert2fpnct;
 
@@ -179,8 +201,14 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::TexCoord>                    Vert3fpnt;
   typedef Vertex4_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f,
+                    p_vertex_t::TexCoord,
+                    p_vertex_t::VertexOri4f>                 Vert3fpnto;
+  typedef Vertex4_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert3fpnct;
+
+  typedef Vertex1_T<p_vertex_t::VertexOri4f>                 Vert4fo;
 
   // -----------------------------------------------------------------------
   // custom GL type enumerators
@@ -200,6 +228,11 @@ namespace tloc { namespace graphics { namespace types {
 #define TLOC_GL_POSITION3F_NORMAL3F_COLOR4F               0xC
 #define TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F             0xD
 #define TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F     0xE
+
+#define TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F_ORIENTATION 0xF
+#define TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F_ORIENTATION 0x10
+
+#define TLOC_GL_ORIENTATION4F                             0x11
 
   namespace f_vertex {
 

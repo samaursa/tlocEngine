@@ -38,6 +38,8 @@ namespace tloc { namespace graphics { namespace component_system {
     Pre_Initialize()
   {
     base_type::SetEnabledAttributePosData(false);
+    base_type::SetEnabledUniformViewMatrix(true);
+    base_type::SetEnabledUniformNormalMatrix(true);
     return base_type::Pre_Initialize();
   }
 

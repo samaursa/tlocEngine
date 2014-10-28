@@ -73,6 +73,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     node_cont_const_iterator  begin() const;
     node_cont_const_iterator  end() const;
+
     node_cont_type::size_type size() const;
 
     bool                      IsParentDisabled() const;

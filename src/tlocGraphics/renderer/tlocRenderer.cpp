@@ -204,7 +204,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
-    fbo_type::Bind b(m_params.GetFBO().get());
+    fbo_type::bind b(*m_params.GetFBO().get());
 
     math_t::Vec4f32 col = m_params.GetClearColor().template GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
@@ -271,7 +271,7 @@ namespace tloc { namespace graphics { namespace renderer {
     DoStart() const
   {
     // enable FBO
-    m_fboBinder.reset(new fbo_type::Bind( m_params.GetFBO().get() ));
+    m_fboBinder.reset(new fbo_bind_ptr::value_type( *m_params.GetFBO().get() ));
 
     return ErrorSuccess;
   }

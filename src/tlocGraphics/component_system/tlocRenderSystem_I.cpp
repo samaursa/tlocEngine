@@ -7,10 +7,21 @@ namespace tloc { namespace graphics { namespace component_system {
     enum {
 
       k_enableAttrPosData = 0,
-      k_enableUniMVP,
+      k_enableUniMVPMat,
+      k_enableUniMVPInverseMat,
       k_enableUniModelMat,
-      k_enableCameraVP,
+      k_enableUniModelInverseMat,
+      k_enableVPMat,
+      k_enableVPInverseMat,
+      k_enableMVMat,
+      k_enableMVInverseMat,
+      k_enableUniViewMat,
+      k_enableUniViewInverseMat,
+      k_enableUniProjMat,
+      k_enableUniProjInverseMat,
       k_enableScaleMat,
+      k_enableScaleInverseMat,
+      k_enableNormalMat,
 
       k_count
     };
@@ -29,6 +40,8 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // model matrix
 
   bool
     RenderSystem_I::
@@ -46,45 +59,169 @@ namespace tloc { namespace graphics { namespace component_system {
 
   bool
     RenderSystem_I::
-    IsAttributePosDataEnabled() const
-  { return m_flags.IsMarked(k_enableAttrPosData); }
+    IsUniformModelInverseMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableUniModelInverseMat); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     RenderSystem_I::
-    SetEnabledAttributePosData(bool a_value)
-  { m_flags[k_enableAttrPosData] = a_value; }
+    SetEnabledUniformModelInverseMatrix(bool a_value)
+  { m_flags[k_enableUniModelInverseMat] = a_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // model view projection matrix
 
   bool
     RenderSystem_I::
     IsUniformMVPMatrixEnabled() const
-  { return m_flags.IsMarked(k_enableUniMVP); }
+  { return m_flags.IsMarked(k_enableUniMVPMat); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     RenderSystem_I::
     SetEnabledUniformMVPMatrix(bool a_value)
-  { m_flags[k_enableUniMVP] = a_value; }
+  { m_flags[k_enableUniMVPMat] = a_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
     RenderSystem_I::
-    IsUniformVPEnabled() const
-  { return m_flags.IsMarked(k_enableCameraVP); }
+    IsUniformMVPInverseMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableUniMVPInverseMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformMVPInverseMatrix(bool a_value)
+  { m_flags[k_enableUniMVPInverseMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // view projection matrix
+
+  bool
+    RenderSystem_I::
+    IsUniformVPMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableVPMat); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     RenderSystem_I::
     SetEnabledUniformVPMatrix(bool a_value)
-  { m_flags[k_enableCameraVP] = a_value; }
+  { m_flags[k_enableVPMat] = a_value; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformVPInverseMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableVPInverseMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformVPInverseMatrix(bool a_value)
+  { m_flags[k_enableVPInverseMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // model view matrix
+
+  bool
+    RenderSystem_I::
+    IsUniformMVMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableMVMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformMVMatrix(bool a_value)
+  { m_flags[k_enableMVMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformMVInverseMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableMVInverseMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformMVInverseMatrix(bool a_value)
+  { m_flags[k_enableMVInverseMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // view matrix
+
+  bool
+    RenderSystem_I::
+    IsUniformViewMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableUniViewMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformViewMatrix(bool a_value)
+  { m_flags[k_enableUniViewMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformViewMatrixInverseEnabled() const
+  { return m_flags.IsMarked(k_enableUniViewInverseMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformViewInverseMatrix(bool a_value)
+  { m_flags[k_enableUniViewInverseMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // projection matrix
+
+  bool
+    RenderSystem_I::
+    IsUniformProjectionEnabled() const
+  { return m_flags.IsMarked(k_enableUniProjMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformProjectionMatrix(bool a_value)
+  { m_flags[k_enableUniProjMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformProjectionInverseEnabled() const
+  { return m_flags.IsMarked(k_enableUniProjInverseMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformProjectionInverseMatrix(bool a_value)
+  { m_flags[k_enableUniProjInverseMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // scale matrix
 
   bool
     RenderSystem_I::
@@ -97,5 +234,49 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_I::
     SetEnabledUniformScaleMatrix(bool a_value)
   { m_flags[k_enableScaleMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformScaleInverseMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableScaleInverseMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformScaleInverseMatrix(bool a_value)
+  { m_flags[k_enableScaleInverseMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsUniformNormalMatrixEnabled() const
+  { return m_flags.IsMarked(k_enableNormalMat); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledUniformNormalMatrix(bool a_value)
+  { m_flags[k_enableNormalMat] = a_value; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // position attribute
+
+  bool
+    RenderSystem_I::
+    IsAttributePosDataEnabled() const
+  { return m_flags.IsMarked(k_enableAttrPosData); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledAttributePosData(bool a_value)
+  { m_flags[k_enableAttrPosData] = a_value; }
 
 };};};

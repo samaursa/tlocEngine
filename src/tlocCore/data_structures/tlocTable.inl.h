@@ -49,7 +49,10 @@ namespace tloc { namespace core { namespace data_structs {
   template <TABLE_TEMPS>
   Table<TABLE_PARAMS>::
     Table(const this_type& aTable)
-  { Set(aTable.m_values, k_ColMajor); }
+  { 
+    ITERATE_TABLE
+    { m_values[i] = aTable[i]; }
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

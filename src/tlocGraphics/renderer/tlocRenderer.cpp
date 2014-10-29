@@ -1,8 +1,6 @@
 #include "tlocRenderer.h"
 
 #include <tlocCore/platform/tlocPlatform.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -302,8 +300,13 @@ namespace tloc { namespace graphics { namespace renderer {
 
 using namespace tloc::gfx_rend;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Renderer_depth32);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth32);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Renderer_depth64);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth64);
 
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth32::RenderOneFrame);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth64::RenderOneFrame);

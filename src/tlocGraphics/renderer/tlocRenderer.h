@@ -3,13 +3,12 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/platform/tlocPlatform.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
@@ -362,9 +361,27 @@ namespace tloc { namespace graphics { namespace renderer {
   typedef Renderer_T<f32>               Renderer_depth32;
   typedef Renderer_T<f64>               Renderer_depth64;
 
-  TLOC_TYPEDEF_SHARED_PTR(Renderer, renderer);
-  TLOC_TYPEDEF_SHARED_PTR(Renderer_depth32, renderer_depth32);
-  TLOC_TYPEDEF_SHARED_PTR(Renderer_depth64, renderer_depth64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Renderer, renderer);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Renderer_depth32, renderer_depth32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Renderer_depth64, renderer_depth64);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Renderer, renderer);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Renderer_depth32, renderer_depth32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Renderer_depth64, renderer_depth64);
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Renderer_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Renderer_T<f64>);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Renderer);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Renderer_depth32);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Renderer_depth64);
+
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth32);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth64);
 
 };};};
 

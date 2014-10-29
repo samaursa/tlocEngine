@@ -254,6 +254,17 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(FramebufferObject, framebuffer_object);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(FramebufferObject, framebuffer_object);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(FramebufferObject);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(FramebufferObject);
+
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(FramebufferObject::bind);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(FramebufferObject::bind_draw);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(FramebufferObject::bind_read);
+
+
 };};};
 
 #endif

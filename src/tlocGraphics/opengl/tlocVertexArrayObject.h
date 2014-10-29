@@ -51,6 +51,18 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_VIRTUAL_PTR(VertexArrayObject, vao);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(VertexArrayObject, vao);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_SHARED_PTR(VertexArrayObject);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(VertexArrayObject);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(VertexArrayObject);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(VertexArrayObject::Bind);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(VertexArrayObject::LateBind);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(VertexArrayObject::LateBind);
+
 };};};
 
 #endif

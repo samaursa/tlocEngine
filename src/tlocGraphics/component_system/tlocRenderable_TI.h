@@ -46,12 +46,6 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_debugName)
   { }
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-#define TLOC_EXTERN_TEMPLATE_RENDERABLE(_component_, _component_enum_type_)\
-  TLOC_EXTERN_TEMPLATE_CLASS(Renderable_TI<_component_ TLOC_COMMA _component_enum_type_>)
-
 };};};
 
 #endif

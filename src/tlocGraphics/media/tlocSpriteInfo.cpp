@@ -121,6 +121,12 @@ namespace tloc { namespace graphics { namespace media {
     };
   };};
 
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template class SpriteInfo_T<core_str::String>;
+  template class SpriteInfo_T<tl_ulong>;
+
 };};};
 
 using namespace tloc::gfx_med;

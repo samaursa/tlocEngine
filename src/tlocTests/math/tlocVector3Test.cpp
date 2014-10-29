@@ -75,6 +75,16 @@ namespace TestingVector3f
     // Convert from Tuple to Vec
     c = Vec3f(Tuple<tl_float, 3>(1.0f));
     CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
+
+    // Constructors
+    {
+      Vec3f v(1, Vec2f(2, 3));
+      CHECK_VEC3F(v, 1, 2, 3);
+    }
+    {
+      Vec3f v(Vec2f(1, 2), 3);
+      CHECK_VEC3F(v, 1, 2, 3);
+    }
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator",

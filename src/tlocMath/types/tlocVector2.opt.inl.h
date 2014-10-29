@@ -36,7 +36,7 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_2_TYPES>
   Vector_T<VECTOR_2_PARAMS>::
-    Vector_T(const_reference aX, const_reference aY)
+    Vector_T(value_type aX, value_type aY)
     : base_type(core::data_structs::Variadic<value_type, 2>(aX, aY))
   { }
 

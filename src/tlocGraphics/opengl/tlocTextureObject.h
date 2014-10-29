@@ -389,12 +389,15 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex2D>);
   TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex2DShadow>);
 
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(TextureObject);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(TextureObject);
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(TextureObjectShadow);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(TextureObjectShadow);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::TextureObject);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::TextureObject);
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::TextureObjectShadow);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::TextureObjectShadow);
 
 #endif

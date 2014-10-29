@@ -336,6 +336,7 @@ template <typename T>
 struct DiagnoseTemplate;
 
 
+// -----------------------------------------------------------------------
 // Punctuation - useful in macros using templates
 #ifndef COMMA
 # define COMMA() ,
@@ -344,7 +345,10 @@ struct DiagnoseTemplate;
 // -----------------------------------------------------------------------
 // extern templates
 
-#if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE)
+// Visual Studio 2010 supports extern template but requires the explicit
+// instantiation to NOT follow it, which makes it next to useless for us. So
+// we turn it off.
+#if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE) && _MSV_VER != 1600
 # define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)\
     extern template class _class_with_type_
 

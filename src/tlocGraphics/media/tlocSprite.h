@@ -56,12 +56,16 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_EXTERN_TEMPLATE_CLASS(SpriteInfo_T<core_str::String>);
   TLOC_EXTERN_TEMPLATE_CLASS(SpriteInfo_T<tl_ulong>);
 
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(sprite_sheet_str);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(sprite_sheet_str);
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(sprite_sheet_ul);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(sprite_sheet_ul);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::sprite_sheet_str);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::sprite_sheet_str);
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::sprite_sheet_ul);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::sprite_sheet_ul);
 
 #endif

@@ -249,7 +249,7 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(_name_)\
         template <typename T_ExtractMethod>\
         template <typename T>\
-        bool _name_##<T_ExtractMethod>::operator()(const T& a)
+        bool _name_ <T_ExtractMethod>::operator()(const T& a)
 
 #define TLOC_DECL_ALGO_WITH_CTOR_BINARY(_name_, _value_type_)\
       template <typename T_ExtractMethod = core::use_self<Component> >\
@@ -271,7 +271,7 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DEFINE_ALGO_WITH_CTOR_BINARY(_name_)\
         template <typename T_ExtractMethod>\
         template <typename T>\
-        bool _name_##<T_ExtractMethod>::operator()(const T& a, const T& b)
+        bool _name_ <T_ExtractMethod>::operator()(const T& a, const T& b)
 
 #define TLOC_DECL_ALGO_UNARY(_name_)\
       template <typename T_ExtractMethod = core::use_self<Component> >\
@@ -286,7 +286,7 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DEFINE_ALGO_UNARY(_name_)\
         template <typename T_ExtractMethod>\
         template <typename T>\
-        bool _name_##<T_ExtractMethod>::operator()(const T& a)
+        bool _name_ <T_ExtractMethod>::operator()(const T& a)
 
 #define TLOC_DECL_ALGO_BINARY(_name_)\
       template <typename T_ExtractMethod = core::use_self<Component> >\
@@ -301,7 +301,7 @@ namespace tloc { namespace core { namespace utils {
 #define TLOC_DEFINE_ALGO_BINARY(_name_)\
         template <typename T_ExtractMethod>\
         template <typename T>\
-        bool _name_##<T_ExtractMethod>::operator()(const T& a, const T& b)
+        bool _name_ <T_ExtractMethod>::operator()(const T& a, const T& b)
 
 };};};
 

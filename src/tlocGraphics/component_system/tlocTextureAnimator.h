@@ -114,12 +114,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(TextureAnimator, texture_animator);
   TLOC_TYPEDEF_COMPONENT_POOL(TextureAnimator, texture_animator);
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(TextureAnimator);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(TextureAnimator);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::TextureAnimator);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::TextureAnimator);
 
 #endif

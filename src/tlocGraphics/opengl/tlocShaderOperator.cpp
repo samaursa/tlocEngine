@@ -770,7 +770,7 @@ namespace tloc { namespace graphics { namespace gl {
 
         // attributes can have upto four names due to interleaving (see the
         // Vertex_T<> class) - this includes VBOs
-        for (tl_size interleaveIndex = 0; 
+        for (gfx_t::gl_enum interleaveIndex = 0;
              interleaveIndex < itr->second.size(); 
              ++interleaveIndex)
         {

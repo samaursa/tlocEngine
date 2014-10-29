@@ -45,12 +45,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Fan, fan);
   TLOC_TYPEDEF_COMPONENT_POOL(Fan, fan);
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Fan);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Fan);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Fan);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Fan);
 
 #endif

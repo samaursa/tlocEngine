@@ -172,12 +172,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(SceneNode, scene_node);
   TLOC_TYPEDEF_COMPONENT_POOL(SceneNode, scene_node);
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(SceneNode);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(SceneNode);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::SceneNode);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::SceneNode);
 
 #endif

@@ -49,7 +49,7 @@ namespace tloc { namespace core { namespace data_structs {
   template <TABLE_TEMPS>
   Table<TABLE_PARAMS>::
     Table(const this_type& aTable)
-  { operator=(aTable); }
+  { Set(aTable.m_values, k_ColMajor); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

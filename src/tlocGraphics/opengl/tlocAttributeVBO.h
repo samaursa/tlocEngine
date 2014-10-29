@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
 
-    const string_type& GetName(tl_int a_nameIndex = 0) const;
+    const string_type& GetName(size_type a_nameIndex = 0) const;
     this_type&         AddName(BufferArg a_name);
 
     TLOC_DECL_AND_DEF_GETTER

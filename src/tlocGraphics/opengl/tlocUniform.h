@@ -147,14 +147,14 @@ namespace tloc { namespace graphics { namespace gl {
 
   typedef core_conts::Array<uniform_sptr>         uniform_sptr_cont;
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Uniform);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Uniform);
-
-  TLOC_EXTERN_TEMPLATE_ARRAY(uniform_sptr);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::Uniform);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::Uniform);
+
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::uniform_sptr);
 
 #endif

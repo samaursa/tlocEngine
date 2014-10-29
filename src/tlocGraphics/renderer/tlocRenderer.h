@@ -375,14 +375,17 @@ namespace tloc { namespace graphics { namespace renderer {
   TLOC_EXTERN_TEMPLATE_CLASS(Renderer_T<f32>);
   TLOC_EXTERN_TEMPLATE_CLASS(Renderer_T<f64>);
 
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Renderer);
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Renderer_depth32);
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Renderer_depth64);
-
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth32);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth64);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_rend::Renderer);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_rend::Renderer_depth32);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_rend::Renderer_depth64);
+
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_rend::Renderer);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_rend::Renderer_depth32);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_rend::Renderer_depth64);
 
 #endif

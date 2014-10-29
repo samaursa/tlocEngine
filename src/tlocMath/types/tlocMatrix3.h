@@ -14,7 +14,7 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Matrix_T<T, 3>
-    : public Matrix_TI<T, 3>
+    : public Matrix_TI<T, 3, Matrix_T<T, 3> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
@@ -22,7 +22,7 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Matrix_T<T, 3>                            this_type;
-    typedef Matrix_TI<T, 3>                           base_type;
+    typedef Matrix_TI<T, 3, this_type>                base_type;
 
     typedef typename base_type::matrix_order          matrix_order;
 
@@ -165,11 +165,25 @@ namespace tloc { namespace math { namespace types {
     bool DoQLAlgorithm (value_type aDiagonal[3], value_type aSubdiagonal[2]);
   };
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
   typedef Matrix_T<f32, 3>  Mat3f32;
   typedef Matrix_T<f64, 3>  Mat3f64;
   typedef Matrix_T<f128, 3> Mat3f128;
 
   typedef Matrix_T<tl_float, 3> Mat3f;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f32 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f64 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f128 TLOC_COMMA 3>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f32 TLOC_COMMA 3 TLOC_COMMA  Mat3f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f64 TLOC_COMMA 3 TLOC_COMMA  Mat3f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f128 TLOC_COMMA 3 TLOC_COMMA  Mat3f128>);
 
 };};};
 

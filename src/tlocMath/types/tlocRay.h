@@ -99,6 +99,18 @@ namespace tloc { namespace math { namespace types {
   typedef Ray_T<f64, 2>     Ray2f64;
   typedef Ray_T<f64, 3>     Ray3f64;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Ray_T<tl_float TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Ray_T<tl_float TLOC_COMMA 3>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Ray_T<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Ray_T<f32 TLOC_COMMA 3>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Ray_T<f64 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Ray_T<f64 TLOC_COMMA 3>);
+
 
 };};};
 

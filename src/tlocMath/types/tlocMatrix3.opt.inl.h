@@ -691,7 +691,9 @@ namespace tloc { namespace math { namespace types {
     const vec_type left(this->GetCol(0));
 
     vec_type newLeft = worldUp.Cross(newDir);
+    newLeft.Normalize();
     vec_type newUp   = newDir.Cross(newLeft);
+    newUp.Normalize();
 
     this->SetCol(0, newLeft);
     this->SetCol(1, newUp);

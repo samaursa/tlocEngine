@@ -142,19 +142,26 @@ namespace tloc { namespace math { namespace types {
     return DoGetCoord<T_Side1, T_Side2, T_Side3>();
   }
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // swap
 
   template <typename T>
   void swap(Cuboid_T<T>& a, Cuboid_T<T>& b)
   { a.swap(b); }
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // Typedefs
 
   typedef Cuboid_T<tl_float>   Cuboidf;
   typedef Cuboid_T<f32>        Cuboidf32;
   typedef Cuboid_T<f64>        Cuboidf64;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<f64>);
 
 };};};
 

@@ -277,6 +277,18 @@ namespace tloc { namespace math { namespace proj {
   typedef Frustum_T<f64, p_frustum::Perspective>   frustum_persp_f64;
   typedef Frustum_T<f64, p_frustum::Orthographic>  frustum_ortho_f64;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Frustum_T<tl_float TLOC_COMMA p_frustum::Perspective>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Frustum_T<tl_float TLOC_COMMA p_frustum::Orthographic>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Frustum_T<f32 TLOC_COMMA p_frustum::Perspective>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Frustum_T<f32 TLOC_COMMA p_frustum::Orthographic>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Frustum_T<f64 TLOC_COMMA p_frustum::Perspective>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Frustum_T<f64 TLOC_COMMA p_frustum::Orthographic>);
+
 };};};
 
 #endif

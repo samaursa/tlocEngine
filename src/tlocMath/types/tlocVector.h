@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TLOC_VECTOR_N_H
-#define TLOC_VECTOR_N_H
+#ifndef _TLOC_VECTOR_N_H_
+#define _TLOC_VECTOR_N_H_
 
 #include <tlocMath/tlocMathBase.h>
 
@@ -23,7 +23,7 @@ namespace tloc { namespace math { namespace types {
     struct    fast{};
   };
 
-  template <typename T, tl_size T_Size>
+  template <typename T, tl_size T_Size, typename T_Derived = DummyStruct>
   class Vector_TI
     : public core::data_structs::Tuple<T, T_Size>
   {
@@ -36,13 +36,18 @@ namespace tloc { namespace math { namespace types {
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Vector_TI<T, T_Size>                  this_type;
-    typedef core::data_structs::Tuple<T, T_Size>  base_type;
+    typedef Vector_TI<T, T_Size, T_Derived>               this_type;
+    typedef core::data_structs::Tuple<T, T_Size>          base_type;
 
-    typedef typename base_type::value_type        value_type;
-    typedef typename base_type::size_type         size_type;
-    typedef value_type&                           reference;
-    typedef value_type const&                     const_reference;
+    // select this_type as the derived_type if no derived type was passed
+    typedef typename Loki::Select
+      <Loki::IsSameType<T_Derived, DummyStruct>::value, 
+       this_type, T_Derived>::Result                      derived_type;
+
+    typedef typename base_type::value_type                value_type;
+    typedef typename base_type::size_type                 size_type;
+    typedef value_type&                                   reference;
+    typedef value_type const&                             const_reference;
 
     //------------------------------------------------------------------------
     // Constructors
@@ -61,28 +66,28 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Modifiers
 
-    void        MakeZero();
-    this_type   Inverse() const;
-    void        Inverse(const this_type& a_vector);
+    void          MakeZero();
+    derived_type  Inverse() const;
+    void          Inverse(const this_type& a_vector);
 
     //------------------------------------------------------------------------
     // Math Operations
 
-    this_type   Add(const this_type& a_vector) const;
-    void        Add(const this_type& a_vector1, const this_type& a_vector2);
+    derived_type  Add(const this_type& a_vector) const;
+    void          Add(const this_type& a_vector1, const this_type& a_vector2);
 
-    this_type   Sub(const this_type& a_vector) const;
-    void        Sub(const this_type& a_vector1, const this_type& a_vector2);
+    derived_type  Sub(const this_type& a_vector) const;
+    void          Sub(const this_type& a_vector1, const this_type& a_vector2);
 
-    this_type   Mul(const this_type& a_vector) const;
-    void        Mul(const this_type& a_vector1, const this_type& a_vector2);
-    this_type   Mul(const value_type a_real) const;
-    void        Mul(const this_type& a_vector, const value_type a_real);
+    derived_type  Mul(const this_type& a_vector) const;
+    void          Mul(const this_type& a_vector1, const this_type& a_vector2);
+    derived_type  Mul(const value_type a_real) const;
+    void          Mul(const this_type& a_vector, const value_type a_real);
 
-    this_type   Div(const this_type& a_vector) const;
-    void        Div(const this_type& a_vector1, const this_type& a_vector2);
-    this_type   Div(const value_type a_real) const;
-    void        Div(const this_type& a_vector, const value_type a_real);
+    derived_type  Div(const this_type& a_vector) const;
+    void          Div(const this_type& a_vector1, const this_type& a_vector2);
+    derived_type  Div(const value_type a_real) const;
+    void          Div(const this_type& a_vector, const value_type a_real);
 
     value_type  LengthSquared() const;
 
@@ -108,26 +113,26 @@ namespace tloc { namespace math { namespace types {
 
     bool        IsParallel(const this_type& a_vector) const;
 
-    this_type   Midpoint(const this_type& a_vector) const;
-    void        Midpoint(const this_type& a_vector1,
-                         const this_type& a_vector2);
+    derived_type  Midpoint(const this_type& a_vector) const;
+    void          Midpoint(const this_type& a_vector1,
+                           const this_type& a_vector2);
 
     //------------------------------------------------------------------------
     // Operators
 
-    this_type   operator+ (const this_type& a_vector) const;
-    this_type   operator- (const this_type& a_vector) const;
-    this_type   operator* (      value_type a_value) const;
-    this_type   operator* (const this_type& a_vector) const;
-    this_type   operator/ (      value_type a_value) const;
-    this_type   operator/ (const this_type& a_vector) const;
+    derived_type   operator+ (const this_type& a_vector) const;
+    derived_type   operator- (const this_type& a_vector) const;
+    derived_type   operator* (      value_type a_value) const;
+    derived_type   operator* (const this_type& a_vector) const;
+    derived_type   operator/ (      value_type a_value) const;
+    derived_type   operator/ (const this_type& a_vector) const;
 
-    this_type&  operator+= (const this_type& a_vector);
-    this_type&  operator-= (const this_type& a_vector);
-    this_type&  operator*= (      value_type a_value);
-    this_type&  operator*= (const this_type& a_vector);
-    this_type&  operator/= (      value_type a_value);
-    this_type&  operator/= (const this_type& a_vector);
+    derived_type&  operator+= (const this_type& a_vector);
+    derived_type&  operator-= (const this_type& a_vector);
+    derived_type&  operator*= (      value_type a_value);
+    derived_type&  operator*= (const this_type& a_vector);
+    derived_type&  operator/= (      value_type a_value);
+    derived_type&  operator/= (const this_type& a_vector);
 
     bool        operator == (const this_type& a_vector) const;
     bool        operator != (const this_type& a_vector) const;
@@ -142,8 +147,8 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Special vectors
 
-    static const this_type ZERO;
-    static const this_type ONE;
+    static const derived_type ZERO;
+    static const derived_type ONE;
 
     // -----------------------------------------------------------------------
     // base functions
@@ -174,30 +179,32 @@ namespace tloc { namespace math { namespace types {
 
   //------------------------------------------------------------------------
   // Static const definitions
-  template<typename T, tl_size T_Size>
-  const typename Vector_TI<T, T_Size>::this_type 
-    Vector_TI<T, T_Size>::ZERO = typename Vector_TI<T, T_Size>::this_type(0);
+  template<typename T, tl_size T_Size, typename T_DT>
+  const typename Vector_TI<T, T_Size, T_DT>::derived_type 
+    Vector_TI<T, T_Size, T_DT>::ZERO = 
+    typename Vector_TI<T, T_Size, T_DT>::derived_type(0);
 
-  template<typename T, tl_size T_Size>
-  const typename Vector_TI<T, T_Size>::this_type 
-    Vector_TI<T, T_Size>::ONE = typename Vector_TI<T, T_Size>::this_type(1);
+  template<typename T, tl_size T_Size, typename T_DT>
+  const typename Vector_TI<T, T_Size, T_DT>::derived_type 
+    Vector_TI<T, T_Size, T_DT>::ONE = 
+    typename Vector_TI<T, T_Size, T_DT>::derived_type(1);
 
   //------------------------------------------------------------------------
   // Template definitions
 
-  template <typename T, tl_size T_Size>
+  template <typename T, tl_size T_Size, typename T_DerivedType>
   template <typename T_Real>
-  Vector_TI<T, T_Size>::
+  Vector_TI<T, T_Size, T_DerivedType>::
     Vector_TI(const core_ds::Tuple<T_Real, T_Size>& a_vector)
       : base_type(a_vector)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_size T_Size>
+  template <typename T, tl_size T_Size, typename T_DerivedType>
   template <typename T_Accuracy>
-  typename Vector_TI<T, T_Size>::value_type
-    Vector_TI<T, T_Size>::
+  typename Vector_TI<T, T_Size, T_DerivedType>::value_type
+    Vector_TI<T, T_Size, T_DerivedType>::
     Length() const
   {
     type_traits::AssertTypeIsSupported
@@ -207,10 +214,10 @@ namespace tloc { namespace math { namespace types {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_size T_Size>
+  template <typename T, tl_size T_Size, typename T_DerivedType>
   template <typename T_Accuracy>
-  typename Vector_TI<T, T_Size>::value_type
-    Vector_TI<T, T_Size>::
+  typename Vector_TI<T, T_Size, T_DerivedType>::value_type
+    Vector_TI<T, T_Size, T_DerivedType>::
     Normalize()
   {
     type_traits::AssertTypeIsSupported
@@ -220,10 +227,10 @@ namespace tloc { namespace math { namespace types {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_size T_Size>
+  template <typename T, tl_size T_Size, typename T_DerivedType>
   template <typename T_Accuracy>
-  typename Vector_TI<T, T_Size>::value_type
-    Vector_TI<T, T_Size>::
+  typename Vector_TI<T, T_Size, T_DerivedType>::value_type
+    Vector_TI<T, T_Size, T_DerivedType>::
     Normalize(const this_type& a_vector)
   {
     type_traits::AssertTypeIsSupported
@@ -233,10 +240,10 @@ namespace tloc { namespace math { namespace types {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <typename T, tl_size T_Size>
+  template <typename T, tl_size T_Size, typename T_DerivedType>
   template <typename T_Accuracy>
-  typename Vector_TI<T, T_Size>::value_type
-    Vector_TI<T, T_Size>::
+  typename Vector_TI<T, T_Size, T_DerivedType>::value_type
+    Vector_TI<T, T_Size, T_DerivedType>::
     Distance(const this_type& a_vector) const
   {
     type_traits::AssertTypeIsSupported
@@ -247,16 +254,16 @@ namespace tloc { namespace math { namespace types {
   //------------------------------------------------------------------------
   // Global operators
 
-  template <typename T, tl_size T_Size>
-  Vector_TI<T, T_Size> 
-    operator* (T a_lhs, const Vector_TI<T, T_Size>& a_rhs)
+  template <typename T, tl_size T_Size, typename T_DT>
+  typename Vector_TI<T, T_Size, T_DT>::derived_type
+    operator* (T a_lhs, const Vector_TI<T, T_Size, T_DT>& a_rhs)
   {
     return a_rhs.operator*(a_lhs);
   }
 
-  template <typename T, tl_size T_Size>
-  Vector_TI<T, T_Size> 
-    operator/ (T a_lhs, const Vector_TI<T, T_Size>& a_rhs)
+  template <typename T, tl_size T_Size, typename T_DT>
+  typename Vector_TI<T, T_Size, T_DT>::derived_type
+    operator/ (T a_lhs, const Vector_TI<T, T_Size, T_DT>& a_rhs)
   {
     return a_rhs.operator/(a_lhs);
   }
@@ -266,6 +273,17 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T, tl_size T_Size>
   class Vector_T;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 4>);
 
 };};};
 

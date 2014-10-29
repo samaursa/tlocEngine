@@ -44,6 +44,13 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Quad, quad);
   TLOC_TYPEDEF_COMPONENT_POOL(Quad, quad);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Quad);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Quad);
+  TLOC_EXTERN_TEMPLATE_RENDERABLE(Quad, components::k_quad);
+
 };};};
 
 #endif

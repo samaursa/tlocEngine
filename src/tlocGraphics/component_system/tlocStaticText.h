@@ -44,6 +44,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(StaticText, static_text);
   TLOC_TYPEDEF_COMPONENT_POOL(StaticText, static_text);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(StaticText);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(StaticText);
+
 };};};
 
 #endif

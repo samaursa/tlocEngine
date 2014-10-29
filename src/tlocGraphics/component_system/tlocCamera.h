@@ -74,6 +74,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Camera, camera);
   TLOC_TYPEDEF_COMPONENT_POOL(Camera, camera);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Camera);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Camera);
+
 };};};
 
 

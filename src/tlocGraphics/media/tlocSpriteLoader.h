@@ -97,6 +97,24 @@ namespace tloc { namespace graphics { namespace media {
   typedef SpriteLoader_T
     <p_sprite_loader::parser::TexturePacker>     SpriteLoader_TexturePacker;
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(SpriteLoader_SpriteSheetPacker, sprite_loader_sprite_sheet_packer);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(SpriteLoader_SpriteSheetPacker, sprite_loader_sprite_sheet_packer);
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(SpriteLoader_TexturePacker, sprite_loader_texture_packer);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(SpriteLoader_TexturePacker, sprite_loader_texture_packer);
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(SpriteLoader_T<p_sprite_loader::parser::SpriteSheetPacker>);
+  TLOC_EXTERN_TEMPLATE_CLASS(SpriteLoader_T<p_sprite_loader::parser::TexturePacker>);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(SpriteLoader_SpriteSheetPacker);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(SpriteLoader_SpriteSheetPacker);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(SpriteLoader_TexturePacker);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(SpriteLoader_TexturePacker);
+
 };};};
 
 #endif

@@ -119,6 +119,18 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(sprite_info_ul, sprite_info_ul);
 
   // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(SpriteInfo_T<core_str::String> );
+  TLOC_EXTERN_TEMPLATE_CLASS(SpriteInfo_T<tl_ulong>);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(sprite_info_str);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(sprite_info_str);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(sprite_info_ul);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(sprite_info_ul);
+
+  // -----------------------------------------------------------------------
   // algorithms
 
   namespace algos { namespace transform {

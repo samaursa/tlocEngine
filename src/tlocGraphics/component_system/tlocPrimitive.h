@@ -102,6 +102,12 @@ namespace tloc { namespace graphics { namespace component_system {
     Primitive_TI();
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Primitive_TI<p_primitive::ArrayOfStructures>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Primitive_TI<p_primitive::StructureOfArrays>);
+
 };};};
 
 #endif

@@ -469,3 +469,12 @@ namespace tloc { namespace graphics { namespace media {
 #include <tlocCore/containers/tlocArray.inl.h>
 
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::gfx_med::sprite_info_str);
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::gfx_med;
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SpriteLoader_SpriteSheetPacker);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(SpriteLoader_SpriteSheetPacker);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SpriteLoader_TexturePacker);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(SpriteLoader_TexturePacker);

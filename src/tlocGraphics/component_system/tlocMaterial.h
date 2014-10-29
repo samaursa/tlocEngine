@@ -83,6 +83,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Material, material);
   TLOC_TYPEDEF_COMPONENT_POOL(Material, material);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Material);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Material);
+
 };};};
 
 #endif

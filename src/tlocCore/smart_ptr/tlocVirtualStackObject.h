@@ -686,16 +686,16 @@ typedef tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
 #define TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(_type_)\
   TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::VirtualStackObjectBase_TI<_type_ TLOC_COMMA \
     tloc::core_sptr::p_virtual_stack_object::copy_ctor::Available TLOC_COMMA\
-    tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail)
+    tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>)
 
 #define TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(_type_)\
   TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::VirtualStackObjectBase_TI<_type_ TLOC_COMMA \
     tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail TLOC_COMMA\
-    tloc::core_sptr::p_virtual_stack_object::default_ctor::Available)
+    tloc::core_sptr::p_virtual_stack_object::default_ctor::Available>)
 
 #define TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(_type_)\
   TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::VirtualStackObjectBase_TI<_type_ TLOC_COMMA \
     tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail TLOC_COMMA\
-    tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail)
+    tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>)
 
 #endif

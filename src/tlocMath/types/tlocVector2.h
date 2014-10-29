@@ -34,7 +34,7 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Constructors
     Vector_T();
-    Vector_T(const_reference aX, const_reference aY);
+    Vector_T(value_type aX, value_type aY);
     Vector_T(const this_type& aVector);
     Vector_T(const base_type& aVector);
     Vector_T(const core::data_structs::Variadic<value_type, 2>& a_vars);

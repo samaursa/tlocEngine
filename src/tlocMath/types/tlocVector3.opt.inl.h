@@ -37,8 +37,20 @@ namespace tloc { namespace math { namespace types {
 
   template <VECTOR_3_TYPES>
   Vector_T<VECTOR_3_PARAMS>::
-    Vector_T(const_reference aX, const_reference aY, const_reference aZ)
-    : base_type(core::data_structs::Variadic<value_type, 3>(aX, aY, aZ) )
+    Vector_T(value_type a_x, value_type a_y, value_type a_z)
+    : base_type(core::data_structs::Variadic<value_type, 3>(a_x, a_y, a_z) )
+  { }
+
+  template <VECTOR_3_TYPES>
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(vec2_type a_xy, value_type a_z)
+    : base_type(core::data_structs::Variadic<value_type, 3>(a_xy[0], a_xy[1], a_z) )
+  { }
+
+  template <VECTOR_3_TYPES>
+  Vector_T<VECTOR_3_PARAMS>::
+    Vector_T(value_type aX, vec2_type a_yz)
+    : base_type(core::data_structs::Variadic<value_type, 3>(aX, a_yz[0], a_yz[1]) )
   { }
 
   template <VECTOR_3_TYPES>

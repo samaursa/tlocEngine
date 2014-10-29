@@ -49,7 +49,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Quad);
   TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Quad);
-  TLOC_EXTERN_TEMPLATE_RENDERABLE(Quad, components::k_quad);
 
 };};};
 

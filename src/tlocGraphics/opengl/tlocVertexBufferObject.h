@@ -129,6 +129,21 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(VertexBufferObject, vbo);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(VertexBufferObject, vbo);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(VertexBufferObject);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);
+
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_array);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_copy_read);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_copy_write);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_element_array);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_pack);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_texture);
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(VertexBufferObject::bind_transform_feedback);
+
 };};};
 
 #endif

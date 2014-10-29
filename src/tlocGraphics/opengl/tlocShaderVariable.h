@@ -241,6 +241,11 @@ namespace tloc { namespace graphics { namespace gl {
 
   // -----------------------------------------------------------------------
 
+#define TLOC_EXTERN_TEMPLATE_SHADER_VARIABLE(_dt_)\
+  TLOC_EXTERN_TEMPLATE_CLASS(ShaderVariable_TI<_dt_>)
+
+  // -----------------------------------------------------------------------
+
   namespace algos { namespace shader_variable {
 
     namespace transform {

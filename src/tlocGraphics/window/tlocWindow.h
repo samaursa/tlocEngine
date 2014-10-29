@@ -394,6 +394,11 @@ namespace tloc { namespace graphics { namespace win {
 
   typedef Window_T<>    Window;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Window_T<>);
+
 };};};
 
 #endif

@@ -177,7 +177,9 @@ using namespace tloc;
 using namespace tloc::gfx_gl;
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexBufferObject);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);
 
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_array);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_copy_read);
@@ -188,5 +190,3 @@ TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_pixel_unpack);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_texture);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexBufferObject::bind_transform_feedback);
 
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexBufferObject);

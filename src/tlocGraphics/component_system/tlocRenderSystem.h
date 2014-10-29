@@ -189,6 +189,12 @@ namespace tloc { namespace graphics { namespace component_system {
     core_str::String          m_colorAttribName;
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(RenderSystem_TI<gfx_rend::renderer_depth32_sptr>);
+  TLOC_EXTERN_TEMPLATE_CLASS(RenderSystem_TI<gfx_rend::renderer_depth64_sptr>);
+
 };};};
 
 #endif

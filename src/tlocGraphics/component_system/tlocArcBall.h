@@ -62,6 +62,9 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ArcBall, arcball);
   TLOC_TYPEDEF_COMPONENT_POOL(ArcBall, arcball);
 
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(ArcBall);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(ArcBall);
+
 };};};
 
 #endif

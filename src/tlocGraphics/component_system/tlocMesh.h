@@ -64,6 +64,15 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mesh_Interleaved, mesh_interleaved);
   TLOC_TYPEDEF_COMPONENT_POOL(Mesh_Interleaved, mesh_interleaved);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Mesh);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Mesh);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Mesh_Interleaved);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Mesh_Interleaved);
+
 };};};
 
 #endif

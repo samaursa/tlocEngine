@@ -62,6 +62,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_TYPEDEF_VIRTUAL_PTR(Text_I, text_i);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(Text_I);
+
 };};};
 
 #endif

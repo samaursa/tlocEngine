@@ -244,6 +244,38 @@ namespace tloc { namespace graphics { namespace media {
 
   typedef Image_T<gfx_t::color_f32_r, p_image::storage::External>     image_stream_f32_r;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::Color>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_rgba>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_rgb>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_rg>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_r>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_rgba>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_rgb>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_rg>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_r>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_f32_r>);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Image);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Image);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_rgba TLOC_COMMA p_image::storage::External>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_rgb TLOC_COMMA p_image::storage::External>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_rg TLOC_COMMA p_image::storage::External>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_r TLOC_COMMA p_image::storage::External>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_rgba TLOC_COMMA p_image::storage::External>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_rgb TLOC_COMMA p_image::storage::External>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_rg TLOC_COMMA p_image::storage::External>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_u16_r TLOC_COMMA p_image::storage::External>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Image_T<gfx_t::color_f32_r TLOC_COMMA p_image::storage::External>);
+
   // ```````````````````````````````````````````````````````````````````````
   // u8 images
 
@@ -266,6 +298,29 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_r, image_stream_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_r, image_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_r, image_stream_r);
+
+  // -----------------------------------------------------------------------
+  // extern templates
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_rgba);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_rgba);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_rgba);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_rgba);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_rgb);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_rgb);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_rgb);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_rgb);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_rg);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_rg);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_rg);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_rg);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_r);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_r);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_r);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_r);
 
   // ```````````````````````````````````````````````````````````````````````
   // u16 images
@@ -290,6 +345,29 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_r, image_u16_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_r, image_stream_u16_r);
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_u16_rgba);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_u16_rgba);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_u16_rgba);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_u16_rgba);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_u16_rgb);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_u16_rgb);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_u16_rgb);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_u16_rgb);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_u16_rg);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_u16_rg);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_u16_rg);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_u16_rg);
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_u16_r);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_u16_r);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_u16_r);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_u16_r);
+
   // ```````````````````````````````````````````````````````````````````````
   // special images
 
@@ -297,6 +375,14 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_f32_r, image_stream_f32_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_f32_r, image_f32_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_f32_r, image_stream_f32_r);
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_f32_r);
+  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(image_stream_f32_r);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_f32_r);
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(image_stream_f32_r);
 
 };};};
 

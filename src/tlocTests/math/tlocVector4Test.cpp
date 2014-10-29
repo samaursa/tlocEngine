@@ -1,5 +1,6 @@
 #include "tlocTestCommon.h"
 
+#include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector4.h>
 
@@ -72,6 +73,32 @@ namespace TestingVector4f
     // Convert from Tuple to Vec
     c = Vec4f(Tuple<tl_float, 4>(1.0f));
     CHECK_VEC4F(c, 1.0f, 1.0f, 1.0f, 1.0f);
+
+    // constructors
+    {
+      Vec4f v(1, Vec3f(2, 3, 4));
+      CHECK_VEC4F(v, 1, 2, 3, 4);
+    }
+    {
+      Vec4f v(Vec3f(1, 2, 3), 4);
+      CHECK_VEC4F(v, 1, 2, 3, 4);
+    }
+    {
+      Vec4f v(Vec2f(1, 2), Vec2f(3, 4));
+      CHECK_VEC4F(v, 1, 2, 3, 4);
+    }
+    {
+      Vec4f v(Vec2f(1, 2), 3, 4);
+      CHECK_VEC4F(v, 1, 2, 3, 4);
+    }
+    {
+      Vec4f v(1, 2, Vec2f(3, 4));
+      CHECK_VEC4F(v, 1, 2, 3, 4);
+    }
+    {
+      Vec4f v(1, Vec2f(2, 3), 4);
+      CHECK_VEC4F(v, 1, 2, 3, 4);
+    }
   }
 
   TEST_CASE_METHOD(Vector4fFixture, "Math/Vector4f/Operators",

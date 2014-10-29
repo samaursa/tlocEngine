@@ -1,7 +1,7 @@
-#ifndef TLOC_VECTOR_N_OPT_INL
-#define TLOC_VECTOR_N_OPT_INL
+#ifndef _TLOC_VECTOR_N_OPT_INL_
+#define _TLOC_VECTOR_N_OPT_INL_
 
-#ifndef TLOC_VECTOR_N_H
+#ifndef _TLOC_VECTOR_N_H_
 #error "Must include header before including the inline file"
 #endif
 
@@ -47,9 +47,9 @@ namespace tloc {
       ////////////////////////////////////////////////////////////////////////
       // Template Macros
 
-#define VECTOR_TEMP typename T, tl_size T_Size
-#define VECTOR_PARAMS T, T_Size
-#define VECTOR_TYPE typename Vector_TI<T, T_Size>
+#define VECTOR_TEMP   typename T, tl_size T_Size, typename T_DerivedType
+#define VECTOR_PARAMS T, T_Size, T_DerivedType
+#define VECTOR_TYPE   typename Vector_TI<VECTOR_PARAMS>
 
       //////////////////////////////////////////////////////////////////////////
       // Misc Macros
@@ -106,14 +106,14 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Inverse() const
       {
-        this_type inv(*this);
+        derived_type inv(*this);
         ITERATE_VECTOR
         {
-          inv.m_values[i] = -inv.m_values[i];
+          inv[i] = -inv[i];
         }
 
         return inv;
@@ -133,15 +133,15 @@ namespace tloc {
       // Math Operations
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Add(const this_type& a_vector) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] += a_vector[i];
+          temp[i] += a_vector[i];
         }
 
         return temp;
@@ -160,15 +160,15 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Sub(const this_type& a_vector) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] -= a_vector[i];
+          temp[i] -= a_vector[i];
         }
 
         return temp;
@@ -187,15 +187,15 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Mul(const this_type& a_vector) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] *= a_vector[i];
+          temp[i] *= a_vector[i];
         }
 
         return temp;
@@ -213,15 +213,15 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Mul(const value_type a_real) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] *= a_real;
+          temp[i] *= a_real;
         }
 
         return temp;
@@ -236,22 +236,22 @@ namespace tloc {
       {
         ITERATE_VECTOR
         {
-          this->m_values[i] = a_vector.m_values[i] * a_real;
+          this->m_values[i] = a_vector[i] * a_real;
         }
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Div(const this_type& a_vector) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] /= a_vector[i];
+          temp[i] /= a_vector[i];
         }
 
         return temp;
@@ -270,15 +270,15 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Div(const value_type a_real) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] /= a_real;
+          temp[i] /= a_real;
         }
 
         return temp;
@@ -452,15 +452,15 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         Midpoint(const this_type& a_vector) const
       {
-        this_type temp(*this);
+        derived_type temp(*this);
 
         ITERATE_VECTOR
         {
-          temp.m_values[i] = ( temp.m_values[i] + a_vector[i] ) * ( value_type )0.5;
+          temp[i] = ( temp[i] + a_vector[i] ) * ( value_type )0.5;
         }
 
         return temp;
@@ -480,7 +480,7 @@ namespace tloc {
       // Operators
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         operator+ ( const this_type& a_vector ) const
       {
@@ -490,7 +490,7 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         operator- ( const this_type& a_vector ) const
       {
@@ -500,7 +500,7 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         operator* ( value_type a_value ) const
       {
@@ -510,7 +510,7 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         operator* ( const this_type& a_vector ) const
       {
@@ -520,7 +520,7 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         operator/ ( value_type a_value ) const
       {
@@ -530,7 +530,7 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type
+      VECTOR_TYPE::derived_type
         Vector_TI<VECTOR_PARAMS>::
         operator/ ( const this_type& a_vector ) const
       {
@@ -540,67 +540,67 @@ namespace tloc {
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type&
+      VECTOR_TYPE::derived_type&
         Vector_TI<VECTOR_PARAMS>::
         operator+= ( const this_type& a_vector )
       {
         Add(*this, a_vector);
-        return ( *this );
+        return *static_cast<derived_type*>(this);
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type&
+      VECTOR_TYPE::derived_type&
         Vector_TI<VECTOR_PARAMS>::
         operator-= ( const this_type& a_vector )
       {
         Sub(*this, a_vector);
-        return ( *this );;
+        return *static_cast<derived_type*>(this);
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type&
+      VECTOR_TYPE::derived_type&
         Vector_TI<VECTOR_PARAMS>::
         operator*= ( value_type a_value )
       {
         Mul(*this, a_value);
-        return *this;
+        return *static_cast<derived_type*>(this);
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type&
+      VECTOR_TYPE::derived_type&
         Vector_TI<VECTOR_PARAMS>::
         operator*= ( const this_type& a_vector )
       {
         Mul(*this, a_vector);
-        return *this;
+        return *static_cast<derived_type*>(this);
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type&
+      VECTOR_TYPE::derived_type&
         Vector_TI<VECTOR_PARAMS>::
         operator/= ( value_type a_value )
       {
         Div(*this, a_value);
-        return ( *this );
+        return *static_cast<derived_type*>(this);
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       template <VECTOR_TEMP>
-      VECTOR_TYPE::this_type&
+      VECTOR_TYPE::derived_type&
         Vector_TI<VECTOR_PARAMS>::
         operator/=( const this_type& a_vector )
       {
         Div(*this, a_vector);
-        return ( *this );
+        return *static_cast<derived_type*>(this);
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -662,5 +662,26 @@ namespace tloc {
     };
   };
 };
+
+// -----------------------------------------------------------------------
+// explicit instantiation macros
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VECTOR(_type_, _size_, _dt_)\
+  template class tloc::math_t::Vector_TI<_type_, _size_, _dt_>;\
+  \
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoLength<tloc::math_t::p_vector::accurate>(const this_type&) const;\
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoNorm<tloc::math_t::p_vector::accurate>(const this_type&);\
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoDistance<tloc::math_t::p_vector::accurate>(const this_type&) const;\
+
+#define TLOC_EXPLICITLY_INSTANTIATE_VECTOR_ALL_ACCURACIES(_type_, _size_, _dt_)\
+  template class tloc::math_t::Vector_TI<_type_, _size_, _dt_>;\
+  \
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoLength<tloc::math_t::p_vector::accurate>(const this_type&) const;\
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoNorm<tloc::math_t::p_vector::accurate>(const this_type&);\
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoDistance<tloc::math_t::p_vector::accurate>(const this_type&) const;\
+  \
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoLength<tloc::math_t::p_vector::fast>(const this_type&) const;\
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoNorm<tloc::math_t::p_vector::fast>(const this_type&);\
+  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoDistance<tloc::math_t::p_vector::fast>(const this_type&) const;\
 
 #endif

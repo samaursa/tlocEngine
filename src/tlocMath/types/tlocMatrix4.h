@@ -25,7 +25,7 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Matrix_T<T, 4>
-    : public Matrix_TI<T, 4>
+    : public Matrix_TI<T, 4, Matrix_T<T, 4> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
@@ -33,7 +33,7 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Matrix_T<T, 4>                          this_type;
-    typedef Matrix_TI<T, 4>                         base_type;
+    typedef Matrix_TI<T, 4, this_type>              base_type;
 
     typedef typename base_type::matrix_order        matrix_order;
 
@@ -126,6 +126,17 @@ namespace tloc { namespace math { namespace types {
   typedef Matrix_T<f128, 4> Mat4f128;
 
   typedef Matrix_T<tl_float, 4> Mat4f;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f32 TLOC_COMMA 4>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f64 TLOC_COMMA 4>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f128 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f32 TLOC_COMMA 4 TLOC_COMMA  Mat4f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f64 TLOC_COMMA 4 TLOC_COMMA  Mat4f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f128 TLOC_COMMA 4 TLOC_COMMA  Mat4f128>);
 
 };};};
 

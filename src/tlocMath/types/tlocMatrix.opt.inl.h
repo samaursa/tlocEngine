@@ -22,8 +22,8 @@ namespace tloc { namespace math { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Template Macros
 
-#define MATRIX_TEMPS  typename T, tl_size T_Size
-#define MATRIX_PARAMS T, T_Size
+#define MATRIX_TEMPS  typename T, tl_size T_Size, typename T_DerivedType
+#define MATRIX_PARAMS T, T_Size, T_DerivedType
 #define MATRIX_TYPE   typename Matrix_TI<MATRIX_PARAMS>
 
   //////////////////////////////////////////////////////////////////////////
@@ -111,11 +111,11 @@ namespace tloc { namespace math { namespace types {
   // Math operations
 
   template <MATRIX_TEMPS>
-  MATRIX_TYPE::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     Add(const this_type& a_matrix) const
   {
-    this_type temp(*this);
+    derived_type temp(*this);
 
     ITERATE_MATRIX
     {
@@ -134,11 +134,11 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  MATRIX_TYPE::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     Sub(const this_type& a_matrix) const
   {
-    this_type temp(*this);
+    derived_type temp(*this);
 
     ITERATE_MATRIX
     {
@@ -156,11 +156,11 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  MATRIX_TYPE::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     Mul(const this_type& a_matrix) const
   {
-    this_type temp(*this);
+    derived_type temp(*this);
 
     for (tl_size i = 0; i < T_Size; ++i)
     {
@@ -186,11 +186,11 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  MATRIX_TYPE::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     Mul(const_reference aReal) const
   {
-    this_type temp(*this);
+    derived_type temp(*this);
 
     ITERATE_MATRIX
     {
@@ -224,14 +224,14 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  MATRIX_TYPE::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     Div(const_reference aReal) const
   {
     TLOC_ASSERT_LOW_LEVEL(math::IsEqual<value_type>(aReal, 0.0f) == false,
       "The matrix is being divided by zero!");
 
-    this_type temp(*this);
+    derived_type temp(*this);
 
     ITERATE_MATRIX
     {
@@ -242,11 +242,11 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     Transpose() const
   {
-    this_type temp(m_values, base_type::k_RowMajor);
+    derived_type temp(m_values, base_type::k_RowMajor);
     return temp;
   }
 
@@ -274,38 +274,38 @@ namespace tloc { namespace math { namespace types {
   // Operators
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     operator+ (const this_type& a_matrix) const
   {
-    this_type returnMat = Add(a_matrix);
+    derived_type returnMat = Add(a_matrix);
     return returnMat;
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     operator- (const this_type& a_matrix) const
   {
-    this_type returnMat = Sub(a_matrix);
+    derived_type returnMat = Sub(a_matrix);
     return returnMat;
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     operator* (const this_type& a_matrix) const
   {
-    this_type returnMat = Mul(a_matrix);
+    derived_type returnMat = Mul(a_matrix);
     return returnMat;
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     operator* (const_reference a_value) const
   {
-    this_type returnMat = Mul(a_value);
+    derived_type returnMat = Mul(a_value);
     return returnMat;
   }
 
@@ -319,57 +319,57 @@ namespace tloc { namespace math { namespace types {
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type
+  MATRIX_TYPE::derived_type
     Matrix_TI<MATRIX_PARAMS>::
     operator/ (const_reference a_matrix) const
   {
-    this_type returnMat = Div(a_matrix);
+    derived_type returnMat = Div(a_matrix);
     return returnMat;
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type&
+  MATRIX_TYPE::derived_type&
     Matrix_TI<MATRIX_PARAMS>::
     operator+= (const this_type& a_matrix)
   {
     *this = Add(a_matrix);
-    return *this;
+    return *static_cast<derived_type*>(this);
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type&
+  MATRIX_TYPE::derived_type&
     Matrix_TI<MATRIX_PARAMS>::
     operator-= (const this_type& a_matrix)
   {
     *this = Sub(a_matrix);
-    return *this;
+    return *static_cast<derived_type*>(this);
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type&
+  MATRIX_TYPE::derived_type&
     Matrix_TI<MATRIX_PARAMS>::
     operator*= (const this_type& a_matrix)
   {
     *this = Mul(a_matrix);
-    return *this;
+    return *static_cast<derived_type*>(this);
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type&
+  MATRIX_TYPE::derived_type&
     Matrix_TI<MATRIX_PARAMS>::
     operator*= (const_reference a_value)
   {
     *this = Mul(a_value);
-    return *this;
+    return *static_cast<derived_type*>(this);
   }
 
   template <MATRIX_TEMPS>
-  typename Matrix_TI<MATRIX_PARAMS>::this_type&
+  MATRIX_TYPE::derived_type&
     Matrix_TI<MATRIX_PARAMS>::
     operator/= (const_reference a_value)
   {
     *this = Div(a_value);
-    return *this;
+    return *static_cast<derived_type*>(this);
   }
 
   template <MATRIX_TEMPS>
@@ -392,5 +392,11 @@ namespace tloc { namespace math { namespace types {
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation macro
+
+#define TLOC_EXPLICITLY_INSTANTIATE_MATRIX(_type_, _size_, _derived_)\
+  template class tloc::math_t::Matrix_TI<_type_, _size_, _derived_>
 
 #endif

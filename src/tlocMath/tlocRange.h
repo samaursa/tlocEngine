@@ -183,6 +183,22 @@ namespace tloc { namespace math {
   typedef Range_T<f64>            range_f64;
   typedef Range_T<tl_size>        range_tl_size;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<tl_int>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<tl_float>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<s8>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<u8>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<s32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<s64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<u32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<u64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Range_T<tl_size>);
+
   //------------------------------------------------------------------------
   // global definitions
 

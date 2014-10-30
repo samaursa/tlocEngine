@@ -47,7 +47,6 @@ set(TLOC_MATH_TYPES
   types/tlocAngle.cpp 
   types/tlocAngle.h 
   types/tlocAngle.opt.inl.h 
-  types/tlocAngleExplicitMacros.h 
   types/tlocAspectRatio.cpp 
   types/tlocAspectRatio.h 
   types/tlocCircle.cpp 
@@ -68,7 +67,6 @@ set(TLOC_MATH_TYPES
   types/tlocMatrix4.cpp 
   types/tlocMatrix4.h 
   types/tlocMatrix4.opt.inl.h 
-  types/tlocMatrixExplicitMacros.h 
   types/tlocRay.h
   types/tlocRay.cpp
   types/tlocRectangle.cpp 
@@ -85,7 +83,6 @@ set(TLOC_MATH_TYPES
   types/tlocVector4.cpp 
   types/tlocVector4.h 
   types/tlocVector4.opt.inl.h 
-  types/tlocVectorExplicitMacros.h 
   types/tloc_matrix.cpp 
   types/tloc_matrix.h 
   types/tloc_matrix.inl.h 

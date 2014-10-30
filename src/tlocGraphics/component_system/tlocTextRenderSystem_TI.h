@@ -81,6 +81,13 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::TextureAnimatorSystem       m_textAnimSys;
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  class StaticText; class DynamicText;
+  TLOC_EXTERN_TEMPLATE_CLASS(TextRenderSystem_TI<StaticText>);
+  TLOC_EXTERN_TEMPLATE_CLASS(TextRenderSystem_TI<DynamicText>);
+
 };};};
 
 #endif

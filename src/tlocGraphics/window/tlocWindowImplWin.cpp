@@ -41,7 +41,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     typedef gl::FramebufferObject           base_type;
   public:
     WindowsFramebufferObject()
-      : base_type(gl::p_framebuffer_object::Default())
+      : base_type(gl::p_fbo::Default())
     { }
   };
 

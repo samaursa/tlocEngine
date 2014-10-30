@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
 
-    const string_type& GetName(tl_int a_nameIndex = 0) const;
+    const string_type& GetName(size_type a_nameIndex = 0) const;
     this_type&         AddName(BufferArg a_name);
 
     TLOC_DECL_AND_DEF_GETTER
@@ -156,7 +156,11 @@ namespace tloc { namespace graphics { namespace gl {
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+        gfx_t::Vert4fo
        >();
 
     return DoBufferData<T_Type>(T_Target::s_glParamName, 
@@ -183,7 +187,11 @@ namespace tloc { namespace graphics { namespace gl {
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+        gfx_t::Vert4fo
        >();
 
     return DoBufferSubData<T_Type>(a_array, a_offset_index);
@@ -208,7 +216,11 @@ namespace tloc { namespace graphics { namespace gl {
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+        gfx_t::Vert4fo
        >();
 
     return DoGetValueAs<T_Type>(a_out, a_offset_index);

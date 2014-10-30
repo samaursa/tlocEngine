@@ -1,8 +1,6 @@
 #include "tlocRenderer.h"
 
 #include <tlocCore/platform/tlocPlatform.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -204,7 +202,7 @@ namespace tloc { namespace graphics { namespace renderer {
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
   {
-    fbo_type::Bind b(m_params.GetFBO().get());
+    fbo_type::bind b(*m_params.GetFBO().get());
 
     math_t::Vec4f32 col = m_params.GetClearColor().template GetAs
       <gfx_t::p_color::format::RGBA, math_t::Vec4f32>();
@@ -271,7 +269,7 @@ namespace tloc { namespace graphics { namespace renderer {
     DoStart() const
   {
     // enable FBO
-    m_fboBinder.reset(new fbo_type::Bind( m_params.GetFBO().get() ));
+    m_fboBinder.reset(new fbo_bind_ptr::value_type( *m_params.GetFBO().get() ));
 
     return ErrorSuccess;
   }
@@ -302,8 +300,13 @@ namespace tloc { namespace graphics { namespace renderer {
 
 using namespace tloc::gfx_rend;
 
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth32);
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(Renderer_depth64);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Renderer_depth32);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth32);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Renderer_depth64);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Renderer_depth64);
 
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth32::RenderOneFrame);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(Renderer_depth64::RenderOneFrame);

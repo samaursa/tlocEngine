@@ -49,7 +49,7 @@ namespace TestingMatrix4
   }
 
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/General",
-    "Test general/basic functionality")
+    "Test constructors")
   {
     a.MakeZero();
     Mat4f f(a);
@@ -90,6 +90,13 @@ namespace TestingMatrix4
                       10.0f, 10.0f, 10.0f, 10.0f,
                       10.0f, 10.0f, 10.0f, 10.0f,
                       10.0f, 10.0f, 10.0f, 10.0f);
+
+    Vec4f row1Norm(a[0], a[4], a[8], a[12]);
+    Vec4f row2Norm(a[1], a[5], a[9], a[13]);
+    Vec4f row3Norm(a[2], a[6], a[10], a[14]);
+    Vec4f row4Norm(0, 0, 0, 1);
+
+    c = Mat4f(row1Norm, row2Norm, row3Norm, row4Norm, Mat4f::k_RowMajor);
   }
 
   TEST_CASE_METHOD(Matrix4Fixture, "Math/Matrix4/Inverse and determinant", "")

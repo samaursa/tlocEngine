@@ -312,6 +312,24 @@ namespace tloc { namespace math { namespace types {
   typedef Degree_T<f32>           degree_f32;
   typedef Degree_T<f64>           degree_f64;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Angle_T<tl_float TLOC_COMMA Radian>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Angle_T<tl_float TLOC_COMMA Degree>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Angle_T<f32 TLOC_COMMA radian_f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Angle_T<f32 TLOC_COMMA degree_f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Angle_T<f64 TLOC_COMMA radian_f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Angle_T<f64 TLOC_COMMA degree_f64>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Radian_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Radian_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Radian_T<f64>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Degree_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Degree_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Degree_T<f64>);
+
 };};};
 
 #endif

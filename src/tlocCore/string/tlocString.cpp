@@ -185,12 +185,6 @@ namespace tloc { namespace core { namespace string {
   template StringW operator+ (const StringW& a_lhs, const char32* a_rhs);
   template StringW operator+ (const StringW& a_lhs, char32 a_rhs);
 
-  // -----------------------------------------------------------------------
-  // Explicitly instantiate string
-
-  template StringBase<char8>;
-  template StringBase<char32>;
-
   // ------------------------------------------------------------------------
   // specialized function definitions
 

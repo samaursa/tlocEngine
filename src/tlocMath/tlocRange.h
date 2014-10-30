@@ -59,10 +59,10 @@ namespace tloc { namespace math {
       bool       operator< (const iterator& a_other) const;
       TLOC_DECLARE_OPERATORS(iterator);
 
-      this_type   operator+ (difference_type a_index) const;
+      this_type   operator+  (difference_type a_index) const;
       this_type&  operator+= (difference_type a_index);
-      this_type   operator- (difference_type a_index);
-      this_type   operator-= (difference_type a_index);
+      this_type   operator-  (difference_type a_index);
+      this_type&  operator-= (difference_type a_index);
       this_type&  operator++ ();
       this_type   operator++ (int);
       this_type&  operator-- ();

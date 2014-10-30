@@ -860,7 +860,7 @@ namespace tloc { namespace core {
 
   // Microsoft Visual Studio
 
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
 
 #include <stdlib.h>
 
@@ -871,7 +871,7 @@ namespace tloc { namespace core {
 
   // Other compilers
 
-#else	// defined(_MSC_VER)
+#else
 
   inline u32 rotl32 ( u32 x, s8 r )
   {
@@ -888,7 +888,7 @@ namespace tloc { namespace core {
 
 #define BIG_CONSTANT(x) (x##LLU)
 
-#endif // !defined(_MSC_VER)
+#endif
 
   //-----------------------------------------------------------------------------
   // Block read - if your platform needs to do endian-swapping or can only

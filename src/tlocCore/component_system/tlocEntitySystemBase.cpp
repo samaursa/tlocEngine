@@ -35,9 +35,9 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase(event_manager_ptr a_eventMgr, 
                      entity_manager_ptr a_entityMgr, 
                      register_type a_compsToRegister)
-    : m_eventMgr(a_eventMgr)
+    : m_compRegistry(a_compsToRegister)
+    , m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
-    , m_compRegistry(a_compsToRegister)
     , m_flags(k_count)
   { 
     m_eventMgr->AddListener(this, entity_events::insert_component);

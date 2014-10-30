@@ -111,9 +111,6 @@ namespace tloc { namespace graphics { namespace gl {
     public:
       UnsafeBind(const fbo_type& a_fbo, target_type a_target);
       ~UnsafeBind();
-
-    private:
-      target_type m_target;
     };
 
   public:
@@ -254,17 +251,16 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(FramebufferObject, framebuffer_object);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(FramebufferObject, framebuffer_object);
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(FramebufferObject);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(FramebufferObject);
-
-  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(FramebufferObject::bind);
-  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(FramebufferObject::bind_draw);
-  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(FramebufferObject::bind_read);
-
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::FramebufferObject);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::FramebufferObject);
+
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::FramebufferObject::bind);
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::FramebufferObject::bind_draw);
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::FramebufferObject::bind_read);
 
 #endif

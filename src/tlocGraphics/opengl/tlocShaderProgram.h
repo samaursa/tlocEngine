@@ -128,12 +128,12 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderProgram, shader_program);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderProgram, shader_program);
 
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(ShaderProgram);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(ShaderProgram);
-
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::ShaderProgram);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::ShaderProgram);
 
 #endif

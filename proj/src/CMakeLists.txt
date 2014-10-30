@@ -175,13 +175,11 @@ FILE(WRITE "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/gameAs
 # import <Foundation/Foundation.h>
 #endif
 
-#define TLOC_ASSETS_PATH \"${ASSETS_PATH}\"
-
 #if defined(TLOC_OS_WIN)
 
 inline const char* GetAssetsPath()
 {
-static const char* assetPath = \"${ASSETS_PATH}\";
+static const char* assetPath = \"${ASSETS_PATH}/\";
   return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)

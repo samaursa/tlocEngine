@@ -795,7 +795,7 @@ namespace tloc { namespace graphics { namespace gl {
     m_dataTypeSize  = sizeof(T_Type);
     m_usage         = a_usage;
     m_target        = a_target;
-    m_dataSize      = a_array.size();
+    m_dataSize      = core_utils::CastNumber<gl_sizei>(a_array.size());
     m_strideInfo    = DoGetStrideInfo(a_array);
 
     glBufferData(m_target, 
@@ -826,7 +826,8 @@ namespace tloc { namespace graphics { namespace gl {
                 "Attempting to update buffer with a mismatched type");
 
     using core_utils::CastNumber;
-    const gfx_t::gl_sizei dataSize = a_array.size();
+    const gfx_t::gl_sizei dataSize =
+      core_utils::CastNumber<gl_sizei>(a_array.size());
 
     TLOC_LOG_GFX_ERR_IF
       (dataSize + a_offset > CastNumber<gfx_t::gl_sizei>(m_dataSize))
@@ -893,7 +894,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   const AttributeVBO::string_type&
     AttributeVBO::
-    GetName(tl_int a_nameIndex) const
+    GetName(size_type a_nameIndex) const
   { return m_names[a_nameIndex]; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

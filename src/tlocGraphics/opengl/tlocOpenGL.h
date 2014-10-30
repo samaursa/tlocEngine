@@ -58,6 +58,11 @@ namespace tloc { namespace graphics { namespace gl {
       typedef gl_int            value_type;
       static const value_type   s_glParamName;
     };
+    struct MaxColorAttachments
+    {
+      typedef gl_int            value_type;
+      static const value_type   s_glParamName;
+    };
 
 #if defined (TLOC_OS_WIN)
     struct NumExtensions

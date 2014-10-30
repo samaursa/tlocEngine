@@ -18,6 +18,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+    const int_type g_maxAttachmentsHardCoded = 15;
+
     template <typename T_Platform>
     int_type
       DoGetMaxColorAttachments(T_Platform)
@@ -157,6 +159,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_ASSERT(gl::Error().Succeeded(),
       "OpenGL: Error with glBindFramebuffer");
+
+    const tl_size numAttachments = a_fbo.size_color_attachments();
+    if (numAttachments > 0)
+    { glDrawBuffers(numAttachments, a_fbo.begin_color_attachments()); }
+
+    TLOC_ASSERT(gl::Error().Succeeded(),
+      "OpenGL: Error with glDrawBuffers");
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -290,6 +299,8 @@ namespace tloc { namespace graphics { namespace gl {
                p_fbo::attachment::value_type a_attachment,
                T_TextureObject a_to)
     {
+      a_to.Bind();
+
       if (a_to.GetTargetType() == p_texture_object::target::Tex1D::s_glParamName)
       {
         glFramebufferTexture1D(a_target, a_attachment,
@@ -329,6 +340,8 @@ namespace tloc { namespace graphics { namespace gl {
                p_framebuffer_object::attachment::value_type a_attachment,
                T_TextureObject a_to)
     {
+      a_to.Bind();
+
       if (a_to.GetTargetType() == p_texture_object::target::Tex2D::s_glParamName)
       {
         glFramebufferTexture2D(a_target, a_attachment,
@@ -362,7 +375,13 @@ namespace tloc { namespace graphics { namespace gl {
 
     priv::DoAttach(a_target, a_attachment, a_to);
 
-    m_textureObjets.push_back(a_to);
+    m_textureObjects.push_back(a_to);
+
+    // keep track of the color attachments
+    using p_framebuffer_object::attachment::ColorAttachment;
+    if (a_attachment >= ColorAttachment<0>::s_glParamName &&
+        a_attachment <= ColorAttachment<g_maxAttachmentsHardCoded>::s_glParamName)
+    { m_activeColorAttachments.push_back(a_attachment); }
 
     return ErrorSuccess;
   }
@@ -379,6 +398,12 @@ namespace tloc { namespace graphics { namespace gl {
     priv::DoAttach(a_target, a_attachment, a_to);
 
     m_textureObjetsShadow.push_back(a_to);
+
+    // keep track of the color attachments
+    using p_framebuffer_object::attachment::ColorAttachment;
+    if (a_attachment >= ColorAttachment<0>::s_glParamName &&
+        a_attachment <= ColorAttachment<g_maxAttachmentsHardCoded>::s_glParamName)
+    { m_activeColorAttachments.push_back(a_attachment); }
 
     return ErrorSuccess;
   }

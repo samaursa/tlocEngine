@@ -42,4 +42,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
 };};};
 
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::QuadRenderSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::QuadRenderSystem);
+
 #endif

@@ -1,5 +1,7 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocShader.h>
@@ -130,10 +132,10 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
-    // stores all uniforms to keep 1 reference alive at all times
     gl::uniform_sptr_cont uniCont;
 
     shader_op_ptr so(new gl::ShaderOperator());
+    gl::uniform_vptr uniformPtrToCheckWarning; // test warning when adding uniforms
 
     //------------------------------------------------------------------------
     // Add all the uniforms
@@ -144,7 +146,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_float");
       uniform->SetValueAs(f32(5.0f));
 
-      so->AddUniform(*uniform);
+      uniformPtrToCheckWarning = so->AddUniform(*uniform);
       CHECK_FALSE(so->IsUniformsCached());
 
       gl::ShaderOperator::uniform_iterator itr =
@@ -170,6 +172,14 @@ namespace TestingShaderOperator
       uniform->SetName("u_vec3");
       uniform->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
+      graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::s_value);
+      TLOC_TEST_ASSERT
+      { so->AddUniform(*uniform); }
+      TLOC_TEST_ASSERT_REQUIRE();
+      graphics::GetLogger().ResetBreakOnSeverity();
+
+      uniformPtrToCheckWarning.reset();
+      // now add the uniform normally
       so->AddUniform(*uniform);
     }
     {
@@ -372,7 +382,7 @@ namespace TestingShaderOperator
 
     // Test Removal
     typedef shader_op_ptr::value_type::size_type size_type;
-    const size_type numUniforms = so->GetNumberOfUniforms();
+    const size_type numUniforms = so->size_uniforms();
 
     // Note that removing uniforms does not affect cache
     gl::ShaderOperator::uniform_iterator uniItr =
@@ -380,14 +390,14 @@ namespace TestingShaderOperator
         core::algos::pair::compare::MakeFirst(so->begin_uniforms()->first));
 
     so->RemoveUniform(uniItr);
-    CHECK(so->GetNumberOfUniforms() == numUniforms - 1);
+    CHECK(so->size_uniforms() == numUniforms - 1);
 
     uniItr =
       core::find_if(so->begin_uniforms(), so->end_uniforms(),
         core::algos::pair::compare::MakeFirst(so->begin_uniforms()->first));
 
     so->RemoveUniform(uniItr);
-    CHECK(so->GetNumberOfUniforms() == numUniforms - 2);
+    CHECK(so->size_uniforms() == numUniforms - 2);
 
     sp.Enable();
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
@@ -396,7 +406,7 @@ namespace TestingShaderOperator
     sp.Disable();
 
     so->RemoveAllUniforms();
-    CHECK(so->GetNumberOfUniforms() == 0);
+    CHECK(so->size_uniforms() == 0);
   }
 
 #if defined (TLOC_OS_WIN)
@@ -508,6 +518,10 @@ namespace TestingShaderOperator
 
       REQUIRE(itr != so->end_uniforms());
       CHECK(itr->first->GetName().compare("u_float") == 0);
+
+      gl::uniform_vptr ptr = gl::f_shader_operator::GetUniform(*so, "u_float");
+      REQUIRE(ptr);
+      CHECK(ptr->GetName().compare("u_float") == 0);
     }
     {
       uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
@@ -810,6 +824,14 @@ namespace TestingShaderOperator
       so->AddAttributeVBO(attribute);
     }
 
+    { // test meta function
+      gl::attributeVBO_vptr vboPtr = 
+        gl::f_shader_operator::GetAttributeVBO(*so, "u_ivec4");
+
+      REQUIRE(vboPtr);
+      CHECK(vboPtr->GetName().compare("u_ivec4") == 0);
+    }
+
 #endif
 
     // Copy the operator
@@ -874,7 +896,7 @@ namespace TestingShaderOperator
 
     // Test Removal
     typedef shader_op_ptr::value_type::size_type size_type;
-    const size_type numAttributes = so->GetNumberOfAttributeVBOs();
+    const size_type numAttributes = so->size_attributeVBOs();
 
     gl::ShaderOperator::attributeVBO_iterator attrItr =
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(),
@@ -882,14 +904,14 @@ namespace TestingShaderOperator
 
     // Note that removing uniforms does not affect cache
     so->RemoveAttributeVBO(attrItr);
-    CHECK(so->GetNumberOfAttributeVBOs() == numAttributes - 1);
+    CHECK(so->size_attributeVBOs() == numAttributes - 1);
 
     attrItr =
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(),
         core::algos::pair::compare::MakeFirst(so->begin_attributeVBOs()->first));
 
     so->RemoveAttributeVBO(attrItr);
-    CHECK(so->GetNumberOfAttributeVBOs() == numAttributes - 2);
+    CHECK(so->size_attributeVBOs() == numAttributes - 2);
 
     sp.Enable();
     CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
@@ -899,6 +921,6 @@ namespace TestingShaderOperator
     sp.Disable();
 
     so->RemoveAllAttributeVBOs();
-    CHECK(so->GetNumberOfAttributeVBOs() == 0);
+    CHECK(so->size_attributeVBOs() == 0);
   }
 };

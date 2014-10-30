@@ -35,7 +35,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     typedef AttributeVBO              vbo_type;
     typedef attributeVBO_vso          vbo_vso;
-    typedef attributeVBO_vptr         vbo_ptr;
+    typedef attributeVBO_vptr         attributeVBO_ptr;
     typedef const_attributeVBO_vptr   const_vbo_ptr;
 
     typedef VertexArrayObject         vao_type;
@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace gl {
     ~ShaderOperator();
 
     uniform_ptr   AddUniform(const uniform_type& a_uniform);
-    vbo_ptr       AddAttributeVBO(const vbo_type& a_vbo);
+    attributeVBO_ptr       AddAttributeVBO(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
     void RemoveAttributeVBO(const attributeVBO_iterator& a_vbo);
@@ -124,10 +124,8 @@ namespace tloc { namespace graphics { namespace gl {
     bool IsUniformsCached();
     bool IsAttributeVBOsCached();
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
-                             m_uniforms.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributeVBOs,
-                             m_VBOs.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_uniforms, m_uniforms.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_attributeVBOs, m_VBOs.size());
     TLOC_DECL_AND_DEF_GETTER(const_vao_vptr, GetVAO, core_sptr::ToVirtualPtr(m_vao));
 
   private:
@@ -139,6 +137,23 @@ namespace tloc { namespace graphics { namespace gl {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderOperator, shader_operator);
+
+  // -----------------------------------------------------------------------
+
+  namespace f_shader_operator {
+
+    typedef ShaderOperator::uniform_ptr           uniform_ptr;
+    typedef ShaderOperator::attributeVBO_ptr      attributeVBO_ptr;
+
+    uniform_ptr
+      GetUniform(ShaderOperator& a_so, BufferArg a_name);
+
+    attributeVBO_ptr
+      GetAttributeVBO(ShaderOperator& a_so, BufferArg a_name);
+
+  };
+
+  // -----------------------------------------------------------------------
 
   namespace algos { namespace shader_operator {
 
@@ -183,3 +198,11 @@ namespace tloc { namespace graphics { namespace gl {
   };};
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::ShaderOperator);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::ShaderOperator);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::ShaderOperator::uniform_pair_type);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::vbo_vso);

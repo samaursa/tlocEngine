@@ -32,7 +32,7 @@ namespace tloc { namespace core { namespace logging {
 
     enum
     {
-      k_info,
+      k_info = p_log::severity::Info::s_value,
       k_success,
       k_debug,
       k_warning,

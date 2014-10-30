@@ -12,7 +12,7 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
-  namespace p_framebuffer_object {
+  namespace p_fbo {
 
     namespace priv {
       struct FramebufferObjectParamsBase { };
@@ -24,7 +24,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       namespace priv {
         struct TargetParamsBase :
-          public p_framebuffer_object::priv::FramebufferObjectParamsBase { };
+          public p_fbo::priv::FramebufferObjectParamsBase { };
       };
 
       struct Framebuffer : public priv::TargetParamsBase
@@ -43,7 +43,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       namespace priv {
         struct AttachmentParamsBase :
-          public p_framebuffer_object::priv::FramebufferObjectParamsBase { };
+          public p_fbo::priv::FramebufferObjectParamsBase { };
       };
 
       template <value_type T_ColorAttachmentIndex>
@@ -69,6 +69,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     struct Default : public priv::FramebufferObjectParamsBase{ };
   };
+
+  // backward compatibility
+  namespace p_framebuffer_object = p_fbo;
 
   // ///////////////////////////////////////////////////////////////////////
   // Framebuffer Object
@@ -98,16 +101,55 @@ namespace tloc { namespace graphics { namespace gl {
     typedef to_type::dimension_type                       dimension_type;
 
   public:
-
-    // RAII not implemented deliberately because the dtor is not exactly
-    // destroying anything, just setting the framebuffer back to default.
-    struct Bind
+    struct UnsafeBind
       : public core_bclass::NonCopyable_I
     {
-      Bind(const FramebufferObject* a_fbo);
-      ~Bind();
+    public:
+      typedef FramebufferObject                           fbo_type;
+      typedef p_fbo::target::value_type    target_type;
+
+    public:
+      UnsafeBind(const fbo_type& a_fbo, target_type a_target);
+      ~UnsafeBind();
     };
-    TLOC_TYPEDEF_UNIQUE_PTR(Bind, bind);
+
+  public:
+    template <typename T_Target>
+    struct Bind_T
+      : public UnsafeBind
+    {
+    public:
+      typedef T_Target                                    target_type;
+
+    public:
+      Bind_T(const fbo_type& a_fbo);
+    };
+
+  public:
+    template <typename T_Target>
+    struct LateBind_T
+      : public core_bclass::NonCopyable_I
+    {
+    public:
+      typedef FramebufferObject                           fbo_type;
+      typedef T_Target                                    target_type;
+      typedef core_sptr::UniquePtr<Bind_T<target_type> >  bind_ptr;
+
+    public:
+      void Bind(const fbo_type& a_fbo);
+
+    private:
+      bind_ptr  m_bind;
+    };
+
+  public:
+    typedef Bind_T<p_fbo::target::Framebuffer>     bind;
+    typedef Bind_T<p_fbo::target::DrawFramebuffer> bind_draw;
+    typedef Bind_T<p_fbo::target::ReadFramebuffer> bind_read;
+
+    TLOC_TYPEDEF_UNIQUE_PTR(bind, bind);
+    TLOC_TYPEDEF_UNIQUE_PTR(bind_draw, bind_draw);
+    TLOC_TYPEDEF_UNIQUE_PTR(bind_read, bind_read);
 
   public:
     FramebufferObject();
@@ -132,11 +174,11 @@ namespace tloc { namespace graphics { namespace gl {
   protected:
     // This constructor should be only be used by platforms that require a
     // FBO with an ID of 0 explicitly
-    FramebufferObject(p_framebuffer_object::Default);
+    FramebufferObject(p_fbo::Default);
 
   private:
-    typedef p_framebuffer_object::target::value_type      target_value_type;
-    typedef p_framebuffer_object::attachment::value_type  attachment_value_type;
+    typedef p_fbo::target::value_type      target_value_type;
+    typedef p_fbo::attachment::value_type  attachment_value_type;
 
     error_type DoAttach(target_value_type a_target,
                         attachment_value_type a_attachment,
@@ -152,18 +194,18 @@ namespace tloc { namespace graphics { namespace gl {
 
   private:
     void DoCheckInternalFormatAgainstTargetAttachment
-      ( p_framebuffer_object::target::value_type a_target,
-        p_framebuffer_object::attachment::value_type a_attachment,
+      ( p_fbo::target::value_type a_target,
+        p_fbo::attachment::value_type a_attachment,
         const rbo_type& a_rbo);
 
     void DoCheckInternalFormatAgainstTargetAttachment
-      ( p_framebuffer_object::target::value_type a_target,
-        p_framebuffer_object::attachment::value_type a_attachment,
+      ( p_fbo::target::value_type a_target,
+        p_fbo::attachment::value_type a_attachment,
         const to_type& a_to);
 
     void DoCheckInternalFormatAgainstTargetAttachment
-      ( p_framebuffer_object::target::value_type a_target,
-        p_framebuffer_object::attachment::value_type a_attachment,
+      ( p_fbo::target::value_type a_target,
+        p_fbo::attachment::value_type a_attachment,
         const to_shadow_type& a_to);
 
   private:
@@ -184,8 +226,8 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // Sanity checks
 
-    using namespace p_framebuffer_object::target::priv;
-    using namespace p_framebuffer_object::attachment::priv;
+    using namespace p_fbo::target::priv;
+    using namespace p_fbo::attachment::priv;
 
     TLOC_STATIC_ASSERT
       ((Loki::Conversion<T_Target, TargetParamsBase>::exists), Invalid_target_param);
@@ -210,5 +252,15 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(FramebufferObject, framebuffer_object);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::FramebufferObject);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::FramebufferObject);
+
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::FramebufferObject::bind);
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::FramebufferObject::bind_draw);
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::FramebufferObject::bind_read);
 
 #endif

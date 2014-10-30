@@ -1,7 +1,5 @@
 #include "tlocTestCommon.h"
 
-#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
-
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector2.h>
 
@@ -77,6 +75,16 @@ namespace TestingVector3f
     // Convert from Tuple to Vec
     c = Vec3f(Tuple<tl_float, 3>(1.0f));
     CHECK_VEC3F(c, 1.0f, 1.0f, 1.0f);
+
+    // Constructors
+    {
+      Vec3f v(1, Vec2f(2, 3));
+      CHECK_VEC3F(v, 1, 2, 3);
+    }
+    {
+      Vec3f v(Vec2f(1, 2), 3);
+      CHECK_VEC3F(v, 1, 2, 3);
+    }
   }
 
   TEST_CASE_METHOD(Vector3fFixture, "Math/Vector3f/[]Operator",
@@ -346,6 +354,23 @@ namespace TestingVector3f
     CHECK(a.IsValid());
     a[2] = sqrt(-2.0f);
     CHECK_FALSE(a.IsValid());
+  }
+  
+  TEST_CASE("Math/Vector3f/global operators", "")
+  {
+    Vec3f crossRes = 5.0f * Vec3f(1, 0, 0);
+    CHECK_VEC3F(crossRes, 5, 0, 0);
+
+    crossRes = 5.0f / crossRes;
+    CHECK_VEC3F(crossRes, 1, 0, 0);
+  }
+
+  TEST_CASE("Math/Vector3f/Chaining", "Issue #95 fix test where Vector_T uses "
+            "a base Vector_TI method such that it returns Vector_TI which does "
+            "not have certain functions")
+  {
+    Vec3f crossRes = (Vec3f(1, 0, 0) * 1).Cross(Vec3f(0, 1, 0));
+    CHECK_VEC3F(crossRes, 0, 0, 1);
   }
 
 }

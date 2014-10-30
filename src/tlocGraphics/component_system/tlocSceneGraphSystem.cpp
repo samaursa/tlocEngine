@@ -76,9 +76,29 @@ namespace tloc { namespace graphics { namespace component_system {
     InitializeEntity(entity_ptr a_ent)
   {
     TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<math_cs::Transform>() == false)
-      << "Node component requires math_cs::Transform component";
+      << "SceneNode component with Entity(" 
+      << a_ent->GetDebugName()
+      << ") requires math_cs::Transform component";
 
     scene_node_sptr node = a_ent->GetComponent<SceneNode>();
+
+    const entity_ptr currNodeEnt = node->GetEntity();
+
+    if (currNodeEnt == nullptr)
+    { 
+      TLOC_LOG_GFX_INFO() 
+        << "Adding missing entity pointer to SceneNode in Entity (" 
+        << a_ent->GetDebugName() << ")";
+      node->m_entity = a_ent;
+    }
+    else
+    {
+      TLOC_LOG_GFX_WARN_IF(currNodeEnt && currNodeEnt != a_ent)
+        << "The SceneNode component has pointer to Entity("
+        << currNodeEnt->GetDebugName()
+        << ") while being attached to Entity(" 
+        << a_ent->GetDebugName() << ")";
+    }
 
     // get the level of this node relative to its parents. If the parent
     // already has a level and update hierarchy is not required, then find
@@ -119,7 +139,17 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_Initialize()
   {
     SortEntities();
-    return ErrorSuccess;
+    return base_type::Post_Initialize();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    SceneGraphSystem::
+    Post_ReInitialize()
+  {
+    SortEntities();
+    return base_type::Post_ReInitialize();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

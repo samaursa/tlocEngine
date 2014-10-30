@@ -16,7 +16,7 @@ namespace tloc { namespace math { namespace types {
 
   template<typename T>
   class Vector_T<T, 3>
-    : public Vector_TI<T, 3>
+    : public Vector_TI<T, 3, Vector_T<T, 3> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
@@ -24,7 +24,8 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Vector_T<T, 3>                        this_type;
-    typedef Vector_TI<T, 3>                       base_type;
+    typedef Vector_TI<T, 3, this_type>            base_type;
+    typedef Vector_TI<T, 2, Vector_T<T, 2> >      vec2_type;
 
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;
@@ -34,20 +35,22 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // Constructors
     Vector_T();
-    Vector_T(const_reference aX, const_reference aY, const_reference aZ);
-    Vector_T(const this_type& aVector);
-    Vector_T(const base_type& aVector);
+    Vector_T(value_type a_X, value_type a_Y, value_type a_Z);
+    Vector_T(vec2_type a_xy, value_type a_z);
+    Vector_T(value_type a_X, vec2_type a_yz);
+    Vector_T(const this_type& a_Vector);
+    Vector_T(const base_type& a_Vector);
     Vector_T(const core::data_structs::Variadic<value_type, 3>& a_vars);
 
-    explicit Vector_T(value_type aValue);
+    explicit Vector_T(value_type a_Value);
 
     // Modifies this vector by storing the cross product between this vector
     // and the incoming vector
-    this_type Cross(const this_type& aVector) const;
+    this_type Cross(const this_type& a_Vector) const;
 
     // Modifies this vector by storing the cross product between the two
     // incoming vectors
-    void Cross(const this_type& aVector1, const this_type& aVector2);
+    void Cross(const this_type& a_Vector1, const this_type& a_Vector2);
 
 
     // -----------------------------------------------------------------------
@@ -107,6 +110,17 @@ namespace tloc { namespace math { namespace types {
   const Vector_T<T, 3> Vector_T<T, 3>::NEG_UNIT_Y (0, T(-1), 0);
   template <typename T>
   const Vector_T<T, 3> Vector_T<T, 3>::NEG_UNIT_Z (0, 0, T(-1));
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f32 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f64 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f128 TLOC_COMMA 3>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 3 TLOC_COMMA  Vec3f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 3 TLOC_COMMA  Vec3f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f128 TLOC_COMMA 3 TLOC_COMMA  Vec3f128>);
 
 };};};
 

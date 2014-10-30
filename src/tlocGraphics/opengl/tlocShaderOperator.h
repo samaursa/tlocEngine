@@ -154,14 +154,6 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(ShaderOperator);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(ShaderOperator);
-  TLOC_EXTERN_TEMPLATE_ARRAY(ShaderOperator::uniform_pair_type);
-  TLOC_EXTERN_TEMPLATE_ARRAY(vbo_vso);
-
-  // -----------------------------------------------------------------------
 
   namespace algos { namespace shader_operator {
 
@@ -206,3 +198,11 @@ namespace tloc { namespace graphics { namespace gl {
   };};
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::ShaderOperator);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::ShaderOperator);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::ShaderOperator::uniform_pair_type);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::vbo_vso);

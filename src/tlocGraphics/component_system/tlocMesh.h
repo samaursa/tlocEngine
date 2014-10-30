@@ -63,16 +63,22 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Mesh_Interleaved, mesh_interleaved);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mesh_Interleaved, mesh_interleaved);
   TLOC_TYPEDEF_COMPONENT_POOL(Mesh_Interleaved, mesh_interleaved);
-
+  
   // -----------------------------------------------------------------------
   // extern template
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Mesh);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Mesh);
-
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Mesh_Interleaved);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Mesh_Interleaved);
+  
+  TLOC_EXTERN_TEMPLATE_CLASS(Mesh_T<p_primitive::ArrayOfStructures>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Mesh_T<p_primitive::StructureOfArrays>);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Mesh);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Mesh);
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Mesh_Interleaved);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Mesh_Interleaved);
 
 #endif

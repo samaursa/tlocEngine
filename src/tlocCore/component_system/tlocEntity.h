@@ -143,7 +143,7 @@ namespace tloc { namespace core { namespace component_system {
 
     return 
       core_sptr::static_pointer_cast<T_Component>
-      (GetComponent(T_Component::Info()
+      (GetComponent(typename T_Component::Info()
         .GroupIndex(T_Component::k_component_group) 
         .Type(T_Component::k_component_type), a_index) );
   }
@@ -154,7 +154,7 @@ namespace tloc { namespace core { namespace component_system {
   bool
     Entity::HasComponent() const
   { 
-    return HasComponent(T_Component::Info()
+    return HasComponent(typename T_Component::Info()
                         .GroupIndex(T_Component::k_component_group)
                         .Type(T_Component::k_component_type));
   }
@@ -219,11 +219,6 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_ARRAY_FIXED(Entity::component_list, component_group::k_count);
-
-  // -----------------------------------------------------------------------
   // typedef
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Entity, entity);
@@ -232,5 +227,11 @@ namespace tloc { namespace core { namespace component_system {
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
   typedef containers::tl_array<const_entity_vptr>::type      const_entity_ptr_array;
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ARRAY_FIXED(tloc::core_cs::Entity::component_list,
+                                 tloc::core_cs::component_group::k_count);
 
 #endif

@@ -85,7 +85,8 @@ namespace tloc { namespace physics { namespace component_system {
                      entity_manager_ptr a_entityMgr,
                      world_type* a_world)
     : base_type(a_eventMgr, a_entityMgr, 
-                register_type().Add<phys_cs::RigidBody>())
+                register_type().Add<phys_cs::RigidBody>(), 
+                "RigidBodySystem")
     , m_world(a_world)
   {
   }

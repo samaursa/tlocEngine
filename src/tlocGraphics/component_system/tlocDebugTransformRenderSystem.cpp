@@ -88,7 +88,8 @@ namespace tloc { namespace graphics { namespace component_system {
     DebugTransformRenderSystem(event_manager_ptr a_eventMgr, 
                                entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr, 
-                register_type().Add<math_cs::Transform>())
+                register_type().Add<math_cs::Transform>(), 
+                "DebugTransformRenderSystem")
     , m_linesEntMgr(MakeArgs(m_linesEventMgr.get()))
     , m_linesMaterialSys(MakeArgs(m_linesEventMgr.get(), m_linesEntMgr.get()))
     , m_scale(1.0f)

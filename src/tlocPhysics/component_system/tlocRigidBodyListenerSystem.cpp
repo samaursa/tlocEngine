@@ -108,7 +108,8 @@ namespace tloc { namespace physics { namespace component_system {
                             entity_manager_ptr a_entityMgr,
                             physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<phys_cs::RigidBodyListener>())
+                register_type().Add<phys_cs::RigidBodyListener>(),
+                "RigidBodyListenerSystem")
     , m_physicsMgr(a_physicsMgr)
   { }
 

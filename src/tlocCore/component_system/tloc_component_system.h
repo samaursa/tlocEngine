@@ -8,7 +8,6 @@
 #include <tlocCore/component_system/tlocComponentType.h>
 
 #include <tlocCore/component_system/tlocECS.h>
-#include <tlocCore/component_system/tlocECS.cpp>
 
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>

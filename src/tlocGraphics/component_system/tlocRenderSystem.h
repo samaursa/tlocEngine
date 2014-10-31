@@ -126,7 +126,8 @@ namespace tloc { namespace graphics { namespace component_system {
   protected:
     RenderSystem_TI(event_manager_ptr              a_eventMgr,
                     entity_manager_ptr             a_entityMgr,
-                    register_type                  a_registerTypes);
+                    register_type                  a_registerTypes,
+                    BufferArg                      a_debugName);
 
     virtual void              SortEntities();
 

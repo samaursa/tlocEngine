@@ -7,6 +7,9 @@
 #include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 
+#include <tlocCore/component_system/tlocECS.h>
+#include <tlocCore/component_system/tlocECS.cpp>
+
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 
@@ -18,5 +21,7 @@
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+
+#include <tlocCore/component_system/tlocSystemsProcessor.h>
 
 #endif

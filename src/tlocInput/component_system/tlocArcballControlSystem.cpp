@@ -39,7 +39,8 @@ namespace tloc { namespace input { namespace component_system {
   ArcBallControlSystem::
     ArcBallControlSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<input_cs::ArcBallControl>())
+                register_type().Add<input_cs::ArcBallControl>(),
+                "ArcBallControlSystem")
     , m_flags(k_count)
     , m_xRel(0.0f)
     , m_yRel(0.0f)

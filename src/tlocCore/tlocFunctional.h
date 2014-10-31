@@ -328,13 +328,19 @@ namespace tloc { namespace core {
   };
 
   // ///////////////////////////////////////////////////////////////////////
-  // extractor from pointers
+  // extractor from pointers or use reference
+
+  struct use_reference
+  {
+    template <typename T>
+    T& operator()(T& a) { return a; }
+  };
 
   struct use_pointee
   {
     template <typename T>
-    const typename PointeeType<T>::value_type& 
-      operator()(const T& a) const 
+    typename PointeeType<T>::value_type& 
+      operator()(T& a) const 
     { 
       typedef  typename PointeeType<T>::value_type             pointee_type;
       return *a; 

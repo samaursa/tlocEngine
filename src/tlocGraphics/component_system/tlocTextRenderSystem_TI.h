@@ -54,7 +54,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
-                        entity_manager_ptr a_entityMgr);
+                        entity_manager_ptr a_entityMgr,
+                        BufferArg a_debugName);
     
     ~TextRenderSystem_TI();
 

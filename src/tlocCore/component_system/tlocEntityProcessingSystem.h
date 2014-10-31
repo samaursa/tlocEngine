@@ -24,7 +24,8 @@ namespace tloc { namespace core { namespace component_system {
   protected:
     EntityProcessingSystem(event_manager_ptr a_eventMgr,
                            entity_manager_ptr a_entityMgr,
-                           register_type a_compsToRegister);
+                           register_type a_compsToRegister, 
+                           BufferArg a_debugName);
 
   protected: // Initialization
     virtual error_type Pre_Initialize();
@@ -64,7 +65,17 @@ namespace tloc { namespace core { namespace component_system {
     core_cs::entity_ptr_array     m_entsToReInit;
     core_cs::entity_ptr_array     m_entsToShutdown;
   };
+  
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_TYPEDEF_VIRTUAL_PTR(EntityProcessingSystem, entity_processing_system);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::core_cs::EntityProcessingSystem);
 
 #endif

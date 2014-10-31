@@ -117,6 +117,7 @@ namespace tloc { namespace graphics { namespace component_system {
     public:
       entity_ptr                m_entity;
       gl::shader_operator_vptr  m_shaderOp;
+      gl::vao_vptr              m_meshVAO;
 
       gfx_t::gl_int     m_drawCommand;
       gfx_t::gl_sizei   m_numVertices;

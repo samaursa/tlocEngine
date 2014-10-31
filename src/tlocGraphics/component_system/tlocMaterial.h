@@ -32,11 +32,13 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::const_shader_program_vptr                   const_shader_prog_ptr;
     typedef gl::shader_program_vso                          shader_prog_vso;
 
-    typedef gl::ShaderOperator                              shader_op;
-    typedef gl::shader_operator_vptr                        shader_op_ptr;
-    typedef gl::const_shader_operator_vptr                  const_shader_op_ptr;
     typedef gl::shader_operator_vso                         shader_op_vso;
-    typedef core::containers::tl_array<shader_op_vso>::type shader_op_cont;
+    typedef gl::shader_operator_vptr                        shader_op_ptr;
+
+    typedef gl::Uniform                                     uniform_type;
+    typedef gl::uniform_vso                                 uniform_vso;
+    typedef core::containers::tl_array<uniform_vso>::type   uniform_vso_cont;
+    typedef uniform_vso_cont::iterator                      uniform_iterator;
 
     typedef core::string::String                            string_type;
 
@@ -44,9 +46,12 @@ namespace tloc { namespace graphics { namespace component_system {
     Material();
     Material(const Material& a_other);
 
-    void AddShaderOperator(const shader_op& a_shaderOp);
-    bool RemoveShaderOperator(const_shader_op_ptr a_shaderOp);
-    void RemoveAllShaderOperators();
+    void AddUniform(const uniform_type& a_uniform);
+
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(uniform_iterator, begin_uniforms, 
+                                       m_uniformCont.begin());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(uniform_iterator, end_uniforms, 
+                                       m_uniformCont.end());
 
     bool operator ==(const Material& a_other) const;
     bool operator < (const Material& a_other) const;
@@ -56,13 +61,13 @@ namespace tloc { namespace graphics { namespace component_system {
       (string_type, GetVertexSource, m_vertexProgram);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (string_type, GetFragmentSource, m_fragmentProgram);
-    TLOC_DECL_AND_DEF_GETTER_DIRECT
-      (shader_op_cont, GetShaderOperators, m_shaderOperators);
 
     TLOC_DECL_AND_DEF_GETTER (const_shader_prog_ptr, GetShaderProg,
                               m_shaderProgram.get());
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST (shader_prog_ptr, GetShaderProg,
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(shader_prog_ptr, GetShaderProg,
                                         m_shaderProgram.get());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(shader_op_ptr, GetShaderOperator, 
+                                       m_shaderOp.get());
 
     void SetVertexSource(BufferArg a_source);
     void SetFragmentSource(BufferArg a_source);
@@ -73,7 +78,8 @@ namespace tloc { namespace graphics { namespace component_system {
     string_type            m_fragmentProgram;
 
     shader_prog_vso        m_shaderProgram;
-    shader_op_cont         m_shaderOperators;
+    uniform_vso_cont       m_uniformCont;
+    shader_op_vso          m_shaderOp;
   };
 
   //------------------------------------------------------------------------

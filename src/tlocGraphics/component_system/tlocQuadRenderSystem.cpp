@@ -142,6 +142,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
+    di.m_meshVAO = quadPtr->GetVAO();
 
     base_type::DoDrawEntity(di);
   }

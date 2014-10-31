@@ -1041,7 +1041,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderOperator::error_type
     ShaderOperator::
-    PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram)
+    PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram, 
+                            const vao_type& a_vao)
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
@@ -1055,9 +1056,7 @@ namespace tloc { namespace graphics { namespace gl {
       // bail early
       if (size_attributeVBOs() == 0) { return retError; }
 
-      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
-
-      VertexArrayObject::Bind vaoBind(*m_vao);
+      VertexArrayObject::Bind vaoBind(a_vao);
 
       const glsl_var_info_cont_type& 
         attrCont = a_shaderProgram.GetAttributeInfoRef();
@@ -1128,7 +1127,6 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     ClearAttributeVBOsCache()
   { 
-    m_vao.reset();
     m_flags.Unmark(k_VBOsCached);
   }
 

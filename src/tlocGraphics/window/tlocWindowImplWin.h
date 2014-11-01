@@ -118,7 +118,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///-------------------------------------------------------------------------
     size_type GetMaxHeight() const;
 
-    void ProcessEvents();
+    void ProcessEvents() const;
 
     ///-------------------------------------------------------------------------
     /// Gets the window handle.

@@ -563,17 +563,10 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // Prepare shader
 
-    typedef mat_type::shader_op_cont::iterator      shader_op_itr;
-    typedef core_conts::Array<gl::const_vao_vptr>   vao_cont;
-
-    vao_cont VAOs;
-
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
     error_type uniformErr = ErrorSuccess;
     error_type vboErr = ErrorSuccess;
-
-    mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
 
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
@@ -591,76 +584,50 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_shaderPtr = sp;
 
-      for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
-           itr != itrEnd; ++itr)
-      {
-        gl::shader_operator_vptr so = itr->get();
-
-        if (so->IsUniformsCached() == false)
-        { so->PrepareAllUniforms(*m_shaderPtr); }
-
-        so->EnableAllUniforms(*m_shaderPtr);
-
-        if (so->IsAttributeVBOsCached() == false)
-        { so->PrepareAllAttributeVBOs(*m_shaderPtr); }
-      }
+      auto matSO = matPtr->GetShaderOperator();
 
       // shader switch requires us to re-prepare the attributes/uniforms
+      TLOC_LOG_GFX_WARN_IF(matSO->size_attributeVBOs() > 0)
+        << "Material's ShaderOperator should not have any attributes";
+
+      if (matSO->IsUniformsCached() == false)
+      { matSO->PrepareAllUniforms(*m_shaderPtr); }
+
+      matSO->EnableAllUniforms(*m_shaderPtr);
+
+      // shader switch requires us to re-prepare the attributes/uniforms
+      TLOC_ASSERT(m_shaderOp->size_attributeVBOs() == 0, 
+        "RenderSystem's internal ShaderOperator should not have any attributes");
+
       m_shaderOp->ClearCache();
       uniformErr = m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
-      vboErr = m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr);
-    }
-
-    // material's SOs
-    for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
-         itr != itrEnd; ++itr)
-    { 
-      gl::shader_operator_vptr so = itr->get();
-      VAOs.push_back(so->GetVAO()); 
     }
 
     if (uniformErr.Succeeded())
     { m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-    if (vboErr.Succeeded())
-    { VAOs.push_back(m_shaderOp->GetVAO()); }
-
     // prepare/enable derived render system's shader operator
     if (a_di.m_shaderOp)
     {
       DoUpdateTexCoords(ent, *a_di.m_shaderOp);
-      
-      // prepare and enable user uniforms/attributes
-      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
 
+      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       if (uniformErr.Succeeded())
       { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr);
-
-      if (vboErr.Succeeded())
-      { VAOs.push_back(a_di.m_shaderOp->GetVAO()); }
+      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr, 
+                                                        *a_di.m_meshVAO);
     }
 
     // -----------------------------------------------------------------------
     // Render
 
-    // we just need to store the Binds, when they are destroyed, they will 
-    // unbind the VAOs
-    typedef core_conts::Array<gl::VertexArrayObject::late_bind_sptr>   vao_bind_cont;
-    vao_bind_cont vaoBinds; vaoBinds.resize(VAOs.size());
-
-    for (tl_size i = 0; i < vaoBinds.size(); ++i)
-    { 
-      if (VAOs[i])
-      { 
-        vaoBinds[i] = core_sptr::MakeShared<gl::VertexArrayObject::LateBind>(); 
-        vaoBinds[i]->Bind(*VAOs[i]);
-      }
+    if (vboErr == ErrorSuccess)
+    {
+      gl::VertexArrayObject::Bind b(*a_di.m_meshVAO);
+      glDrawArrays(a_di.m_drawCommand, 0,
+                   core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
     }
-
-    glDrawArrays(a_di.m_drawCommand, 0,
-                 core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -20,7 +20,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace target {
 
-      typedef s32   value_type;
+      typedef gfx_t::gl_enum   value_type;
 
       namespace priv {
         struct TargetParamsBase :
@@ -39,7 +39,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     namespace attachment {
 
-      typedef s32   value_type;
+      typedef gfx_t::gl_enum   value_type;
 
       namespace priv {
         struct AttachmentParamsBase :
@@ -84,6 +84,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Object_T<this_type, p_object::OnlyID>         base_type;
     typedef base_type::object_handle                      object_handle;
     typedef base_type::error_type                         error_type;
+    typedef tl_size                                       size_type;
 
     typedef RenderbufferObject                            rbo_type;
     typedef TextureObject                                 to_type;
@@ -92,6 +93,13 @@ namespace tloc { namespace graphics { namespace gl {
     typedef core_conts::Array<rbo_type>                   rbo_cont;
     typedef core_conts::Array<to_type>                    to_cont;
     typedef core_conts::Array<to_shadow_type>             to_shadow_cont;
+    typedef core_conts::Array
+      <p_fbo::attachment::value_type>                     attachments_cont;
+
+    typedef rbo_cont::const_iterator                      const_rbo_iterator;
+    typedef to_cont::const_iterator                       const_to_iterator;
+    typedef to_shadow_cont::const_iterator                const_to_shadow_iterator;
+    typedef attachments_cont::const_iterator              const_color_attachments_iterator;
 
     typedef rbo_cont::iterator                            rbo_cont_iterator;
     typedef rbo_cont::const_iterator                      rbo_cont_const_iterator;
@@ -164,12 +172,36 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_RenderOrTexturebuffer>
     error_type Detach(const T_RenderOrTexturebuffer& a_bufferObject);
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (rbo_cont, GetRenderBufferObjects, m_renderbufferObjects);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (to_cont, GetTextureobjects, m_textureObjets);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (to_shadow_cont, GetTextureobjectsShadow, m_textureObjetsShadow);
+    TLOC_DECL_AND_DEF_GETTER(const_rbo_iterator, 
+                             begin_rbos, m_renderbufferObjects.begin());
+    TLOC_DECL_AND_DEF_GETTER(const_rbo_iterator, 
+                             end_rbos, m_renderbufferObjects.end());
+
+    TLOC_DECL_AND_DEF_GETTER(const_to_iterator, 
+                             begin_texture_objects, m_textureObjects.begin());
+    TLOC_DECL_AND_DEF_GETTER(const_to_iterator, 
+                             end_texture_objects, m_textureObjects.end());
+
+    TLOC_DECL_AND_DEF_GETTER(const_to_shadow_iterator, 
+                             begin_to_shadows, m_textureObjetsShadow.begin());
+    TLOC_DECL_AND_DEF_GETTER(const_to_shadow_iterator, 
+                             end_to_shadows, m_textureObjetsShadow.end());
+
+    TLOC_DECL_AND_DEF_GETTER(const_color_attachments_iterator, 
+                             begin_color_attachments, 
+                             m_activeColorAttachments.begin());
+    TLOC_DECL_AND_DEF_GETTER(const_color_attachments_iterator, 
+                             end_color_attachments, 
+                             m_activeColorAttachments.end());
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_rbos, 
+                             m_renderbufferObjects.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_texture_objects, 
+                             m_textureObjects.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_to_shadows, 
+                             m_textureObjetsShadow.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_color_attachments, 
+                             m_activeColorAttachments.size());
 
   protected:
     // This constructor should be only be used by platforms that require a
@@ -209,9 +241,10 @@ namespace tloc { namespace graphics { namespace gl {
         const to_shadow_type& a_to);
 
   private:
-    rbo_cont        m_renderbufferObjects;
-    to_cont         m_textureObjets;
-    to_shadow_cont  m_textureObjetsShadow;
+    rbo_cont                  m_renderbufferObjects;
+    to_cont                   m_textureObjects;
+    to_shadow_cont            m_textureObjetsShadow;
+    attachments_cont          m_activeColorAttachments;
   };
 
   // -----------------------------------------------------------------------

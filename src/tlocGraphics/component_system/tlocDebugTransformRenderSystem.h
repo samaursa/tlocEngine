@@ -35,8 +35,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef vec3_type::value_type                             real_type;
 
     typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
-
     typedef gl::uniform_vptr                                  uniform_ptr;
+    typedef gl::vao_vso                                       vao_vso;
 
   public:
     DebugTransformRenderSystem(event_manager_ptr  a_eventMgr,
@@ -69,6 +69,7 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::material_system_vso     m_linesMaterialSys;
 
     gl::shader_operator_vso         m_linesOperator;
+    vao_vso                         m_vao;
     uniform_ptr                     m_uniVpMat;
     
     core_cs::entity_vptr            m_linesMaterial;

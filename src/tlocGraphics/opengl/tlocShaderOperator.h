@@ -39,11 +39,6 @@ namespace tloc { namespace graphics { namespace gl {
     typedef const_attributeVBO_vptr   const_vbo_ptr;
 
     typedef VertexArrayObject         vao_type;
-    typedef vao_vso                   vao_vso;
-    typedef const_vao_vptr            const_vao_ptr;
-
-    typedef vao_type::Bind            vao_bind_type;
-    typedef vao_type::bind_sptr       vao_bind_ptr;
 
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
@@ -63,8 +58,8 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator();
     ~ShaderOperator();
 
-    uniform_ptr   AddUniform(const uniform_type& a_uniform);
-    attributeVBO_ptr       AddAttributeVBO(const vbo_type& a_vbo);
+    uniform_ptr         AddUniform(const uniform_type& a_uniform);
+    attributeVBO_ptr    AddAttributeVBO(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
     void RemoveAttributeVBO(const attributeVBO_iterator& a_vbo);
@@ -82,7 +77,8 @@ namespace tloc { namespace graphics { namespace gl {
     /// @return all uniforms.
     ///-------------------------------------------------------------------------
     error_type PrepareAllUniforms(const ShaderProgram& a_shaderProgram);
-    error_type PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram);
+    error_type PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram, 
+                                       const vao_type& a_vao);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -126,13 +122,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     TLOC_DECL_AND_DEF_GETTER(size_type, size_uniforms, m_uniforms.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, size_attributeVBOs, m_VBOs.size());
-    TLOC_DECL_AND_DEF_GETTER(const_vao_vptr, GetVAO, core_sptr::ToVirtualPtr(m_vao));
 
   private:
     uniform_cont_type           m_uniforms;
     attributeVBO_cont_type      m_VBOs;
     core::utils::Checkpoints    m_flags;
-    vao_sptr                    m_vao;
   };
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);

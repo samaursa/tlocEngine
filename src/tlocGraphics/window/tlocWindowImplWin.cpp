@@ -304,7 +304,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return m_OpenGLContext != TLOC_NULL;
   }
 
-  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::ProcessEvents()
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::ProcessEvents() const
   {
     // SFML: Update the window only if we own it
     if (!m_callbackPtr)
@@ -369,8 +369,20 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     a_width  = rect.right - rect.left;
     a_height = rect.bottom - rect.top;
 
-    SetWindowPos(m_handle, TLOC_NULL, 0, 0,
-                 width, height, SWP_NOMOVE | SWP_NOZORDER);
+    // the events are fired as soon as SetWindowPos is TRUE. So we set the
+    // width and height of m_graphicsMode and if FALSE, we reset it.
+    graphics_mode::size_type oldWidth = m_graphicsMode.GetProperties().m_width;
+    graphics_mode::size_type oldHeight = m_graphicsMode.GetProperties().m_height;
+
+    m_graphicsMode.GetProperties().m_width = width;
+    m_graphicsMode.GetProperties().m_height = height;
+
+    if (SetWindowPos(m_handle, TLOC_NULL, 0, 0,
+                     width, height, SWP_NOMOVE | SWP_NOZORDER) == FALSE)
+    {
+      m_graphicsMode.GetProperties().m_width = oldWidth;
+      m_graphicsMode.GetProperties().m_height = oldHeight;
+    }
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetVisibility(bool a_visible)

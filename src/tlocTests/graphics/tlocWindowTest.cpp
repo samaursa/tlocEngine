@@ -31,7 +31,6 @@ namespace TestingWindow
     core_dispatch::Event 
       OnWindowEvent(const WindowEvent& a_event)
     {
-      INFO("Unknown event was passed.");
       REQUIRE(a_event.m_type < WindowEvent::events_count);
 
       m_windowEventCount++;
@@ -136,7 +135,7 @@ namespace TestingWindow
   {
     typedef Window::graphics_mode graphics_mode;
 
-    g_windowSizeX = 1920; g_windowSizeY = 1080;
+    g_windowSizeX = 800; g_windowSizeY = 600;
 
     Window win3;
     CHECK(win3.IsValid() == false);
@@ -155,7 +154,9 @@ namespace TestingWindow
     Window win;
     CHECK(win.IsValid() == false);
     CHECK(win.IsCreated() == false);
-    win.Create();
+    win.Create(graphics_mode::Properties(g_windowSizeX, g_windowSizeY), 
+               WindowSettings("Testing").ClearStyles()
+               .AddStyle<p_window_settings::style::FullScreen>());
     CHECK(win.IsValid() == true);
     CHECK(win.IsCreated() == true);
 
@@ -163,10 +164,11 @@ namespace TestingWindow
     CHECK(callbacks.m_windowEventCount == 0);
     win.Register(&callbacks);
 
-    win.SetSize(100, 100);
-    // TODO: Fix these tests
-    //CHECK(callbacks.m_windowEventCount == 1);
-    //CHECK(callbacks.m_counts[WindowEvent::resized] == 1);
+    g_windowSizeX = 100; g_windowSizeY = 100;
+    win.SetSize(g_windowSizeX, g_windowSizeY);
+
+    CHECK(callbacks.m_windowEventCount == 1);
+    CHECK(callbacks.m_counts[WindowEvent::resized] == 1);
   }
 
 #elif defined(TLOC_OS_IPHONE)

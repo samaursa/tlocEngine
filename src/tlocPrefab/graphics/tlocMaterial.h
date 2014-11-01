@@ -23,20 +23,14 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef Prefab_TI<this_type, component_type>    base_type;
     typedef gfx_gl::uniform_vptr                    uniform_ptr_type;
     typedef gfx_gl::attributeVBO_vptr               attributeVBO_ptr_type;
-    typedef gfx_gl::shader_operator_vptr            shader_operator_ptr_type;
+    typedef gfx_gl::shader_operator_vso             shader_operator_vso;
+    typedef tl_size                                 size_type;
 
-    typedef core_conts::Array<uniform_ptr_type>         uniform_array;
-    typedef core_conts::Array<attributeVBO_ptr_type>    attributeVBO_array;
-    typedef core_conts::Array<shader_operator_ptr_type> so_array;
+    typedef core_conts::Array<uniform_ptr_type>     uniform_array;
 
-    typedef so_array::size_type                         size_type;
-    
 
-    typedef uniform_array::iterator                   uniform_itr;
-    typedef attributeVBO_array::iterator              attributeVBO_itr;
-    typedef uniform_array::const_iterator             const_uniform_itr;
-    typedef attributeVBO_array::const_iterator        const_attributeVBO_itr;
-    typedef so_array::const_iterator                  const_so_itr;
+    typedef uniform_array::iterator                 uniform_itr;
+    typedef uniform_array::const_iterator           const_uniform_itr;
 
   public:
     Material(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
@@ -57,31 +51,21 @@ namespace tloc { namespace prefab { namespace graphics {
                       BufferArg a_fragmentShader) const;
 
     Material&     AddUniform(const uniform_ptr_type& a_uniform);
-    Material&     AddAttributeVBO(const attributeVBO_ptr_type& a_attribute);
-    Material&     AddShaderOperator(const shader_operator_ptr_type& a_so);
 
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
       (uniform_itr, begin_uniforms, m_newUniformPtrs.begin());
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
       (uniform_itr, end_uniforms, m_newUniformPtrs.end());
 
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST
-      (attributeVBO_itr, begin_attributeVBOs, m_newAttributeVBOPtrs.begin());
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST
-      (attributeVBO_itr, end_attributeVBOs, m_newAttributeVBOPtrs.end());
-
     TLOC_DECL_AND_DEF_GETTER(size_type, size_uniforms, m_newUniformPtrs.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, size_attributeVBOs, m_newAttributeVBOPtrs.size());
 
     TLOC_DECL_PARAM_VAR(core_str::String, AssetsPath, m_assetsPath);
 
   private:
-    uniform_array       m_uniforms;
-    attributeVBO_array  m_attributesVBO;
-    so_array            m_shaderOperators;
+    uniform_array               m_uniforms;
+    shader_operator_vso         m_so;
 
     mutable uniform_array       m_newUniformPtrs;
-    mutable attributeVBO_array  m_newAttributeVBOPtrs;
 
   };
 

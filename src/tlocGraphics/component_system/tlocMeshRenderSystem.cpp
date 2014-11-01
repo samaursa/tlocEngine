@@ -114,6 +114,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLES, numVertices);
     di.m_shaderOp = core_sptr::ToVirtualPtr(meshPtr->GetShaderOperator());
+    di.m_meshVAO  = meshPtr->GetVAO();
 
     base_type::DoDrawEntity(di);
   }

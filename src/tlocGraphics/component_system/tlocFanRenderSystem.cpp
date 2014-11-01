@@ -147,6 +147,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_FAN, numVertices);
     di.m_shaderOp = core_sptr::ToVirtualPtr(fanPtr->GetShaderOperator());
+    di.m_meshVAO  = fanPtr->GetVAO();
+
     base_type::DoDrawEntity(di);
   }
 

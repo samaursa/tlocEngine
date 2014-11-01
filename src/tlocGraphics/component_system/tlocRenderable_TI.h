@@ -30,15 +30,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef typename base_type::component_type              component_type;
     typedef gfx_gl::shader_operator_vso                     so_type;
+    typedef gfx_gl::vao_vso                                 vao_vso;
+    typedef gfx_gl::vao_vptr                                vao_ptr;
 
   public:
     TLOC_DECL_AND_DEF_GETTER_DIRECT(so_type, GetShaderOperator, m_shaderOp);
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(vao_ptr, GetVAO, m_vao.get());
 
   protected:
     Renderable_TI(BufferArg a_debugName);
 
   private:
     so_type         m_shaderOp;
+    vao_vso         m_vao;
   };
 
   // -----------------------------------------------------------------------

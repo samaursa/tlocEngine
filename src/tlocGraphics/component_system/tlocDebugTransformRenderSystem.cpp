@@ -232,14 +232,15 @@ namespace tloc { namespace graphics { namespace component_system {
         }
 
         uniformErr = m_linesOperator->PrepareAllUniforms(*m_shaderPtr);
-        attribErr = m_linesOperator->PrepareAllAttributeVBOs(*m_shaderPtr);
+        attribErr = m_linesOperator->PrepareAllAttributeVBOs(*m_shaderPtr, 
+                                                             *m_vao);
       }
 
       // Add the mvp
       if (uniformErr.Succeeded())
       { m_linesOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      gfx_gl::VertexArrayObject::Bind b(*m_linesOperator->GetVAO());
+      gfx_gl::VertexArrayObject::Bind b(*m_vao);
 
       glDrawArrays(GL_LINES, 0,
                    core_utils::CastNumber<gfx_t::gl_sizei>(m_lineList.size()));

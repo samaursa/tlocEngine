@@ -4,12 +4,6 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  // -----------------------------------------------------------------------
-  // typedefs
-
-  typedef Material::uniform_vso_cont::iterator        shader_op_cont_itr;
-  typedef Material::uniform_vso_cont::const_iterator  shader_op_cont_const_itr;
-
   // ///////////////////////////////////////////////////////////////////////
   // Material
 
@@ -22,13 +16,13 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_vertexProgram(a_other.m_vertexProgram)
     , m_fragmentProgram(a_other.m_fragmentProgram)
     , m_shaderProgram(a_other.m_shaderProgram)
-    , m_uniformCont(a_other.m_uniformCont)
+    , m_shaderOp(a_other.m_shaderOp)
   { }
 
   void
     Material::
     AddUniform(const uniform_type& a_uniform)
-  { m_uniformCont.push_back( uniform_vso(MakeArgs(a_uniform)) ); }
+  { m_shaderOp->AddUniform(a_uniform); }
 
   void Material::
     SetVertexSource(BufferArg a_source)

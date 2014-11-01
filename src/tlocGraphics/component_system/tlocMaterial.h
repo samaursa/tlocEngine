@@ -34,13 +34,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gl::shader_operator_vso                         shader_op_vso;
     typedef gl::shader_operator_vptr                        shader_op_ptr;
+    typedef gl::ShaderOperator::uniform_iterator            shader_op_uniform_itr;
 
     typedef gl::Uniform                                     uniform_type;
     typedef gl::uniform_vso                                 uniform_vso;
-    typedef core::containers::tl_array<uniform_vso>::type   uniform_vso_cont;
-    typedef uniform_vso_cont::iterator                      uniform_iterator;
 
     typedef core::string::String                            string_type;
+    typedef tl_size                                         size_type;
 
   public:
     Material();
@@ -48,10 +48,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void AddUniform(const uniform_type& a_uniform);
 
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST(uniform_iterator, begin_uniforms, 
-                                       m_uniformCont.begin());
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST(uniform_iterator, end_uniforms, 
-                                       m_uniformCont.end());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (shader_op_uniform_itr, begin_uniforms, m_shaderOp->begin_uniforms());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (shader_op_uniform_itr, end_uniforms, m_shaderOp->end_uniforms());
+    TLOC_DECL_AND_DEF_GETTER
+      (size_type, size_uniforms, m_shaderOp->size_uniforms());
 
     bool operator ==(const Material& a_other) const;
     bool operator < (const Material& a_other) const;
@@ -78,7 +80,6 @@ namespace tloc { namespace graphics { namespace component_system {
     string_type            m_fragmentProgram;
 
     shader_prog_vso        m_shaderProgram;
-    uniform_vso_cont       m_uniformCont;
     shader_op_vso          m_shaderOp;
   };
 

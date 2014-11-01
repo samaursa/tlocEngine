@@ -98,14 +98,7 @@ namespace tloc { namespace graphics { namespace component_system {
       sp->Enable();
 
       auto so = matPtr->GetShaderOperator();
-
-      core_err::Error err = ErrorSuccess;
-      for (auto itr = matPtr->begin_uniforms(), 
-                itrEnd = matPtr->end_uniforms(); 
-                itr != itrEnd; ++itr)
-      {
-        so->AddUniform(**itr);
-      }
+      auto err = ErrorSuccess;
 
       err = so->PrepareAllUniforms(*sp);
       TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)

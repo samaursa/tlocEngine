@@ -839,27 +839,26 @@ namespace TestingShaderOperator
     shader_op_ptr soCopy2;
     soCopy2 = so;
 
+    gl::VertexArrayObject vao;
     sp.Enable();
     CHECK(gl::Error().Succeeded());
-    CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
+    CHECK(so->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
 
     {
-      gl::VertexArrayObject::Bind b(*so->GetVAO());
+      gl::VertexArrayObject::Bind b(vao);
       CHECK(so->IsAttributeVBOsCached());
     }
 
     {
-      CHECK(soCopy->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy->GetVAO());
+      CHECK(soCopy->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy->IsAttributeVBOsCached());
-      CHECK(soCopy->PrepareAllAttributeVBOs(sp) == ErrorSuccess); // check the cache
+      CHECK(soCopy->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess); // check the cache
     }
 
     {
-      CHECK(soCopy2->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy2->GetVAO());
+      CHECK(soCopy2->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy2->IsAttributeVBOsCached());
-      CHECK(soCopy2->PrepareAllAttributeVBOs(sp) == ErrorSuccess); // check the cache
+      CHECK(soCopy2->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess); // check the cache
     }
     sp.Disable();
 
@@ -870,24 +869,21 @@ namespace TestingShaderOperator
     so->ClearAttributeVBOsCache();
     {
       CHECK_FALSE(so->IsAttributeVBOsCached());
-      CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*so->GetVAO());
+      CHECK(so->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(so->IsAttributeVBOsCached());
     }
 
     soCopy->ClearAttributeVBOsCache();
     {
       CHECK_FALSE(soCopy->IsAttributeVBOsCached());
-      CHECK(soCopy->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy->GetVAO());
+      CHECK(soCopy->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy->IsAttributeVBOsCached());
     }
 
     soCopy2->ClearAttributeVBOsCache();
     {
       CHECK_FALSE(soCopy2->IsAttributeVBOsCached());
-      CHECK(soCopy2->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy2->GetVAO());
+      CHECK(soCopy2->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy2->IsAttributeVBOsCached());
     }
 
@@ -914,9 +910,8 @@ namespace TestingShaderOperator
     CHECK(so->size_attributeVBOs() == numAttributes - 2);
 
     sp.Enable();
-    CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
+    CHECK(so->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
 
-    gl::VertexArrayObject::Bind b(*so->GetVAO());
     CHECK(so->IsAttributeVBOsCached());
     sp.Disable();
 

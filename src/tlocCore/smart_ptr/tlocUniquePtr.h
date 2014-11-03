@@ -33,18 +33,16 @@ namespace tloc { namespace core { namespace smart_ptr {
   public:
     UniquePtr();
     UniquePtr(nullptr_t);
+    UniquePtr(this_type&& a_other);
     explicit UniquePtr(pointer a_rawPtr);
-    explicit UniquePtr(const this_type& a_other);
 
     template <typename T_Other>
-    explicit UniquePtr(const UniquePtr<T_Other>& a_other);
+    UniquePtr(UniquePtr<T_Other>&& a_other);
     ~UniquePtr();
 
-    // This is intentionally commented out - UniquePtr's assignment operator
-    // only works with move semantics which is not available in C++03
-    //template <typename T_Other>
-    //this_type& operator=(const UniquePtr<T_Other>& a_other);
-    //this_type& operator=(const this_type& a_other);
+    template <typename T_Other>
+    this_type& operator=(UniquePtr<T_Other>&& a_other);
+    this_type& operator=(this_type&& a_other);
 
     pointer   release(pointer a_ptr = pointer() );
     void      reset(pointer a_ptr = pointer() );
@@ -72,11 +70,22 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T>
   template <typename T_Other>
   UniquePtr<T>::
-    UniquePtr(const UniquePtr<T_Other>& a_other)
-    : m_rawPtr( static_cast<pointer>(
-                const_cast<UniquePtr<T_Other>* >(&a_other)->release()) )
+    UniquePtr(UniquePtr<T_Other>&& a_other)
+    : m_rawPtr( static_cast<pointer>(a_other.release()) )
   { 
     core_mem::tracking::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
+  typename UniquePtr<T>::this_type& 
+    UniquePtr<T>::
+    operator= (UniquePtr<T_Other>&& a_other)
+  {
+    m_rawPtr = static_cast<pointer>(&a_other.release());
+    return *this;
   }
 
   //////////////////////////////////////////////////////////////////////////

@@ -31,17 +31,17 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
-    UniquePtr(pointer a_rawPtr)
-    : m_rawPtr(a_rawPtr)
-  {
+    UniquePtr(this_type&& a_other)
+    : m_rawPtr(a_other.release())
+  { 
     core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
   }
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
-    UniquePtr(const this_type& a_other)
-    : m_rawPtr( const_cast<this_type*>(&a_other)->release() )
-  { 
+    UniquePtr(pointer a_rawPtr)
+    : m_rawPtr(a_rawPtr)
+  {
     core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
   }
 
@@ -52,23 +52,18 @@ namespace tloc { namespace core { namespace smart_ptr {
     DoDestroyRawPtr();
   }
 
-  //template <UNIQUE_PTR_TEMPS>
-  //template <typename T_Other>
-  //UNIQUE_PTR_TYPE::this_type& UniquePtr<UNIQUE_PTR_PARAMS>::
-  //  operator= (const UniquePtr<T_Other>& a_other)
-  //{
-  //  m_rawPtr = const_cast<this_type*>(&a_other)->release();
-  //}
-
-  //template <UNIQUE_PTR_TEMPS>
-  //UNIQUE_PTR_TYPE::this_type& UniquePtr<UNIQUE_PTR_PARAMS>::
-  //  operator= (const this_type& a_other)
-  //{
-  //  m_rawPtr = const_cast<this_type*>(&a_other)->release();
-  //}
+  template <UNIQUE_PTR_TEMPS>
+  UNIQUE_PTR_TYPE::this_type& 
+    UniquePtr<UNIQUE_PTR_PARAMS>::
+    operator= (this_type&& a_other)
+  {
+    m_rawPtr = const_cast<this_type*>(&a_other)->release();
+    return *this;
+  }
 
   template <UNIQUE_PTR_TEMPS>
-  UNIQUE_PTR_TYPE::pointer  UniquePtr<UNIQUE_PTR_PARAMS>::
+  UNIQUE_PTR_TYPE::pointer  
+    UniquePtr<UNIQUE_PTR_PARAMS>::
     release(pointer a_ptr)
   {
     core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
@@ -93,7 +88,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <UNIQUE_PTR_TEMPS>
-  UNIQUE_PTR_TYPE::pointer  UniquePtr<UNIQUE_PTR_PARAMS>::
+  UNIQUE_PTR_TYPE::pointer  
+    UniquePtr<UNIQUE_PTR_PARAMS>::
     get() const
   {
     return m_rawPtr;
@@ -107,7 +103,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <UNIQUE_PTR_TEMPS>
-  UNIQUE_PTR_TYPE::reference UniquePtr<UNIQUE_PTR_PARAMS>::
+  UNIQUE_PTR_TYPE::reference 
+    UniquePtr<UNIQUE_PTR_PARAMS>::
     operator*() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference NULL ptr!");
@@ -115,7 +112,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   }
 
   template <UNIQUE_PTR_TEMPS>
-  UNIQUE_PTR_TYPE::pointer UniquePtr<UNIQUE_PTR_PARAMS>::
+  UNIQUE_PTR_TYPE::pointer 
+    UniquePtr<UNIQUE_PTR_PARAMS>::
     operator->() const
   {
     TLOC_ASSERT_LOW_LEVEL(m_rawPtr, "Trying to dereference NULL ptr!");

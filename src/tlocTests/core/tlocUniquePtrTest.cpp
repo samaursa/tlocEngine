@@ -9,6 +9,8 @@
 #include <tlocCore/memory/tlocMemoryPool.h>
 #include <tlocCore/memory/tlocMemoryPool.inl.h>
 
+#include <tlocCore/types/tlocTypeTraits.h>
+
 namespace TestingUniquePtr
 {
   using namespace tloc;
@@ -332,8 +334,7 @@ namespace TestingUniquePtr
       CheckMemAddressIsTracked( (void*) up2.get(), true,
                                 core_cfg::BuildConfig::build_config_type() );
 
-
-      UniquePtr<base> up3(up2);
+      UniquePtr<base> up3(Move(up2));
       CHECK_FALSE(up2);
       CHECK(up3);
 

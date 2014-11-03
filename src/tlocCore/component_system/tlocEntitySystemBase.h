@@ -11,7 +11,7 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -69,25 +69,20 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
 
-    ///-------------------------------------------------------------------------
-    /// @brief Gives derived classes opportunity to perform initialization.
-    ///-------------------------------------------------------------------------
-    error_type Initialize();
-    bool       IsInitialized() const;
+    virtual       ~EntitySystemBase();
 
-    ///-------------------------------------------------------------------------
-    /// @brief Cleans up anything done in Initialize()
-    ///-------------------------------------------------------------------------
-    error_type Shutdown();
+    error_type    Initialize();
+    bool          IsInitialized() const;
+    error_type    Shutdown();
 
     ///-------------------------------------------------------------------------
     /// @brief
     /// Process the active entities. The entities are not processed if
-    /// CheckProcessing returns 0.
+    /// CheckProcessing returns false.
     ///-------------------------------------------------------------------------
-    void ProcessActiveEntities(time_type a_deltaT = 0);
+    void          ProcessActiveEntities(time_type a_deltaT = 0);
 
-    virtual void SortEntities() = 0;
+    virtual void  SortEntities() = 0;
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumEntities, m_activeEntities.size());
 
@@ -97,8 +92,6 @@ namespace tloc { namespace core { namespace component_system {
                      entity_manager_ptr a_entityMgr,
                      register_type a_compsToRegister, 
                      BufferArg a_debugName);
-
-    virtual ~EntitySystemBase();
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called
@@ -207,6 +200,7 @@ namespace tloc { namespace core { namespace component_system {
   // typedefs
 
   TLOC_TYPEDEF_VIRTUAL_PTR(EntitySystemBase, entity_system_base);
+  TLOC_TYPEDEF_UNIQUE_PTR(EntitySystemBase, entity_system_base);
 
   namespace algos { namespace entity_system  {
 
@@ -246,6 +240,6 @@ namespace tloc { namespace core { namespace component_system {
 
 // -----------------------------------------------------------------------
 // extern template
-TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::core_cs::EntitySystemBase);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::core_cs::EntitySystemBase);
 
 #endif

@@ -306,6 +306,26 @@ namespace tloc
       <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // std type_traits
+
+  // -----------------------------------------------------------------------
+  // std::remove_reference
+
+  template< class T > struct RemoveReference { typedef T type; };
+  template< class T > struct RemoveReference < T& > { typedef T type; };
+  template< class T > struct RemoveReference < T&& > { typedef T type; };
+
+  // -----------------------------------------------------------------------
+  // std::move
+
+  template <typename T>
+  typename RemoveReference<T>::type&& 
+    Move(T&& arg)
+  {
+    return static_cast<typename RemoveReference<T>::type&&>( arg );
+  }
+
 };
 
 //------------------------------------------------------------------------
@@ -382,7 +402,6 @@ namespace Loki
   {
     enum { value = 1 };
   };
-
 };
 
 #endif

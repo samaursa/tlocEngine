@@ -12,7 +12,7 @@ namespace tloc { namespace core { namespace assert {
   // following macro is provided (which is not used in C++03 as it does not
   // have a noexcept() decoration)
   
-#if !defined TLOC_RELEASE && !defined TLOC_CXX03 && !defined _MSC_VER
+#if !defined TLOC_RELEASE && !defined TLOC_CXX03 && !defined TLOC_COMPILER_VISUAL_CPP
 #define TLOC_DTOR_ASSERT noexcept(false)
 #else
 #define TLOC_DTOR_ASSERT

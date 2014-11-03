@@ -33,7 +33,7 @@ namespace tloc
 
     // We reach VC++ internal character limit for symbol information which is
     // unfortunate. For now, we will disable the warning
-#ifdef _MSC_VER
+#ifdef TLOC_COMPILER_VISUAL_CPP
 # pragma warning(disable : 4503)
 #endif
 

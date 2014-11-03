@@ -13,8 +13,9 @@ namespace tloc { namespace core { namespace component_system {
   EntityProcessingSystem::
     EntityProcessingSystem(event_manager_ptr a_eventMgr, 
                            entity_manager_ptr a_entityMgr, 
-                           register_type a_compsToRegister)
-    : base_type(a_eventMgr, a_entityMgr, a_compsToRegister)
+                           register_type a_compsToRegister,
+                           BufferArg a_debugName)
+    : base_type(a_eventMgr, a_entityMgr, a_compsToRegister, a_debugName)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -28,7 +29,7 @@ namespace tloc { namespace core { namespace component_system {
     DoInitialize(const entity_count_cont& a_entities)
   {
     TLOC_LOG_CORE_WARN_IF(a_entities.size() == 0) 
-      <<  "System (" << core_utils::GetMemoryAddress(this) 
+      <<  GetDebugName() << " (" << core_utils::GetMemoryAddress(this) 
       << ") does not have any components to Initialize (or process)";
 
     for (entity_count_cont::const_iterator itr = a_entities.begin(),
@@ -157,3 +158,6 @@ namespace tloc { namespace core { namespace component_system {
   }
 
 };};};
+
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntityProcessingSystem);

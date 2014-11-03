@@ -27,7 +27,8 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_ptr a_eventMgr,
                        entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<mesh_type>())
+                register_type().Add<mesh_type>(), 
+                "MeshRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

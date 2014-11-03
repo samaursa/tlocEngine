@@ -18,6 +18,7 @@ namespace tloc { namespace core { namespace component_system {
   class EntitySystemBase
     : public EventListener
     , public core_bclass::NonCopyable_I
+    , public core_bclass::DebugName
   {
   public:
 
@@ -94,7 +95,8 @@ namespace tloc { namespace core { namespace component_system {
 
     EntitySystemBase(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
-                     register_type a_compsToRegister);
+                     register_type a_compsToRegister, 
+                     BufferArg a_debugName);
 
     virtual ~EntitySystemBase();
 
@@ -211,47 +213,39 @@ namespace tloc { namespace core { namespace component_system {
     // ///////////////////////////////////////////////////////////////////////
     // initialize
 
-    struct Initialize
-    {
-    public:
-      typedef EntitySystemBase                            value_type;
+    TLOC_DECL_ALGO_UNARY(Initialize_T, );
+    TLOC_DEFINE_ALGO_UNARY(Initialize_T, )
+    { extract()(a).Initialize(); return true; }
 
-    public:
-      void operator()(value_type& a_system);
-    };
+    typedef Initialize_T<core::use_reference>   Initialize;
+    typedef Initialize_T<core::use_pointee>     Initialize_Deref;
 
     // ///////////////////////////////////////////////////////////////////////
     // shutdown
 
-    struct ShutDown
-    {
-    public:
-      typedef EntitySystemBase                            value_type;
+    TLOC_DECL_ALGO_UNARY(Shutdown_T, );
+    TLOC_DEFINE_ALGO_UNARY(Shutdown_T, )
+    { extract()(a).Shutdown(); return true; }
 
-    public:
-      void operator()(value_type& a_system);
-    };
+    typedef Shutdown_T<core::use_reference>     Shutdown;
+    typedef Shutdown_T<core::use_pointee>       Shutdown_Deref;
 
     // ///////////////////////////////////////////////////////////////////////
     // process
 
-    struct Process
-    {
-    public:
-      typedef EntitySystemBase                            value_type;
-      typedef value_type::time_type                       time_type;
+    TLOC_DECL_ALGO_WITH_CTOR_UNARY(Process_T, EntitySystemBase::time_type, );
+    TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(Process_T, )
+    { extract()(a).ProcessActiveEntities(m_value); return true; }
 
-    public:
-      Process(time_type a_deltaT);
-
-      void operator()(value_type& a_system);
-
-    private:
-      time_type m_deltaT;
-    };
+    typedef Process_T<use_reference>            Process;
+    typedef Process_T<core::use_pointee>        Process_Deref;
 
   };};
   
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::core_cs::EntitySystemBase);
 
 #endif

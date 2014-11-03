@@ -93,9 +93,10 @@ namespace tloc { namespace graphics { namespace component_system {
   RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     RenderSystem_TI(event_manager_ptr   a_eventMgr,
                     entity_manager_ptr  a_entityMgr,
-                    register_type       a_registerTypes)
+                    register_type       a_registerTypes, 
+                    BufferArg           a_debugName)
 
-    : base_type(a_eventMgr, a_entityMgr, a_registerTypes)
+    : base_type(a_eventMgr, a_entityMgr, a_registerTypes, a_debugName)
     , m_sharedCam(nullptr)
     , m_renderer(nullptr)
   { }

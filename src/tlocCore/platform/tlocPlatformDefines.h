@@ -34,11 +34,21 @@
 // compiler macros
 
 #if defined(_MSC_VER)
-# define TLOC_COMPILER_VISUAL_CPP
+# define TLOC_COMPILER_VISUAL_CPP _MSC_VER
+# if TLOC_COMPILER_VISUAL_CPP < 1600
+#   define TLOC_COMPILER_VISUAL_CPP_UNSUPPORTED
+# endif
+# if TLOC_COMPILER_VISUAL_CPP >= 1800
+#   define TLOC_COMPILER_VISUAL_CPP_2013
+# elif TLOC_COMPILER_VISUAL_CPP >= 1700
+#   define TLOC_COMPILER_VISUAL_CPP_2012
+# elif TLOC_COMPILER_VISUAL_CPP >= 1600
+#   define TLOC_COMPILER_VISUAL_CPP_2010
+# endif
 #elif defined (__GNUC__)
 # define TLOC_COMPILER_GCC
 #elif defined (__clang__)
-# define TLOC_COMPILER _CLANG
+# define TLOC_COMPILER_CLANG
 #endif
 
 // Convenience Macro

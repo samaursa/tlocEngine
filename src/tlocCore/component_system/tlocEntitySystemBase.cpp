@@ -21,6 +21,7 @@ namespace tloc { namespace core { namespace component_system {
   enum
   {
     k_systemInitialized = 0,
+    k_processingDisabled,
     k_count
   };
 
@@ -63,6 +64,9 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase::
     Initialize()
   {
+    TLOC_ASSERT(m_flags.IsUnMarked(k_systemInitialized), 
+                "System already initialized");
+
     m_flags.Mark(k_systemInitialized);
 
     if (Pre_Initialize() == ErrorSuccess)
@@ -225,6 +229,20 @@ namespace tloc { namespace core { namespace component_system {
 
     return evtRet;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    EntitySystemBase::
+    IsProcessingDisabled() const
+  { return m_flags.IsMarked(k_processingDisabled); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    EntitySystemBase::
+    SetDisableProcessing(bool a_enable)
+  { m_flags[k_processingDisabled] = a_enable; }
 
 };};};
 

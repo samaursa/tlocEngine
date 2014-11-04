@@ -84,6 +84,9 @@ namespace tloc { namespace core { namespace component_system {
 
     virtual void  SortEntities() = 0;
 
+    bool          IsProcessingDisabled() const;
+    void          SetDisableProcessing(bool a_enable = true);
+
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumEntities, m_activeEntities.size());
 
   protected:
@@ -115,7 +118,7 @@ namespace tloc { namespace core { namespace component_system {
 
 
     ///-------------------------------------------------------------------------
-    /// @brief Called by Initialize()
+    /// @brief Called by Shutdown()
     ///-------------------------------------------------------------------------
     virtual error_type DoShutdown(const entity_count_cont& a_entities) = 0;
 

@@ -15,10 +15,16 @@ namespace tloc { namespace graphics { namespace gl {
     typedef types::gl_int   int_type;
 
 #if defined (TLOC_OS_WIN)
+  const int_type g_maxAttachmentsHardCoded = 15;
+#elif defined (TLOC_OS_IPHONE)
+  const int_type g_maxAttachmentsHardCoded = 1;
+#else
+# error WIP
+#endif
+
+#if defined (TLOC_OS_WIN)
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    const int_type g_maxAttachmentsHardCoded = 15;
 
     template <typename T_Platform>
     int_type
@@ -151,21 +157,38 @@ namespace tloc { namespace graphics { namespace gl {
   // ///////////////////////////////////////////////////////////////////////
   // UnsafeBind
 
+
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
+  namespace priv {
+    void DoDrawBuffers(const FramebufferObject::UnsafeBind::fbo_type& a_fbo)
+    {
+      const tl_size numAttachments = a_fbo.size_color_attachments();
+      if (numAttachments > 0)
+      { glDrawBuffers(numAttachments, a_fbo.begin_color_attachments()); }
+
+      TLOC_ASSERT(gl::Error().Succeeded(),
+                  "OpenGL: Error with glDrawBuffers");
+    }
+  };
+#elif defined (TLOC_OS_IPHONE)
+  namespace priv {
+    void DoDrawBuffers(const FramebufferObject::UnsafeBind::fbo_type& )
+    { }
+  };
+#else
+# error WIP
+#endif
+
   FramebufferObject::UnsafeBind::
     UnsafeBind(const fbo_type& a_fbo, target_type a_target)
   {
-    object_handle handle = a_fbo.GetHandle();
-    glBindFramebuffer(a_target, handle);
+      object_handle handle = a_fbo.GetHandle();
+      glBindFramebuffer(a_target, handle);
+      
+      TLOC_ASSERT(gl::Error().Succeeded(),
+                  "OpenGL: Error with glBindFramebuffer");
 
-    TLOC_ASSERT(gl::Error().Succeeded(),
-      "OpenGL: Error with glBindFramebuffer");
-
-    const tl_size numAttachments = a_fbo.size_color_attachments();
-    if (numAttachments > 0)
-    { glDrawBuffers(numAttachments, a_fbo.begin_color_attachments()); }
-
-    TLOC_ASSERT(gl::Error().Succeeded(),
-      "OpenGL: Error with glDrawBuffers");
+      priv::DoDrawBuffers(a_fbo);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

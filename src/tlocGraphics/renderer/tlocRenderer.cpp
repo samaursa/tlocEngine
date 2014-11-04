@@ -269,7 +269,8 @@ namespace tloc { namespace graphics { namespace renderer {
     DoStart() const
   {
     // enable FBO
-    m_fboBinder.reset(new fbo_bind_ptr::value_type( *m_params.GetFBO().get() ));
+    m_fboBinder = 
+      core_sptr::MakeUnique<fbo_bind_ptr::value_type>( *m_params.GetFBO().get() );
 
     return ErrorSuccess;
   }

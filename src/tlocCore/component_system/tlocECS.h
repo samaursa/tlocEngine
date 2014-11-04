@@ -130,8 +130,9 @@ namespace tloc { namespace core { namespace component_system {
     ECS::
     AddSystem()
   { 
-    core_sptr::UniquePtr<T_System> sys(new T_System(m_eventMgr.get(), 
-                                                    m_entMgr.get()));
+    core_sptr::UniquePtr<T_System> sys = 
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get());
+
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
@@ -148,9 +149,8 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
     AddSystem(const Args<T1>& a_param)
   { 
-    core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
-                    a_param.m_arg1));
+    core_sptr::UniquePtr<T_System> sys = 
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), a_param.m_arg1);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -168,9 +168,9 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
     AddSystem(const Args<T1, T2>& a_param)
   { 
-    core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
-                    a_param.m_arg1, a_param.m_arg2));
+    core_sptr::UniquePtr<T_System> sys = 
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
+      a_param.m_arg1, a_param.m_arg2);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -188,9 +188,9 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
     AddSystem(const Args<T1, T2, T3>& a_param)
   { 
-    core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
-                    a_param.m_arg1, a_param.m_arg2, a_param.m_arg3));
+    core_sptr::UniquePtr<T_System> sys = 
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
+      a_param.m_arg1, a_param.m_arg2, a_params.m_arg3);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -208,10 +208,9 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
     AddSystem(const Args<T1, T2, T3, T4>& a_param)
   { 
-    core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
-                    a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, 
-                    a_param.m_arg4));
+    core_sptr::UniquePtr<T_System> sys = 
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
+      a_param.m_arg1, a_param.m_arg2, a_params.m_arg3, a_param.m_arg4);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -229,10 +228,10 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
     AddSystem(const Args<T1, T2, T3, T4, T5>& a_param)
   { 
-    core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
-                    a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, 
-                    a_param.m_arg4, a_param.m_arg5));
+    core_sptr::UniquePtr<T_System> sys = 
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
+      a_param.m_arg1, a_param.m_arg2, a_params.m_arg3, a_param.m_arg4, 
+      a_param.m_arg5);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 

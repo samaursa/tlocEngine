@@ -21,11 +21,12 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef Entity                                entity_type;
     typedef entity_vptr                           entity_ptr;
+    typedef entity_uptr                           entity_vptr;
     typedef const_entity_vptr                     const_entity_ptr;
     typedef component_sptr                        component_ptr_type;
 
     typedef containers::tl_array
-      <entity_ptr>::type                          entity_cont;
+      <entity_uptr>::type                         entity_cont;
     typedef containers::
       tl_array<Entity::entity_id>::type           entity_id_cont;
     typedef containers::tl_array

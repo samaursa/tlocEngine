@@ -434,7 +434,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
 
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame.reset(new typename rof_uptr::value_type(m_renderer.get()) );
+    m_renderOneFrame = 
+      core_sptr::MakeUnique<typename rof_uptr::value_type>(m_renderer.get());
 
     base_type::Pre_ProcessActiveEntities(a_deltaT);
   }

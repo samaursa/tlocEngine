@@ -119,7 +119,8 @@ namespace TestingUniquePtr
       ResetUniqueStructStaticVars();
 
       CHECK_CTOR_DTOR_COUNT(0, 0);
-      smart_ptr::UniquePtr<UniqueStruct>  up(new UniqueStruct(5));
+      smart_ptr::UniquePtr<UniqueStruct>  up = 
+        core_sptr::MakeUnique<UniqueStruct>(5);
       CHECK(up);
       CHECK_CTOR_DTOR_COUNT(1, 0);
     }
@@ -128,7 +129,8 @@ namespace TestingUniquePtr
     {
       ResetUniqueStructStaticVars();
 
-      smart_ptr::UniquePtr<UniqueStruct>  up(new UniqueStruct(5));
+      smart_ptr::UniquePtr<UniqueStruct>  up = 
+        core_sptr::MakeUnique<UniqueStruct>(5);
       CHECK(up);
       smart_ptr::UniquePtr<UniqueStruct>  up2(Move(up));
       CHECK(up2);
@@ -142,9 +144,9 @@ namespace TestingUniquePtr
     {
       ResetUniqueStructStaticVars();
 
-      smart_ptr::UniquePtr<UniqueStruct> up(new UniqueStruct(10));
+      auto up = core_sptr::MakeUnique<UniqueStruct>(10);
       CHECK(up->m_value == 10);
-      smart_ptr::UniquePtr<UniqueStruct> up2(new UniqueStruct(5));
+      auto up2 = core_sptr::MakeUnique<UniqueStruct>(5);
       CHECK(up2->m_value == 5);
 
       // This should NOT compile
@@ -167,7 +169,8 @@ namespace TestingUniquePtr
     }
 
     {
-      smart_ptr::UniquePtr<const UniqueStruct> sp(new UniqueStruct(10));
+      smart_ptr::UniquePtr<const UniqueStruct> sp = 
+        core_sptr::MakeUnique<UniqueStruct>(10);
       CHECK(sp);
     }
   }
@@ -185,7 +188,9 @@ namespace TestingUniquePtr
     {
       shared_array_type sa;
       for (int i = 0; i < count; ++i)
-      { sa.push_back( unique_ptr_type(new UniqueStruct(i)) ); }
+      { 
+        sa.push_back( core_sptr::MakeUnique<UniqueStruct>(i) );
+      }
 
       CHECK(UniqueStruct::m_numCtors == count);
 
@@ -217,10 +222,10 @@ namespace TestingUniquePtr
   {
     using tloc::core::smart_ptr::UniquePtr;
 
-    UniquePtr<base> basePtr(new derived());
+    UniquePtr<base> basePtr = core_sptr::MakeUnique<derived>();
     basePtr->foo(5);
 
-    UniquePtr<derived> derPtr(new derived());
+    UniquePtr<derived> derPtr = core_sptr::MakeUnique<derived>();
     derPtr->foo(10);
 
     CHECK( (basePtr == basePtr) );
@@ -321,7 +326,7 @@ namespace TestingUniquePtr
   {
     //SECTION("Basic functionality", "")
     {
-      UniquePtr<derived> up(new derived());
+      auto up = core_sptr::MakeUnique<derived>();
       CHECK(up);
 
       CheckMemAddressIsTracked( (void*) up.get(), true,
@@ -345,7 +350,7 @@ namespace TestingUniquePtr
     //SECTION("Basic functionality", "Also tests whether release is untracking "
              //"the memory address it started tracking on construction.")
     {
-      UniquePtr<tl_int> up(new tl_int(50));
+      auto up = core_sptr::MakeUnique<tl_int>(50);
       CHECK(up);
 
       CheckMemAddressIsTracked( (void*) up.get(), true,
@@ -368,18 +373,18 @@ namespace TestingUniquePtr
 
     {
       CHECK(base::m_ctorCount == 0);
-      UniquePtr<base> basePtr(new derived());
+      UniquePtr<base> basePtr = core_sptr::MakeUnique<derived>();
       CHECK(base::m_ctorCount == 1);
     }
     CHECK(base::m_dtorCount == 1);
 
     {
-      UniquePtr<base> basePtr(new derived());
+      UniquePtr<base> basePtr = core_sptr::MakeUnique<derived>();
       CHECK(basePtr->m_value == 0);
       basePtr->foo(5);
       CHECK(basePtr->m_value == 5);
 
-      UniquePtr<derived> derPtr(new derived());
+      auto derPtr = core_sptr::MakeUnique<derived>();
       derPtr->foo(10);
       basePtr = Move(derPtr);
       CHECK(base::m_dtorCount == 2);
@@ -390,7 +395,6 @@ namespace TestingUniquePtr
       UniquePtr<derived> convToDer;
       CHECK(base::m_ctorCount == 3);
       CHECK(base::m_dtorCount == 2);
-
 
       convToDer = core_sptr::static_pointer_cast<derived>(basePtr2);
       CHECK(convToDer->m_value == 10);
@@ -419,7 +423,7 @@ namespace TestingUniquePtr
 
   TEST_CASE("core/smart_ptr/unique_ptr/static_pointer_cast", "")
   {
-    UniquePtr<DerivedClass> dc(new DerivedClass());
+    auto dc = core_sptr::MakeUnique<DerivedClass>();
     dc->m_float = 10.0f;
     dc->m_int = 5;
 
@@ -436,8 +440,7 @@ namespace TestingUniquePtr
 
   TEST_CASE("core/smart_ptr/unique_ptr/const_pointer_cast", "")
   {
-    const UniquePtr<DerivedClass> dcConst = 
-      core_sptr::MakeUnique<DerivedClass>(5.0f);
+    const auto dcConst = core_sptr::MakeUnique<DerivedClass>(5.0f);
 
     UniquePtr<DerivedClass> dc =
       core_sptr::const_pointer_cast<DerivedClass>(dcConst);
@@ -458,13 +461,11 @@ namespace TestingUniquePtr
   TEST_CASE("core/smart_ptr/unique_ptr/MakeUnique", "")
   {
     {
-      UniquePtr<UniqueStruct> sp =
-        core_sptr::MakeUnique<UniqueStruct>(13);
+      auto sp = core_sptr::MakeUnique<UniqueStruct>(13);
       CHECK(sp->m_value == 13);
     }
     {
-      UniquePtr<FiveParams> sp =
-        core_sptr::MakeUnique<FiveParams>(1, 2, 3, 4, 5);
+      auto sp = core_sptr::MakeUnique<FiveParams>(1, 2, 3, 4, 5);
       CHECK(sp->m_a == 1);
       CHECK(sp->m_b == 2);
       CHECK(sp->m_c == 3);

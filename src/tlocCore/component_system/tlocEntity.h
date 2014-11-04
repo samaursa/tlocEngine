@@ -226,6 +226,9 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
   typedef containers::tl_array<const_entity_vptr>::type      const_entity_ptr_array;
+
+  typedef containers::tl_array<entity_uptr>::type            entity_uptr_array;
+  typedef containers::tl_array<const_entity_uptr>::type      const_entity_uptr_array;
 };};};
 
 // -----------------------------------------------------------------------

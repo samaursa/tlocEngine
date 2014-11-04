@@ -191,6 +191,12 @@ namespace
       CHECK(sys1->m_flags.IsMarked(k_initializeCalled));
       CHECK(sys2->m_flags.IsMarked(k_initializeCalled));
 
+      TLOC_TEST_ASSERT
+      {
+        sp.Initialize();
+      }
+      TLOC_TEST_ASSERT_CHECK();
+
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
       sp.Process(0.0f);

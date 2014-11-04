@@ -248,7 +248,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T, 
             typename P1>
   UniquePtr<T>
-    MakeUnique(const P1& a)
+    MakeUnique(P1&& a)
   { return UniquePtr<T>(new T(a)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -256,7 +256,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T, 
             typename P1, typename P2>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b)
+    MakeUnique(P1&& a, P2&& b)
   { return UniquePtr<T>(new T(a, b)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -264,7 +264,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T, 
             typename P1, typename P2, typename P3>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c)
+    MakeUnique(P1&& a, P2&& b, P3&& c)
   { return UniquePtr<T>(new T(a, b, c)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -272,7 +272,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T, 
             typename P1, typename P2, typename P3, typename P4>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d)
   { return UniquePtr<T>(new T(a, b, c, d)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -281,8 +281,7 @@ namespace tloc { namespace core { namespace smart_ptr {
             typename P1, typename P2, typename P3, typename P4,
             typename P5>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
-               const P5& e)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e)
   { return UniquePtr<T>(new T(a, b, c, d, e)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -291,8 +290,7 @@ namespace tloc { namespace core { namespace smart_ptr {
             typename P1, typename P2, typename P3, typename P4,
             typename P5, typename P6>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
-               const P5& e, const P6& f)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f)
   { return UniquePtr<T>(new T(a, b, c, d, e, f)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -301,8 +299,7 @@ namespace tloc { namespace core { namespace smart_ptr {
             typename P1, typename P2, typename P3, typename P4,
             typename P5, typename P6, typename P7>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
-               const P5& e, const P6& f, const P7& g)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g)
   { return UniquePtr<T>(new T(a, b, c, d, e, f, g)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -311,8 +308,7 @@ namespace tloc { namespace core { namespace smart_ptr {
             typename P1, typename P2, typename P3, typename P4,
             typename P5, typename P6, typename P7, typename P8>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
-               const P5& e, const P6& f, const P7& g, const P8& h)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h)
   { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -322,9 +318,7 @@ namespace tloc { namespace core { namespace smart_ptr {
             typename P5, typename P6, typename P7, typename P8,
             typename P9>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
-               const P5& e, const P6& f, const P7& g, const P8& h,
-               const P9& i)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i)
   { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -334,9 +328,7 @@ namespace tloc { namespace core { namespace smart_ptr {
             typename P5, typename P6, typename P7, typename P8,
             typename P9, typename P10>
   UniquePtr<T>
-    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
-               const P5& e, const P6& f, const P7& g, const P8& h,
-               const P9& i, const P10& j)
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i, P10&& j)
   { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i, j)); }
 
 };};};

@@ -189,7 +189,7 @@ namespace tloc { namespace math { namespace types {
   // Global operators
 
   template <typename T, tl_size T_Size, typename T_DT>
-  typename Matrix_TI<T, T_Size>::derived_type
+  typename Matrix_TI<T, T_Size, T_DT>::derived_type
     operator* (T a_lhs, const Matrix_TI<T, T_Size, T_DT>& a_rhs)
   {
     return a_rhs.operator*(a_lhs);

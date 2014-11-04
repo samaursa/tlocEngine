@@ -64,7 +64,6 @@ namespace tloc { namespace graphics { namespace gl {
       static const value_type   s_glParamName;
     };
 
-#if defined (TLOC_OS_WIN)
     struct NumExtensions
     {
       typedef gl_int            value_type;
@@ -75,7 +74,6 @@ namespace tloc { namespace graphics { namespace gl {
       typedef gl_int            value_type;
       static const value_type   s_glParamName;
     };
-#endif
   };
 
   template <typename T_GlPName>

@@ -65,7 +65,7 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool EntityProcessingSystem::CheckProcessing()
-  { return true; }
+  { return IsProcessingDisabled() == false; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

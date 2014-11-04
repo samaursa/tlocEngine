@@ -39,6 +39,14 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <UNIQUE_PTR_TEMPS>
   UniquePtr<UNIQUE_PTR_PARAMS>::
+    UniquePtr(const this_type& a_other)
+    : m_rawPtr(const_cast<this_type*>(&a_other)->release())
+  { 
+    core_mem::tracking::priv::DoTrackMemoryAddress( (void*) m_rawPtr );
+  }
+
+  template <UNIQUE_PTR_TEMPS>
+  UniquePtr<UNIQUE_PTR_PARAMS>::
     UniquePtr(pointer a_rawPtr)
     : m_rawPtr(a_rawPtr)
   {
@@ -56,6 +64,15 @@ namespace tloc { namespace core { namespace smart_ptr {
   UNIQUE_PTR_TYPE::this_type& 
     UniquePtr<UNIQUE_PTR_PARAMS>::
     operator= (this_type&& a_other)
+  {
+    m_rawPtr = a_other.release();
+    return *this;
+  }
+
+  template <UNIQUE_PTR_TEMPS>
+  UNIQUE_PTR_TYPE::this_type& 
+    UniquePtr<UNIQUE_PTR_PARAMS>::
+    operator= (const this_type& a_other)
   {
     m_rawPtr = const_cast<this_type*>(&a_other)->release();
     return *this;

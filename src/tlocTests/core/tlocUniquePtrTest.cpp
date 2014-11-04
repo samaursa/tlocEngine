@@ -130,7 +130,7 @@ namespace TestingUniquePtr
 
       smart_ptr::UniquePtr<UniqueStruct>  up(new UniqueStruct(5));
       CHECK(up);
-      smart_ptr::UniquePtr<UniqueStruct>  up2(up);
+      smart_ptr::UniquePtr<UniqueStruct>  up2(Move(up));
       CHECK(up2);
       CHECK_FALSE(up);
 
@@ -208,7 +208,7 @@ namespace TestingUniquePtr
 
   TEST_CASE("core/smart_ptr/unique_ptr/with containers", "")
   {
-    //TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
+    TestContainers<tl_array<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_singly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
     TestContainers<tl_doubly_list<smart_ptr::UniquePtr<UniqueStruct> >::type>();
   }
@@ -274,7 +274,7 @@ namespace TestingUniquePtr
     CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d2));
     CHECK_FALSE(DoIsMemoryAddressTracked( (void*)d3));
 
-    UniquePtr<derived> derPtrS(derPtr);
+    UniquePtr<derived> derPtrS(Move(derPtr));
     CHECK(DoGetNumberOfPointersToMemoryAddress( (void*)d1) == 0);
 
     // This SHOULD fail
@@ -327,7 +327,7 @@ namespace TestingUniquePtr
       CheckMemAddressIsTracked( (void*) up.get(), true,
                                 core_cfg::BuildConfig::build_config_type() );
 
-      UniquePtr<derived> up2(up);
+      UniquePtr<derived> up2(Move(up));
       CHECK_FALSE(up);
       CHECK(up2);
 

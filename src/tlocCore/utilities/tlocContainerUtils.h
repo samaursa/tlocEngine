@@ -49,6 +49,8 @@ namespace tloc { namespace core { namespace utils {
   TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END(_suffix_, _container_)
 
 #define TLOC_DECL_AND_DEF_CONTAINER_SIZE_AND_EMPTY(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_EMPTY(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_SIZE(_suffix_, _container_)
 
 #define TLOC_DECL_AND_DEF_CONTAINER_CONST_METHODS(_suffix_, _container_)\
   TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_CONST(_suffix_, _container_);\

@@ -33,6 +33,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   public:
     UniquePtr();
     UniquePtr(nullptr_t);
+    UniquePtr(const this_type& a_other);
     UniquePtr(this_type&& a_other);
     explicit UniquePtr(pointer a_rawPtr);
 
@@ -43,6 +44,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename T_Other>
     this_type& operator=(UniquePtr<T_Other>&& a_other);
     this_type& operator=(this_type&& a_other);
+    this_type& operator=(const this_type& a_other);
 
     pointer   release(pointer a_ptr = pointer() );
     void      reset(pointer a_ptr = pointer() );
@@ -56,8 +58,6 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   private:
     void      DoDestroyRawPtr();
-
-    this_type& operator=(const this_type& a_other);
 
   private:
     pointer   m_rawPtr;

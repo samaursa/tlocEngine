@@ -20,6 +20,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     : public SmartPtr
   {
   public:
+    // for accessing a_other's m_rawPtr
+    template <typename U> friend class UniquePtr;
+
+  public:
     typedef SmartPtr               base_type;
 
     typedef T                      value_type;
@@ -84,10 +88,8 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T_Other>
   UniquePtr<T>::
     UniquePtr(UniquePtr<T_Other>&& a_other)
-    : m_rawPtr( static_cast<pointer>(a_other.release()) )
-  { 
-    core_mem::tracking::priv::DoTrackMemoryAddress((void*)m_rawPtr);
-  }
+    : m_rawPtr( static_cast<pointer>(a_other.m_rawPtr) )
+  { a_other.m_rawPtr = nullptr; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -97,7 +99,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr<T>::
     operator= (UniquePtr<T_Other>&& a_other)
   {
-    m_rawPtr = static_cast<pointer>(&a_other.release());
+    delete release();
+    m_rawPtr = static_cast<pointer>(a_other.m_rawPtr);
+    a_other.m_rawPtr = nullptr;
     return *this;
   }
 

@@ -361,6 +361,118 @@ namespace TestingUniquePtr
     }
   }
 
+  TEST_CASE("core/smart_ptr/unique_ptr/polymorphic_behavior", "")
+  {
+    base::m_ctorCount = 0; base::m_dtorCount = 0;
+    derived::m_ctorCount = 0; derived::m_dtorCount = 0;
+
+    {
+      CHECK(base::m_ctorCount == 0);
+      UniquePtr<base> basePtr(new derived());
+      CHECK(base::m_ctorCount == 1);
+    }
+    CHECK(base::m_dtorCount == 1);
+
+    {
+      UniquePtr<base> basePtr(new derived());
+      CHECK(basePtr->m_value == 0);
+      basePtr->foo(5);
+      CHECK(basePtr->m_value == 5);
+
+      UniquePtr<derived> derPtr(new derived());
+      derPtr->foo(10);
+      basePtr = Move(derPtr);
+      CHECK(base::m_dtorCount == 2);
+      CHECK(basePtr->m_value == 10);
+
+      UniquePtr<base> basePtr2(Move(basePtr));
+
+      UniquePtr<derived> convToDer;
+      CHECK(base::m_ctorCount == 3);
+      CHECK(base::m_dtorCount == 2);
+
+
+      convToDer = core_sptr::static_pointer_cast<derived>(basePtr2);
+      CHECK(convToDer->m_value == 10);
+
+      //TODO: Do const_pointer_cast checks
+    }
+    CHECK(base::m_ctorCount == 3);
+    CHECK(base::m_dtorCount == 3);
+  }
+
+  struct BaseClass
+  {
+    tl_int m_int;
+  };
+
+  struct DerivedClass : public BaseClass
+  {
+    DerivedClass()
+    { }
+    DerivedClass(tl_float a_float)
+      : m_float(a_float)
+    { }
+
+    tl_float m_float;
+  };
+
+  TEST_CASE("core/smart_ptr/unique_ptr/static_pointer_cast", "")
+  {
+    UniquePtr<DerivedClass> dc(new DerivedClass());
+    dc->m_float = 10.0f;
+    dc->m_int = 5;
+
+    UniquePtr<BaseClass> bc(Move(dc));
+    CHECK_FALSE(dc);
+
+    UniquePtr<DerivedClass> dcCopy =
+      core_sptr::static_pointer_cast<DerivedClass>(bc);
+    CHECK_FALSE(bc);
+
+    CHECK(dcCopy->m_float == Approx(10.0f));
+    CHECK(dcCopy->m_int == 5);
+  }
+
+  TEST_CASE("core/smart_ptr/unique_ptr/const_pointer_cast", "")
+  {
+    const UniquePtr<DerivedClass> dcConst = 
+      core_sptr::MakeUnique<DerivedClass>(5.0f);
+
+    UniquePtr<DerivedClass> dc =
+      core_sptr::const_pointer_cast<DerivedClass>(dcConst);
+    CHECK_FALSE(dcConst);
+
+    CHECK(dc->m_float == Approx(5.0f));
+  }
+
+  struct FiveParams
+  {
+    FiveParams(tl_int a, tl_int b, tl_int c, tl_int d, tl_int e)
+      : m_a(a), m_b(b), m_c(c), m_d(d), m_e(e)
+    { }
+
+    tl_int m_a, m_b, m_c, m_d, m_e;
+  };
+
+  TEST_CASE("core/smart_ptr/unique_ptr/MakeUnique", "")
+  {
+    {
+      UniquePtr<UniqueStruct> sp =
+        core_sptr::MakeUnique<UniqueStruct>(13);
+      CHECK(sp->m_value == 13);
+    }
+    {
+      UniquePtr<FiveParams> sp =
+        core_sptr::MakeUnique<FiveParams>(1, 2, 3, 4, 5);
+      CHECK(sp->m_a == 1);
+      CHECK(sp->m_b == 2);
+      CHECK(sp->m_c == 3);
+      CHECK(sp->m_d == 4);
+      CHECK(sp->m_e == 5);
+    }
+  }
+
   struct LargeObject
   {
     int m_largeArray[100];

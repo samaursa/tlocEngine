@@ -101,7 +101,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     template <typename T_Other, typename U>
     friend
     SharedPtr<T_Other>
-      static_pointer_cast(const SharedPtr<T_Other>& a_sp);
+      static_pointer_cast(const SharedPtr<U>& a_sp);
 
     template <typename T_T, typename T_T_NullCopyPolicy, typename U>
     friend

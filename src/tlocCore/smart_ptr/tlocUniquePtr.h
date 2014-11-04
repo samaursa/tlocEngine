@@ -56,6 +56,19 @@ namespace tloc { namespace core { namespace smart_ptr {
     reference operator*() const;
     pointer   operator->() const;
 
+  public:
+    //------------------------------------------------------------------------
+    // friend functions - casting
+    template <typename T_Other, typename U>
+    friend
+    UniquePtr<T_Other>
+      static_pointer_cast(UniquePtr<U>& a_sp);
+
+    template <typename T_Other, typename U>
+    friend
+    UniquePtr<T_Other>
+      const_pointer_cast(const UniquePtr<U>& a_sp);
+
   private:
     void      DoDestroyRawPtr();
 
@@ -177,6 +190,39 @@ namespace tloc { namespace core { namespace smart_ptr {
   void swap(UniquePtr<T>& a, UniquePtr<T>& b)
   { a.swap(b); }
 
+  // -----------------------------------------------------------------------
+  // casting
+
+  template <typename T, typename U>
+  UniquePtr<T>
+    static_pointer_cast(UniquePtr<U>& a_ptr)
+  {
+    typedef UniquePtr<T>   return_type;
+
+    return_type ptr;
+    U* rawPtr = a_ptr.m_rawPtr;
+    a_ptr.m_rawPtr = nullptr;
+    ptr.m_rawPtr = static_cast<T*>(rawPtr);
+
+    return ptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename U>
+  UniquePtr<T>
+    const_pointer_cast(const UniquePtr<U>& a_ptr)
+  {
+    typedef UniquePtr<T>   return_type;
+
+    return_type ptr;
+    U* rawPtr = a_ptr.m_rawPtr;
+    const_cast<UniquePtr<U>*>(&a_ptr)->m_rawPtr = nullptr;
+    ptr.m_rawPtr = static_cast<T*>(rawPtr);
+
+    return ptr;
+  }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
@@ -184,6 +230,110 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     return a_uptr == nullptr ? 0 : 1;
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MakeUnique
+
+  template <typename T>
+  UniquePtr<T>
+    MakeUnique()
+  { return UniquePtr<T>(new T()); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1>
+  UniquePtr<T>
+    MakeUnique(const P1& a)
+  { return UniquePtr<T>(new T(a)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b)
+  { return UniquePtr<T>(new T(a, b)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c)
+  { return UniquePtr<T>(new T(a, b, c)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d)
+  { return UniquePtr<T>(new T(a, b, c, d)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e)
+  { return UniquePtr<T>(new T(a, b, c, d, e)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g, const P8& h)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8,
+            typename P9>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g, const P8& h,
+               const P9& i)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8,
+            typename P9, typename P10>
+  UniquePtr<T>
+    MakeUnique(const P1& a, const P2& b, const P3& c, const P4& d,
+               const P5& e, const P6& f, const P7& g, const P8& h,
+               const P9& i, const P10& j)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i, j)); }
 
 };};};
 

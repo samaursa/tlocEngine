@@ -6,6 +6,14 @@ namespace tloc { namespace core { namespace component_system {
   // ECS
 
   ECS::
+   ECS(BufferArg a_debugName)
+   : core_bclass::DebugName(a_debugName)
+   , m_entMgr(MakeArgs(m_eventMgr.get()))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ECS::
     ~ECS()
   { }
 

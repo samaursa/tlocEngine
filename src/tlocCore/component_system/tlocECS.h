@@ -130,9 +130,14 @@ namespace tloc { namespace core { namespace component_system {
     ECS::
     AddSystem()
   { 
-    core_sptr::UniquePtr<T_System> sys(new T_System(m_eventMgr, m_entMgr));
-    m_systems.push_back(sys);
-    return core_sptr::ToVirtualPtr(sys);
+    core_sptr::UniquePtr<T_System> sys(new T_System(m_eventMgr.get(), 
+                                                    m_entMgr.get()));
+    auto sysPtr = core_sptr::ToVirtualPtr(sys);
+
+    m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
+    m_sysProcessor->Add(sysPtr);
+
+    return sysPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -144,10 +149,15 @@ namespace tloc { namespace core { namespace component_system {
     AddSystem(const Args<T1>& a_param)
   { 
     core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr, m_entMgr, a_param.m_arg1));
-    m_systems.push_back(sys);
-    m_sysProcessor->Add(sys);
-    return core_sptr::ToVirtualPtr(sys);
+      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
+                    a_param.m_arg1));
+
+    auto sysPtr = core_sptr::ToVirtualPtr(sys);
+
+    m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
+    m_sysProcessor->Add(sysPtr);
+
+    return sysPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -159,9 +169,15 @@ namespace tloc { namespace core { namespace component_system {
     AddSystem(const Args<T1, T2>& a_param)
   { 
     core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr, m_entMgr, a_param.m_arg1, a_param.m_arg2));
-    m_systems.push_back(sys);
-    return core_sptr::ToVirtualPtr(sys);
+      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
+                    a_param.m_arg1, a_param.m_arg2));
+
+    auto sysPtr = core_sptr::ToVirtualPtr(sys);
+
+    m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
+    m_sysProcessor->Add(sysPtr);
+
+    return sysPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -173,10 +189,15 @@ namespace tloc { namespace core { namespace component_system {
     AddSystem(const Args<T1, T2, T3>& a_param)
   { 
     core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr, m_entMgr, 
+      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
                     a_param.m_arg1, a_param.m_arg2, a_param.m_arg3));
-    m_systems.push_back(sys);
-    return core_sptr::ToVirtualPtr(sys);
+
+    auto sysPtr = core_sptr::ToVirtualPtr(sys);
+
+    m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
+    m_sysProcessor->Add(sysPtr);
+
+    return sysPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -188,11 +209,16 @@ namespace tloc { namespace core { namespace component_system {
     AddSystem(const Args<T1, T2, T3, T4>& a_param)
   { 
     core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr, m_entMgr, 
+      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
                     a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, 
                     a_param.m_arg4));
-    m_systems.push_back(sys);
-    return core_sptr::ToVirtualPtr(sys);
+
+    auto sysPtr = core_sptr::ToVirtualPtr(sys);
+
+    m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
+    m_sysProcessor->Add(sysPtr);
+
+    return sysPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -204,11 +230,16 @@ namespace tloc { namespace core { namespace component_system {
     AddSystem(const Args<T1, T2, T3, T4, T5>& a_param)
   { 
     core_sptr::UniquePtr<T_System> sys
-      (new T_System(m_eventMgr, m_entMgr, 
+      (new T_System(m_eventMgr.get(), m_entMgr.get(), 
                     a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, 
                     a_param.m_arg4, a_param.m_arg5));
-    m_systems.push_back(sys);
-    return core_sptr::ToVirtualPtr(sys);
+
+    auto sysPtr = core_sptr::ToVirtualPtr(sys);
+
+    m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
+    m_sysProcessor->Add(sysPtr);
+
+    return sysPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

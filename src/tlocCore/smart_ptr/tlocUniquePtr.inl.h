@@ -61,6 +61,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr<UNIQUE_PTR_PARAMS>::
     operator= (this_type&& a_other)
   {
+    delete release();
     m_rawPtr = a_other.m_rawPtr; 
     a_other.m_rawPtr = nullptr;
     return *this;
@@ -71,6 +72,7 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr<UNIQUE_PTR_PARAMS>::
     operator= (const this_type& a_other)
   {
+    delete release();
     m_rawPtr = const_cast<this_type*>(&a_other)->release();
     return *this;
   }
@@ -80,7 +82,9 @@ namespace tloc { namespace core { namespace smart_ptr {
     UniquePtr<UNIQUE_PTR_PARAMS>::
     release(pointer a_ptr)
   {
-    core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr );
+    if (a_ptr)
+    { core_mem::tracking::priv::DoUntrackMemoryAddress( (void*) m_rawPtr ); }
+
     pointer toReturn = m_rawPtr;
     m_rawPtr = a_ptr;
     return toReturn;

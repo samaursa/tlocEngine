@@ -12,11 +12,13 @@ namespace tloc { namespace core { namespace logging {
   {
     namespace severity
     {
-      struct Info    { static const tl_int s_value = 0; };
-      struct Success { static const tl_int s_value = 1; };
-      struct Debug   { static const tl_int s_value = 2; };
-      struct Warning { static const tl_int s_value = 3; };
-      struct Error   { static const tl_int s_value = 4; };
+      typedef tl_int  value_type;
+
+      struct Info    { static const value_type s_value = 0; };
+      struct Success { static const value_type s_value = 1; };
+      struct Debug   { static const value_type s_value = 2; };
+      struct Warning { static const value_type s_value = 3; };
+      struct Error   { static const value_type s_value = 4; };
     };
   };
 

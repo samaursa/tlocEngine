@@ -291,7 +291,7 @@ namespace tloc { namespace math { namespace types {
     typedef core::Pair<bool,
       typename ray_3d_type::vec_type>               intersect_ret_type;
 
-    typedef math_t::Vector3<real_type>              dir_vec_type;
+    typedef math_t::Vector_T<real_type, 3>              dir_vec_type;
 
     typedef core_t::StrongType_T<bool, 0>      from_origin;
     typedef core_t::StrongType_T<bool, 1>      double_sided;
@@ -413,6 +413,25 @@ namespace tloc { namespace math { namespace types {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf_c, rectf_c);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf32_c, rectf32_c);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf64_c, rectf64_c);
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<tl_int TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s32 TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s64 TLOC_COMMA p_rectangle::position::BottomLeft>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<tl_int TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s32 TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s64 TLOC_COMMA p_rectangle::position::Center>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<tl_float TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f32 TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f64 TLOC_COMMA p_rectangle::position::BottomLeft>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<tl_float TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f32 TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f64 TLOC_COMMA p_rectangle::position::Center>);
 
   // -----------------------------------------------------------------------
   // algorithms

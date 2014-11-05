@@ -19,7 +19,8 @@ namespace tloc { namespace math { namespace utils {
 
   public:
     typedef T                                         value_type;
-    typedef math::types::Degree_T<value_type>         angle_type;
+    typedef math_t::Degree_T<value_type>              angle_type;
+    typedef math_t::Radian_T<value_type>              radian_type;
     typedef Pythagoras_T<value_type>                  this_type;
     typedef core::data_structs::Tuple<value_type, 3>  cont_type;
 
@@ -114,6 +115,13 @@ namespace tloc { namespace math { namespace utils {
   typedef Pythagoras_T<tl_float>    Pythagoras;
   typedef Pythagoras_T<f32>         Pythagorasf32;
   typedef Pythagoras_T<f64>         Pythagorasf64;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Pythagoras_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Pythagoras_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Pythagoras_T<f64>);
 
 };};};
 

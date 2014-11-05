@@ -9,7 +9,34 @@ namespace TestingImage
   using namespace tloc::gfx_med;
   using namespace tloc::gfx_t;
 
-  TEST_CASE("tloc/graphics/Image/LoadFromMemory", "")
+  TEST_CASE("tloc/graphics/Image", "Smart pointers")
+  {
+    { image_rgba_vso  img; image_rgba_vptr  imgPtr = img.get(); }
+    { image_rgb_vso   img; image_rgb_vptr   imgPtr = img.get(); }
+    { image_rg_vso    img; image_rg_vptr    imgPtr = img.get(); }
+    { image_r_vso     img; image_r_vptr     imgPtr = img.get(); }
+    { image_f32_r_vso img; image_f32_r_vptr imgPtr = img.get(); }
+
+    { image_stream_rgba_vso  img; image_stream_rgba_vptr  imgPtr = img.get(); }
+    { image_stream_rgb_vso   img; image_stream_rgb_vptr   imgPtr = img.get(); }
+    { image_stream_rg_vso    img; image_stream_rg_vptr    imgPtr = img.get(); }
+    { image_stream_r_vso     img; image_stream_r_vptr     imgPtr = img.get(); }
+    { image_stream_f32_r_vso img; image_stream_f32_r_vptr imgPtr = img.get(); }
+
+    { image_rgba::pixel_container_type  cont; }
+    { image_rgb::pixel_container_type   cont; }
+    { image_rg::pixel_container_type    cont; }
+    { image_r::pixel_container_type     cont; }
+    { image_f32_r::pixel_container_type cont; }
+
+    { image_stream_rgba::pixel_container_type  cont; }
+    { image_stream_rgb::pixel_container_type   cont; }
+    { image_stream_rg::pixel_container_type    cont; }
+    { image_stream_r::pixel_container_type     cont; }
+    { image_stream_f32_r::pixel_container_type cont; }
+  }
+
+  TEST_CASE("tloc/graphics/Image/Load", "")
   {
     SECTION("From Memory uchar8", "")
     {
@@ -18,26 +45,126 @@ namespace TestingImage
         0, 16, 32, 255,
         32, 64, 128, 128
       };
+      Image::color_ptr pixelsPtr(pixels);
 
-      Image::const_color_ptr pixelsPtr(pixels);
+      uchar8 pixels2[8] =
+      {
+        1, 2, 3, 4,
+        5, 6, 7, 8 
+      };
+      Image::color_ptr pixelsPtr2(pixels2);
 
-      Image img;
-      CHECK_FALSE(img.IsValid());
-      img.LoadFromMemory(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
-      CHECK(img.IsValid());
+      SECTION("Image_T<Internal>", "")
+      {
+        TLOC_TEST_ASSERT
+        {
+          Image img;
+          CHECK_FALSE(img.IsValid());
+          img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 3);
+        }
+        TLOC_TEST_ASSERT_CHECK();
 
-      CHECK(img.GetDimensions()[0] == 2);
-      CHECK(img.GetDimensions()[1] == 1);
+        Image img;
+        CHECK_FALSE(img.IsValid());
+        img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
+        CHECK(img.IsValid());
 
-      CHECK(img.GetPixel(0, 0)[0] == 0);
-      CHECK(img.GetPixel(0, 0)[1] == 16);
-      CHECK(img.GetPixel(0, 0)[2] == 32);
-      CHECK(img.GetPixel(0, 0)[3] == 255);
+        CHECK(img.GetDimensions()[0] == 2);
+        CHECK(img.GetDimensions()[1] == 1);
 
-      CHECK(img.GetPixel(1, 0)[0] == 32);
-      CHECK(img.GetPixel(1, 0)[1] == 64);
-      CHECK(img.GetPixel(1, 0)[2] == 128);
-      CHECK(img.GetPixel(1, 0)[3] == 128);
+        CHECK(img.GetPixel(0, 0)[0] == 0);
+        CHECK(img.GetPixel(0, 0)[1] == 16);
+        CHECK(img.GetPixel(0, 0)[2] == 32);
+        CHECK(img.GetPixel(0, 0)[3] == 255);
+
+        CHECK(img.GetPixel(1, 0)[0] == 32);
+        CHECK(img.GetPixel(1, 0)[1] == 64);
+        CHECK(img.GetPixel(1, 0)[2] == 128);
+        CHECK(img.GetPixel(1, 0)[3] == 128);
+
+        img.Load(pixelsPtr2, core_ds::MakeTuple(2, 1), 4);
+        CHECK(img.IsValid());
+
+        CHECK(img.GetDimensions()[0] == 2);
+        CHECK(img.GetDimensions()[1] == 1);
+
+        CHECK(img.GetPixel(0, 0)[0] == 1);
+        CHECK(img.GetPixel(0, 0)[1] == 2);
+        CHECK(img.GetPixel(0, 0)[2] == 3);
+        CHECK(img.GetPixel(0, 0)[3] == 4);
+
+        CHECK(img.GetPixel(1, 0)[0] == 5);
+        CHECK(img.GetPixel(1, 0)[1] == 6);
+        CHECK(img.GetPixel(1, 0)[2] == 7);
+        CHECK(img.GetPixel(1, 0)[3] == 8);
+      }
+
+      SECTION("Image_T<External>", "")
+      {
+        TLOC_TEST_ASSERT
+        {
+          image_stream_rgba img;
+          CHECK_FALSE(img.IsValid());
+          img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 3);
+        }
+        TLOC_TEST_ASSERT_CHECK();
+
+        image_stream_rgba img;
+        CHECK_FALSE(img.IsValid());
+
+        TLOC_TEST_ASSERT
+        {
+          img.SetPixel(0, 0, image_stream_rgba::color_type(1, 2, 3, 4));
+        }
+        TLOC_TEST_ASSERT_CHECK();
+
+        {
+          uchar8* tempPixels = new uchar8[8];
+          Image::color_ptr tempPixelsPtr(tempPixels);
+
+          img.Load(tempPixelsPtr, core_ds::MakeTuple(2, 1), 4);
+
+          delete[] tempPixels;
+        }
+
+        TLOC_TEST_ASSERT
+        {
+          img.SetPixel(0, 0, image_stream_rgba::color_type(1, 2, 3, 4));
+        }
+        TLOC_TEST_ASSERT_CHECK();
+
+        img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
+        CHECK(img.IsValid());
+
+        CHECK(img.GetDimensions()[0] == 2);
+        CHECK(img.GetDimensions()[1] == 1);
+
+        CHECK(img.GetPixel(0, 0)[0] == 0);
+        CHECK(img.GetPixel(0, 0)[1] == 16);
+        CHECK(img.GetPixel(0, 0)[2] == 32);
+        CHECK(img.GetPixel(0, 0)[3] == 255);
+
+        CHECK(img.GetPixel(1, 0)[0] == 32);
+        CHECK(img.GetPixel(1, 0)[1] == 64);
+        CHECK(img.GetPixel(1, 0)[2] == 128);
+        CHECK(img.GetPixel(1, 0)[3] == 128);
+
+        img.Load(pixelsPtr2, core_ds::MakeTuple(2, 1), 4);
+        CHECK(img.IsValid());
+
+        CHECK(img.GetDimensions()[0] == 2);
+        CHECK(img.GetDimensions()[1] == 1);
+
+        CHECK(img.GetPixel(0, 0)[0] == 1);
+        CHECK(img.GetPixel(0, 0)[1] == 2);
+        CHECK(img.GetPixel(0, 0)[2] == 3);
+        CHECK(img.GetPixel(0, 0)[3] == 4);
+
+        CHECK(img.GetPixel(1, 0)[0] == 5);
+        CHECK(img.GetPixel(1, 0)[1] == 6);
+        CHECK(img.GetPixel(1, 0)[2] == 7);
+        CHECK(img.GetPixel(1, 0)[3] == 8);
+      }
     }
 
     SECTION("From Memory uchar8", "")
@@ -50,7 +177,7 @@ namespace TestingImage
       pixelCont.push_back(c2);
 
       Image img;
-      img.LoadFromMemory(pixelCont, core_ds::MakeTuple(2, 1));
+      img.Load(pixelCont, core_ds::MakeTuple(2, 1));
 
       CHECK(img.GetPixels()[0] == c1);
       CHECK(img.GetPixels()[1] == c2);
@@ -209,7 +336,7 @@ namespace TestingImage
       pixelCont.push_back(c2);
 
       Image img;
-      img.LoadFromMemory(pixelCont, core_ds::MakeTuple(2, 1));
+      img.Load(pixelCont, core_ds::MakeTuple(2, 1));
 
       CHECK(img.GetPixel(0, 0) == c1);
       CHECK(img.GetPixel(1, 0) == c2);
@@ -289,6 +416,48 @@ namespace TestingImage
       {
         CHECK(img.GetPixels()[i] == c4);
       }
+    }
+
+    SECTION("Get/Set Pixel (external storage)", "")
+    {
+      uchar8 pixels[8] =
+      {
+        0, 16, 32, 255,
+        32, 64, 128, 128
+      };
+      Image::color_ptr pixelsPtr(pixels);
+
+      image_stream_rgba img;
+      CHECK_FALSE(img.IsValid());
+      img.Load(pixelsPtr, core_ds::MakeTuple(2, 1), 4);
+      CHECK(img.IsValid());
+
+      CHECK(img.GetDimensions()[0] == 2);
+      CHECK(img.GetDimensions()[1] == 1);
+
+      CHECK(img.GetPixel(0, 0)[0] == 0);
+      CHECK(img.GetPixel(0, 0)[1] == 16);
+      CHECK(img.GetPixel(0, 0)[2] == 32);
+      CHECK(img.GetPixel(0, 0)[3] == 255);
+
+      CHECK(img.GetPixel(1, 0)[0] == 32);
+      CHECK(img.GetPixel(1, 0)[1] == 64);
+      CHECK(img.GetPixel(1, 0)[2] == 128);
+      CHECK(img.GetPixel(1, 0)[3] == 128);
+
+      img.SetPixel(0, 0, image_stream_rgba::color_type(1, 2, 3, 4) );
+      img.SetPixel(1, 0, image_stream_rgba::color_type(3, 4, 5, 6) );
+
+      CHECK(img.GetPixel(0, 0)[0] == 1); CHECK(pixels[0] == 1);
+      CHECK(img.GetPixel(0, 0)[1] == 2); CHECK(pixels[1] == 2);
+      CHECK(img.GetPixel(0, 0)[2] == 3); CHECK(pixels[2] == 3);
+      CHECK(img.GetPixel(0, 0)[3] == 4); CHECK(pixels[3] == 4);
+
+      CHECK(img.GetPixel(1, 0)[0] == 3); CHECK(pixels[4] == 3);
+      CHECK(img.GetPixel(1, 0)[1] == 4); CHECK(pixels[5] == 4);
+      CHECK(img.GetPixel(1, 0)[2] == 5); CHECK(pixels[6] == 5);
+      CHECK(img.GetPixel(1, 0)[3] == 6); CHECK(pixels[7] == 6);
+
     }
   }
 

@@ -49,7 +49,10 @@ namespace tloc { namespace core { namespace data_structs {
   template <TABLE_TEMPS>
   Table<TABLE_PARAMS>::
     Table(const this_type& aTable)
-  { operator=(aTable); }
+  { 
+    ITERATE_TABLE
+    { m_values[i] = aTable[i]; }
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -506,17 +509,6 @@ namespace tloc { namespace core { namespace data_structs {
   // Operators
 
   template <TABLE_TEMPS>
-  Table<TABLE_PARAMS>& 
-    Table<TABLE_PARAMS>::
-    operator= (const Table& aTable)
-  {
-    memcpy(m_values, aTable.data(), sizeof(T) * k_size);
-    return *this;
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TABLE_TEMPS>
   bool 
     Table<TABLE_PARAMS>::
     operator== (const Table<TABLE_PARAMS>& aTable)
@@ -570,5 +562,8 @@ namespace tloc { namespace core { namespace data_structs {
 
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_TABLE(_type_, _rows_, _cols_)\
+  template class tloc::core_ds::Table<_type_, _rows_, _cols_>
 
 #endif

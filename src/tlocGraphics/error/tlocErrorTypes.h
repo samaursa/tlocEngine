@@ -34,11 +34,22 @@ namespace tloc { namespace graphics { namespace error {
     error_sprite_sheet_parse_error,
 
     error_obj_file_parse_error,
+    error_obj_file_has_no_vertices,
+    error_obj_file_face_vertex_has_more_than_three_indices,
+    error_obj_file_invalid_vertex,
+    error_obj_file_invalid_vertex_normal,
+    error_obj_file_expecting_real_number_encountered_NAN,
+    error_obj_file_invalid_vertex_texcoord,
+    error_obj_file_face_indexing_non_existent_tex_coord,
     error_obj_corrupt_or_invalid,
 
     error_free_type_initialize,
     error_free_type_error_loading_font,
-    error_free_type_error_setting_size
+    error_free_type_error_setting_size,
+
+    error_attribute_vbo_has_no_data,
+    error_attribute_vbo_has_no_names,
+    error_attribute_vbo_interleave_name_size_mismatch
   };
 
 };};};

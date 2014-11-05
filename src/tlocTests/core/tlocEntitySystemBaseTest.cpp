@@ -14,12 +14,14 @@ namespace TestingEntitySystemBase
   // test components
 
   struct EmptyComponent1 
-    : public Component_T<EmptyComponent1, components::listener>
+    : public Component_T<EmptyComponent1, component_group::k_core, components::k_listener>
   {
-    typedef Component_T<EmptyComponent1, components::listener>    base_type;
+    typedef Component_T<EmptyComponent1, 
+                        k_component_group, 
+                        k_component_type>                     base_type;
 
     EmptyComponent1()
-      : base_type(k_component_type, "EntityComponent1")
+      : base_type("EntityComponent1")
     { }
 
     ~EmptyComponent1()
@@ -33,12 +35,14 @@ namespace TestingEntitySystemBase
   tl_int EmptyComponent1::m_dtor = 0;
 
   struct EmptyComponent2 
-    : public Component_T<EmptyComponent2, components::listener + 1>
+    : public Component_T<EmptyComponent1, component_group::k_core, components::k_listener + 1>
   {
-    typedef Component_T<EmptyComponent2, components::listener + 1>    base_type;
+    typedef Component_T<EmptyComponent1, 
+                        k_component_group, 
+                        k_component_type>                     base_type;
 
     EmptyComponent2()
-      : base_type(k_component_type, "EntityComponent2")
+      : base_type("EntityComponent2")
     { }
 
     ~EmptyComponent2()
@@ -64,8 +68,7 @@ namespace TestingEntitySystemBase
     EntSys(event_manager_ptr a_eventMgr,
           entity_manager_ptr a_entMgr)
           : base_type(a_eventMgr, a_entMgr, 
-                      core_ds::Variadic<components::value_type, 1>
-                      (EmptyComponent1::k_component_type))
+                      register_type().Add<EmptyComponent1>(), "EntSys")
     { }
 
     ~EntSys()

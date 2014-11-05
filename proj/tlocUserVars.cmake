@@ -6,5 +6,3 @@ set(USER_LIBRARY_PROJECTS "skopworksLib;")
 
 set(USER_TEST_PROJECTS "skopworksTest;")
 #list(APPEND USER_TEST_PROJECTS "nextTestProject;")
-
-set(USER_ASSETS_PATH "${CMAKE_SOURCE_DIR}/src/gameAssetsPath.h")

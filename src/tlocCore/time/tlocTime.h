@@ -19,6 +19,8 @@ namespace tloc { namespace core { namespace time {
             typename T_Adjust = p_timer_t::Adjust>
   class Timer_T
   {
+    TLOC_STATIC_ASSERT_IS_FLOAT(T_Real);
+    TLOC_STATIC_ASSERT_IS_INTEGRAL(T_UInt);
   public:
     typedef T_Real                    sec_type;
     typedef T_UInt                    value_type;
@@ -82,6 +84,17 @@ namespace tloc { namespace core { namespace time {
   // global functions
 
   const Timer&  GetProgramTime();
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f128>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f64 TLOC_COMMA u64 TLOC_COMMA p_timer_t::NoAdjust>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f128 TLOC_COMMA u64 TLOC_COMMA p_timer_t::NoAdjust>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f32 TLOC_COMMA u32 TLOC_COMMA p_timer_t::Adjust>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f32 TLOC_COMMA u32 TLOC_COMMA p_timer_t::NoAdjust>);
 
 };};};
 

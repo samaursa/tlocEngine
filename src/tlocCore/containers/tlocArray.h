@@ -355,6 +355,30 @@ namespace tloc { namespace core { namespace containers {
   {
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+
+#define TLOC_EXTERN_TEMPLATE_ARRAY(_type_)\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::ArrayBase<_type_ TLOC_COMMA tloc::core_conts::Array_Unordered>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::ArrayBase<_type_ TLOC_COMMA tloc::core_conts::Array_Ordered>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::Array<_type_ TLOC_COMMA tloc::core_conts::Array_Unordered>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_conts::Array<_type_ TLOC_COMMA tloc::core_conts::Array_Ordered>)
+
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::s8);
+
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::s32);
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::s64);
+
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::u8);
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::u32);
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::u64);
+
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::f32);
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::f64);
+
+  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::tl_ulong);
+
 };};};
 
 #endif

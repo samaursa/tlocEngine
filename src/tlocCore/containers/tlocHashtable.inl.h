@@ -54,29 +54,9 @@ namespace tloc { namespace core { namespace containers {
   template <HASHTABLE_ELEMENT_TYPES>
   TL_FI HashtableElement<HASHTABLE_ELEMENT_PARAMS>
     ::HashtableElement(const value_type& a_value, const size_type& a_hash)
-    : m_valueAndHashcode(a_value, a_hash)
+    : m_value(a_value)
   {
-  }
-
-  template <HASHTABLE_ELEMENT_TYPES>
-  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::value_type&
-    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_value()
-  {
-    return m_valueAndHashcode.m_var;
-  }
-
-  template <HASHTABLE_ELEMENT_TYPES>
-  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::const_value_type&
-    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_value() const
-  {
-    return m_valueAndHashcode.m_var;
-  }
-
-  template <HASHTABLE_ELEMENT_TYPES>
-  TL_FI typename HashtableElement<HASHTABLE_ELEMENT_PARAMS>::const_size_type&
-    HashtableElement<HASHTABLE_ELEMENT_PARAMS>::m_hashcode() const
-  {
-    return m_valueAndHashcode.Get();
+    base_type::SetHash(a_hash);
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -284,14 +264,14 @@ namespace tloc { namespace core { namespace containers {
   typename HashtableItr<HASHTABLE_ITR_PARAMS>::reference
     HashtableItr<HASHTABLE_ITR_PARAMS>::operator*() const
   {
-    return (*(base_type::m_currNode)).m_value();
+    return (*(base_type::m_currNode)).GetValue();
   }
 
   template <HASHTABLE_ITR_TYPES>
   typename HashtableItr<HASHTABLE_ITR_PARAMS>::pointer
     HashtableItr<HASHTABLE_ITR_PARAMS>::operator->() const
   {
-    return &(*(base_type::m_currNode)).m_value();
+    return &(*(base_type::m_currNode)).GetValue();
   }
 
   template <HASHTABLE_ITR_TYPES>

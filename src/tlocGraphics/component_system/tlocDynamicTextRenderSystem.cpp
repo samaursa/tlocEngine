@@ -2,8 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 
 #include <tlocGraphics/component_system/tlocDynamicText.h>
@@ -18,15 +16,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
 
-  namespace {
-
-    const core_str::StringW
-      g_symbols = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  L"abcdefghijklmnopqrstuvwxyz" 
-                  L"1234567890!@#$%^&*()_+-=[]" 
-                  L"{}\\|;:'\",<.>/?`~";
-  };
-
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -38,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
   DynamicTextRenderSystem::
     DynamicTextRenderSystem(event_manager_ptr a_eventMgr, 
                             entity_manager_ptr a_entityMgr)
-    : base_type(a_eventMgr, a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr, "DynamicTextRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -57,6 +46,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (dynamicText->IsUpdateRequired())
     {
+      dynamicText->SetUpdateRequired(false);
+
       if (dynamicText->IsTextUpdated())
       {
         // -----------------------------------------------------------------------
@@ -66,7 +57,7 @@ namespace tloc { namespace graphics { namespace component_system {
       else if (dynamicText->IsAlignmentUpdated())
       {
         text_quads_cont::const_iterator itr = core::find_if_all
-          (m_allText, core::algos::compare::pair::MakeFirst(const_entity_ptr(a_ent)));
+          (m_allText, core::algos::pair::compare::MakeFirst(const_entity_ptr(a_ent)));
 
         TLOC_ASSERT(itr != m_allText.end(), 
                     "Text should be stored in m_allText container");

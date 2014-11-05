@@ -43,7 +43,7 @@ namespace tloc { namespace graphics { namespace media {
     typedef core_conts::Array<core_str::String>     string_array;
 
     string_array  allLines;
-    core_str::Tokenize(a_fileContents.c_str(), '\n', allLines);
+    core_str::Tokenize(a_fileContents.c_str(), core_str::g_newline, allLines);
 
     string_array::iterator itr = allLines.begin();
     string_array::iterator itrEnd = allLines.end();
@@ -61,6 +61,8 @@ namespace tloc { namespace graphics { namespace media {
     m_objects.push_back(ObjGroup());
     iterator currGroup = m_objects.begin();
     core::advance(currGroup, m_objects.size() - 1);
+
+    error_type retErr = TLOC_ERROR(error::error_obj_file_parse_error);
 
     // NOTES: (info: http://people.cs.clemson.edu/~dhouse/courses/405/docs/brief-obj-file-format.html)
     // We ignore: Point, Line and negative face values
@@ -101,13 +103,19 @@ namespace tloc { namespace graphics { namespace media {
 
         // We should have only 3 floats
         if (core::distance(begin, end) != 3)
-        { goto RETURN_ERROR; }
+        { 
+          retErr = TLOC_ERROR(error::error_obj_file_invalid_vertex);
+          goto RETURN_ERROR;
+        }
 
         math_t::Vec3f32 pos;
         for (int i = 0; begin != end; ++i, ++begin)
         {
           if (core_str::IsRealNumber(begin->c_str()) == false)
-          { goto RETURN_ERROR; }
+          { 
+            retErr = TLOC_ERROR(error::error_obj_file_expecting_real_number_encountered_NAN);
+            goto RETURN_ERROR;
+          }
 
           pos[i] = core_utils::CastNumber<f32>( atof(begin->c_str()) );
         }
@@ -122,13 +130,19 @@ namespace tloc { namespace graphics { namespace media {
 
         // We should have at least 2 floats
         if (core::distance(begin, end) < 2)
-        { goto RETURN_ERROR; }
+        { 
+          retErr = TLOC_ERROR(error::error_obj_file_invalid_vertex_texcoord);
+          goto RETURN_ERROR;
+        }
 
         math_t::Vec2f32 tcoord;
         for (int i = 0; begin != end && i < 2; ++i, ++begin)
         {
           if (core_str::IsRealNumber(begin->c_str()) == false)
-          { goto RETURN_ERROR; }
+          { 
+            retErr = TLOC_ERROR(error::error_obj_file_expecting_real_number_encountered_NAN);
+            goto RETURN_ERROR;
+          }
 
           tcoord[i] = core_utils::CastNumber<f32>( atof(begin->c_str()) );
         }
@@ -142,13 +156,19 @@ namespace tloc { namespace graphics { namespace media {
 
         // We should have only 3 floats
         if (core::distance(begin, end) != 3)
-        { goto RETURN_ERROR; }
+        { 
+          retErr = TLOC_ERROR(error::error_obj_file_invalid_vertex_normal);
+          goto RETURN_ERROR;
+        }
 
         math_t::Vec3f32 norm;
         for (int i = 0; begin != end; ++i, ++begin)
         {
           if (core_str::IsRealNumber(begin->c_str()) == false)
-          { goto RETURN_ERROR; }
+          { 
+            retErr = TLOC_ERROR(error::error_obj_file_expecting_real_number_encountered_NAN);
+            goto RETURN_ERROR;
+          }
 
           norm[i] = core_utils::CastNumber<f32>( atof(begin->c_str()) );
         }
@@ -160,7 +180,10 @@ namespace tloc { namespace graphics { namespace media {
       {
         // If no vertices have been recorded, the obj file is not supported
         if (verticesRecorded == false)
-        { goto RETURN_ERROR; }
+        { 
+          retErr = TLOC_ERROR(error::error_obj_file_has_no_vertices);
+          goto RETURN_ERROR;
+        }
 
         string_array::const_iterator firstNum = ++begin;
 
@@ -190,7 +213,10 @@ namespace tloc { namespace graphics { namespace media {
 
           // face can be: 559/3055/549 i.e. no more than 3 numbers
           if (wordTokens.size() > 3)
-          { goto RETURN_ERROR; }
+          { 
+            retErr = TLOC_ERROR(error::error_obj_file_face_vertex_has_more_than_three_indices);
+            goto RETURN_ERROR; 
+          }
 
           string_array::const_iterator wordTokenBegin = wordTokens.begin();
           string_array::const_iterator wordTokenEnd = wordTokens.end();
@@ -201,7 +227,10 @@ namespace tloc { namespace graphics { namespace media {
             ++i, ++wordTokenBegin)
           {
             if (core_str::IsNumber(wordTokenBegin->c_str()) == false)
-            { goto RETURN_ERROR; }
+            { 
+              retErr = TLOC_ERROR(error::error_obj_file_expecting_real_number_encountered_NAN);
+              goto RETURN_ERROR;
+            }
 
             if (i == 0)
             {
@@ -220,7 +249,10 @@ namespace tloc { namespace graphics { namespace media {
               else
               {
                 if (tcoordsRecorded == false)
-                { goto RETURN_ERROR; }
+                { 
+                  retErr = TLOC_ERROR(error::error_obj_file_face_indexing_non_existent_tex_coord);
+                  goto RETURN_ERROR; 
+                }
 
                 if (newFace)
                 {
@@ -253,7 +285,8 @@ PUSH_NORM_INDEX:
     }
 
     m_flags.Mark(k_valid);
-    return ErrorSuccess;
+    retErr = ErrorSuccess;
+    return retErr;
 
 RETURN_ERROR:
     m_flags.Unmark(k_valid);

@@ -3,13 +3,16 @@ tloc_add_definitions_strict()
 
 # common includes
 include_directories(
-  ${TLOC_DEP_PATH}/include/
-  ${TLOC_DEP_PATH}/src/
+  ${TLOC_DEP_INSTALL_PATH}
+  ${TLOC_DEP_INSTALL_PATH}/include/
   ${TLOC_ENGINE_PATH}/src/
+
+  ${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/
   )
 
 # All libraries/projects add their name to this variable
 set(tlocAllLibraries 
+  3rdParty
   tlocCore 
   tlocGraphics 
   tlocInput 
@@ -29,7 +32,7 @@ if (TLOC_INCLUDE_TESTS)
 endif()
 
 # Add the version tool - currently DISABLED for APPLE due to iOS builds
-if(NOT TLOC_PLATFORM_IOS)
+if(NOT TLOC_PLATFORM_IOS AND NOT DISTRIBUTION_BUILD)
   add_subdirectory(tlocVersion)
 
   # Make tlocVersion and tlocVersionTool as dependencies for all projects
@@ -39,6 +42,12 @@ if(NOT TLOC_PLATFORM_IOS)
       tlocVersionTool
       )
   endforeach()
+
+  #The version tools must be added to the engine folder as well
+  set_target_properties(tlocVersion tlocVersionTool
+    PROPERTIES
+    FOLDER Versioning
+    )
 
 endif()
 
@@ -55,17 +64,26 @@ if(TLOC_COMPILER_MSVC)
     endif()
   endforeach()
 
-#The version tools must be added to the engine folder as well
-set_target_properties(tlocVersion tlocVersionTool
-  PROPERTIES
-  FOLDER Versioning
-  )
-
 endif()
 
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
-FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
+
+if(NOT DISTRIBUTION_BUILD)
+  SET(ENGINE_ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets/)
+else()
+  SET(ENGINE_ASSETS_PATH "../../assets/")
+
+  add_custom_target(tlocAssetsCopier ALL)
+  add_custom_command(TARGET tlocAssetsCopier POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${TLOC_ENGINE_PATH}/assets"
+      "${TLOC_ENGINE_INSTALL_PATH}/assets")
+    
+endif()
+
+FILE(WRITE "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/tlocAssetsPath.h" 
+"
 #pragma once
 
 #ifndef _ASSETS_PATH_H_
@@ -77,13 +95,13 @@ FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
 # import <Foundation/Foundation.h>
 #endif
 
-#define TLOC_ASSETS_PATH \"${CMAKE_SOURCE_DIR}/assets/\"
+#define TLOC_ASSETS_PATH \"${ENGINE_ASSETS_PATH}\"
 
 #if defined(TLOC_OS_WIN)
 
 inline const char* GetAssetsPath()
 {
-  static const char* assetPath = \"${CMAKE_SOURCE_DIR}/assets/\";
+  static const char* assetPath = \"${ENGINE_ASSETS_PATH}\";
   return assetPath;
 }
 #elif defined(TLOC_OS_IPHONE)

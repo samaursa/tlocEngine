@@ -64,6 +64,11 @@ namespace tloc { namespace graphics { namespace win {
 
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(GraphicsMode<>);
+
 };};};
 
 #endif

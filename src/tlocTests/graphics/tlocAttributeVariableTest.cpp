@@ -1,375 +1,403 @@
 #include "tlocTestCommon.h"
 
-#include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/opengl/tlocAttributeVBO.h>
+#include <tlocGraphics/types/tlocVertex.h>
+#include <tlocGraphics/window/tlocWindow.h>
 
 #include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 #include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
 
+#if defined (TLOC_OS_WIN)
+# define CHECK_ATTRIBUTE_VBO_VALUE(_attrib_vbo_, _array_, _value_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FP(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPC(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetColor() == _vert_.GetColor())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPT(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetTexCoord() == _vert_.GetTexCoord())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPN(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNC(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal()); \
+    CHECK(_array_[0].GetColor() == _vert_.GetColor())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNT(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal()); \
+    CHECK(_array_[0].GetTexCoord() == _vert_.GetTexCoord())
+
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNCT(_attrib_vbo_, _array_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == 1); \
+    CHECK(_array_[0].GetPosition() == _vert_.GetPosition()); \
+    CHECK(_array_[0].GetNormal() == _vert_.GetNormal()); \
+    CHECK(_array_[0].GetColor() == _vert_.GetColor()); \
+    CHECK(_array_[0].GetTexCoord() == _vert_.GetTexCoord())
+
+# define CHECK_ATTRIBUTE_VBO_MULTIPLE_VERT3FPNCT(_attrib_vbo_, _array_, _num_, _vert_) \
+    _attrib_vbo_.GetValueAs(_array_); \
+    CHECK(_array_.size() == _num_); \
+    for (tl_int i = 0; i < _num_; ++i) \
+    { \
+      CHECK(_array_[i].GetPosition() == _vert_.GetPosition()); \
+      CHECK(_array_[i].GetNormal() == _vert_.GetNormal()); \
+      CHECK(_array_[i].GetColor() == _vert_.GetColor()); \
+      CHECK(_array_[i].GetTexCoord() == _vert_.GetTexCoord()); \
+    }
+
+#elif defined (TLOC_OS_IPHONE)
+# define CHECK_ATTRIBUTE_VBO_VALUE(_attrib_vbo_, _array_, _value_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FP(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPC(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPT(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPN(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNC(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNT(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_VERT3FPNCT(_attrib_vbo_, _array_, _vert_)
+# define CHECK_ATTRIBUTE_VBO_MULTIPLE_VERT3FPNCT(_attrib_vbo_, _array_, _num_, _vert_)
+
+#else
+# error WIP
+#endif
+
 namespace TestingAttributeVariable
 {
   using namespace tloc;
-  using namespace tloc::graphics;
+  using namespace graphics;
+  using namespace core_ds;
+  using namespace core_conts;
+  using namespace math_t;
+  using namespace gfx_win;
+  using namespace gfx_t;
 
   TEST_CASE("Graphics/gl/Attribute/copy", "")
   {
-    using namespace tloc::core_ds;
-    using namespace tloc::core_conts;
-    using namespace tloc::math_t;
 
-    SECTION("Normal values", "")
+    typedef win::Window::graphics_mode         graphics_mode;
+
+    Window window;
+    window.Create(graphics_mode(graphics_mode::Properties(1, 1)),
+      WindowSettings("AttributeVBO Test"));
+
+    REQUIRE(gl::InitializePlatform() == ErrorSuccess);
+
+    SECTION("Arrays", "")
     {
-      Vec2f32 v(0.0f, 1.0f);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+      Array<f32> array(1, 1.0f);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
 
-      gl::Attribute a;
-      a.SetName("TestVar");
-      a.SetValueAs(v);
-      a.SetEnabled(false);
-
-      CHECK(gl::algos::shader_variable::compare::Name("TestVar")(a));
-      CHECK_FALSE(gl::algos::shader_variable::compare::Name("TestVars")(a));
-
-      {
-        gl::Attribute acopy(a);
-        CHECK( acopy.GetType() == a.GetType() );
-        CHECK( (acopy.GetName().compare(a.GetName()) == 0) );
-        CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
-
-        CHECK_FALSE( acopy.IsEnabled() );
-        CHECK_FALSE( a.IsEnabled() );
-
-        acopy.SetEnabled(true);
-        CHECK( acopy.IsEnabled() );
-        CHECK_FALSE( a.IsEnabled() );
-      }
-
-      {
-        gl::Attribute acopy;
-        acopy = a;
-        CHECK( (acopy.GetValueAs<Vec2f32>() == v) );
-      }
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Approx(1.0f));
     }
 
     SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetName("TestVarArray");
-      Array<f32> array(1, 1.0f);
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.IsAttribArray());
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+      Array<Vec2f32> array(1, Vec2f32(1.0f, 2.0f));
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
 
-      CHECK(gl::algos::shader_variable::compare::Name("TestVarArray")(a));
-      CHECK_FALSE(gl::algos::shader_variable::compare::Name("TestVars")(a));
-
-      gl::Attribute aCopy(a);
-      CHECK(aCopy.IsAttribArray());
-      CHECK( aCopy.GetType() == a.GetType() );
-      CHECK( (aCopy.GetName().compare(a.GetName()) == 0) );
-
-      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
-      CHECK( aCopy.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
-
-      gl::Attribute aCopy2;
-      aCopy2 = a;
-      CHECK(aCopy2.IsAttribArray());
-
-      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
-      CHECK( aCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
-
-    }
-  }
-
-  TEST_CASE("Graphics/gl/Attribute/Reset", "")
-  {
-    using namespace tloc::core_ds;
-    using namespace tloc::core_conts;
-    using namespace tloc::math_t;
-
-    SECTION("Normal values", "")
-    {
-      Vec2f32 v(0.0f, 1.0f);
-
-      gl::Attribute a;
-      a.SetName("TestVar");
-      a.SetValueAs(v);
-      CHECK(a.IsValidType());
-
-      a.Reset();
-      CHECK(a.GetName().length() == 0);
-      CHECK_FALSE(a.IsValidType());
-
-      Vec3f32 v2(0.0f, 1.0f, 2.0f);
-
-      // changing type without Reset() is not allowed
-      a.SetValueAs(v2);
-      a.SetName("TestVar2");
-      CHECK( a.IsValidType() );
-      CHECK( a.GetValueAs<Vec3f32>()[0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[2] == Approx(2.0f));
-
-      Vec3f32 v3(3.0f, 4.0f, 5.0f);
-
-      a.ResetValue();
-      a.SetValueAs(v3);
-      CHECK( a.IsValidType() );
-      CHECK( a.GetValueAs<Vec3f32>()[0] == Approx(3.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[1] == Approx(4.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[2] == Approx(5.0f));
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Vec2f32(1.0f, 2.0f));
     }
 
     SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetName("TestVarArray");
-      Array<f32> array(1, 1.0f);
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.IsAttribArray());
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+      Array<Vec3f32> array(1, Vec3f32(1.0f, 2.0f, 3.0f));
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
 
-      Array<f32> array2(2, 2);
-      a.Reset();
-      CHECK(a.GetName().length() == 0);
-      CHECK_FALSE(a.IsValidType());
-
-      a.SetVertexArray(array2, gl::p_shader_variable_ti::CopyArray() );
-      a.SetName("TestVarArray2");
-      CHECK( a.IsValidType() );
-      CHECK( a.IsAttribArray() );
-      CHECK( a.IsValidType() );
-      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(2));
-      CHECK( a.GetValueAs<Array<f32> >()[1] == Approx(2));
-    }
-  }
-
-  TEST_CASE("Graphics/gl/Attribute", "")
-  {
-    using namespace tloc::core_ds;
-    using namespace tloc::core_conts;
-    using namespace tloc::math_t;
-
-    {
-      gl::Attribute a;
-      a.SetValueAs(1.0f);
-      CHECK( a.GetValueAs<f32>() == Approx(1.0f) );
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Vec3f32(1.0, 2.0f, 3.0f));
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs(Vec2f32(0.0f, 1.0f));
-      CHECK( a.GetValueAs<Vec2f32>()[0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Vec2f32>()[1] == Approx(1.0f));
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+      Array<Vec4f32> array(1, Vec4f32(1.0f, 2.0f, 3.0f, 4.0f));
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VALUE(a, array, Vec4f32(1.0, 2.0f, 3.0f, 4.0f));
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs(Vec3f32(0.0f, 1.0f, 2.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[1] == Approx(1.0f));
-      CHECK( a.GetValueAs<Vec3f32>()[2] == Approx(2.0f));
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fp v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+
+      Array<Vert3fp> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FP(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs(Vec4f32(0.0f, 1.0f, 2.0f, 3.0f));
-      CHECK( a.GetValueAs<Vec4f32>()[0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Vec4f32>()[1] == Approx(1.0f));
-      CHECK( a.GetValueAs<Vec4f32>()[2] == Approx(2.0f));
-      CHECK( a.GetValueAs<Vec4f32>()[3] == Approx(3.0f));
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpc v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetColor(gfx_t::Color::COLOR_RED);
+
+      Array<Vert3fpc> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPC(a, array, v);
     }
 
-#if defined (TLOC_OS_WIN)
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs(s32(1));
-      CHECK(a.GetValueAs<s32>() == 1);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpt v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
+
+      Array<Vert3fpt> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPT(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs( Tuple2s32(Variadic2s32(1, 2)) );
-      CHECK(a.GetValueAs<Tuple2s32>()[0] == 1);
-      CHECK(a.GetValueAs<Tuple2s32>()[1] == 2);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpn v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+
+      Array<Vert3fpn> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPN(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs( Tuple3s32(Variadic3s32(1, 2, 3)) );
-      CHECK(a.GetValueAs<Tuple3s32>()[0] == 1);
-      CHECK(a.GetValueAs<Tuple3s32>()[1] == 2);
-      CHECK(a.GetValueAs<Tuple3s32>()[2] == 3);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpnc v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetColor(gfx_t::Color::COLOR_RED);
+      v.SetNormal(Vec3f32::UNIT_X);
+
+      Array<Vert3fpnc> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPNC(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs( Tuple4s32(Variadic4s32(1, 2, 3, 4)) );
-      CHECK(a.GetValueAs<Tuple4s32>()[0] == 1);
-      CHECK(a.GetValueAs<Tuple4s32>()[1] == 2);
-      CHECK(a.GetValueAs<Tuple4s32>()[2] == 3);
-      CHECK(a.GetValueAs<Tuple4s32>()[3] == 4);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpnt v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+
+      Array<Vert3fpnt> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPNT(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs(u32(1));
-      CHECK(a.GetValueAs<u32>() == 1);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpnct v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+      v.SetColor(gfx_t::Color::COLOR_RED);
+
+      Array<Vert3fpnct> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPNCT(a, array, v);
     }
 
+    SECTION("Arrays with more than 1 value", "")
     {
-      gl::Attribute a;
-      a.SetValueAs( Tuple2u32(Variadic2u32(1, 2)) );
-      CHECK(a.GetValueAs<Tuple2u32>()[0] == 1);
-      CHECK(a.GetValueAs<Tuple2u32>()[1] == 2);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert3fpnct v; 
+      v.SetPosition(Vec3f32(0.0f, 1.0f, 2.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+      v.SetColor(gfx_t::Color::COLOR_RED);
+
+      Array<Vert3fpnct> array(3, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_MULTIPLE_VERT3FPNCT(a, array, 3, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs( Tuple3u32(Variadic3u32(1, 2, 3)) );
-      CHECK(a.GetValueAs<Tuple3u32>()[0] == 1);
-      CHECK(a.GetValueAs<Tuple3u32>()[1] == 2);
-      CHECK(a.GetValueAs<Tuple3u32>()[2] == 3);
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert2fpc v; 
+      v.SetPosition(Vec2f32(0.0f, 1.0f));
+      v.SetColor(gfx_t::Color::COLOR_RED);
+
+      Array<Vert2fpc> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPC(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      a.SetValueAs( Tuple4u32(Variadic4u32(1, 2, 3, 4)) );
-      CHECK(a.GetValueAs<Tuple4u32>()[0] == 1);
-      CHECK(a.GetValueAs<Tuple4u32>()[1] == 2);
-      CHECK(a.GetValueAs<Tuple4u32>()[2] == 3);
-      CHECK(a.GetValueAs<Tuple4u32>()[3] == 4);
-    }
-#endif
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
 
-    SECTION("Pointer", "")
-    {
-      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(f32, f32);
-      f32_vso sp; *sp = 1.0f;
+      Vert2fpt v; 
+      v.SetPosition(Vec2f32(0.0f, 1.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
 
-      gl::Attribute a;
-      a.SetValueAs(sp.get());
-      CHECK( *a.GetValueAsArrayPtr<f32>() == Approx(1.0f) );
-    }
-  }
+      Array<Vert2fpt> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
 
-  TEST_CASE("Graphics/gl/Attribute/arrays", "")
-  {
-    using namespace tloc::core_ds;
-    using namespace tloc::core_conts;
-    using namespace tloc::math_t;
-
-    {
-      gl::Attribute a;
-      Array<f32> array(1, 1.0f);
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK( a.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPT(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      Array<Vec2f32> array(1, Vec2f32(0.0f, 1.0f));
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK( a.GetValueAs<Array<Vec2f32> >()[0][0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Array<Vec2f32> >()[0][1] == Approx(1.0f));
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert2fpn v; 
+      v.SetPosition(Vec2f32(0.0f, 1.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+
+      Array<Vert2fpn> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPN(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      Array<Vec3f32> array(1, Vec3f32(0.0f, 1.0f, 2.0f));
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK( a.GetValueAs<Array<Vec3f32> >()[0][0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Array<Vec3f32> >()[0][1] == Approx(1.0f));
-      CHECK( a.GetValueAs<Array<Vec3f32> >()[0][2] == Approx(2.0f));
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert2fpnc v; 
+      v.SetPosition(Vec2f32(0.0f, 1.0f));
+      v.SetColor(gfx_t::Color::COLOR_RED);
+      v.SetNormal(Vec3f32::UNIT_X);
+
+      Array<Vert2fpnc> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPNC(a, array, v);
     }
 
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      Array<Vec4f32> array(1, Vec4f32(0.0f, 1.0f, 2.0f, 3.0f));
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK( a.GetValueAs<Array<Vec4f32> >()[0][0] == Approx(0.0f));
-      CHECK( a.GetValueAs<Array<Vec4f32> >()[0][1] == Approx(1.0f));
-      CHECK( a.GetValueAs<Array<Vec4f32> >()[0][2] == Approx(2.0f));
-      CHECK( a.GetValueAs<Array<Vec4f32> >()[0][3] == Approx(3.0f));
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
+
+      Vert2fpnt v; 
+      v.SetPosition(Vec2f32(0.0f, 1.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+
+      Array<Vert2fpnt> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
+
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPNT(a, array, v);
     }
 
-#if defined (TLOC_OS_WIN)
+    SECTION("Arrays", "")
     {
-      gl::Attribute a;
-      Array<s32> array(1, s32(1));
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<s32> >()[0] == 1);
-    }
+      gl::AttributeVBO a;
+      a.AddName("TestVarArray");
 
-    {
-      gl::Attribute a;
-      Array<Tuple2s32> array(1, Tuple2s32(Variadic2s32(1, 2)) );
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<Tuple2s32> >()[0][0] == 1);
-      CHECK(a.GetValueAs<Array<Tuple2s32> >()[0][1] == 2);
-    }
+      Vert2fpnct v; 
+      v.SetPosition(Vec2f32(0.0f, 1.0f));
+      v.SetTexCoord(Vec2f32(0.0f, 1.0f));
+      v.SetNormal(Vec3f32::UNIT_X);
+      v.SetColor(gfx_t::Color::COLOR_RED);
 
-    {
-      gl::Attribute a;
-      Array<Tuple3s32> array(1, Tuple3s32(Variadic3s32(1, 2, 3)) );
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<Tuple3s32> >()[0][0] == 1);
-      CHECK(a.GetValueAs<Array<Tuple3s32> >()[0][1] == 2);
-      CHECK(a.GetValueAs<Array<Tuple3s32> >()[0][2] == 3);
-    }
+      Array<Vert2fpnct> array(1, v);
+      a.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                   gl::p_vbo::usage::StaticDraw>(array);
 
-    {
-      gl::Attribute a;
-      Array<Tuple4s32> array(1, Tuple4s32(Variadic4s32(1, 2, 3, 4)) );
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<Tuple4s32> >()[0][0] == 1);
-      CHECK(a.GetValueAs<Array<Tuple4s32> >()[0][1] == 2);
-      CHECK(a.GetValueAs<Array<Tuple4s32> >()[0][2] == 3);
-      CHECK(a.GetValueAs<Array<Tuple4s32> >()[0][3] == 4);
-    }
-
-    {
-      gl::Attribute a;
-      Array<u32> array(1, u32(1));
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<u32> >()[0] == 1);
-    }
-
-    {
-      gl::Attribute a;
-      Array<Tuple2u32> array(1, Tuple2u32(Variadic2u32(1, 2)) );
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<Tuple2u32> >()[0][0] == 1);
-      CHECK(a.GetValueAs<Array<Tuple2u32> >()[0][1] == 2);
-    }
-
-    {
-      gl::Attribute a;
-      Array<Tuple3u32> array(1, Tuple3u32(Variadic3u32(1, 2, 3)) );
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<Tuple3u32> >()[0][0] == 1);
-      CHECK(a.GetValueAs<Array<Tuple3u32> >()[0][1] == 2);
-      CHECK(a.GetValueAs<Array<Tuple3u32> >()[0][2] == 3);
-    }
-
-    {
-      gl::Attribute a;
-      Array<Tuple4u32> array(1, Tuple4u32(Variadic4u32(1, 2, 3, 4)) );
-      a.SetVertexArray(array, gl::p_shader_variable_ti::CopyArray() );
-      CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][0] == 1);
-      CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][1] == 2);
-      CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][2] == 3);
-      CHECK(a.GetValueAs<Array<Tuple4u32> >()[0][3] == 4);
-    }
-#endif
-
-    SECTION("Pointer", "")
-    {
-      TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Array<f32>, array_f32);
-
-      array_f32_vso sp;
-      sp->resize(1, 1.0f);
-
-      gl::Attribute u;
-      u.SetVertexArray(sp.get(), gl::p_shader_variable_ti::Pointer());
-      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+      array.clear();
+      CHECK_ATTRIBUTE_VBO_VERT3FPNCT(a, array, v);
     }
   }
 };

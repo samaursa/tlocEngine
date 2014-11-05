@@ -24,7 +24,7 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef T                                         value_type;
     typedef Circle_T<value_type>                      this_type;
-    typedef Vector2<value_type>                       point_type;
+    typedef Vector_T<value_type, 2>                   point_type;
     typedef Ray_T<value_type, 2>                      ray_type;
     typedef tl_size                                   size_type;
 
@@ -85,13 +85,21 @@ namespace tloc { namespace math { namespace types {
     , m_position(a_other.GetPosition())
   { }
 
-  //////////////////////////////////////////////////////////////////////////
+  // -----------------------------------------------------------------------
   // Typedefs
 
   typedef Circle_T<tl_float>  Circlef;
   typedef Circle_T<f32>       Circlef32;
   typedef Circle_T<f64>       Circlef64;
   typedef Circle_T<f128>      Circlef128;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<f128>);
 
 };};};
 

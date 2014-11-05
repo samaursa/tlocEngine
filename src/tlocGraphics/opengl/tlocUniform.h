@@ -18,6 +18,7 @@
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
+#include <tlocGraphics/types/tlocVertex.h>
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -57,6 +58,7 @@ namespace tloc { namespace graphics { namespace gl {
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
          TextureObject,
+         TextureObjectShadow,
          Array<f32>,
          Array<Vec2f32>,
          Array<Vec3f32>,
@@ -68,7 +70,21 @@ namespace tloc { namespace graphics { namespace gl {
          Array<u32>,
          Array<Tuple2u32>,
          Array<Tuple3u32>,
-         Array<Tuple4u32>
+         Array<Tuple4u32>,
+         Array<Vert2fp>,
+         Array<Vert2fpn>,
+         Array<Vert2fpc>,
+         Array<Vert2fpt>,
+         Array<Vert2fpnc>,
+         Array<Vert2fpnt>,
+         Array<Vert2fpnct>,
+         Array<Vert3fp>,
+         Array<Vert3fpn>,
+         Array<Vert3fpc>,
+         Array<Vert3fpt>,
+         Array<Vert3fpnc>,
+         Array<Vert3fpnt>,
+         Array<Vert3fpnct>
         >();
     }
 
@@ -88,7 +104,8 @@ namespace tloc { namespace graphics { namespace gl {
          u32,
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
-         TextureObject
+         TextureObject,
+         TextureObjectShadow
         >();
     }
 
@@ -131,5 +148,13 @@ namespace tloc { namespace graphics { namespace gl {
   typedef core_conts::Array<uniform_sptr>         uniform_sptr_cont;
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::Uniform);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::Uniform);
+
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::uniform_sptr);
 
 #endif

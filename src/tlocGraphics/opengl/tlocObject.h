@@ -2,6 +2,7 @@
 #define TLOC_GL_OBJECT_H
 
 #include <tlocGraphics/tlocGraphicsBase.h>
+#include <tlocGraphics/opengl/tlocOpenGL.h>
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/error/tlocError.h>
@@ -21,7 +22,7 @@ namespace tloc { namespace graphics { namespace gl {
   class ObjectBase
   {
   public:
-    typedef u32 object_handle; // GLuint is u32
+    typedef gfx_t::gl_handle              object_handle;
 
     bool IsValid();
 
@@ -132,6 +133,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     typedef ObjectRefCounted<T_Derived>         base_type;
     typedef typename base_type::object_handle   object_handle;
+    typedef typename base_type::size_type       size_type;
 
     typedef T_Derived                   derived_type;
     typedef core::error::Error          error_type;
@@ -139,6 +141,12 @@ namespace tloc { namespace graphics { namespace gl {
     typedef Object_T<derived_type, T_Policy> this_type;
 
   public:
+    using base_type::GetHandle;
+    using base_type::SetHandle;
+    using base_type::IsLastRef;
+    
+  public:
+
     Object_T()
       : base_type()
     { }
@@ -196,9 +204,9 @@ namespace tloc { namespace graphics { namespace gl {
   // -----------------------------------------------------------------------
   // algorithms
 
-  namespace algos { namespace compare {
+  namespace algos { namespace object {
 
-    namespace object {
+    namespace compare {
 
       struct ByHandle
       {

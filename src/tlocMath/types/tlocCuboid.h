@@ -22,7 +22,7 @@ namespace tloc { namespace math { namespace types {
     typedef tl_size                                   size_type;
     typedef T                                         real_type;
     typedef Cuboid_T<real_type>                       this_type;
-    typedef Vector3<real_type>                        point_type;
+    typedef Vector_T<real_type, 3>                    point_type;
     typedef Ray_T<real_type, 3>                       ray_3d_type;
 
     typedef core::types::StrongType_T<real_type, 0>   width;
@@ -142,19 +142,26 @@ namespace tloc { namespace math { namespace types {
     return DoGetCoord<T_Side1, T_Side2, T_Side3>();
   }
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // swap
 
   template <typename T>
   void swap(Cuboid_T<T>& a, Cuboid_T<T>& b)
   { a.swap(b); }
 
-  //------------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   // Typedefs
 
   typedef Cuboid_T<tl_float>   Cuboidf;
   typedef Cuboid_T<f32>        Cuboidf32;
   typedef Cuboid_T<f64>        Cuboidf64;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<f64>);
 
 };};};
 

@@ -7,6 +7,17 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef EntityProcessingSystem::error_type    error_type;
 
+  // ///////////////////////////////////////////////////////////////////////
+  // EntityProcessingSystem
+
+  EntityProcessingSystem::
+    EntityProcessingSystem(event_manager_ptr a_eventMgr, 
+                           entity_manager_ptr a_entityMgr, 
+                           register_type a_compsToRegister,
+                           BufferArg a_debugName)
+    : base_type(a_eventMgr, a_entityMgr, a_compsToRegister, a_debugName)
+  { }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type EntityProcessingSystem::Pre_Initialize()
@@ -18,7 +29,7 @@ namespace tloc { namespace core { namespace component_system {
     DoInitialize(const entity_count_cont& a_entities)
   {
     TLOC_LOG_CORE_WARN_IF(a_entities.size() == 0) 
-      <<  "System (" << core_utils::GetMemoryAddress(this) 
+      <<  GetDebugName() << " (" << core_utils::GetMemoryAddress(this) 
       << ") does not have any components to Initialize (or process)";
 
     for (entity_count_cont::const_iterator itr = a_entities.begin(),
@@ -37,13 +48,52 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  error_type EntityProcessingSystem::Pre_ReInitialize()
+  { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type EntityProcessingSystem::
+    ReInitializeEntity(entity_vptr a_ent)
+  { return InitializeEntity(a_ent); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type EntityProcessingSystem::Post_ReInitialize()
+  { return ErrorSuccess; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool EntityProcessingSystem::CheckProcessing()
-  { return true; }
+  { return IsProcessingDisabled() == false; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void EntityProcessingSystem::Pre_ProcessActiveEntities(f64)
-  { }
+  { 
+    if (m_entsToReInit.empty() == false)
+    {
+      Pre_ReInitialize();
+      for (core_cs::entity_ptr_array::iterator itr = m_entsToReInit.begin(),
+           itrEnd = m_entsToReInit.end(); itr != itrEnd; ++itr)
+      { ReInitializeEntity(*itr); }
+      Post_ReInitialize();
+
+      m_entsToReInit.clear();
+    }
+
+    if (m_entsToShutdown.empty() == false)
+    {
+      Pre_Shutdown();
+      for (core_cs::entity_ptr_array::iterator itr = m_entsToShutdown.begin(),
+           itrEnd = m_entsToShutdown.end(); itr != itrEnd; ++itr)
+      { ShutdownEntity(*itr); }
+      Post_Shutdown();
+
+      m_entsToShutdown.clear();
+    }
+
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -88,4 +138,26 @@ namespace tloc { namespace core { namespace component_system {
   error_type EntityProcessingSystem::Post_Shutdown()
   { return ErrorSuccess; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    EntityProcessingSystem::
+    OnComponentInsert(const core_cs::EntityComponentEvent& a_event)
+  {
+    if (IsInitialized())
+    { m_entsToReInit.push_back(a_event.GetEntity()); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  void 
+    EntityProcessingSystem::
+    OnComponentRemove(const core_cs::EntityComponentEvent& a_event)
+  {
+    if (IsInitialized())
+    { m_entsToShutdown.push_back(a_event.GetEntity()); }
+  }
+
 };};};
+
+#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntityProcessingSystem);

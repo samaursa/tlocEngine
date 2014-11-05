@@ -80,7 +80,7 @@ namespace TestingForwardList
     const s32 myInts[] = {78, 52, 38, 46};
     T_ForwardListType myForwardList(myInts, myInts+4);
 
-    typename T_ForwardListType::container_type myContainer = myForwardList._Get_container();
+    typename T_ForwardListType::container_type myContainer = myForwardList.DoGetContainer();
     typename T_ForwardListType::container_type::iterator itr;
 
     itr = myContainer.begin();

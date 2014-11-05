@@ -12,9 +12,9 @@ namespace tloc { namespace core { namespace component_system {
   {
     enum default_events
     {
-      reserved_events_begin = 0,
-      entity_events_begin   = 1000,
-      user_events_begin     = 10000,
+      k_reserved_events_begin = 0,
+      k_entity_events_begin   = 1000,
+      k_user_events_begin     = 10000,
     }; typedef tl_int value_type;
   };
 

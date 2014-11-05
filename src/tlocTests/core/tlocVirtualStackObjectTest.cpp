@@ -40,8 +40,8 @@ namespace TestingVirtualStackObject
 
         int onStackCopy = *onStack;
         CHECK(onStackCopy == 10);
-        CHECK(onStackCopy == onStackCopy);
-        CHECK_FALSE(onStackCopy < onStackCopy);
+        CHECK(onStackCopy == *onStack);
+        CHECK_FALSE(onStackCopy < *onStack);
 
         {
           int_vso::pointer ptrToVSO(onStack.get());
@@ -179,6 +179,19 @@ namespace TestingVirtualStackObject
 
       // CHECK( (onStack == 20) ); // should be a compiler error
       // CHECK_FALSE( (onStack != 20) ); // should be a compiler error
+    }
+
+    //SECTION("Assignment", "")
+    {
+      const int_vso ndc( MakeArgs(10) );
+      int_vso ndc2( MakeArgs(20) );
+
+      CHECK( *ndc2 == 20 );
+      CHECK( (&*ndc2.get() == &*ndc2) ); // make sure addresses are the same
+
+      ndc2 = ndc;
+      CHECK( *ndc2 == 10 );
+      CHECK( (&*ndc2.get() == &*ndc2) ); // make sure addresses are the same
     }
   }
 

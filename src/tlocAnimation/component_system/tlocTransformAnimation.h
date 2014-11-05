@@ -15,7 +15,9 @@
 namespace tloc { namespace animation { namespace component_system {
 
   class TransformAnimation
-    : public core_cs::Component_T<TransformAnimation, components::transform_animation>
+    : public core_cs::Component_T<TransformAnimation, 
+                                  core_cs::component_group::k_animation, 
+                                  components::k_transform_animation>
   {
   public:
     typedef types::keyframe_sequence_mat4f32        kf_seq_type;
@@ -38,12 +40,13 @@ namespace tloc { namespace animation { namespace component_system {
     };
 
   public:
-    typedef TransformAnimation                                      this_type;
-    typedef Component_T<this_type, components::transform_animation> base_type;
-    typedef tl_size                                                 size_type;
+    typedef TransformAnimation                                this_type;
+    typedef Component_T<this_type, 
+                        k_component_group, k_component_type>  base_type;
+    typedef tl_size                                           size_type;
 
-    typedef core_conts::Array<KeyframeSequenceSetType>      cont_type;
-    typedef cont_type::iterator                             iterator;
+    typedef core_conts::Array<KeyframeSequenceSetType>        cont_type;
+    typedef cont_type::iterator                               iterator;
 
   public:
     TransformAnimation();

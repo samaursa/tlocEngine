@@ -13,10 +13,10 @@ namespace tloc { namespace core { namespace component_system {
   {
     enum Type
     {
-      create_entity   = events::entity_events_begin,
+      create_entity   = events::k_entity_events_begin,
       destroy_entity,
-      disable_entity,
-      enable_entity,
+      activate_entity,
+      deactivate_entity,
       insert_component,
       remove_component,
       disable_component,

@@ -8,8 +8,9 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/memory/tlocBufferArg.h>
 
-#include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/opengl/tlocAttributeVBO.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
+#include <tlocGraphics/opengl/tlocVertexArrayObject.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 
@@ -20,32 +21,35 @@ namespace tloc { namespace graphics { namespace gl {
   class ShaderOperator
   {
   public:
-    typedef ShaderOperator          this_type;
-    typedef core::error::Error      error_type;
-    typedef tl_size                 size_type;
-    typedef tl_int                  index_type;
+    typedef ShaderOperator                          this_type;
+    typedef core::error::Error                      error_type;
+    typedef tl_size                                 size_type;
+    typedef tl_int                                  index_type;
+    typedef core_conts::ArrayFixed<index_type, 1>   index_cont_1;
+    typedef core_conts::Array<index_type>           index_cont;
 
-    typedef Uniform                 uniform_type;
-    typedef Attribute               attribute_type;
-    typedef uniform_vptr            uniform_ptr_type;
-    typedef const_uniform_vptr      const_uniform_ptr_type;
-    typedef attribute_vptr          attribute_ptr_type;
-    typedef const_attribute_vptr    const_attribute_ptr_type;
-    typedef uniform_vso             uniform_vso;
-    typedef attribute_vso           attribute_vso;
-    typedef uniform_vptr            uniform_ptr;
-    typedef attribute_vptr          attribute_ptr;
+    typedef Uniform                   uniform_type;
+    typedef uniform_vso               uniform_vso;
+    typedef uniform_vptr              uniform_ptr;
+    typedef const_uniform_vptr        const_uniform_ptr;
+
+    typedef AttributeVBO              vbo_type;
+    typedef attributeVBO_vso          vbo_vso;
+    typedef attributeVBO_vptr         attributeVBO_ptr;
+    typedef const_attributeVBO_vptr   const_vbo_ptr;
+
+    typedef VertexArrayObject         vao_type;
 
     // The index_type of the pair is used to get the pointer quickly the second
     // time around
-    typedef core::Pair<uniform_vso, index_type>           uniform_pair_type;
-    typedef core::Pair<attribute_vso, index_type>         attribute_pair_type;
+    typedef core::Pair<uniform_vso, index_cont_1>         uniform_pair_type;
+    typedef core::Pair<vbo_vso, index_cont>               vbo_pair_type;
 
-    typedef core::containers::Array<uniform_pair_type>	  uniform_cont_type;
+    typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
 
-    typedef core::containers::Array<attribute_pair_type>  attribute_cont_type;
-    typedef attribute_cont_type::iterator                 attribute_iterator;
+    typedef core_conts::Array<vbo_pair_type>              attributeVBO_cont_type;
+    typedef attributeVBO_cont_type::iterator              attributeVBO_iterator;
 
     typedef core_conts::tl_array<index_type>::type        index_cont_type;
     typedef index_cont_type::iterator                     index_iterator;
@@ -54,14 +58,14 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator();
     ~ShaderOperator();
 
-    uniform_ptr   AddUniform(const uniform_type& a_uniform);
-    attribute_ptr AddAttribute(const attribute_type& a_attribute);
+    uniform_ptr         AddUniform(const uniform_type& a_uniform);
+    attributeVBO_ptr    AddAttributeVBO(const vbo_type& a_vbo);
 
     void RemoveUniform(const uniform_iterator& a_uniform);
-    void RemoveAttribute(const attribute_iterator& a_attribute);
+    void RemoveAttributeVBO(const attributeVBO_iterator& a_vbo);
 
     void RemoveAllUniforms();
-    void RemoveAllAttributes();
+    void RemoveAllAttributeVBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -73,7 +77,8 @@ namespace tloc { namespace graphics { namespace gl {
     /// @return all uniforms.
     ///-------------------------------------------------------------------------
     error_type PrepareAllUniforms(const ShaderProgram& a_shaderProgram);
-    error_type PrepareAllAttributes(const ShaderProgram& a_shaderProgram);
+    error_type PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram, 
+                                       const vao_type& a_vao);
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -82,13 +87,12 @@ namespace tloc { namespace graphics { namespace gl {
     /// @param  a_shaderProgram The shader program.
     ///-------------------------------------------------------------------------
     void EnableAllUniforms(const ShaderProgram& a_shaderProgram) const;
-    void EnableAllAttributes(const ShaderProgram& a_shaderProgram) const;
 
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
 
-    attribute_iterator begin_attributes();
-    attribute_iterator end_attributes();
+    attributeVBO_iterator begin_attributeVBOs();
+    attributeVBO_iterator end_attributeVBOs();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -104,30 +108,46 @@ namespace tloc { namespace graphics { namespace gl {
     /// @brief
     /// see reserve_uniforms()
     ///-------------------------------------------------------------------------
-    void reserve_attributes(size_type a_capacity);
+    void reserve_attributeVBOs(size_type a_capacity);
 
     // The following functions will destroy the uniform/attribute cache which
     // was setup when Prepare*() methods were called
-    void ClearAttributesCache();
     void ClearUniformsCache();
-    void ClearCache();
-    bool IsAttributesCached();
-    bool IsUniformsCached();
+    void ClearAttributeVBOsCache();
 
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfUniforms,
-                             m_uniforms.size());
-    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumberOfAttributes,
-                             m_attributes.size());
+    void ClearCache();
+
+    bool IsUniformsCached();
+    bool IsAttributeVBOsCached();
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_uniforms, m_uniforms.size());
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_attributeVBOs, m_VBOs.size());
 
   private:
     uniform_cont_type           m_uniforms;
-    attribute_cont_type         m_attributes;
+    attributeVBO_cont_type      m_VBOs;
     core::utils::Checkpoints    m_flags;
-    index_cont_type             m_enabledVertexAttrib;
   };
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ShaderOperator, shader_operator);
+
+  // -----------------------------------------------------------------------
+
+  namespace f_shader_operator {
+
+    typedef ShaderOperator::uniform_ptr           uniform_ptr;
+    typedef ShaderOperator::attributeVBO_ptr      attributeVBO_ptr;
+
+    uniform_ptr
+      GetUniform(ShaderOperator& a_so, BufferArg a_name);
+
+    attributeVBO_ptr
+      GetAttributeVBO(ShaderOperator& a_so, BufferArg a_name);
+
+  };
+
+  // -----------------------------------------------------------------------
 
   namespace algos { namespace shader_operator {
 
@@ -150,12 +170,12 @@ namespace tloc { namespace graphics { namespace gl {
         value_type m_name;
       };
 
-      struct AttributeName
+      struct AttributeVBOName
       {
-        typedef ShaderOperator::attribute_pair_type     pair_type;
+        typedef ShaderOperator::vbo_pair_type           pair_type;
         typedef BufferArg                               value_type;
 
-        AttributeName(value_type a_attributeName)
+        AttributeVBOName(value_type a_attributeName)
           : m_name(a_attributeName)
         { }
 
@@ -172,3 +192,11 @@ namespace tloc { namespace graphics { namespace gl {
   };};
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::ShaderOperator);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::ShaderOperator);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::ShaderOperator::uniform_pair_type);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::vbo_vso);

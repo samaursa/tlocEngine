@@ -34,8 +34,10 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef tl_float                                          real_type;
 
   public:
-    typedef core::Pair<const_entity_ptr, 
-                       core_cs::const_entity_ptr_array>       text_quads_pair;
+    typedef core_cs::const_entity_ptr_array                   ent_ptr_cont;
+    typedef ent_ptr_cont::iterator                            ent_ptr_cont_itr;
+    typedef ent_ptr_cont::const_iterator                      const_ent_ptr_cont_itr;
+    typedef core::Pair<const_entity_ptr, ent_ptr_cont>        text_quads_pair;
     typedef core_conts::Array<text_quads_pair>                text_quads_cont;
     typedef text_quads_cont::iterator                         text_quads_iterator;
 
@@ -52,10 +54,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
-                        entity_manager_ptr a_entityMgr);
+                        entity_manager_ptr a_entityMgr,
+                        BufferArg a_debugName);
     
     ~TextRenderSystem_TI();
 
+    void         DoAlignLine(const_ent_ptr_cont_itr a_begin, 
+                             const_ent_ptr_cont_itr a_end,
+                             tl_int a_beginIndex,
+                             text_ptr a_text,
+                             size_type a_lineNumber);
     void         DoAlignText(const text_quads_pair& a_pair);
 
   private:
@@ -73,6 +81,13 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::QuadRenderSystem            m_textQuadRenderSys;
     gfx_cs::TextureAnimatorSystem       m_textAnimSys;
   };
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  class StaticText; class DynamicText;
+  TLOC_EXTERN_TEMPLATE_CLASS(TextRenderSystem_TI<StaticText>);
+  TLOC_EXTERN_TEMPLATE_CLASS(TextRenderSystem_TI<DynamicText>);
 
 };};};
 

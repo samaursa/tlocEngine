@@ -229,7 +229,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     }
 
     image_ptr fontImg(new image_ptr::value_type());
-    fontImg->LoadFromMemory(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
+    fontImg->Load(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
 
     return fontImg;
   }
@@ -250,8 +250,11 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
       return TLOC_ERROR( gfx_err::error_free_type_initialize );
     }
 
+    // FT_New_Memory_Face expects us to not deallocate the raw data, so we
+    // need to make a copy of it.
+    m_rawData = a_data;
     const FT_Byte* rawData =
-      reinterpret_cast<const FT_Byte*>( a_data.begin() );
+      reinterpret_cast<const FT_Byte*>( m_rawData.begin() );
 
     error = FT_New_Memory_Face( m_library, rawData, a_data.size(), 0, &m_face );
 

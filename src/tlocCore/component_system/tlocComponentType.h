@@ -3,46 +3,42 @@
 
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocTypes.h>
+#include <tlocCore/types/tlocStrongType.h>
 
 namespace tloc { namespace core { namespace component_system {
 
-  namespace components_group
+  namespace component_group
   {
     // Built-in component types. These are (theoretically) the fastest component
     // types. We (will) also allow setting component types dynamically which
     // will have a slight runtime cost.
     enum type
     {
-      invalid   = -1,
-      core		  = 0,
-      math		  = 20,
-      graphics  = 40,
-      input		  = 60,
-      animation = 70,
-      physics   = 80,
-      sound     = 100,
-      ai        = 120,
+      k_invalid   = -1,
+      k_core		  = 0,
+      k_math		  ,
+      k_graphics  ,
+      k_input		  ,
+      k_animation ,
+      k_physics   ,
+      k_sound     ,
+      k_ai        ,
+      k_user      ,
 
-      count    = 140
-    };
+      k_count
+    }; typedef tl_int     value_type;
   };
 
   namespace components
   {
-    // the component type (used for indexing)
-    typedef tl_int value_type;
-
     enum type
     {
-      listener= components_group::core, // used for callback functionality
+      k_invalid   = component_group::k_invalid,
+      k_listener  = 0, // used for callback functionality
 
-      count
-    };
+      k_count
+    }; typedef tl_int     value_type;
 
-    namespace detail
-    {
-      void componentsCheck();
-    };
   };
 
 };};};

@@ -14,7 +14,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   DynamicText::
     DynamicText()
-    : base_type(k_component_type, "DynamicText")
+    : base_type("DynamicText")
     , Text_I()
     , m_flags(k_count)
   { }
@@ -23,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   DynamicText::
     DynamicText(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
-    : base_type(k_component_type, "DynamicText")
+    : base_type("DynamicText")
     , Text_I(a_text, a_font, a_alignment)
     , m_flags(k_count)
   { }
@@ -79,11 +79,12 @@ namespace tloc { namespace graphics { namespace component_system {
 //////////////////////////////////////////////////////////////////////////
 // explicit instantiations
 
-#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
-
 using namespace tloc::gfx_cs;
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
+
 // SmartPtr
-TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(DynamicText);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(DynamicText);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(DynamicText);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DynamicText);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(DynamicText);

@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Macros that have to be included before any other file
 
-#ifdef _MSC_VER
+#ifdef TLOC_COMPILER_VISUAL_CPP
 #  ifndef _CRT_SECURE_NO_WARNINGS
 #    define _CRT_SECURE_NO_WARNINGS
 #  endif
@@ -33,7 +33,7 @@
 // Common macros
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
-# if defined (_MSC_VER)
+# if defined (TLOC_COMPI)
 #   ifdef _SECURE_SCL
 #     undef _SECURE_SCL
 #   endif
@@ -41,32 +41,6 @@
 #   pragma inline_depth( 255 ) // unlimited inline depth - change if causing problems
 #   pragma inline_recursion( on )
 # endif
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-// TLOC Engine No source
-//
-// The following macro can be commented out when compiling the engine which
-// allows safe removal of inline files altogether
-
-#ifndef TLOC_NO_SOURCE
-  #define TLOC_FULL_SOURCE
-#endif
-
-//------------------------------------------------------------------------
-// The following macros can be enabled to increase the size of the template
-// instantiations (that many more template types will be instantiated).
-// For example, with TLOC_TEMPLATE_TYPES_SIZE_20 defined, Table<>,
-// Matrix<>, Vector<> etc. classes will be instantiated such that they have
-// have a size of at least 20 rows and cols (if any). Note that for types
-// such as Table<> this will require a large type generation.
-//
-// NOTE : Only useful if giving out the code without source
-// NOTE2: If you want size to be 20, you must also define SIZE_15
-
-#ifndef TLOC_FULL_SOURCE
-//#define TLOC_TEMPLATE_TYPES_SIZE_15
-//#define TLOC_TEMPLATE_TYPES_SIZE_20
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -105,7 +79,7 @@
 
 //------------------------------------------------------------------------
 // Microsoft Visual C++ compiler
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
   //------------------------------------------------------------------------
   // Check for exception handling
 # if defined(_CPPUNWIND)
@@ -151,7 +125,7 @@
   // This fix is temporary until we can figure out a way to remove typename
   // limitations from VS (i.e. adding typedef to VS fails to compile, while
   // removing typedef fails to compile on LLVM)
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
 # define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
   typedef _type_ _alias_
 #else // For GCC and Clang
@@ -182,7 +156,9 @@
 
 // Use custom new/delete (if using custom MALLOCs above, this will allow
 // new/delete to take advantage of them)
-#define TLOC_USE_CUSTOM_NEW_DELETE
+#ifndef TLOC_DISABLE_CUSTOM_NEW_DELETE
+# define TLOC_USE_CUSTOM_NEW_DELETE
+#endif
 
 #ifdef TLOC_DEBUG
 # ifndef DEBUG
@@ -253,7 +229,7 @@
 
 //------------------------------------------------------------------------
 // Define force inline for the VC++ compiler
-#if defined (_MSC_VER)
+#if defined (TLOC_COMPILER_VISUAL_CPP)
 # pragma warning(disable : 4714)
 // NOTE: __forceinline increases build times substantially
 # define TLOC_FORCE_INLINE inline /*__forceinline*/
@@ -301,13 +277,15 @@
 #define TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6) TLOC_UNUSED_5(variable1, variable2, variable3, variable4, variable5); TLOC_UNUSED(variable6)
 #define TLOC_UNUSED_7(variable1, variable2, variable3, variable4, variable5, variable6, variable7) TLOC_UNUSED_6(variable1, variable2, variable3, variable4, variable5, variable6); TLOC_UNUSED(variable7)
 
+#define TLOC_UNUSED_RELEASE(variable) (void)variable
+
 // If a source file is empty (usually because of #ifdef) then the linker will
 // generate the LNK4221 warning complaining that no symbols were found and hence
 // the archive member (in the library) will be inaccessible. In most cases, we
 // are intentionally leaving the source file empty. In those cases, the following
 // define can be used (taken from: http://stackoverflow.com/questions/1822887/what-is-the-best-way-to-eliminate-ms-visual-c-linker-warning-warning-lnk4221/1823024#1823024
 
-#ifdef _MSC_VER
+#ifdef TLOC_COMPILER_VISUAL_CPP 
 # define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
     namespace { char NoEmptyFileDummy##__LINE__; }
 # define TLOC_NOT_EMPTY_SOURCE_FILE() \
@@ -358,10 +336,37 @@ template <typename T>
 struct DiagnoseTemplate;
 
 
+// -----------------------------------------------------------------------
 // Punctuation - useful in macros using templates
+
 #ifndef COMMA
 # define COMMA() ,
 #endif
 
+// -----------------------------------------------------------------------
+// extern templates
 
+// Visual Studio 2010 supports extern template but requires the explicit
+// instantiation to NOT follow it, which makes it next to useless for us. So
+// we turn it off.
+#if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE) && TLOC_COMPILER_VISUAL_CPP >= 1700
+# define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)\
+    extern template class _class_with_type_
+
+# define TLOC_EXTERN_TEMPLATE_STRUCT(_struct_with_type_)\
+    extern template struct _struct_with_type_
+#else
+# define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)
+# define TLOC_EXTERN_TEMPLATE_STRUCT(_class_with_type_)
 #endif
+
+// -----------------------------------------------------------------------
+// decltype() fix for VC++ 2010
+// see: http://stackoverflow.com/a/9291674/368599
+
+#ifdef TLOC_COMPILER_VISUAL_CPP_2010
+#include <utility>
+#define decltype(...) std::identity<decltype(__VA_ARGS__)>::type
+#endif
+
+#endif // header guard

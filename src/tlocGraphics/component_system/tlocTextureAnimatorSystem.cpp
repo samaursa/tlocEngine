@@ -2,8 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
@@ -22,7 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimatorSystem(event_manager_ptr a_eventMgr,
                           entity_manager_ptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 Variadic<component_type, 1>(components::texture_animator))
+                 register_type().Add<TextureAnimator>(), 
+                 "TextureAnimatorSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -39,8 +38,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimatorSystem::
     InitializeEntity(entity_ptr a_ent)
   {
-    const tl_size size =
-      a_ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+    const tl_size size = a_ent->size_components<TextureAnimator>();
 
     for (tl_size i = 0; i < size; ++i)
     {
@@ -81,8 +79,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef gfx_cs::TextureCoords                 tex_coords;
 
-    const tl_size size =
-      a_ent->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+    const tl_size size = a_ent->size_components<TextureAnimator>();
 
     for (tl_size i = 0; i < size; ++i)
     {
@@ -106,8 +103,7 @@ namespace tloc { namespace graphics { namespace component_system {
         diff = texAnim->GetTotalTime() - texAnim->GetStartTime();
       }
 
-      if (a_ent->HasComponent(components::texture_coords) &&
-          texAnim->IsSpriteSeqChanged())
+      if (a_ent->HasComponent<TextureCoords>() && texAnim->IsSpriteSeqChanged())
       {
         gfx_cs::texture_coords_sptr coordPtr =
           a_ent->GetComponent<gfx_cs::TextureCoords>(i);

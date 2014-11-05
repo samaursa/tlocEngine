@@ -18,12 +18,15 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class StaticText
-    : public core_cs::Component_T<StaticText, components::static_text>
+    : public core_cs::Component_T<StaticText, 
+                                  core_cs::component_group::k_graphics, 
+                                  components::k_static_text>
     , public Text_I
   {
   public:
-    typedef StaticText                                      this_type;
-    typedef Component_T<this_type, components::static_text> base_type;
+    typedef StaticText                                    this_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>    base_type;
 
   public:
     StaticText();
@@ -42,5 +45,11 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(StaticText, static_text);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::StaticText);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::StaticText);
 
 #endif

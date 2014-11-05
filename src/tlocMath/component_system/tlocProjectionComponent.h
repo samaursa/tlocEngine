@@ -13,14 +13,15 @@
 namespace tloc { namespace math { namespace component_system {
 
   class Projection
-    : public core::component_system::Component_T<Projection,
-                                                 components::projection>
+    : public core_cs::Component_T<Projection, 
+                                  core_cs::component_group::k_math, 
+                                  components::k_projection>
   {
   public:
     typedef core::component_system::Component_T
-      <Projection, components::projection>  base_type;
+      <Projection, k_component_group, k_component_type>   base_type;
 
-    typedef proj::frustum_f32               frustum_type;
+    typedef proj::frustum_f32                             frustum_type;
 
   public:
     Projection();

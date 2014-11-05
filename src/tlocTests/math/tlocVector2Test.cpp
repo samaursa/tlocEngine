@@ -1,11 +1,6 @@
 #include "tlocTestCommon.h"
 
-#define TLOC_VECTOR_ALLOW_EASY_OPERATIONS
-
 #include <tlocMath/types/tlocVector2.h>
-#include <tlocMath/types/tlocVector2.inl.h>
-
-#undef TLOC_VECTOR_ALLOW_EASY_OPERATIONS
 
 namespace TestingVector2f
 {

@@ -1,8 +1,6 @@
 #include "tlocArcBallSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocArcBall.h>
@@ -24,7 +22,8 @@ namespace tloc { namespace graphics { namespace component_system {
   ArcBallSystem::
     ArcBallSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::arcball))
+                register_type().Add<gfx_cs::ArcBall>(), 
+                "ArcBallSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -35,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     using math_utils::Pythagorasf32;
 
-    if (a_ent->HasComponent(math_cs::components::transform) == false)
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
     { return; }
 
     typedef math_cs::Transform::position_type     pos_type;
@@ -48,7 +47,7 @@ namespace tloc { namespace graphics { namespace component_system {
     math_cs::transform_sptr t = a_ent->GetComponent<math_cs::Transform>();
     gfx_cs::arcball_sptr arcBall = a_ent->GetComponent<gfx_cs::ArcBall>();
 
-    if (a_ent->HasComponent(gfx_cs::components::scene_node))
+    if (a_ent->HasComponent<gfx_cs::SceneNode>())
     {
       math_cs::Transform tWorld
         (a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform());
@@ -74,6 +73,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     ori_type rotMatVertical;
     rotMatVertical.MakeRotation(leftVec, vAngle);
+    leftVec.Normalize();
 
     ori_type rotMatHorizontal;
     rotMatHorizontal.MakeRotation(upVec, hAngle);
@@ -84,6 +84,7 @@ namespace tloc { namespace graphics { namespace component_system {
     pos_type dirVec = vecToRot.IsZero() ? pos_type(0, 0, -1) : vecToRot;
     dirVec.Normalize();
     upVec = dirVec.Cross(leftVec);
+    upVec.Normalize();
 
     vecToRot = rotMatHorizontal * vecToRot;
 
@@ -91,6 +92,7 @@ namespace tloc { namespace graphics { namespace component_system {
     dirVec = vecToRot.IsZero() ? pos_type(0, 0, -1) : vecToRot;
     dirVec.Normalize();
     leftVec = upVec.Cross(dirVec);
+    leftVec.Normalize();
 
     oriWorld.SetCol(0, leftVec);
     oriWorld.SetCol(1, upVec);

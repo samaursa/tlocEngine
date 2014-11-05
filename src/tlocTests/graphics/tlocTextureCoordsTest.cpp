@@ -16,7 +16,8 @@ namespace TestingTextureCoords
   {
     typedef gfx_cs::TextureCoords::set_index set_index;
 
-    gfx_cs::texture_coords_sptr texCoords(new gfx_cs::TextureCoords());
+    gfx_cs::texture_coords_sptr texCoords = 
+      core_sptr::MakeShared<TextureCoords>();
     CHECK(texCoords->GetNumSets() == 0);
     CHECK(texCoords->GetCurrentSet() == 0);
 

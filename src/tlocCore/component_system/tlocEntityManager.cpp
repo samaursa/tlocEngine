@@ -8,6 +8,8 @@ TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace core { namespace component_system {
 
+  using core_sptr::ToVirtualPtr;
+
   // ///////////////////////////////////////////////////////////////////////
   // InsertParams
 
@@ -46,37 +48,44 @@ namespace tloc { namespace core { namespace component_system {
     for (entity_cont::iterator itr = m_entities.begin(),
          itrEnd = m_entities.end(); itr != itrEnd; ++itr)
     {
-      if (*itr) { DestroyEntity(*itr); }
+      if (*itr) { DestroyEntity(ToVirtualPtr(*itr)); }
     }
 
     // update releases components and deletes entities marked for destruction
     Update();
 
     // delete the remaining entities, if any
-    for_each_all(m_entities, core_sptr::algos::virtual_ptr::DeleteAndReset());
+    m_entities.clear();
   }
 
-  EntityManager::entity_ptr EntityManager::
+  EntityManager::entity_ptr 
+    EntityManager::
     CreateEntity()
   {
-    entity_ptr e(new Entity(m_nextId++));
+    auto e = core_sptr::MakeUnique<Entity>(m_nextId++);
+
+    entity_ptr ePtr;
 
     if (m_removedEntities.size() > 0)
     {
       e->DoSetIndex(m_removedEntities.back());
       m_removedEntities.pop_back();
 
-      m_entities[e->GetIndex()] = e;
+      const auto index = e->GetIndex();
+
+      m_entities[index] = e;
+      ePtr = core_sptr::ToVirtualPtr(m_entities[index]);
     }
     else
     {
       e->DoSetIndex(m_entities.size());
       m_entities.push_back(e);
+      ePtr = ToVirtualPtr(m_entities.back());
     }
 
-    m_eventMgr->DispatchNow( EntityEvent(entity_events::create_entity, e) );
+    m_eventMgr->DispatchNow( EntityEvent(entity_events::create_entity, ePtr) );
 
-    return e;
+    return ePtr;
   }
 
   void
@@ -84,7 +93,8 @@ namespace tloc { namespace core { namespace component_system {
     DeactivateEntity(entity_ptr a_entity)
   {
     a_entity->DoDeactivate();
-    m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, a_entity) );
+    m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, 
+                                          ToVirtualPtr(a_entity)) );
   }
 
   void
@@ -92,7 +102,8 @@ namespace tloc { namespace core { namespace component_system {
     ActivateEntity(entity_ptr a_entity)
   {
     a_entity->DoActivate();
-    m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, a_entity) );
+    m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, 
+                                          ToVirtualPtr(a_entity)) );
   }
 
   void EntityManager::
@@ -101,17 +112,17 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
       "Entity does not exist!");
 
-    m_entities[a_entity->GetIndex()] = nullptr;
-    m_entitiesToRemove.push_back(a_entity);
+    m_entitiesToRemove.push_back(m_entities[a_entity->GetIndex()]);
 
-    m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, a_entity));
+    m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, 
+                                        ToVirtualPtr(a_entity)) );
   }
 
   EntityManager::entity_ptr EntityManager::
     GetEntity(tloc::tl_int a_index)
   {
     TLOC_ASSERT(a_index < (tl_int)m_entities.size(), "Index out of range!");
-    return m_entities[a_index];
+    return ToVirtualPtr(m_entities[a_index]);
   }
 
   void EntityManager::
@@ -122,7 +133,8 @@ namespace tloc { namespace core { namespace component_system {
 
     a_params.m_entity->DoInsertComponent(a_params.m_component);
 
-    EntityComponentEvent evt(entity_events::insert_component, a_params.m_entity,
+    EntityComponentEvent evt(entity_events::insert_component, 
+                             ToVirtualPtr(a_params.m_entity),
                              a_params.m_component);
 
     if (m_eventMgr->DispatchNow(evt, a_params.m_dispatchTo) == false)
@@ -153,7 +165,8 @@ namespace tloc { namespace core { namespace component_system {
     { return false; }
 
     m_compToRemove.push_back(MakePair(a_entity, a_comp));
-    EntityComponentEvent evt(entity_events::remove_component, a_entity,
+    EntityComponentEvent evt(entity_events::remove_component, 
+                             ToVirtualPtr(a_entity),
                              a_comp);
     m_eventMgr->DispatchNow(evt);
 
@@ -202,17 +215,14 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::
     DoUpdateAndCleanEntities()
-  {
-    for_each_all(m_entitiesToRemove, core_sptr::algos::virtual_ptr::DeleteAndReset());
-    m_entitiesToRemove.clear();
-  }
+  { m_entitiesToRemove.clear(); }
 
   void EntityManager::Update()
   {
     // Go through all the entities that we have to remove, and mark their
     // components for removal
-    entity_cont::iterator itr = m_entitiesToRemove.begin();
-    entity_cont::iterator itrEnd = m_entitiesToRemove.end();
+    auto itr = m_entitiesToRemove.begin();
+    auto itrEnd = m_entitiesToRemove.end();
 
     for(; itr != itrEnd; ++itr)
     {
@@ -226,7 +236,7 @@ namespace tloc { namespace core { namespace component_system {
 
         for ( ; compItr != compItrEnd; ++compItr)
         {
-          RemoveComponent(MakePair(*itr, *compItr));
+          RemoveComponent(MakePair(ToVirtualPtr(*itr), *compItr));
         }
       }
 

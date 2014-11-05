@@ -142,15 +142,18 @@ namespace TestingEntityManager
       eMgr.DestroyEntity(newEnt);
       CHECK(entTrack->m_entEventCounter == 0);
 
+      eMgr.Update();
+
       // -----------------------------------------------------------------------
       // create entity with count entityCount
 
       bool stressTestPassed = true;
-      EntityManager::entity_cont myList;
+      core_cs::entity_ptr_array myList;
 
       for (tl_uint i = 0; i < entityCount; ++i)
       {
         newEnt = eMgr.CreateEntity();
+
         myList.push_back(newEnt);
         if (newEnt == nullptr) { stressTestPassed = false; break; }
       }
@@ -161,18 +164,18 @@ namespace TestingEntityManager
       // -----------------------------------------------------------------------
       // enable disable entity
 
-      for (EntityManager::entity_cont::iterator itr = myList.begin(),
+      for (auto itr = myList.begin(),
         itrEnd = myList.end(); itr != itrEnd; ++itr)
       {
-        eMgr.DeactivateEntity(*itr);
+        eMgr.DeactivateEntity(core_sptr::ToVirtualPtr(*itr));
       }
       CHECK(entTrack->m_disableEntityCounter == entityCount);
       CHECK(entTrack2->m_disableEntityCounter == 0); // not listening for this event
 
-      for (EntityManager::entity_cont::iterator itr = myList.begin(),
+      for (auto itr = myList.begin(),
         itrEnd = myList.end(); itr != itrEnd; ++itr)
       {
-        eMgr.ActivateEntity(*itr);
+        eMgr.ActivateEntity(core_sptr::ToVirtualPtr(*itr));
       }
       CHECK(entTrack->m_disableEntityCounter == 0);
       CHECK(entTrack2->m_disableEntityCounter == 0);
@@ -180,10 +183,10 @@ namespace TestingEntityManager
       // -----------------------------------------------------------------------
       // destroy entity
 
-      for (EntityManager::entity_cont::iterator itr = myList.begin(),
+      for (auto itr = myList.begin(),
         itrEnd = myList.end(); itr != itrEnd; ++itr)
       {
-        eMgr.DestroyEntity(*itr);
+        eMgr.DestroyEntity(core_sptr::ToVirtualPtr(*itr));
       }
 
       // clear and reset the virtual pointers to ensure that the entity manager
@@ -194,7 +197,7 @@ namespace TestingEntityManager
 
       eMgr.Update();
       CHECK(entTrack->m_entEventCounter == 0);
-      CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
+      CHECK(eMgr.GetUnusedEntities() == entityCount);
 
       newEnt = eMgr.CreateEntity();
       CHECK(entTrack->m_entEventCounter == 1);
@@ -232,7 +235,7 @@ namespace TestingEntityManager
 
       eMgr.Update();
       CHECK(entTrack->m_entEventCounter == 0);
-      CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
+      CHECK(eMgr.GetUnusedEntities() == entityCount); // +1 because of line 84
     }
 
     //SECTION("Destructor memory leak", "")

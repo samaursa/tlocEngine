@@ -213,7 +213,7 @@ namespace tloc { namespace graphics { namespace gl {
     FramebufferObject::LateBind_T<TLOC_FBO_BIND_PARAMS>::
     Bind(const fbo_type& a_fbo)
   { 
-    m_bind.reset(new typename bind_ptr::value_type(a_fbo));
+    m_bind = core_sptr::MakeUnique<typename bind_ptr::value_type>(a_fbo);
   }
 
   // -----------------------------------------------------------------------

@@ -85,7 +85,7 @@ namespace tloc { namespace graphics { namespace win {
 
     renderer_params_type params;
     params.SetFBO(fbo);
-    m_renderer.reset(new renderer_type(params));
+    m_renderer = core_sptr::MakeShared<renderer_type>(params);
   }
 
   template <WINDOW_TEMP>

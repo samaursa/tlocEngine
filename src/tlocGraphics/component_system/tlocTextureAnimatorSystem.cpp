@@ -20,7 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TextureAnimatorSystem(event_manager_ptr a_eventMgr,
                           entity_manager_ptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 register_type().Add<TextureAnimator>())
+                 register_type().Add<TextureAnimator>(), 
+                 "TextureAnimatorSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

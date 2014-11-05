@@ -68,7 +68,7 @@ namespace TestingEntitySystemBase
     EntSys(event_manager_ptr a_eventMgr,
           entity_manager_ptr a_entMgr)
           : base_type(a_eventMgr, a_entMgr, 
-                      register_type().Add<EmptyComponent1>())
+                      register_type().Add<EmptyComponent1>(), "EntSys")
     { }
 
     ~EntSys()

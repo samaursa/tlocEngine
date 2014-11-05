@@ -10,6 +10,57 @@
 
 namespace tloc { namespace core { namespace utils {
 
+  // -----------------------------------------------------------------------
+  // macros for quickly exposing begin/end/size/empty of containers
+
+#define TLOC_DECL_AND_DEF_CONTAINER_BEGIN_CONST(_suffix_, _container_)\
+  decltype(_container_)::const_iterator  begin_ ## _suffix_() const \
+  { return _container_.begin(); }
+
+#define TLOC_DECL_AND_DEF_CONTAINER_END_CONST(_suffix_, _container_)\
+  decltype(_container_)::const_iterator  end_ ## _suffix_() const \
+  { return _container_.end(); }
+
+#define TLOC_DECL_AND_DEF_CONTAINER_BEGIN(_suffix_, _container_)\
+  decltype(_container_)::iterator  begin_ ## _suffix_() \
+  { return _container_.begin(); }
+
+#define TLOC_DECL_AND_DEF_CONTAINER_END(_suffix_, _container_)\
+  decltype(_container_)::iterator  end_ ## _suffix_() \
+  { return _container_.end(); }
+
+#define TLOC_DECL_AND_DEF_CONTAINER_SIZE(_suffix_, _container_)\
+  decltype(_container_)::size_type size_ ## _suffix_() const \
+  { return _container_.size(); }
+
+#define TLOC_DECL_AND_DEF_CONTAINER_EMPTY(_suffix_, _container_)\
+  bool empty_ ## _suffix_() const { return _container_.empty(); }
+
+#define TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_CONST(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN_CONST(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_END_CONST(_suffix_, _container_)
+
+#define TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_END(_suffix_, _container_)
+
+#define TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_ALL(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_CONST(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END(_suffix_, _container_)
+
+#define TLOC_DECL_AND_DEF_CONTAINER_SIZE_AND_EMPTY(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_EMPTY(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_SIZE(_suffix_, _container_)
+
+#define TLOC_DECL_AND_DEF_CONTAINER_CONST_METHODS(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_CONST(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_SIZE_AND_EMPTY(_suffix_, _container_)
+
+#define TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_suffix_, _container_)\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_CONST(_suffix_, _container_);\
+  TLOC_DECL_AND_DEF_CONTAINER_SIZE_AND_EMPTY(_suffix_, _container_)
+
   //------------------------------------------------------------------------
   // Array size counter (raw and complex)
 

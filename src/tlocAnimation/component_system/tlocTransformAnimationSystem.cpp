@@ -22,7 +22,8 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimationSystem(event_manager_ptr a_eventMgr,
                              entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<anim_cs::TransformAnimation>())
+                register_type().Add<anim_cs::TransformAnimation>(), 
+                "TransformAnimationSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -64,20 +64,24 @@ namespace tloc { namespace core { namespace component_system {
   {
     auto e = core_sptr::MakeUnique<Entity>(m_nextId++);
 
+    entity_ptr ePtr;
+
     if (m_removedEntities.size() > 0)
     {
       e->DoSetIndex(m_removedEntities.back());
       m_removedEntities.pop_back();
 
-      m_entities[e->GetIndex()] = e;
+      const auto index = e->GetIndex();
+
+      m_entities[index] = e;
+      ePtr = core_sptr::ToVirtualPtr(m_entities[index]);
     }
     else
     {
       e->DoSetIndex(m_entities.size());
       m_entities.push_back(e);
+      ePtr = ToVirtualPtr(m_entities.back());
     }
-
-    auto ePtr = ToVirtualPtr(m_entities.back());
 
     m_eventMgr->DispatchNow( EntityEvent(entity_events::create_entity, ePtr) );
 

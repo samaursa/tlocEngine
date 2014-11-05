@@ -190,7 +190,7 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2, a_params.m_arg3);
+      a_param.m_arg1, a_param.m_arg2, a_param.m_arg3);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -210,7 +210,7 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2, a_params.m_arg3, a_param.m_arg4);
+      a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, a_param.m_arg4);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -230,7 +230,7 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2, a_params.m_arg3, a_param.m_arg4, 
+      a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, a_param.m_arg4,
       a_param.m_arg5);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);

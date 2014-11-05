@@ -13,18 +13,6 @@ namespace {
 
 namespace tloc { namespace core { namespace logging {
 
-  namespace p_log
-  {
-    namespace severity
-    {
-      const value_type Info::s_value;
-      const value_type Success::s_value;
-      const value_type Debug::s_value;
-      const value_type Warning::s_value;
-      const value_type Error::s_value;
-    };
-  };
-
   const char* Log_I::s_severityStr[Log_I::k_count] =
   {
     "Info",

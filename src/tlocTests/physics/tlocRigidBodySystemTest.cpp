@@ -156,7 +156,7 @@ namespace TestingRigidBodySystem
     // Create a static rigid body entity (Box)
     core_cs::entity_vptr rbStaticRectEntity = entityMgr->CreateEntity();
 
-    rigid_body_def_sptr rbDef(new rigid_body_def_type);
+    rigid_body_def_sptr rbDef = core_sptr::MakeShared<rigid_body_def_type>();
     SharedPtr<rigid_body_component> rbStaticRectComponent = 
       MakeShared<rigid_body_component>(rbDef);
 
@@ -173,14 +173,14 @@ namespace TestingRigidBodySystem
 
     //------------------------------------------------------------------------
     // Create a static rigid body entity (Circle)
-    core_cs::entity_vptr rbStaticCircleEntity = entityMgr->CreateEntity();
+    auto rbStaticCircleEntity = entityMgr->CreateEntity();
 
     SharedPtr<transform_type> transformComponent1 = 
       MakeShared<transform_type>();
 
     const float circleStartPosition = 3.0f;
 
-    rigid_body_def_sptr rbDef1(new rigid_body_def_type);
+    rigid_body_def_sptr rbDef1 = core_sptr::MakeShared<rigid_body_def_type>();
     rbDef1->SetPosition(vec_type(-2.0f, circleStartPosition));
     SharedPtr<rigid_body_component> rbStaticComponent = 
       MakeShared<rigid_body_component>(rbDef1);
@@ -203,7 +203,7 @@ namespace TestingRigidBodySystem
     SharedPtr<transform_type> transformComponent2 = 
       MakeShared<transform_type>();
 
-    rigid_body_def_sptr rbDef2(new rigid_body_def_type);
+    rigid_body_def_sptr rbDef2 = core_sptr::MakeShared<rigid_body_def_type>();
     rbDef2->SetType<box2d::p_rigid_body::DynamicBody>();
     rbDef2->SetPosition(vec_type(2.0f, circleStartPosition));
 

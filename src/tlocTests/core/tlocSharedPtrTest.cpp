@@ -59,7 +59,7 @@ namespace TestingSharedPtr
     }
 
     {
-      SharedPtr<SharedStruct> sp( new SharedStruct(5) );
+      auto sp = core_sptr::MakeShared<SharedStruct>(5);
       CHECK(sp);
       CHECK_CTOR_DTOR_COUNT(1, 0);
       CHECK(sp.use_count() == 1);
@@ -105,11 +105,11 @@ namespace TestingSharedPtr
     {
       ResetSharedStructStaticVars();
 
-      SharedPtr<SharedStruct> sp(new SharedStruct(10));
+      auto sp = core_sptr::MakeShared<SharedStruct>(10);
       SharedPtr<SharedStruct> sp2 = sp;
       CHECK(sp.use_count() == 2);
 
-      SharedPtr<SharedStruct> sp3(new SharedStruct(50));
+      auto sp3 = core_sptr::MakeShared<SharedStruct>(50);
       sp2 = sp3;
       CHECK(sp.use_count() == 1);
       CHECK(sp3.use_count() == 2);
@@ -124,8 +124,8 @@ namespace TestingSharedPtr
     {
       ResetSharedStructStaticVars();
 
-      SharedPtr<SharedStruct> sp(new SharedStruct(10));
-      SharedPtr<SharedStruct> sp2(new SharedStruct(5));
+      auto sp = core_sptr::MakeShared<SharedStruct>(10);
+      auto sp2 = core_sptr::MakeShared<SharedStruct>(5);
 
       CHECK(sp->m_value == 10);
       CHECK(sp2->m_value == 5);
@@ -152,7 +152,7 @@ namespace TestingSharedPtr
     }
 
     {
-      SharedPtr<const SharedStruct> sp(new SharedStruct(10));
+      SharedPtr<const SharedStruct> sp = core_sptr::MakeShared<SharedStruct>(10);
       CHECK(sp);
     }
   }
@@ -162,7 +162,7 @@ namespace TestingSharedPtr
     {
       ResetSharedStructStaticVars();
 
-      SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      auto sp = core_sptr::MakeShared<SharedStruct>(50);
       CHECK_CTOR_DTOR_COUNT(1, 0);
       sp.reset();
       CHECK_CTOR_DTOR_COUNT(1, 1);
@@ -172,7 +172,7 @@ namespace TestingSharedPtr
     {
       ResetSharedStructStaticVars();
 
-      SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      auto sp = core_sptr::MakeShared<SharedStruct>(50);
       SharedPtr<SharedStruct> sp2(sp);
       sp.reset();
       CHECK_CTOR_DTOR_COUNT(1, 0);
@@ -182,10 +182,10 @@ namespace TestingSharedPtr
     {
       ResetSharedStructStaticVars();
 
-      SharedPtr<SharedStruct> sp(new SharedStruct(50));
+      auto sp = core_sptr::MakeShared<SharedStruct>(50);
       SharedPtr<SharedStruct> sp3(sp);
       CHECK_CTOR_DTOR_COUNT(1, 0);
-      sp.reset(new SharedStruct(10));
+      sp.reset(new SharedStruct(10) );
       CHECK(sp3);
       sp3.reset();
       CHECK_CTOR_DTOR_COUNT(2, 1);
@@ -214,7 +214,7 @@ namespace TestingSharedPtr
     {
       shared_array_type sa;
       for (int i = 0; i < count; ++i)
-      { sa.push_back( shared_ptr_type(new SharedStruct(i)) ); }
+      { sa.push_back( core_sptr::MakeShared<SharedStruct>(i) ); }
 
       CHECK(SharedStruct::m_numCtors == count);
 
@@ -278,13 +278,13 @@ namespace TestingSharedPtr
       typedef my_mem_pool::iterator                         pool_type;
 
       my_mem_pool memPool(poolSize);
-      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(0, 1, 2)) );
-      (*memPool.GetNext())->SetValue(my_comp_ptr(new MyComponent(1, 2, 3)) );
+      (*memPool.GetNext())->SetValue(core_sptr::MakeShared<MyComponent>(0, 1, 2));
+      (*memPool.GetNext())->SetValue(core_sptr::MakeShared<MyComponent>(1, 2, 3));
 
       for (tl_int i = 2; i < poolSize; ++i)
       {
         (*memPool.GetNext())->SetValue(
-          my_comp_ptr(new MyComponent(i, i + 1, i + 2)) );
+          my_comp_ptr(core_sptr::MakeShared<MyComponent>(i, i + 1, i + 2)) );
       }
 
       CHECK(MyComponent::m_ctorCount == poolSize);
@@ -352,18 +352,18 @@ namespace TestingSharedPtr
   {
     {
       CHECK(base::m_ctorCount == 0);
-      SharedPtr<base> basePtr(new derived());
+      SharedPtr<base> basePtr = core_sptr::MakeShared<derived>();
       CHECK(base::m_ctorCount == 1);
     }
     CHECK(base::m_dtorCount == 1);
 
     {
-      SharedPtr<base> basePtr(new derived());
+      SharedPtr<base> basePtr = core_sptr::MakeShared<derived>();
       CHECK(basePtr->m_value == 0);
       basePtr->foo(5);
       CHECK(basePtr->m_value == 5);
 
-      SharedPtr<derived> derPtr(new derived());
+      SharedPtr<derived> derPtr = core_sptr::MakeShared<derived>();
       derPtr->foo(10);
       basePtr = derPtr;
       CHECK(base::m_dtorCount == 2);
@@ -390,10 +390,10 @@ namespace TestingSharedPtr
 
   TEST_CASE("core/smart_ptr/shared_ptr/global operators", "")
   {
-      SharedPtr<base> basePtr(new derived());
+      SharedPtr<base> basePtr = core_sptr::MakeShared<derived>();
       basePtr->foo(5);
 
-      SharedPtr<derived> derPtr(new derived());
+      auto derPtr = core_sptr::MakeShared<derived>();
       derPtr->foo(10);
 
       CHECK( (basePtr == basePtr) );
@@ -501,7 +501,7 @@ namespace TestingSharedPtr
   template <typename T_PtrPolicyType>
   void CastTest()
   {
-    SharedPtr<DerivedClass, T_PtrPolicyType> dc(new DerivedClass());
+    SharedPtr<DerivedClass, T_PtrPolicyType> dc = core_sptr::MakeShared<DerivedClass>();
     dc->m_float = 10.0f;
     dc->m_int = 5;
 
@@ -532,7 +532,7 @@ namespace TestingSharedPtr
   void ConstTest()
   {
     const SharedPtr<DerivedClass, T_PtrPolicyType>
-      dcConst(new DerivedClass(5.0f));
+      dcConst = core_sptr::MakeShared<DerivedClass>(5.0f);
 
     SharedPtr<DerivedClass, T_PtrPolicyType> dc =
       core_sptr::const_pointer_cast<DerivedClass, T_PtrPolicyType>(dcConst);
@@ -570,13 +570,11 @@ namespace TestingSharedPtr
   TEST_CASE("core/smart_ptr/shared_ptr/MakeShared", "")
   {
     {
-      SharedPtr<SharedStruct> sp =
-        core_sptr::MakeShared<SharedStruct>(13);
+      auto sp = core_sptr::MakeShared<SharedStruct>(13);
       CHECK(sp->m_value == 13);
     }
     {
-      SharedPtr<FiveParams> sp =
-        core_sptr::MakeShared<FiveParams>(1, 2, 3, 4, 5);
+      auto sp = core_sptr::MakeShared<FiveParams>(1, 2, 3, 4, 5);
       CHECK(sp->m_a == 1);
       CHECK(sp->m_b == 2);
       CHECK(sp->m_c == 3);

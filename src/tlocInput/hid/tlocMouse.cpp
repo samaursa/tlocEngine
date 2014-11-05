@@ -31,7 +31,7 @@ namespace tloc { namespace input { namespace hid {
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
     : m_clamped(true)
   {
-    m_impl.reset(new impl_type(*this, a_paramList));
+    m_impl = core_sptr::MakeUnique<impl_type>(*this, a_paramList);
   }
 
   template <MOUSE_TEMP>

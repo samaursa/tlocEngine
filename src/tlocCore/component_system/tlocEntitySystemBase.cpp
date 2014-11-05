@@ -21,6 +21,7 @@ namespace tloc { namespace core { namespace component_system {
   enum
   {
     k_systemInitialized = 0,
+    k_processingDisabled,
     k_count
   };
 
@@ -34,8 +35,10 @@ namespace tloc { namespace core { namespace component_system {
   EntitySystemBase::
     EntitySystemBase(event_manager_ptr a_eventMgr, 
                      entity_manager_ptr a_entityMgr, 
-                     register_type a_compsToRegister)
-    : m_compRegistry(a_compsToRegister)
+                     register_type a_compsToRegister,
+                     BufferArg a_debugName)
+    : core_bclass::DebugName(a_debugName)
+    , m_compRegistry(a_compsToRegister)
     , m_eventMgr(a_eventMgr)
     , m_entityMgr(a_entityMgr)
     , m_flags(k_count)
@@ -61,6 +64,9 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase::
     Initialize()
   {
+    TLOC_ASSERT(m_flags.IsUnMarked(k_systemInitialized), 
+                "System already initialized");
+
     m_flags.Mark(k_systemInitialized);
 
     if (Pre_Initialize() == ErrorSuccess)
@@ -224,45 +230,21 @@ namespace tloc { namespace core { namespace component_system {
     return evtRet;
   }
 
-  // -----------------------------------------------------------------------
-  // algorithms
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  namespace algos { namespace entity_system {
+  bool
+    EntitySystemBase::
+    IsProcessingDisabled() const
+  { return m_flags.IsMarked(k_processingDisabled); }
 
-    // ///////////////////////////////////////////////////////////////////////
-    // initialize
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    void
-      Initialize::
-      operator()(value_type& a_system)
-    { a_system.Initialize(); }
-
-    // ///////////////////////////////////////////////////////////////////////
-    // shutdown
-
-    void
-      ShutDown::
-      operator()(value_type& a_system)
-    { a_system.Shutdown(); }
-
-    // ///////////////////////////////////////////////////////////////////////
-    // process
-
-    Process::
-      Process(time_type a_deltaT)
-      : m_deltaT(a_deltaT)
-    { }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      Process::
-      operator()(value_type& a_system)
-    { a_system.ProcessActiveEntities(m_deltaT); }
-
-  };};
+  void
+    EntitySystemBase::
+    SetDisableProcessing(bool a_enable)
+  { m_flags[k_processingDisabled] = a_enable; }
 
 };};};
 
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntitySystemBase);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EntitySystemBase);

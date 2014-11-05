@@ -6,6 +6,7 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
@@ -77,7 +78,7 @@ namespace tloc { namespace graphics { namespace media {
       InitializeAndDestroy_TI<this_type,
       core_bclass::p_initialize_and_destroy::OneParam>    base_type;
 
-    typedef core_sptr::VirtualPtr<free_type::FreeType>    ft_ptr;
+    typedef core_sptr::UniquePtr<free_type::FreeType>     ft_ptr;
     typedef core_str::String                              data_type;
     typedef core_ds::Tuple2f                              pos_type;
 

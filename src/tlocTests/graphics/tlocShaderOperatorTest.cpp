@@ -134,13 +134,13 @@ namespace TestingShaderOperator
 
     gl::uniform_sptr_cont uniCont;
 
-    shader_op_ptr so(new gl::ShaderOperator());
+    auto so = core_sptr::MakeShared<gl::ShaderOperator>();
     gl::uniform_vptr uniformPtrToCheckWarning; // test warning when adding uniforms
 
     //------------------------------------------------------------------------
     // Add all the uniforms
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_float");
@@ -157,7 +157,7 @@ namespace TestingShaderOperator
       CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec2");
@@ -166,7 +166,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec3");
@@ -183,7 +183,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec4");
@@ -192,7 +192,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_int");
@@ -201,7 +201,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec2");
@@ -210,7 +210,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec3");
@@ -219,7 +219,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec4");
@@ -229,7 +229,7 @@ namespace TestingShaderOperator
     }
 #if defined (TLOC_OS_WIN)
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uint");
@@ -238,7 +238,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec2");
@@ -247,7 +247,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec3");
@@ -256,7 +256,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec4");
@@ -266,7 +266,7 @@ namespace TestingShaderOperator
     }
 #endif
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat2");
@@ -276,7 +276,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat3");
@@ -287,7 +287,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat4");
@@ -301,7 +301,7 @@ namespace TestingShaderOperator
 
     gl::uniform_vptr uniformBugFix;
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat5");
@@ -497,12 +497,12 @@ namespace TestingShaderOperator
     // stores all uniforms to keep 1 reference alive at all times
     gl::uniform_sptr_cont uniCont;
 
-    shader_op_ptr so(new gl::ShaderOperator());
+    auto so = core_sptr::MakeShared<gl::ShaderOperator>();
 
     //------------------------------------------------------------------------
     // Add all the uniforms
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_float");
@@ -524,7 +524,7 @@ namespace TestingShaderOperator
       CHECK(ptr->GetName().compare("u_float") == 0);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec2");
@@ -535,7 +535,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec3");
@@ -546,7 +546,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec4");
@@ -557,7 +557,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_int");
@@ -568,7 +568,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec2");
@@ -579,7 +579,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec3");
@@ -590,7 +590,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec4");
@@ -602,7 +602,7 @@ namespace TestingShaderOperator
     }
 #if defined (TLOC_OS_WIN)
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uint");
@@ -613,7 +613,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec2");
@@ -624,7 +624,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec3");
@@ -635,7 +635,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec4");
@@ -729,7 +729,7 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
-    shader_op_ptr so(new gl::ShaderOperator());
+    auto so = core_sptr::MakeShared<gl::ShaderOperator>();
     {
       gl::AttributeVBO attribute;
       attribute.AddName("u_float");

@@ -142,6 +142,8 @@ namespace TestingEntityManager
       eMgr.DestroyEntity(newEnt);
       CHECK(entTrack->m_entEventCounter == 0);
 
+      eMgr.Update();
+
       // -----------------------------------------------------------------------
       // create entity with count entityCount
 
@@ -151,6 +153,7 @@ namespace TestingEntityManager
       for (tl_uint i = 0; i < entityCount; ++i)
       {
         newEnt = eMgr.CreateEntity();
+
         myList.push_back(newEnt);
         if (newEnt == nullptr) { stressTestPassed = false; break; }
       }
@@ -194,7 +197,7 @@ namespace TestingEntityManager
 
       eMgr.Update();
       CHECK(entTrack->m_entEventCounter == 0);
-      CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
+      CHECK(eMgr.GetUnusedEntities() == entityCount);
 
       newEnt = eMgr.CreateEntity();
       CHECK(entTrack->m_entEventCounter == 1);
@@ -232,7 +235,7 @@ namespace TestingEntityManager
 
       eMgr.Update();
       CHECK(entTrack->m_entEventCounter == 0);
-      CHECK(eMgr.GetUnusedEntities() == entityCount + 1); // +1 because of line 84
+      CHECK(eMgr.GetUnusedEntities() == entityCount); // +1 because of line 84
     }
 
     //SECTION("Destructor memory leak", "")

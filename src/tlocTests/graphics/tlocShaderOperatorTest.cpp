@@ -172,7 +172,7 @@ namespace TestingShaderOperator
       uniform->SetName("u_vec3");
       uniform->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
-      graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::s_value);
+      graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::k_value);
       TLOC_TEST_ASSERT
       { so->AddUniform(*uniform); }
       TLOC_TEST_ASSERT_REQUIRE();

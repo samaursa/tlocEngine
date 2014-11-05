@@ -12,13 +12,11 @@ namespace tloc { namespace core { namespace logging {
   {
     namespace severity
     {
-      typedef tl_int  value_type;
-
-      struct Info    { static const value_type s_value = 0; };
-      struct Success { static const value_type s_value = 1; };
-      struct Debug   { static const value_type s_value = 2; };
-      struct Warning { static const value_type s_value = 3; };
-      struct Error   { static const value_type s_value = 4; };
+      struct Info    { enum {k_value = 0}; };
+      struct Success { enum {k_value = 1}; };
+      struct Debug   { enum {k_value = 2}; };
+      struct Warning { enum {k_value = 3}; };
+      struct Error   { enum {k_value = 4}; };
     };
   };
 
@@ -34,7 +32,7 @@ namespace tloc { namespace core { namespace logging {
 
     enum
     {
-      k_info = p_log::severity::Info::s_value,
+      k_info = p_log::severity::Info::k_value,
       k_success,
       k_debug,
       k_warning,

@@ -360,4 +360,13 @@ struct DiagnoseTemplate;
 # define TLOC_EXTERN_TEMPLATE_STRUCT(_class_with_type_)
 #endif
 
+// -----------------------------------------------------------------------
+// decltype() fix for VC++ 2010
+// see: http://stackoverflow.com/a/9291674/368599
+
+#ifdef TLOC_COMPILER_VISUAL_CPP_2010
+#include <utility>
+#define decltype(...) std::identity<decltype(__VA_ARGS__)>::type
+#endif
+
 #endif // header guard

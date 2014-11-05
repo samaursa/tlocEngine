@@ -616,6 +616,20 @@ namespace TestingArray
     CHECK(ints2.capacity() == intsCap);
   }
 
+  TEST_CASE("Core/Containers/Array/2d_array", "")
+  {
+    Array<Array<s32> > m_2dArray;
+
+    m_2dArray.resize(2); 
+    m_2dArray[0].resize(2);
+    m_2dArray[1].resize(2);
+
+    m_2dArray[0][0] = 1;
+    m_2dArray[0][1] = 2;
+    m_2dArray[1][0] = 3;
+    m_2dArray[1][1] = 4;
+  }
+
 #undef FILL_INT_ARRAY_BY_PUSH
 #undef FILL_INT_ARRAY_BY_INDEX
 #undef CHECK_ARRAY_BY_INDEX

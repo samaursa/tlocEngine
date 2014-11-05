@@ -1,26 +1,21 @@
 #include "tlocFanRenderSystem.h"
 
-#include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.inl.h>
-#include <tlocCore/logging/tlocLogger.h>
-
 #include <tlocMath/types/tlocCircle.h>
-#include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/types/tlocVector3.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
-#include <tlocGraphics/component_system/tlocSceneNode.h>
-#include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
-#include <tlocGraphics/component_system/tlocCamera.h>
-
 
 namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core::data_structs;
+
+  typedef math::types::Vec3f32                              vec3_type;
+  typedef math::types::Vec2f32                              vec2_type;
+
+  typedef core_conts::tl_array<vec3_type>::type             vec3_cont_type;
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs
@@ -34,13 +29,39 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem(event_manager_ptr a_eventMgr,
                     entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::fan))
-  {
-    m_vertList->reserve(30);
+                register_type().Add<gfx_cs::Fan>(), "FanRenderSystem")
+  { }
 
-    m_vData->SetName("a_vPos");
-    m_uniVpMat->SetName("u_mvp");
-    m_tData->SetName("a_tCoord");
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    DoMakeFanVertices(const gfx_cs::fan_sptr& a_fan, vec3_cont_type& a_out)
+  {
+    //------------------------------------------------------------------------
+    // Prepare the Fan
+
+    typedef math::types::Circlef32 circle_type;
+    using namespace math::types;
+
+    const circle_type& circ   = a_fan->GetEllipseRef();
+    const tl_size numSides    = a_fan->GetNumSides();
+    const f32 angleInterval   = 360.0f / numSides;
+
+    a_out.reserve(numSides + 2);
+
+    // Push the center vertex
+    {
+      Vec2f32 newCoord = circ.GetPosition();
+      a_out.push_back
+        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
+    }
+
+    for (f32 i = 0; i <= numSides; ++i)
+    {
+      Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
+      a_out.push_back
+        (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -49,8 +70,29 @@ namespace tloc { namespace graphics { namespace component_system {
     FanRenderSystem::
     InitializeEntity(entity_ptr a_ent)
   { 
-    base_type::InitializeEntity(a_ent);
-    return ErrorSuccess;
+    using namespace core::component_system;
+    using math_t::degree_f32;
+
+    gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
+    fanPtr->SetUpdateRequired(false);
+
+
+    const gfx_gl::shader_operator_vptr so =  fanPtr->GetShaderOperator().get();
+
+    vec3_cont_type vertList;
+    DoMakeFanVertices(fanPtr, vertList);
+
+    gfx_gl::AttributeVBO vbo;
+    vbo.AddName(base_type::GetVertexAttributeName())
+       .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                   gfx_gl::p_vbo::usage::StaticDraw>(vertList);
+
+    so->AddAttributeVBO(vbo);
+
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>())
+    { base_type::DoInitializeTexCoords(a_ent, *so); }
+
+    return base_type::InitializeEntity(a_ent);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -63,142 +105,51 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    FanRenderSystem::
-    ProcessEntity(entity_ptr a_ent, f64)
+    DoUpdateFan(FanRenderSystem& a_sys, FanRenderSystem::entity_ptr a_ent, 
+                 gfx_cs::fan_sptr a_fanPtr)
   {
-    using namespace core::component_system;
-    using math_t::degree_f32;
+    //------------------------------------------------------------------------
+    // Update the quad
 
-    if (a_ent->HasComponent(components::material))
-    {
-      gfx_cs::material_sptr matPtr = a_ent->GetComponent<gfx_cs::Material>();
-      gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
+    const gfx_gl::shader_operator_vptr so =  a_fanPtr->GetShaderOperator().get();
 
-      //------------------------------------------------------------------------
-      // Prepare the Fan
+    using gl::algos::shader_operator::compare::AttributeVBOName;
+    gl::ShaderOperator::attributeVBO_iterator itr = 
+      core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(), 
+                    AttributeVBOName(a_sys.GetVertexAttributeName()));
 
-      typedef math::types::Circlef32 circle_type;
-      using namespace math::types;
+    if (itr == so->end_attributeVBOs())
+    { return; }
 
-      m_vertList->clear();
+    a_fanPtr->SetUpdateRequired(false);
 
-      const circle_type& circ = fanPtr->GetEllipseRef();
+    vec3_cont_type      fanList;
+    DoMakeFanVertices(a_fanPtr, fanList);
 
-      const size_type numSides = fanPtr->GetNumSides();
-      const f32 angleInterval = 360.0f/numSides;
-
-      math_cs::transform_sptr posPtr = a_ent->GetComponent<math_cs::Transform>();
-
-      Mat4f32 tMatrix;
-      if (a_ent->HasComponent(components::scene_node))
-      { tMatrix = a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
-      else
-      { tMatrix = posPtr->GetTransformation().Cast<Mat4f32>(); }
-
-      Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
-
-      m_uniVpMat->SetValueAs(tFinalMat);
-
-      m_mvpOperator->RemoveAllUniforms();
-      m_mvpOperator->AddUniform(*m_uniVpMat);
-
-      // Push the center vertex
-      {
-        Vec2f32 newCoord = circ.GetPosition();
-        m_vertList->push_back
-          (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>());
-      }
-
-      for (f32 i = 0; i <= numSides; ++i)
-      {
-        Vec2f32 newCoord = circ.GetCoord(degree_f32(angleInterval * i));
-        m_vertList->push_back
-          (newCoord.ConvertTo<Vec3f32, p_tuple::overflow_zero>() );
-      }
-
-      const tl_size numVertices = m_vertList->size();
-
-      m_vData->SetVertexArray(core_sptr::ToVirtualPtr(m_vertList),
-                              gl::p_shader_variable_ti::Pointer());
-
-      m_so_fan->RemoveAllAttributes();
-      m_so_fan->AddAttribute(*m_vData);
-
-      if (a_ent->HasComponent(components::texture_coords))
-      {
-        typedef gfx_cs::TextureCoords::set_index    set_index;
-
-        gfx_cs::texture_coords_sptr texCoordPtr =
-          a_ent->GetComponent<gfx_cs::TextureCoords>();
-
-        if (texCoordPtr->GetNumSets())
-        {
-          gfx_cs::TextureCoords::cont_type_ptr
-            texCoordCont = texCoordPtr->GetCoords
-            (set_index(texCoordPtr->GetCurrentSet()) );
-
-          m_tData->SetVertexArray(texCoordCont,
-                                  gl::p_shader_variable_ti::Pointer() );
-
-          m_so_fan->AddAttribute(*m_tData);
-        }
-      }
-
-      //------------------------------------------------------------------------
-      // Enable the shader
-
-      Material::const_shader_prog_ptr sp = matPtr->GetShaderProg();
-
-      // Don't 're-enable' the shader if it was already enabled by the previous
-      // entity
-      if ( m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
-      {
-        if (m_shaderPtr)
-        { m_shaderPtr->Disable(); }
-
-        if (sp->Enable().Failed())
-        { 
-          TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle() 
-            << " could not be enabled.";
-          return;
-        }
-
-        m_shaderPtr = sp;
-
-        typedef gfx_cs::Material::shader_op_cont::const_iterator     const_itr_type;
-        const gfx_cs::Material::shader_op_cont& cont = matPtr->GetShaderOperators();
-
-        for (const_itr_type itr = cont.begin(), itrEnd = cont.end();
-          itr != itrEnd; ++itr)
-        {
-          gl::const_shader_operator_vptr so = itr->get();
-
-          so->EnableAllUniforms(*m_shaderPtr);
-          so->EnableAllAttributes(*m_shaderPtr);
-        }
-      }
-
-      // Add the mvp
-      if (m_mvpOperator->PrepareAllUniforms(*m_shaderPtr).Succeeded())
-      { m_mvpOperator->EnableAllUniforms(*m_shaderPtr); }
-
-      if (m_so_fan->PrepareAllAttributes(*m_shaderPtr).Succeeded())
-      { m_so_fan->EnableAllAttributes(*m_shaderPtr); }
-
-      glDrawArrays(GL_TRIANGLE_FAN, 0,
-                   core_utils::CastNumber<GLsizei, tl_size>(numVertices));
-    }
+    itr->first->UpdateData(fanList);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     FanRenderSystem::
-    Post_ProcessActiveEntities(f64)
+    ProcessEntity(entity_ptr a_ent, f64)
   {
-    m_shaderPtr.reset();
+    if (a_ent->HasComponent<gfx_cs::Material>() == false)
+    { return; }
 
-    base_type::Post_ProcessActiveEntities(f64());
+    gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
+
+    if (fanPtr->IsUpdateRequired())
+    { DoUpdateFan(*this, a_ent, fanPtr); }
+
+    const tl_size numVertices = fanPtr->GetNumSides() + 2;
+
+    base_type::DrawInfo di(a_ent, GL_TRIANGLE_FAN, numVertices);
+    di.m_shaderOp = core_sptr::ToVirtualPtr(fanPtr->GetShaderOperator());
+    di.m_meshVAO  = fanPtr->GetVAO();
+
+    base_type::DoDrawEntity(di);
   }
 
 };};};
@@ -212,6 +163,3 @@ using namespace tloc::gfx_cs;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FanRenderSystem);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(FanRenderSystem);
-
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec2_cont_type);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FanRenderSystem::vec3_cont_type);

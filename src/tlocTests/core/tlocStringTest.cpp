@@ -803,8 +803,19 @@ namespace TestingStrings
     CHECK(IsDigit('9'));
     CHECK(IsDigit('0'));
 
-    CHECK_FALSE(IsDigit(0));
-    CHECK(IsDigit(51));
+    CHECK(IsDigit(L'1'));
+    CHECK(IsDigit(L'2'));
+    CHECK(IsDigit(L'3'));
+    CHECK(IsDigit(L'4'));
+    CHECK(IsDigit(L'5'));
+    CHECK(IsDigit(L'6'));
+    CHECK(IsDigit(L'7'));
+    CHECK(IsDigit(L'8'));
+    CHECK(IsDigit(L'9'));
+    CHECK(IsDigit(L'0'));
+
+    CHECK_FALSE(IsDigit(char8(0)));
+    CHECK(IsDigit(char8(51)));
 
     CHECK(IsCntrl('\t'));
     CHECK(IsCntrl('\f'));
@@ -814,10 +825,23 @@ namespace TestingStrings
     CHECK_FALSE(IsCntrl('A'));
     CHECK_FALSE(IsCntrl('0'));
 
+    CHECK(IsCntrl(L'\t'));
+    CHECK(IsCntrl(L'\f'));
+    CHECK(IsCntrl(L'\v'));
+    CHECK(IsCntrl(L'\n'));
+    CHECK(IsCntrl(L'\r'));
+    CHECK_FALSE(IsCntrl(L'A'));
+    CHECK_FALSE(IsCntrl(L'0'));
+
     CHECK(IsBlank('\t'));
     CHECK(IsBlank(' '));
     CHECK_FALSE(IsBlank('A'));
     CHECK_FALSE(IsBlank('0'));
+
+    CHECK(IsBlank(L'\t'));
+    CHECK(IsBlank(L' '));
+    CHECK_FALSE(IsBlank(L'A'));
+    CHECK_FALSE(IsBlank(L'0'));
 
     CHECK(IsSpace('\t'));
     CHECK(IsSpace('\f'));
@@ -825,6 +849,16 @@ namespace TestingStrings
     CHECK(IsSpace('\n'));
     CHECK(IsSpace('\r'));
     CHECK(IsSpace(' '));
+
+    CHECK(IsSpace(L'\t'));
+    CHECK(IsSpace(L'\f'));
+    CHECK(IsSpace(L'\v'));
+    CHECK(IsSpace(L'\n'));
+    CHECK(IsSpace(L'\r'));
+    CHECK(IsSpace(L' '));
+
+    CHECK(IsNewline('\n'));
+    CHECK(IsNewline(L'\n'));
 
     bool testPassed = true;
     for (char8 i = 'A'; i <= 'Z'; ++i)

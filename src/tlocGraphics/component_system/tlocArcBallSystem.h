@@ -4,16 +4,12 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/types/tlocStrongType.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
-
-//#include <tlocMath/types/tlocVector3.h>
-//#include <tlocMath/types/tlocMatrix4.h>
-//#include <tlocMath/projection/tlocFrustum.h>
-//#include <tlocMath/component_system/tlocComponentType.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -37,8 +33,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void Pre_ProcessActiveEntities(f64) {}
     virtual void Post_ProcessActiveEntities(f64) {}
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
@@ -54,6 +48,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(ArcBallSystem, arc_ball_system);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::ArcBallSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::ArcBallSystem);
 
 #endif
 

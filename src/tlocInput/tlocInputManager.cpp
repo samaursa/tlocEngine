@@ -33,7 +33,7 @@ namespace tloc { namespace input {
   template <typename T_ParamList>
   InputManager<INPUT_MANAGER_PARAM>::InputManager(T_ParamList a_paramList)
   {
-    m_impl.reset(new impl_type(*this, a_paramList));
+    m_impl = core_sptr::MakeUnique<impl_type>(*this, a_paramList);
     m_impl->Initialize();
   }
 

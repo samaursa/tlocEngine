@@ -9,7 +9,6 @@
 
 // testing explicit instantiation macros
 TLOC_EXPLICITLY_INSTANTIATE_LIST(tloc::tl_int);
-TLOC_EXPLICITLY_INSTANTIATE_LIST_NO_DEDICATED_SIZE(tloc::tl_int);
 
 namespace TestingList
 {

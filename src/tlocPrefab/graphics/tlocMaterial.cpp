@@ -28,6 +28,8 @@ namespace tloc { namespace prefab { namespace graphics {
     Material::
     Construct(BufferArg a_vertexShader, BufferArg a_fragmentShader) const
   {
+    m_newUniformPtrs.clear();
+
     using namespace gfx_cs::components;
 
     typedef ComponentPoolManager              pool_mgr;
@@ -44,19 +46,12 @@ namespace tloc { namespace prefab { namespace graphics {
     mat->SetVertexSource(a_vertexShader);
     mat->SetFragmentSource(a_fragmentShader);
 
-    gfx_gl::shader_operator_vso so;
-
+    auto matSO = mat->GetShaderOperator();
+    matSO->reserve_uniforms(m_uniforms.size());
     for (const_uniform_itr 
          itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
-    { so->AddUniform(**itr); }
-
-    for (const_attribute_itr 
-         itr = m_attributes.begin(), itrEnd = m_attributes.end();
-         itr != itrEnd; ++itr)
-    { so->AddAttribute(**itr); }
-
-    mat->AddShaderOperator(*so);
+    { m_newUniformPtrs.push_back(matSO->AddUniform(**itr)); }
 
     return mat;
   }
@@ -154,19 +149,9 @@ namespace tloc { namespace prefab { namespace graphics {
     return *this;
   }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  Material&
-    Material::
-    AddAttribute(const attribute_ptr_type& a_attribute)
-  {
-    m_attributes.push_back(a_attribute);
-    return *this;
-  }
-
 };};};
 
 #include <tlocCore/containers/tlocArray.inl.h>
 
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::uniform_ptr_type);
-TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::attribute_ptr_type);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(tloc::pref_gfx::Material::attributeVBO_ptr_type);

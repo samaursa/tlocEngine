@@ -6,7 +6,7 @@
 // overall program optimizations.
 
 #if !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
-# ifdef _MSC_VER
+# ifdef TLOC_COMPILER_VISUAL_CPP
 #   pragma warning(disable:4748)
 #   pragma optimize("", off)
 #   define _SECURE_SCL 0

@@ -5,7 +5,9 @@
 
 #include <tlocGraphics/opengl/tlocError.h>
 
-#include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/opengl/tlocGLTypes.h>
+
+#include <tlocGraphics/opengl/tlocAttributeVBO.h>
 #include <tlocGraphics/opengl/tlocUniform.h>
 
 #include <tlocGraphics/opengl/tlocShaderVariable.h>
@@ -17,6 +19,8 @@
 #include <tlocGraphics/opengl/tlocTextureObject.h>
 #include <tlocGraphics/opengl/tlocFramebufferObject.h>
 #include <tlocGraphics/opengl/tlocRenderbufferObject.h>
+#include <tlocGraphics/opengl/tlocVertexArrayObject.h>
+#include <tlocGraphics/opengl/tlocVertexBufferObject.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>

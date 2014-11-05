@@ -6,25 +6,25 @@
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
-#include <tlocCore/component_system/tlocComponent.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/component_system/tlocRenderable_TI.h>
 
 #include <tlocMath/types/tlocCircle.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
   class Fan
-    : public core_cs::Component_T<Fan, components::fan>
+    : public Renderable_TI<Fan, components::k_fan>
   {
   public:
-    typedef Fan                                     this_type;
-    typedef Component_T<this_type, components::fan> base_type;
-    typedef tl_size                                 size_type;
-    typedef f32                                     real_type;
-    typedef math::types::Circle_T<real_type>        ellipse_type;
+    typedef Fan                                         this_type;
+    typedef Renderable_TI<this_type, components::k_fan> base_type;
+    typedef tl_size                                     size_type;
+    typedef f32                                         real_type;
+    typedef math::types::Circle_T<real_type>            ellipse_type;
 
-    typedef core::types::StrongType_T<size_type, 0>   sides;
+    typedef core::types::StrongType_T<size_type, 0>     sides;
 
   public:
     Fan();
@@ -46,5 +46,11 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(Fan, fan);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Fan);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Fan);
 
 #endif

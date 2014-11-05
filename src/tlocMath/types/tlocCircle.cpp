@@ -3,7 +3,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 
-#include <tlocMath/types/tlocVector2.inl.h>
+#include <tlocMath/types/tlocVector2.opt.inl.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -111,7 +111,7 @@ namespace tloc { namespace math { namespace types {
     Contains(const point_type& a_xyPoint) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
-    Vector2<value_type> displacement(m_position);
+    Vector_T<value_type, 2> displacement(m_position);
     displacement = displacement.Sub(a_xyPoint);
 
     value_type distance = displacement.Length();
@@ -126,7 +126,7 @@ namespace tloc { namespace math { namespace types {
     Contains(const this_type& a_other) const
   {
     TLOC_ASSERT_CIRCLE_VALID();
-    Vector2<value_type> displacement(m_position);
+    Vector_T<value_type, 2> displacement(m_position);
     displacement = displacement.Sub(a_other.m_position);
 
     value_type outerDistance = displacement.Length() + a_other.m_radius;
@@ -143,7 +143,7 @@ namespace tloc { namespace math { namespace types {
     TLOC_ASSERT(IsValid(), "Intersects() may not work with invalid dimensions!");
 
     TLOC_ASSERT_CIRCLE_VALID();
-    Vector2<value_type> displacement(m_position);
+    Vector_T<value_type, 2> displacement(m_position);
     displacement = displacement.Sub(a_other.m_position);
 
     value_type distance = displacement.Length();
@@ -169,8 +169,8 @@ namespace tloc { namespace math { namespace types {
   {
     // Get the point on a unit circle
     value_type r = a_angle.Get();
-    value_type rCos = Math<value_type>::Cos(r);
-    value_type rSin = Math<value_type>::Sin(r);
+    value_type rCos = math::Cos(math_t::MakeRadian(r));
+    value_type rSin = math::Sin(math_t::MakeRadian(r));
 
     return point_type(m_radius * rCos, m_radius * rSin) + m_position;
   }

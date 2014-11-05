@@ -105,7 +105,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all_all(T_Container1& a_toSearch, T_Container2& a_toFind)
+    find_end_all(T_Container1& a_toSearch, T_Container2& a_toFind)
   {
     return find_end(a_toSearch.begin(), a_toSearch.end(), a_toFind.begin(),
                     a_toFind.end());
@@ -113,7 +113,7 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all_all(T_Container1& a_toSearch,
+    find_end_all(T_Container1& a_toSearch,
                      T_Container2& a_toFind,
                      T_BinaryPred a_pred)
   {
@@ -216,7 +216,7 @@ namespace tloc { namespace core {
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
     find_if_end_all(T_Container& a_container, T_Predicate a_pred)
   {
-    find_if_end(a_container.begin(), a_container.end(), a_pred);
+    return find_if_end(a_container.begin(), a_container.end(), a_pred);
   }
 
   template <typename T_Container1, typename T_Container2>
@@ -1399,7 +1399,9 @@ namespace tloc { namespace core {
     {
       while (a_rangeBegin != a_rangeEnd)
       {
-        *(aDestRangeBegin++) = *(a_rangeBegin++);
+        *aDestRangeBegin = *a_rangeBegin;
+        aDestRangeBegin++;
+        a_rangeBegin++;
       }
 
       return aDestRangeBegin;
@@ -2025,15 +2027,13 @@ namespace tloc { namespace core {
       T_InputIterator currentItr;
       T_InputIterator currentItrPlusOne;
 
-      bool swapped;
-
       for (endOfUnsortedItr = a_last; endOfUnsortedItr != a_first; --endOfUnsortedItr)
       {
         currentItr = a_first;
         currentItrPlusOne = currentItr;
         ++currentItrPlusOne;
 
-        swapped = false;
+        bool swapped = false;
 
         for (/* */;
              currentItrPlusOne != endOfUnsortedItr;

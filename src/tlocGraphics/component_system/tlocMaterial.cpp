@@ -4,17 +4,11 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  // -----------------------------------------------------------------------
-  // typedefs
-
-  typedef Material::shader_op_cont::iterator                  shader_op_cont_itr;
-  typedef Material::shader_op_cont::const_iterator            shader_op_cont_const_itr;
-
   // ///////////////////////////////////////////////////////////////////////
   // Material
 
   Material::Material()
-    : base_type(k_component_type, "Material")
+    : base_type("Material")
   { }
 
   Material::Material(const Material& a_other)
@@ -22,38 +16,13 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_vertexProgram(a_other.m_vertexProgram)
     , m_fragmentProgram(a_other.m_fragmentProgram)
     , m_shaderProgram(a_other.m_shaderProgram)
-    , m_shaderOperators(a_other.m_shaderOperators)
+    , m_shaderOp(a_other.m_shaderOp)
   { }
 
-  void Material::
-    AddShaderOperator(const shader_op& a_shaderOp)
-  {
-    m_shaderOperators.push_back(shader_op_vso(MakeArgs(a_shaderOp)));
-    SetUpdateRequired(true);
-  }
-
-  bool Material::
-    RemoveShaderOperator(const_shader_op_ptr a_shaderOp)
-  {
-    shader_op_cont_itr itr =
-      core::remove_if_all(m_shaderOperators,
-        core_sptr::algos::compare::virtual_stack_object::
-        MakeWithVirtualPtr(a_shaderOp));
-
-    if (itr != m_shaderOperators.end())
-    {
-      SetUpdateRequired(true);
-      return true;
-    }
-
-    return false;
-  }
-
-  void Material::
-    RemoveAllShaderOperators()
-  {
-    m_shaderOperators.clear();
-  }
+  void
+    Material::
+    AddUniform(const uniform_type& a_uniform)
+  { m_shaderOp->AddUniform(a_uniform); }
 
   void Material::
     SetVertexSource(BufferArg a_source)

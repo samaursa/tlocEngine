@@ -3,9 +3,9 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 4512)
+#ifdef TLOC_COMPILER_VISUAL_CPP
+# pragma warning(push)
+# pragma warning(disable: 4512)
 #endif
 
 namespace tloc { namespace core {
@@ -54,9 +54,9 @@ namespace tloc { namespace core {
   template <typename T1, typename T2>
   TL_FI bool operator<=(const Pair<T1, T2>& a, const Pair<T1, T2>& b);
 
-  namespace algos { namespace compare {
+  namespace algos { namespace pair {
 
-    namespace pair {
+    namespace compare {
 
     // ///////////////////////////////////////////////////////////////////////
     // Compare the first value
@@ -108,7 +108,10 @@ namespace tloc { namespace core {
 
 };};
 
-#if _MSC_VER
+#define TLOC_EXTERN_TEMPLATE_PAIR(_firstType_, _secondType_)\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core::Pair<_firstType_ TLOC_COMMA _secondType_>)
+
+#if TLOC_COMPILER_VISUAL_CPP
 #pragma warning(pop)
 #endif
 

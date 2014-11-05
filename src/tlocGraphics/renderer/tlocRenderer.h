@@ -3,13 +3,12 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
 #include <tlocCore/utilities/tlocObjectCounter.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/platform/tlocPlatform.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
@@ -83,6 +82,15 @@ namespace tloc { namespace graphics { namespace renderer {
 
     };
 
+    namespace cull_face
+    {
+      typedef s32                     value_type;
+
+      struct Front                    { static const value_type s_glParamName; };
+      struct Back                     { static const value_type s_glParamName; };
+      struct FrontAndBack             { static const value_type s_glParamName; };
+    };
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -100,6 +108,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef p_renderer::enable_disable::value_type    enable_value_type;
     typedef p_renderer::enable_disable::value_type    disable_value_type;
     typedef p_renderer::clear::value_type             clear_value_type;
+    typedef p_renderer::cull_face::value_type         cull_face_value_type;
     typedef core::Pair<blend_function_value_type,
                        blend_function_value_type>     blend_pair_type;
 
@@ -112,6 +121,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef s32                                       stencil_value_type;
 
     typedef gl::FramebufferObject                     fbo_type;
+    typedef fbo_type::bind_uptr                       fbo_bind_ptr;
     typedef gl::framebuffer_object_sptr               fbo_sptr;
     typedef fbo_type::dimension_type                  dimension_type;
     typedef core_err::Error                           error_type;
@@ -141,6 +151,9 @@ namespace tloc { namespace graphics { namespace renderer {
       template <typename T_ClearValue>
       this_type& AddClearBit();
 
+      template <typename T_Face>
+      this_type& Cull();
+
       TLOC_DECL_AND_DEF_GETTER
         (depth_function_value_type, GetDepthFunction, m_depthFunction);
       TLOC_DECL_AND_DEF_GETTER
@@ -151,6 +164,8 @@ namespace tloc { namespace graphics { namespace renderer {
         (disable_cont, GetFeaturesToDisable, m_disableFeatures);
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
         (clear_value_type, GetClearBits, m_clearBits);
+      TLOC_DECL_AND_DEF_GETTER
+        (cull_face_value_type, GetFaceToCull, m_faceToCull);
 
       TLOC_DECL_AND_DEF_GETTER(color_type, GetClearColor, m_clearColor);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(color_type, SetClearColor, m_clearColor);
@@ -170,6 +185,7 @@ namespace tloc { namespace graphics { namespace renderer {
       enable_cont                 m_enableFeatures;
       disable_cont                m_disableFeatures;
       clear_value_type            m_clearBits;
+      cull_face_value_type        m_faceToCull;
     };
 
   public:
@@ -198,7 +214,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
   private:
     Params                      m_params;
-    mutable fbo_type::bind_uptr m_fboBinder;
+    mutable fbo_bind_ptr        m_fboBinder;
   };
 
   // -----------------------------------------------------------------------
@@ -320,6 +336,24 @@ namespace tloc { namespace graphics { namespace renderer {
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DepthPrecision>
+  template <typename T_Face> 
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
+    Renderer_T<T_DepthPrecision>::Params::
+    Cull()
+  {
+    using namespace p_renderer::cull_face;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_Face,
+       Front, Back, FrontAndBack>();
+
+    m_faceToCull = T_Face::s_glParamName;
+    return *this;
+  }
+
   // -----------------------------------------------------------------------
   // typedefs
 
@@ -327,10 +361,31 @@ namespace tloc { namespace graphics { namespace renderer {
   typedef Renderer_T<f32>               Renderer_depth32;
   typedef Renderer_T<f64>               Renderer_depth64;
 
-  TLOC_TYPEDEF_SHARED_PTR(Renderer, renderer);
-  TLOC_TYPEDEF_SHARED_PTR(Renderer_depth32, renderer_depth32);
-  TLOC_TYPEDEF_SHARED_PTR(Renderer_depth64, renderer_depth64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Renderer, renderer);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Renderer_depth32, renderer_depth32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Renderer_depth64, renderer_depth64);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Renderer, renderer);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Renderer_depth32, renderer_depth32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Renderer_depth64, renderer_depth64);
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Renderer_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Renderer_T<f64>);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_rend::Renderer);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_rend::Renderer_depth32);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_rend::Renderer_depth64);
+
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_rend::Renderer);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_rend::Renderer_depth32);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_rend::Renderer_depth64);
 
 #endif

@@ -60,6 +60,13 @@ namespace tloc { namespace math { namespace types {
   typedef FOV_T<f32>      fov_f32;
   typedef FOV_T<f32>      fov_f64;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(FOV_T<tl_float>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FOV_T<f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FOV_T<f64>);
+
 };};};
 
 #endif

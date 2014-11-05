@@ -11,7 +11,7 @@ namespace tloc { namespace animation { namespace component_system {
   {
     enum type
     {
-      transform_animation = core::component_system::components_group::animation,
+      k_transform_animation = core_cs::component_group::k_animation,
       count
     };  typedef tl_int value_type;
   };

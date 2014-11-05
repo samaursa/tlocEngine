@@ -47,18 +47,16 @@ namespace tloc { namespace math { namespace types {
   void FOV_T<FOV_PARAMS>::
     DoSetAngle(angle_type a_angle, p_FOV::horizontal)
   {
-    typedef Math<value_type>  math;
     m_FOVx = a_angle;
-    m_FOVy = 2 * math::ATan( math::Tan( m_FOVx.Get() / 2) * m_aspectRatio.GetInv());
+    m_FOVy = math::ATan( math::Tan( m_FOVx / 2.0f) * m_aspectRatio.GetInv()) * 2.0f;
   }
 
   template <FOV_TEMPS>
   void FOV_T<FOV_PARAMS>::
     DoSetAngle(angle_type a_angle, p_FOV::vertical)
   {
-    typedef Math<value_type>  math;
     m_FOVy = a_angle;
-    m_FOVx = 2.0f * math::ATan( math::Tan( m_FOVy.Get() / 2.0f) * m_aspectRatio.Get());
+    m_FOVx = math::ATan( math::Tan( m_FOVy / 2.0f) * m_aspectRatio.Get()) * 2.0f;
   }
 
   template <FOV_TEMPS>

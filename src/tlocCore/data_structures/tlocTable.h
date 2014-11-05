@@ -120,7 +120,6 @@ namespace tloc { namespace core { namespace data_structs {
     //------------------------------------------------------------------------
     // Operators
 
-    Table& operator= (const Table& aTable);
     bool operator == (const Table& aTable);
     bool operator != (const Table& aTable);
 
@@ -145,6 +144,42 @@ namespace tloc { namespace core { namespace data_structs {
     T m_values[k_size];
 
   };
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+#define TLOC_EXTERN_TEMPLATE_TABLE(_type_, _rows_, _cols_)\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_ds::Table<_type_ TLOC_COMMA _rows_ TLOC_COMMA _cols_>)
+
+  TLOC_EXTERN_TEMPLATE_TABLE(s32, 1, 1);
+  TLOC_EXTERN_TEMPLATE_TABLE(s32, 2, 2);
+  TLOC_EXTERN_TEMPLATE_TABLE(s32, 3, 3);
+  TLOC_EXTERN_TEMPLATE_TABLE(s32, 4, 4);
+
+  TLOC_EXTERN_TEMPLATE_TABLE(u32, 1, 1);
+  TLOC_EXTERN_TEMPLATE_TABLE(u32, 2, 2);
+  TLOC_EXTERN_TEMPLATE_TABLE(u32, 3, 3);
+  TLOC_EXTERN_TEMPLATE_TABLE(u32, 4, 4);
+
+  TLOC_EXTERN_TEMPLATE_TABLE(f32, 1, 1);
+  TLOC_EXTERN_TEMPLATE_TABLE(f32, 2, 2);
+  TLOC_EXTERN_TEMPLATE_TABLE(f32, 3, 3);
+  TLOC_EXTERN_TEMPLATE_TABLE(f32, 4, 4);
+
+  TLOC_EXTERN_TEMPLATE_TABLE(s64, 1, 1);
+  TLOC_EXTERN_TEMPLATE_TABLE(s64, 2, 2);
+  TLOC_EXTERN_TEMPLATE_TABLE(s64, 3, 3);
+  TLOC_EXTERN_TEMPLATE_TABLE(s64, 4, 4);
+
+  TLOC_EXTERN_TEMPLATE_TABLE(u64, 1, 1);
+  TLOC_EXTERN_TEMPLATE_TABLE(u64, 2, 2);
+  TLOC_EXTERN_TEMPLATE_TABLE(u64, 3, 3);
+  TLOC_EXTERN_TEMPLATE_TABLE(u64, 4, 4);
+
+  TLOC_EXTERN_TEMPLATE_TABLE(f64, 1, 1);
+  TLOC_EXTERN_TEMPLATE_TABLE(f64, 2, 2);
+  TLOC_EXTERN_TEMPLATE_TABLE(f64, 3, 3);
+  TLOC_EXTERN_TEMPLATE_TABLE(f64, 4, 4);
 
 };};};
 

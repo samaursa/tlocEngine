@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace types {
   Color_TI<T, T_Size>::
     SetAs(const core_ds::Tuple<U, k_size>& a_colorInChannels)
   {
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <U, u8, s32, s64, f32, f64>();
 
     DoSetAs(a_colorInChannels);
@@ -172,7 +172,7 @@ namespace tloc { namespace graphics { namespace types {
     GetAs() const
   {
     using namespace p_color::format;
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
 
     return DoGetAs<T_ColorFormat>();
@@ -208,16 +208,15 @@ namespace tloc { namespace graphics { namespace types {
     using tloc::math::types::Vec4f32;
     using tloc::math::types::Vec4f64;
 
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
 
-    type_traits::AssertTypeIsSupported
+    tloc::type_traits::AssertTypeIsSupported
       <T_VectorType,
       core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
       core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>,
-      math_t::Vector2<f32>, math_t::Vector2<f64>,
-      math_t::Vector3<f32>, math_t::Vector3<f64>,
-      math_t::Vector4<f32>, math_t::Vector4<f64> >();
+      math_t::Vector_T<f32, k_size>, math_t::Vector_T<f64, k_size> 
+      >();
 
     DoGetAs<T_ColorFormat>(a_vec);
   }
@@ -291,7 +290,14 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     static const this_type COLOR_BLACK;
+    static const this_type COLOR_GREY;
     static const this_type COLOR_WHITE;
+    static const this_type COLOR_RED;
+    static const this_type COLOR_GREEN;
+    static const this_type COLOR_BLUE;
+    static const this_type COLOR_YELLOW;
+    static const this_type COLOR_CYAN;
+    static const this_type COLOR_MAGENTA;
   };
 
   // -----------------------------------------------------------------------
@@ -303,7 +309,35 @@ namespace tloc { namespace graphics { namespace types {
 
   template <typename T>
   const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_GREY = Color_T<T, 4>(128, 128, 128, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
     Color_T<T, 4>::COLOR_WHITE = Color_T<T, 4>(255, 255, 255, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_RED = Color_T<T, 4>(255, 0, 0, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_GREEN = Color_T<T, 4>(0, 255, 0, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_BLUE = Color_T<T, 4>(0, 0, 255, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_YELLOW = Color_T<T, 4>(255, 255, 0, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_CYAN = Color_T<T, 4>(0, 255, 255, 255);
+
+  template <typename T>
+  const Color_T<T, 4>
+    Color_T<T, 4>::COLOR_MAGENTA = Color_T<T, 4>(255, 0, 255, 255);
 
   // ///////////////////////////////////////////////////////////////////////
   // Color<T, 3>
@@ -369,7 +403,14 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     static const this_type COLOR_BLACK;
+    static const this_type COLOR_GREY;
     static const this_type COLOR_WHITE;
+    static const this_type COLOR_RED;
+    static const this_type COLOR_GREEN;
+    static const this_type COLOR_BLUE;
+    static const this_type COLOR_YELLOW;
+    static const this_type COLOR_CYAN;
+    static const this_type COLOR_MAGENTA;
   };
 
   // -----------------------------------------------------------------------
@@ -381,7 +422,35 @@ namespace tloc { namespace graphics { namespace types {
 
   template <typename T>
   const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_GREY = Color_T<T, 3>(128, 128, 128);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
     Color_T<T, 3>::COLOR_WHITE = Color_T<T, 3>(255, 255, 255);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_RED = Color_T<T, 3>(255, 0, 0);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_GREEN = Color_T<T, 3>(0, 255, 0);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_BLUE = Color_T<T, 3>(0, 0, 255);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_YELLOW = Color_T<T, 3>(255, 255, 0);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_CYAN = Color_T<T, 3>(0, 255, 255);
+
+  template <typename T>
+  const typename Color_T<T, 3>::this_type
+    Color_T<T, 3>::COLOR_MAGENTA = Color_T<T, 3>(255, 0, 255);
 
   // ///////////////////////////////////////////////////////////////////////
   // Color<T, 2>
@@ -447,7 +516,9 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     static const this_type COLOR_BLACK;
-    static const this_type COLOR_WHITE;
+    static const this_type COLOR_RED;
+    static const this_type COLOR_GREEN;
+    static const this_type COLOR_YELLOW;
   };
 
   // -----------------------------------------------------------------------
@@ -459,7 +530,15 @@ namespace tloc { namespace graphics { namespace types {
 
   template <typename T>
   const typename Color_T<T, 2>::this_type
-    Color_T<T, 2>::COLOR_WHITE = Color_T<T, 2>(255, 255);
+    Color_T<T, 2>::COLOR_RED = Color_T<T, 2>(255, 0);
+
+  template <typename T>
+  const typename Color_T<T, 2>::this_type
+    Color_T<T, 2>::COLOR_GREEN = Color_T<T, 2>(0, 255); 
+
+  template <typename T>
+  const typename Color_T<T, 2>::this_type
+    Color_T<T, 2>::COLOR_YELLOW = Color_T<T, 2>(255, 255); 
 
   // ///////////////////////////////////////////////////////////////////////
   // Color<T, 1>
@@ -525,7 +604,7 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     static const this_type COLOR_BLACK;
-    static const this_type COLOR_WHITE;
+    static const this_type COLOR_RED;
   };
 
   // -----------------------------------------------------------------------
@@ -537,7 +616,7 @@ namespace tloc { namespace graphics { namespace types {
 
   template <typename T>
   const typename Color_T<T, 1>::this_type
-    Color_T<T, 1>::COLOR_WHITE = Color_T<T, 1>(255);
+    Color_T<T, 1>::COLOR_RED = Color_T<T, 1>(255);
 
   // -----------------------------------------------------------------------
   // typedefs
@@ -562,6 +641,24 @@ namespace tloc { namespace graphics { namespace types {
   typedef Color_T<f32, 2>                                 color_f32_rg;
   typedef Color_T<f32, 3>                                 color_f32_rgb;
   typedef Color_T<f32, 4>                                 color_f32_rgba;
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 1>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 1>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 1>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 4>);
 
 };};};
 

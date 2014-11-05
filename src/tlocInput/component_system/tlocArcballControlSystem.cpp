@@ -1,8 +1,6 @@
 #include "tlocArcBallControlSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocGraphics/component_system/tlocSceneNode.h>
@@ -41,8 +39,14 @@ namespace tloc { namespace input { namespace component_system {
   ArcBallControlSystem::
     ArcBallControlSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::k_arcball_control))
+                register_type().Add<input_cs::ArcBallControl>(),
+                "ArcBallControlSystem")
     , m_flags(k_count)
+    , m_xRel(0.0f)
+    , m_yRel(0.0f)
+    , m_xPos(0.0f)
+    , m_yPos(0.0f)
+    , m_currentTouch(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -130,9 +134,10 @@ namespace tloc { namespace input { namespace component_system {
       }
       else if (m_flags.IsMarked(k_panning))
       {
-        math_t::Vec3f leftVec = t->GetOrientation().GetCol(0);
-        math_t::Vec3f upVec = t->GetOrientation().GetCol(1);
-
+        math_t::Vec3f leftVec =
+          t->GetOrientation().GetCol(0).ConvertTo<math_t::Vec3f>();
+        math_t::Vec3f upVec =
+          t->GetOrientation().GetCol(1).ConvertTo<math_t::Vec3f>();
         leftVec *= m_xRel * globalMulti[0] * panMulti[0];
         upVec *= m_yRel * globalMulti[1] * panMulti[1];
 
@@ -141,8 +146,8 @@ namespace tloc { namespace input { namespace component_system {
       }
       else if (m_flags.IsMarked(k_dolly))
       {
-        math_t::Vec3f dirVec = t->GetOrientation().GetCol(2);
-
+        math_t::Vec3f dirVec =
+          t->GetOrientation().GetCol(2).ConvertTo<math_t::Vec3f>();
         dirVec *= m_xRel * globalMulti[0] * dollyMulti;
 
         t->SetPosition(t->GetPosition() - dirVec);
@@ -273,6 +278,56 @@ namespace tloc { namespace input { namespace component_system {
     }
 
     return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::event_type
+    ArcBallControlSystem::
+    OnTouchPress(const tl_size, const TouchSurfaceEvent& a_event)
+  {
+    if (m_currentTouch == 0)
+    {
+      m_currentTouch = a_event.m_touchHandle;
+      m_flags.Mark(k_rotating);
+      m_xPos = a_event.m_X.m_abs();
+      m_yPos = a_event.m_Y.m_abs();
+    }
+
+    return core::dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::event_type
+    ArcBallControlSystem::
+    OnTouchRelease(const tl_size, const TouchSurfaceEvent& a_event)
+  {
+    if (a_event.m_touchHandle == m_currentTouch)
+    {
+      m_flags.Unmark(k_rotating);
+      m_currentTouch = 0;
+    }
+
+    return core::dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ArcBallControlSystem::event_type
+    ArcBallControlSystem::
+    OnTouchMove(const tl_size, const TouchSurfaceEvent& a_event)
+  {
+    if (a_event.m_touchHandle == m_currentTouch)
+    {
+      m_xRel = a_event.m_X.m_abs() - m_xPos;
+      m_yRel = a_event.m_Y.m_abs() - m_yPos;
+      m_xPos = a_event.m_X.m_abs();
+      m_yPos = a_event.m_Y.m_abs();
+      
+      m_flags.Mark(k_updated);
+    }
+    return core::dispatch::f_event::Continue();
   }
 
 };};};

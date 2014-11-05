@@ -156,10 +156,15 @@ using namespace tloc::core_cs;
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(EventManager);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(EventManager);
 
-#include <tlocCore/data_structures/tlocTupleExplicitMacros.h>
-
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 1);
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 2);
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 3);
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 4);
 TLOC_EXPLICITLY_INSTANTIATE_TUPLE(EventManager::listener_ptr, 5);
+
+// NOTE: Why explicitly instantiate listener_list when we have it built into
+// the EventManager? clang/LLVM appears to optimize and build the list directly
+// into the EventManager in release and release debug info builds, causing any
+// other class referring to listener_list to get linking errors. We need to
+// explicitly instantiate it to prevent this.
+TLOC_EXPLICITLY_INSTANTIATE_LIST(EventManager::listener_ptr);

@@ -113,4 +113,11 @@ namespace tloc { namespace graphics { namespace gl {
 
 };};};
 
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_SHARED_PTR(tloc::gfx_gl::RenderbufferObject);
+TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(tloc::gfx_gl::RenderbufferObject::Bind);
+
 #endif

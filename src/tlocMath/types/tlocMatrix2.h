@@ -11,15 +11,16 @@
 namespace tloc { namespace math { namespace types {
 
   template <typename T>
-  class Matrix2 : public Matrix<T, 2>
+  class Matrix_T<T, 2>
+    : public Matrix_TI<T, 2, Matrix_T<T, 2> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
   public:
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
-    typedef Matrix2<T>                            this_type;
-    typedef Matrix<T, 2>                          base_type;
+    typedef Matrix_T<T, 2>                        this_type;
+    typedef Matrix_TI<T, 2, this_type>            base_type;
 
     typedef typename base_type::matrix_order      matrix_order;
 
@@ -39,33 +40,33 @@ namespace tloc { namespace math { namespace types {
     // Constructors
 
     // Empty default constructor
-    Matrix2();
+    Matrix_T();
 
     // Copy constructor
-    Matrix2(const this_type& aMatrix);
+    Matrix_T(const this_type& aMatrix);
 
     // Copy constructor
-    Matrix2(const base_type& aMatrix);
+    Matrix_T(const base_type& aMatrix);
 
     // Generate a matrix by inputs in row-major order
-    Matrix2(value_type m00, value_type m01,
-            value_type m10, value_type m11);
+    Matrix_T(value_type m00, value_type m01,
+             value_type m10, value_type m11);
 
     // Generate a diagonal matrix
-    Matrix2(value_type m00, value_type m11);
+    Matrix_T(value_type m00, value_type m11);
 
     // Fill the matrix with a certain value
-    explicit Matrix2(const_reference aValue);
+    explicit Matrix_T(const_reference aValue);
 
     // Fill the matrix with vectors depending on the selected order
-    Matrix2(const Vector2<value_type>& aVec1,
-            const Vector2<value_type>& aVec2,
-            typename base_type::matrix_order aOrder);
+    Matrix_T(const Vector_T<value_type, 2>& aVec1,
+             const Vector_T<value_type, 2>& aVec2,
+             typename base_type::matrix_order aOrder);
 
     // Fill the matrix with values in a certain matrix order
-    Matrix2(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
+    Matrix_T(const value_type (&values)[k_MatrixSize], matrix_order aOrder);
 
-    Matrix2(const core::data_structs::Variadic<value_type, 4>& a_vars,
+    Matrix_T(const core::data_structs::Variadic<value_type, 4>& a_vars,
             matrix_order a_order);
 
     //------------------------------------------------------------------------
@@ -93,11 +94,24 @@ namespace tloc { namespace math { namespace types {
     void EigenDecomposition(this_type& aRot, this_type& aDiag) const;
   };
 
-  typedef Matrix2<f32>  Mat2f32;
-  typedef Matrix2<f64>  Mat2f64;
-  typedef Matrix2<f128> Mat2f128;
+  // -----------------------------------------------------------------------
+  // typedefs
 
-  typedef Matrix2<tl_float> Mat2f;
+  typedef Matrix_T<f32, 2>      Mat2f32;
+  typedef Matrix_T<f64, 2>      Mat2f64;
+  typedef Matrix_T<f128, 2>     Mat2f128;
+  typedef Matrix_T<tl_float, 2> Mat2f;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f64 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f128 TLOC_COMMA 2>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f32 TLOC_COMMA 2 TLOC_COMMA  Mat2f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f64 TLOC_COMMA 2 TLOC_COMMA  Mat2f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f128 TLOC_COMMA 2 TLOC_COMMA  Mat2f128>);
 
 };};};
 

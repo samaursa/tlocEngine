@@ -74,7 +74,7 @@ namespace tloc { namespace prefab { namespace graphics {
     SceneNode::
     Add(entity_ptr a_ent) const
   {
-    TLOC_ASSERT(a_ent->HasComponent(gfx_cs::SceneNode::k_component_type) == false,
+    TLOC_ASSERT(a_ent->HasComponent<gfx_cs::SceneNode>() == false,
       "Entity already has a SceneNode");
 
     // -----------------------------------------------------------------------
@@ -86,6 +86,12 @@ namespace tloc { namespace prefab { namespace graphics {
         .Position(m_pos)
         .Orientation(m_ori)
         .Add(a_ent);
+    }
+    else
+    {
+      math_cs::transform_sptr t = a_ent->GetComponent<math_cs::Transform>();
+      t->SetPosition(m_pos);
+      t->SetOrientation(m_ori);
     }
 
     // -----------------------------------------------------------------------

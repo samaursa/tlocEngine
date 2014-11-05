@@ -99,6 +99,34 @@ namespace tloc { namespace core { namespace io {
   typedef FileIO_T<p_file_io::Read_And_Append,
                  p_file_io::Binary>                  FileIO_ReadAndAppendB;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read TLOC_COMMA p_file_io::Ascii>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Append TLOC_COMMA p_file_io::Ascii>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Write TLOC_COMMA p_file_io::Ascii>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read_And_Write TLOC_COMMA p_file_io::Ascii>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read_And_Write_Empty TLOC_COMMA p_file_io::Ascii>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read_And_Append TLOC_COMMA p_file_io::Ascii>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read TLOC_COMMA p_file_io::Binary>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Append TLOC_COMMA p_file_io::Binary>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Write TLOC_COMMA p_file_io::Binary>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read_And_Write TLOC_COMMA p_file_io::Binary>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read_And_Write_Empty TLOC_COMMA p_file_io::Binary>);
+  TLOC_EXTERN_TEMPLATE_CLASS(FileIO_T<p_file_io::Read_And_Append TLOC_COMMA p_file_io::Binary>);
+
+  // ///////////////////////////////////////////////////////////////////////
+
+  namespace f_file_io {
+
+    template <typename T_FileFormat>
+    typename FileIO_T<p_file_io::Read, T_FileFormat>::error_type
+      OpenAndGetContents(const core_io::Path& a_filePath, 
+                         core_str::String& a_contentOut);
+
+  };
+
 };};};
 
 #endif

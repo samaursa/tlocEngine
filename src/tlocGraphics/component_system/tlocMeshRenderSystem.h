@@ -36,14 +36,11 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_ptr a_eventMgr,
                        entity_manager_ptr a_entityMgr);
 
+    virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
-    virtual void Post_ProcessActiveEntities(f64 a_deltaT);
-
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
@@ -52,11 +49,7 @@ namespace tloc { namespace graphics { namespace component_system {
     using base_type::GetViewProjectionMatrix;
 
   private:
-    const_shader_prog_ptr     m_shaderPtr;
-
-    gl::shader_operator_vso   m_mvpOperator,
-                              so_mesh;
-    gl::uniform_vso           m_uniVpMat;
+    gl::shader_operator_vso   so_mesh;
   };
 
   // -----------------------------------------------------------------------
@@ -66,7 +59,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(MeshRenderSystem, mesh_render_system);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(MeshRenderSystem, mesh_render_system);
+  
+  // -----------------------------------------------------------------------
+  // extern template
+  
+  TLOC_EXTERN_TEMPLATE_CLASS(MeshRenderSystem_T<Mesh>);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::MeshRenderSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::MeshRenderSystem);
 
 #endif

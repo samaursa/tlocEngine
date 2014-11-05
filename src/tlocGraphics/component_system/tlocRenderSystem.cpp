@@ -66,7 +66,7 @@ namespace tloc { namespace graphics { namespace component_system {
     DrawInfo::
     DrawInfo(entity_ptr a_ent, 
              gfx_t::gl_int a_drawCommand, 
-             gfx_t::gl_sizei a_numVertices)
+             tl_size a_numVertices)
     : m_entity(a_ent)
     , m_drawCommand(a_drawCommand)
     , m_numVertices(a_numVertices)

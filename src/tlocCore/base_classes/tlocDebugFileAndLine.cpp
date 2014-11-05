@@ -42,6 +42,5 @@ namespace tloc { namespace core { namespace base_classes {
 
    template class DebugFileAndLine_T<core_cfg::p_build_config::Debug>;
    template class DebugFileAndLine_T<core_cfg::p_build_config::Release_DebugInfo>;
-   template class DebugFileAndLine_T<core_cfg::p_build_config::Release>;
 
 };};};

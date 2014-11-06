@@ -7,6 +7,7 @@
 #include <tlocCore/types/tlocTemplateParams.h>
 
 #include <tlocInput/tlocInputTypes.h>
+#include <tlocInput/tlocInputImplWin.h>
 #include <tlocInput/hid/tlocJoystick.h>
 #include <tlocInput/hid/tlocJoystickImpl.h>
 
@@ -19,7 +20,8 @@
 
 namespace tloc { namespace input {
 
-  typedef ParamList<HWND, IDirectInput8*, param_options::value_type>
+  typedef ParamList<HWND, IDirectInput8*, priv::InputDeviceInfo, 
+                    param_options::value_type>
     windows_joystick_param_type;
 
 };};

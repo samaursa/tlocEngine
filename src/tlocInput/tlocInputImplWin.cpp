@@ -28,9 +28,10 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject, tl_int T_Index>
     struct DoCreateHID
     {
-      T_InputObject* Create(param_options::value_type a_params,
-        IDirectInput8* a_directInput,
-        input_param_type a_inputManagerParams)
+      T_InputObject* 
+        Create(param_options::value_type a_params, 
+               IDirectInput8* a_directInput, InputDeviceInfo a_info, 
+               input_param_type a_inputManagerParams)
       {
         TLOC_LOG_INPUT_ERR() << "Unsupported input type selected";
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
@@ -42,15 +43,17 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Keyboard::m_index>
     {
-      T_InputObject* Create(param_options::value_type a_params,
-        IDirectInput8* a_directInput,
-        input_param_type a_inputManagerParams)
+      T_InputObject* 
+        Create(param_options::value_type a_params, 
+               IDirectInput8* a_directInput, InputDeviceInfo a_info, 
+               input_param_type a_inputManagerParams)
       {
         TLOC_UNUSED(a_params);
         windows_keyboard_param_type params;
         params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
-        params.m_param3 = a_params;
+        params.m_param3 = a_info;
+        params.m_param4 = a_params;
 
         T_InputObject* newInput = new T_InputObject(params);
 
@@ -61,15 +64,17 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Mouse::m_index>
     {
-      T_InputObject* Create(param_options::value_type a_params,
-                            IDirectInput8* a_directInput,
-                            input_param_type a_inputManagerParams)
+      T_InputObject* 
+        Create(param_options::value_type a_params, 
+               IDirectInput8* a_directInput, InputDeviceInfo a_info, 
+               input_param_type a_inputManagerParams)
       {
         TLOC_UNUSED(a_params);
         windows_mouse_param_type params;
         params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
-        params.m_param3 = a_params;
+        params.m_param3 = a_info;
+        params.m_param4 = a_params;
 
         T_InputObject* newInput = new T_InputObject(params);
 
@@ -80,15 +85,17 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::Joystick::m_index>
     {
-      T_InputObject* Create(param_options::value_type a_params,
-                            IDirectInput8* a_directInput,
-                            input_param_type a_inputManagerParams)
+      T_InputObject* 
+        Create(param_options::value_type a_params, 
+               IDirectInput8* a_directInput, InputDeviceInfo a_info, 
+               input_param_type a_inputManagerParams)
       {
         TLOC_UNUSED(a_params);
         windows_joystick_param_type params;
         params.m_param1 = a_inputManagerParams.m_param1.Cast<HWND>();
         params.m_param2 = a_directInput;
-        params.m_param3 = a_params;
+        params.m_param3 = a_info;
+        params.m_param4 = a_params;
 
         T_InputObject* newInput = new T_InputObject(params);
 
@@ -99,9 +106,10 @@ namespace tloc { namespace input { namespace priv {
     template <typename T_InputObject>
     struct DoCreateHID<T_InputObject, p_hid::TouchSurface::m_index>
     {
-      T_InputObject* Create(param_options::value_type a_params,
-        IDirectInput8* a_directInput,
-        input_param_type a_inputManagerParams)
+      T_InputObject* 
+        Create(param_options::value_type a_params, 
+               IDirectInput8* a_directInput, InputDeviceInfo a_info, 
+               input_param_type a_inputManagerParams)
       {
         TLOC_UNUSED_3(a_params, a_directInput, a_inputManagerParams);
         win_touch_surface_param_type params;
@@ -246,22 +254,23 @@ namespace tloc { namespace input { namespace priv {
 
     for (size_type i = 0; i < m_winHIDs[T_InputObject::m_index].size(); ++i)
     {
-      if (m_winHIDs[T_InputObject::m_index][i].m_inUse == false)
+      auto& deviceInfo = m_winHIDs[T_InputObject::m_index][i];
+
+      if (deviceInfo.m_inUse == false)
       {
         newInput.reset
           (DoCreateHID<T_InputObject, T_InputObject::m_index>()
-          .Create(a_params, m_directInput, m_params));
+          .Create(a_params, m_directInput, deviceInfo, m_params));
 
-        m_winHIDs[T_InputObject::m_index][i].m_inUse = true;
-        m_winHIDs[T_InputObject::m_index][i].m_devicePtr = newInput;
-      }
-      else
-      {
-        TLOC_LOG_INPUT_ERR()
-          << "Could not create a keyboard (either one is already created or we "
-          << "do not have any keyboards attached)";
+        deviceInfo.m_inUse = true;
+        deviceInfo.m_devicePtr = newInput;
+
+        break;
       }
     }
+
+    TLOC_LOG_INPUT_WARN_IF(newInput == nullptr) 
+      << "Could not create the requested input device";
 
     return newInput;
   }

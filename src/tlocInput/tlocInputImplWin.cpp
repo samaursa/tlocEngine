@@ -269,9 +269,6 @@ namespace tloc { namespace input { namespace priv {
       }
     }
 
-    TLOC_LOG_INPUT_WARN_IF(newInput == nullptr) 
-      << "Could not create the requested input device";
-
     return newInput;
   }
 

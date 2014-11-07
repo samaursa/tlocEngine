@@ -73,7 +73,7 @@ namespace TestingInput
       , m_movementEvents(0) {}
 
     core_dispatch::Event
-      OnButtonPress(const tl_size a_caller,
+      OnMouseButtonPress(const tl_size a_caller,
       const MouseEvent& a_event,
       const MouseEvent::button_code_type a_buttonCode)
     {
@@ -86,7 +86,7 @@ namespace TestingInput
     }
 
     core_dispatch::Event
-      OnButtonRelease(const tl_size a_caller,
+      OnMouseButtonRelease(const tl_size a_caller,
       const MouseEvent& a_event,
       const MouseEvent::button_code_type a_buttonCode)
     {

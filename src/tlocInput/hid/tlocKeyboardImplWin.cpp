@@ -201,7 +201,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   void KeyboardImpl<KEYBOARD_IMPL_PARAMS>::DoInitialize()
   {
     if (FAILED(m_directInput->
-      CreateDevice(GUID_SysKeyboard, &m_keyboard, TLOC_NULL)))
+      CreateDevice(m_params.m_param3.m_deviceGuid, &m_keyboard, TLOC_NULL)))
     {
       // LOG: Keyboard failed to initialize
       TLOC_LOG_INPUT_ERR() << "Keyboard failed to initialize";
@@ -216,15 +216,15 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     DWORD coop = 0;
 
-    if (m_params.m_param3 & param_options::TL_WIN_DISCL_BACKGROUND)
+    if (m_params.m_param4 & param_options::TL_WIN_DISCL_BACKGROUND)
     { coop |= DISCL_BACKGROUND; }
     else { coop |= DISCL_FOREGROUND; } // default
 
-    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    if (m_params.m_param4 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
     { coop |= DISCL_NONEXCLUSIVE; }
     else { coop |= DISCL_EXCLUSIVE; } // default
 
-    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NOWINKEY)
+    if (m_params.m_param4 & param_options::TL_WIN_DISCL_NOWINKEY)
     { coop |= DISCL_NOWINKEY; }
 
     if (!DoInitializeExtra(policy_type()))

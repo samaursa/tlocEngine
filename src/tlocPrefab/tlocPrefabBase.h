@@ -39,8 +39,7 @@ namespace tloc {
 
   template <typename T_Derived, typename T_ComponentType>
   class Prefab_TI
-    : public core_bclass::NonCopyable_I
-    , public core_bclass::PolicyBase_TI<T_Derived>
+    : public core_bclass::PolicyBase_TI<T_Derived>
   {
   public:
     typedef core_bclass::PolicyBase_TI<T_Derived>         base_type;

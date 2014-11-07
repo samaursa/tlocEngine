@@ -168,7 +168,7 @@ namespace tloc { namespace input { namespace component_system {
 
   ArcBallControlSystem::event_type
     ArcBallControlSystem::
-    OnButtonPress(const tl_size, const input_hid::MouseEvent&, 
+    OnMouseButtonPress(const tl_size, const input_hid::MouseEvent&, 
                   const input_hid::MouseEvent::button_code_type a_button)
   {
     if (a_button == input_hid::MouseEvent::left)
@@ -202,8 +202,8 @@ namespace tloc { namespace input { namespace component_system {
 
   ArcBallControlSystem::event_type
     ArcBallControlSystem::
-    OnButtonRelease(const tl_size, const input_hid::MouseEvent&, 
-                    const input_hid::MouseEvent::button_code_type a_button)
+    OnMouseButtonRelease(const tl_size, const input_hid::MouseEvent&, 
+                         const input_hid::MouseEvent::button_code_type a_button)
   {
     if (a_button == input_hid::MouseEvent::left)
     {

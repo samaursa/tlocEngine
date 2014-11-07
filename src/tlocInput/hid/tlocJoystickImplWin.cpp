@@ -6,6 +6,8 @@
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/logging/tlocLogger.h>
 
+#include <tlocMath/utilities/tlocScale.h>
+
 // In dinput.h we have macros for offsets for the DIJOYSTATE struct but no
 // macros for DIJOYSTATE2 struct, we will define our own here (by copying
 // the existing macros in DIJOYSTATE and replacing DIJOYSTATE with DIJOYSTATE2)
@@ -156,7 +158,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoInitialize()
   {
     if (FAILED(m_directInput->
-      CreateDevice(GUID_Joystick, &m_joystick, TLOC_NULL)) )
+      CreateDevice(m_params.m_param3.m_deviceGuid, &m_joystick, TLOC_NULL)) )
     {
       TLOC_LOG_INPUT_ERR() << "Joystick failed to initialize";
       return;
@@ -169,15 +171,15 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     DWORD coop = 0;
 
-    if (m_params.m_param3 & param_options::TL_WIN_DISCL_BACKGROUND)
+    if (m_params.m_param4 & param_options::TL_WIN_DISCL_BACKGROUND)
     { coop |= DISCL_BACKGROUND; }
     else { coop |= DISCL_FOREGROUND; } // default
 
-    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
+    if (m_params.m_param4 & param_options::TL_WIN_DISCL_NONEXCLUSIVE)
     { coop |= DISCL_NONEXCLUSIVE; }
     else { coop |= DISCL_EXCLUSIVE; } // default
 
-    if (m_params.m_param3 & param_options::TL_WIN_DISCL_NOWINKEY)
+    if (m_params.m_param4 & param_options::TL_WIN_DISCL_NOWINKEY)
     { coop |= DISCL_NOWINKEY; }
 
     if (!DoInitializeExtra(policy_type()))
@@ -235,6 +237,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     m_currentState.m_buttons.resize(m_diJoyCaps.dwButtons);
     m_currentState.m_axes.resize(m_diJoyCaps.dwAxes);
+    m_currentState.m_normAxes.resize(m_diJoyCaps.dwAxes);
     m_currentState.m_pov.resize(m_diJoyCaps.dwPOVs);
 
     m_axisMoved.resize(m_diJoyCaps.dwAxes);
@@ -256,6 +259,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DWORD entries = buffer_size::joystick_buffer_Size;
     HRESULT hRes;
 
+    auto axisScale = math_utils::scale_f32_s32(m_smallRange, m_largeRange);
+
+    m_joystick->Acquire();
     hRes = m_joystick->
       GetDeviceData(sizeof(DIDEVICEOBJECTDATA), diBuff, &entries, TLOC_NULL);
     if (hRes != DI_OK)
@@ -275,10 +281,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       }
     }
 
-    if (FAILED(hRes))
-    {
-      TLOC_LOG_INPUT_ERR() << "Could not get joystick (device) data";
-    }
+    TLOC_LOG_INPUT_ERR_IF(FAILED(hRes)) 
+      << "Could not get joystick (device) data";
 
     core::fill_all(m_axisMoved, false);
     core::fill_all(m_sliderMoved, false);
@@ -290,8 +294,6 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
       switch(offset)
       {
-        // -----------------------------------------------------------------------
-        // Since there are only 4 POVs in the DIJOYSTATE struct
       case TLOC_DIJOFS_SLIDER0(0):
         m_sliderMoved[0] = true;
         m_currentState.m_sliders[0][0] = data;
@@ -353,14 +355,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #1
           case TLOC_DIJOFS_X:
             m_currentState.m_axes[0][0] = data;
+            m_currentState.m_normAxes[0][0] = axisScale.ScaleDown(data);
             m_axisMoved[0] = true;
             break;
           case TLOC_DIJOFS_Y:
             m_currentState.m_axes[0][1] = data;
+            m_currentState.m_normAxes[0][1] = axisScale.ScaleDown(data);
             m_axisMoved[0] = true;
             break;
           case TLOC_DIJOFS_Z:
             m_currentState.m_axes[0][2] = data;
+            m_currentState.m_normAxes[0][2] = axisScale.ScaleDown(data);
             m_axisMoved[0] = true;
             break;
 
@@ -368,14 +373,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #2
           case TLOC_DIJOFS_RX:
             m_currentState.m_axes[1][0] = data;
+            m_currentState.m_normAxes[1][0] = axisScale.ScaleDown(data);
             m_axisMoved[1] = true;
             break;
           case TLOC_DIJOFS_RY:
             m_currentState.m_axes[1][1] = data;
+            m_currentState.m_normAxes[1][1] = axisScale.ScaleDown(data);
             m_axisMoved[1] = true;
             break;
           case TLOC_DIJOFS_RZ:
             m_currentState.m_axes[1][2] = data;
+            m_currentState.m_normAxes[1][2] = axisScale.ScaleDown(data);
             m_axisMoved[1] = true;
             break;
 
@@ -383,14 +391,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #3
           case TLOC_DIJOFS_VX:
             m_currentState.m_axes[2][0] = data;
+            m_currentState.m_normAxes[2][0] = axisScale.ScaleDown(data);
             m_axisMoved[2] = true;
             break;
           case TLOC_DIJOFS_VY:
             m_currentState.m_axes[2][1] = data;
+            m_currentState.m_normAxes[2][1] = axisScale.ScaleDown(data);
             m_axisMoved[2] = true;
             break;
           case TLOC_DIJOFS_VZ:
             m_currentState.m_axes[2][2] = data;
+            m_currentState.m_normAxes[2][2] = axisScale.ScaleDown(data);
             m_axisMoved[2] = true;
             break;
 
@@ -398,14 +409,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #4
           case TLOC_DIJOFS_VRX:
             m_currentState.m_axes[3][0] = data;
+            m_currentState.m_normAxes[3][0] = axisScale.ScaleDown(data);
             m_axisMoved[3] = true;
             break;
           case TLOC_DIJOFS_VRY:
             m_currentState.m_axes[3][1] = data;
+            m_currentState.m_normAxes[3][1] = axisScale.ScaleDown(data);
             m_axisMoved[3] = true;
             break;
           case TLOC_DIJOFS_VRZ:
             m_currentState.m_axes[3][2] = data;
+            m_currentState.m_normAxes[3][2] = axisScale.ScaleDown(data);
             m_axisMoved[3] = true;
             break;
 
@@ -413,14 +427,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #5
           case TLOC_DIJOFS_AX:
             m_currentState.m_axes[4][0] = data;
+            m_currentState.m_normAxes[4][0] = axisScale.ScaleDown(data);
             m_axisMoved[4] = true;
             break;
           case TLOC_DIJOFS_AY:
             m_currentState.m_axes[4][1] = data;
+            m_currentState.m_normAxes[4][1] = axisScale.ScaleDown(data);
             m_axisMoved[4] = true;
             break;
           case TLOC_DIJOFS_AZ:
             m_currentState.m_axes[4][2] = data;
+            m_currentState.m_normAxes[4][2] = axisScale.ScaleDown(data);
             m_axisMoved[4] = true;
             break;
 
@@ -428,14 +445,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #6
           case TLOC_DIJOFS_ARX:
             m_currentState.m_axes[5][0] = data;
+            m_currentState.m_normAxes[5][0] = axisScale.ScaleDown(data);
             m_axisMoved[5] = true;
             break;
           case TLOC_DIJOFS_ARY:
             m_currentState.m_axes[5][1] = data;
+            m_currentState.m_normAxes[5][1] = axisScale.ScaleDown(data);
             m_axisMoved[5] = true;
             break;
           case TLOC_DIJOFS_ARZ:
             m_currentState.m_axes[5][2] = data;
+            m_currentState.m_normAxes[5][2] = axisScale.ScaleDown(data);
             m_axisMoved[5] = true;
             break;
 
@@ -443,14 +463,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #7
           case TLOC_DIJOFS_FX:
             m_currentState.m_axes[6][0] = data;
+            m_currentState.m_normAxes[6][0] = axisScale.ScaleDown(data);
             m_axisMoved[6] = true;
             break;
           case TLOC_DIJOFS_FY:
             m_currentState.m_axes[6][1] = data;
+            m_currentState.m_normAxes[6][1] = axisScale.ScaleDown(data);
             m_axisMoved[6] = true;
             break;
           case TLOC_DIJOFS_FZ:
             m_currentState.m_axes[6][2] = data;
+            m_currentState.m_normAxes[6][2] = axisScale.ScaleDown(data);
             m_axisMoved[6] = true;
             break;
 
@@ -458,14 +481,17 @@ namespace tloc { namespace input { namespace hid { namespace priv {
             // axis #8
           case TLOC_DIJOFS_FRX:
             m_currentState.m_axes[7][0] = data;
+            m_currentState.m_normAxes[7][0] = axisScale.ScaleDown(data);
             m_axisMoved[7] = true;
             break;
           case TLOC_DIJOFS_FRY:
             m_currentState.m_axes[7][1] = data;
+            m_currentState.m_normAxes[7][1] = axisScale.ScaleDown(data);
             m_axisMoved[7] = true;
             break;
           case TLOC_DIJOFS_FRZ:
             m_currentState.m_axes[7][2] = data;
+            m_currentState.m_normAxes[7][2] = axisScale.ScaleDown(data);
             m_axisMoved[7] = true;
             break;
           }
@@ -491,8 +517,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         if (m_axisMoved[i])
         {
-          if (m_parent.SendAxisChange(m_currentState, i,
-                                      m_currentState.m_axes[i]).IsVeto())
+          if (m_parent.SendJoystickAxisChange(m_currentState, i, 
+                                              m_currentState.m_axes[i],
+                                              m_currentState.m_normAxes[i]).IsVeto())
           {
             return;
           }
@@ -503,8 +530,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       {
         if (m_sliderMoved[i])
         {
-          if (m_parent.SendSliderChange(m_currentState, i,
-                                        m_currentState.m_sliders[i]).IsVeto())
+          if (m_parent.SendJoystickSliderChange(m_currentState, i,
+                                                m_currentState.m_sliders[i]).IsVeto())
           {
             return;
           }
@@ -554,11 +581,13 @@ namespace tloc { namespace input { namespace hid { namespace priv {
 
     if( a_di.dwData & 0x80 )
     {
-      return m_parent.SendButtonPress( JoystickEvent(m_currentState), a_button);
+      return m_parent.SendJoystickButtonPress
+        (JoystickEvent(m_currentState), a_button);
     }
     else
     {
-      return m_parent.SendButtonRelease( JoystickEvent(m_currentState), a_button);
+      return m_parent.SendJoystickButtonRelease
+        (JoystickEvent(m_currentState), a_button);
     }
   }
 
@@ -570,7 +599,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     DoChangePOV(tl_int a_povIndex, DIDEVICEOBJECTDATA& a_di, InputPolicy::Buffered)
   {
     DoChangePOV(a_povIndex, a_di, InputPolicy::Immediate());
-    return m_parent.SendPOVChange
+    return m_parent.SendJoystickPOVChange
       (JoystickEvent(m_currentState), a_povIndex, m_currentState.m_pov[a_povIndex]);
   }
 
@@ -639,8 +668,18 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER);
     diprg.diph.dwHow        = DIPH_BYID;
     diprg.diph.dwObj        = lpddoi->dwType;
-    diprg.lMin              = base_type::MIN_AXIS;
-    diprg.lMax              = base_type::MAX_AXIS;
+
+    if (t->m_joystick->GetProperty(DIPROP_RANGE, &diprg.diph) != DI_OK)
+    {
+      diprg.lMin = base_type::MIN_AXIS;
+      diprg.lMax = base_type::MAX_AXIS;
+    }
+
+    t->m_axisMinMax.first   = diprg.lMin;
+    t->m_axisMinMax.second  = diprg.lMax;
+
+    t->m_smallRange = math::RangeNeg1to1<tl_float, math::p_range::Inclusive>().Get();
+    t->m_largeRange = math::range_s32(diprg.lMin, diprg.lMax + 1);
 
     if (FAILED(t->m_joystick->SetProperty(DIPROP_RANGE, &diprg.diph)))
     { TLOC_LOG_INPUT_WARN() << "Failed to set min/max for the axis"; }

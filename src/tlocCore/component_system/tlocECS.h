@@ -100,6 +100,7 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
     void  Initialize();
+    void  Update();
     void  Process(time_type a_deltaT);
 
   public:

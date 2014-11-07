@@ -1,7 +1,6 @@
 #include "tlocEntityManager.h"
 
 #include <tlocCore/tlocAssert.h>
-#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
@@ -48,7 +47,8 @@ namespace tloc { namespace core { namespace component_system {
     for (entity_cont::iterator itr = m_entities.begin(),
          itrEnd = m_entities.end(); itr != itrEnd; ++itr)
     {
-      if (*itr) { DestroyEntity(ToVirtualPtr(*itr)); }
+      if (*itr != nullptr) 
+      { DestroyEntity(ToVirtualPtr(*itr)); }
     }
 
     // update releases components and deletes entities marked for destruction
@@ -90,18 +90,30 @@ namespace tloc { namespace core { namespace component_system {
 
   void
     EntityManager::
-    DeactivateEntity(entity_ptr a_entity)
+    DeactivateEntity(const_entity_ptr a_entity)
   {
-    a_entity->DoDeactivate();
+    TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(), 
+      "Entity is not part of this EntityManager OR has been destroyed already");
+
+    a_entity->Deactivate();
+    m_deactivatedEntities.push_back(a_entity);
     m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, 
                                           ToVirtualPtr(a_entity)) );
   }
 
   void
     EntityManager::
-    ActivateEntity(entity_ptr a_entity)
+    ActivateEntity(const_entity_ptr a_entity)
   {
-    a_entity->DoActivate();
+    TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(), 
+      "Entity is not part of this EntityManager OR has been destroyed already");
+
+    a_entity->Activate();
+
+    auto itrSearch = find_all(m_deactivatedEntities, a_entity);
+    if (itrSearch != m_deactivatedEntities.end())
+    { m_deactivatedEntities.erase(itrSearch); }
+
     m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, 
                                           ToVirtualPtr(a_entity)) );
   }
@@ -109,8 +121,12 @@ namespace tloc { namespace core { namespace component_system {
   void EntityManager::
     DestroyEntity(entity_ptr a_entity)
   {
-    TLOC_ASSERT(core::find_all(m_entities, a_entity) != m_entities.end(),
-      "Entity does not exist!");
+    TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(),
+      "Entity is not part of this EntityManager OR has been destroyed already");
+
+    auto itrSearch = find_all(m_deactivatedEntities, a_entity);
+    if (itrSearch != m_deactivatedEntities.end())
+    { m_deactivatedEntities.erase(itrSearch); }
 
     m_entitiesToRemove.push_back(m_entities[a_entity->GetIndex()]);
 
@@ -220,11 +236,10 @@ namespace tloc { namespace core { namespace component_system {
   void EntityManager::Update()
   {
     // Go through all the entities that we have to remove, and mark their
-    // components for removal
-    auto itr = m_entitiesToRemove.begin();
-    auto itrEnd = m_entitiesToRemove.end();
-
-    for(; itr != itrEnd; ++itr)
+    // components for removal - if any entity is deactivated and is NOT in
+    // m_disabledEntities, disable it through DeactivateEntity()
+    for(auto itr = m_entitiesToRemove.begin(), 
+             itrEnd = m_entitiesToRemove.end(); itr != itrEnd; ++itr)
     {
       component_group_iterator groupItr    = (*itr)->begin_component_groups();
       component_group_iterator groupItrEnd = (*itr)->end_component_groups();
@@ -243,6 +258,29 @@ namespace tloc { namespace core { namespace component_system {
       m_removedEntities.push_back( (*itr)->GetIndex());
     }
 
+    // deactivate all entities that are marked as disabled
+    for(auto itr = m_entities.begin(), 
+             itrEnd = m_entities.end(); itr != itrEnd; ++itr)
+    {
+      if (*itr != nullptr)
+      {
+        if ( (*itr)->IsActive() == false)
+        {
+          if (find_all(m_deactivatedEntities, *itr) == m_deactivatedEntities.end())
+          {
+            DeactivateEntity(core_sptr::ToVirtualPtr(*itr));
+          }
+        }
+        else
+        {
+          if (find_all(m_deactivatedEntities, *itr) != m_deactivatedEntities.end())
+          {
+            ActivateEntity(core_sptr::ToVirtualPtr(*itr));
+          }
+        }
+      }
+    }
+
     // Update the components (which involves removing them)
     DoUpdateAndCleanComponents();
     // Update the entities (which involves removing them)
@@ -254,5 +292,11 @@ namespace tloc { namespace core { namespace component_system {
 //------------------------------------------------------------------------
 // Explicit instantiations
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EntityManager);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::core_cs::EntityManager);
+using namespace tloc;
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(core_cs::EntityManager);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(core_cs::EntityManager);
+
+#include <tlocCore/containers/tlocArray.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(core_cs::EntityManager::const_entity_ptr);

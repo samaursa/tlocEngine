@@ -18,7 +18,7 @@ namespace tloc { namespace core { namespace utils {
   {
   public:
     typedef bool                                      value_type;
-    typedef containers::tl_array <value_type>::type   flags_type;
+    typedef containers::tl_array<value_type>::type    flags_type;
     typedef tl_int                                    size_type;
 
     Checkpoints(tl_uint a_numberOfCheckpoints, bool a_initial = false);

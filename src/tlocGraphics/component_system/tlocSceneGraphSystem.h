@@ -60,6 +60,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void 
       ActivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent);
+
+    void 
+      DeactivateHierarchy(entity_ptr a_parent);
+
+    void 
+      ActivateHierarchy(entity_ptr a_parent);
   };
 
 };};};

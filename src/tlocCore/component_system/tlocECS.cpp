@@ -28,6 +28,13 @@ namespace tloc { namespace core { namespace component_system {
 
   void
     ECS::
+    Update()
+  { m_entMgr->Update(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ECS::
     Process(time_type a_deltaT)
   { 
     m_entMgr->Update();

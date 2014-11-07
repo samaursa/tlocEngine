@@ -46,10 +46,10 @@ namespace tloc { namespace input { namespace component_system {
     // -----------------------------------------------------------------------
     // callbacks
 
-    event_type    OnButtonPress(const tl_size, const input_hid::MouseEvent&,
-                                const input_hid::MouseEvent::button_code_type a_button);
-    event_type    OnButtonRelease(const tl_size, const input_hid::MouseEvent&,
-                                  const input_hid::MouseEvent::button_code_type a_button);
+    event_type    OnMouseButtonPress(const tl_size, const input_hid::MouseEvent&,
+                                     const input_hid::MouseEvent::button_code_type a_button);
+    event_type    OnMouseButtonRelease(const tl_size, const input_hid::MouseEvent&,
+                                       const input_hid::MouseEvent::button_code_type a_button);
     event_type    OnMouseMove(const tl_size, const input_hid::MouseEvent& a_event);
 
     event_type    OnKeyPress(const tl_size, const input_hid::KeyboardEvent& a_event);

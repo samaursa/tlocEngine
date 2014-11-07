@@ -28,15 +28,17 @@ namespace tloc { namespace input { namespace hid {
     }; typedef s32 state_code_type;
 
     typedef Component::Pov                                  pov_type;
+    typedef core_ds::Tuple3f32                              axis_type_norm;
     typedef core_ds::Tuple3s32                              axis_type;
     typedef core_ds::Tuple2s32                              slider_type;
 
     typedef JoystickEvent                                   this_type;
     typedef core_conts::Array<bool>                         button_cont;
     typedef core_conts::Array<axis_type>                    axis_cont;
+    typedef core_conts::Array<axis_type_norm>               axis_cont_norm;
     typedef core_conts::ArrayFixed<slider_type, 4>          slider_cont;
     typedef core_conts::ArrayFixed<pov_type, 4>             pov_cont;
-
+    
   public:
     JoystickEvent()
     { Clear(); }
@@ -72,6 +74,7 @@ namespace tloc { namespace input { namespace hid {
 
     button_cont               m_buttons;
     axis_cont                 m_axes;
+    axis_cont_norm            m_normAxes;
     pov_cont                  m_pov;
     slider_cont               m_sliders;
 
@@ -109,10 +112,10 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       GetParams() const
     { return m_params; }
 
-    //! The minimal axis value
+    //! The minimal axis value (will be set again later)
     static const int MIN_AXIS = -32768;
 
-    //! The maximum axis value
+    //! The maximum axis value (will be set again later)
     static const int MAX_AXIS = 32767;
 
   protected:

@@ -28,32 +28,33 @@ namespace tloc { namespace input { namespace hid {
 
     public:
       virtual event_type 
-        OnButtonPress(const tl_size a_caller, 
-                      const JoystickEvent& a_event, 
-                      tl_int a_buttonIndex) const = 0; 
+        OnJoystickButtonPress(const tl_size a_caller, 
+                              const JoystickEvent& a_event, 
+                              tl_int a_buttonIndex) const = 0; 
 
       virtual event_type 
-        OnButtonRelease(const tl_size a_caller, 
-                        const JoystickEvent& a_event, 
-                        tl_int a_buttonIndex) const = 0; 
+        OnJoystickButtonRelease(const tl_size a_caller, 
+                                const JoystickEvent& a_event, 
+                                tl_int a_buttonIndex) const = 0; 
       
       virtual event_type 
-        OnAxisChange(const tl_size a_caller, 
-                     const JoystickEvent& a_event, 
-                     tl_int a_axisIndex, 
-                     JoystickEvent::axis_type a_axis) const = 0;
+        OnJoystickAxisChange(const tl_size a_caller, 
+                             const JoystickEvent& a_event, 
+                             tl_int a_axisIndex, 
+                             JoystickEvent::axis_type a_axis,
+                             JoystickEvent::axis_type_norm a_normAxis) const = 0;
 
       virtual event_type 
-        OnSliderChange(const tl_size a_caller, 
-                       const JoystickEvent& a_event, 
-                       tl_int a_sliderIndex, 
-                       JoystickEvent::slider_type a_slider) const = 0;
+        OnJoystickSliderChange(const tl_size a_caller, 
+                               const JoystickEvent& a_event, 
+                               tl_int a_sliderIndex, 
+                               JoystickEvent::slider_type a_slider) const = 0;
 
       virtual event_type
-        OnPOVChange(const tl_size a_caller, 
-                    const JoystickEvent& a_event, 
-                    tl_int a_povIndex, 
-                    JoystickEvent::pov_type a_pov) const = 0;
+        OnJoystickPOVChange(const tl_size a_caller, 
+                            const JoystickEvent& a_event, 
+                            tl_int a_povIndex, 
+                            JoystickEvent::pov_type a_pov) const = 0;
     };
 
     template <typename T>
@@ -70,13 +71,13 @@ namespace tloc { namespace input { namespace hid {
 
     public:
       virtual event_type
-        OnButtonPress(const tl_size a_caller, 
-                      const JoystickEvent& a_event, 
-                      tl_int a_buttonIndex) const
+        OnJoystickButtonPress(const tl_size a_caller, 
+                              const JoystickEvent& a_event, 
+                              tl_int a_buttonIndex) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnButtonPress
+          if (m_observers[i]->OnJoystickButtonPress
                 (a_caller, a_event, a_buttonIndex).IsVeto())
           { 
             return core_dispatch::f_event::Veto();
@@ -87,13 +88,13 @@ namespace tloc { namespace input { namespace hid {
       }
 
       virtual event_type
-        OnButtonRelease(const tl_size a_caller, 
-                        const JoystickEvent& a_event, 
-                        tl_int a_buttonIndex) const
+        OnJoystickButtonRelease(const tl_size a_caller, 
+                                const JoystickEvent& a_event, 
+                                tl_int a_buttonIndex) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnButtonRelease
+          if (m_observers[i]->OnJoystickButtonRelease
                 (a_caller, a_event, a_buttonIndex).IsVeto())
           { 
             return core_dispatch::f_event::Veto();
@@ -104,15 +105,16 @@ namespace tloc { namespace input { namespace hid {
       }
 
       virtual event_type 
-        OnAxisChange(const tl_size a_caller, 
-                     const JoystickEvent& a_event, 
-                     tl_int a_axisIndex, 
-                     JoystickEvent::axis_type a_axis) const
+        OnJoystickAxisChange(const tl_size a_caller, 
+                             const JoystickEvent& a_event, 
+                             tl_int a_axisIndex, 
+                             JoystickEvent::axis_type a_axis,
+                             JoystickEvent::axis_type_norm a_axisNorm) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnAxisChange
-                (a_caller, a_event, a_axisIndex, a_axis).IsVeto())
+          if (m_observers[i]->OnJoystickAxisChange
+                (a_caller, a_event, a_axisIndex, a_axis, a_axisNorm).IsVeto())
           {
             return core_dispatch::f_event::Veto();
           }
@@ -122,14 +124,14 @@ namespace tloc { namespace input { namespace hid {
       }
 
       virtual event_type
-        OnSliderChange(const tl_size a_caller, 
-                       const JoystickEvent& a_event, 
-                       tl_int a_sliderIndex, 
-                       JoystickEvent::slider_type a_slider) const
+        OnJoystickSliderChange(const tl_size a_caller, 
+                               const JoystickEvent& a_event, 
+                               tl_int a_sliderIndex, 
+                               JoystickEvent::slider_type a_slider) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnSliderChange
+          if (m_observers[i]->OnJoystickSliderChange
                 (a_caller, a_event, a_sliderIndex, a_slider).IsVeto())
           {
             return core_dispatch::f_event::Veto();
@@ -140,14 +142,14 @@ namespace tloc { namespace input { namespace hid {
       }
 
       virtual event_type 
-        OnPOVChange(const tl_size a_caller, 
-                    const JoystickEvent& a_event, 
-                    tl_int a_povIndex, 
-                    JoystickEvent::pov_type a_pov) const
+        OnJoystickPOVChange(const tl_size a_caller, 
+                            const JoystickEvent& a_event, 
+                            tl_int a_povIndex, 
+                            JoystickEvent::pov_type a_pov) const
       {
         for (u32 i = 0; i < m_observers.size(); ++i)
         {
-          if (m_observers[i]->OnPOVChange
+          if (m_observers[i]->OnJoystickPOVChange
                 (a_caller, a_event, a_povIndex, a_pov).IsVeto())
           {
             return core_dispatch::f_event::Veto();
@@ -188,23 +190,24 @@ namespace tloc { namespace input { namespace hid {
     const joystick_event_type& GetCurrState() const;
 
     event_type 
-      SendButtonPress(const joystick_event_type& a_event, 
-                      tl_int a_buttonIndex) const;
+      SendJoystickButtonPress(const joystick_event_type& a_event, 
+                              tl_int a_buttonIndex) const;
     event_type 
-      SendButtonRelease(const joystick_event_type& a_event, 
-                        tl_int a_buttonIndex) const;
+      SendJoystickButtonRelease(const joystick_event_type& a_event, 
+                                tl_int a_buttonIndex) const;
     event_type 
-      SendAxisChange(const joystick_event_type& a_event, 
-                     tl_int a_axisIndex, 
-                     joystick_event_type::axis_type a_axis) const;
+      SendJoystickAxisChange(const joystick_event_type& a_event, 
+                             tl_int a_axisIndex, 
+                             joystick_event_type::axis_type a_axis,
+                             joystick_event_type::axis_type_norm a_axisNorm) const;
     event_type 
-      SendSliderChange(const joystick_event_type& a_event, 
-                       tl_int a_sliderIndex, 
-                       joystick_event_type::slider_type a_slider) const;
+      SendJoystickSliderChange(const joystick_event_type& a_event, 
+                               tl_int a_sliderIndex, 
+                               joystick_event_type::slider_type a_slider) const;
     event_type 
-      SendPOVChange(const joystick_event_type& a_event, 
-                    tl_int a_povIndex, 
-                    joystick_event_type::pov_type a_pov) const;
+      SendJoystickPOVChange(const joystick_event_type& a_event, 
+                            tl_int a_povIndex, 
+                            joystick_event_type::pov_type a_pov) const;
 
     void Update();
     void Reset();

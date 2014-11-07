@@ -55,14 +55,14 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
-    SendButtonPress(const joystick_event_type& a_event,
+    SendJoystickButtonPress(const joystick_event_type& a_event,
                     tl_int a_buttonIndex) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnButtonPress( core_utils::GetMemoryAddress(this), a_event,
-                         a_buttonIndex).IsVeto())
+          OnJoystickButtonPress(core_utils::GetMemoryAddress(this), a_event,
+                                a_buttonIndex).IsVeto())
       { return core_dispatch::f_event::Veto(); }
     }
 
@@ -74,14 +74,14 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
-    SendButtonRelease(const joystick_event_type& a_event,
-                      tl_int a_buttonIndex) const
+    SendJoystickButtonRelease(const joystick_event_type& a_event,
+                              tl_int a_buttonIndex) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnButtonRelease( core_utils::GetMemoryAddress(this), a_event,
-                           a_buttonIndex).IsVeto())
+          OnJoystickButtonRelease(core_utils::GetMemoryAddress(this), a_event,
+                                  a_buttonIndex).IsVeto())
       { return core_dispatch::f_event::Veto(); }
     }
 
@@ -93,15 +93,16 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
-    SendAxisChange(const joystick_event_type& a_event,
-                   tl_int a_axisIndex,
-                   joystick_event_type::axis_type a_axis) const
+    SendJoystickAxisChange(const joystick_event_type& a_event,
+                           tl_int a_axisIndex, 
+                           joystick_event_type::axis_type a_axis,
+                           joystick_event_type::axis_type_norm a_axisNorm) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnAxisChange( core_utils::GetMemoryAddress(this), a_event,
-                        a_axisIndex, a_axis).IsVeto())
+          OnJoystickAxisChange(core_utils::GetMemoryAddress(this), a_event,
+                               a_axisIndex, a_axis, a_axisNorm).IsVeto())
       { return core_dispatch::f_event::Veto(); }
     }
 
@@ -113,15 +114,15 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
-    SendSliderChange(const joystick_event_type& a_event,
-                     tl_int a_sliderIndex,
-                     joystick_event_type::slider_type a_slider) const
+    SendJoystickSliderChange(const joystick_event_type& a_event,
+                             tl_int a_sliderIndex,
+                             joystick_event_type::slider_type a_slider) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnSliderChange( core_utils::GetMemoryAddress(this), a_event,
-                          a_sliderIndex, a_slider).IsVeto())
+          OnJoystickSliderChange(core_utils::GetMemoryAddress(this), a_event,
+                                 a_sliderIndex, a_slider).IsVeto())
       { return core_dispatch::f_event::Veto(); }
     }
 
@@ -133,15 +134,15 @@ namespace tloc { namespace input { namespace hid {
   template <JOYSTICK_TEMP>
   JOYSTICK_TYPE::event_type
     Joystick_T<JOYSTICK_PARAMS>::
-    SendPOVChange(const joystick_event_type& a_event,
-                  tl_int a_povIndex,
-                  joystick_event_type::pov_type a_pov) const
+    SendJoystickPOVChange(const joystick_event_type& a_event,
+                          tl_int a_povIndex,
+                          joystick_event_type::pov_type a_pov) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
       if (m_allObservers[i]->
-          OnPOVChange( core_utils::GetMemoryAddress(this), a_event,
-                       a_povIndex, a_pov).IsVeto())
+          OnJoystickPOVChange(core_utils::GetMemoryAddress(this), a_event,
+                              a_povIndex, a_pov).IsVeto())
       { return core_dispatch::f_event::Veto(); }
     }
 

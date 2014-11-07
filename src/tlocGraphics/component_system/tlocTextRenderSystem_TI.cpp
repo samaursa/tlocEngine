@@ -289,7 +289,7 @@ namespace tloc { namespace graphics { namespace component_system {
       // not create it but other logic relies on these characters
       // TODO: Refactor later to not create the quad in the first place
       if (core_str::IsSpace(core_str::CharWideToAscii(text[i])))
-      { DoGetEntityManager()->DeactivateEntity(q); }
+      { q->Deactivate(); }
 
       // -----------------------------------------------------------------------
       // make it a node
@@ -304,7 +304,7 @@ namespace tloc { namespace graphics { namespace component_system {
         .Paused(false).Add(q, itrSs, itrEndSs);
 
       if (a_ent->IsActive() == false)
-      { DoGetEntityManager()->DeactivateEntity(q); }
+      { q->Deactivate(); }
     }
 
     DoAlignText(tqp);

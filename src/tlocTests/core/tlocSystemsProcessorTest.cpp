@@ -108,7 +108,7 @@ namespace
     core_utils::Checkpoints     m_flags;
   };
   TLOC_TYPEDEF_ALL_SMART_PTRS(DummySys1, dummy_sys1);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(DummySys1, dummy_sys1);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(DummySys1, dummy_sys1);
 
   // ///////////////////////////////////////////////////////////////////////
   // DummySys2
@@ -153,7 +153,7 @@ namespace
     core_utils::Checkpoints     m_flags;
   };
   TLOC_TYPEDEF_ALL_SMART_PTRS(DummySys2, dummy_sys2);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR(DummySys2, dummy_sys2);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(DummySys2, dummy_sys2);
 
   // ///////////////////////////////////////////////////////////////////////
   // TESTS

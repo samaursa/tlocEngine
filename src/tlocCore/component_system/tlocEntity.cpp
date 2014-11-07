@@ -265,14 +265,14 @@ namespace tloc { namespace core { namespace component_system {
 
   void
     Entity::
-    DoActivate() const
+    Activate() const
   { m_active = true; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     Entity::
-    DoDeactivate() const
+    Deactivate() const
   { m_active = false; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

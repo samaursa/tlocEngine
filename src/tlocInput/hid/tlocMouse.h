@@ -35,16 +35,15 @@ namespace tloc { namespace input { namespace hid {
 
   public:
     virtual event_type
-      OnButtonPress(const tl_size a_caller,
-                    const MouseEvent& a_event,
-                    const MouseEvent::button_code_type a_buttonCode) const = 0;
+      OnMouseButtonPress(const tl_size a_caller,
+                         const MouseEvent& a_event,
+                         const MouseEvent::button_code_type a_buttonCode) const = 0;
     virtual event_type
-      OnButtonRelease(const tl_size a_caller,
-                      const MouseEvent& a_event,
-                      const MouseEvent::button_code_type a_buttonCode) const = 0;
+      OnMouseButtonRelease(const tl_size a_caller,
+                           const MouseEvent& a_event,
+                           const MouseEvent::button_code_type a_buttonCode) const = 0;
     virtual event_type
-      OnMouseMove(const tl_size a_caller,
-                  const MouseEvent& a_event) const = 0;
+      OnMouseMove(const tl_size a_caller, const MouseEvent& a_event) const = 0;
   };
 
   ///-------------------------------------------------------------------------
@@ -66,14 +65,14 @@ namespace tloc { namespace input { namespace hid {
 
   public:
     virtual event_type
-      OnButtonPress(const tl_size a_caller,
-                    const MouseEvent& a_event,
-                    const MouseEvent::button_code_type a_buttonCode) const
+      OnMouseButtonPress(const tl_size a_caller,
+                         const MouseEvent& a_event,
+                         const MouseEvent::button_code_type a_buttonCode) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonPress(a_caller, a_event, a_buttonCode).IsVeto())
+            OnMouseButtonPress(a_caller, a_event, a_buttonCode).IsVeto())
         {
           return core_dispatch::f_event::Veto();
         }
@@ -83,14 +82,14 @@ namespace tloc { namespace input { namespace hid {
     }
 
     virtual event_type
-      OnButtonRelease(const tl_size a_caller,
-                      const MouseEvent& a_event,
-                      const MouseEvent::button_code_type a_buttonCode) const
+      OnMouseButtonRelease(const tl_size a_caller,
+                           const MouseEvent& a_event,
+                           const MouseEvent::button_code_type a_buttonCode) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
         if (m_observers[i]->
-            OnButtonRelease(a_caller, a_event, a_buttonCode).IsVeto())
+            OnMouseButtonRelease(a_caller, a_event, a_buttonCode).IsVeto())
         {
           return core_dispatch::f_event::Veto();
         }
@@ -100,8 +99,7 @@ namespace tloc { namespace input { namespace hid {
     }
 
     virtual event_type
-      OnMouseMove(const tl_size a_caller,
-                  const MouseEvent& a_event) const
+      OnMouseMove(const tl_size a_caller, const MouseEvent& a_event) const
     {
       for (u32 i = 0; i < m_observers.size(); ++i)
       {
@@ -145,10 +143,10 @@ namespace tloc { namespace input { namespace hid {
     bool        IsButtonDown(button_code_type a_button) const;
     event_type  GetState() const;
 
-    void SendOnButtonPress(const MouseEvent& a_event,
-                           button_code_type a_buttonCode) const;
-    void SendOnButtonRelease(const MouseEvent& a_event,
-                             button_code_type a_buttonCode) const;
+    void SendOnMouseButtonPress(const MouseEvent& a_event,
+                                button_code_type a_buttonCode) const;
+    void SendOnMouseButtonRelease(const MouseEvent& a_event,
+                                  button_code_type a_buttonCode) const;
     void SendOnMouseMove(const MouseEvent& a_event) const;
 
     void Clamp(event_type& a_event) const;

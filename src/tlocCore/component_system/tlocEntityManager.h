@@ -27,6 +27,11 @@ namespace tloc { namespace core { namespace component_system {
 
     typedef containers::tl_array
       <entity_uptr>::type                         entity_cont;
+
+    typedef containers::tl_array
+      <const_entity_ptr, 
+       core_conts::Array_Unordered>::type         const_entity_ptr_cont;
+
     typedef containers::
       tl_array<Entity::entity_id>::type           entity_id_cont;
     typedef containers::tl_array
@@ -97,6 +102,8 @@ namespace tloc { namespace core { namespace component_system {
   private:
 
     entity_cont             m_entities;
+    const_entity_ptr_cont   m_deactivatedEntities;
+
     entity_id_cont          m_removedEntities;
     event_manager_vptr      m_eventMgr;
     entity_id_type          m_nextId;

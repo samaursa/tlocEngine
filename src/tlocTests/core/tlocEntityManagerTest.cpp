@@ -164,6 +164,12 @@ namespace TestingEntityManager
       // -----------------------------------------------------------------------
       // enable disable entity
 
+      core_cs::entity_vso badEnt(MakeArgs(0));
+
+      TLOC_TEST_ASSERT
+      { eMgr.DeactivateEntity(badEnt.get()); }
+      TLOC_TEST_ASSERT_CHECK();
+
       for (auto itr = myList.begin(),
         itrEnd = myList.end(); itr != itrEnd; ++itr)
       {
@@ -172,11 +178,36 @@ namespace TestingEntityManager
       CHECK(entTrack->m_disableEntityCounter == entityCount);
       CHECK(entTrack2->m_disableEntityCounter == 0); // not listening for this event
 
+
+      TLOC_TEST_ASSERT
+      { eMgr.ActivateEntity(badEnt.get()); }
+      TLOC_TEST_ASSERT_CHECK();
+
       for (auto itr = myList.begin(),
         itrEnd = myList.end(); itr != itrEnd; ++itr)
       {
         eMgr.ActivateEntity(core_sptr::ToVirtualPtr(*itr));
       }
+      CHECK(entTrack->m_disableEntityCounter == 0);
+      CHECK(entTrack2->m_disableEntityCounter == 0);
+
+      // -----------------------------------------------------------------------
+      // we can also enable/disable the entities directly
+      for (auto itr = myList.begin(),
+                itrEnd = myList.end(); itr != itrEnd; ++itr)
+      {
+        (*itr)->Deactivate();
+      }
+      eMgr.Update();
+      CHECK(entTrack->m_disableEntityCounter == entityCount);
+      CHECK(entTrack2->m_disableEntityCounter == 0); // not listening for this event
+
+      for (auto itr = myList.begin(),
+                itrEnd = myList.end(); itr != itrEnd; ++itr)
+      {
+        (*itr)->Activate();
+      }
+      eMgr.Update();
       CHECK(entTrack->m_disableEntityCounter == 0);
       CHECK(entTrack2->m_disableEntityCounter == 0);
 

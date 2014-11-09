@@ -95,6 +95,10 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(), 
       "Entity is not part of this EntityManager OR has been destroyed already");
 
+    // entity already deactive
+    if (find_all(m_deactivatedEntities, a_entity) != m_deactivatedEntities.end())
+    { return; }
+
     a_entity->Deactivate();
     m_deactivatedEntities.push_back(a_entity);
     m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, 
@@ -107,6 +111,10 @@ namespace tloc { namespace core { namespace component_system {
   {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(), 
       "Entity is not part of this EntityManager OR has been destroyed already");
+
+    // entity already active
+    if (find_all(m_deactivatedEntities, a_entity) == m_deactivatedEntities.end())
+    { return; }
 
     a_entity->Activate();
 
@@ -265,19 +273,9 @@ namespace tloc { namespace core { namespace component_system {
       if (*itr != nullptr)
       {
         if ( (*itr)->IsActive() == false)
-        {
-          if (find_all(m_deactivatedEntities, *itr) == m_deactivatedEntities.end())
-          {
-            DeactivateEntity(core_sptr::ToVirtualPtr(*itr));
-          }
-        }
+        { DeactivateEntity(core_sptr::ToVirtualPtr(*itr)); }
         else
-        {
-          if (find_all(m_deactivatedEntities, *itr) != m_deactivatedEntities.end())
-          {
-            ActivateEntity(core_sptr::ToVirtualPtr(*itr));
-          }
-        }
+        { ActivateEntity(core_sptr::ToVirtualPtr(*itr)); }
       }
     }
 

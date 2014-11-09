@@ -28,19 +28,20 @@ namespace tloc { namespace core { namespace component_system {
     typedef Component::info_type                  component_info_type;
 
     typedef tl_size                               size_type;
-    typedef core::error::Error                    error_type;
+    typedef core_err::Error                       error_type;
 
-    typedef core_cs::EventManager                 event_manager;
-    typedef core_cs::event_manager_vptr           event_manager_ptr;
-    typedef core_cs::EventBase                    event_type;
+    typedef EventManager                          event_manager;
+    typedef event_manager_vptr                    event_manager_ptr;
+    typedef EventBase                             event_type;
+    typedef EntityComponentEvent                  entity_comp_event_type;
 
-    typedef core_cs::EntityManager                entity_manager;
-    typedef core_cs::entity_manager_vptr          entity_manager_ptr;
-    typedef core_cs::const_entity_manager_vptr    const_entity_manager_ptr;
+    typedef EntityManager                         entity_manager;
+    typedef entity_manager_vptr                   entity_manager_ptr;
+    typedef const_entity_manager_vptr             const_entity_manager_ptr;
 
-    typedef core_cs::Entity                       entity_type;
-    typedef core_cs::entity_vptr                  entity_ptr;
-    typedef core_cs::const_entity_vptr            const_entity_ptr;
+    typedef Entity                                entity_type;
+    typedef entity_vptr                           entity_ptr;
+    typedef const_entity_vptr                     const_entity_ptr;
     typedef EventBase::event_type                 event_value_type;
 
     typedef core::Pair<entity_ptr, size_type>     entity_count_pair;
@@ -153,11 +154,14 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     virtual void Post_ProcessActiveEntities(time_type a_deltaT) = 0;
 
-    virtual void OnComponentInsert(const EntityComponentEvent& a_event) = 0;
-    virtual void OnComponentRemove(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentInsert(const entity_comp_event_type& a_event) = 0;
+    virtual void OnComponentRemove(const entity_comp_event_type& a_event) = 0;
 
-    virtual void OnComponentDisable(const EntityComponentEvent& a_event) = 0;
-    virtual void OnComponentEnable(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentDisable(const entity_comp_event_type& a_event) = 0;
+    virtual void OnComponentEnable(const entity_comp_event_type& a_event) = 0;
+
+    virtual void OnEntityActivate(const entity_comp_event_type& a_event) = 0;
+    virtual void OnEntityDeactivate(const entity_comp_event_type& a_event) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called by EventManager (we are/should-be a registered listener).

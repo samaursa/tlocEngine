@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/tlocAssert.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocEntitySystemBase.h>
 
@@ -37,6 +38,16 @@ namespace tloc { namespace core { namespace component_system {
     virtual error_type ReInitializeEntity(entity_vptr a_ent);
     virtual error_type Post_ReInitialize();
 
+  protected: // Re-Activate
+    virtual error_type Pre_Reactivate();
+    virtual error_type ReactivateEntity(entity_vptr a_ent);
+    virtual error_type Post_Reactivate();
+
+  protected: // De-Activate
+    virtual error_type Pre_Deactivate();
+    virtual error_type DeactivateEntity(entity_vptr a_ent);
+    virtual error_type Post_Deactivate();
+
   protected: // Processing
     virtual bool CheckProcessing();
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
@@ -50,8 +61,14 @@ namespace tloc { namespace core { namespace component_system {
     virtual error_type Post_Shutdown();
 
   protected: // component insert/remove
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&);
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&);
+    virtual void OnComponentInsert(const entity_comp_event_type&);
+    virtual void OnComponentRemove(const entity_comp_event_type&);
+    
+    virtual void OnComponentDisable(const entity_comp_event_type&);
+    virtual void OnComponentEnable(const entity_comp_event_type&);
+
+    virtual void OnEntityActivate(const entity_comp_event_type&);
+    virtual void OnEntityDeactivate(const entity_comp_event_type&);
 
   private:
     virtual void DoProcessActiveEntities (const entity_count_cont& a_entities,
@@ -63,7 +80,15 @@ namespace tloc { namespace core { namespace component_system {
 
   private:
     core_cs::entity_ptr_array     m_entsToReInit;
+    core_cs::entity_ptr_array     m_entsDeactivated;
+    core_cs::entity_ptr_array     m_entsActivated;
     core_cs::entity_ptr_array     m_entsToShutdown;
+
+  protected:
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToReInit, m_entsToReInit);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToDeactivate, m_entsDeactivated);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToActivate, m_entsActivated);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToShutdown, m_entsToShutdown);
   };
   
   // -----------------------------------------------------------------------

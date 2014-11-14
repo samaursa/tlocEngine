@@ -53,19 +53,19 @@ namespace tloc { namespace graphics { namespace component_system {
   namespace f_scene_graph
   {
     typedef SceneGraphSystem::entity_manager_ptr        entity_manager_ptr;
-    typedef SceneGraphSystem::entity_ptr                entity_ptr;
+    typedef SceneGraphSystem::const_entity_ptr          const_entity_ptr;
 
     void 
-      DeactivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent);
+      DeactivateHierarchy(entity_manager_ptr a_mgr, const_entity_ptr a_parent);
 
     void 
-      ActivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent);
+      ActivateHierarchy(entity_manager_ptr a_mgr, const_entity_ptr a_parent);
 
     void 
-      DeactivateHierarchy(entity_ptr a_parent);
+      DeactivateHierarchy(const_entity_ptr a_parent);
 
     void 
-      ActivateHierarchy(entity_ptr a_parent);
+      ActivateHierarchy(const_entity_ptr a_parent);
   };
 
 };};};

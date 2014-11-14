@@ -208,7 +208,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   namespace f_scene_graph {
     void
-      DeactivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent)
+      DeactivateHierarchy(entity_manager_ptr a_mgr, const_entity_ptr a_parent)
     {
       TLOC_ASSERT_NOT_NULL(a_parent);
 
@@ -229,7 +229,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
-      ActivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent)
+      ActivateHierarchy(entity_manager_ptr a_mgr, const_entity_ptr a_parent)
     {
       TLOC_ASSERT_NOT_NULL(a_parent);
 
@@ -250,7 +250,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
-      DeactivateHierarchy(entity_ptr a_parent)
+      DeactivateHierarchy(const_entity_ptr a_parent)
     {
       TLOC_ASSERT_NOT_NULL(a_parent);
 
@@ -271,7 +271,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
-      ActivateHierarchy(entity_ptr a_parent)
+      ActivateHierarchy(const_entity_ptr a_parent)
     {
       TLOC_ASSERT_NOT_NULL(a_parent);
 

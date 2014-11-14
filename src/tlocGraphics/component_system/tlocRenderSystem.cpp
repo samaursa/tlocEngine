@@ -2,11 +2,13 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
 
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
+#include <tlocGraphics/opengl/tlocVertexArrayObject.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
@@ -15,89 +17,32 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  namespace {
+  // ///////////////////////////////////////////////////////////////////////
+  // Entity Compare Materials
 
-    enum {
+  struct MaterialCompareFromEntity
+  {
+    typedef gfx_cs::material_sptr                         ptr_type;
+    typedef core_cs::EntitySystemBase::entity_count_pair  entity_ptr_type;
+    typedef ptr_type::value_type                          comp_type;
 
-      k_enableAttrPosData = 0,
-      k_enableUniMVP,
-      k_enableUniModelMat,
-      k_enableCameraVP,
+    bool
+      operator()(entity_ptr_type a, entity_ptr_type b)
+    {
+      if (a.first->HasComponent<comp_type>() == false)
+      { return true; }
+      else if (b.first->HasComponent<comp_type>() == false)
+      { return false; }
 
-      k_count
-    };
+      ptr_type first = a.first->GetComponent<comp_type>();
+      ptr_type second = b.first->GetComponent<comp_type>();
 
+      return first < second;
+    }
   };
 
   // ///////////////////////////////////////////////////////////////////////
-  // RenderSystemBase
-
-  RenderSystemBase::
-    RenderSystemBase()
-    : m_flags(k_count)
-  { 
-    SetEnabledUniformMVPMatrix(true);
-    SetEnabledAttributePosData(true);
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  bool
-    RenderSystemBase::
-    IsUniformModelMatrixEnabled() const
-  { return m_flags.IsMarked(k_enableUniModelMat); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    RenderSystemBase::
-    SetEnabledUniformModelMatrix(bool a_value)
-  { m_flags[k_enableUniModelMat] = a_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  bool
-    RenderSystemBase::
-    IsAttributePosDataEnabled() const
-  { return m_flags.IsMarked(k_enableAttrPosData); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    RenderSystemBase::
-    SetEnabledAttributePosData(bool a_value)
-  { m_flags[k_enableAttrPosData] = a_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  bool
-    RenderSystemBase::
-    IsUniformMVPMatrixEnabled() const
-  { return m_flags.IsMarked(k_enableUniMVP); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    RenderSystemBase::
-    SetEnabledUniformMVPMatrix(bool a_value)
-  { m_flags[k_enableUniMVP] = a_value; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  bool
-    RenderSystemBase::
-    IsUniformVPEnabled() const
-  { return m_flags.IsMarked(k_enableCameraVP); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    RenderSystemBase::
-    SetEnabledUniformVPMatrix(bool a_value)
-  { m_flags[k_enableCameraVP] = a_value; }
-
-  // ///////////////////////////////////////////////////////////////////////
-  // RenderSystem_I
+  // RenderSystem_TI::DrawInfo
 
 #define RENDER_SYSTEM_TEMPS   typename T_RendererSptr
 #define RENDER_SYSTEM_PARAMS  T_RendererSptr
@@ -121,14 +66,42 @@ namespace tloc { namespace graphics { namespace component_system {
     DrawInfo::
     DrawInfo(entity_ptr a_ent, 
              gfx_t::gl_int a_drawCommand, 
-             gfx_t::gl_sizei a_numVertices)
+             tl_size a_numVertices)
     : m_entity(a_ent)
     , m_drawCommand(a_drawCommand)
     , m_numVertices(a_numVertices)
   { }
 
   // ///////////////////////////////////////////////////////////////////////
-  // RenderSystem_TO
+  // RenderSystem_TI
+
+  template <RENDER_SYSTEM_TEMPS>
+  void
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    SortEntities()
+  {
+    if (IsSortingByMaterialEnabled())
+    {
+      core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
+                 MaterialCompareFromEntity());
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    RenderSystem_TI(event_manager_ptr   a_eventMgr,
+                    entity_manager_ptr  a_entityMgr,
+                    register_type       a_registerTypes, 
+                    BufferArg           a_debugName)
+
+    : base_type(a_eventMgr, a_entityMgr, a_registerTypes, a_debugName)
+    , m_sharedCam(nullptr)
+    , m_renderer(nullptr)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDER_SYSTEM_TEMPS>
   RENDER_SYSTEM_TYPE::error_type
@@ -137,44 +110,99 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     // -----------------------------------------------------------------------
 
-    if (m_mvpMat.second.empty())
-    { m_mvpMat.second = "u_mvp"; }
+    if (m_vertexAttribName.empty())
+    { m_vertexAttribName = "a_vPos"; }
 
-    if (m_vpMat.second.empty())
-    { m_vpMat.second = "u_vpMat"; }
+    if (m_textureAttribPrefix.empty())
+    { m_textureAttribPrefix = "a_tCoord"; }
 
-    if (m_modelMat.second.empty())
-    { m_modelMat.second = "u_modelMat"; }
+    if (m_normalAttribName.empty())
+    { m_normalAttribName = "a_vNorm"; }
 
-    if (m_vertexData.second.empty())
-    { m_vertexData.second = "a_vPos"; }
+    if (m_colorAttribName.empty())
+    { m_colorAttribName = "a_vCol"; }
 
     // -----------------------------------------------------------------------
 
-    m_shaderOp->reserve_attributes(9);
-    m_shaderOp->reserve_uniforms(3);
+    if (m_uniMVPMat.second.empty())
+    { m_uniMVPMat.second = "u_mvp"; }
+    if (m_uniMVPInverseMat.second.empty())
+    { m_uniMVPInverseMat.second = "u_mvpInverse"; }
 
-    m_tData.resize(m_tData.capacity());
-    m_tData[0] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord"));
-    m_tData[1] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord2"));
-    m_tData[2] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord3"));
-    m_tData[3] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord4"));
-    m_tData[4] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord5"));
-    m_tData[5] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord6"));
-    m_tData[6] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord7"));
-    m_tData[7] = m_shaderOp->AddAttribute(gl::Attribute().SetName("a_tCoord8"));
+    if (m_uniVPMat.second.empty())
+    { m_uniVPMat.second = "u_vpMat"; }
+    if (m_uniVPInverseMat.second.empty())
+    { m_uniVPInverseMat.second = "u_vpInverseMat"; }
 
-    for (tl_size i = 0; i < m_tData.size(); ++i)
-    { m_tData[i]->SetEnabled(false); }
+    if (m_uniMVMat.second.empty())
+    { m_uniMVMat.second = "u_mvMat"; }
+    if (m_uniMVInverseMat.second.empty())
+    { m_uniMVInverseMat.second = "u_mvInverseMat"; }
 
-    m_mvpMat.first      = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_mvpMat.second));
-    m_vpMat.first       = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_vpMat.second));
-    m_modelMat.first    = 
-      m_shaderOp->AddUniform(gl::Uniform().SetName(m_modelMat.second));
-    m_vertexData.first  = 
-      m_shaderOp->AddAttribute(gl::Attribute().SetName(m_vertexData.second));
+    if (m_uniProjMat.second.empty())
+    { m_uniProjMat.second = "u_projectionMat"; }
+    if (m_uniProjInverseMat.second.empty())
+    { m_uniProjInverseMat.second = "u_projectionInverseMat"; }
+
+    if (m_uniViewMat.second.empty())
+    { m_uniViewMat.second = "u_viewMat"; }
+    if (m_uniViewInverseMat.second.empty())
+    { m_uniViewInverseMat.second = "u_viewInverseMat"; }
+
+    if (m_uniModelMat.second.empty())
+    { m_uniModelMat.second = "u_modelMat"; }
+    if (m_uniModelInverseMat.second.empty())
+    { m_uniModelInverseMat.second = "u_modelInverseMat"; }
+
+    if (m_uniScaleMat.second.empty())
+    { m_uniScaleMat.second = "u_scaleMat"; }
+    if (m_uniScaleInverseMat.second.empty())
+    { m_uniScaleInverseMat.second = "u_scaleInverseMat"; }
+
+    if (m_uniNormalMat.second.empty())
+    { m_uniNormalMat.second = "u_normalMat"; }
+
+    // -----------------------------------------------------------------------
+
+    m_shaderOp->reserve_uniforms(15);
+
+    m_uniMVPMat.first      = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniMVPMat.second));
+    m_uniMVPInverseMat.first      = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniMVPInverseMat.second));
+
+    m_uniVPMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniVPMat.second));
+    m_uniVPInverseMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniVPInverseMat.second));
+
+    m_uniMVMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniMVMat.second));
+    m_uniMVInverseMat.first       = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniMVInverseMat.second));
+
+    m_uniProjMat.first     = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniProjMat.second));
+    m_uniProjInverseMat.first     = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniProjInverseMat.second));
+
+    m_uniViewMat.first     = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniViewMat.second));
+    m_uniViewInverseMat.first     = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniViewInverseMat.second));
+
+    m_uniModelMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniModelMat.second));
+    m_uniModelInverseMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniModelInverseMat.second));
+
+    m_uniScaleMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniScaleMat.second));
+    m_uniScaleInverseMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniScaleInverseMat.second));
+
+    m_uniNormalMat.first    = 
+      m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniNormalMat.second));
 
     return ErrorSuccess;
   }
@@ -189,8 +217,109 @@ namespace tloc { namespace graphics { namespace component_system {
     m_sharedCam = a_cameraEntity;
 
     // Ensure that camera entity has the projection component
-    TLOC_ASSERT( m_sharedCam->HasComponent(gfx_cs::components::camera),
+    TLOC_ASSERT( m_sharedCam->HasComponent<gfx_cs::Camera>(),
       "The passed entity is not a camera!");
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void 
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    DoInitializeTexCoords(entity_ptr a_ent, so_type& a_so) const
+  {
+    // populate the texture coordinate attributes
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
+    { return; }
+
+    const size_type texCoordIndex =
+      a_ent->size_components<gfx_cs::TextureCoords>();
+
+    typedef gfx_cs::TextureCoords::set_index        set_index;
+
+    for (tl_size i = 0; i < texCoordIndex; ++i)
+    {
+      gfx_cs::texture_coords_sptr tcPtr =
+        a_ent->GetComponent<gfx_cs::TextureCoords>(i);
+      tcPtr->SetUpdateRequired(false);
+
+      if (tcPtr->GetNumSets() != 0)
+      {
+        gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
+          tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
+
+        gfx_gl::AttributeVBO vbo;
+
+        // hard coded tex-coord names
+        if (i != 0)
+        { vbo.AddName(core_str::Format("%s%i", m_textureAttribPrefix.c_str(), i + 1)); }
+        else
+        { vbo.AddName(m_textureAttribPrefix); }
+
+        vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
+                       gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
+
+        a_so.AddAttributeVBO(vbo);
+      }
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void 
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    DoUpdateTexCoords(entity_ptr a_ent, so_type& a_so) const
+  {
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
+    { return; }
+
+    const size_type numTexCoords =
+      a_ent->size_components<gfx_cs::TextureCoords>();
+
+    typedef gfx_cs::TextureCoords::set_index        set_index;
+
+    for (tl_size i = 0; i < numTexCoords; ++i)
+    {
+      gfx_cs::texture_coords_sptr tcPtr =
+        a_ent->GetComponent<gfx_cs::TextureCoords>(i);
+
+      if (tcPtr->IsUpdateRequired() == false)
+      { continue; }
+
+      tcPtr->SetUpdateRequired(false);
+
+      if (tcPtr->GetNumSets() != 0)
+      {
+        gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
+          tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
+
+        core_str::String currTextureName = 
+          core_str::Format("%s%i", m_textureAttribPrefix.c_str(), i + 1);
+        if (i == 0)
+        { currTextureName = m_textureAttribPrefix; }
+
+        using gl::algos::shader_operator::compare::AttributeVBOName;
+        gl::ShaderOperator::attributeVBO_iterator itr = 
+          core::find_if(a_so.begin_attributeVBOs(), 
+                        a_so.end_attributeVBOs(), 
+                        AttributeVBOName(currTextureName));
+
+        if (itr != a_so.end_attributeVBOs())
+        {
+          itr->first->UpdateData(*texCoordCont);
+        }
+        else
+        {
+          gfx_gl::AttributeVBO vbo;
+          vbo.AddName(currTextureName);
+          vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
+                         gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
+
+          a_so.AddAttributeVBO(vbo);
+        }
+      }
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -207,24 +336,108 @@ namespace tloc { namespace graphics { namespace component_system {
     return ErrorSuccess;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RENDER_SYSTEM_TYPE::error_type
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    Post_Initialize()
+  {
+    SortEntities();
+    return base_type::Post_Initialize();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RENDER_SYSTEM_TYPE::error_type
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    Post_ReInitialize()
+  {
+    SortEntities();
+    return base_type::Post_ReInitialize();
+  }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDER_SYSTEM_TEMPS>
   void 
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-    Pre_ProcessActiveEntities( f64 )
+    Pre_ProcessActiveEntities( f64 a_deltaT )
   {
-    if (m_sharedCam && m_sharedCam->HasComponent(gfx_cs::components::camera))
+    if (m_sharedCam && m_sharedCam->HasComponent<gfx_cs::Camera>())
     {
       m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
+      m_viewMatrix = m_sharedCam->GetComponent<Camera>()->GetViewMatrix();
+      m_projMat = m_sharedCam->GetComponent<Camera>()->GetProjectionMatrix();
     }
     else
     {
       m_vpMatrix.MakeIdentity();
+      m_viewMatrix.MakeIdentity();
+      m_projMat.MakeIdentity();
     }
 
+    // -----------------------------------------------------------------------
+    // populate and enable uniforms as needed
+
+    // view matrix
+    if (other_base_type::IsUniformViewMatrixEnabled())
+    { 
+      m_uniViewMat.first->SetValueAs(m_viewMatrix);
+      m_uniViewMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniViewMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformViewMatrixInverseEnabled())
+    { 
+      m_uniViewInverseMat.first->SetValueAs(m_viewMatrix.Invert());
+      m_uniViewInverseMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniViewInverseMat.first->SetEnabled(false); }
+
+    // projection matrix
+    if (other_base_type::IsUniformProjectionEnabled())
+    { 
+      m_uniProjMat.first->SetValueAs(m_projMat);
+      m_uniProjMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniProjMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformProjectionInverseEnabled())
+    { 
+      m_uniProjInverseMat.first->SetValueAs(m_projMat.Invert());
+      m_uniProjInverseMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniProjInverseMat.first->SetEnabled(false); }
+
+    // view projection matrix
+    if (other_base_type::IsUniformVPMatrixEnabled())
+    { 
+      m_uniVPMat.first->SetValueAs(m_vpMatrix);
+      m_uniVPMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniVPMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformVPInverseMatrixEnabled())
+    { 
+      m_uniVPInverseMat.first->SetValueAs(m_vpMatrix.Invert());
+      m_uniVPInverseMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniVPInverseMat.first->SetEnabled(false); }
+
+
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame.reset(new typename rof_uptr::value_type(m_renderer.get()) );
+    m_renderOneFrame = 
+      core_sptr::MakeUnique<typename rof_uptr::value_type>(m_renderer.get());
+
+    base_type::Pre_ProcessActiveEntities(a_deltaT);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -240,92 +453,114 @@ namespace tloc { namespace graphics { namespace component_system {
 
     entity_ptr  ent = a_di.m_entity;
 
-    if (ent->HasComponent(components::material) == false)
+    if (ent->HasComponent<gfx_cs::Material>() == false)
     { return; }
 
     gfx_cs::material_sptr matPtr = ent->GetComponent<gfx_cs::Material>();
 
-    using math_t::Mat4f32; using math_t::Vec4f32;
+    using math_t::Mat4f32; using math_t::Mat3f32; using math_t::Vec4f32;
 
-    Mat4f32 tMatrix;
-    if (ent->HasComponent(components::scene_node))
-    { tMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
-    else if (ent->HasComponent(math_cs::components::transform))
+    Mat4f32 modelMatrix; Mat3f32 scaleMat;
+    if (ent->HasComponent<gfx_cs::SceneNode>())
+    { modelMatrix = ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform(); }
+    else if (ent->HasComponent<math_cs::Transform>())
     { 
       math_cs::transform_f32_sptr t = ent->GetComponent<math_cs::Transformf32>();
-      tMatrix = t->GetTransformation().Cast<Mat4f32>();
+      modelMatrix = t->GetTransformation().Cast<Mat4f32>();
+      scaleMat.MakeIdentity();
+      scaleMat[0] = t->GetScale()[0];
+      scaleMat[4] = t->GetScale()[1];
+      scaleMat[8] = t->GetScale()[2];
     }
 
     // -----------------------------------------------------------------------
     // populate and enable uniforms/attributes as needed
 
-    const Mat4f32 viewProjMat = GetViewProjectionMatrix();
-    if (other_base_type::IsUniformVPEnabled())
-    { 
-      m_vpMat.first->SetValueAs(viewProjMat);
-      m_vpMat.first->SetEnabled(true);
-    }
-    else
-    { m_vpMat.first->SetEnabled(false); }
-
-    Mat4f32 tFinalMat = viewProjMat * tMatrix;
+    // mvp matrix
+    Mat4f32 tFinalMat = m_vpMatrix * modelMatrix;
     if (other_base_type::IsUniformMVPMatrixEnabled())
     { 
-      m_mvpMat.first->SetValueAs(tFinalMat);
-      m_mvpMat.first->SetEnabled(true);
+      m_uniMVPMat.first->SetValueAs(tFinalMat);
+      m_uniMVPMat.first->SetEnabled(true);
     }
     else
-    { m_mvpMat.first->SetEnabled(false); }
+    { m_uniMVPMat.first->SetEnabled(false); }
 
-    // position data
-    m_vertexData.first->SetEnabled(other_base_type::IsAttributePosDataEnabled());
+    if (other_base_type::IsUniformMVPInverseMatrixEnabled())
+    { 
+      m_uniMVPInverseMat.first->SetValueAs(tFinalMat.Invert());
+      m_uniMVPInverseMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniMVPInverseMat.first->SetEnabled(false); }
+
+    // mv matrix
+    if (other_base_type::IsUniformMVMatrixEnabled())
+    { 
+      Mat4f32 mvMatInv = m_viewMatrix * modelMatrix;
+
+      m_uniMVMat.first->SetValueAs(mvMatInv);
+      m_uniMVMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniMVMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformMVInverseMatrixEnabled())
+    { 
+      Mat4f32 mvMatInv = m_viewMatrix * modelMatrix;
+      mvMatInv = mvMatInv.Invert();
+
+      m_uniMVInverseMat.first->SetValueAs(mvMatInv) ;
+      m_uniMVPInverseMat.first->SetEnabled(true);
+    }
+    else
+    { m_uniMVInverseMat.first->SetEnabled(false); }
 
     // model matrix uniform
     if (other_base_type::IsUniformModelMatrixEnabled()) 
     { 
-      m_modelMat.first->SetValueAs(tMatrix);
-      m_modelMat.first->SetEnabled(true);
+      m_uniModelMat.first->SetValueAs(modelMatrix);
+      m_uniModelMat.first->SetEnabled(true);
     }
     else 
-    { m_modelMat.first->SetEnabled(false); }
+    { m_uniModelMat.first->SetEnabled(false); }
 
-    // -----------------------------------------------------------------------
-    // texture coordinates
-
-    const tl_size numTexCoordsSupported = m_tData.size();
-
-    for (tl_size i = 0; i < numTexCoordsSupported; ++i)
-    { m_tData[i]->SetEnabled(false); }
-
-    // populate the texture coordinate attributes
-    if (ent->HasComponent(components::texture_coords))
-    {
-      typedef gfx_cs::TextureCoords::set_index        set_index;
-
-      const tl_size numTexCoords =
-        ent->GetComponents(gfx_cs::TextureCoords::k_component_type).size();
-
-      TLOC_LOG_GFX_WARN_IF(numTexCoords > numTexCoordsSupported) 
-        << "Requested " << numTexCoords << " but only " << numTexCoordsSupported
-        << " supported";
-
-      for (tl_size i = 0; i < numTexCoords && i < numTexCoordsSupported; ++i)
-      {
-        gfx_cs::texture_coords_sptr texCoordPtr =
-          ent->GetComponent<gfx_cs::TextureCoords>(i);
-
-        if (texCoordPtr && texCoordPtr->GetNumSets())
-        {
-          gfx_cs::TextureCoords::cont_type_ptr
-            texCoordCont = texCoordPtr->GetCoords
-            (set_index(texCoordPtr->GetCurrentSet()));
-
-          m_tData[i]->SetEnabled(true);
-          m_tData[i]->SetVertexArray(texCoordCont,
-                                     gl::p_shader_variable_ti::Pointer());
-        }
-      }
+    if (other_base_type::IsUniformModelInverseMatrixEnabled()) 
+    { 
+      m_uniModelInverseMat.first->SetValueAs(modelMatrix.Invert());
+      m_uniModelInverseMat.first->SetEnabled(true);
     }
+    else 
+    { m_uniModelInverseMat.first->SetEnabled(false); }
+
+    // scale matrix uniform
+    if (other_base_type::IsUniformScaleMatrixEnabled()) 
+    { 
+      m_uniScaleMat.first->SetValueAs(scaleMat);
+      m_uniScaleMat.first->SetEnabled(true);
+    }
+    else 
+    { m_uniScaleMat.first->SetEnabled(false); }
+
+    if (other_base_type::IsUniformScaleInverseMatrixEnabled()) 
+    { 
+      m_uniScaleInverseMat.first->SetValueAs(scaleMat.Inverse());
+      m_uniScaleInverseMat.first->SetEnabled(true);
+    }
+    else 
+    { m_uniScaleInverseMat.first->SetEnabled(false); }
+
+    // normal matrix uniform
+    if (other_base_type::IsUniformNormalMatrixEnabled()) 
+    { 
+      math_t::Mat4f32 normMatrix = m_viewMatrix * modelMatrix;
+      normMatrix = normMatrix.Invert();
+      normMatrix = normMatrix.Transpose();
+      m_uniNormalMat.first->SetValueAs( normMatrix.ConvertTo<math_t::Mat3f32>() ) ;
+      m_uniNormalMat.first->SetEnabled(true);
+    }
+    else 
+    { m_uniNormalMat.first->SetEnabled(false); }
 
     // -----------------------------------------------------------------------
     // Prepare shader
@@ -333,7 +568,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const_shader_prog_ptr sp = matPtr->GetShaderProg();
 
     error_type uniformErr = ErrorSuccess;
-    error_type attribErr = ErrorSuccess;
+    error_type vboErr = ErrorSuccess;
 
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
@@ -351,51 +586,50 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_shaderPtr = sp;
 
-      typedef mat_type::shader_op_cont::const_iterator  shader_op_itr;
-
-      const mat_type::shader_op_cont& cont = matPtr->GetShaderOperators();
-
-      for (shader_op_itr itr = cont.begin(), itrEnd = cont.end();
-           itr != itrEnd; ++itr)
-      {
-        gl::const_shader_operator_vptr so = itr->get();
-
-        so->EnableAllUniforms(*m_shaderPtr);
-        so->EnableAllAttributes(*m_shaderPtr);
-      }
+      auto matSO = matPtr->GetShaderOperator();
 
       // shader switch requires us to re-prepare the attributes/uniforms
+      TLOC_LOG_GFX_WARN_IF(matSO->size_attributeVBOs() > 0)
+        << "Material's ShaderOperator should not have any attributes";
+
+      if (matSO->IsUniformsCached() == false)
+      { matSO->PrepareAllUniforms(*m_shaderPtr); }
+
+      matSO->EnableAllUniforms(*m_shaderPtr);
+
+      // shader switch requires us to re-prepare the attributes/uniforms
+      TLOC_ASSERT(m_shaderOp->size_attributeVBOs() == 0, 
+        "RenderSystem's internal ShaderOperator should not have any attributes");
+
       m_shaderOp->ClearCache();
       uniformErr = m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
-      attribErr = m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
     }
 
-    // Add the mvp
     if (uniformErr.Succeeded())
     { m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-    if (attribErr.Succeeded())
-    { m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
-
-    // prepare/enable user's shader operator
+    // prepare/enable derived render system's shader operator
     if (a_di.m_shaderOp)
     {
-      // prepare and enable user uniforms/attributes
-      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
-      attribErr = a_di.m_shaderOp->PrepareAllAttributes(*m_shaderPtr);
+      DoUpdateTexCoords(ent, *a_di.m_shaderOp);
 
+      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       if (uniformErr.Succeeded())
       { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
 
-      if (attribErr.Succeeded())
-      { a_di.m_shaderOp->EnableAllAttributes(*m_shaderPtr); }
+      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr, 
+                                                        *a_di.m_meshVAO);
     }
 
     // -----------------------------------------------------------------------
     // Render
 
-    glDrawArrays(a_di.m_drawCommand, 0,
-                 core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
+    if (vboErr == ErrorSuccess)
+    {
+      gl::VertexArrayObject::Bind b(*a_di.m_meshVAO);
+      glDrawArrays(a_di.m_drawCommand, 0,
+                   core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

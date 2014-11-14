@@ -19,7 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   ArcBall::
     ArcBall()
-    : base_type(k_component_type, "ArcBall")
+    : base_type("ArcBall")
     , m_focusPoint(vec_type::ZERO)
     , m_verticalAngle(0.0f)
     , m_horizontalAngle(0.0f)
@@ -30,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   ArcBall::
     ArcBall(const vec_type& a_focusPoint)
-    : base_type(k_component_type, "ArcBall")
+    : base_type("ArcBall")
     , m_focusPoint(a_focusPoint)
     , m_verticalAngle(0.0f)
     , m_horizontalAngle(0.0f)

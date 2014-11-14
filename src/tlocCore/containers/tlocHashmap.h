@@ -9,7 +9,6 @@
 #include <tlocCore/iterators/tlocIterator.h>
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocList.h>
 #include <tlocCore/containers/tlocHashtable.h>
 
 //------------------------------------------------------------------------
@@ -28,7 +27,7 @@ namespace tloc { namespace core { namespace containers {
             typename T_KeyEqual = equal_to<T_Key>,
             bool T_CacheHashCode = false,
             typename T_BucketType
-            = Array<List<HashtableElement<Pair</*const*/T_Key, T_ValueType>, T_CacheHashCode > > > >
+            = Array<Array<HashtableElement<Pair</*const*/T_Key, T_ValueType>, T_CacheHashCode > > > >
   class HashMap
     : public Hashtable<
                        HashtablePolicy<T_Key,

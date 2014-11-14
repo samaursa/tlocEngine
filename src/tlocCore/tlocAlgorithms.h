@@ -68,12 +68,12 @@ namespace tloc { namespace core {
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all_all(T_Container1& a_toSearch, T_Container2& a_toFind);
+    find_end_all(T_Container1& a_toSearch, T_Container2& a_toFind);
 
   template <typename T_Container1, typename T_Container2, typename T_BinaryPred>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
-    find_end_all_all(T_Container1& a_toSearch, T_Container2& a_toFind,
-                     T_BinaryPred a_pred);
+    find_end_all(T_Container1& a_toSearch, T_Container2& a_toFind,
+                 T_BinaryPred a_pred);
 
   template <typename T_ForwardIterator1, typename T_ForwardIterator2>
   T_ForwardIterator1

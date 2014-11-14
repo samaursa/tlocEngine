@@ -16,11 +16,14 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class TextureCoords
-    : public core_cs::Component_T<TextureCoords, components::texture_coords>
+    : public core_cs::Component_T<TextureCoords, 
+                                  core_cs::component_group::k_graphics, 
+                                  components::k_texture_coords>
   {
   public:
     typedef TextureCoords                                       this_type;
-    typedef Component_T<this_type, components::texture_coords>  base_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>          base_type;
     typedef f32                                                 real_type;
     typedef math_t::Vec2f32                                     vec_type;
     typedef core_conts::tl_array<vec_type>::type                cont_type;
@@ -83,5 +86,11 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(TextureCoords, texture_coords);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::TextureCoords);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::TextureCoords);
 
 #endif

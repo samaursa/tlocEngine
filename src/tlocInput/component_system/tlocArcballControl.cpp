@@ -8,7 +8,7 @@ namespace tloc { namespace input { namespace component_system {
 
   ArcBallControl::
     ArcBallControl()
-    : base_type(k_component_type, "ArcBallControl")
+    : base_type("ArcBallControl")
     , m_globalMulti(1)
     , m_rotMulti(1)
     , m_panMulti(1)

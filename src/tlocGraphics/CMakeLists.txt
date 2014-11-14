@@ -72,11 +72,14 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocMeshRenderSystem.h 
   component_system/tlocSceneNode.h
   component_system/tlocSceneNode.cpp
-  component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
   component_system/tlocRenderSystem.h
   component_system/tlocRenderSystem.cpp
+  component_system/tlocRenderSystem_I.h
+  component_system/tlocRenderSystem_I.cpp
+  component_system/tlocRenderable_TI.h
+  component_system/tlocRenderable_TI.cpp
   component_system/tlocSceneGraphSystem.h
   component_system/tlocSceneGraphSystem.cpp
   component_system/tlocStaticText.h
@@ -137,12 +140,14 @@ set(TLOC_GRAPHICS_MEDIA
   )
 
 set(TLOC_GRAPHICS_OPENGL 
-  opengl/tlocAttribute.cpp 
-  opengl/tlocAttribute.h 
+  opengl/tlocAttributeVBO.cpp 
+  opengl/tlocAttributeVBO.h 
   opengl/tlocError.cpp 
   opengl/tlocError.h 
   opengl/tlocFramebufferObject.h
   opengl/tlocFramebufferObject.cpp
+  opengl/tlocGLTypes.h
+  opengl/tlocGLTypes.cpp
   opengl/tlocObject.cpp 
   opengl/tlocObject.h 
   opengl/tlocOpenGL.cpp 
@@ -196,6 +201,7 @@ set(TLOC_GRAPHICS_TYPES
   types/tlocColor.h 
   types/tlocDimension.h 
   types/tlocVertex.h 
+  types/tlocVertex.cpp
   types/tloc_types.cpp 
   types/tloc_types.h 
   types/tloc_types.inl.h

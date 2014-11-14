@@ -350,16 +350,6 @@ namespace tloc { namespace core { namespace data_structs {
   // Operators
 
   template <TUPLE_TEMP>
-  Tuple<TUPLE_PARAMS>& Tuple<TUPLE_PARAMS>::
-    operator =(const Tuple& a_other)
-  {
-    Set(a_other);
-    return *this;
-  }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TUPLE_TEMP>
   bool Tuple<TUPLE_PARAMS>::
     operator==( const this_type& aTuple ) const
   {
@@ -417,5 +407,8 @@ namespace tloc { namespace core { namespace data_structs {
   }
 
 };};};
+
+#define TLOC_EXPLICITLY_INSTANTIATE_TUPLE(_type_, _size_)\
+  template class tloc::core_ds::Tuple<_type_, _size_>
 
 #endif

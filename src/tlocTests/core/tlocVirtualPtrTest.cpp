@@ -59,21 +59,21 @@ namespace TestingVirtualPtr
 
   TEST_CASE("core/smart_ptr/VirtualPtr/ctors", "")
   {
-    //SECTION("default ctor", "")
+    SECTION("default ctor", "")
     {
       VirtualPtr<int> p;
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
-    //SECTION("nullptr ctor", "")
+    SECTION("nullptr ctor", "")
     {
       VirtualPtr<int> p(nullptr);
       CHECK( CheckUseCount(p, 0, core_cfg::BuildConfig::build_config_type()) );
       CHECK( (p.get() == nullptr) );
     }
 
-    //SECTION("raw pointer ctor", "")
+    SECTION("raw pointer ctor", "")
     {
       int* a = new int();
 
@@ -90,7 +90,7 @@ namespace TestingVirtualPtr
       TLOC_TEST_ASSERT_CHECK();
     }
 
-    //SECTION("raw pointer ctor", "")
+    SECTION("raw pointer ctor", "")
     {
       int* a = new int[2];
 
@@ -107,7 +107,7 @@ namespace TestingVirtualPtr
       TLOC_TEST_ASSERT_CHECK();
     }
 
-    //SECTION("this_type copy ctor", "")
+    SECTION("this_type copy ctor", "")
     {
       int* a = new int();
 
@@ -126,7 +126,7 @@ namespace TestingVirtualPtr
       delete a;
     }
 
-    //SECTION("VirtualPtr<T_Other> copy ctor", "")
+    SECTION("VirtualPtr<T_Other> copy ctor", "")
     {
       SharedStruct* s = new SharedStruct(10);
 
@@ -141,7 +141,7 @@ namespace TestingVirtualPtr
       delete s;
     }
 
-    //SECTION("SharedPtr<> copy ctor", "")
+    SECTION("SharedPtr<> copy ctor", "")
     {
       SharedPtr<int> sptr(new int(10));
 
@@ -150,10 +150,12 @@ namespace TestingVirtualPtr
 
       sptr.reset();
 
-      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
+      TLOC_TEST_ASSERT
+      { *p.get(); }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
-    //SECTION("UniquePtr<> copy ctor", "")
+    SECTION("UniquePtr<> copy ctor", "")
     {
       UniquePtr<int> sptr(new int(10));
 
@@ -162,13 +164,15 @@ namespace TestingVirtualPtr
 
       sptr.reset();
 
-      //CHECK(*p.get() == 10); // should throw assertion - accessing invalid pointer
+      TLOC_TEST_ASSERT
+      { *p.get(); }
+      TLOC_TEST_ASSERT_CHECK();
     }
   }
 
   TEST_CASE("core/smart_ptr/VirtualPtr/operators", "")
   {
-    //SECTION("operator=(this_type)", "")
+    SECTION("operator=(this_type)", "")
     {
       VirtualPtr<int> vp;
       vp = VirtualPtr<int>(new int(10));
@@ -181,7 +185,7 @@ namespace TestingVirtualPtr
       core_sptr::algos::virtual_ptr::DeleteAndReset()(vp);
     }
 
-    //SECTION("operator=(SharedPtr)", "")
+    SECTION("operator=(SharedPtr)", "")
     {
       SharedPtr<int>      sp(new int(20));
       VirtualPtr<int>     vp;
@@ -197,10 +201,12 @@ namespace TestingVirtualPtr
 
       sp2.reset();
 
-      //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
+      TLOC_TEST_ASSERT
+      { *vp2.get(); }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
-    //SECTION("operator=(UniquePtr)", "")
+    SECTION("operator=(UniquePtr)", "")
     {
       UniquePtr<int>      sp(new int(20));
       VirtualPtr<int>     vp;
@@ -216,10 +222,12 @@ namespace TestingVirtualPtr
 
       sp2.reset();
 
-      //CHECK(*vp2.get() == 30); // should throw assertion - accessing invalid pointer
+      TLOC_TEST_ASSERT
+      { *vp2.get(); }
+      TLOC_TEST_ASSERT_CHECK();
     }
 
-    //SECTION("operator==", "")
+    SECTION("operator==", "")
     {
       VirtualPtr<int> vp;
       CHECK( (vp == nullptr) );
@@ -426,7 +434,7 @@ namespace TestingVirtualPtr
 
     DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
 
-    // Due to the multiply inherited hierarchy, the cast results in a different
+    // Due to the multiple inherited hierarchy, the cast results in a different
     // pointer address. VirtualPtr and SmartPtrTracker compensate for this.
     core_sptr::VirtualPtr<Base> b(d);
     core_sptr::VirtualPtr<Base> bb(d);
@@ -435,17 +443,19 @@ namespace TestingVirtualPtr
     // the original pointer in the SmartPtrTracker.
     DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
 
-    d.reset();
+    d.reset(); // does not change anything due to the cached pointer in VSO
 
-    // b and bb counted as 2 references
-    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
+    // b and bb counted as 2 references + 1 in VSO
+    DoCheckVPtrCount((void*)&*dStack, 3, core_cfg::BuildConfig::build_config_type());
     b.reset(); // should not crash
 
     // bb counted as 1 ref
-    DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
+    DoCheckVPtrCount((void*)&*dStack, 2, core_cfg::BuildConfig::build_config_type());
 
     bb.reset();
+    DoCheckVPtrCount((void*)&*dStack, 1, core_cfg::BuildConfig::build_config_type());
 
+    dStack = core_sptr::VirtualStackObjectBase_TI<Derived>();
     DoCheckVPtrCount((void*)&*dStack, 0, core_cfg::BuildConfig::build_config_type());
   }
 

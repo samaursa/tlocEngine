@@ -9,7 +9,8 @@
 #include <tlocCore/io/tlocPath.h>
 
 #include <tlocGraphics/opengl/tlocUniform.h>
-#include <tlocGraphics/opengl/tlocAttribute.h>
+#include <tlocGraphics/opengl/tlocAttributeVBO.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -21,13 +22,15 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef Material                                this_type;
     typedef Prefab_TI<this_type, component_type>    base_type;
     typedef gfx_gl::uniform_vptr                    uniform_ptr_type;
-    typedef gfx_gl::attribute_vptr                  attribute_ptr_type;
+    typedef gfx_gl::attributeVBO_vptr               attributeVBO_ptr_type;
+    typedef gfx_gl::shader_operator_vso             shader_operator_vso;
+    typedef tl_size                                 size_type;
 
     typedef core_conts::Array<uniform_ptr_type>     uniform_array;
-    typedef core_conts::Array<attribute_ptr_type>   attribute_array;
 
+
+    typedef uniform_array::iterator                 uniform_itr;
     typedef uniform_array::const_iterator           const_uniform_itr;
-    typedef attribute_array::const_iterator         const_attribute_itr;
 
   public:
     Material(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
@@ -48,13 +51,21 @@ namespace tloc { namespace prefab { namespace graphics {
                       BufferArg a_fragmentShader) const;
 
     Material&     AddUniform(const uniform_ptr_type& a_uniform);
-    Material&     AddAttribute(const attribute_ptr_type& a_attribute);
+
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (uniform_itr, begin_uniforms, m_newUniformPtrs.begin());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST
+      (uniform_itr, end_uniforms, m_newUniformPtrs.end());
+
+    TLOC_DECL_AND_DEF_GETTER(size_type, size_uniforms, m_newUniformPtrs.size());
 
     TLOC_DECL_PARAM_VAR(core_str::String, AssetsPath, m_assetsPath);
 
   private:
-    uniform_array       m_uniforms;
-    attribute_array     m_attributes;
+    uniform_array               m_uniforms;
+    shader_operator_vso         m_so;
+
+    mutable uniform_array       m_newUniformPtrs;
 
   };
 

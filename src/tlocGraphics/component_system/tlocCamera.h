@@ -19,13 +19,16 @@ namespace tloc { namespace graphics { namespace component_system {
   class CameraSystem;
 
   class Camera
-    : public core_cs::Component_T<Camera, components::camera>
+    : public core_cs::Component_T<Camera, 
+                                  core_cs::component_group::k_graphics,
+                                  components::k_camera>
   {
   public:
     friend class CameraSystem;
 
     typedef Camera                                      this_type;
-    typedef Component_T<this_type, components::camera>  base_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>  base_type;
     typedef math_proj::frustum_f32                      frustum_type;
     typedef frustum_type::matrix_type                   matrix_type;
     typedef math_t::Vec3f32                             point_type;
@@ -44,6 +47,14 @@ namespace tloc { namespace graphics { namespace component_system {
       (matrix_type, GetViewProjRef, m_vpMat);
     TLOC_DECL_AND_DEF_SETTER(matrix_type, SetViewProj, m_vpMat);
 
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (matrix_type, GetViewMatrix, m_viewMat);
+    TLOC_DECL_AND_DEF_SETTER(matrix_type, SetViewMatrix, m_viewMat);
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (matrix_type, GetProjectionMatrix, m_projMat);
+    TLOC_DECL_AND_DEF_SETTER(matrix_type, SetProjectionMatrix, m_projMat);
+
   private:
     TLOC_DECL_GETTER_NON_CONST(bool, DoIsTargetUpdated);
     TLOC_DECL_AND_DEF_GETTER(point_type, DoGetTarget, m_target.second);
@@ -51,6 +62,8 @@ namespace tloc { namespace graphics { namespace component_system {
   private:
     frustum_type      m_frustum;
     matrix_type       m_vpMat;
+    matrix_type       m_viewMat;
+    matrix_type       m_projMat;
     target_type       m_target;
   };
 
@@ -62,6 +75,12 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(Camera, camera);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Camera);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Camera);
 
 
 #endif

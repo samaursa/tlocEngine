@@ -64,14 +64,19 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // static definitions
 
+#if defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL
+# define GL_MAX_COLOR_ATTACHMENTS           TLOC_GL_UNSUPPORTED
+# define GL_NUM_EXTENSIONS                  TLOC_GL_UNSUPPORTED
+# define GL_NUM_SHADING_LANGUAGE_VERSIONS   TLOC_GL_UNSUPPORTED
+#endif
+
     const GLint CurrentProgram::s_glParamName               = GL_CURRENT_PROGRAM;
     const GLint MaxCombinedTextureImageUnits::s_glParamName = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
     const GLint MaxVertexAttribs::s_glParamName             = GL_MAX_VERTEX_ATTRIBS;
-
-#if defined (TLOC_OS_WIN)
+    const GLint MaxColorAttachments::s_glParamName          = GL_MAX_COLOR_ATTACHMENTS;
     const GLint NumExtensions::s_glParamName                = GL_NUM_EXTENSIONS;
     const GLint NumShadingLanguageVersions::s_glParamName   = GL_NUM_SHADING_LANGUAGE_VERSIONS;
-#endif
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -89,63 +94,18 @@ namespace tloc { namespace graphics { namespace gl {
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    bool 
+    void
       Enable(gl_int a_index)
     {
-      if (IsEnabled(a_index) == false)
-      { 
-        g_enabledAttributes.push_back(a_index);
-        glEnableVertexAttribArray(a_index);
-        return true;
-      }
-      else
-      {
-        TLOC_LOG_GFX_WARN() << "VertexAttribArray(" << a_index << ")"
-          << " already enabled";
-        return false;
-      }
+      glEnableVertexAttribArray(a_index);
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    bool
-      EnableIfDisabled(gfx_t::gl_int a_index)
-    {
-      if (IsEnabled(a_index))
-      { return false; }
-      else
-      { return Enable(a_index); }
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    bool 
-      IsEnabled(gfx_t::gl_int a_index)
-    { 
-      return core::find_all(g_enabledAttributes, a_index) != 
-                            g_enabledAttributes.end();
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    bool 
+    void
       Disable(gfx_t::gl_int a_index)
     {
-      if (IsEnabled(a_index))
-      { 
-        g_enabledAttributes.erase
-          (core::remove_all(g_enabledAttributes, a_index), 
-                            g_enabledAttributes.end());
-
-        glDisableVertexAttribArray(a_index);
-        return true;
-      }
-      else
-      {
-        TLOC_LOG_GFX_WARN() << "VertexAttribArray(" << a_index << ")"
-          << " already disabled";
-        return false;
-      }
+      glDisableVertexAttribArray(a_index);
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -153,8 +113,9 @@ namespace tloc { namespace graphics { namespace gl {
     void
       DisableAll()
     { 
-      while(g_enabledAttributes.empty() == false)
-      { Disable(g_enabledAttributes.back()); }
+      const gfx_t::gl_sizei maxVertAttribs = Get<p_get::MaxVertexAttribs>();
+      for (gfx_t::gl_sizei i = 0; i < maxVertAttribs; ++i)
+      { Disable(i); }
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -176,17 +137,22 @@ namespace tloc { namespace graphics { namespace gl {
   
   // ///////////////////////////////////////////////////////////////////////
   // VertexArrayObject
-  
+
   namespace vertex_array_object {
+
+#if defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL
+# define glBindVertexArray(_name_)          glBindVertexArrayOES(_name_)
+# define glGenVertexArrays(_num_, _handle_) glGenVertexArraysOES(_num_, _handle_)
+# define glDeleteVertexArrays(_num_, _handle_)  glDeleteVertexArraysOES(_num_, _handle_)
+#endif
     
     void
       Bind(gfx_t::gl_uint a_name)
     {
-#ifdef TLOC_OS_IPHONE
-      glBindVertexArrayOES(a_name);
-#else
       glBindVertexArray(a_name);
-#endif
+
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glBindVertexArray() failed");
     }
     
     void
@@ -199,22 +165,68 @@ namespace tloc { namespace graphics { namespace gl {
       Generate()
     {
       gfx_t::gl_uint handle;
-#ifdef TLOC_OS_IPHONE
-      glGenVertexArraysOES(1, &handle);
-#else
+
       glGenVertexArrays(1, &handle);
-#endif
+
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_ASSERT(err.Succeeded(), "glGenVertexArray() failed");
+
       return handle;
     }
     
     void
       Destroy(gfx_t::gl_uint a_name)
     {
-#ifdef TLOC_OS_IPHONE
-      glDeleteVertexArraysOES(1, &a_name);
-#else
       glDeleteVertexArrays(1, &a_name);
-#endif
+
+      gl::Error err; TLOC_UNUSED(err);
+      TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteVertexArrays() failed";
+    }
+    
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // VertexBufferObject
+  
+  namespace vertex_buffer_object {
+    
+    void            
+      Bind(gfx_t::gl_enum a_target, gfx_t::gl_uint a_name)
+    {
+      glBindBuffer(a_target, a_name);
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_ASSERT(err.Succeeded(), "glBindBuffer() failed");
+      }
+    }
+    
+    void
+      UnBind(gfx_t::gl_enum a_target)
+    {
+      Bind(a_target, 0);
+    }
+    
+    gfx_t::gl_uint
+      Generate()
+    {
+      gfx_t::gl_uint handle;
+      glGenBuffers(1, &handle);
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_ASSERT(err.Succeeded(), "glGenBuffers() failed");
+      }
+
+      return handle;
+    }
+    
+    void
+      Destroy(gfx_t::gl_uint a_name)
+    {
+      glDeleteBuffers(1, &a_name);
+      {
+        gl::Error err; TLOC_UNUSED(err);
+        TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteBuffers() failed";
+      }
     }
     
   }
@@ -292,8 +304,10 @@ namespace tloc { namespace graphics { namespace gl {
           TLOC_ASSERT_LOW_LEVEL(IsValid(a_texImgUnit), "Invalid texture unit");
 
           glActiveTexture(a_texImgUnit);
-          gl::Error err; TLOC_UNUSED(err);
-          TLOC_ASSERT(err.Succeeded(), "glActiveTexture() failed");
+          {
+            gl::Error err; TLOC_UNUSED(err);
+            TLOC_ASSERT(err.Succeeded(), "glActiveTexture() failed");
+          }
           return;
         }
 

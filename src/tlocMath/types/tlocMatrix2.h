@@ -12,7 +12,7 @@ namespace tloc { namespace math { namespace types {
 
   template <typename T>
   class Matrix_T<T, 2>
-    : public Matrix_TI<T, 2>
+    : public Matrix_TI<T, 2, Matrix_T<T, 2> >
   {
     TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
@@ -20,7 +20,7 @@ namespace tloc { namespace math { namespace types {
     //------------------------------------------------------------------------
     // typedefs (similar to std containers)
     typedef Matrix_T<T, 2>                        this_type;
-    typedef Matrix_TI<T, 2>                       base_type;
+    typedef Matrix_TI<T, 2, this_type>            base_type;
 
     typedef typename base_type::matrix_order      matrix_order;
 
@@ -94,11 +94,24 @@ namespace tloc { namespace math { namespace types {
     void EigenDecomposition(this_type& aRot, this_type& aDiag) const;
   };
 
-  typedef Matrix_T<f32, 2>  Mat2f32;
-  typedef Matrix_T<f64, 2>  Mat2f64;
-  typedef Matrix_T<f128, 2> Mat2f128;
+  // -----------------------------------------------------------------------
+  // typedefs
 
+  typedef Matrix_T<f32, 2>      Mat2f32;
+  typedef Matrix_T<f64, 2>      Mat2f64;
+  typedef Matrix_T<f128, 2>     Mat2f128;
   typedef Matrix_T<tl_float, 2> Mat2f;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f64 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f128 TLOC_COMMA 2>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f32 TLOC_COMMA 2 TLOC_COMMA  Mat2f32>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f64 TLOC_COMMA 2 TLOC_COMMA  Mat2f64>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f128 TLOC_COMMA 2 TLOC_COMMA  Mat2f128>);
 
 };};};
 

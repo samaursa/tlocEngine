@@ -185,12 +185,6 @@ namespace tloc { namespace core { namespace string {
   template StringW operator+ (const StringW& a_lhs, const char32* a_rhs);
   template StringW operator+ (const StringW& a_lhs, char32 a_rhs);
 
-  // -----------------------------------------------------------------------
-  // Explicitly instantiate string
-
-  template StringBase<char8>;
-  template StringBase<char32>;
-
   // ------------------------------------------------------------------------
   // specialized function definitions
 
@@ -866,7 +860,7 @@ namespace tloc { namespace core {
 
   // Microsoft Visual Studio
 
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
 
 #include <stdlib.h>
 
@@ -877,7 +871,7 @@ namespace tloc { namespace core {
 
   // Other compilers
 
-#else	// defined(_MSC_VER)
+#else
 
   inline u32 rotl32 ( u32 x, s8 r )
   {
@@ -894,7 +888,7 @@ namespace tloc { namespace core {
 
 #define BIG_CONSTANT(x) (x##LLU)
 
-#endif // !defined(_MSC_VER)
+#endif
 
   //-----------------------------------------------------------------------------
   // Block read - if your platform needs to do endian-swapping or can only

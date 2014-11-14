@@ -2,22 +2,54 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 
 namespace tloc { namespace core { namespace component_system {
+
+  // ///////////////////////////////////////////////////////////////////////
+  // EntitySystemBase::Register
+
+  EntitySystemBase::Register::this_type&
+    EntitySystemBase::Register::
+    Add(component_info_type a_info)
+  { 
+    m_registeredComps.push_back(a_info);
+    return *this;
+  }
+
+  // -----------------------------------------------------------------------
 
   enum
   {
     k_systemInitialized = 0,
+    k_processingDisabled,
     k_count
   };
-
-  const tl_int EntitySystemBase::s_flagCount = k_count;
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs]
 
   typedef EntitySystemBase::error_type      error_type;
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  EntitySystemBase::
+    EntitySystemBase(event_manager_ptr a_eventMgr, 
+                     entity_manager_ptr a_entityMgr, 
+                     register_type a_compsToRegister,
+                     BufferArg a_debugName)
+    : core_bclass::DebugName(a_debugName)
+    , m_compRegistry(a_compsToRegister)
+    , m_eventMgr(a_eventMgr)
+    , m_entityMgr(a_entityMgr)
+    , m_flags(k_count)
+  { 
+    m_eventMgr->AddListener(this, entity_events::insert_component);
+    m_eventMgr->AddListener(this, entity_events::remove_component);
+    m_eventMgr->AddListener(this, entity_events::disable_component);
+    m_eventMgr->AddListener(this, entity_events::enable_component);
+    m_eventMgr->AddListener(this, entity_events::activate_entity);
+    m_eventMgr->AddListener(this, entity_events::deactivate_entity);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -36,6 +68,9 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase::
     Initialize()
   {
+    TLOC_ASSERT(m_flags.IsUnMarked(k_systemInitialized), 
+                "System already initialized");
+
     m_flags.Mark(k_systemInitialized);
 
     if (Pre_Initialize() == ErrorSuccess)
@@ -48,6 +83,13 @@ namespace tloc { namespace core { namespace component_system {
 
     return ErrorFailure;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    EntitySystemBase::
+    IsInitialized() const
+  { return m_flags.IsMarked(k_systemInitialized); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -97,18 +139,20 @@ namespace tloc { namespace core { namespace component_system {
     {
     case entity_events::insert_component:
       {
-        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
 
         // does the event have the component we are interested in?
-        component_type_array::iterator itr = 
-          core::find_all(m_typeFlags, entEvent.GetComponent()->GetType());
-        if (itr == m_typeFlags.end())
+        auto itr = core::find_all(m_compRegistry.m_registeredComps, 
+                                  entEvent.GetComponent()->GetInfo());
+
+        if (itr == m_compRegistry.m_registeredComps.end())
         { break; }
 
         entity_vptr ent = entEvent.GetEntity();
 
-        for (component_type_array::iterator itr = m_typeFlags.begin(),
-             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        for (auto itr = m_compRegistry.m_registeredComps.begin(), 
+                  itrEnd = m_compRegistry.m_registeredComps.end(); 
+                  itr != itrEnd; ++itr)
         {
           if (ent->HasComponent(*itr) )
           {
@@ -118,9 +162,10 @@ namespace tloc { namespace core { namespace component_system {
               core::find_if_all(m_activeEntities, 
               core::algos::pair::compare::MakeFirst(ent));
 
+            OnComponentInsert(entEvent);
+
             if (entItr == m_activeEntities.end())
             {
-              OnComponentInsert(entEvent);
               m_activeEntities.push_back(MakePair(ent, 1));
             }
             else
@@ -133,21 +178,22 @@ namespace tloc { namespace core { namespace component_system {
       }
     case entity_events::remove_component:
       {
-        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
         entity_vptr ent = entEvent.GetEntity();
 
-        for (component_type_array::iterator itr = m_typeFlags.begin(),
-             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        for (auto itr = m_compRegistry.m_registeredComps.begin(), 
+                  itrEnd = m_compRegistry.m_registeredComps.end(); 
+                  itr != itrEnd; ++itr)
         {
           if (ent->HasComponent(*itr) )
           {
-            entity_count_cont::iterator entItr = 
-              core::find_if_all(m_activeEntities, 
-              core::algos::pair::compare::MakeFirst(ent));
+            auto entItr = core::find_if_all
+              (m_activeEntities, core::algos::pair::compare::MakeFirst(ent));
+
+            OnComponentRemove(entEvent);
 
             if (entItr != m_activeEntities.end())
             {
-              OnComponentRemove(entEvent);
               if (entItr->second == 1)
               {
                 m_activeEntities.erase(entItr);
@@ -165,13 +211,14 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::disable_component:
     case entity_events::enable_component:
       {
-        const EntityComponentEvent& entEvent = a_event.GetAs<EntityComponentEvent>();
+        const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
         component_sptr comp = entEvent.GetComponent();
 
-        for (component_type_array::iterator itr = m_typeFlags.begin(),
-             itrEnd = m_typeFlags.end(); itr != itrEnd; ++itr)
+        for (auto itr = m_compRegistry.m_registeredComps.begin(), 
+                  itrEnd = m_compRegistry.m_registeredComps.end(); 
+                  itr != itrEnd; ++itr)
         {
-          if (comp->GetType() == *itr)
+          if (comp->GetInfo() == *itr)
           {
             if (type == entity_events::disable_component)
             { OnComponentDisable(entEvent); }
@@ -181,50 +228,39 @@ namespace tloc { namespace core { namespace component_system {
         }
         break;
       }
+
+    case entity_events::activate_entity:
+    case entity_events::deactivate_entity:
+      {
+        const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
+
+        if (type == entity_events::activate_entity)
+        { OnEntityActivate(entEvent); }
+        else
+        { OnEntityDeactivate(entEvent); }
+
+        break;
+      }
     }
 
     return evtRet;
   }
 
-  // -----------------------------------------------------------------------
-  // algorithms
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  namespace algos { namespace entity_system {
+  bool
+    EntitySystemBase::
+    IsProcessingDisabled() const
+  { return m_flags.IsMarked(k_processingDisabled); }
 
-    // ///////////////////////////////////////////////////////////////////////
-    // initialize
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    void
-      Initialize::
-      operator()(value_type& a_system)
-    { a_system.Initialize(); }
-
-    // ///////////////////////////////////////////////////////////////////////
-    // shutdown
-
-    void
-      ShutDown::
-      operator()(value_type& a_system)
-    { a_system.Shutdown(); }
-
-    // ///////////////////////////////////////////////////////////////////////
-    // process
-
-    Process::
-      Process(time_type a_deltaT)
-      : m_deltaT(a_deltaT)
-    { }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      Process::
-      operator()(value_type& a_system)
-    { a_system.ProcessActiveEntities(m_deltaT); }
-
-  };};
+  void
+    EntitySystemBase::
+    SetDisableProcessing(bool a_enable)
+  { m_flags[k_processingDisabled] = a_enable; }
 
 };};};
 
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntitySystemBase);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EntitySystemBase);

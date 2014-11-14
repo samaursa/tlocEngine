@@ -13,6 +13,7 @@ set(TLOC_TESTS_CORE
   tlocComponentPoolManagerTest.cpp
   tlocContainerTraitsTest.cpp
   tlocContainerUtilsTest.cpp
+  tlocECSTest.cpp
   tlocEntityManagerTest.cpp
   tlocEntitySystemBaseTest.cpp
   tlocEntityTest.cpp
@@ -40,6 +41,7 @@ set(TLOC_TESTS_CORE
   tlocStackTest.cpp
   tlocStringTest.cpp
   tlocStrongTypeTest.cpp
+  tlocSystemsProcessorTest.cpp
   tlocTableTest.cpp
   tlocTemplateDispatchTest.cpp
   tlocTestCommon.cpp

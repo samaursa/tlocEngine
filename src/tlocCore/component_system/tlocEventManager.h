@@ -89,4 +89,10 @@ namespace tloc { namespace core { namespace component_system {
 
 };};};
 
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 1);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 2);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 3);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 4);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 5);
+
 #endif

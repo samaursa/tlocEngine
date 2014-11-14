@@ -2,7 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
@@ -47,25 +46,23 @@ namespace tloc { namespace physics { namespace component_system {
 
       typedef RigidBodySystem::rigid_body_shape_component_type
                                                           rb_shape_component;
-      typedef rb_shape_component::rigid_body_shape_def_type
+      typedef rb_shape_component::rigid_body_shape_def
                                                           rb_shape_type;
 
-      typedef ComponentMapper<rb_shape_component>         component_mapper_type;
-      typedef component_mapper_type::size_type            size_type;
+      typedef ComponentMapper
+        <rb_shape_component, core_cs::Entity::component_iterator> component_mapper_type;
+      typedef component_mapper_type::size_type                    size_type;
 
       rb_component& rbComponent = GetRigidBodyComponent(a_ent);
       rb_type& rb = rbComponent.GetRigidBody();
 
-      ComponentMapper<rb_shape_component> rigidBodyShapeComponents =
-        a_ent->GetComponents(components::k_rigidBodyShape);
-
-      size_type numComponents = rigidBodyShapeComponents.size();
+      size_type numComponents = a_ent->size_components<phys_cs::RigidBodyShape>();
       error_type result = ErrorSuccess;
 
       for (size_type i = 0; i < numComponents; ++i)
       {
         const rb_shape_type rbShape =
-          rigidBodyShapeComponents[i]->GetRigidBodyShape();
+          a_ent->GetComponent<phys_cs::RigidBodyShape>(i)->GetRigidBodyShape();
 
         result = rb.CreateRigidBodyShape(rbShape);
 
@@ -87,8 +84,9 @@ namespace tloc { namespace physics { namespace component_system {
     RigidBodySystem (event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
                      world_type* a_world)
-    : base_type(a_eventMgr, a_entityMgr
-    , Variadic<component_type, 1>(components::k_rigidBody))
+    : base_type(a_eventMgr, a_entityMgr, 
+                register_type().Add<phys_cs::RigidBody>(), 
+                "RigidBodySystem")
     , m_world(a_world)
   {
   }

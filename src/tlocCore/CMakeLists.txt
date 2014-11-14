@@ -33,6 +33,7 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tloc_base_classes.opt.inl.h
     base_classes/tloc_base_classes.cpp
     base_classes/tlocDebugName.h
+    base_classes/tlocDebugName.cpp
     base_classes/tlocDebugFileAndLine.h
     base_classes/tlocDebugFileAndLine.cpp
     base_classes/tlocInitializeAndDestroy.h
@@ -58,8 +59,9 @@ set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tlocComponentType.h
     component_system/tlocComponentType.inl.h
     component_system/tlocComponentType.cpp
+    component_system/tlocECS.h
+    component_system/tlocECS.cpp
     component_system/tlocEntity.h
-    component_system/tlocEntity.inl.h
     component_system/tlocEntity.cpp
     component_system/tlocEntityEvent.h
     component_system/tlocEntityManager.h
@@ -75,6 +77,8 @@ set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tlocEventManager.h
     component_system/tlocEventManager.inl.h
     component_system/tlocEventManager.cpp
+    component_system/tlocSystemsProcessor.h
+    component_system/tlocSystemsProcessor.cpp
 )
 set(TLOC_ENGINE_CORE_CONFIGS
     configs/tloc_configs.h
@@ -134,7 +138,6 @@ set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tlocTuple.h
     data_structures/tlocTuple.inl.h
     data_structures/tlocTuple.cpp
-    data_structures/tlocTupleExplicitMacros.h
     data_structures/tlocVariadic.h
     data_structures/tlocVariadic.inl.h
     data_structures/tlocVariadic.cpp
@@ -376,13 +379,6 @@ set(TLOC_ENGINE_CORE_UTILITIES
 include_directories(
   ../3rdParty/
 )
-
-if (TLOC_ENABLE_MEMORY_TRACKING)
-  message(STATUS "MEMORY TRACKING: Enabled")
-  add_definitions(-DTLOC_ENABLE_MEMORY_TRACKING)
-else()
-  message(STATUS "MEMORY TRACKING: Disabled")
-endif()
 
 add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE}

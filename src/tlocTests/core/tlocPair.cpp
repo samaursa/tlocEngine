@@ -3,16 +3,10 @@
 #include <tlocCore/tlocPair.h>
 #include <tlocCore/tlocPair.inl.h>
 
-
 namespace TestingPair
 {
   using namespace tloc;
   using namespace core;
-
-  struct PairFixture
-  {
-
-  };
 
   TEST_CASE("Core/Pair/Ctors", "")
   {

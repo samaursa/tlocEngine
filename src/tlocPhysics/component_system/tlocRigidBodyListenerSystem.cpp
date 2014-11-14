@@ -6,6 +6,7 @@
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocPhysics/error/tlocErrorTypes.h>
+#include <tlocPhysics/component_system/tlocRigidBodyComponent.h>
 #include <tlocPhysics/component_system/tlocRigidbodyListenerComponent.h>
 #include <tlocPhysics/component_system/tlocComponentType.h>
 #include <tlocPhysics/box2d/tlocPhysicsManager.h>
@@ -31,6 +32,9 @@ namespace tloc { namespace physics { namespace component_system {
     typedef RigidBodyListenerSystem::const_entity_ptr const_entity_ptr;
     typedef entity_type::component_list               component_list;
 
+    typedef entity_type::component_iterator           component_iterator;
+    typedef entity_type::const_component_iterator     const_component_iterator;
+
     namespace contact
     {
       enum type
@@ -43,12 +47,13 @@ namespace tloc { namespace physics { namespace component_system {
     };
 
     rb_listener_ptr
-      DoGetRigidBodyListener(const component_list* a_rbListenerComponents)
+      DoGetRigidBodyListener(const_component_iterator itr, 
+                             const_component_iterator itrEnd)
     {
       using namespace tloc::core::component_system;
 
-      ComponentMapper<rb_listener_component>
-        rbListenerComponentsMapped = *a_rbListenerComponents;
+      ComponentMapper<rb_listener_component, const_component_iterator> 
+        rbListenerComponentsMapped(itr, itrEnd);
 
       rigid_body_listener_sptr rbListenerComponent =
         rbListenerComponentsMapped[0];
@@ -62,15 +67,15 @@ namespace tloc { namespace physics { namespace component_system {
       DoSendOnContactBegin(const_entity_ptr a_sendToEnt,
                            const_entity_ptr a_contactWithEnt)
     {
-      const entity_type::component_list* rbListenerComponents;
-      rb_listener_ptr rbListener;
-
-      rbListenerComponents =
-        &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
-
-      if (!rbListenerComponents->empty())
+      if (a_sendToEnt->size_components<phys_cs::RigidBodyListener>() > 0)
       {
-        rbListener = DoGetRigidBodyListener(rbListenerComponents);
+        rb_listener_ptr rbListener;
+
+        const_component_iterator itr, itrEnd;
+        itr     = a_sendToEnt->begin_components<phys_cs::RigidBodyListener>();
+        itrEnd  = a_sendToEnt->end_components<phys_cs::RigidBodyListener>();
+
+        rbListener = DoGetRigidBodyListener(itr, itrEnd);
         rbListener->OnContactBegin(a_contactWithEnt);
       }
     }
@@ -81,15 +86,15 @@ namespace tloc { namespace physics { namespace component_system {
       SendOnContactEnd(const_entity_ptr a_sendToEnt,
                        const_entity_ptr a_contactWithEnt)
     {
-      const entity_type::component_list* rbListenerComponents;
-      rb_listener_ptr rbListener;
-
-      rbListenerComponents =
-        &a_sendToEnt->GetComponents(components::k_rigidBodyListener);
-
-      if (!rbListenerComponents->empty())
+      if (a_sendToEnt->size_components<phys_cs::RigidBodyListener>() > 0)
       {
-        rbListener = DoGetRigidBodyListener(rbListenerComponents);
+        rb_listener_ptr rbListener;
+
+        const_component_iterator itr, itrEnd;
+        itr     = a_sendToEnt->begin_components<phys_cs::RigidBodyListener>();
+        itrEnd  = a_sendToEnt->end_components<phys_cs::RigidBodyListener>();
+
+        rbListener = DoGetRigidBodyListener(itr, itrEnd);
         rbListener->OnContactEnd(a_contactWithEnt);
       }
     }
@@ -103,7 +108,8 @@ namespace tloc { namespace physics { namespace component_system {
                             entity_manager_ptr a_entityMgr,
                             physics_manager* a_physicsMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::k_rigidBodyListener))
+                register_type().Add<phys_cs::RigidBodyListener>(),
+                "RigidBodyListenerSystem")
     , m_physicsMgr(a_physicsMgr)
   { }
 
@@ -135,10 +141,7 @@ namespace tloc { namespace physics { namespace component_system {
     RigidBodyListenerSystem::
     InitializeEntity(entity_ptr a_ent)
   {
-    const entity_type::component_list& rbComponents =
-      a_ent->GetComponents(components::k_rigidBody);
-
-    if (rbComponents.empty())
+    if (a_ent->size_components<phys_cs::RigidBody>() == 0)
     {
       TLOC_LOG_PHYS_WARN()
         << "There is no RigidBody component attached to this "

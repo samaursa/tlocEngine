@@ -54,7 +54,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
-                        entity_manager_ptr a_entityMgr);
+                        entity_manager_ptr a_entityMgr,
+                        BufferArg a_debugName);
     
     ~TextRenderSystem_TI();
 
@@ -80,6 +81,13 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::QuadRenderSystem            m_textQuadRenderSys;
     gfx_cs::TextureAnimatorSystem       m_textAnimSys;
   };
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  class StaticText; class DynamicText;
+  TLOC_EXTERN_TEMPLATE_CLASS(TextRenderSystem_TI<StaticText>);
+  TLOC_EXTERN_TEMPLATE_CLASS(TextRenderSystem_TI<DynamicText>);
 
 };};};
 

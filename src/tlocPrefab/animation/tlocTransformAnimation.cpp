@@ -146,7 +146,7 @@ namespace tloc { namespace prefab { namespace animation {
     using namespace anim_cs::components;
     using anim_cs::TransformAnimation;
 
-    TLOC_ASSERT(a_ent->HasComponent(transform_animation),
+    TLOC_ASSERT(a_ent->HasComponent<anim_cs::TransformAnimation>(),
       "No TransformAnimation component to modify");
 
     anim_cs::transform_animation_sptr ta = 

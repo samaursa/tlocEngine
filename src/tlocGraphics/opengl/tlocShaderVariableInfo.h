@@ -10,10 +10,15 @@ namespace tloc { namespace graphics { namespace gl {
 
     struct ShaderVariableInfo
     {
+    public:
       enum { g_buffSize = 40 }; // try to keep it divisible by 4 and 8
 
       typedef core::data_structs::ProtectedBuffer<char8, g_buffSize>  buff_type;
 
+    public:
+      ShaderVariableInfo();
+
+    public:
       gfx_t::gl_sizei      m_nameLength;
       gfx_t::gl_int        m_arraySize;
       gfx_t::gl_int        m_location;

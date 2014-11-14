@@ -15,6 +15,14 @@ namespace tloc { namespace graphics { namespace gl {
     typedef types::gl_int   int_type;
 
 #if defined (TLOC_OS_WIN)
+  const int_type g_maxAttachmentsHardCoded = 15;
+#elif defined (TLOC_OS_IPHONE)
+  const int_type g_maxAttachmentsHardCoded = 1;
+#else
+# error WIP
+#endif
+
+#if defined (TLOC_OS_WIN)
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -37,7 +45,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   }
 
-  namespace p_framebuffer_object {
+  namespace p_fbo {
 
     namespace target {
 
@@ -147,33 +155,96 @@ namespace tloc { namespace graphics { namespace gl {
   };
 
   // ///////////////////////////////////////////////////////////////////////
-  // Bind
+  // UnsafeBind
 
-  FramebufferObject::Bind::
-    Bind(const FramebufferObject* a_fbo)
+
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
+  namespace priv {
+    void DoDrawBuffers(const FramebufferObject::UnsafeBind::fbo_type& a_fbo)
+    {
+      const tl_size numAttachments = a_fbo.size_color_attachments();
+      if (numAttachments > 0)
+      { glDrawBuffers(numAttachments, a_fbo.begin_color_attachments()); }
+
+      TLOC_ASSERT(gl::Error().Succeeded(),
+                  "OpenGL: Error with glDrawBuffers");
+    }
+  };
+#elif defined (TLOC_OS_IPHONE)
+  namespace priv {
+    void DoDrawBuffers(const FramebufferObject::UnsafeBind::fbo_type& )
+    { }
+  };
+#else
+# error WIP
+#endif
+
+  FramebufferObject::UnsafeBind::
+    UnsafeBind(const fbo_type& a_fbo, target_type a_target)
   {
-    object_handle handle = a_fbo->GetHandle();
-    glBindFramebuffer
-      (p_framebuffer_object::target::Framebuffer::s_glParamName, handle);
+      object_handle handle = a_fbo.GetHandle();
+      glBindFramebuffer(a_target, handle);
+      
+      TLOC_ASSERT(gl::Error().Succeeded(),
+                  "OpenGL: Error with glBindFramebuffer");
 
-    TLOC_ASSERT(gl::Error().Succeeded(),
-      "OpenGL: Error with glBindFramebuffer");
+      priv::DoDrawBuffers(a_fbo);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  FramebufferObject::Bind::
-    ~Bind()
+  FramebufferObject::UnsafeBind::
+    ~UnsafeBind()
   {
     // On iOS, binding the frame buffer '0' corrupts the rendering and shows
     // a blank screen. Although binding to '0' is the correct way to unbind
-    // the previously bound frame buffer, we see now harm (so far) in
+    // the previously bound frame buffer, we see no harm (so far) in
     // not unbinding (especially since it solves the blank screen issue on
     // iOS)
 
     // glBindFramebuffer
     // (p_framebuffer_object::target::Framebuffer::s_glParamName, 0);
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Bind_T<>
+
+#define TLOC_FBO_BIND_TEMPS   typename T_Target
+#define TLOC_FBO_BIND_PARAMS  T_Target
+
+  template <TLOC_FBO_BIND_TEMPS>
+  FramebufferObject::Bind_T<TLOC_FBO_BIND_PARAMS>::
+    Bind_T(const fbo_type& a_fbo)
+    : UnsafeBind(a_fbo, T_Target::s_glParamName)
+  { }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiation
+
+  template struct FramebufferObject::Bind_T<p_fbo::target::Framebuffer>;
+  template struct FramebufferObject::Bind_T<p_fbo::target::DrawFramebuffer>;
+  template struct FramebufferObject::Bind_T<p_fbo::target::ReadFramebuffer>;
+
+  // ///////////////////////////////////////////////////////////////////////
+  // LateBind_T<>
+
+#define TLOC_FBO_BIND_TEMPS   typename T_Target
+#define TLOC_FBO_BIND_PARAMS  T_Target
+
+  template <TLOC_FBO_BIND_TEMPS>
+  void
+    FramebufferObject::LateBind_T<TLOC_FBO_BIND_PARAMS>::
+    Bind(const fbo_type& a_fbo)
+  { 
+    m_bind = core_sptr::MakeUnique<typename bind_ptr::value_type>(a_fbo);
+  }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiation
+
+  template struct FramebufferObject::LateBind_T<p_fbo::target::Framebuffer>;
+  template struct FramebufferObject::LateBind_T<p_fbo::target::DrawFramebuffer>;
+  template struct FramebufferObject::LateBind_T<p_fbo::target::ReadFramebuffer>;
 
   // ///////////////////////////////////////////////////////////////////////
   // FramebufferObject
@@ -189,7 +260,7 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FramebufferObject::
-    FramebufferObject(p_framebuffer_object::Default)
+    FramebufferObject(p_fbo::Default)
   {
     ResetHandle();
   }
@@ -217,11 +288,11 @@ namespace tloc { namespace graphics { namespace gl {
 
   FramebufferObject::error_type
     FramebufferObject::
-    DoAttach(p_framebuffer_object::target::value_type a_target,
-             p_framebuffer_object::attachment::value_type a_attachment,
+    DoAttach(p_fbo::target::value_type a_target,
+             p_fbo::attachment::value_type a_attachment,
              const rbo_type& a_rbo)
   {
-    Bind b(this);
+    UnsafeBind b(*this, a_target);
     TLOC_ASSERT(a_rbo.GetHandle() >= 0, "Invalid object ID for Renderbuffer");
     DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_rbo);
 
@@ -229,7 +300,7 @@ namespace tloc { namespace graphics { namespace gl {
                               a_rbo.GetHandle());
 
     gfx_t::gl_enum res = glCheckFramebufferStatus
-      (p_framebuffer_object::target::Framebuffer::s_glParamName);
+      (p_fbo::target::Framebuffer::s_glParamName);
     TLOC_UNUSED(res);
     TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
       "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -247,17 +318,19 @@ namespace tloc { namespace graphics { namespace gl {
   namespace priv {
     template <typename T_TextureObject>
     void
-      DoAttach(p_framebuffer_object::target::value_type a_target,
-               p_framebuffer_object::attachment::value_type a_attachment,
+      DoAttach(p_fbo::target::value_type a_target,
+               p_fbo::attachment::value_type a_attachment,
                T_TextureObject a_to)
     {
+      a_to.Bind();
+
       if (a_to.GetTargetType() == p_texture_object::target::Tex1D::s_glParamName)
       {
         glFramebufferTexture1D(a_target, a_attachment,
                                a_to.GetTargetType(), a_to.GetHandle(), 0);
 
         gfx_t::gl_enum res = glCheckFramebufferStatus
-          (p_framebuffer_object::target::Framebuffer::s_glParamName);
+          (p_fbo::target::Framebuffer::s_glParamName);
         TLOC_UNUSED(res);
         TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
           "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -268,7 +341,7 @@ namespace tloc { namespace graphics { namespace gl {
                                a_to.GetTargetType(), a_to.GetHandle(), 0);
 
         gfx_t::gl_enum res = glCheckFramebufferStatus
-          (p_framebuffer_object::target::Framebuffer::s_glParamName);
+          (p_fbo::target::Framebuffer::s_glParamName);
         TLOC_UNUSED(res);
         TLOC_ASSERT(res == GL_FRAMEBUFFER_COMPLETE,
           "Incomplete Framebuffer - did you forget to use a ColorAttachment first?");
@@ -290,6 +363,8 @@ namespace tloc { namespace graphics { namespace gl {
                p_framebuffer_object::attachment::value_type a_attachment,
                T_TextureObject a_to)
     {
+      a_to.Bind();
+
       if (a_to.GetTargetType() == p_texture_object::target::Tex2D::s_glParamName)
       {
         glFramebufferTexture2D(a_target, a_attachment,
@@ -314,32 +389,44 @@ namespace tloc { namespace graphics { namespace gl {
 
   FramebufferObject::error_type
     FramebufferObject::
-    DoAttach(p_framebuffer_object::target::value_type a_target,
-             p_framebuffer_object::attachment::value_type a_attachment,
+    DoAttach(p_fbo::target::value_type a_target,
+             p_fbo::attachment::value_type a_attachment,
              const to_type& a_to)
   {
-    Bind b(this);
+    UnsafeBind b(*this, a_target);
     DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
 
     priv::DoAttach(a_target, a_attachment, a_to);
 
-    m_textureObjets.push_back(a_to);
+    m_textureObjects.push_back(a_to);
+
+    // keep track of the color attachments
+    using p_framebuffer_object::attachment::ColorAttachment;
+    if (a_attachment >= ColorAttachment<0>::s_glParamName &&
+        a_attachment <= ColorAttachment<g_maxAttachmentsHardCoded>::s_glParamName)
+    { m_activeColorAttachments.push_back(a_attachment); }
 
     return ErrorSuccess;
   }
 
   FramebufferObject::error_type
     FramebufferObject::
-    DoAttach(p_framebuffer_object::target::value_type a_target,
-             p_framebuffer_object::attachment::value_type a_attachment,
+    DoAttach(p_fbo::target::value_type a_target,
+             p_fbo::attachment::value_type a_attachment,
              const to_shadow_type& a_to)
   {
-    Bind b(this);
+    UnsafeBind b(*this, a_target);
     DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
 
     priv::DoAttach(a_target, a_attachment, a_to);
 
     m_textureObjetsShadow.push_back(a_to);
+
+    // keep track of the color attachments
+    using p_framebuffer_object::attachment::ColorAttachment;
+    if (a_attachment >= ColorAttachment<0>::s_glParamName &&
+        a_attachment <= ColorAttachment<g_maxAttachmentsHardCoded>::s_glParamName)
+    { m_activeColorAttachments.push_back(a_attachment); }
 
     return ErrorSuccess;
   }
@@ -349,8 +436,8 @@ namespace tloc { namespace graphics { namespace gl {
   void
     FramebufferObject::
     DoCheckInternalFormatAgainstTargetAttachment
-      ( p_framebuffer_object::target::value_type a_target,
-        p_framebuffer_object::attachment::value_type a_attachment,
+      ( p_fbo::target::value_type a_target,
+        p_fbo::attachment::value_type a_attachment,
         const rbo_type& a_rbo)
   {
     TLOC_UNUSED_3(a_target, a_attachment, a_rbo); // for release
@@ -358,7 +445,7 @@ namespace tloc { namespace graphics { namespace gl {
     using  p_renderbuffer_object::internal_format::value_type;
 
     using namespace p_renderbuffer_object::internal_format;
-    using namespace p_framebuffer_object::attachment;
+    using namespace p_fbo::attachment;
 
     types::gl_int maxAttachments =
       DoGetMaxColorAttachments(core_plat::PlatformInfo::platform_type());
@@ -409,14 +496,14 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_TextureObject>
     void
       DoCheckInternalFormatAgainstTargetAttachment
-        ( p_framebuffer_object::target::value_type ,
-          p_framebuffer_object::attachment::value_type a_attachment,
+        ( p_fbo::target::value_type ,
+          p_fbo::attachment::value_type a_attachment,
           const T_TextureObject& a_to)
     {
       using  p_texture_object::internal_format::value_type;
 
       using namespace p_texture_object::internal_format;
-      using namespace p_framebuffer_object::attachment;
+      using namespace p_fbo::attachment;
 
       int maxAttachments =
         DoGetMaxColorAttachments(core_plat::PlatformInfo::platform_type());
@@ -436,7 +523,7 @@ namespace tloc { namespace graphics { namespace gl {
                     toFormat == RGBA::s_glParamName,
                     "Incorrect internal format for specified attachment");
       }
-      else if (a_attachment == p_framebuffer_object::attachment::Depth::s_glParamName)
+      else if (a_attachment == p_fbo::attachment::Depth::s_glParamName)
       {
         value_type toFormat = a_to.GetParams().GetInternalFormat();
 
@@ -444,7 +531,7 @@ namespace tloc { namespace graphics { namespace gl {
         TLOC_ASSERT(toFormat == DepthComponent::s_glParamName,
                     "Incorrect internal format for specified attachment");
       }
-      else if (a_attachment == p_framebuffer_object::attachment::Stencil::s_glParamName)
+      else if (a_attachment == p_fbo::attachment::Stencil::s_glParamName)
       {
         value_type toFormat = a_to.GetParams().GetInternalFormat();
 
@@ -464,8 +551,8 @@ namespace tloc { namespace graphics { namespace gl {
   void
     FramebufferObject::
     DoCheckInternalFormatAgainstTargetAttachment
-      ( p_framebuffer_object::target::value_type a_target,
-        p_framebuffer_object::attachment::value_type a_attachment,
+      ( p_fbo::target::value_type a_target,
+        p_fbo::attachment::value_type a_attachment,
         const to_type& a_to)
   {
     priv::DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
@@ -474,8 +561,8 @@ namespace tloc { namespace graphics { namespace gl {
   void
     FramebufferObject::
     DoCheckInternalFormatAgainstTargetAttachment
-      ( p_framebuffer_object::target::value_type a_target,
-        p_framebuffer_object::attachment::value_type a_attachment,
+      ( p_fbo::target::value_type a_target,
+        p_fbo::attachment::value_type a_attachment,
         const to_shadow_type& a_to)
   {
     priv::DoCheckInternalFormatAgainstTargetAttachment(a_target, a_attachment, a_to);
@@ -492,4 +579,7 @@ using namespace tloc::gfx_gl;
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(FramebufferObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(FramebufferObject);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::Bind);
+
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::bind);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::bind_draw);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(FramebufferObject::bind_read);

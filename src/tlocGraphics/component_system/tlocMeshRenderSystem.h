@@ -42,9 +42,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
 
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
-
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
@@ -62,7 +59,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(MeshRenderSystem, mesh_render_system);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(MeshRenderSystem, mesh_render_system);
+  
+  // -----------------------------------------------------------------------
+  // extern template
+  
+  TLOC_EXTERN_TEMPLATE_CLASS(MeshRenderSystem_T<Mesh>);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::MeshRenderSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::MeshRenderSystem);
 
 #endif

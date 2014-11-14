@@ -46,15 +46,16 @@ namespace tloc { namespace physics { namespace component_system {
   /// RigidBodyListener callback class.
   ///-------------------------------------------------------------------------
   class RigidBodyListener :
-    public core::component_system::Component_T<RigidBodyListener,
-                                               components::k_rigidBodyListener>
+    public core_cs::Component_T<RigidBodyListener, 
+                                core_cs::component_group::k_graphics, 
+                                components::k_rigidBodyListener>
   {
   public:
-    typedef RigidBodyListener                                       this_type;
+    typedef RigidBodyListener                           this_type;
     typedef core::component_system::Component_T
-      <RigidBodyListener, components::k_rigidBodyListener>          base_type;
+      <this_type, k_component_group, k_component_type>  base_type;
 
-    typedef physics::rigid_body_listener_vptr         rigid_body_listener_ptr;
+    typedef physics::rigid_body_listener_vptr           rigid_body_listener_ptr;
 
   public:
     RigidBodyListener();

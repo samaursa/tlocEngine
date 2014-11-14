@@ -226,6 +226,83 @@ namespace tloc { namespace core { namespace utils {
     }
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Macros for rapidly delcaring and defining function objects for algorithms
+
+#define TLOC_DECL_ALGO_WITH_CTOR_UNARY(_name_, _value_type_, _const_)\
+      template <typename T_ExtractMethod>\
+      struct _name_\
+      {\
+        typedef _value_type_                        value_type;\
+        typedef T_ExtractMethod                     extract;\
+        \
+        _name_(value_type a_value)\
+          : m_value(a_value)\
+        { }\
+        \
+        template <typename T>\
+        bool operator()(_const_ T& a) _const_;\
+        \
+        value_type   m_value;\
+      }
+
+#define TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(_name_, _const_)\
+        template <typename T_ExtractMethod>\
+        template <typename T>\
+        bool _name_ <T_ExtractMethod>::operator()(_const_ T& a) _const_
+
+#define TLOC_DECL_ALGO_WITH_CTOR_BINARY(_name_, _value_type_, _const_)\
+      template <typename T_ExtractMethod>\
+      struct _name_\
+      {\
+        typedef _value_type_                        value_type;\
+        typedef T_ExtractMethod                     extract;\
+        \
+        _name_(value_type a_value)\
+          : m_value(a_value)\
+        { }\
+        \
+        template <typename T>\
+        bool operator()(_const_ T& a, _const_ T& b) _const_ ;\
+        \
+        value_type   m_value;\
+      }
+
+#define TLOC_DEFINE_ALGO_WITH_CTOR_BINARY(_name_, _const_)\
+        template <typename T_ExtractMethod>\
+        template <typename T>\
+        bool _name_ <T_ExtractMethod>::operator()(_const_ T& a, _const_ T& b) _const_
+
+#define TLOC_DECL_ALGO_UNARY(_name_, _const_)\
+      template <typename T_ExtractMethod>\
+      struct _name_\
+      {\
+        typedef T_ExtractMethod                     extract;\
+        \
+        template <typename T>\
+        bool operator()(_const_ T& a) _const_;\
+      }
+
+#define TLOC_DEFINE_ALGO_UNARY(_name_, _const_)\
+        template <typename T_ExtractMethod>\
+        template <typename T>\
+        bool _name_ <T_ExtractMethod>::operator()(_const_ T& a) _const_
+
+#define TLOC_DECL_ALGO_BINARY(_name_, _const_)\
+      template <typename T_ExtractMethod>\
+      struct _name_\
+      {\
+        typedef T_ExtractMethod                     extract;\
+        \
+        template <typename T>\
+        bool operator()(_const_ T& a, _const_ T& b) _const_;\
+      }
+
+#define TLOC_DEFINE_ALGO_BINARY(_name_, _const_)\
+        template <typename T_ExtractMethod>\
+        template <typename T>\
+        bool _name_ <T_ExtractMethod>::operator()(_const_ T& a, _const_ T& b) _const_
+
 };};};
 
 

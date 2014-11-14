@@ -11,8 +11,6 @@
 
 #include <tlocGraphics/component_system/tlocRenderSystem.h>
 
-#include <tlocMath/types/tlocVector3.h>
-
 namespace tloc { namespace graphics { namespace component_system {
 
   class FanRenderSystem
@@ -20,14 +18,6 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>  base_type;
-
-    typedef math::types::Vec3f32                              vec3_type;
-    typedef math::types::Vec2f32                              vec2_type;
-
-    typedef core::containers::tl_array<vec3_type>::type       vec3_cont_type;
-    typedef core_sptr::VirtualStackObjectBase_TI<vec3_cont_type>  vec3_cont_vso;
-
-    typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
 
   public:
     FanRenderSystem(event_manager_ptr a_eventMgr,
@@ -38,14 +28,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
 
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
-
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
-
-  private:
-    vec3_cont_vso             m_vertList;
   };
 
   //------------------------------------------------------------------------
@@ -55,5 +39,11 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(FanRenderSystem, fan_render_system);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::FanRenderSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::FanRenderSystem);
 
 #endif

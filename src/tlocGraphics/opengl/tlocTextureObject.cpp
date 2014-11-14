@@ -90,9 +90,9 @@ namespace tloc { namespace graphics { namespace gl {
 
     const wvt ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
     const wvt ClampToBorder::s_glParamName     = GL_CLAMP_TO_BORDER;
-    const wvt MirroredRepeat::s_glParamName    = GL_CLAMP_TO_EDGE;
-    const wvt Repeat::s_glParamName            = GL_CLAMP_TO_EDGE;
-    const wvt MirrorClampToEdge::s_glParamName = GL_CLAMP_TO_EDGE;
+    const wvt MirroredRepeat::s_glParamName    = GL_MIRRORED_REPEAT;
+    const wvt Repeat::s_glParamName            = GL_REPEAT;
+    const wvt MirrorClampToEdge::s_glParamName = GL_MIRROR_CLAMP_TO_EDGE_EXT;
 
     const fvt Nearest::s_glParamName              = GL_NEAREST;
     const fvt Linear::s_glParamName               = GL_LINEAR;

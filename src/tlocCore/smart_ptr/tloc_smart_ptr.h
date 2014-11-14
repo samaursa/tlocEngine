@@ -14,6 +14,11 @@
   TLOC_TYPEDEF_VIRTUAL_PTR(_type_, _typedef_);\
   TLOC_TYPEDEF_SHARED_PTR(_type_, _typedef_)
 
+#define TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(_type_)\
+  TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(_type_);\
+  TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(_type_);\
+  TLOC_EXTERN_TEMPLATE_SHARED_PTR(_type_)
+
 namespace tloc
 {
   TLOC_TYPEDEF_ALL_SMART_PTRS(char8, char8);

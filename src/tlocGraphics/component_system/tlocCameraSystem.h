@@ -34,8 +34,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void Pre_ProcessActiveEntities(f64 ) {}
     virtual void Post_ProcessActiveEntities(f64 ) {}
-    virtual void OnComponentInsert(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentRemove(const core_cs::EntityComponentEvent&) {}
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
@@ -48,7 +46,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(CameraSystem, camera_system);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(CameraSystem, camera_system);
-
+  
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::CameraSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::CameraSystem);
 
 #endif

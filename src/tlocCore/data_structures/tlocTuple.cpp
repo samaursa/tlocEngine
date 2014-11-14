@@ -1,36 +1,8 @@
 #include "tlocTuple.h"
 #include "tlocTuple.inl.h"
 
-#ifndef TLOC_FULL_SOURCE
-//------------------------------------------------------------------------
-// Instantiate table types upto 20x20
-#define CLASS_NAME tloc::Tuple
-#define TYPE tloc::s32
-#include "tlocTemplateTypesN.h"
-#undef TYPE
-
-#define TYPE tloc::f32
-#include "tlocTemplateTypesN.h"
-#undef TYPE
-
-#define TYPE tloc::f64
-#include "tlocTemplateTypesN.h"
-#undef TYPE
-
-#define TYPE tloc::f128
-#include "tlocTemplateTypesN.h"
-#undef TYPE
-
-#undef CLASS_NAME
-//------------------------------------------------------------------------
-// Include the definitions
-#include <tlocCore/data_structures/tlocTuple.inl.h>
-
-#else
-
 namespace tloc { namespace core { namespace data_structs {
 
-#include "tlocTupleExplicitMacros.h"
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f32, 2);
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(f64, 2);
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(s32, 2);
@@ -61,5 +33,3 @@ namespace tloc { namespace core { namespace data_structs {
   TLOC_EXPLICITLY_INSTANTIATE_TUPLE(bool, 4);
 
 };};};
-
-#endif

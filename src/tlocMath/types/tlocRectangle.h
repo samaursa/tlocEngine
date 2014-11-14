@@ -415,6 +415,25 @@ namespace tloc { namespace math { namespace types {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Rectf64_c, rectf64_c);
 
   // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<tl_int TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s32 TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s64 TLOC_COMMA p_rectangle::position::BottomLeft>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<tl_int TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s32 TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_TI<s64 TLOC_COMMA p_rectangle::position::Center>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<tl_float TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f32 TLOC_COMMA p_rectangle::position::BottomLeft>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f64 TLOC_COMMA p_rectangle::position::BottomLeft>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<tl_float TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f32 TLOC_COMMA p_rectangle::position::Center>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Rectangle_T<f64 TLOC_COMMA p_rectangle::position::Center>);
+
+  // -----------------------------------------------------------------------
   // algorithms
 
   namespace algos { namespace rectangle { 

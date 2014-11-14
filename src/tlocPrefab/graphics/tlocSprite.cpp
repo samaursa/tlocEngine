@@ -33,8 +33,7 @@ namespace tloc { namespace prefab { namespace graphics {
   {
     gfx_cs::texture_animator_sptr ta = nullptr;
 
-    const tl_size size = 
-      a_entity->GetComponents(gfx_cs::TextureAnimator::k_component_type).size();
+    const tl_size size = a_entity->size_components<gfx_cs::TextureAnimator>();
 
     if (size && m_setIndex < size)
     {

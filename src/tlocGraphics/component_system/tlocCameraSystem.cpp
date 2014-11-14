@@ -1,8 +1,6 @@
 #include "tlocCameraSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 
 #include <tlocGraphics/component_system/tlocCamera.h>
 
@@ -22,7 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
   CameraSystem::
     CameraSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::camera))
+                register_type().Add<gfx_cs::Camera>(), 
+                "CameraSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -60,8 +59,9 @@ namespace tloc { namespace graphics { namespace component_system {
     // vMVP, but since we are doing column major, it becomes PVMv
 
     m_vpMatrix = cam->GetFrustumRef().GetProjectionMatrix();
+    cam->SetProjectionMatrix(m_vpMatrix);
 
-    if (a_ent->HasComponent(transform))
+    if (a_ent->HasComponent<math_cs::Transform>())
     {
       math_cs::Transform vMatInv = camTrans->Invert();
       viewMat = vMatInv.GetTransformation().Cast<matrix_type>();
@@ -69,6 +69,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vpMatrix = m_vpMatrix * viewMat;
 
+    cam->SetViewMatrix(viewMat);
     cam->SetViewProj(m_vpMatrix);
   }
 

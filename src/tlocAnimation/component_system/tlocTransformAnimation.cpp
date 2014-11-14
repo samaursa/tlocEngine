@@ -57,7 +57,7 @@ namespace tloc { namespace animation { namespace component_system {
 
   TransformAnimation::
     TransformAnimation()
-    : base_type(k_component_type, "TransformAnimation")
+    : base_type("TransformAnimation")
     , m_currentSeq(0)
   { }
 

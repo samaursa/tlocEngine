@@ -2,8 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 #include <tlocCore/io/tlocFileIO.h>
 #include <tlocCore/logging/tlocLogger.h>
@@ -28,15 +26,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
 
-  namespace {
-
-    const core_str::StringW
-      g_symbols = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  L"abcdefghijklmnopqrstuvwxyz" 
-                  L"1234567890!@#$%^&*()_+-=[]" 
-                  L"{}\\|;:'\",<.>/?`~";
-  };
-
 #define TLOC_TEXT_RENDER_SYSTEM_TEMPS   typename T_TextOrStaticTextComponent
 #define TLOC_TEXT_RENDER_SYSTEM_PARAMS  T_TextOrStaticTextComponent
 #define TLOC_TEXT_RENDER_SYSTEM_TYPE    typename TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>
@@ -47,10 +36,10 @@ namespace tloc { namespace graphics { namespace component_system {
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     TextRenderSystem_TI(event_manager_ptr a_eventMgr, 
-                        entity_manager_ptr a_entityMgr)
+                        entity_manager_ptr a_entityMgr,
+                        BufferArg a_debugName)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(text_type::k_component_type))
-
+                register_type().Add<text_type>(), a_debugName)
     , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
     , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
     , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
@@ -318,6 +307,7 @@ namespace tloc { namespace graphics { namespace component_system {
       { q->Deactivate(); }
     }
 
+    DoAlignText(tqp);
     m_allText.push_back(tqp);
 
     return ErrorSuccess;

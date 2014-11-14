@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 set(TLOC_ENGINE_NAME "tlocEngine" CACHE STRING "You may change the name based on build configuration")
-
 project(${TLOC_ENGINE_NAME})
-
 set(TLOC_ENGINE_VERSION 0.1)
 
 set(internal_FIXME "FIXME!")
@@ -34,19 +32,12 @@ function(tloc_install_library target_name include_folder)
 endfunction()
 
 #------------------------------------------------------------------------------
-# Grab the build path
-string(REPLACE "/" ";" p2list "${PROJECT_BINARY_DIR}")
-list(REVERSE p2list)
-list(GET p2list 0 TLOC_BUILD_FOLDER_NAME)
-
-#------------------------------------------------------------------------------
 # CACHE Variables
 
 set(TLOC_ENGINE_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
 set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine")
 set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The tloc dependency INSTALL path goes here.")
 set(TLOC_INCLUDE_TESTS TRUE CACHE BOOL "Include tests in the project.")
-set(TLOC_ENABLE_MEMORY_TRACKING TRUE CACHE BOOL "Disabling the tracker will increase debugging performance. Tracker is ALWAYS DISABLED in Release.")
 
 # Variables to check for ${internal_FIXEM}
 set(TLOC_CHECK_PATHS
@@ -60,9 +51,24 @@ foreach(PATHDIR ${TLOC_CHECK_PATHS})
   endif()
 endforeach()
 
+#------------------------------------------------------------------------------
 # Common configuration file that sets up platform and compiler specific details
 set(TLOC_COMMON_CMAKE_PATH "${TLOC_DEP_INSTALL_PATH}/tlocCommon.cmake")
 include(${TLOC_COMMON_CMAKE_PATH})
+
+#------------------------------------------------------------------------------
+# Over-ride the project name with the correct suffix (iff user hasn't modified
+# it already)
+tloc_get_leaf_folder_name(${CMAKE_BINARY_DIR} TLOC_BUILD_FOLDER_NAME)
+if(${TLOC_ENGINE_NAME} STREQUAL "tlocEngine")
+  set(TLOC_ENGINE_NAME "tlocEngine_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
+  project(${TLOC_ENGINE_NAME})
+endif()
+
+if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL "${CMAKE_SOURCE_DIR}/INSTALL")
+  set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
+endif()
+
 
 #------------------------------------------------------------------------------
 # Copy the platform files

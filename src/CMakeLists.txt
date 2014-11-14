@@ -6,6 +6,8 @@ include_directories(
   ${TLOC_DEP_INSTALL_PATH}
   ${TLOC_DEP_INSTALL_PATH}/include/
   ${TLOC_ENGINE_PATH}/src/
+
+  ${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/
   )
 
 # All libraries/projects add their name to this variable
@@ -80,7 +82,8 @@ else()
     
 endif()
 
-FILE(WRITE "${CMAKE_SOURCE_DIR}/src/tlocAssetsPath.h" "
+FILE(WRITE "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/tlocAssetsPath.h" 
+"
 #pragma once
 
 #ifndef _ASSETS_PATH_H_

@@ -1,8 +1,6 @@
 #include "tlocTransformAnimationSystem.h"
 
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
@@ -24,7 +22,8 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimationSystem(event_manager_ptr a_eventMgr,
                              entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>(components::transform_animation))
+                register_type().Add<anim_cs::TransformAnimation>(), 
+                "TransformAnimationSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -40,8 +39,7 @@ namespace tloc { namespace animation { namespace component_system {
     TransformAnimationSystem::
     InitializeEntity(entity_ptr a_ent)
   {
-    const tl_size size =
-      a_ent->GetComponents(anim_cs::TransformAnimation::k_component_type).size();
+    const tl_size size = a_ent->size_components<anim_cs::TransformAnimation>();
 
     for (tl_size i = 0; i < size; ++i)
     {
@@ -96,7 +94,7 @@ namespace tloc { namespace animation { namespace component_system {
       diff = transAnim->GetTotalTime() - transAnim->GetStartTime();
     }
 
-    if (a_ent->HasComponent(components::transform_animation) &&
+    if (a_ent->HasComponent<anim_cs::TransformAnimation>() &&
         transAnim->IsKFSequenceChanged())
     {
       math_cs::transform_sptr transPtr =

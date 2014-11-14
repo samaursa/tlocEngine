@@ -2,8 +2,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-#include <tlocCore/component_system/tlocComponentMapper.h>
-#include <tlocCore/component_system/tlocEntity.inl.h>
 #include <tlocCore/containers/tlocArray.inl.h>
 
 #include <tlocGraphics/component_system/tlocStaticText.h>
@@ -11,15 +9,6 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
-
-  namespace {
-
-    const core_str::StringW
-      g_symbols = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  L"abcdefghijklmnopqrstuvwxyz" 
-                  L"1234567890!@#$%^&*()_+-=[]" 
-                  L"{}\\|;:'\",<.>/?`~";
-  };
 
   //////////////////////////////////////////////////////////////////////////
   // typedefs
@@ -32,7 +21,7 @@ namespace tloc { namespace graphics { namespace component_system {
   StaticTextRenderSystem::
     StaticTextRenderSystem(event_manager_ptr a_eventMgr, 
                            entity_manager_ptr a_entityMgr)
-    : base_type(a_eventMgr, a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr, "StaticTextRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

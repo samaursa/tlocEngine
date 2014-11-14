@@ -13,10 +13,10 @@ namespace tloc { namespace core { namespace component_system {
   {
     enum Type
     {
-      create_entity   = events::entity_events_begin,
+      create_entity   = events::k_entity_events_begin,
       destroy_entity,
-      disable_entity,
-      enable_entity,
+      activate_entity,
+      deactivate_entity,
       insert_component,
       remove_component,
       disable_component,
@@ -29,13 +29,13 @@ namespace tloc { namespace core { namespace component_system {
   public:
     using EventBase::event_type;
 
-    EntityEvent(event_type a_eventType, entity_vptr a_entity)
+    EntityEvent(event_type a_eventType, const_entity_vptr a_entity)
       : EventBase(a_eventType), m_entity(a_entity) {}
 
-    TLOC_DECL_AND_DEF_GETTERS_DIRECT(entity_vptr, GetEntity, m_entity);
+    TLOC_DECL_AND_DEF_GETTER(const_entity_vptr, GetEntity, m_entity);
 
   private:
-    entity_vptr m_entity;
+    const_entity_vptr m_entity;
   };
 
   class EntityComponentEvent : public EventBase

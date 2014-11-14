@@ -20,7 +20,9 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class TextureAnimator
-    : public core_cs::Component_T<TextureAnimator, components::texture_animator>
+    : public core_cs::Component_T<TextureAnimator, 
+                                  core_cs::component_group::k_graphics, 
+                                  components::k_texture_animator>
   {
   public:
     struct CoordSet
@@ -49,13 +51,14 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     typedef TextureAnimator                                       this_type;
-    typedef Component_T<this_type, components::texture_animator>  base_type;
+    typedef Component_T
+      <this_type, k_component_group, k_component_type>            base_type;
     typedef f32                                                   real_type;
     typedef CoordSet                                              coord_set;
     typedef gfx_t::Dimension2u                                    dim_type;
     typedef tl_size                                               size_type;
 
-    typedef core_conts::tl_array<coord_set>::type               cont_type;
+    typedef core_conts::tl_array<coord_set>::type                 cont_type;
 
   public:
     TextureAnimator();
@@ -112,5 +115,11 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(TextureAnimator, texture_animator);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::TextureAnimator);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::TextureAnimator);
 
 #endif

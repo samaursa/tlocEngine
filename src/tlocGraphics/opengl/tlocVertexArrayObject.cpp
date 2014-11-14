@@ -10,9 +10,9 @@ namespace tloc { namespace graphics { namespace gl {
   // Bind
 
   VertexArrayObject::Bind::
-    Bind(const vao_ptr a_vao)
+    Bind(const this_type& a_vao)
   {
-    object_handle handle = a_vao->GetHandle();
+    object_handle handle = a_vao.GetHandle();
     gfx_gl::vertex_array_object::Bind(handle);
 
     TLOC_ASSERT(gl::Error().Succeeded(), "OpenGL: Error with glBindVertexArray");
@@ -25,6 +25,16 @@ namespace tloc { namespace graphics { namespace gl {
   {
     gfx_gl::vertex_array_object::UnBind();
     TLOC_ASSERT(gl::Error().Succeeded(), "OpenGL: Error with glBindVertexArray(0)");
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // LateBind
+
+  void 
+    VertexArrayObject::LateBind::
+    Bind(const this_type& a_vao)
+  {
+    m_bind = core_sptr::MakeUnique<VertexArrayObject::Bind>(a_vao);
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -58,6 +68,11 @@ namespace tloc { namespace graphics { namespace gl {
 
 using namespace tloc::gfx_gl;
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexArrayObject);
+TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(VertexArrayObject);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(VertexArrayObject);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(VertexArrayObject);
-TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(VertexArrayObject::Bind);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexArrayObject::Bind);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(VertexArrayObject::LateBind);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(VertexArrayObject::LateBind);

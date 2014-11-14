@@ -6,24 +6,25 @@
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
-#include <tlocCore/component_system/tlocComponent.h>
 
+#include <tlocGraphics/component_system/tlocRenderable_TI.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
   class Quad
-    : public core_cs::Component_T<Quad, components::quad>
+    : public Renderable_TI<Quad, components::k_quad>
   {
   public:
-    typedef Quad                                      this_type;
-    typedef Component_T<this_type, components::quad>  base_type;
-    typedef f32                                       real_type;
+    typedef Quad                                          this_type;
+    typedef Renderable_TI<this_type, components::k_quad>  base_type;
+    typedef f32                                           real_type;
     typedef math_t::Rectangle_T
       <real_type, 
-       math_t::p_rectangle::position::Center>         rect_type;
+       math_t::p_rectangle::position::Center>             rect_type;
 
   public:
     Quad();
@@ -33,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_COMPONENT_SETTER(rect_type, SetRectangle, m_rect);
 
   private:
-    rect_type m_rect;
+    rect_type       m_rect;
   };
 
   //------------------------------------------------------------------------
@@ -44,5 +45,11 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_COMPONENT_POOL(Quad, quad);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Quad);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Quad);
 
 #endif

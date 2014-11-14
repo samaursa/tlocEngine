@@ -1,8 +1,6 @@
 #include "tlocRenderbufferObject.h"
 
 #include <tlocCore/tlocAssert.h>
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -138,6 +136,9 @@ namespace tloc { namespace graphics { namespace gl {
 // explicit instantiations
 
 using namespace tloc::gfx_gl;
+
+#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
+#include <tlocCore/smart_ptr/tlocUniquePtr.inl.h>
 
 TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(RenderbufferObject);
 TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(RenderbufferObject::Bind);

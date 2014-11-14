@@ -7,6 +7,7 @@
 
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocMath/types/tlocVector3.h>
@@ -18,8 +19,9 @@ namespace tloc { namespace math { namespace component_system {
 
   template <typename T_Real>
   class Transform_T
-    : public core::component_system::Component_T<Transform_T<T_Real>,
-                                                 components::transform>
+    : public core_cs::Component_T<Transform_T<T_Real>, 
+                                  core_cs::component_group::k_math, 
+                                  components::k_transform>
   {
   public:
     enum pivot
@@ -36,17 +38,17 @@ namespace tloc { namespace math { namespace component_system {
     };
 
   public:
-    typedef T_Real                    real_type;
-    typedef Transform_T<real_type>    this_type;
+    typedef T_Real                                      real_type;
+    typedef Transform_T<real_type>                      this_type;
+    typedef core_cs::Component_T
+      <this_type, core_cs::component_group::k_math,
+                  components::k_transform>              base_type;
 
-    typedef types::Matrix_T<real_type, 4> transform_type;
-    typedef types::Vector_T<real_type, 3> position_type;
-    typedef types::Vector_T<real_type, 3> scale_type;
-    typedef types::Vector_T<real_type, 3> pivot_type;
-    typedef types::Matrix_T<real_type, 3> orientation_type;
-
-    typedef core::component_system::Component_T
-      <this_type, components::transform>    base_type;
+    typedef types::Matrix_T<real_type, 4>       transform_type;
+    typedef types::Vector_T<real_type, 3>       position_type;
+    typedef types::Vector_T<real_type, 3>       scale_type;
+    typedef types::Vector_T<real_type, 3>       pivot_type;
+    typedef types::Matrix_T<real_type, 3>       orientation_type;
 
   public:
     Transform_T();

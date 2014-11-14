@@ -517,6 +517,106 @@ namespace tloc { namespace core { namespace smart_ptr {
   bool operator >=(nullptr_t, const VirtualPtr<T>& b)
   { return !(nullptr < b); }
 
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator ==(const VirtualPtr<T>& a, const SharedPtr<U, T_NullPolicy>& b)
+  { return a.get() == b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator ==(const SharedPtr<T, T_NullPolicy>& a, const VirtualPtr<U>& b)
+  { return a.get() == b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator !=(const VirtualPtr<T>& a, const SharedPtr<U, T_NullPolicy>& b)
+  { return a.get() != b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator !=(const SharedPtr<T, T_NullPolicy>& a, const VirtualPtr<U>& b)
+  { return a.get() != b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator < (const VirtualPtr<T>& a, const SharedPtr<U, T_NullPolicy>& b)
+  { return a.get() < b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator < (const SharedPtr<T, T_NullPolicy>& a, const VirtualPtr<U>& b)
+  { return a.get() < b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator <= (const VirtualPtr<T>& a, const SharedPtr<U, T_NullPolicy>& b)
+  { return a.get() <= b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator <= (const SharedPtr<T, T_NullPolicy>& a, const VirtualPtr<U>& b)
+  { return a.get() <= b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator > (const VirtualPtr<T>& a, const SharedPtr<U, T_NullPolicy>& b)
+  { return a.get() > b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator > (const SharedPtr<T, T_NullPolicy>& a, const VirtualPtr<U>& b)
+  { return a.get() > b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator >= (const VirtualPtr<T>& a, const SharedPtr<U, T_NullPolicy>& b)
+  { return a.get() >= b.get(); }
+
+  template <class T, class U, class T_NullPolicy>
+  bool operator >= (const SharedPtr<T, T_NullPolicy>& a, const VirtualPtr<U>& b)
+  { return a.get() >= b.get(); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <class T, class U>
+  bool operator ==(const VirtualPtr<T>& a, const UniquePtr<U>& b)
+  { return a.get() == b.get(); }
+
+  template <class T, class U>
+  bool operator ==(const UniquePtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() == b.get(); }
+
+  template <class T, class U>
+  bool operator !=(const VirtualPtr<T>& a, const UniquePtr<U>& b)
+  { return a.get() != b.get(); }
+
+  template <class T, class U>
+  bool operator !=(const UniquePtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() != b.get(); }
+
+  template <class T, class U>
+  bool operator < (const VirtualPtr<T>& a, const UniquePtr<U>& b)
+  { return a.get() < b.get(); }
+
+  template <class T, class U>
+  bool operator < (const UniquePtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() < b.get(); }
+
+  template <class T, class U>
+  bool operator <= (const VirtualPtr<T>& a, const UniquePtr<U>& b)
+  { return a.get() <= b.get(); }
+
+  template <class T, class U>
+  bool operator <= (const UniquePtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() <= b.get(); }
+
+  template <class T, class U>
+  bool operator > (const VirtualPtr<T>& a, const UniquePtr<U>& b)
+  { return a.get() > b.get(); }
+
+  template <class T, class U>
+  bool operator > (const UniquePtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() > b.get(); }
+
+  template <class T, class U>
+  bool operator >= (const VirtualPtr<T>& a, const UniquePtr<U>& b)
+  { return a.get() >= b.get(); }
+
+  template <class T, class U>
+  bool operator >= (const UniquePtr<T>& a, const VirtualPtr<U>& b)
+  { return a.get() >= b.get(); }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
@@ -565,5 +665,9 @@ namespace tloc { namespace core { namespace smart_ptr {
 #define TLOC_TYPEDEF_VIRTUAL_PTR(_type_, _typedef_)\
   typedef tloc::core_sptr::VirtualPtr<_type_>  _typedef_##_vptr;\
   typedef tloc::core_sptr::VirtualPtr<const _type_>  const_##_typedef_##_vptr
+
+#define TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(_type_)\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::VirtualPtr<_type_>);\
+  TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::VirtualPtr<const _type_>)
 
 #endif

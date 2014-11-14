@@ -17,7 +17,7 @@ namespace tloc { namespace graphics { namespace component_system {
     class ArrayOfStructures
     {
     public:
-      enum { k_component_id = components::mesh_interleaved };
+      enum { k_component_id = components::k_mesh_interleaved };
 
     public:
       typedef types::Vert3fpnt                                  vert_type;
@@ -41,7 +41,7 @@ namespace tloc { namespace graphics { namespace component_system {
     class StructureOfArrays
     {
     public:
-      enum { k_component_id = components::mesh};
+      enum { k_component_id = components::k_mesh};
 
     public:
       typedef types::Vert3fpnt                                vert_type;
@@ -101,6 +101,12 @@ namespace tloc { namespace graphics { namespace component_system {
   protected:
     Primitive_TI();
   };
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Primitive_TI<p_primitive::ArrayOfStructures>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Primitive_TI<p_primitive::StructureOfArrays>);
 
 };};};
 

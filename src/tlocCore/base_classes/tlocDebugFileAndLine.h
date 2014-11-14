@@ -52,6 +52,13 @@ namespace tloc { namespace core { namespace base_classes {
 
   typedef DebugFileAndLine_T<>                            DebugFileAndLine;
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(DebugFileAndLine_T<core_cfg::p_build_config::Debug>);
+  TLOC_EXTERN_TEMPLATE_CLASS(DebugFileAndLine_T<core_cfg::p_build_config::Release_DebugInfo>);
+  TLOC_EXTERN_TEMPLATE_CLASS(DebugFileAndLine_T<core_cfg::p_build_config::Release>);
+
 };};};
 
 #endif

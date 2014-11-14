@@ -14,12 +14,14 @@ namespace TestingEntitySystemBase
   // test components
 
   struct EmptyComponent1 
-    : public Component_T<EmptyComponent1, components::listener>
+    : public Component_T<EmptyComponent1, component_group::k_core, components::k_listener>
   {
-    typedef Component_T<EmptyComponent1, components::listener>    base_type;
+    typedef Component_T<EmptyComponent1, 
+                        k_component_group, 
+                        k_component_type>                     base_type;
 
     EmptyComponent1()
-      : base_type(k_component_type, "EntityComponent1")
+      : base_type("EntityComponent1")
     { }
 
     ~EmptyComponent1()
@@ -33,12 +35,14 @@ namespace TestingEntitySystemBase
   tl_int EmptyComponent1::m_dtor = 0;
 
   struct EmptyComponent2 
-    : public Component_T<EmptyComponent2, components::listener + 1>
+    : public Component_T<EmptyComponent1, component_group::k_core, components::k_listener + 1>
   {
-    typedef Component_T<EmptyComponent2, components::listener + 1>    base_type;
+    typedef Component_T<EmptyComponent1, 
+                        k_component_group, 
+                        k_component_type>                     base_type;
 
     EmptyComponent2()
-      : base_type(k_component_type, "EntityComponent2")
+      : base_type("EntityComponent2")
     { }
 
     ~EmptyComponent2()
@@ -64,8 +68,7 @@ namespace TestingEntitySystemBase
     EntSys(event_manager_ptr a_eventMgr,
           entity_manager_ptr a_entMgr)
           : base_type(a_eventMgr, a_entMgr, 
-                      core_ds::Variadic<components::value_type, 1>
-                      (EmptyComponent1::k_component_type))
+                      register_type().Add<EmptyComponent1>(), "EntSys")
     { }
 
     ~EntSys()
@@ -118,26 +121,29 @@ namespace TestingEntitySystemBase
     { }
 
     virtual void OnComponentInsert(const EntityComponentEvent& )
-    {
-    }
+    { m_componentInsert++; }
 
     virtual void OnComponentRemove(const EntityComponentEvent& )
-    {
-    }
-
-    virtual void OnComponentDisable(const EntityComponentEvent& )
-    {
-    }
+    { m_componentInsert--; }
 
     virtual void OnComponentEnable(const EntityComponentEvent& )
-    {
-    }
+    { m_componentEnable++; }
+
+    virtual void OnComponentDisable(const EntityComponentEvent& )
+    { m_componentEnable--; }
+
+    virtual void OnEntityActivate(const entity_comp_event_type& )
+    { m_entityActivate++; }
+
+    virtual void OnEntityDeactivate(const entity_comp_event_type& )
+    { m_entityActivate--; }
 
     virtual void SortEntities()
     { }
 
     using base_type::DoGetActiveEntities;
 
+    tl_int m_componentInsert = 0, m_componentEnable = 0, m_entityActivate = 0;
   };
 
   TEST_CASE("core/component_system/EntitySystemBase", "")
@@ -165,47 +171,104 @@ namespace TestingEntitySystemBase
 
     typedef core_cs::EntityManager::orphan          orphan;
 
-    entMgr->InsertComponent(EntityManager::Params(ent, e2_a).Orphan(true));
-    // adding unrelated components does not add entities to the system
-    CHECK(e.GetNumEntities() == 0);
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->InsertComponent(EntityManager::Params(ent, e2_a).Orphan(true));
+      CHECK(e.m_componentInsert == currCompInsertVal);
+      // adding unrelated components does not add entities to the system
+      CHECK(e.GetNumEntities() == 0);
+    }
 
-    entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
-    // we have one active entity due to the above component
-    CHECK(e.GetNumEntities() == 1);
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
+      CHECK(e.m_componentInsert == currCompInsertVal + 1);
+      // we have one active entity due to the above component
+      CHECK(e.GetNumEntities() == 1);
+    }
 
-    entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
-    // we still have one active entity because the component belongs to the 
-    // same entity
-    CHECK(e.GetNumEntities() == 1);
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
+      CHECK(e.m_componentInsert == currCompInsertVal + 1);
+      // we still have one active entity because the component belongs to the 
+      // same entity
+      CHECK(e.GetNumEntities() == 1);
+    }
 
-    entMgr->RemoveComponent(core::MakePair(ent, e1_a));
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->RemoveComponent(core::MakePair(ent, e1_a));
+      CHECK(e.m_componentInsert == currCompInsertVal - 1);
+      entMgr->Update();
+    }
+
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
+      CHECK(e.m_componentInsert == currCompInsertVal + 1);
+      CHECK(e.GetNumEntities() == 1);
+    }
+
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->RemoveComponent(core::MakePair(ent, e1_a));
+      CHECK(e.m_componentInsert == currCompInsertVal - 1);
+      CHECK(e.GetNumEntities() == 1);
+    }
+
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->RemoveComponent(core::MakePair(ent, e1_b));
+      CHECK(e.m_componentInsert == currCompInsertVal - 1);
+      CHECK(e.GetNumEntities() == 0);
+    }
+
     entMgr->Update();
 
-    entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
-    CHECK(e.GetNumEntities() == 1);
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
+      CHECK(e.m_componentInsert == currCompInsertVal + 1);
+      entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
+      CHECK(e.m_componentInsert == currCompInsertVal + 2);
+    }
 
-    entMgr->RemoveComponent(core::MakePair(ent, e1_a));
-    CHECK(e.GetNumEntities() == 1);
-    entMgr->RemoveComponent(core::MakePair(ent, e1_b));
-    CHECK(e.GetNumEntities() == 0);
+    {
+      auto currEntActivate = e.m_entityActivate;
+      entMgr->DeactivateEntity(ent);
+      CHECK(e.m_entityActivate == currEntActivate - 1);
 
-    entMgr->Update();
+      // double deactivation should not do anything
+      entMgr->DeactivateEntity(ent);
+      CHECK(e.m_entityActivate == currEntActivate - 1);
 
-    entMgr->InsertComponent(EntityManager::Params(ent, e1_a));
-    entMgr->InsertComponent(EntityManager::Params(ent, e1_b));
+      entMgr->ActivateEntity(ent);
+      CHECK(e.m_entityActivate == currEntActivate);
+    }
 
     core_cs::entity_vptr ent2 = entMgr->CreateEntity();
 
-    entMgr->InsertComponent(EntityManager::Params(ent2, e1_a));
-    entMgr->InsertComponent(EntityManager::Params(ent2, e1_b));
-    CHECK(e.GetNumEntities() == 2);
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      entMgr->InsertComponent(EntityManager::Params(ent2, e1_a));
+      CHECK(e.m_componentInsert == currCompInsertVal + 1);
+      entMgr->InsertComponent(EntityManager::Params(ent2, e1_b));
+      CHECK(e.m_componentInsert == currCompInsertVal + 2);
+      CHECK(e.GetNumEntities() == 2);
+    }
 
-    entMgr->DestroyEntity(ent2);
-    CHECK(e.GetNumEntities() == 2);
-
-    CHECK(entMgr->GetUnusedEntities() == 0);
-    entMgr->Update();
-    CHECK(entMgr->GetUnusedEntities() == 1);
-    CHECK(e.GetNumEntities() == 1);
+    {
+      auto currCompInsertVal = e.m_componentInsert;
+      const_entity_vptr ent2Ptr = ent2;
+      auto totalComps = ent2->size_components<EmptyComponent1>();
+      totalComps += ent2->size_components<EmptyComponent2>();
+      entMgr->DestroyEntity(ent2);
+      entMgr->Update();
+      CHECK(e.m_componentInsert == currCompInsertVal - 
+                                   core_utils::CastNumber<tl_int>(totalComps));
+      CHECK(entMgr->GetUnusedEntities() == 1);
+      CHECK(e.GetNumEntities() == 1);
+    }
   }
 };

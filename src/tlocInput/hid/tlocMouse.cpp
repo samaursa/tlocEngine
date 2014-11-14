@@ -31,7 +31,7 @@ namespace tloc { namespace input { namespace hid {
   Mouse<MOUSE_PARAMS>::Mouse(const T_ParamList& a_paramList)
     : m_clamped(true)
   {
-    m_impl.reset(new impl_type(*this, a_paramList));
+    m_impl = core_sptr::MakeUnique<impl_type>(*this, a_paramList);
   }
 
   template <MOUSE_TEMP>
@@ -52,13 +52,14 @@ namespace tloc { namespace input { namespace hid {
 
   template <MOUSE_TEMP>
   void Mouse<MOUSE_PARAMS>::
-    SendOnButtonPress(const MouseEvent& a_event,
+    SendOnMouseButtonPress(const MouseEvent& a_event,
                       button_code_type a_buttonCode) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnButtonPress(core_utils::GetMemoryAddress(this),
-                                           a_event, a_buttonCode).IsVeto())
+      if (m_allObservers[i]->
+          OnMouseButtonPress(core_utils::GetMemoryAddress(this),
+                             a_event, a_buttonCode).IsVeto())
       {
         break;
       }
@@ -67,13 +68,14 @@ namespace tloc { namespace input { namespace hid {
 
   template <MOUSE_TEMP>
   void Mouse<MOUSE_PARAMS>::
-    SendOnButtonRelease(const MouseEvent& a_event,
+    SendOnMouseButtonRelease(const MouseEvent& a_event,
                         button_code_type a_buttonCode) const
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnButtonRelease(core_utils::GetMemoryAddress(this),
-                                             a_event, a_buttonCode).IsVeto())
+      if (m_allObservers[i]->
+          OnMouseButtonRelease(core_utils::GetMemoryAddress(this), 
+                               a_event, a_buttonCode).IsVeto())
       {
         break;
       }
@@ -86,8 +88,8 @@ namespace tloc { namespace input { namespace hid {
   {
     for (size_type i = 0; i < m_allObservers.size(); ++i)
     {
-      if (m_allObservers[i]->OnMouseMove(core_utils::GetMemoryAddress(this),
-                                         a_event).IsVeto())
+      if (m_allObservers[i]->
+          OnMouseMove(core_utils::GetMemoryAddress(this), a_event).IsVeto())
       { break; }
     }
   }

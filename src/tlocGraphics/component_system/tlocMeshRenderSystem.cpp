@@ -1,6 +1,5 @@
 #include "tlocMeshRenderSystem.h"
 
-#include <tlocCore/component_system/tlocComponentMapper.h>
 #include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
@@ -28,8 +27,8 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_ptr a_eventMgr,
                        entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                Variadic<component_type, 1>
-                (mesh_type::vertex_storage_policy::k_component_id) )
+                register_type().Add<mesh_type>(), 
+                "MeshRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -40,6 +39,8 @@ namespace tloc { namespace graphics { namespace component_system {
     Pre_Initialize()
   {
     base_type::SetEnabledAttributePosData(false);
+    base_type::SetEnabledUniformViewMatrix(true);
+    base_type::SetEnabledUniformNormalMatrix(true);
     return base_type::Pre_Initialize();
   }
 
@@ -53,35 +54,39 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::InitializeEntity(a_ent);
 
     mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
-
-    gl::attribute_vso posAttr, normAttr, tcoordAttr;
+    meshType->SetUpdateRequired(false);
+    
+    const gfx_gl::shader_operator_vptr so = meshType->GetShaderOperator().get();
 
     { // Positions
-      posAttr->SetVertexArray(meshType->GetPositions(),
-                              gl::p_shader_variable_ti::Pointer());
-      posAttr->SetName("a_vPos");
-      meshType->SetPosAttribute(*posAttr);
+      gfx_gl::AttributeVBO vbo;
+      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetPositions());
+      vbo.AddName(base_type::GetVertexAttributeName());
+      so->AddAttributeVBO(vbo);
     }
 
     // Normals
     if (meshType->IsNormalsEnabled())
     {
-      normAttr->SetVertexArray(meshType->GetNormals(),
-                              gl::p_shader_variable_ti::Pointer());
-      normAttr->SetName("a_vNorm");
-      meshType->SetNormAttribute(*normAttr);
+      gfx_gl::AttributeVBO vbo;
+      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetNormals());
+      vbo.AddName(base_type::GetNormalAttributeName());
+      so->AddAttributeVBO(vbo);
     }
 
     // TexCoords
     if (meshType->IsTexCoordsEnabled())
     {
-      tcoordAttr->SetVertexArray(meshType->GetTCoords(),
-                              gl::p_shader_variable_ti::Pointer());
-      tcoordAttr->SetName("a_tCoord");
-      meshType->SetTCoordAttribute(*tcoordAttr);
+      gfx_gl::AttributeVBO vbo;
+      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
+                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetTCoords());
+      vbo.AddName(base_type::GetTextureAttributePrefix());
+      so->AddAttributeVBO(vbo);
     }
 
-    return ErrorSuccess;
+    return base_type::InitializeEntity(a_ent);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -108,17 +113,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
     const tl_size numVertices = meshPtr->size();
 
-    so_mesh->RemoveAllAttributes();
-    so_mesh->AddAttribute(*meshPtr->GetPosAttribute());
-
-    if (meshPtr->IsTexCoordsEnabled())
-    { so_mesh->AddAttribute(*meshPtr->GetTCoordAttribute()); }
-
-    if (meshPtr->IsNormalsEnabled())
-    { so_mesh->AddAttribute(*meshPtr->GetNormAttribute()); }
-
     base_type::DrawInfo di(a_ent, GL_TRIANGLES, numVertices);
-    di.m_shaderOp = so_mesh.get();
+    di.m_shaderOp = core_sptr::ToVirtualPtr(meshPtr->GetShaderOperator());
+    di.m_meshVAO  = meshPtr->GetVAO();
+
     base_type::DoDrawEntity(di);
   }
 

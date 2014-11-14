@@ -11,37 +11,37 @@
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 namespace tloc { namespace core { namespace component_system {
 
   class EntitySystemBase
     : public EventListener
     , public core_bclass::NonCopyable_I
+    , public core_bclass::DebugName
   {
   public:
-
-    // The maximum number of components a system is allowed to register for
-    // events listening
-    enum { max_component_types = 4 };
 
     typedef EntitySystemBase                      this_type;
 
     typedef components::value_type                component_type;
+    typedef Component::info_type                  component_info_type;
+
     typedef tl_size                               size_type;
-    typedef core::error::Error                    error_type;
+    typedef core_err::Error                       error_type;
 
-    typedef core_cs::EventManager                 event_manager;
-    typedef core_cs::event_manager_vptr           event_manager_ptr;
-    typedef core_cs::EventBase                    event_type;
+    typedef EventManager                          event_manager;
+    typedef event_manager_vptr                    event_manager_ptr;
+    typedef EventBase                             event_type;
+    typedef EntityComponentEvent                  entity_comp_event_type;
 
-    typedef core_cs::EntityManager                entity_manager;
-    typedef core_cs::entity_manager_vptr          entity_manager_ptr;
-    typedef core_cs::const_entity_manager_vptr    const_entity_manager_ptr;
+    typedef EntityManager                         entity_manager;
+    typedef entity_manager_vptr                   entity_manager_ptr;
+    typedef const_entity_manager_vptr             const_entity_manager_ptr;
 
-    typedef core_cs::Entity                       entity_type;
-    typedef core_cs::entity_vptr                  entity_ptr;
-    typedef core_cs::const_entity_vptr            const_entity_ptr;
+    typedef Entity                                entity_type;
+    typedef entity_vptr                           entity_ptr;
+    typedef const_entity_vptr                     const_entity_ptr;
     typedef EventBase::event_type                 event_value_type;
 
     typedef core::Pair<entity_ptr, size_type>     entity_count_pair;
@@ -49,41 +49,53 @@ namespace tloc { namespace core { namespace component_system {
 
     typedef f64                                   time_type;
 
-    typedef containers::tl_array_fixed
-      <component_type, max_component_types>::type       component_type_array;
+  public:
+    struct Register
+    {
+    public:
+      typedef Register                                this_type;
+      typedef core_conts::Array<component_info_type>  component_info_cont;
+      typedef component_info_cont::iterator           iterator;
+
+    public:
+      this_type&  Add(component_info_type a_info);
+
+      template <typename T_Component>
+      this_type&  Add();
+
+    public:
+      component_info_cont m_registeredComps;
+    }; 
+    typedef Register                              register_type;
 
   public:
 
-    ///-------------------------------------------------------------------------
-    /// @brief Gives derived classes opportunity to perform initialization.
-    ///-------------------------------------------------------------------------
-    error_type Initialize();
+    virtual       ~EntitySystemBase();
 
-    ///-------------------------------------------------------------------------
-    /// @brief Cleans up anything done in Initialize()
-    ///-------------------------------------------------------------------------
-    error_type Shutdown();
+    error_type    Initialize();
+    bool          IsInitialized() const;
+    error_type    Shutdown();
 
     ///-------------------------------------------------------------------------
     /// @brief
     /// Process the active entities. The entities are not processed if
-    /// CheckProcessing returns 0.
+    /// CheckProcessing returns false.
     ///-------------------------------------------------------------------------
-    void ProcessActiveEntities(time_type a_deltaT = 0);
+    void          ProcessActiveEntities(time_type a_deltaT = 0);
 
-    virtual void SortEntities() = 0;
+    virtual void  SortEntities() = 0;
+
+    bool          IsProcessingDisabled() const;
+    void          SetDisableProcessing(bool a_enable = true);
 
     TLOC_DECL_AND_DEF_GETTER(size_type, GetNumEntities, m_activeEntities.size());
 
   protected:
 
-    template <tl_size T_VarSize>
     EntitySystemBase(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
-                     const data_structs::
-                      Variadic<component_type, T_VarSize>& a_typeFlags);
-
-    virtual ~EntitySystemBase();
+                     register_type a_compsToRegister, 
+                     BufferArg a_debugName);
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called
@@ -107,7 +119,7 @@ namespace tloc { namespace core { namespace component_system {
 
 
     ///-------------------------------------------------------------------------
-    /// @brief Called by Initialize()
+    /// @brief Called by Shutdown()
     ///-------------------------------------------------------------------------
     virtual error_type DoShutdown(const entity_count_cont& a_entities) = 0;
 
@@ -142,11 +154,14 @@ namespace tloc { namespace core { namespace component_system {
     ///-------------------------------------------------------------------------
     virtual void Post_ProcessActiveEntities(time_type a_deltaT) = 0;
 
-    virtual void OnComponentInsert(const EntityComponentEvent& a_event) = 0;
-    virtual void OnComponentRemove(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentInsert(const entity_comp_event_type& a_event) = 0;
+    virtual void OnComponentRemove(const entity_comp_event_type& a_event) = 0;
 
-    virtual void OnComponentDisable(const EntityComponentEvent& a_event) = 0;
-    virtual void OnComponentEnable(const EntityComponentEvent& a_event) = 0;
+    virtual void OnComponentDisable(const entity_comp_event_type& a_event) = 0;
+    virtual void OnComponentEnable(const entity_comp_event_type& a_event) = 0;
+
+    virtual void OnEntityActivate(const entity_comp_event_type& a_event) = 0;
+    virtual void OnEntityDeactivate(const entity_comp_event_type& a_event) = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called by EventManager (we are/should-be a registered listener).
@@ -165,96 +180,73 @@ namespace tloc { namespace core { namespace component_system {
                                     m_activeEntities);
 
   private:
-    component_type_array    m_typeFlags;
+    register_type           m_compRegistry;
     entity_count_cont       m_activeEntities;
 
     event_manager_ptr       m_eventMgr;
     entity_manager_ptr      m_entityMgr;
 
     core_utils::Checkpoints m_flags;
-    static const tl_int     s_flagCount;
 
   };
 
-  //------------------------------------------------------------------------
-  // Template definition
+  // -----------------------------------------------------------------------
+  // template definitions
 
-  template <tl_size T_VarSize>
-  EntitySystemBase::
-    EntitySystemBase(event_manager_ptr a_eventMgr,
-                     entity_manager_ptr a_entityMgr,
-                     const data_structs::
-                      Variadic<component_type, T_VarSize>& a_typeFlags)
-    : m_eventMgr(a_eventMgr)
-    , m_entityMgr(a_entityMgr)
-    , m_flags(s_flagCount)
+  template <typename T_Component>
+  EntitySystemBase::Register::this_type&
+    EntitySystemBase::Register::
+    Add()
   {
-    TLOC_ASSERT_NOT_NULL(a_eventMgr); TLOC_ASSERT_NOT_NULL(a_entityMgr);
-    TLOC_STATIC_ASSERT(T_VarSize <= max_component_types,
-                       Exceeded_max_components_supported);
-
-    for (tl_uint i = 0; i < a_typeFlags.size(); ++i)
-    {
-      m_typeFlags.push_back(a_typeFlags[i]);
-    }
-
-    m_eventMgr->AddListener
-      (this, entity_events::insert_component);
-    m_eventMgr->AddListener
-      (this, entity_events::remove_component);
+    return Add(component_info_type()
+               .GroupIndex(T_Component::k_component_group)
+               .Type(T_Component::k_component_type));
   }
 
   // -----------------------------------------------------------------------
   // typedefs
 
   TLOC_TYPEDEF_VIRTUAL_PTR(EntitySystemBase, entity_system_base);
+  TLOC_TYPEDEF_UNIQUE_PTR(EntitySystemBase, entity_system_base);
 
   namespace algos { namespace entity_system  {
 
     // ///////////////////////////////////////////////////////////////////////
     // initialize
 
-    struct Initialize
-    {
-    public:
-      typedef EntitySystemBase                            value_type;
+    TLOC_DECL_ALGO_UNARY(Initialize_T, );
+    TLOC_DEFINE_ALGO_UNARY(Initialize_T, )
+    { extract()(a).Initialize(); return true; }
 
-    public:
-      void operator()(value_type& a_system);
-    };
+    typedef Initialize_T<core::use_reference>   Initialize;
+    typedef Initialize_T<core::use_pointee>     Initialize_Deref;
 
     // ///////////////////////////////////////////////////////////////////////
     // shutdown
 
-    struct ShutDown
-    {
-    public:
-      typedef EntitySystemBase                            value_type;
+    TLOC_DECL_ALGO_UNARY(Shutdown_T, );
+    TLOC_DEFINE_ALGO_UNARY(Shutdown_T, )
+    { extract()(a).Shutdown(); return true; }
 
-    public:
-      void operator()(value_type& a_system);
-    };
+    typedef Shutdown_T<core::use_reference>     Shutdown;
+    typedef Shutdown_T<core::use_pointee>       Shutdown_Deref;
 
     // ///////////////////////////////////////////////////////////////////////
     // process
 
-    struct Process
-    {
-    public:
-      typedef EntitySystemBase                            value_type;
-      typedef value_type::time_type                       time_type;
+    TLOC_DECL_ALGO_WITH_CTOR_UNARY(Process_T, EntitySystemBase::time_type, );
+    TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(Process_T, )
+    { extract()(a).ProcessActiveEntities(m_value); return true; }
 
-    public:
-      Process(time_type a_deltaT);
-
-      void operator()(value_type& a_system);
-
-    private:
-      time_type m_deltaT;
-    };
+    typedef Process_T<use_reference>            Process;
+    typedef Process_T<core::use_pointee>        Process_Deref;
 
   };};
   
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::core_cs::EntitySystemBase);
 
 #endif

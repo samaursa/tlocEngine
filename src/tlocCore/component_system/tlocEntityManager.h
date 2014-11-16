@@ -78,8 +78,8 @@ namespace tloc { namespace core { namespace component_system {
     virtual ~EntityManager();
 
     entity_ptr        CreateEntity();
-    void              DeactivateEntity(const_entity_ptr a_entity);
-    void              ActivateEntity(const_entity_ptr a_entity);
+    void              DeactivateEntity(const_entity_ptr a_entity) const;
+    void              ActivateEntity(const_entity_ptr a_entity) const;
     void              DestroyEntity(entity_ptr a_entity);
     entity_ptr        GetEntity(tl_int a_index);
 
@@ -102,7 +102,6 @@ namespace tloc { namespace core { namespace component_system {
   private:
 
     entity_cont             m_entities;
-    const_entity_ptr_cont   m_deactivatedEntities;
 
     entity_id_cont          m_removedEntities;
     event_manager_vptr      m_eventMgr;

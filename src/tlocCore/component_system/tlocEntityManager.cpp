@@ -62,7 +62,7 @@ namespace tloc { namespace core { namespace component_system {
     EntityManager::
     CreateEntity()
   {
-    auto e = core_sptr::MakeUnique<Entity>(m_nextId++);
+    auto e = core_sptr::MakeUnique<Entity>(m_nextId++, entity_manager_vptr(this));
 
     entity_ptr ePtr;
 
@@ -90,37 +90,33 @@ namespace tloc { namespace core { namespace component_system {
 
   void
     EntityManager::
-    DeactivateEntity(const_entity_ptr a_entity)
+    DeactivateEntity(const_entity_ptr a_entity) const
   {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(), 
       "Entity is not part of this EntityManager OR has been destroyed already");
 
-    // entity already deactive
-    if (find_all(m_deactivatedEntities, a_entity) != m_deactivatedEntities.end())
+    if (a_entity->IsActive() == false)
     { return; }
 
-    a_entity->Deactivate();
-    m_deactivatedEntities.push_back(a_entity);
+    // avoid a recursive call to Entity::Deactivate()
+    a_entity->m_active = false;
+
     m_eventMgr->DispatchNow( EntityEvent( entity_events::deactivate_entity, 
                                           ToVirtualPtr(a_entity)) );
   }
 
   void
     EntityManager::
-    ActivateEntity(const_entity_ptr a_entity)
+    ActivateEntity(const_entity_ptr a_entity) const
   {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(), 
       "Entity is not part of this EntityManager OR has been destroyed already");
 
-    // entity already active
-    if (find_all(m_deactivatedEntities, a_entity) == m_deactivatedEntities.end())
+    if (a_entity->IsActive())
     { return; }
 
-    a_entity->Activate();
-
-    auto itrSearch = find_all(m_deactivatedEntities, a_entity);
-    if (itrSearch != m_deactivatedEntities.end())
-    { m_deactivatedEntities.erase(itrSearch); }
+    // avoid a recursive call to Entity::Activate()
+    a_entity->m_active = true;
 
     m_eventMgr->DispatchNow( EntityEvent( entity_events::activate_entity, 
                                           ToVirtualPtr(a_entity)) );
@@ -131,10 +127,6 @@ namespace tloc { namespace core { namespace component_system {
   {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(),
       "Entity is not part of this EntityManager OR has been destroyed already");
-
-    auto itrSearch = find_all(m_deactivatedEntities, a_entity);
-    if (itrSearch != m_deactivatedEntities.end())
-    { m_deactivatedEntities.erase(itrSearch); }
 
     m_entitiesToRemove.push_back(m_entities[a_entity->GetIndex()]);
 
@@ -264,19 +256,6 @@ namespace tloc { namespace core { namespace component_system {
       }
 
       m_removedEntities.push_back( (*itr)->GetIndex());
-    }
-
-    // deactivate all entities that are marked as disabled
-    for(auto itr = m_entities.begin(), 
-             itrEnd = m_entities.end(); itr != itrEnd; ++itr)
-    {
-      if (*itr != nullptr)
-      {
-        if ( (*itr)->IsActive() == false)
-        { DeactivateEntity(core_sptr::ToVirtualPtr(*itr)); }
-        else
-        { ActivateEntity(core_sptr::ToVirtualPtr(*itr)); }
-      }
     }
 
     // Update the components (which involves removing them)

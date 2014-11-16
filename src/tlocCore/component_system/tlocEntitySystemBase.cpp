@@ -234,10 +234,17 @@ namespace tloc { namespace core { namespace component_system {
       {
         const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
 
-        if (type == entity_events::activate_entity)
-        { OnEntityActivate(entEvent); }
-        else
-        { OnEntityDeactivate(entEvent); }
+        auto itr = 
+          core::find_if_all(m_activeEntities, 
+          core::algos::pair::compare::MakeFirst(entEvent.GetEntity()) );
+
+        if (itr != m_activeEntities.end())
+        {
+          if (type == entity_events::activate_entity)
+          { OnEntityActivate(entEvent); }
+          else
+          { OnEntityDeactivate(entEvent); }
+        }
 
         break;
       }

@@ -58,11 +58,11 @@ namespace TestingEntity
   {
   public:
     EntityMock(entity_id a_id) 
-      : Entity(a_id) 
+      : Entity(a_id, nullptr) 
     { }
 
     EntityMock(entity_id a_id, BufferArg a_debugName) 
-      : Entity(a_id, a_debugName) 
+      : Entity(a_id, a_debugName, nullptr) 
     { }
 
     component_iterator  begin_components(component_group_type a_groupIndex)

@@ -24,6 +24,7 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     friend class EntityManager;
+    typedef core_sptr::VirtualPtr<EntityManager>        ent_mgr_ptr;
 
     typedef Entity                                      this_type;
     typedef base_classes::DebugName_TI
@@ -49,8 +50,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                                     size_type;
 
   public:
-    Entity(entity_id  a_id);
-    Entity(entity_id  a_id, BufferArg a_debugName);
+    Entity(entity_id  a_id, ent_mgr_ptr a_entMgr);
+    Entity(entity_id  a_id, BufferArg a_debugName, ent_mgr_ptr a_entMgr);
 
     bool                      operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
@@ -131,6 +132,7 @@ namespace tloc { namespace core { namespace component_system {
     component_group_list  m_allComponents;
 
     mutable bool          m_active;
+    ent_mgr_ptr           m_entMgr;
   };
 
   //------------------------------------------------------------------------

@@ -25,7 +25,7 @@ namespace
     
     //SECTION("Construct", "")
     {
-      core_cs::entity_vso ent(MakeArgs(0));
+      core_cs::entity_vso ent(MakeArgs(0, nullptr));
 
       component_ptr ptr = pref_gfx::SceneNode(entMgr.get(), compMgr.get())
         .Construct(ent.get());

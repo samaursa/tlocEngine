@@ -69,6 +69,9 @@ namespace TestingEntitySystemBase
           entity_manager_ptr a_entMgr)
           : base_type(a_eventMgr, a_entMgr, 
                       register_type().Add<EmptyComponent1>(), "EntSys")
+          , m_componentInsert(0)
+          , m_componentEnable(0)
+          , m_entityActivate(0)
     { }
 
     ~EntSys()
@@ -143,7 +146,7 @@ namespace TestingEntitySystemBase
 
     using base_type::DoGetActiveEntities;
 
-    tl_int m_componentInsert = 0, m_componentEnable = 0, m_entityActivate = 0;
+    tl_int m_componentInsert, m_componentEnable, m_entityActivate;
   };
 
   TEST_CASE("core/component_system/EntitySystemBase", "")
@@ -168,6 +171,7 @@ namespace TestingEntitySystemBase
     CHECK(e.GetNumEntities() == 0);
 
     core_cs::entity_vptr ent = entMgr->CreateEntity();
+    core_cs::entity_vptr entOrphan = entMgr->CreateEntity();
 
     typedef core_cs::EntityManager::orphan          orphan;
 
@@ -241,6 +245,10 @@ namespace TestingEntitySystemBase
 
       // double deactivation should not do anything
       entMgr->DeactivateEntity(ent);
+      CHECK(e.m_entityActivate == currEntActivate - 1);
+
+      // unrelated entities should be ignored altogether
+      entMgr->DeactivateEntity(entOrphan);
       CHECK(e.m_entityActivate == currEntActivate - 1);
 
       entMgr->ActivateEntity(ent);

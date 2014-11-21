@@ -1,6 +1,7 @@
 #include "tlocEntity.h"
 
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocEntityManager.h>
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -10,11 +11,12 @@ namespace tloc { namespace core { namespace component_system {
   // Entity
 
   Entity::
-    Entity(entity_id a_id)
+    Entity(entity_id a_id, ent_mgr_ptr a_entMgr)
     : base_type("No name assigned")
     , m_id(a_id)
     , m_index(size_type() - 1)
     , m_active(true)
+    , m_entMgr(a_entMgr)
   {
     m_allComponents.resize(component_group::k_count);
   }
@@ -22,11 +24,12 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Entity::
-    Entity(entity_id a_id, BufferArg a_debugName)
+    Entity(entity_id a_id, BufferArg a_debugName, ent_mgr_ptr a_entMgr)
     : base_type(a_debugName)
     , m_id(a_id)
     , m_index(size_type() - 1)
     , m_active(true)
+    , m_entMgr(a_entMgr)
   {
     m_allComponents.resize(component_group::k_count);
   }
@@ -266,14 +269,20 @@ namespace tloc { namespace core { namespace component_system {
   void
     Entity::
     Activate() const
-  { m_active = true; }
+  { 
+    m_entMgr->ActivateEntity(const_entity_vptr(this));
+    //m_active = true; // EntityManager sets this flag now
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     Entity::
     Deactivate() const
-  { m_active = false; }
+  { 
+    m_entMgr->DeactivateEntity(const_entity_vptr(this));
+    //m_active = false; // EntityManager sets this flag now
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

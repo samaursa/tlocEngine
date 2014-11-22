@@ -7,6 +7,8 @@
 #include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocMath/types/tlocVector.h>
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -19,8 +21,8 @@ namespace tloc { namespace math { namespace types {
   public:
     typedef Vector_T<T, 4>                        this_type;
     typedef Vector_TI<T, 4, this_type>            base_type;
-    typedef Vector_TI<T, 3, Vector_T<T, 3> >      vec3_type;
-    typedef Vector_TI<T, 2, Vector_T<T, 2> >      vec2_type;
+    typedef Vector_T<T, 3>                        vec3_type;
+    typedef Vector_T<T, 2>                        vec2_type;
 
     typedef typename base_type::value_type        value_type;
     typedef typename base_type::reference         reference;

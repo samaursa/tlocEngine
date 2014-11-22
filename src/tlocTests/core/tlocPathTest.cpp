@@ -30,7 +30,7 @@ namespace TestingIOPath
 #else
   void GetPathToCreateFiles(char* a_path)
   {
-    strcpy(a_path, "/");
+    strcpy(a_path, "./");
   }
 #endif
 
@@ -85,13 +85,14 @@ namespace TestingIOPath
     GetPathToCreateFiles(pathToCreateFiles);
 
     {
-      const char* fileName = "./testExists.txt";
+      const char* fileName = "testExists.txt";
       char path[1024];
 
       strcpy(path, pathToCreateFiles);
       strcat(path, fileName);
 
       FILE* f = fopen(path, "w");
+      REQUIRE(f != TLOC_NULL);
       fclose(f);
 
       io::Path p(path);
@@ -101,13 +102,14 @@ namespace TestingIOPath
     }
 
     {
-      const char* fileName = "./testExists.bin";
+      const char* fileName = "testExists.bin";
       char path[1024];
 
       strcpy(path, pathToCreateFiles);
       strcat(path, fileName);
 
       FILE* f = fopen(path, "wb");
+      REQUIRE(f != TLOC_NULL);
       fclose(f);
 
       io::Path p(path);

@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace gl {
     VertexArrayObject::LateBind::
     Bind(const this_type& a_vao)
   {
-    m_bind.reset(new VertexArrayObject::Bind(a_vao));
+    m_bind = core_sptr::MakeUnique<VertexArrayObject::Bind>(a_vao);
   }
 
   // ///////////////////////////////////////////////////////////////////////

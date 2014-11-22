@@ -25,7 +25,7 @@ namespace
     
     //SECTION("Construct", "")
     {
-      core_cs::entity_vso ent(MakeArgs(0));
+      core_cs::entity_vso ent(MakeArgs(0, nullptr));
 
       component_ptr ptr = pref_gfx::SceneNode(entMgr.get(), compMgr.get())
         .Construct(ent.get());
@@ -96,7 +96,7 @@ namespace
     // testing Issue #83
     gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
 
-    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Info::s_value);
+    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Info::k_value);
     TLOC_TEST_ASSERT
     {
       entity_ptr dummyEnt = entMgr->CreateEntity();
@@ -111,7 +111,7 @@ namespace
     }
     TLOC_TEST_ASSERT_CHECK();
 
-    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::s_value);
+    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::k_value);
     TLOC_TEST_ASSERT
     {
       entity_ptr dummyEnt = entMgr->CreateEntity();

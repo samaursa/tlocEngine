@@ -133,9 +133,16 @@ namespace TestingWindow
 
   TEST_CASE("Graphics/Window/Fullscreen", "")
   {
-    typedef Window::graphics_mode graphics_mode;
-
+    // TODO: Our window class should provide this functionality 
+#ifdef TLOC_OS_WIN
+    // query the resolution of the monitor
+    g_windowSizeX = GetSystemMetrics(SM_CXSCREEN); 
+    g_windowSizeY = GetSystemMetrics(SM_CYSCREEN);
+#else
     g_windowSizeX = 800; g_windowSizeY = 600;
+#endif
+
+    typedef Window::graphics_mode graphics_mode;
 
     Window win3;
     CHECK(win3.IsValid() == false);

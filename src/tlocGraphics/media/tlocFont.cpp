@@ -132,7 +132,7 @@ namespace tloc { namespace graphics { namespace media {
                 "Number of character images must not exceed number of rows/cols "
                 "available");
 
-    image_sptr spriteSheet(new Image());
+    image_sptr spriteSheet = core_sptr::MakeShared<Image>();
 
     spriteSheet->
       Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
@@ -224,7 +224,7 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoInitialize(const data_type& a_data)
   {
-    m_ft.reset(new ft_ptr::value_type());
+    m_ft = core_sptr::MakeUnique<ft_ptr::value_type>();
     return m_ft->Initialize(a_data);
   }
 
@@ -234,8 +234,7 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoDestroy()
   {
-    if (m_ft)
-    { core_sptr::algos::virtual_ptr::DeleteAndReset()(m_ft); }
+    m_ft.reset();
     return ErrorSuccess;
   }
 
@@ -268,7 +267,7 @@ namespace tloc { namespace graphics { namespace media {
 using namespace tloc::gfx_med;
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(free_type::FreeType);
+TLOC_EXPLICITLY_INSTANTIATE_UNIQUE_PTR(free_type::FreeType);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Font);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(Font);
 

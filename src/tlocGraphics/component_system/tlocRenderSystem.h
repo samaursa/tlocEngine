@@ -112,22 +112,23 @@ namespace tloc { namespace graphics { namespace component_system {
       DrawInfo();
       DrawInfo(entity_ptr a_ent, 
                gfx_t::gl_int a_drawCommand, 
-               gfx_t::gl_sizei a_numVertices);
+               tl_size a_numVertices);
 
     public:
       entity_ptr                m_entity;
       gl::shader_operator_vptr  m_shaderOp;
       gl::vao_vptr              m_meshVAO;
 
-      gfx_t::gl_int     m_drawCommand;
-      gfx_t::gl_sizei   m_numVertices;
+      gfx_t::gl_int   m_drawCommand;
+      tl_size         m_numVertices;
 
     };
 
   protected:
     RenderSystem_TI(event_manager_ptr              a_eventMgr,
                     entity_manager_ptr             a_entityMgr,
-                    register_type                  a_registerTypes);
+                    register_type                  a_registerTypes,
+                    BufferArg                      a_debugName);
 
     virtual void              SortEntities();
 

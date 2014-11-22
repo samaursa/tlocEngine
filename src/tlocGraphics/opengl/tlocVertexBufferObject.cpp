@@ -108,7 +108,7 @@ namespace tloc { namespace graphics { namespace gl {
   VertexBufferObject::LateBind_T<TLOC_VBO_LATE_BIND_PARAMS>::
     Bind(const this_type& a_vbo)
   {
-    m_bind.reset(new typename bind_ptr::value_type(a_vbo));
+    m_bind = core_sptr::MakeUnique<typename bind_ptr::value_type>(a_vbo);
   }
 
   // -----------------------------------------------------------------------

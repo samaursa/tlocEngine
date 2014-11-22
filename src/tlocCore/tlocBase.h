@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Macros that have to be included before any other file
 
-#ifdef _MSC_VER
+#ifdef TLOC_COMPILER_VISUAL_CPP
 #  ifndef _CRT_SECURE_NO_WARNINGS
 #    define _CRT_SECURE_NO_WARNINGS
 #  endif
@@ -33,7 +33,7 @@
 // Common macros
 
 #if defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL) || defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
-# if defined (_MSC_VER)
+# if defined (TLOC_COMPI)
 #   ifdef _SECURE_SCL
 #     undef _SECURE_SCL
 #   endif
@@ -79,7 +79,7 @@
 
 //------------------------------------------------------------------------
 // Microsoft Visual C++ compiler
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
   //------------------------------------------------------------------------
   // Check for exception handling
 # if defined(_CPPUNWIND)
@@ -125,7 +125,7 @@
   // This fix is temporary until we can figure out a way to remove typename
   // limitations from VS (i.e. adding typedef to VS fails to compile, while
   // removing typedef fails to compile on LLVM)
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
 # define TLOC_COMPILER_TYPEDEF(_type_, _alias_)\
   typedef _type_ _alias_
 #else // For GCC and Clang
@@ -229,7 +229,7 @@
 
 //------------------------------------------------------------------------
 // Define force inline for the VC++ compiler
-#if defined (_MSC_VER)
+#if defined (TLOC_COMPILER_VISUAL_CPP)
 # pragma warning(disable : 4714)
 // NOTE: __forceinline increases build times substantially
 # define TLOC_FORCE_INLINE inline /*__forceinline*/
@@ -285,7 +285,7 @@
 // are intentionally leaving the source file empty. In those cases, the following
 // define can be used (taken from: http://stackoverflow.com/questions/1822887/what-is-the-best-way-to-eliminate-ms-visual-c-linker-warning-warning-lnk4221/1823024#1823024
 
-#ifdef _MSC_VER
+#ifdef TLOC_COMPILER_VISUAL_CPP 
 # define TLOC_INTENTIONALLY_EMPTY_SOURCE_FILE() \
     namespace { char NoEmptyFileDummy##__LINE__; }
 # define TLOC_NOT_EMPTY_SOURCE_FILE() \
@@ -349,7 +349,7 @@ struct DiagnoseTemplate;
 // Visual Studio 2010 supports extern template but requires the explicit
 // instantiation to NOT follow it, which makes it next to useless for us. So
 // we turn it off.
-#if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE) && _MSC_VER >= 1700
+#if !defined(TLOC_CXX03) && !defined(TLOC_NO_EXTERN_TEMPLATE) && TLOC_COMPILER_VISUAL_CPP >= 1700
 # define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)\
     extern template class _class_with_type_
 
@@ -358,6 +358,15 @@ struct DiagnoseTemplate;
 #else
 # define TLOC_EXTERN_TEMPLATE_CLASS(_class_with_type_)
 # define TLOC_EXTERN_TEMPLATE_STRUCT(_class_with_type_)
+#endif
+
+// -----------------------------------------------------------------------
+// decltype() fix for VC++ 2010
+// see: http://stackoverflow.com/a/9291674/368599
+
+#ifdef TLOC_COMPILER_VISUAL_CPP_2010
+#include <utility>
+#define decltype(...) std::identity<decltype(__VA_ARGS__)>::type
 #endif
 
 #endif // header guard

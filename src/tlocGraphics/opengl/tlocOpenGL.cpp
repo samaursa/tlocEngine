@@ -64,15 +64,19 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // static definitions
 
+#if defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL
+# define GL_MAX_COLOR_ATTACHMENTS           TLOC_GL_UNSUPPORTED
+# define GL_NUM_EXTENSIONS                  TLOC_GL_UNSUPPORTED
+# define GL_NUM_SHADING_LANGUAGE_VERSIONS   TLOC_GL_UNSUPPORTED
+#endif
+
     const GLint CurrentProgram::s_glParamName               = GL_CURRENT_PROGRAM;
     const GLint MaxCombinedTextureImageUnits::s_glParamName = GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
     const GLint MaxVertexAttribs::s_glParamName             = GL_MAX_VERTEX_ATTRIBS;
     const GLint MaxColorAttachments::s_glParamName          = GL_MAX_COLOR_ATTACHMENTS;
-
-#if defined (TLOC_OS_WIN)
     const GLint NumExtensions::s_glParamName                = GL_NUM_EXTENSIONS;
     const GLint NumShadingLanguageVersions::s_glParamName   = GL_NUM_SHADING_LANGUAGE_VERSIONS;
-#endif
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -133,17 +137,20 @@ namespace tloc { namespace graphics { namespace gl {
   
   // ///////////////////////////////////////////////////////////////////////
   // VertexArrayObject
-  
+
   namespace vertex_array_object {
+
+#if defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL
+# define glBindVertexArray(_name_)          glBindVertexArrayOES(_name_)
+# define glGenVertexArrays(_num_, _handle_) glGenVertexArraysOES(_num_, _handle_)
+# define glDeleteVertexArrays(_num_, _handle_)  glDeleteVertexArraysOES(_num_, _handle_)
+#endif
     
     void
       Bind(gfx_t::gl_uint a_name)
     {
-#ifdef TLOC_OS_IPHONE
-      glBindVertexArrayOES(a_name);
-#else
       glBindVertexArray(a_name);
-#endif
+
       gl::Error err; TLOC_UNUSED(err);
       TLOC_ASSERT(err.Succeeded(), "glBindVertexArray() failed");
     }
@@ -158,11 +165,9 @@ namespace tloc { namespace graphics { namespace gl {
       Generate()
     {
       gfx_t::gl_uint handle;
-#ifdef TLOC_OS_IPHONE
-      glGenVertexArraysOES(1, &handle);
-#else
+
       glGenVertexArrays(1, &handle);
-#endif
+
       gl::Error err; TLOC_UNUSED(err);
       TLOC_ASSERT(err.Succeeded(), "glGenVertexArray() failed");
 
@@ -172,11 +177,8 @@ namespace tloc { namespace graphics { namespace gl {
     void
       Destroy(gfx_t::gl_uint a_name)
     {
-#ifdef TLOC_OS_IPHONE
-      glDeleteVertexArraysOES(1, &a_name);
-#else
       glDeleteVertexArrays(1, &a_name);
-#endif
+
       gl::Error err; TLOC_UNUSED(err);
       TLOC_LOG_GFX_ERR_IF(err.Failed()) << "glDeleteVertexArrays() failed";
     }

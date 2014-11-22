@@ -123,7 +123,7 @@ namespace TestingEventManager
     event_tracker_vso globalTracker;
     event_tracker_vso tracker, tracker2;
 
-    entity_vso         dummyEnt( MakeArgs(0) );
+    entity_vso         dummyEnt( MakeArgs(0, nullptr) );
     comp_to_test_sptr  transComp = MakeShared<CompToTest>();
     component_sptr     dummyComp = MakeShared<component_sptr::value_type>(*transComp);
 

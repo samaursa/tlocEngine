@@ -24,6 +24,7 @@ namespace tloc { namespace core { namespace component_system {
   {
   public:
     friend class EntityManager;
+    typedef core_sptr::VirtualPtr<EntityManager>        ent_mgr_ptr;
 
     typedef Entity                                      this_type;
     typedef base_classes::DebugName_TI
@@ -49,8 +50,8 @@ namespace tloc { namespace core { namespace component_system {
     typedef tl_size                                     size_type;
 
   public:
-    Entity(entity_id  a_id);
-    Entity(entity_id  a_id, BufferArg a_debugName);
+    Entity(entity_id  a_id, ent_mgr_ptr a_entMgr);
+    Entity(entity_id  a_id, BufferArg a_debugName, ent_mgr_ptr a_entMgr);
 
     bool                      operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
@@ -79,10 +80,13 @@ namespace tloc { namespace core { namespace component_system {
     const_component_group_iterator begin_component_groups() const;
     const_component_group_iterator end_component_groups() const;
 
-    size_type           size_components(component_group_type  a_groupIndex) const;
-    size_type           size_components(component_info_type   a_info) const;
+    size_type                 size_components(component_group_type  a_groupIndex) const;
+    size_type                 size_components(component_info_type   a_info) const;
     template <typename T_Component>
-    size_type           size_components() const;
+    size_type                 size_components() const;
+
+    void                      Activate() const;
+    void                      Deactivate() const;
 
     using base_type::GetDebugName;
     using base_type::SetDebugName;
@@ -112,9 +116,6 @@ namespace tloc { namespace core { namespace component_system {
     void                DoInsertComponent(component_sptr a_component);
     void                DoRemoveComponent(component_sptr a_component);
 
-    void                DoActivate() const;
-    void                DoDeactivate() const;
-
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT (component_group_list,  
                         DoGetComponentGroupList, m_allComponents);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(entity_id, DoSetID, m_id);
@@ -127,8 +128,11 @@ namespace tloc { namespace core { namespace component_system {
 
     entity_id             m_id;
     size_type             m_index;
-    mutable bool          m_active;
+
     component_group_list  m_allComponents;
+
+    mutable bool          m_active;
+    ent_mgr_ptr           m_entMgr;
   };
 
   //------------------------------------------------------------------------
@@ -226,6 +230,9 @@ namespace tloc { namespace core { namespace component_system {
 
   typedef containers::tl_array<entity_vptr>::type            entity_ptr_array;
   typedef containers::tl_array<const_entity_vptr>::type      const_entity_ptr_array;
+
+  typedef containers::tl_array<entity_uptr>::type            entity_uptr_array;
+  typedef containers::tl_array<const_entity_uptr>::type      const_entity_uptr_array;
 };};};
 
 // -----------------------------------------------------------------------

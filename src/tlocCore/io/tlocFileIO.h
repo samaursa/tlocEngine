@@ -3,11 +3,10 @@
 
 #include <tlocCore/tlocCoreBase.h>
 
-#include <cstdio>
-
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/io/tlocPath.h>
 #include <tlocCore/memory/tlocBufferArg.h>
+#include <tlocCore/io/tlocFileContents.h>
 
 namespace tloc { namespace core { namespace io {
 
@@ -50,16 +49,19 @@ namespace tloc { namespace core { namespace io {
     error_type      Delete();
     error_type      Write(BufferArg a_string) const;
     error_type      GetContents(string_type& a_out) const;
+    error_type      GetContents(FileContents& a_out) const;
     void            swap(this_type& a_other);
 
     bool            IsOpen() const;
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Path, GetPath, m_filePath);
 
   private:
 
     error_type      DoClose();
 
     FILE*   m_file;
-    Path    m_fileName;
+    Path    m_filePath;
   };
 
   // -----------------------------------------------------------------------

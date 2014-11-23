@@ -169,6 +169,8 @@ set(TLOC_ENGINE_CORE_IO
     io/tloc_io.cpp
     io/tlocFileIO.h
     io/tlocFileIO.cpp
+    io/tlocFileContents.h
+    io/tlocFileContents.cpp
     io/tlocPath.h
     io/tlocPath.cpp
 )

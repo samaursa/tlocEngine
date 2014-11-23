@@ -453,8 +453,8 @@ namespace tloc { namespace core { namespace memory {
       void DoAssertPtrIsTracked(const void* a_ptrAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsPointerTracked(a_ptrAddress) == true,
-          "Memory address is already tracked. Possibly causes include no calls "
-          "to TrackPointerToAddress()");
+          "Memory address is NOT tracked. Possibly causes include no calls to "
+          "TrackPointerToAddress()");
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

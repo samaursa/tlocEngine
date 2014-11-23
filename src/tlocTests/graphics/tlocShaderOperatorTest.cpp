@@ -70,7 +70,7 @@ namespace TestingShaderOperator
     "{                                                                    \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x * u_vec4.x;          \n"
     "  gl_Position.y = float(u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x);  \n"
-    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;           \n"
+    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x            \n"
     "                  + u_mat5[0].x;                                     \n"
     "}\n";
 
@@ -669,12 +669,15 @@ namespace TestingShaderOperator
     "  attribute ivec2 u_ivec2;                                        \n"
     "  attribute ivec3 u_ivec3;                                        \n"
     "  attribute ivec4 u_ivec4;                                        \n"
+    "  attribute mat2  u_matrix2;                                      \n"
+    "  attribute mat3  u_matrix3;                                      \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position   = u_vec4 + u_vec5;                                \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
+    "  gl_Position.z = u_matrix2[0].x * u_matrix3[0].x;                \n"
     "}\n";
 
 #elif defined (TLOC_OS_IPHONE)
@@ -775,6 +778,26 @@ namespace TestingShaderOperator
       attribute.AddName("u_vec4");
 
       core_conts::Array<Vec4f32> array(1, Vec4f32(0.1f, 0.2f, 0.3f, 0.4f));
+      attribute.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                           gl::p_vbo::usage::StaticDraw>(array);
+
+      so->AddAttributeVBO(attribute);
+    }
+    {
+      gl::AttributeVBO attribute;
+      attribute.AddName("u_matrix2");
+
+      core_conts::Array<Mat2f32> array(1, Mat2f32::IDENTITY);
+      attribute.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                           gl::p_vbo::usage::StaticDraw>(array);
+
+      so->AddAttributeVBO(attribute);
+    }
+    {
+      gl::AttributeVBO attribute;
+      attribute.AddName("u_matrix3");
+
+      core_conts::Array<Mat3f32> array(1, Mat3f32::IDENTITY);
       attribute.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
                            gl::p_vbo::usage::StaticDraw>(array);
 

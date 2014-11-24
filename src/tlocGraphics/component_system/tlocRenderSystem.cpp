@@ -186,6 +186,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_uniProjInverseMat.first     = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniProjInverseMat.second));
 
+
     m_uniViewMat.first     = 
       m_shaderOp->AddUniform(gl::Uniform().SetName(m_uniViewMat.second));
     m_uniViewInverseMat.first     = 
@@ -377,6 +378,9 @@ namespace tloc { namespace graphics { namespace component_system {
       m_viewMatrix.MakeIdentity();
       m_projMat.MakeIdentity();
     }
+
+    if (DoGetDirtyAndUmark() == true)
+    { m_shaderOp->ClearCache(); }
 
     // -----------------------------------------------------------------------
     // populate and enable uniforms as needed
@@ -593,9 +597,10 @@ namespace tloc { namespace graphics { namespace component_system {
         << "Material's ShaderOperator should not have any attributes";
 
       if (matSO->IsUniformsCached() == false)
-      { matSO->PrepareAllUniforms(*m_shaderPtr); }
+      { uniformErr = matSO->PrepareAllUniforms(*m_shaderPtr); }
 
-      matSO->EnableAllUniforms(*m_shaderPtr);
+      if (uniformErr == ErrorSuccess)
+      { matSO->EnableAllUniforms(*m_shaderPtr); }
 
       // shader switch requires us to re-prepare the attributes/uniforms
       TLOC_ASSERT(m_shaderOp->size_attributeVBOs() == 0, 

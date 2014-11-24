@@ -25,6 +25,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       k_enableSortingByMaterial,
 
+      k_isDirty,
+
       k_count
     };
 
@@ -56,7 +58,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformModelMatrix(bool a_value)
-  { m_flags[k_enableUniModelMat] = a_value; }
+  { m_flags[k_enableUniModelMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -70,7 +72,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformModelInverseMatrix(bool a_value)
-  { m_flags[k_enableUniModelInverseMat] = a_value; }
+  { m_flags[k_enableUniModelInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -86,7 +88,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformMVPMatrix(bool a_value)
-  { m_flags[k_enableUniMVPMat] = a_value; }
+  { m_flags[k_enableUniMVPMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -100,7 +102,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformMVPInverseMatrix(bool a_value)
-  { m_flags[k_enableUniMVPInverseMat] = a_value; }
+  { m_flags[k_enableUniMVPInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -116,7 +118,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformVPMatrix(bool a_value)
-  { m_flags[k_enableVPMat] = a_value; }
+  { m_flags[k_enableVPMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -130,7 +132,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformVPInverseMatrix(bool a_value)
-  { m_flags[k_enableVPInverseMat] = a_value; }
+  { m_flags[k_enableVPInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -146,7 +148,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformMVMatrix(bool a_value)
-  { m_flags[k_enableMVMat] = a_value; }
+  { m_flags[k_enableMVMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -160,7 +162,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformMVInverseMatrix(bool a_value)
-  { m_flags[k_enableMVInverseMat] = a_value; }
+  { m_flags[k_enableMVInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -176,7 +178,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformViewMatrix(bool a_value)
-  { m_flags[k_enableUniViewMat] = a_value; }
+  { m_flags[k_enableUniViewMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -190,7 +192,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformViewInverseMatrix(bool a_value)
-  { m_flags[k_enableUniViewInverseMat] = a_value; }
+  { m_flags[k_enableUniViewInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -206,7 +208,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformProjectionMatrix(bool a_value)
-  { m_flags[k_enableUniProjMat] = a_value; }
+  { m_flags[k_enableUniProjMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -220,7 +222,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformProjectionInverseMatrix(bool a_value)
-  { m_flags[k_enableUniProjInverseMat] = a_value; }
+  { m_flags[k_enableUniProjInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -236,7 +238,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformScaleMatrix(bool a_value)
-  { m_flags[k_enableScaleMat] = a_value; }
+  { m_flags[k_enableScaleMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -250,7 +252,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformScaleInverseMatrix(bool a_value)
-  { m_flags[k_enableScaleInverseMat] = a_value; }
+  { m_flags[k_enableScaleInverseMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -264,7 +266,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledUniformNormalMatrix(bool a_value)
-  { m_flags[k_enableNormalMat] = a_value; }
+  { m_flags[k_enableNormalMat] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -280,7 +282,7 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledAttributePosData(bool a_value)
-  { m_flags[k_enableAttrPosData] = a_value; }
+  { m_flags[k_enableAttrPosData] = a_value; m_flags.Mark(k_isDirty); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -296,6 +298,15 @@ namespace tloc { namespace graphics { namespace component_system {
   void
     RenderSystem_I::
     SetEnabledSortingByMaterial(bool a_value)
-  { m_flags[k_enableSortingByMaterial] = a_value; }
+  { m_flags[k_enableSortingByMaterial] = a_value; m_flags.Mark(k_isDirty); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // has any flag changed?
+
+  bool
+    RenderSystem_I::
+    DoGetDirtyAndUmark()
+  { return m_flags.ReturnAndUnmark(k_isDirty); }
 
 };};};

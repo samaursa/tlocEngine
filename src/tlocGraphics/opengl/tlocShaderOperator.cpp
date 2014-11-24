@@ -830,6 +830,7 @@ namespace tloc { namespace graphics { namespace gl {
               {
                 TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
                   << shaderVarPtr->GetName();
+                shaderVarPtr->SetEnabled(false);
                 retError = ErrorFailure;
                 break;
               }
@@ -842,6 +843,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
               << shaderVarPtr->GetName();
+            shaderVarPtr->SetEnabled(false);
             retError = ErrorFailure;
           }
         }

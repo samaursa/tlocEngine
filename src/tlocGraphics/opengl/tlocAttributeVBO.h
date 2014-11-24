@@ -11,6 +11,9 @@
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/types/tlocVertex.h>
@@ -46,10 +49,16 @@ namespace tloc { namespace graphics { namespace gl {
     public:
       StrideInfo();
 
-      // size param in glVertexAttribPointer
+      // NumElements - Can be 1, 2, 3 or 4 even if total elements exceed that number. 
+      // e.g. Vec4 will be 4, Mat4 will be 4
       TLOC_DECL_PARAM_VAR(gl_int_type,  NumElements, m_numElements);
+      // TotalElements - e.g. Vec4 will be 4, Mat4 will be 16
+      TLOC_DECL_PARAM_VAR(size_type,    TotalElements, m_totalElements);
+      // GLType - see tlocGLType
       TLOC_DECL_PARAM_VAR(gl_enum_type, GLType, m_glType);
+      // StrideInBytes - Stide for each interleaved type
       TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
+      // DataStartIndex - The interleaved type starts from here
       TLOC_DECL_PARAM_VAR(size_type,    DataStartIndex, m_dataStartIndex);
     };
     typedef core_conts::Array<StrideInfo>                   stride_info_cont;
@@ -151,6 +160,8 @@ namespace tloc { namespace graphics { namespace gl {
         core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
 
         math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+        math_t::Mat2f32, math_t::Mat3f32, math_t::Mat4f32,
 
         gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,

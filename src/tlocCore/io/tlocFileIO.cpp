@@ -6,6 +6,7 @@
 #include <tlocCore/string/tlocString.inl.h>
 
 #include <stdio.h>
+#include <cstdio>
 
 namespace tloc { namespace core { namespace io {
 
@@ -81,9 +82,9 @@ namespace tloc { namespace core { namespace io {
   template <FILE_IO_TEMP>
   FileIO_T<FILE_IO_PARAMS>::
     FileIO_T(const Path& a_path)
-    : m_file(nullptr), m_fileName(a_path)
+    : m_file(nullptr), m_filePath(a_path)
   {
-    TLOC_ASSERT(m_fileName.HasFilename(), "Path does not contain a filename!");
+    TLOC_ASSERT(m_filePath.HasFilename(), "Path does not contain a filename!");
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -92,7 +93,7 @@ namespace tloc { namespace core { namespace io {
   FileIO_T<FILE_IO_PARAMS>::
     FileIO_T(const this_type& a_other)
     : m_file(nullptr)
-    , m_fileName(a_other.m_fileName)
+    , m_filePath(a_other.m_filePath)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -127,10 +128,10 @@ namespace tloc { namespace core { namespace io {
     FileIO_T<FILE_IO_PARAMS>::
     Open() /* const */
   {
-    if (m_fileName.HasFilename() == false)
+    if (m_filePath.HasFilename() == false)
     { return TLOC_ERROR(common_error_types::error_path_incorrect); }
 
-    m_file = detail::DoOpen(m_fileName.GetPath(), access_policy_type(),
+    m_file = detail::DoOpen(m_filePath.GetPath(), access_policy_type(),
                             file_format_type());
     if (m_file)
     {
@@ -168,7 +169,7 @@ namespace tloc { namespace core { namespace io {
     FileIO_T<FILE_IO_PARAMS>::
     Delete() /* const */
   {
-    if (::remove(m_fileName.GetPath()) == 0)
+    if (::remove(m_filePath.GetPath()) == 0)
     { return ErrorSuccess; }
     else
     { return ErrorFailure; }
@@ -224,13 +225,27 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type
+    FileIO_T<FILE_IO_PARAMS>::
+    GetContents(FileContents& a_out) const
+  {
+    string_type contents;
+    auto err = GetContents(contents);
+
+    a_out = FileContents(m_filePath, contents);
+    return err;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <FILE_IO_TEMP>
   void
     FileIO_T<FILE_IO_PARAMS>::
     swap(this_type& a_other)
   {
     using core::swap;
     swap(m_file, a_other.m_file);
-    swap(m_fileName, a_other.m_fileName);
+    swap(m_filePath, a_other.m_filePath);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

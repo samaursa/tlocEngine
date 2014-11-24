@@ -57,6 +57,11 @@ namespace TestingFileIO
     fileReader.GetContents(fileContents);
     CHECK(fileContents.compare(sentence) == 0);
 
+    core_io::FileContents fc;
+    fileReader.GetContents(fc);
+    CHECK(fc.GetContents().compare(sentence) == 0);
+    CHECK(fc.GetPath() == fileReader.GetPath());
+
     // should close the file fileReader currently has and copy the rhs file
     // reader into fileReader
     fileReader = io::FileIO_ReadA(core_io::Path(path));

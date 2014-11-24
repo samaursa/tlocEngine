@@ -169,6 +169,8 @@ set(TLOC_ENGINE_CORE_IO
     io/tloc_io.cpp
     io/tlocFileIO.h
     io/tlocFileIO.cpp
+    io/tlocFileContents.h
+    io/tlocFileContents.cpp
     io/tlocPath.h
     io/tlocPath.cpp
 )
@@ -376,8 +378,39 @@ set(TLOC_ENGINE_CORE_UTILITIES
     utilities/tlocUtils.h
 )
 
+set(3RD_PARTY_FILE_WATCHER_PATH ${TLOC_ENGINE_PATH}/src/3rdParty/Core/FileWatcher/)
+set(3RD_PARTY_FILE_WATCHER
+  ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcher.h
+  ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherImpl.h
+  )
+
+if(WIN32)
+  set(3RD_PARTY_FILE_WATCHER
+    ${3RD_PARTY_FILE_WATCHER}
+    ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherWin32.h
+    ${3RD_PARTY_FILE_WATCHER_PATH}/src/FileWatcher.cpp
+    ${3RD_PARTY_FILE_WATCHER_PATH}/src/FileWatcherWin32.cpp
+    )
+elseif(UNIX)
+  set(3RD_PARTY_FILE_WATCHER
+    ${3RD_PARTY_FILE_WATCHER}
+    ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherLinux.h
+    ${3RD_PARTY_FILE_WATCHER_PATH}/src/FileWatcher.cpp
+    ${3RD_PARTY_FILE_WATCHER_PATH}/src/FileWatcherLinux.cpp
+    )
+elseif(APPLE)
+  set(3RD_PARTY_FILE_WATCHER
+    ${3RD_PARTY_FILE_WATCHER}
+    ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherOSX.h
+    ${3RD_PARTY_FILE_WATCHER_PATH}/src/FileWatcher.cpp
+    ${3RD_PARTY_FILE_WATCHER_PATH}/src/FileWatcherOSX.cpp
+    )
+endif()
+
+
 include_directories(
   ../3rdParty/
+  ../3rdParty/Core/FileWatcher/include/
 )
 
 add_library(tlocCore STATIC
@@ -403,6 +436,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_TIME}
   ${TLOC_ENGINE_CORE_TYPES}
   ${TLOC_ENGINE_CORE_UTILITIES}
+  ${3RD_PARTY_FILE_WATCHER}
 )
 
 add_dependencies(tlocCore
@@ -433,5 +467,6 @@ source_group(threads FILES ${TLOC_ENGINE_CORE_THREADS})
 source_group(time FILES ${TLOC_ENGINE_CORE_TIME})
 source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
+source_group(3rd_party/FileWatcher FILES ${3RD_PARTY_FILE_WATCHER})
 
 tloc_install_library(tlocCore tlocCore)

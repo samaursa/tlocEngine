@@ -34,7 +34,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef ShaderVariable_I                        this_type;
     typedef core_t::Any                             value_type;
     typedef core_str::String                        string_type;
-    typedef u32                                     gl_type;
+    typedef tl_size                                 size_type;
+    typedef gfx_t::gl_enum                          gl_type;
 
   public:
     ShaderVariable_I();
@@ -48,8 +49,8 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetName, m_name);
     TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetName, m_name);
 
-    const string_type& GetName(tl_int a_nameIndex) const;
-    gl_type            GetInterleavedType(tl_int a_typeIndex) const;
+    const string_type& GetName(size_type a_nameIndex) const;
+    gl_type            GetInterleavedType(size_type a_typeIndex) const;
 
   protected:
     TLOC_DECL_AND_DEF_SETTER(gl_type, DoSetType, m_type);
@@ -238,6 +239,11 @@ namespace tloc { namespace graphics { namespace gl {
     static_cast<derived_type*>(this)->template DoCheckArrayTypes<T>();
     return DoSetValueAs(a_array);
   }
+
+  // -----------------------------------------------------------------------
+
+#define TLOC_EXTERN_TEMPLATE_SHADER_VARIABLE(_dt_)\
+  TLOC_EXTERN_TEMPLATE_CLASS(ShaderVariable_TI<_dt_>)
 
   // -----------------------------------------------------------------------
 

@@ -20,7 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
   CameraSystem::
     CameraSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<gfx_cs::Camera>())
+                register_type().Add<gfx_cs::Camera>(), 
+                "CameraSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -58,6 +59,7 @@ namespace tloc { namespace graphics { namespace component_system {
     // vMVP, but since we are doing column major, it becomes PVMv
 
     m_vpMatrix = cam->GetFrustumRef().GetProjectionMatrix();
+    cam->SetProjectionMatrix(m_vpMatrix);
 
     if (a_ent->HasComponent<math_cs::Transform>())
     {
@@ -67,6 +69,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_vpMatrix = m_vpMatrix * viewMat;
 
+    cam->SetViewMatrix(viewMat);
     cam->SetViewProj(m_vpMatrix);
   }
 

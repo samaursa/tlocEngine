@@ -4,7 +4,7 @@
 
 #ifdef TLOC_USE_CUSTOM_NEW_DELETE
 
-# if defined (_MSC_VER)
+# if defined (TLOC_COMPILER_VISUAL_CPP)
 #   define ALLOCATOR_DECL_THROW(type)
 #   define ALLOCATOR_DECL_NO_THROW()
 # else
@@ -129,8 +129,8 @@ namespace tloc { namespace core { namespace memory {
     class MemoryTracker_T
     {
     public:
-      typedef void*                             mem_info_type;
-      typedef void*                             ptr_info_type;
+      typedef const void*                       mem_info_type;
+      typedef const void*                       ptr_info_type;
 
       typedef T_BuildConfig                     build_config;
       typedef MemoryTracker_T<build_config>     this_type;
@@ -152,7 +152,7 @@ namespace tloc { namespace core { namespace memory {
     public:
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void TrackMemoryAddress(void* a_memAddress)
+      void TrackMemoryAddress(const void* a_memAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
@@ -175,8 +175,8 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void TrackConnectedMemoryAddress(void* a_memAddress,
-                                       void* a_connectedAddress)
+      void TrackConnectedMemoryAddress(const void* a_memAddress,
+                                       const void* a_connectedAddress)
       {
         TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_loggingEnabled)
           << "Tracking connected memory address (" << (tl_uintptr)a_memAddress
@@ -212,7 +212,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void UntrackMemoryAddress(void* a_memAddress)
+      void UntrackMemoryAddress(const void* a_memAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
@@ -265,7 +265,8 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void TrackPointerToMemoryAddress(void* a_memAddress, void* a_ptrAddress)
+      void TrackPointerToMemoryAddress(const void* a_memAddress, 
+                                       const void* a_ptrAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
@@ -302,7 +303,8 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void UntrackPointerToMemoryAddress(void* a_memAddress, void* a_ptrAddress)
+      void UntrackPointerToMemoryAddress(const void* a_memAddress, 
+                                         const void* a_ptrAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
@@ -347,7 +349,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      bool IsMemoryAddressTracked(void* a_memAddress)
+      bool IsMemoryAddressTracked(const void* a_memAddress)
       {
         if (IsTrackerAvail() == false)
         { return false; }
@@ -357,7 +359,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      bool IsPointerTracked(void* a_ptrAddress)
+      bool IsPointerTracked(const void* a_ptrAddress)
       {
         if (IsTrackerAvail() == false)
         { return false; }
@@ -367,7 +369,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      bool IsPointerToValidMemoryAddress(void* a_ptrAddress)
+      bool IsPointerToValidMemoryAddress(const void* a_ptrAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
@@ -377,7 +379,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      size_type GetNumberOfPointersToMemAddresses(void* a_memAddress)
+      size_type GetNumberOfPointersToMemAddresses(const void* a_memAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsTrackerAvail(), "Tracker Unavailable");
 
@@ -413,7 +415,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void DoAssertAddressIsTracked(void* a_memAddress)
+      void DoAssertAddressIsTracked(const void* a_memAddress)
       {
         bool isAddressTracked = IsMemoryAddressTracked(a_memAddress);
 
@@ -431,7 +433,7 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void DoAssertAddressIsNotTracked(void* a_memAddress)
+      void DoAssertAddressIsNotTracked(const void* a_memAddress)
       {
         bool isAddressTracked = IsMemoryAddressTracked(a_memAddress);
 
@@ -448,16 +450,16 @@ namespace tloc { namespace core { namespace memory {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void DoAssertPtrIsTracked(void* a_ptrAddress)
+      void DoAssertPtrIsTracked(const void* a_ptrAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsPointerTracked(a_ptrAddress) == true,
-          "Memory address is already tracked. Possibly causes include no calls "
-          "to TrackPointerToAddress()");
+          "Memory address is NOT tracked. Possibly causes include no calls to "
+          "TrackPointerToAddress()");
       }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void DoAssertPtrIsNotTracked(void* a_ptrAddress)
+      void DoAssertPtrIsNotTracked(const void* a_ptrAddress)
       {
         TLOC_ASSERT_LOW_LEVEL(IsPointerTracked(a_ptrAddress) == false,
           "Pointer address is already tracked. Possibly causes include dtor "
@@ -512,8 +514,8 @@ namespace tloc { namespace core { namespace memory {
     class MemoryTracker_T<p_memory_tracker::DisableTracker>
     {
     public:
-      typedef void*                             mem_info_type;
-      typedef void*                             ptr_info_type;
+      typedef const void*                       mem_info_type;
+      typedef const void*                       ptr_info_type;
 
       typedef p_memory_tracker::DisableTracker  build_config;
       typedef MemoryTracker_T<build_config>     this_type;
@@ -535,47 +537,47 @@ namespace tloc { namespace core { namespace memory {
     public:
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void TrackMemoryAddress(void* )
+      void TrackMemoryAddress(const void* )
       { }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void TrackConnectedMemoryAddress(void* , void* )
+      void TrackConnectedMemoryAddress(const void* , const void* )
       { }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void UntrackMemoryAddress(void* )
+      void UntrackMemoryAddress(const void* )
       { }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void TrackPointerToMemoryAddress(void* , void* )
+      void TrackPointerToMemoryAddress(const void* , const void* )
       { }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      void UntrackPointerToMemoryAddress(void* , void* )
+      void UntrackPointerToMemoryAddress(const void* , const void* )
       { }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      bool IsMemoryAddressTracked(void* )
+      bool IsMemoryAddressTracked(const void* )
       { return true; }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      bool IsPointerTracked(void* )
+      bool IsPointerTracked(const void* )
       { return false; }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      bool IsPointerToValidMemoryAddress(void* )
+      bool IsPointerToValidMemoryAddress(const void* )
       { return true; }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-      size_type GetNumberOfPointersToMemAddresses(void* )
+      size_type GetNumberOfPointersToMemAddresses(const void* )
       { return 0; }
 
       void EnableLogging(bool)
@@ -614,7 +616,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoTrackMemoryAddress(void* a_memAddress)
+    DoTrackMemoryAddress(const void* a_memAddress)
   {
     if (a_memAddress == nullptr)
     { return; }
@@ -626,8 +628,8 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoTrackConnectedMemoryAddress(void* a_memAddress,
-                                  void* a_connectedAddress)
+    DoTrackConnectedMemoryAddress(const void* a_memAddress,
+                                  const void* a_connectedAddress)
   {
     if (a_memAddress == nullptr)
     { return; }
@@ -645,7 +647,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoUntrackMemoryAddress(void* a_memAddress)
+    DoUntrackMemoryAddress(const void* a_memAddress)
   {
     if (MemoryTracker::IsTrackerAvail())
     { MemoryTracker::Get().UntrackMemoryAddress(a_memAddress); }
@@ -654,7 +656,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoTrackPointerToMemoryAddress(void* a_memAddress, void* a_ptr)
+    DoTrackPointerToMemoryAddress(const void* a_memAddress, const void* a_ptr)
   {
     if (MemoryTracker::IsTrackerAvail())
     {
@@ -665,7 +667,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoUntrackPointerToMemoryAddress(void* a_memAddress, void* a_ptr)
+    DoUntrackPointerToMemoryAddress(const void* a_memAddress, const void* a_ptr)
   {
     if (MemoryTracker::IsTrackerAvail())
     {
@@ -676,7 +678,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    DoIsPointerToValidMemoryAddress(void* a_ptr)
+    DoIsPointerToValidMemoryAddress(const void* a_ptr)
   {
     if (a_ptr == nullptr)
     { return false; }
@@ -692,7 +694,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    DoIsMemoryAddressTracked(void* a_memAddress)
+    DoIsMemoryAddressTracked(const void* a_memAddress)
   {
     if (a_memAddress == nullptr)
     { return false; }
@@ -708,7 +710,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoAssertPointerToValidMemoryAddress(void* a_memAddress, void* a_ptr)
+    DoAssertPointerToValidMemoryAddress(const void* a_memAddress, const void* a_ptr)
   {
     if (a_memAddress == nullptr)
     { return; }
@@ -728,7 +730,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   size_t
-    DoGetNumberOfPointersToMemoryAddress(void* a_memAddress)
+    DoGetNumberOfPointersToMemoryAddress(const void* a_memAddress)
   {
     return MemoryTracker::Get().GetNumberOfPointersToMemAddresses(a_memAddress);
   }

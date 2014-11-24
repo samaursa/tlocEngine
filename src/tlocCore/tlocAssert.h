@@ -24,7 +24,7 @@ namespace tloc { namespace core { namespace assert {
 
 };};};
 
-#if defined(_MSC_VER)
+#if defined(TLOC_COMPILER_VISUAL_CPP)
   #include <intrin.h>
     #define TLOC_DEBUG_BREAK() \
     do { \

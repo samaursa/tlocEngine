@@ -87,4 +87,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
 };};};
 
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::TextureCoords);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::TextureCoords);
+
 #endif

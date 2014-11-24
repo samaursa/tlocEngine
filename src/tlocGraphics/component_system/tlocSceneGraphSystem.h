@@ -29,6 +29,8 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type Post_Initialize();
 
+    virtual error_type Post_ReInitialize();
+
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
@@ -58,8 +60,20 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void 
       ActivateHierarchy(entity_manager_ptr a_mgr, entity_ptr a_parent);
+
+    void 
+      DeactivateHierarchy(entity_ptr a_parent);
+
+    void 
+      ActivateHierarchy(entity_ptr a_parent);
   };
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::SceneGraphSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::SceneGraphSystem);
 
 #endif

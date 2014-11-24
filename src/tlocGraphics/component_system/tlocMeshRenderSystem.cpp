@@ -27,7 +27,8 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_ptr a_eventMgr,
                        entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<mesh_type>())
+                register_type().Add<mesh_type>(), 
+                "MeshRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -38,6 +39,8 @@ namespace tloc { namespace graphics { namespace component_system {
     Pre_Initialize()
   {
     base_type::SetEnabledAttributePosData(false);
+    base_type::SetEnabledUniformViewMatrix(true);
+    base_type::SetEnabledUniformNormalMatrix(true);
     return base_type::Pre_Initialize();
   }
 
@@ -112,6 +115,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLES, numVertices);
     di.m_shaderOp = core_sptr::ToVirtualPtr(meshPtr->GetShaderOperator());
+    di.m_meshVAO  = meshPtr->GetVAO();
 
     base_type::DoDrawEntity(di);
   }

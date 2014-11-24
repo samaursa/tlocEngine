@@ -28,6 +28,8 @@ namespace tloc { namespace prefab { namespace graphics {
     Material::
     Construct(BufferArg a_vertexShader, BufferArg a_fragmentShader) const
   {
+    m_newUniformPtrs.clear();
+
     using namespace gfx_cs::components;
 
     typedef ComponentPoolManager              pool_mgr;
@@ -44,19 +46,12 @@ namespace tloc { namespace prefab { namespace graphics {
     mat->SetVertexSource(a_vertexShader);
     mat->SetFragmentSource(a_fragmentShader);
 
-    gfx_gl::shader_operator_vso so;
-
+    auto matSO = mat->GetShaderOperator();
+    matSO->reserve_uniforms(m_uniforms.size());
     for (const_uniform_itr 
          itr = m_uniforms.begin(), itrEnd = m_uniforms.end();
          itr != itrEnd; ++itr)
-    { so->AddUniform(**itr); }
-
-    for (const_attribute_itr 
-         itr = m_attributesVBO.begin(), itrEnd = m_attributesVBO.end();
-         itr != itrEnd; ++itr)
-    { so->AddAttributeVBO(**itr); }
-
-    mat->AddShaderOperator(*so);
+    { m_newUniformPtrs.push_back(matSO->AddUniform(**itr)); }
 
     return mat;
   }
@@ -151,16 +146,6 @@ namespace tloc { namespace prefab { namespace graphics {
     AddUniform(const uniform_ptr_type& a_uniform)
   {
     m_uniforms.push_back(a_uniform);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  Material&
-    Material::
-    AddAttributeVBO(const attributeVBO_ptr_type& a_attribute)
-  {
-    m_attributesVBO.push_back(a_attribute);
     return *this;
   }
 

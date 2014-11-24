@@ -20,6 +20,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     : public SmartPtr
   {
   public:
+    // for accessing a_other's m_rawPtr
+    template <typename U> friend class UniquePtr;
+
+  public:
     typedef SmartPtr               base_type;
 
     typedef T                      value_type;
@@ -33,18 +37,18 @@ namespace tloc { namespace core { namespace smart_ptr {
   public:
     UniquePtr();
     UniquePtr(nullptr_t);
+    UniquePtr(const this_type& a_other);
+    UniquePtr(this_type&& a_other);
     explicit UniquePtr(pointer a_rawPtr);
-    explicit UniquePtr(const this_type& a_other);
 
     template <typename T_Other>
-    explicit UniquePtr(const UniquePtr<T_Other>& a_other);
+    UniquePtr(UniquePtr<T_Other>&& a_other);
     ~UniquePtr();
 
-    // This is intentionally commented out - UniquePtr's assignment operator
-    // only works with move semantics which is not available in C++03
-    //template <typename T_Other>
-    //this_type& operator=(const UniquePtr<T_Other>& a_other);
-    //this_type& operator=(const this_type& a_other);
+    template <typename T_Other>
+    this_type& operator=(UniquePtr<T_Other>&& a_other);
+    this_type& operator=(this_type&& a_other);
+    this_type& operator=(const this_type& a_other);
 
     pointer   release(pointer a_ptr = pointer() );
     void      reset(pointer a_ptr = pointer() );
@@ -56,10 +60,21 @@ namespace tloc { namespace core { namespace smart_ptr {
     reference operator*() const;
     pointer   operator->() const;
 
+  public:
+    //------------------------------------------------------------------------
+    // friend functions - casting
+    template <typename T_Other, typename U>
+    friend
+    UniquePtr<T_Other>
+      static_pointer_cast(UniquePtr<U>& a_sp);
+
+    template <typename T_Other, typename U>
+    friend
+    UniquePtr<T_Other>
+      const_pointer_cast(const UniquePtr<U>& a_sp);
+
   private:
     void      DoDestroyRawPtr();
-
-    this_type& operator=(const this_type& a_other);
 
   private:
     pointer   m_rawPtr;
@@ -72,11 +87,22 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <typename T>
   template <typename T_Other>
   UniquePtr<T>::
-    UniquePtr(const UniquePtr<T_Other>& a_other)
-    : m_rawPtr( static_cast<pointer>(
-                const_cast<UniquePtr<T_Other>* >(&a_other)->release()) )
-  { 
-    core_mem::tracking::priv::DoTrackMemoryAddress((void*)m_rawPtr);
+    UniquePtr(UniquePtr<T_Other>&& a_other)
+    : m_rawPtr( static_cast<pointer>(a_other.m_rawPtr) )
+  { a_other.m_rawPtr = nullptr; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  template <typename T_Other>
+  typename UniquePtr<T>::this_type& 
+    UniquePtr<T>::
+    operator= (UniquePtr<T_Other>&& a_other)
+  {
+    delete release();
+    m_rawPtr = static_cast<pointer>(a_other.m_rawPtr);
+    a_other.m_rawPtr = nullptr;
+    return *this;
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -168,6 +194,39 @@ namespace tloc { namespace core { namespace smart_ptr {
   void swap(UniquePtr<T>& a, UniquePtr<T>& b)
   { a.swap(b); }
 
+  // -----------------------------------------------------------------------
+  // casting
+
+  template <typename T, typename U>
+  UniquePtr<T>
+    static_pointer_cast(UniquePtr<U>& a_ptr)
+  {
+    typedef UniquePtr<T>   return_type;
+
+    return_type ptr;
+    U* rawPtr = a_ptr.m_rawPtr;
+    a_ptr.m_rawPtr = nullptr;
+    ptr.m_rawPtr = static_cast<T*>(rawPtr);
+
+    return ptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, typename U>
+  UniquePtr<T>
+    const_pointer_cast(const UniquePtr<U>& a_ptr)
+  {
+    typedef UniquePtr<T>   return_type;
+
+    return_type ptr;
+    U* rawPtr = a_ptr.m_rawPtr;
+    const_cast<UniquePtr<U>*>(&a_ptr)->m_rawPtr = nullptr;
+    ptr.m_rawPtr = static_cast<T*>(rawPtr);
+
+    return ptr;
+  }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
@@ -175,6 +234,102 @@ namespace tloc { namespace core { namespace smart_ptr {
   {
     return a_uptr == nullptr ? 0 : 1;
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // MakeUnique
+
+  template <typename T>
+  UniquePtr<T>
+    MakeUnique()
+  { return UniquePtr<T>(new T()); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1>
+  UniquePtr<T>
+    MakeUnique(P1&& a)
+  { return UniquePtr<T>(new T(a)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b)
+  { return UniquePtr<T>(new T(a, b)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c)
+  { return UniquePtr<T>(new T(a, b, c)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d)
+  { return UniquePtr<T>(new T(a, b, c, d)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e)
+  { return UniquePtr<T>(new T(a, b, c, d, e)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8,
+            typename P9>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i)); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, 
+            typename P1, typename P2, typename P3, typename P4,
+            typename P5, typename P6, typename P7, typename P8,
+            typename P9, typename P10>
+  UniquePtr<T>
+    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i, P10&& j)
+  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i, j)); }
 
 };};};
 

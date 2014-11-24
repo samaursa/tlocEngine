@@ -22,7 +22,8 @@ namespace tloc { namespace graphics { namespace component_system {
   ArcBallSystem::
     ArcBallSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<gfx_cs::ArcBall>())
+                register_type().Add<gfx_cs::ArcBall>(), 
+                "ArcBallSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -72,6 +73,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     ori_type rotMatVertical;
     rotMatVertical.MakeRotation(leftVec, vAngle);
+    leftVec.Normalize();
 
     ori_type rotMatHorizontal;
     rotMatHorizontal.MakeRotation(upVec, hAngle);
@@ -82,6 +84,7 @@ namespace tloc { namespace graphics { namespace component_system {
     pos_type dirVec = vecToRot.IsZero() ? pos_type(0, 0, -1) : vecToRot;
     dirVec.Normalize();
     upVec = dirVec.Cross(leftVec);
+    upVec.Normalize();
 
     vecToRot = rotMatHorizontal * vecToRot;
 
@@ -89,6 +92,7 @@ namespace tloc { namespace graphics { namespace component_system {
     dirVec = vecToRot.IsZero() ? pos_type(0, 0, -1) : vecToRot;
     dirVec.Normalize();
     leftVec = upVec.Cross(dirVec);
+    leftVec.Normalize();
 
     oriWorld.SetCol(0, leftVec);
     oriWorld.SetCol(1, upVec);

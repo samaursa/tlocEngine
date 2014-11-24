@@ -72,7 +72,6 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocMeshRenderSystem.h 
   component_system/tlocSceneNode.h
   component_system/tlocSceneNode.cpp
-  component_system/tlocPrefabMaterial.h 
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
   component_system/tlocRenderSystem.h

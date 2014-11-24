@@ -149,4 +149,12 @@ namespace tloc { namespace graphics { namespace gl {
 
 };};};
 
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::Uniform);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::Uniform);
+
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::gfx_gl::uniform_sptr);
+
 #endif

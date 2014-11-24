@@ -5,6 +5,7 @@
 #include <tlocCore/logging/tlocLogger.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/containers/tlocArray.inl.h>
+#include <tlocCore/configs/tlocBuildConfig.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -602,39 +603,41 @@ namespace tloc { namespace graphics { namespace gl {
 
       DoSetReturn toRet;
 
-      switch(a_attributeVBO.GetType())
+      const auto attributeVBOType = a_attributeVBO.GetType();
+
+      switch(attributeVBOType)
       {
       case GL_INT:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_INT_VEC2:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_INT_VEC3:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_INT_VEC4:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
           break;
@@ -642,21 +645,21 @@ namespace tloc { namespace graphics { namespace gl {
 #ifdef TLOC_OS_WIN // TODO: Change to TLOC_GFX_PLATFORM_GL
       case GL_UNSIGNED_INT_VEC2:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT_VEC3:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
         }
       case GL_UNSIGNED_INT_VEC4:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
           break;
@@ -664,28 +667,28 @@ namespace tloc { namespace graphics { namespace gl {
 #endif
       case GL_FLOAT:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC2:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC3:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
           break;
         }
       case GL_FLOAT_VEC4:
         {
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
+          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
           break;
@@ -703,6 +706,12 @@ namespace tloc { namespace graphics { namespace gl {
       case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F:
       case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F:
       case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
+
+      case GL_FLOAT_MAT2:
+      case GL_FLOAT_MAT3:
+      case GL_FLOAT_MAT4:
+      case TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F_ORIENTATION:
+      case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F_ORIENTATION:
        {
           // handle TLOC_GL types
           // the interleaveIndex = the index of the interleaved attribute
@@ -710,14 +719,25 @@ namespace tloc { namespace graphics { namespace gl {
           gl::AttributeVBO::StrideInfo si =
             a_attributeVBO.GetStrideInfo(a_interleaveIndex);
 
-          VertexBufferObject::bind_array_buffer vboBind(a_attributeVBO.GetVBO());
-          gl::vertex_attrib_array::Enable(a_info.m_location);
-          glVertexAttribPointer(a_info.m_location, 
-                                si.m_numElements,
-                                GL_FLOAT, 
-                                GL_FALSE, 
-                                si.m_strideInBytes, 
-                                (void*)(sizeof(f32) * si.m_dataStartIndex));
+          // iteration number is 1 unless a Mat2/Mat3/Mat4 is encountered
+          tl_int iterations = si.m_totalElements / si.m_numElements;
+
+          for (tl_int i = 0; i < iterations; ++i)
+          {
+            // substride is 0 unless it is a Mat2/Mat3/Mat4 where Mat*::vec_type's 
+            // size is the substride in each iteration
+            const tl_size subStride = sizeof(f32) * si.m_numElements * i;
+
+            VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
+            gl::vertex_attrib_array::Enable(a_info.m_location + i);
+            glVertexAttribPointer(a_info.m_location + i, 
+                                  si.m_numElements,
+                                  GL_FLOAT, 
+                                  GL_FALSE, 
+                                  si.m_strideInBytes, 
+                                  (void*)(sizeof(f32) * si.m_dataStartIndex + subStride));
+          }
+
           break;
         }
       default:
@@ -728,106 +748,147 @@ namespace tloc { namespace graphics { namespace gl {
 
       return toRet;
     }
-  }
 
-  template <typename T_ShaderVariableContainer,
-  typename T_ShaderVariableInfoContainer>
-  ErrorShaderVarIndexContPair
-  DoPrepareVariables(T_ShaderVariableContainer& a_shaderUserVars,
-                     const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
-  {
-    typedef T_ShaderVariableContainer             svc;
-    typedef T_ShaderVariableInfoContainer         svcInfo;
-    typedef typename svc::iterator                svc_iterator;
-    typedef typename svcInfo::const_iterator      svcInfo_const_iterator;
-    typedef typename svc::value_type::
-            first_type::pointer                   shader_var_ptr;
-
-    ShaderOperator::error_type retError = ErrorSuccess;
-
-    core_conts::Array<DoSetReturn> variableLocations;
-
-    svc_iterator itr, itrEnd;
-    for (itr = a_shaderUserVars.begin(), itrEnd = a_shaderUserVars.end();
-         itr != itrEnd; ++itr)
+    template <typename T_ShaderVariableContainer,
+    typename T_ShaderVariableInfoContainer>
+    ErrorShaderVarIndexContPair
+    DoPrepareVariables(T_ShaderVariableContainer& a_shaderUserVars,
+                       const T_ShaderVariableInfoContainer& a_shaderVarsInfo)
     {
-      shader_var_ptr shaderVarPtr = itr->first.get();
+      typedef T_ShaderVariableContainer             svc;
+      typedef T_ShaderVariableInfoContainer         svcInfo;
+      typedef typename svc::iterator                svc_iterator;
+      typedef typename svcInfo::iterator            svcInfo_iterator;
+      typedef typename svc::value_type::
+              first_type::pointer                   shader_var_ptr;
 
-      if (shaderVarPtr->IsEnabled() == false)
-      { continue; }
+      ShaderOperator::error_type retError = ErrorSuccess;
 
-      if (shaderVarPtr->GetType() == GL_NONE)
+      core_conts::Array<DoSetReturn> variableLocations;
+
+      svc_iterator itr, itrEnd;
+      for (itr = a_shaderUserVars.begin(), itrEnd = a_shaderUserVars.end();
+           itr != itrEnd; ++itr)
       {
-        TLOC_LOG_GFX_WARN() << "Uniform*/Attribute*/AttributeVBO ("
-          << shaderVarPtr->GetName()
-          << ") Does not have a type. Did you forget to populate it with data?";
-        shaderVarPtr->SetEnabled(false);
-        continue;
-      }
+        shader_var_ptr shaderVarPtr = itr->first.get();
 
-      // attributes can have upto four names due to interleaving (see the
-      // Vertex_T<> class) - this includes VBOs
-      for (tl_size interleaveIndex = 0; 
-           interleaveIndex < itr->second.size(); 
-           ++interleaveIndex)
-      {
-        // this is over-ridden with the correct location if found
-        itr->second[interleaveIndex] = g_unableToFindIndex;
+        if (shaderVarPtr->IsEnabled() == false)
+        { continue; }
 
-        ShaderOperator::index_type index = 0;
-        svcInfo_const_iterator itrInfo, itrInfoEnd;
-        for (itrInfo = a_shaderVarsInfo.begin(),
-             itrInfoEnd = a_shaderVarsInfo.end();
-             itrInfo != itrInfoEnd; ++itrInfo)
+        if (shaderVarPtr->GetType() == GL_NONE)
         {
-          if ( shaderVarPtr->GetName(interleaveIndex).compare(itrInfo->m_name.get()) == 0)
+          TLOC_LOG_GFX_WARN() << "Uniform*/Attribute*/AttributeVBO ("
+            << shaderVarPtr->GetName()
+            << ") Does not have a type. Did you forget to populate it with data?";
+          shaderVarPtr->SetEnabled(false);
+          continue;
+        }
+
+        // copy of a_shaderVarsInfo is used because we remove matched variables
+        svcInfo svcInfoCopy(a_shaderVarsInfo);
+
+        // attributes can have upto four names due to interleaving (see the
+        // Vertex_T<> class) - this includes VBOs
+        for (gfx_t::gl_enum interleaveIndex = 0;
+             interleaveIndex < itr->second.size(); 
+             ++interleaveIndex)
+        {
+          // this is over-ridden with the correct location if found
+          itr->second[interleaveIndex] = g_unableToFindIndex;
+
+          ShaderOperator::index_type index = 0;
+          svcInfo_iterator itrInfo, itrInfoEnd;
+          for (itrInfo = svcInfoCopy.begin(),
+               itrInfoEnd = svcInfoCopy.end();
+               itrInfo != itrInfoEnd; ++itrInfo)
           {
-            gfx_t::gl_enum shaderVarType = shaderVarPtr->GetType();
-
-            if (shaderVarType >= TLOC_GL_POSITION2F &&
-                shaderVarType <= TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F)
+            if ( shaderVarPtr->GetName(interleaveIndex).compare(itrInfo->m_name.get()) == 0)
             {
-              shaderVarType = shaderVarPtr->GetInterleavedType(interleaveIndex);
+              gfx_t::gl_enum shaderVarType = shaderVarPtr->GetType();
+
+              if (shaderVarType >= TLOC_GL_POSITION2F &&
+                  shaderVarType <= TLOC_GL_ORIENTATION4F)
+              {
+                shaderVarType = shaderVarPtr->GetInterleavedType(interleaveIndex);
+              }
+
+              if ( shaderVarType == itrInfo->m_type &&
+                   itrInfo->m_location != g_unableToFindIndex)
+              {
+                itr->second[interleaveIndex] = index;
+                DoSetReturn doSetRet = DoSet(*itrInfo, *shaderVarPtr, interleaveIndex);
+                variableLocations.push_back(doSetRet);
+
+                TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
+                  << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
+
+                itrInfo = svcInfoCopy.erase(itrInfo);
+
+                break;
+              }
+              else
+              {
+                TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
+                  << shaderVarPtr->GetName();
+                shaderVarPtr->SetEnabled(false);
+                retError = ErrorFailure;
+                break;
+              }
             }
-
-            if ( shaderVarType == itrInfo->m_type &&
-                 itrInfo->m_location != g_unableToFindIndex)
-            {
-              itr->second[interleaveIndex] = index;
-
-              DoSetReturn doSetRet = DoSet(*itrInfo, *shaderVarPtr, interleaveIndex);
-
-              variableLocations.push_back(doSetRet);
-
-              TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
-                << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
-              break;
-            }
-            else
-            {
-              TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
-                << shaderVarPtr->GetName();
-              retError = ErrorFailure;
-              break;
-            }
+            ++index;
           }
-          ++index;
-        }
 
-        // We could not find the user specified uniform in the shader
-        if (itrInfo == itrInfoEnd)
-        {
-          TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
-            << shaderVarPtr->GetName();
-          retError = ErrorFailure;
+          // We could not find the user specified uniform in the shader
+          if (itrInfo == itrInfoEnd)
+          {
+            TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
+              << shaderVarPtr->GetName();
+            shaderVarPtr->SetEnabled(false);
+            retError = ErrorFailure;
+          }
         }
       }
+
+      return core::MakePair(retError, variableLocations);
     }
 
-    return core::MakePair(retError, variableLocations);
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Container, typename T_BuildConfig>
+    bool 
+      DoWillAnyPointersInvalidate(T_Container& a_variables, T_BuildConfig)
+    {
+      // we have enough capacity to not invalidate previous pointers
+      if (a_variables.size() < a_variables.capacity())
+      { return false; }
+
+      typedef typename T_Container::iterator itr_type;
+     
+      itr_type itr = a_variables.begin();
+      itr_type itrEnd = a_variables.end();
+
+      for ( ; itr != itrEnd; ++itr)
+      {
+        // 1 is cached in the VSO and 1 is when we call .get(). Any other
+        // references and we return true (so that a warning can be issued)
+        if (itr->first.get().use_count() > 2)
+        { return true; }
+      }
+
+      return false;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Iterator>
+    bool 
+      DoWillAnyPointersInvalidate(T_Iterator , T_Iterator , 
+                                  core_cfg::p_build_config::Release)
+    { return false; }
   }
 
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // ///////////////////////////////////////////////////////////////////////
+  // ShaderOperator
 
   ShaderOperator::
     ShaderOperator()
@@ -847,6 +908,11 @@ namespace tloc { namespace graphics { namespace gl {
     AddUniform(const uniform_type& a_uniform)
   {
     TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
+    TLOC_LOG_GFX_WARN_IF
+      (DoWillAnyPointersInvalidate(m_uniforms,
+                                   core_cfg::BuildConfig::build_config_type()))
+      << "Adding Uniform will invalidate previous Uniform pointers";
+
     m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)),
                                         index_cont_1(1, -1)) );
     m_flags.Unmark(k_uniformsCached);
@@ -856,11 +922,15 @@ namespace tloc { namespace graphics { namespace gl {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  ShaderOperator::vbo_ptr
+  ShaderOperator::attributeVBO_ptr
     ShaderOperator::
     AddAttributeVBO(const vbo_type& a_vbo)
   {
     TLOC_ASSERT(a_vbo.Validate() == ErrorSuccess, "VBO is invalid");
+    TLOC_LOG_GFX_WARN_IF
+      (DoWillAnyPointersInvalidate(m_VBOs,
+                                   core_cfg::BuildConfig::build_config_type()))
+      << "Adding AttributeVBO will invalidate previous AttributeVBO pointers";
 
     index_cont indexCont(a_vbo.size_names(), -1);
 
@@ -976,7 +1046,7 @@ namespace tloc { namespace graphics { namespace gl {
     if (m_flags.ReturnAndMark(k_uniformsCached) == false)
     {
       // bail early
-      if (GetNumberOfUniforms() == 0) { return retError; }
+      if (size_uniforms() == 0) { return retError; }
 
       const glsl_var_info_cont_type& uniCont = a_shaderProgram.GetUniformInfoRef();
 
@@ -992,7 +1062,8 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderOperator::error_type
     ShaderOperator::
-    PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram)
+    PrepareAllAttributeVBOs(const ShaderProgram& a_shaderProgram, 
+                            const vao_type& a_vao)
   {
     TLOC_ASSERT(a_shaderProgram.IsLinked(),
                 "Shader not linked - did you forget to call Link()?");
@@ -1004,11 +1075,9 @@ namespace tloc { namespace graphics { namespace gl {
     if (m_flags.ReturnAndMark(k_VBOsCached) == false)
     {
       // bail early
-      if (GetNumberOfAttributeVBOs() == 0) { return retError; }
+      if (size_attributeVBOs() == 0) { return retError; }
 
-      if (!m_vao) { m_vao = core_sptr::MakeShared<vao_type>(); }
-
-      VertexArrayObject::Bind vaoBind(*m_vao);
+      VertexArrayObject::Bind vaoBind(a_vao);
 
       const glsl_var_info_cont_type& 
         attrCont = a_shaderProgram.GetAttributeInfoRef();
@@ -1079,7 +1148,6 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     ClearAttributeVBOsCache()
   { 
-    m_vao.reset();
     m_flags.Unmark(k_VBOsCached);
   }
 
@@ -1106,6 +1174,51 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     IsAttributeVBOsCached()
   { return m_flags[k_VBOsCached]; }
+
+  // -----------------------------------------------------------------------
+
+  namespace f_shader_operator {
+
+    uniform_ptr
+      GetUniform(ShaderOperator& a_so, BufferArg a_name)
+    {
+      using algos::shader_operator::compare::UniformName;
+      typedef ShaderOperator::uniform_iterator      itr_type;
+
+      uniform_ptr ptrToRet;
+      
+      itr_type itrBegin = a_so.begin_uniforms(),
+               itrEnd   = a_so.end_uniforms();
+
+
+      itr_type itr = core::find_if(itrBegin, itrEnd, UniformName(a_name));
+
+      if (itr != a_so.end_uniforms()) { ptrToRet = itr->first.get(); }
+
+      return ptrToRet;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    attributeVBO_ptr
+      GetAttributeVBO(ShaderOperator& a_so, BufferArg a_name)
+    {
+      using algos::shader_operator::compare::AttributeVBOName;
+      typedef ShaderOperator::attributeVBO_iterator      itr_type;
+
+      attributeVBO_ptr ptrToRet;
+      
+      itr_type itrBegin = a_so.begin_attributeVBOs(),
+               itrEnd   = a_so.end_attributeVBOs();
+
+      itr_type itr = core::find_if(itrBegin, itrEnd, AttributeVBOName(a_name));
+
+      if (itr != a_so.end_attributeVBOs()) { ptrToRet = itr->first.get(); }
+
+      return ptrToRet;
+    }
+
+  };
 
 };};};
 

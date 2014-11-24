@@ -1,5 +1,6 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocPrefab/graphics/tlocSceneNode.h>
 
@@ -24,7 +25,7 @@ namespace
     
     //SECTION("Construct", "")
     {
-      core_cs::entity_vso ent(MakeArgs(0));
+      core_cs::entity_vso ent(MakeArgs(0, nullptr));
 
       component_ptr ptr = pref_gfx::SceneNode(entMgr.get(), compMgr.get())
         .Construct(ent.get());
@@ -51,6 +52,19 @@ namespace
         .Position(math_t::Vec3f32(0.0f, 0.0f, 0.0f))
         .Parent(core_sptr::ToVirtualPtr(ent->GetComponent<component_type>()) )
         .Create();
+
+      // testing Issue #83
+      TLOC_TEST_ASSERT
+      {
+        entity_ptr parentEnt = pref_gfx::SceneNode(entMgr.get(), compMgr.get())
+          .Create();
+
+        gfx_cs::scene_node_sptr parentEntSN = 
+          parentEnt->GetComponent<gfx_cs::SceneNode>();
+
+        parentEntSN->AddChild(core_sptr::ToVirtualPtr(parentEntSN));
+      }
+      TLOC_TEST_ASSERT_CHECK();
 
       REQUIRE(ent2->HasComponent<component_type>());
       REQUIRE(ent2->HasComponent<math_cs::Transform>());
@@ -79,7 +93,42 @@ namespace
       CHECK( (ptr->GetEntity() == ent) );
     }
 
-    system->Initialize();
+    // testing Issue #83
+    gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
+
+    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Info::k_value);
+    TLOC_TEST_ASSERT
+    {
+      entity_ptr dummyEnt = entMgr->CreateEntity();
+
+      math_cs::transform_sptr t = core_sptr::MakeShared<math_cs::Transform>();
+      gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
+
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, t).Orphan(true));
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, sn));
+
+      system->Initialize();
+    }
+    TLOC_TEST_ASSERT_CHECK();
+
+    graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::k_value);
+    TLOC_TEST_ASSERT
+    {
+      entity_ptr dummyEnt = entMgr->CreateEntity();
+      entity_ptr dummyEnt2 = entMgr->CreateEntity();
+
+      math_cs::transform_sptr t = core_sptr::MakeShared<math_cs::Transform>();
+      gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>(dummyEnt2);
+
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, t).Orphan(true));
+      entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, sn));
+
+      system->Initialize();
+    }
+    TLOC_TEST_ASSERT_CHECK();
+
+    graphics::GetLogger().ResetBreakOnSeverity();
+
     system->ProcessActiveEntities();
   }
 };

@@ -16,15 +16,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
 
-  namespace {
-
-    const core_str::StringW
-      g_symbols = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  L"abcdefghijklmnopqrstuvwxyz" 
-                  L"1234567890!@#$%^&*()_+-=[]" 
-                  L"{}\\|;:'\",<.>/?`~";
-  };
-
   //////////////////////////////////////////////////////////////////////////
   // typedefs
 
@@ -36,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
   DynamicTextRenderSystem::
     DynamicTextRenderSystem(event_manager_ptr a_eventMgr, 
                             entity_manager_ptr a_entityMgr)
-    : base_type(a_eventMgr, a_entityMgr)
+    : base_type(a_eventMgr, a_entityMgr, "DynamicTextRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -11,6 +11,9 @@
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/types/tlocMatrix2.h>
+#include <tlocMath/types/tlocMatrix3.h>
+#include <tlocMath/types/tlocMatrix4.h>
 
 #include <tlocGraphics/opengl/tlocObject.h>
 #include <tlocGraphics/types/tlocVertex.h>
@@ -46,10 +49,16 @@ namespace tloc { namespace graphics { namespace gl {
     public:
       StrideInfo();
 
-      // size param in glVertexAttribPointer
+      // NumElements - Can be 1, 2, 3 or 4 even if total elements exceed that number. 
+      // e.g. Vec4 will be 4, Mat4 will be 4
       TLOC_DECL_PARAM_VAR(gl_int_type,  NumElements, m_numElements);
+      // TotalElements - e.g. Vec4 will be 4, Mat4 will be 16
+      TLOC_DECL_PARAM_VAR(size_type,    TotalElements, m_totalElements);
+      // GLType - see tlocGLType
       TLOC_DECL_PARAM_VAR(gl_enum_type, GLType, m_glType);
+      // StrideInBytes - Stide for each interleaved type
       TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
+      // DataStartIndex - The interleaved type starts from here
       TLOC_DECL_PARAM_VAR(size_type,    DataStartIndex, m_dataStartIndex);
     };
     typedef core_conts::Array<StrideInfo>                   stride_info_cont;
@@ -80,7 +89,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
 
-    const string_type& GetName(tl_int a_nameIndex = 0) const;
+    const string_type& GetName(size_type a_nameIndex = 0) const;
     this_type&         AddName(BufferArg a_name);
 
     TLOC_DECL_AND_DEF_GETTER
@@ -152,11 +161,17 @@ namespace tloc { namespace graphics { namespace gl {
 
         math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
 
+        math_t::Mat2f32, math_t::Mat3f32, math_t::Mat4f32,
+
         gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+        gfx_t::Vert4fo
        >();
 
     return DoBufferData<T_Type>(T_Target::s_glParamName, 
@@ -183,7 +198,11 @@ namespace tloc { namespace graphics { namespace gl {
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+        gfx_t::Vert4fo
        >();
 
     return DoBufferSubData<T_Type>(a_array, a_offset_index);
@@ -208,7 +227,11 @@ namespace tloc { namespace graphics { namespace gl {
         gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
 
         gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct
+        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+        gfx_t::Vert4fo
        >();
 
     return DoGetValueAs<T_Type>(a_out, a_offset_index);

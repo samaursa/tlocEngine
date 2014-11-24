@@ -87,12 +87,12 @@ namespace tloc { namespace core { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(EventManager, event_manager);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(EventManager, event_manager);
 
-  TLOC_EXTERN_TEMPLATE_TUPLE(EventManager::listener_ptr, 1);
-  TLOC_EXTERN_TEMPLATE_TUPLE(EventManager::listener_ptr, 2);
-  TLOC_EXTERN_TEMPLATE_TUPLE(EventManager::listener_ptr, 3);
-  TLOC_EXTERN_TEMPLATE_TUPLE(EventManager::listener_ptr, 4);
-  TLOC_EXTERN_TEMPLATE_TUPLE(EventManager::listener_ptr, 5);
-
 };};};
+
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 1);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 2);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 3);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 4);
+TLOC_EXTERN_TEMPLATE_TUPLE(tloc::core_cs::EventManager::listener_ptr, 5);
 
 #endif

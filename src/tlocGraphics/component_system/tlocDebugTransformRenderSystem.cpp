@@ -88,7 +88,8 @@ namespace tloc { namespace graphics { namespace component_system {
     DebugTransformRenderSystem(event_manager_ptr a_eventMgr, 
                                entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr, 
-                register_type().Add<math_cs::Transform>())
+                register_type().Add<math_cs::Transform>(), 
+                "DebugTransformRenderSystem")
     , m_linesEntMgr(MakeArgs(m_linesEventMgr.get()))
     , m_linesMaterialSys(MakeArgs(m_linesEventMgr.get(), m_linesEntMgr.get()))
     , m_scale(1.0f)
@@ -232,14 +233,15 @@ namespace tloc { namespace graphics { namespace component_system {
         }
 
         uniformErr = m_linesOperator->PrepareAllUniforms(*m_shaderPtr);
-        attribErr = m_linesOperator->PrepareAllAttributeVBOs(*m_shaderPtr);
+        attribErr = m_linesOperator->PrepareAllAttributeVBOs(*m_shaderPtr, 
+                                                             *m_vao);
       }
 
       // Add the mvp
       if (uniformErr.Succeeded())
       { m_linesOperator->EnableAllUniforms(*m_shaderPtr); }
 
-      gfx_gl::VertexArrayObject::Bind b(*m_linesOperator->GetVAO());
+      gfx_gl::VertexArrayObject::Bind b(*m_vao);
 
       glDrawArrays(GL_LINES, 0,
                    core_utils::CastNumber<gfx_t::gl_sizei>(m_lineList.size()));
@@ -296,8 +298,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
 using namespace tloc::gfx_cs;
 
-//TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(DebugTransformRenderSystem);
-//TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(DebugTransformRenderSystem);
-//
-//TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vec3_cont_type);
-//TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vec4_cont_type);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(DebugTransformRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(DebugTransformRenderSystem);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(DebugTransformRenderSystem::vertex_cont);

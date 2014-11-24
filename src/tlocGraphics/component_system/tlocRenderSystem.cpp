@@ -17,6 +17,34 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
+  namespace {
+
+    math_t::Mat3f32
+      DoInvertOrIdentity(const math_t::Mat3f32& a_mat, BufferArg a_name)
+    {
+      math_t::Mat3f32 ret = math_t::Mat3f32::IDENTITY;
+      if (math::IsEqual(a_mat.Determinant(), 0.0f) == false)
+      { ret = a_mat.Inverse(); }
+      else
+      { TLOC_LOG_GFX_WARN() << a_name << "(Mat3f) is non-invertible"; }
+
+      return ret;
+    }
+
+    math_t::Mat4f32
+      DoInvertOrIdentity(const math_t::Mat4f32& a_mat, BufferArg a_name)
+    {
+      math_t::Mat4f32 ret = math_t::Mat4f32::IDENTITY;
+      if (math::IsEqual(a_mat.Determinant(), 0.0f) == false)
+      { ret = a_mat.Invert(); }
+      else
+      { TLOC_LOG_GFX_WARN() << a_name << "(Mat4f) is non-invertible"; }
+
+      return ret;
+    }
+
+  };
+
   // ///////////////////////////////////////////////////////////////////////
   // Entity Compare Materials
 
@@ -396,7 +424,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (other_base_type::IsUniformViewMatrixInverseEnabled())
     { 
-      m_uniViewInverseMat.first->SetValueAs(m_viewMatrix.Invert());
+      m_uniViewInverseMat.first->
+        SetValueAs(DoInvertOrIdentity(m_viewMatrix, "ViewMatrix"));
       m_uniViewInverseMat.first->SetEnabled(true);
     }
     else
@@ -413,7 +442,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (other_base_type::IsUniformProjectionInverseEnabled())
     { 
-      m_uniProjInverseMat.first->SetValueAs(m_projMat.Invert());
+      m_uniProjInverseMat.first->
+        SetValueAs(DoInvertOrIdentity(m_projMat, "ProjectionMatrix"));
       m_uniProjInverseMat.first->SetEnabled(true);
     }
     else
@@ -430,7 +460,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (other_base_type::IsUniformVPInverseMatrixEnabled())
     { 
-      m_uniVPInverseMat.first->SetValueAs(m_vpMatrix.Invert());
+      m_uniVPInverseMat.first->
+        SetValueAs(DoInvertOrIdentity(m_vpMatrix, "ViewProjectionMatrix"));
       m_uniVPInverseMat.first->SetEnabled(true);
     }
     else
@@ -492,7 +523,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (other_base_type::IsUniformMVPInverseMatrixEnabled())
     { 
-      m_uniMVPInverseMat.first->SetValueAs(tFinalMat.Invert());
+      m_uniMVPInverseMat.first->
+        SetValueAs(DoInvertOrIdentity(tFinalMat, "ModelViewProjectionMatrix"));
       m_uniMVPInverseMat.first->SetEnabled(true);
     }
     else
@@ -512,7 +544,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (other_base_type::IsUniformMVInverseMatrixEnabled())
     { 
       Mat4f32 mvMatInv = m_viewMatrix * modelMatrix;
-      mvMatInv = mvMatInv.Invert();
+      mvMatInv = DoInvertOrIdentity(mvMatInv, "ModelViewMatrix");
 
       m_uniMVInverseMat.first->SetValueAs(mvMatInv) ;
       m_uniMVPInverseMat.first->SetEnabled(true);
@@ -531,7 +563,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (other_base_type::IsUniformModelInverseMatrixEnabled()) 
     { 
-      m_uniModelInverseMat.first->SetValueAs(modelMatrix.Invert());
+      m_uniModelInverseMat.first->
+        SetValueAs(DoInvertOrIdentity(modelMatrix, "ModelMatrix"));
       m_uniModelInverseMat.first->SetEnabled(true);
     }
     else 
@@ -548,7 +581,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (other_base_type::IsUniformScaleInverseMatrixEnabled()) 
     { 
-      m_uniScaleInverseMat.first->SetValueAs(scaleMat.Inverse());
+      m_uniScaleInverseMat.first->
+        SetValueAs(DoInvertOrIdentity(scaleMat, "ScaleMatrix"));
       m_uniScaleInverseMat.first->SetEnabled(true);
     }
     else 
@@ -558,7 +592,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (other_base_type::IsUniformNormalMatrixEnabled()) 
     { 
       math_t::Mat4f32 normMatrix = m_viewMatrix * modelMatrix;
-      normMatrix = normMatrix.Invert();
+      normMatrix = DoInvertOrIdentity(normMatrix, "NormalMatrixMatrix");
       normMatrix = normMatrix.Transpose();
       m_uniNormalMat.first->SetValueAs( normMatrix.ConvertTo<math_t::Mat3f32>() ) ;
       m_uniNormalMat.first->SetEnabled(true);

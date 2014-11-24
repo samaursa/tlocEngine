@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/io/tlocFileIO.h>
+#include <tlocCore/io/tlocFileContents.h>
 #include <tlocCore/io/tlocPath.h>
 
 #endif

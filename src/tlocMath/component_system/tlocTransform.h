@@ -7,6 +7,7 @@
 
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocComponentType.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocMath/types/tlocVector3.h>
@@ -40,7 +41,8 @@ namespace tloc { namespace math { namespace component_system {
     typedef T_Real                                      real_type;
     typedef Transform_T<real_type>                      this_type;
     typedef core_cs::Component_T
-      <this_type, k_component_group, k_component_type>  base_type;
+      <this_type, core_cs::component_group::k_math,
+                  components::k_transform>              base_type;
 
     typedef types::Matrix_T<real_type, 4>       transform_type;
     typedef types::Vector_T<real_type, 3>       position_type;

@@ -355,7 +355,7 @@ namespace tloc { namespace graphics { namespace media {
     TLOC_ASSERT(a_y + a_dimToGet[1] <= this->GetDimensions()[1], 
                 "Dimensions out of range");
 
-    image_sptr img(new this_type());
+    image_sptr img = core_sptr::MakeShared<this_type>();
     img->Create(a_dimToGet, color_type::COLOR_BLACK);
 
     for (size_type y = 0; y < a_dimToGet[1]; ++y)

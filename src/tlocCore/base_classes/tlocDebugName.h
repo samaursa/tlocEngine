@@ -16,18 +16,11 @@ namespace tloc{ namespace core { namespace base_classes {
     typedef core_str::String                string_type;
 
   protected:
-    DebugName_TI(BufferArg a_name)
-      : m_name(a_name)
-    { }
-
-    ~DebugName_TI()
-    { }
+    DebugName_TI(BufferArg a_name);
+    ~DebugName_TI();
     
-    void          SetDebugName(BufferArg a_name)
-    { m_name = a_name; }
-
-    const char*   GetDebugName() const
-    { return m_name.c_str(); }
+    void          SetDebugName(BufferArg a_name);
+    const char*   GetDebugName() const;
 
   private:
     core_str::String m_name;
@@ -43,21 +36,24 @@ namespace tloc{ namespace core { namespace base_classes {
     typedef core_str::String                string_type;
 
   protected:
-    DebugName_TI(BufferArg )
-    { }
-
-    ~DebugName_TI()
-    { }
+    DebugName_TI(BufferArg );
+    ~DebugName_TI();
     
-    void          SetDebugName(BufferArg ) { }
-    const char*   GetDebugName() const
-    { return "No name assigned - RELEASE CONFIG"; }
+    void          SetDebugName(BufferArg );
+    const char*   GetDebugName() const;
   };
 
   // -----------------------------------------------------------------------
   // typedef
 
   typedef DebugName_TI<>                              DebugName;
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(DebugName_TI<core_cfg::p_build_config::Debug>);
+  TLOC_EXTERN_TEMPLATE_CLASS(DebugName_TI<core_cfg::p_build_config::Release_DebugInfo>);
+  TLOC_EXTERN_TEMPLATE_CLASS(DebugName_TI<core_cfg::p_build_config::Release>);
 
 };};};
 

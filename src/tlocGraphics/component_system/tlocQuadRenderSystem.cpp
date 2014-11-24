@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
     QuadRenderSystem(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr)
      : base_type(a_eventMgr, a_entityMgr,
-                 register_type().Add<Quad>())
+                 register_type().Add<Quad>(), "QuadRenderSystem")
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -142,6 +142,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());
+    di.m_meshVAO = quadPtr->GetVAO();
 
     base_type::DoDrawEntity(di);
   }

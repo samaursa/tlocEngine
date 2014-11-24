@@ -50,6 +50,12 @@ namespace tloc { namespace graphics { namespace media {
 
   };
 
+  // -----------------------------------------------------------------------
+  // extern template
+
+  class ImageLoaderPng;
+  TLOC_EXTERN_TEMPLATE_CLASS(ImageLoader_TI<ImageLoaderPng>);
+
 };};};
 
 #endif

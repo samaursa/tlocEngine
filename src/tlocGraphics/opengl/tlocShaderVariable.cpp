@@ -50,7 +50,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   const ShaderVariable_I::string_type&
     ShaderVariable_I::
-    GetName(tl_int a_nameIndex) const
+    GetName(size_type a_nameIndex) const
   {
     TLOC_UNUSED_RELEASE(a_nameIndex);
     TLOC_ASSERT(a_nameIndex == 0, "ShaderVariable only has one name"); 
@@ -61,7 +61,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   ShaderVariable_I::gl_type
     ShaderVariable_I::
-    GetInterleavedType(tl_int a_typeIndex) const
+    GetInterleavedType(size_type a_typeIndex) const
   {
     TLOC_UNUSED_RELEASE(a_typeIndex);
     TLOC_ASSERT(a_typeIndex == 0, 

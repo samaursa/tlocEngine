@@ -53,4 +53,16 @@ namespace tloc { namespace graphics { namespace gl {
 
 };};};
 
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_SHARED_PTR(tloc::gfx_gl::VertexArrayObject);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::gfx_gl::VertexArrayObject);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_gl::VertexArrayObject);
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::VertexArrayObject::Bind);
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_gl::VertexArrayObject::LateBind);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::gfx_gl::VertexArrayObject::LateBind);
+
 #endif

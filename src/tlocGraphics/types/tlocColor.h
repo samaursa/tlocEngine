@@ -642,6 +642,24 @@ namespace tloc { namespace graphics { namespace types {
   typedef Color_T<f32, 3>                                 color_f32_rgb;
   typedef Color_T<f32, 4>                                 color_f32_rgba;
 
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 1>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u8 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 1>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<u16 TLOC_COMMA 4>);
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 1>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 2>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 3>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 4>);
+
 };};};
 
 #endif

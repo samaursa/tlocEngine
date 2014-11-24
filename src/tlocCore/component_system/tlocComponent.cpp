@@ -110,10 +110,10 @@ namespace tloc { namespace core { namespace component_system {
         // -----------------------------------------------------------------------
         // explicit instnatiations
 
-        template struct ComponentGroup_T<core::use_self<Component> >;
+        template struct ComponentGroup_T<core::use_reference>;
         template struct ComponentGroup_T<core::use_pointee>;
 
-        template struct ComponentType_T<core::use_self<Component> >;
+        template struct ComponentType_T<core::use_reference>;
         template struct ComponentType_T<core::use_pointee>;
 
     };
@@ -125,7 +125,7 @@ namespace tloc { namespace core { namespace component_system {
         // -----------------------------------------------------------------------
         // explicit instnatiations
 
-        template struct LessThan_T<core::use_self<Component> >;
+        template struct LessThan_T<core::use_reference>;
         template struct LessThan_T<core::use_pointee>;
       };
 
@@ -134,7 +134,7 @@ namespace tloc { namespace core { namespace component_system {
         // -----------------------------------------------------------------------
         // explicit instnatiations
 
-        template struct LessThan_T<core::use_self<Component> >;
+        template struct LessThan_T<core::use_reference>;
         template struct LessThan_T<core::use_pointee>;
       };
 

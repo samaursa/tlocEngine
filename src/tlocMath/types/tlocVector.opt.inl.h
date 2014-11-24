@@ -666,12 +666,6 @@ namespace tloc {
 // -----------------------------------------------------------------------
 // explicit instantiation macros
 
-#define TLOC_EXPLICITLY_INSTANTIATE_VECTOR(_type_, _size_, _dt_)\
-  template class tloc::math_t::Vector_TI<_type_, _size_, _dt_>;\
-  \
-  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoLength<tloc::math_t::p_vector::accurate>(const this_type&) const;\
-  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoNorm<tloc::math_t::p_vector::accurate>(const this_type&);\
-  template tloc::math_t::Vector_TI<_type_, _size_, _dt_>::value_type tloc::math_t::Vector_TI<_type_, _size_, _dt_>::DoDistance<tloc::math_t::p_vector::accurate>(const this_type&) const;\
 
 #define TLOC_EXPLICITLY_INSTANTIATE_VECTOR_ALL_ACCURACIES(_type_, _size_, _dt_)\
   template class tloc::math_t::Vector_TI<_type_, _size_, _dt_>;\

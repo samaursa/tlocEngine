@@ -1,5 +1,7 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocShader.h>
@@ -68,7 +70,7 @@ namespace TestingShaderOperator
     "{                                                                    \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x * u_vec4.x;          \n"
     "  gl_Position.y = float(u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x);  \n"
-    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x;           \n"
+    "  gl_Position.z = u_mat2[0].x + u_mat3[0].x + u_mat4[0].x            \n"
     "                  + u_mat5[0].x;                                     \n"
     "}\n";
 
@@ -130,21 +132,21 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
-    // stores all uniforms to keep 1 reference alive at all times
     gl::uniform_sptr_cont uniCont;
 
-    shader_op_ptr so(new gl::ShaderOperator());
+    auto so = core_sptr::MakeShared<gl::ShaderOperator>();
+    gl::uniform_vptr uniformPtrToCheckWarning; // test warning when adding uniforms
 
     //------------------------------------------------------------------------
     // Add all the uniforms
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_float");
       uniform->SetValueAs(f32(5.0f));
 
-      so->AddUniform(*uniform);
+      uniformPtrToCheckWarning = so->AddUniform(*uniform);
       CHECK_FALSE(so->IsUniformsCached());
 
       gl::ShaderOperator::uniform_iterator itr =
@@ -155,7 +157,7 @@ namespace TestingShaderOperator
       CHECK(itr->first->GetName().compare("u_float") == 0);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec2");
@@ -164,16 +166,24 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec3");
       uniform->SetValueAs(Vec3f32(0.1f, 0.2f, 0.3f));
 
+      graphics::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::k_value);
+      TLOC_TEST_ASSERT
+      { so->AddUniform(*uniform); }
+      TLOC_TEST_ASSERT_REQUIRE();
+      graphics::GetLogger().ResetBreakOnSeverity();
+
+      uniformPtrToCheckWarning.reset();
+      // now add the uniform normally
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec4");
@@ -182,7 +192,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_int");
@@ -191,7 +201,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec2");
@@ -200,7 +210,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec3");
@@ -209,7 +219,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec4");
@@ -219,7 +229,7 @@ namespace TestingShaderOperator
     }
 #if defined (TLOC_OS_WIN)
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uint");
@@ -228,7 +238,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec2");
@@ -237,7 +247,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec3");
@@ -246,7 +256,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec4");
@@ -256,7 +266,7 @@ namespace TestingShaderOperator
     }
 #endif
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat2");
@@ -266,7 +276,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat3");
@@ -277,7 +287,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat4");
@@ -291,7 +301,7 @@ namespace TestingShaderOperator
 
     gl::uniform_vptr uniformBugFix;
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_mat5");
@@ -372,7 +382,7 @@ namespace TestingShaderOperator
 
     // Test Removal
     typedef shader_op_ptr::value_type::size_type size_type;
-    const size_type numUniforms = so->GetNumberOfUniforms();
+    const size_type numUniforms = so->size_uniforms();
 
     // Note that removing uniforms does not affect cache
     gl::ShaderOperator::uniform_iterator uniItr =
@@ -380,14 +390,14 @@ namespace TestingShaderOperator
         core::algos::pair::compare::MakeFirst(so->begin_uniforms()->first));
 
     so->RemoveUniform(uniItr);
-    CHECK(so->GetNumberOfUniforms() == numUniforms - 1);
+    CHECK(so->size_uniforms() == numUniforms - 1);
 
     uniItr =
       core::find_if(so->begin_uniforms(), so->end_uniforms(),
         core::algos::pair::compare::MakeFirst(so->begin_uniforms()->first));
 
     so->RemoveUniform(uniItr);
-    CHECK(so->GetNumberOfUniforms() == numUniforms - 2);
+    CHECK(so->size_uniforms() == numUniforms - 2);
 
     sp.Enable();
     CHECK(so->PrepareAllUniforms(sp) == ErrorSuccess);
@@ -396,7 +406,7 @@ namespace TestingShaderOperator
     sp.Disable();
 
     so->RemoveAllUniforms();
-    CHECK(so->GetNumberOfUniforms() == 0);
+    CHECK(so->size_uniforms() == 0);
   }
 
 #if defined (TLOC_OS_WIN)
@@ -487,12 +497,12 @@ namespace TestingShaderOperator
     // stores all uniforms to keep 1 reference alive at all times
     gl::uniform_sptr_cont uniCont;
 
-    shader_op_ptr so(new gl::ShaderOperator());
+    auto so = core_sptr::MakeShared<gl::ShaderOperator>();
 
     //------------------------------------------------------------------------
     // Add all the uniforms
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_float");
@@ -508,9 +518,13 @@ namespace TestingShaderOperator
 
       REQUIRE(itr != so->end_uniforms());
       CHECK(itr->first->GetName().compare("u_float") == 0);
+
+      gl::uniform_vptr ptr = gl::f_shader_operator::GetUniform(*so, "u_float");
+      REQUIRE(ptr);
+      CHECK(ptr->GetName().compare("u_float") == 0);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec2");
@@ -521,7 +535,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec3");
@@ -532,7 +546,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_vec4");
@@ -543,7 +557,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_int");
@@ -554,7 +568,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec2");
@@ -565,7 +579,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec3");
@@ -576,7 +590,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_ivec4");
@@ -588,7 +602,7 @@ namespace TestingShaderOperator
     }
 #if defined (TLOC_OS_WIN)
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uint");
@@ -599,7 +613,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec2");
@@ -610,7 +624,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec3");
@@ -621,7 +635,7 @@ namespace TestingShaderOperator
       so->AddUniform(*uniform);
     }
     {
-      uniCont.push_back(uniform_ptr_type(new gl::Uniform()) );
+      uniCont.push_back(core_sptr::MakeShared<gl::Uniform>());
 
       gl::uniform_sptr uniform = uniCont.back();
       uniform->SetName("u_uivec4");
@@ -655,12 +669,15 @@ namespace TestingShaderOperator
     "  attribute ivec2 u_ivec2;                                        \n"
     "  attribute ivec3 u_ivec3;                                        \n"
     "  attribute ivec4 u_ivec4;                                        \n"
+    "  attribute mat2  u_matrix2;                                      \n"
+    "  attribute mat3  u_matrix3;                                      \n"
     "                                                                  \n"
     "void main(void)                                                   \n"
     "{                                                                 \n"
     "  gl_Position   = u_vec4 + u_vec5;                                \n"
     "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
     "  gl_Position.y = u_int * u_ivec2.x * u_ivec3.x * u_ivec4.x;      \n"
+    "  gl_Position.z = u_matrix2[0].x * u_matrix3[0].x;                \n"
     "}\n";
 
 #elif defined (TLOC_OS_IPHONE)
@@ -715,7 +732,7 @@ namespace TestingShaderOperator
     sp.Disable();
     CHECK(gl::Error().Succeeded());
 
-    shader_op_ptr so(new gl::ShaderOperator());
+    auto so = core_sptr::MakeShared<gl::ShaderOperator>();
     {
       gl::AttributeVBO attribute;
       attribute.AddName("u_float");
@@ -766,6 +783,26 @@ namespace TestingShaderOperator
 
       so->AddAttributeVBO(attribute);
     }
+    {
+      gl::AttributeVBO attribute;
+      attribute.AddName("u_matrix2");
+
+      core_conts::Array<Mat2f32> array(1, Mat2f32::IDENTITY);
+      attribute.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                           gl::p_vbo::usage::StaticDraw>(array);
+
+      so->AddAttributeVBO(attribute);
+    }
+    {
+      gl::AttributeVBO attribute;
+      attribute.AddName("u_matrix3");
+
+      core_conts::Array<Mat3f32> array(1, Mat3f32::IDENTITY);
+      attribute.SetValueAs<gl::p_vbo::target::ArrayBuffer, 
+                           gl::p_vbo::usage::StaticDraw>(array);
+
+      so->AddAttributeVBO(attribute);
+    }
 
 #if defined (TLOC_OS_WIN)
 
@@ -810,6 +847,14 @@ namespace TestingShaderOperator
       so->AddAttributeVBO(attribute);
     }
 
+    { // test meta function
+      gl::attributeVBO_vptr vboPtr = 
+        gl::f_shader_operator::GetAttributeVBO(*so, "u_ivec4");
+
+      REQUIRE(vboPtr);
+      CHECK(vboPtr->GetName().compare("u_ivec4") == 0);
+    }
+
 #endif
 
     // Copy the operator
@@ -817,27 +862,26 @@ namespace TestingShaderOperator
     shader_op_ptr soCopy2;
     soCopy2 = so;
 
+    gl::VertexArrayObject vao;
     sp.Enable();
     CHECK(gl::Error().Succeeded());
-    CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
+    CHECK(so->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
 
     {
-      gl::VertexArrayObject::Bind b(*so->GetVAO());
+      gl::VertexArrayObject::Bind b(vao);
       CHECK(so->IsAttributeVBOsCached());
     }
 
     {
-      CHECK(soCopy->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy->GetVAO());
+      CHECK(soCopy->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy->IsAttributeVBOsCached());
-      CHECK(soCopy->PrepareAllAttributeVBOs(sp) == ErrorSuccess); // check the cache
+      CHECK(soCopy->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess); // check the cache
     }
 
     {
-      CHECK(soCopy2->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy2->GetVAO());
+      CHECK(soCopy2->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy2->IsAttributeVBOsCached());
-      CHECK(soCopy2->PrepareAllAttributeVBOs(sp) == ErrorSuccess); // check the cache
+      CHECK(soCopy2->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess); // check the cache
     }
     sp.Disable();
 
@@ -848,24 +892,21 @@ namespace TestingShaderOperator
     so->ClearAttributeVBOsCache();
     {
       CHECK_FALSE(so->IsAttributeVBOsCached());
-      CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*so->GetVAO());
+      CHECK(so->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(so->IsAttributeVBOsCached());
     }
 
     soCopy->ClearAttributeVBOsCache();
     {
       CHECK_FALSE(soCopy->IsAttributeVBOsCached());
-      CHECK(soCopy->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy->GetVAO());
+      CHECK(soCopy->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy->IsAttributeVBOsCached());
     }
 
     soCopy2->ClearAttributeVBOsCache();
     {
       CHECK_FALSE(soCopy2->IsAttributeVBOsCached());
-      CHECK(soCopy2->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
-      gl::VertexArrayObject::Bind b(*soCopy2->GetVAO());
+      CHECK(soCopy2->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
       CHECK(soCopy2->IsAttributeVBOsCached());
     }
 
@@ -874,7 +915,7 @@ namespace TestingShaderOperator
 
     // Test Removal
     typedef shader_op_ptr::value_type::size_type size_type;
-    const size_type numAttributes = so->GetNumberOfAttributeVBOs();
+    const size_type numAttributes = so->size_attributeVBOs();
 
     gl::ShaderOperator::attributeVBO_iterator attrItr =
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(),
@@ -882,23 +923,22 @@ namespace TestingShaderOperator
 
     // Note that removing uniforms does not affect cache
     so->RemoveAttributeVBO(attrItr);
-    CHECK(so->GetNumberOfAttributeVBOs() == numAttributes - 1);
+    CHECK(so->size_attributeVBOs() == numAttributes - 1);
 
     attrItr =
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(),
         core::algos::pair::compare::MakeFirst(so->begin_attributeVBOs()->first));
 
     so->RemoveAttributeVBO(attrItr);
-    CHECK(so->GetNumberOfAttributeVBOs() == numAttributes - 2);
+    CHECK(so->size_attributeVBOs() == numAttributes - 2);
 
     sp.Enable();
-    CHECK(so->PrepareAllAttributeVBOs(sp) == ErrorSuccess);
+    CHECK(so->PrepareAllAttributeVBOs(sp, vao) == ErrorSuccess);
 
-    gl::VertexArrayObject::Bind b(*so->GetVAO());
     CHECK(so->IsAttributeVBOsCached());
     sp.Disable();
 
     so->RemoveAllAttributeVBOs();
-    CHECK(so->GetNumberOfAttributeVBOs() == 0);
+    CHECK(so->size_attributeVBOs() == 0);
   }
 };

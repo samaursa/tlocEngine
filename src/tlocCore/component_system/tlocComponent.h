@@ -93,14 +93,8 @@ namespace tloc { namespace core { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Component, component);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Component, component);
 
-  TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(Component);
-  TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(Component);
-
   typedef containers::tl_array<component_vptr>::type  component_ptr_array;
   typedef containers::tl_array<component_sptr>::type  component_sptr_array;
-
-  TLOC_EXTERN_TEMPLATE_ARRAY(component_vptr);
-  TLOC_EXTERN_TEMPLATE_ARRAY(component_sptr);
 
   //////////////////////////////////////////////////////////////////////////
   // Component_T<>
@@ -139,28 +133,28 @@ namespace tloc { namespace core { namespace component_system {
       // ///////////////////////////////////////////////////////////////////////
       // ComponentGroup_T
 
-      TLOC_DECL_ALGO_WITH_CTOR_UNARY(ComponentGroup_T, Component::component_group_type);
-      TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(ComponentGroup_T)
+      TLOC_DECL_ALGO_WITH_CTOR_UNARY(ComponentGroup_T, Component::component_group_type, );
+      TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(ComponentGroup_T, )
       {
-        return extract()( b ).GetInfo().m_groupIndex == m_value;
+        return extract()( a ).GetInfo().m_groupIndex == m_value;
       }
 
       // -----------------------------------------------------------------------
       // typedefs
 
-      typedef ComponentGroup_T<>                    ComponentGroup;
-      typedef ComponentGroup_T<core::use_pointee>   ComponentGroupPointer;
+      typedef ComponentGroup_T<core::use_reference>     ComponentGroup;
+      typedef ComponentGroup_T<core::use_pointee>       ComponentGroupPointer;
 
       // -----------------------------------------------------------------------
       // extern template 
-      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_self<Component> >);
+      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_reference>);
       TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_pointee>);
 
       // ///////////////////////////////////////////////////////////////////////
       // ComponentType_T
 
-      TLOC_DECL_ALGO_WITH_CTOR_UNARY(ComponentType_T, Component::info_type);
-      TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(ComponentType_T)
+      TLOC_DECL_ALGO_WITH_CTOR_UNARY(ComponentType_T, Component::info_type, );
+      TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(ComponentType_T, )
       {
         TLOC_ASSERT(extract()( a ).GetInfo().m_groupIndex == m_value.m_groupIndex,
                     "Comparing component types from different component groups");
@@ -170,12 +164,12 @@ namespace tloc { namespace core { namespace component_system {
       // -----------------------------------------------------------------------
       // typedefs
 
-      typedef ComponentType_T<>                     ComponentType;
-      typedef ComponentType_T<core::use_pointee>    ComponentType_Deref;
+      typedef ComponentType_T<core::use_reference>      ComponentType;
+      typedef ComponentType_T<core::use_pointee>        ComponentType_Deref;
 
       // -----------------------------------------------------------------------
       // extern template 
-      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_self<Component> >);
+      TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_reference>);
       TLOC_EXTERN_TEMPLATE_STRUCT(ComponentGroup_T<core::use_pointee>);
 
     };
@@ -184,8 +178,8 @@ namespace tloc { namespace core { namespace component_system {
 
       namespace component_type
       {
-        TLOC_DECL_ALGO_BINARY(LessThan_T);
-        TLOC_DEFINE_ALGO_BINARY(LessThan_T)
+        TLOC_DECL_ALGO_BINARY(LessThan_T, const);
+        TLOC_DEFINE_ALGO_BINARY(LessThan_T, const)
         {
           TLOC_ASSERT(extract()(a).GetInfo().m_groupIndex == 
                       extract()(b).GetInfo().m_groupIndex,
@@ -197,19 +191,19 @@ namespace tloc { namespace core { namespace component_system {
         // -----------------------------------------------------------------------
         // typedefs
 
-        typedef LessThan_T<>                          LessThan;
+        typedef LessThan_T<core::use_reference>       LessThan;
         typedef LessThan_T<core::use_pointee>         LessThan_Deref;
 
         // -----------------------------------------------------------------------
         // extern template 
-        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_self<Component> >);
+        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_reference>);
         TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_pointee>);
       };
 
       namespace component_group
       {
-        TLOC_DECL_ALGO_BINARY(LessThan_T);
-        TLOC_DEFINE_ALGO_BINARY(LessThan_T)
+        TLOC_DECL_ALGO_BINARY(LessThan_T, const);
+        TLOC_DEFINE_ALGO_BINARY(LessThan_T, const)
         {
             return extract()(a).GetInfo().m_groupIndex < 
                    extract()(b).GetInfo().m_groupIndex; 
@@ -218,12 +212,12 @@ namespace tloc { namespace core { namespace component_system {
         // -----------------------------------------------------------------------
         // typedefs
 
-        typedef LessThan_T<>                          LessThan;
+        typedef LessThan_T<core::use_reference>       LessThan;
         typedef LessThan_T<core::use_pointee>         LessThan_Deref;
 
         // -----------------------------------------------------------------------
         // extern template 
-        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_self<Component> >);
+        TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_reference>);
         TLOC_EXTERN_TEMPLATE_STRUCT(LessThan_T<core::use_pointee>);
       };
 
@@ -233,5 +227,15 @@ namespace tloc { namespace core { namespace component_system {
 
 
 };};};
+
+//------------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::core_cs::Component);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::core_cs::Component);
+
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::core_cs::component_vptr);
+TLOC_EXTERN_TEMPLATE_ARRAY(tloc::core_cs::component_sptr);
+
 
 #endif

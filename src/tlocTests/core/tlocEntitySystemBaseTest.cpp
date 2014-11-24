@@ -69,6 +69,9 @@ namespace TestingEntitySystemBase
           entity_manager_ptr a_entMgr)
           : base_type(a_eventMgr, a_entMgr, 
                       register_type().Add<EmptyComponent1>(), "EntSys")
+          , m_componentInsert(0)
+          , m_componentEnable(0)
+          , m_entityActivate(0)
     { }
 
     ~EntSys()
@@ -143,7 +146,7 @@ namespace TestingEntitySystemBase
 
     using base_type::DoGetActiveEntities;
 
-    tl_int m_componentInsert = 0, m_componentEnable = 0, m_entityActivate = 0;
+    tl_int m_componentInsert, m_componentEnable, m_entityActivate;
   };
 
   TEST_CASE("core/component_system/EntitySystemBase", "")

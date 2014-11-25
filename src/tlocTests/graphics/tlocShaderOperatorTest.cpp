@@ -690,11 +690,14 @@ namespace TestingShaderOperator
   "  attribute vec3  u_vec3;                                         \n"
   "  attribute vec4  u_vec4;                                         \n"
   "  attribute vec4  u_vec5;                                         \n"
+  "  attribute mat2  u_matrix2;                                      \n"
+  "  attribute mat3  u_matrix3;                                      \n"
   "                                                                  \n"
   "void main(void)                                                   \n"
   "{                                                                 \n"
   "  gl_Position   = u_vec4 + u_vec5;                                \n"
   "  gl_Position.x = u_float * u_vec2.x * u_vec3.x;                  \n"
+  "  gl_Position.z = u_matrix2[0].x * u_matrix3[0].x;                \n"
   "}\n";
 
 #endif

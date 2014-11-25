@@ -13,6 +13,7 @@
 #include <tlocCore/component_system/tlocEntity.h>
 
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
+#include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -25,6 +26,8 @@ namespace tloc { namespace graphics { namespace component_system {
     MaterialSystem(event_manager_ptr a_eventMgr,
                    entity_manager_ptr a_entityMgr);
 
+    virtual error_type Pre_Initialize();
+
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
@@ -32,6 +35,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+    
+  private:
+    gfx_cs::material_uptr                m_defaultMaterial;
   };
 
   //------------------------------------------------------------------------

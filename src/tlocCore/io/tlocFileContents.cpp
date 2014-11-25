@@ -18,12 +18,4 @@ namespace tloc { namespace core { namespace io {
     , m_fileContents(a_string)
   { }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  FileContents::
-    FileContents(this_type&& a_temp)
-    : m_path(a_temp.m_path)
-    , m_fileContents(a_temp.m_fileContents)
-  { }
-
 };};};

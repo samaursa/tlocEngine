@@ -53,7 +53,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (tl_size i = 0; i < p_material::Uniforms::k_count; ++i)
     {
-      auto uniformName = g_uniformNames[i];
+      auto uniformName = core_str::String(g_uniformNames[i]);
       auto uniformPtr = m_internalShaderOp->
         AddUniform(gl::Uniform().SetName(uniformName));
 
@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SetEnableUniform<p_material::Uniforms::k_modelViewProjectionMatrix>();
 
     for (tl_size i = 0; i < p_material::Attributes::k_count; ++i)
-    { m_attributeNames.push_back(g_attributeNames[i]); }
+    { m_attributeNames.push_back(core_str::String(g_attributeNames[i])); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -77,6 +77,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_shaderProgram(a_other.m_shaderProgram)
     , m_shaderOp(a_other.m_shaderOp)
     , m_internalShaderOp(a_other.m_internalShaderOp)
+    , m_attributeNames(a_other.m_attributeNames)
     , m_isDirty(true)
   { 
     auto itr = m_internalShaderOp->begin_uniforms(),
@@ -90,9 +91,33 @@ namespace tloc { namespace graphics { namespace component_system {
 
       m_internalUniforms.push_back(core::MakePair(itrCopy->first.get(), g_uniformNames[i]));
     }
+  }
 
-    for (tl_size i = 0; i < p_material::Attributes::k_count; ++i)
-    { m_attributeNames.push_back(g_attributeNames[i]); }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Material::this_type& 
+    Material::
+    operator =(this_type a_other)
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Material::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+    swap(m_vertexProgram, a_other.m_vertexProgram);
+    swap(m_fragmentProgram, a_other.m_fragmentProgram);
+    swap(m_shaderProgram, a_other.m_shaderProgram);
+    swap(m_shaderOp, a_other.m_shaderOp);
+    swap(m_internalUniforms, a_other.m_internalUniforms);
+    swap(m_attributeNames, a_other.m_attributeNames);
+    swap(m_internalUniforms, a_other.m_internalUniforms);
+    swap(m_isDirty, a_other.m_isDirty);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

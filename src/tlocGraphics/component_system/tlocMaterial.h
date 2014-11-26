@@ -128,6 +128,9 @@ namespace tloc { namespace graphics { namespace component_system {
     Material();
     Material(const Material& a_other);
 
+    this_type& operator=(this_type a_other);
+    void swap(this_type& a_other);
+
     this_type& AddUniform(const uniform_type& a_uniform);
 
     TLOC_DECL_AND_DEF_GETTER_NON_CONST

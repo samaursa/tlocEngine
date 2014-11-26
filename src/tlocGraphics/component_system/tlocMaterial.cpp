@@ -88,6 +88,7 @@ namespace tloc { namespace graphics { namespace component_system {
       core::advance(itrCopy, i);
 
       TLOC_ASSERT(itrCopy != itrEnd, "Iterator went out of bounds");
+      TLOC_UNUSED(itrEnd);
 
       m_internalUniforms.push_back(core::MakePair(itrCopy->first.get(), g_uniformNames[i]));
     }

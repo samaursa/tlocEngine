@@ -18,7 +18,6 @@ namespace tloc { namespace core { namespace io {
   public:
     FileContents();
     FileContents(const path_type& a_path, const string_type& a_string);
-    FileContents(this_type&& a_temp);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(path_type, GetPath, m_path);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetContents, m_fileContents);

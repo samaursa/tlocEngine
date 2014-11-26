@@ -37,7 +37,6 @@ namespace tloc { namespace core { namespace component_system {
     ECS::
     Process(time_type a_deltaT)
   { 
-    m_entMgr->Update();
     m_sysProcessor->Process(a_deltaT); 
   }
 

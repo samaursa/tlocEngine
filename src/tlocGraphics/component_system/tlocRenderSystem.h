@@ -63,47 +63,6 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
 
-  public:
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetMVPMatrixUniformName, m_uniMVPMat.second);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetVPMatrixUniformName, m_uniVPMat.second);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetViewMatrixUniformName, m_uniViewMat.second);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetModelMatrixUniformName, m_uniModelMat.second);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetScaleMatrixUniformName, m_uniModelMat.second);
-
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetMVPMatrixUniformName, m_uniMVPMat.second);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetVPMatrixUniformName, m_uniMVPMat.second);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetViewMatrixUniformName, m_uniViewMat.second);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetModelMatrixUniformName, m_uniModelMat.second);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetScaleMatrixUniformName, m_uniModelMat.second);
-
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetVertexAttributeName, m_vertexAttribName);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetTextureAttributePrefix, m_textureAttribPrefix);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetNormalAttributeName, m_normalAttribName);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (core_str::String, GetColorAttributeName, m_colorAttribName);
-
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetVertexAttributeName, m_vertexAttribName);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetTextureAttributePrefix, m_textureAttribPrefix);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetNormalAttributeName, m_normalAttribName);
-    TLOC_DECL_AND_DEF_SETTER
-      (core_str::String, SetColorAttributeName, m_colorAttribName);
-
   protected:
 
     struct DrawInfo
@@ -148,9 +107,6 @@ namespace tloc { namespace graphics { namespace component_system {
     void                      DoDrawEntity(const DrawInfo& a_di);
 
   private:
-    typedef core::Pair<uniform_ptr, core_str::String>     uniform_string_pair;
-
-  private:
     const_shader_prog_ptr     m_shaderPtr;
 
     const_entity_ptr          m_sharedCam;
@@ -159,36 +115,6 @@ namespace tloc { namespace graphics { namespace component_system {
     matrix_type               m_vpMatrix;
     matrix_type               m_projMat;
     matrix_type               m_viewMatrix;
-
-    gl::shader_operator_vso   m_shaderOp;
-
-    uniform_string_pair       m_uniMVPMat;
-    uniform_string_pair       m_uniMVPInverseMat;
-
-    uniform_string_pair       m_uniVPMat;
-    uniform_string_pair       m_uniVPInverseMat;
-
-    uniform_string_pair       m_uniMVMat;
-    uniform_string_pair       m_uniMVInverseMat;
-
-    uniform_string_pair       m_uniProjMat;
-    uniform_string_pair       m_uniProjInverseMat;
-
-    uniform_string_pair       m_uniViewMat;
-    uniform_string_pair       m_uniViewInverseMat;
-
-    uniform_string_pair       m_uniModelMat;
-    uniform_string_pair       m_uniModelInverseMat;
-
-    uniform_string_pair       m_uniScaleMat;
-    uniform_string_pair       m_uniScaleInverseMat;
-
-    uniform_string_pair       m_uniNormalMat;
-
-    core_str::String          m_vertexAttribName;
-    core_str::String          m_textureAttribPrefix;
-    core_str::String          m_normalAttribName;
-    core_str::String          m_colorAttribName;
   };
 
   // -----------------------------------------------------------------------

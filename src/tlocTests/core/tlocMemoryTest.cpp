@@ -193,5 +193,67 @@ namespace TestingMemory
     }
   }
 
+  struct Complex
+  {
+    Complex()
+    { m_num = new tl_int(0); }
+
+    ~Complex()
+    { delete m_num; }
+
+    Complex(const Complex& a_other)
+      : m_num(new tl_int(*a_other.m_num))
+    { }
+
+    Complex& operator=(Complex a_other)
+    {
+      swap(a_other);
+      return *this;
+    }
+
+    void swap(Complex& a_other)
+    {
+      using core::swap;
+      swap(m_num, a_other.m_num);
+    }
+
+    tl_int* m_num;
+  };
+
+  TEST_CASE("core/memory/MemCopy", "")
+  {
+    SECTION("Simple types", "")
+    {
+      tl_int a1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+      tl_int a2[10];
+
+      tl_int* itr = core_mem::MemCopy(a2, a1, 10);
+      CHECK(itr == a2);
+
+      bool testPassed = true;
+      for (tl_int i = 0; i < 10; ++i)
+      { if (a1[i] != a2[i]) { testPassed = false; break; } }
+      CHECK(testPassed);
+    }
+
+    SECTION("Complex types", "")
+    {
+      Complex a1[5];
+      *a1[0].m_num = 0; *a1[1].m_num = 1; *a1[2].m_num = 2; *a1[3].m_num = 3;
+      *a1[4].m_num = 4;
+
+      Complex a2[5];
+
+      Complex* itr = core_mem::MemCopy(a2, a1, 5);
+      CHECK(itr == a2);
+
+      for (tl_int i = 0; i < 5; ++i)
+      { CHECK(a1[i].m_num != a2[i].m_num); } // pointer addresses should be diff.
+
+      for (tl_int i = 0; i < 5; ++i)
+      { CHECK(*a1[i].m_num == *a2[i].m_num); } // values should be same 
+    }
+  }
+
 };
 

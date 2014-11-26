@@ -138,7 +138,7 @@ namespace tloc { namespace core { namespace data_structs {
     GetCol(tl_size aCol, tuple_row_type& aColOut) const
   {
     ASSERT_NUM_COLS;
-    memcpy(aColOut.data(), m_values + (aCol * T_Rows), sizeof(T) * T_Cols);
+    core_mem::MemCopy(aColOut.data(), m_values + (aCol * T_Rows), T_Cols);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -456,7 +456,7 @@ namespace tloc { namespace core { namespace data_structs {
         table_order a_tableOrder)
   {
     if (a_tableOrder == k_ColMajor)
-    { memcpy(m_values, &a_vars, sizeof(T) * k_size); }
+    { core_mem::MemCopy(m_values, a_vars.data(), k_size); }
     else
     {
       for (size_type currRow = 0; currRow < k_Rows; ++currRow)
@@ -502,7 +502,7 @@ namespace tloc { namespace core { namespace data_structs {
     SetCol(tl_size aCol, const tuple_row_type& aColIn)
   {
     ASSERT_NUM_COLS;
-    memcpy(m_values + (aCol * T_Rows), aColIn.data(), sizeof(T) * T_Rows);
+    core_mem::MemCopy(m_values + (aCol * T_Rows), aColIn.data(), T_Rows);
   }
 
   //------------------------------------------------------------------------

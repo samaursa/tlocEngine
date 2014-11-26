@@ -372,7 +372,7 @@ namespace tloc { namespace core { namespace data_structs {
   template <TUPLE_TEMP>
   void Tuple<TUPLE_PARAMS>::
     DoSet(const T (&aArray)[T_Size], type_true)
-  { memcpy(m_values, aArray, sizeof(T) * T_Size); }
+  { core_mem::MemCopy(m_values, aArray, T_Size); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -393,7 +393,7 @@ namespace tloc { namespace core { namespace data_structs {
   template <TUPLE_TEMP>
   void Tuple<TUPLE_PARAMS>::
     DoSet(const this_type& aTuple, type_true)
-  { memcpy(m_values, aTuple.data(), sizeof(T) * T_Size); }
+  { core_mem::MemCopy(m_values, aTuple.data(), T_Size); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

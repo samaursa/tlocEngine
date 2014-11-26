@@ -2,6 +2,7 @@
 
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -18,7 +19,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const char* vsSource =
       "#version 330 core                                        \n\
                                                                 \n\
-       in vec3 a_vPos;                                          \n\
+       in vec3 a_vertPos;                                       \n\
        uniform mat4 u_mvp;                                      \n\
                                                                 \n\
        void main()                                              \n\
@@ -29,7 +30,7 @@ namespace tloc { namespace graphics { namespace component_system {
               u_mvp[2] == 0)                                    \n\
           { mvp = mat4(1.0); }                                  \n\
                                                                 \n\
-          gl_Position = mvp * vec4(a_vPos, 1);                  \n\
+          gl_Position = mvp * vec4(a_vertPos, 1);               \n\
        }                                                        \n\
       ";
 
@@ -46,27 +47,27 @@ namespace tloc { namespace graphics { namespace component_system {
     const char* vsSource =
       "#version 100                                             \n\
                                                                 \n\
-       attribute lowp vec3 a_vPos;                              \n\
-       attribute lowp vec4 a_color;                             \n\
+       attribute lowp vec3 a_vertPos;                           \n\
        uniform mat4 u_mvp;                                      \n\
-                                                                \n\
-       varying vec4 v_lineColor;                                \n\
                                                                 \n\
        void main()                                              \n\
        {                                                        \n\
-          gl_Position = u_mvp * vec4(a_vPos, 1);                \n\
-          v_lineColor = a_color;                                \n\
+          mat4 mvp = u_mvp;                                     \n\
+          if (u_mvp[0] == 0.0 &&                                \n\
+              u_mvp[1] == 0.0 &&                                \n\
+              u_mvp[2] == 0)                                    \n\
+          { mvp = mat4(1.0); }                                  \n\
+                                                                \n\
+          gl_Position = u_mvp * vec4(a_vertPos, 1);             \n\
        }                                                        \n\
       ";
     
     const char* fsSource =
       "#version 100                                             \n\
                                                                 \n\
-       varying lowp vec4 v_lineColor;                           \n\
-                                                                \n\
        void main()                                              \n\
        {                                                        \n\
-          gl_FragColor = v_lineColor;                           \n\
+         gl_FragColor = vec4(1.0, 0.0, 0.996, 1.0);             \n\
        }                                                        \n\
       ";
 #endif
@@ -228,8 +229,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     MaterialSystem::
-    ProcessEntity(entity_ptr, f64)
-  { }
+    ProcessEntity(entity_ptr a_ent, f64)
+  { 
+    auto matPtr = a_ent->GetComponent<gfx_cs::Material>();
+    if (matPtr->m_isDirty)
+    {
+      matPtr->m_isDirty = false;
+      matPtr->m_internalShaderOp->ClearCache();
+    }
+  }
 
 };};};
 

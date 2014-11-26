@@ -72,13 +72,20 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
     quadPtr->SetUpdateRequired(false);
 
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+    else // create material temporarily for names
+    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
+
     vec3_cont_type quadList;
     DoMakeQuadVertices(quadPtr, quadList);
 
     const gfx_gl::shader_operator_vptr so =  quadPtr->GetShaderOperator().get();
 
+    using namespace p_material::Attributes;
     gfx_gl::AttributeVBO vbo;
-    vbo.AddName(base_type::GetVertexAttributeName())
+    vbo.AddName(matPtr->GetAttributeName<k_vertexPosition>())
        .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                    gfx_gl::p_vbo::usage::StaticDraw>(quadList);
 
@@ -100,20 +107,26 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoUpdateQuad(QuadRenderSystem& a_sys, QuadRenderSystem::entity_ptr a_ent, 
-                 gfx_cs::quad_sptr a_quadPtr)
+    DoUpdateQuad(QuadRenderSystem::entity_ptr a_ent, gfx_cs::quad_sptr a_quadPtr)
   {
     //------------------------------------------------------------------------
     // Update the quad
+
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+    else // create material temporarily for names
+    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
 
     typedef math::types::Rectf32_c            rect_type;
 
     const gfx_gl::shader_operator_vptr so =  a_quadPtr->GetShaderOperator().get();
 
     using gl::algos::shader_operator::compare::AttributeVBOName;
+    using namespace p_material::Attributes;
     gl::ShaderOperator::attributeVBO_iterator itr = 
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(), 
-                    AttributeVBOName(a_sys.GetVertexAttributeName()));
+                    AttributeVBOName(matPtr->GetAttributeName<k_vertexPosition>()));
 
     if (itr == so->end_attributeVBOs())
     { return; }
@@ -138,7 +151,7 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::quad_sptr quadPtr = a_ent->GetComponent<gfx_cs::Quad>();
 
     if (quadPtr->IsUpdateRequired())
-    { DoUpdateQuad(*this, a_ent, quadPtr); }
+    { DoUpdateQuad(a_ent, quadPtr); }
 
     base_type::DrawInfo di(a_ent, GL_TRIANGLE_STRIP, 4);
     di.m_shaderOp = core_sptr::ToVirtualPtr(quadPtr->GetShaderOperator());

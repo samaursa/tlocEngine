@@ -123,6 +123,49 @@ namespace tloc { namespace core {
 namespace tloc { namespace core { namespace memory {
 
   // ///////////////////////////////////////////////////////////////////////
+  // Slightly safer version of memcpy where you don't have to worry about
+  // complex types being copied incorrectly
+
+  namespace priv {
+
+    typedef type_true                                 simple_type;
+    typedef type_false                                complex_type;
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T>
+    T* 
+      DoMemCopy(T* a_destination, const T* a_source, tl_size a_elementsToCopy, 
+                simple_type)
+    { return (T*)memcpy(a_destination, a_source, a_elementsToCopy * sizeof(T)); }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T>
+    T* 
+      DoMemCopy(T* a_destination, const T* a_source, tl_size a_elementsToCopy, 
+                complex_type)
+    { 
+      T* dest = a_destination;
+      for (tl_size i = 0; i < a_elementsToCopy; ++i)
+      {
+        *dest = *a_source;
+        ++dest; ++a_source;
+      }
+
+      return a_destination;
+    }
+  };
+
+  template <typename T>
+  T* MemCopy(T* a_destination, const T* a_source, tl_size a_elementsToCopy)
+  {
+    typedef Loki::Int2Type<Loki::TypeTraits<T>::isFundamental> simple_or_complex;
+    return priv::DoMemCopy(a_destination, a_source, a_elementsToCopy, 
+                           simple_or_complex());
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // ObjectCreator
 
   // All resources require a ResourceCreator class that can construct the

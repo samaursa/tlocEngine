@@ -76,14 +76,20 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
     fanPtr->SetUpdateRequired(false);
 
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+    else // create material temporarily for names
+    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
 
     const gfx_gl::shader_operator_vptr so =  fanPtr->GetShaderOperator().get();
 
     vec3_cont_type vertList;
     DoMakeFanVertices(fanPtr, vertList);
 
+    using namespace p_material::Attributes;
     gfx_gl::AttributeVBO vbo;
-    vbo.AddName(base_type::GetVertexAttributeName())
+    vbo.AddName(matPtr->GetAttributeName<k_vertexPosition>())
        .SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                    gfx_gl::p_vbo::usage::StaticDraw>(vertList);
 
@@ -105,18 +111,24 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DoUpdateFan(FanRenderSystem& a_sys, FanRenderSystem::entity_ptr a_ent, 
-                 gfx_cs::fan_sptr a_fanPtr)
+    DoUpdateFan(FanRenderSystem::entity_ptr a_ent, gfx_cs::fan_sptr a_fanPtr)
   {
     //------------------------------------------------------------------------
     // Update the quad
 
     const gfx_gl::shader_operator_vptr so =  a_fanPtr->GetShaderOperator().get();
 
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+    else // create material temporarily for names
+    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
+
     using gl::algos::shader_operator::compare::AttributeVBOName;
+    using namespace p_material::Attributes;
     gl::ShaderOperator::attributeVBO_iterator itr = 
       core::find_if(so->begin_attributeVBOs(), so->end_attributeVBOs(), 
-                    AttributeVBOName(a_sys.GetVertexAttributeName()));
+                    AttributeVBOName(matPtr->GetAttributeName<k_vertexPosition>()));
 
     if (itr == so->end_attributeVBOs())
     { return; }
@@ -141,7 +153,7 @@ namespace tloc { namespace graphics { namespace component_system {
     gfx_cs::fan_sptr      fanPtr = a_ent->GetComponent<gfx_cs::Fan>();
 
     if (fanPtr->IsUpdateRequired())
-    { DoUpdateFan(*this, a_ent, fanPtr); }
+    { DoUpdateFan(a_ent, fanPtr); }
 
     const tl_size numVertices = fanPtr->GetNumSides() + 2;
 

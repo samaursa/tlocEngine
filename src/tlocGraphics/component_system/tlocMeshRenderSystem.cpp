@@ -37,12 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
   MESH_RENDER_SYSTEM_TYPE::error_type
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
-  {
-    base_type::SetEnabledAttributePosData(false);
-    base_type::SetEnabledUniformViewMatrix(true);
-    base_type::SetEnabledUniformNormalMatrix(true);
-    return base_type::Pre_Initialize();
-  }
+  { return base_type::Pre_Initialize(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -53,16 +48,26 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     base_type::InitializeEntity(a_ent);
 
-    mesh_ptr meshType = a_ent->GetComponent<mesh_type>();
+    auto meshType = a_ent->GetComponent<mesh_type>();
     meshType->SetUpdateRequired(false);
+
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    {
+      matPtr = a_ent->GetComponent<gfx_cs::Material>();
+      matPtr->SetEnableUniform<p_material::Uniforms::k_normalMatrix>();
+    }
+    else // create material temporarily for names
+    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
     
     const gfx_gl::shader_operator_vptr so = meshType->GetShaderOperator().get();
 
+    using namespace p_material::Attributes;
     { // Positions
       gfx_gl::AttributeVBO vbo;
       vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                      gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetPositions());
-      vbo.AddName(base_type::GetVertexAttributeName());
+      vbo.AddName(matPtr->GetAttributeName<k_vertexPosition>());
       so->AddAttributeVBO(vbo);
     }
 
@@ -72,7 +77,7 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_gl::AttributeVBO vbo;
       vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                      gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetNormals());
-      vbo.AddName(base_type::GetNormalAttributeName());
+      vbo.AddName(matPtr->GetAttributeName<k_vertexNormal>());
       so->AddAttributeVBO(vbo);
     }
 
@@ -82,7 +87,7 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_gl::AttributeVBO vbo;
       vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
                      gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetTCoords());
-      vbo.AddName(base_type::GetTextureAttributePrefix());
+      vbo.AddName(matPtr->GetAttributeName<k_texCoordPrefix>() + "0");
       so->AddAttributeVBO(vbo);
     }
 

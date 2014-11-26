@@ -61,8 +61,6 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(Mat3f32, GL_FLOAT_MAT3);
   TLOC_DECL_TL_TO_GL(Mat4f32, GL_FLOAT_MAT4);
 
-  TLOC_DECL_TL_TO_GL(Array<Mat4f32>, GL_FLOAT_VEC4);
-
   TLOC_DECL_TL_TO_GL(Array<s8>,     GL_BYTE);
   TLOC_DECL_TL_TO_GL(Array<u8>,     GL_UNSIGNED_BYTE);
   TLOC_DECL_TL_TO_GL(Array<short>,  GL_SHORT);
@@ -72,6 +70,10 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(Array<Vec2f32>, GL_FLOAT_VEC2);
   TLOC_DECL_TL_TO_GL(Array<Vec3f32>, GL_FLOAT_VEC3);
   TLOC_DECL_TL_TO_GL(Array<Vec4f32>, GL_FLOAT_VEC4);
+
+  TLOC_DECL_TL_TO_GL(Array<Mat2f32>, GL_FLOAT_MAT2);
+  TLOC_DECL_TL_TO_GL(Array<Mat3f32>, GL_FLOAT_MAT3);
+  TLOC_DECL_TL_TO_GL(Array<Mat4f32>, GL_FLOAT_MAT4);
 
   TLOC_DECL_TL_TO_GL(Array<s32>,       GL_INT);
   TLOC_DECL_TL_TO_GL(Array<Tuple2s32>, GL_INT_VEC2);

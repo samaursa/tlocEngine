@@ -69,6 +69,9 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingByMaterial);
 
   protected:
+    TLOC_DECL_GETTER_NON_CONST(bool, DoGetDirtyAndUmark);
+
+  protected:
     RenderSystem_I();
 
   private:

@@ -603,7 +603,9 @@ namespace tloc { namespace graphics { namespace gl {
 
       DoSetReturn toRet;
 
-      switch(a_attributeVBO.GetType())
+      const auto attributeVBOType = a_attributeVBO.GetType();
+
+      switch(attributeVBOType)
       {
       case GL_INT:
         {
@@ -704,6 +706,12 @@ namespace tloc { namespace graphics { namespace gl {
       case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F:
       case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F:
       case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
+
+      case GL_FLOAT_MAT2:
+      case GL_FLOAT_MAT3:
+      case GL_FLOAT_MAT4:
+      case TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F_ORIENTATION:
+      case TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F_ORIENTATION:
        {
           // handle TLOC_GL types
           // the interleaveIndex = the index of the interleaved attribute
@@ -711,14 +719,25 @@ namespace tloc { namespace graphics { namespace gl {
           gl::AttributeVBO::StrideInfo si =
             a_attributeVBO.GetStrideInfo(a_interleaveIndex);
 
-          VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
-          gl::vertex_attrib_array::Enable(a_info.m_location);
-          glVertexAttribPointer(a_info.m_location, 
-                                si.m_numElements,
-                                GL_FLOAT, 
-                                GL_FALSE, 
-                                si.m_strideInBytes, 
-                                (void*)(sizeof(f32) * si.m_dataStartIndex));
+          // iteration number is 1 unless a Mat2/Mat3/Mat4 is encountered
+          tl_int iterations = si.m_totalElements / si.m_numElements;
+
+          for (tl_int i = 0; i < iterations; ++i)
+          {
+            // substride is 0 unless it is a Mat2/Mat3/Mat4 where Mat*::vec_type's 
+            // size is the substride in each iteration
+            const tl_size subStride = sizeof(f32) * si.m_numElements * i;
+
+            VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
+            gl::vertex_attrib_array::Enable(a_info.m_location + i);
+            glVertexAttribPointer(a_info.m_location + i, 
+                                  si.m_numElements,
+                                  GL_FLOAT, 
+                                  GL_FALSE, 
+                                  si.m_strideInBytes, 
+                                  (void*)(sizeof(f32) * si.m_dataStartIndex + subStride));
+          }
+
           break;
         }
       default:
@@ -811,6 +830,7 @@ namespace tloc { namespace graphics { namespace gl {
               {
                 TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
                   << shaderVarPtr->GetName();
+                shaderVarPtr->SetEnabled(false);
                 retError = ErrorFailure;
                 break;
               }
@@ -823,6 +843,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
               << shaderVarPtr->GetName();
+            shaderVarPtr->SetEnabled(false);
             retError = ErrorFailure;
           }
         }

@@ -186,7 +186,11 @@ namespace tloc { namespace graphics { namespace component_system {
   Material::this_type&
     Material::
     SetEnableUniform(uniform_index_type a_index, bool a_enable)
-  {  m_internalUniforms[a_index].first->SetEnabled(a_enable); return *this; }
+  {  
+    m_internalUniforms[a_index].first->SetEnabled(a_enable); 
+    m_isDirty = true; 
+    return *this;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

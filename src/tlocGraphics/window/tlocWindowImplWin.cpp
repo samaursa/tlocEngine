@@ -350,6 +350,33 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     SetCursor(m_cursor);
   }
 
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::ConfineMouseToWindow(bool a_confine)
+  {
+    if (a_confine) 
+    { 
+      POINT point;
+      point.x = 0; point.y = 0;
+      ClientToScreen(GetWindowHandle(), &point);
+
+      RECT rcClip;
+      GetClientRect(GetWindowHandle(), &rcClip);
+
+      rcClip.top += point.y;
+      rcClip.bottom += point.y;
+
+      rcClip.left += point.x;
+      rcClip.right += point.y;
+
+      ClipCursor(&rcClip);
+    }
+    else
+    {
+      m_cursor = TLOC_NULL;
+    }
+
+    SetCursor(m_cursor);
+  }
+
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetPosition(s32 a_x, s32 a_y)
   {
     SetWindowPos(m_handle, TLOC_NULL, a_x, a_y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
@@ -462,6 +489,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   {
     if (m_handle == TLOC_NULL) { return; }
 
+    ConfineMouseToWindow(false);
+
     switch (a_message)
     {
     case WM_DESTROY:
@@ -479,12 +508,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       }
     case WM_SIZE:
       {
+        ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::resized, GetWidth(), GetHeight()));
         break;
       }
     case WM_SETFOCUS:
       {
+        ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::gained_focus, GetWidth(), GetHeight()));
         break;

@@ -150,6 +150,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///-------------------------------------------------------------------------
     void SetMouseVisibility(bool a_visible);
 
+    void ConfineMouseToWindow(bool a_confine);
+
     ///-------------------------------------------------------------------------
     /// Sets the window position
     ///
@@ -218,6 +220,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     bool                m_isCursorIn;
     HDC                 m_deviceContext;
     HGLRC               m_OpenGLContext;
+    RECT                m_defaultMouseClip;
 
   };
 

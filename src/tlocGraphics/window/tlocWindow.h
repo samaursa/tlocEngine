@@ -291,6 +291,8 @@ namespace tloc { namespace graphics { namespace win {
     ///-------------------------------------------------------------------------
     void SetMouseVisibility(bool a_visible);
 
+    void ConfineMouseToWindow(bool a_confine = true);
+
     ///-------------------------------------------------------------------------
     /// Sets the window position
     ///
@@ -339,6 +341,7 @@ namespace tloc { namespace graphics { namespace win {
     renderer_sptr GetRenderer() const;
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsMouseVisible, m_mouseVisible);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsMouseConfined, m_mouseConfined);
 
   private:
     typedef tloc::type_true   IsWindowHandle;
@@ -356,6 +359,7 @@ namespace tloc { namespace graphics { namespace win {
     impl_type*                              m_impl;
     core::containers::Queue<WindowEvent>    m_events;
     bool                                    m_mouseVisible;
+    bool                                    m_mouseConfined;
     renderer_sptr                           m_renderer;
   };
 

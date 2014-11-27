@@ -37,6 +37,7 @@ namespace tloc { namespace graphics { namespace win {
     Window_T()
     : m_impl(nullptr)
     , m_mouseVisible(true)
+    , m_mouseConfined(false)
   {
   }
 
@@ -255,6 +256,15 @@ namespace tloc { namespace graphics { namespace win {
     VALIDATE_WINDOW();
     m_mouseVisible = a_visible;
     m_impl->SetMouseVisibility(a_visible);
+  }
+
+  template <WINDOW_TEMP>
+  void Window_T<WINDOW_PARAMS>::
+    ConfineMouseToWindow(bool a_confine)
+  {
+    VALIDATE_WINDOW();
+    m_mouseConfined = a_confine;
+    m_impl->ConfineMouseToWindow(a_confine);
   }
 
   template <WINDOW_TEMP>

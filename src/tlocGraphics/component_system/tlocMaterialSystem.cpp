@@ -25,9 +25,9 @@ namespace tloc { namespace graphics { namespace component_system {
        void main()                                              \n\
        {                                                        \n\
           mat4 mvp = u_mvp;                                     \n\
-          if (u_mvp[0] == 0.0 &&                                \n\
-              u_mvp[1] == 0.0 &&                                \n\
-              u_mvp[2] == 0)                                    \n\
+          if (u_mvp[0][0] == 0.0 &&                             \n\
+              u_mvp[0][1] == 0.0 &&                             \n\
+              u_mvp[0][2] == 0.0)                               \n\
           { mvp = mat4(1.0); }                                  \n\
                                                                 \n\
           gl_Position = mvp * vec4(a_vertPos, 1);               \n\
@@ -164,6 +164,21 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  MaterialSystem::this_type&
+    MaterialSystem::
+    SetDefaultShaders(core_io::FileContents a_vs, core_io::FileContents a_fs)
+  {
+    TLOC_LOG_GFX_WARN_IF(IsInitialized()) 
+      << "MaterialSystem already Initialized(). Set default shaders BEFORE "
+      << "initializing the system";
+
+    m_vsSource = a_vs;
+    m_fsSource = a_fs;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   error_type
     MaterialSystem::
     Pre_Initialize()
@@ -172,8 +187,17 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_defaultMaterial == nullptr)
     {
       m_defaultMaterial = core_sptr::MakeUnique<gfx_cs::Material>();
-      m_defaultMaterial->SetVertexSource(vsSource);
-      m_defaultMaterial->SetFragmentSource(fsSource);
+
+      if (m_fsSource.GetContents().empty() || m_vsSource.GetContents().empty())
+      {
+        m_defaultMaterial->SetVertexSource(vsSource);
+        m_defaultMaterial->SetFragmentSource(fsSource);
+      }
+      else
+      {
+        m_defaultMaterial->SetVertexSource(m_vsSource.GetContents());
+        m_defaultMaterial->SetFragmentSource(m_fsSource.GetContents());
+      }
 
       auto result = 
         DoCompileAndLinkShaderProgram(core_sptr::ToVirtualPtr(m_defaultMaterial));

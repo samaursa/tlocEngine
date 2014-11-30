@@ -11,6 +11,7 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
+#include <tlocCore/io/tlocFileContents.h>
 
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -26,6 +27,9 @@ namespace tloc { namespace graphics { namespace component_system {
     MaterialSystem(event_manager_ptr a_eventMgr,
                    entity_manager_ptr a_entityMgr);
 
+    this_type& SetDefaultShaders(core_io::FileContents a_vs, 
+                                 core_io::FileContents a_fs);
+
     virtual error_type Pre_Initialize();
 
     virtual error_type InitializeEntity(entity_ptr a_ent);
@@ -38,6 +42,8 @@ namespace tloc { namespace graphics { namespace component_system {
     
   private:
     gfx_cs::material_uptr                m_defaultMaterial;
+    core_io::FileContents                m_vsSource;
+    core_io::FileContents                m_fsSource;
   };
 
   //------------------------------------------------------------------------

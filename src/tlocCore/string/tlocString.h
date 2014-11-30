@@ -111,7 +111,7 @@ namespace tloc { namespace core { namespace string {
     void       set_capacity(const size_type& newCapacity = npos);
     void       reserve(const size_type& newSize);
     void       clear();
-    bool       empty();
+    bool       empty() const;
 
     //------------------------------------------------------------------------
     // Modifiers

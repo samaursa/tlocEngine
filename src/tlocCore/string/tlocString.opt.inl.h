@@ -345,7 +345,7 @@ namespace tloc { namespace core { namespace string {
 
   template <STRING_BASE_TYPES>
   bool StringBase<STRING_BASE_PARAMS>::
-    empty()
+    empty() const
   {
     return (m_begin == m_end);
   }

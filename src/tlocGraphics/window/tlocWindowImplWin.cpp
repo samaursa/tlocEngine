@@ -533,6 +533,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         // where the mouse cursor's icon is not updated when re-entering
         // client area
         SetMouseVisibility(m_parentWindow->IsMouseVisible());
+        break;
       }
     }
 

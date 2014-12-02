@@ -15,6 +15,8 @@
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace component_system {
 
   namespace {
@@ -26,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
       if (math::IsEqual(a_mat.Determinant(), 0.0f) == false)
       { ret = a_mat.Inverse(); }
       else
-      { TLOC_LOG_GFX_WARN() << a_name << "(Mat3f) is non-invertible"; }
+      { TLOC_LOG_GFX_WARN_NO_FILENAME() << a_name << "(Mat3f) is non-invertible"; }
 
       return ret;
     }
@@ -38,7 +40,7 @@ namespace tloc { namespace graphics { namespace component_system {
       if (math::IsEqual(a_mat.Determinant(), 0.0f) == false)
       { ret = a_mat.Invert(); }
       else
-      { TLOC_LOG_GFX_WARN() << a_name << "(Mat4f) is non-invertible"; }
+      { TLOC_LOG_GFX_WARN_NO_FILENAME() << a_name << "(Mat4f) is non-invertible"; }
 
       return ret;
     }
@@ -502,7 +504,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (sp->Enable().Failed())
       {
-        TLOC_LOG_GFX_WARN() << "ShaderProgram #" << sp->GetHandle()
+        TLOC_LOG_GFX_WARN_NO_FILENAME() << "ShaderProgram #" << sp->GetHandle()
           << " could not be enabled.";
         return;
       }
@@ -512,7 +514,7 @@ namespace tloc { namespace graphics { namespace component_system {
       auto matSO = matPtr->GetShaderOperator();
 
       // shader switch requires us to re-prepare the attributes/uniforms
-      TLOC_LOG_GFX_WARN_IF(matSO->size_attributeVBOs() > 0)
+      TLOC_LOG_GFX_WARN_NO_FILENAME_IF(matSO->size_attributeVBOs() > 0)
         << "Material's ShaderOperator should not have any attributes";
 
       if (matSO->IsUniformsCached() == false)

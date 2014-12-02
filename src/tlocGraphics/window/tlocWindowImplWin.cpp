@@ -365,16 +365,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       rcClip.bottom += point.y;
 
       rcClip.left += point.x;
-      rcClip.right += point.y;
+      rcClip.right += point.x;
 
       ClipCursor(&rcClip);
     }
     else
     {
-      m_cursor = TLOC_NULL;
+      ClipCursor(&m_defaultMouseClip);
     }
-
-    SetCursor(m_cursor);
   }
 
   void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetPosition(s32 a_x, s32 a_y)
@@ -489,8 +487,6 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   {
     if (m_handle == TLOC_NULL) { return; }
 
-    ConfineMouseToWindow(false);
-
     switch (a_message)
     {
     case WM_DESTROY:
@@ -515,6 +511,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       }
     case WM_SETFOCUS:
       {
+        SetMouseVisibility(m_parentWindow->IsMouseVisible());
         ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::gained_focus, GetWidth(), GetHeight()));
@@ -522,6 +519,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       }
     case WM_KILLFOCUS:
       {
+        SetMouseVisibility(true);
+        ConfineMouseToWindow(false);
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::lost_focus, GetWidth(), GetHeight()));
         break;
@@ -533,6 +532,12 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         // where the mouse cursor's icon is not updated when re-entering
         // client area
         SetMouseVisibility(m_parentWindow->IsMouseVisible());
+        break;
+      }
+    default:
+      {
+        SetMouseVisibility(m_parentWindow->IsMouseVisible());
+        ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
         break;
       }
     }
@@ -725,7 +730,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       g_currFullScreenWindow = TLOC_NULL;
     }
 
-    // SFML: Unhide the mouse cursor
+    ConfineMouseToWindow(false);
     SetMouseVisibility(true);
 
     // SFML: Destroy the OpenGL context

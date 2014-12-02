@@ -112,7 +112,8 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     m_linesMaterial = 
       pref_gfx::Material(m_linesEntMgr.get(), m_linesPoolMgr.get())
-      .Create(vsSource, fsSource);
+      .Create(core_io::FileContents(core_io::Path("Hard-coded shader"), vsSource), 
+              core_io::FileContents(core_io::Path("Hard-coded shader"), fsSource));
 
     {
       gfx_t::Vert3fpc v1, v2;

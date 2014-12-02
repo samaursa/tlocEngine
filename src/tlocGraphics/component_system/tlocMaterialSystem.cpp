@@ -9,6 +9,8 @@
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core::data_structs;
@@ -91,32 +93,39 @@ namespace tloc { namespace graphics { namespace component_system {
         const auto vertSourceSize = vsSource.size();
         const auto fragSourceSize = fsSource.size();
 
-        TLOC_LOG_GFX_WARN_IF(vertSourceSize == 0)
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(vertSourceSize == 0)
           << "Vertex shader source is empty";
-        TLOC_LOG_GFX_WARN_IF(fragSourceSize == 0)
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(fragSourceSize == 0)
           << "Fragment shader source is empty";
 
-        vShader.Load(a_matPtr->GetVertexSource().c_str() );
+        result = vShader.Load(a_matPtr->GetVertexSource().c_str() );
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Failed to load the shader: " << a_matPtr->GetVertexPath().GetPath();
         result = vShader.Compile();
-        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
-          << "Could not compile vertex shader:\n"
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not compile vertex shader: " 
+          << a_matPtr->GetVertexPath().GetPath() << "\n"
           << vShader.GetError().c_str();
 
         result = fShader.Load(a_matPtr->GetFragmentSource().c_str());
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Failed to load the shader: " << a_matPtr->GetVertexPath().GetPath();
         result = fShader.Compile();
-        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
-          << "Could not compile fragment shader:\n"
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not compile fragment shader: "
+          << a_matPtr->GetFragmentPath().GetPath() << "\n"
           << fShader.GetError().c_str();
 
         result = sp->AttachShaders
           (gl::ShaderProgram::two_shader_components(&vShader, &fShader) );
-        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
           << "Could not attach shader program(s)";
 
         result = sp->Link();
 
-        TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
-          << "Could not link shader(s):\n"
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not link shader(s): " << a_matPtr->GetVertexPath().GetPath()
+          << " and " << a_matPtr->GetFragmentPath().GetPath() << "\n"
           << sp->GetError().c_str();
       }
 
@@ -168,7 +177,7 @@ namespace tloc { namespace graphics { namespace component_system {
     MaterialSystem::
     SetDefaultShaders(core_io::FileContents a_vs, core_io::FileContents a_fs)
   {
-    TLOC_LOG_GFX_WARN_IF(IsInitialized()) 
+    TLOC_LOG_GFX_WARN_NO_FILENAME_IF(IsInitialized()) 
       << "MaterialSystem already Initialized(). Set default shaders BEFORE "
       << "initializing the system";
 
@@ -190,19 +199,19 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (m_fsSource.GetContents().empty() || m_vsSource.GetContents().empty())
       {
-        m_defaultMaterial->SetVertexSource(vsSource);
-        m_defaultMaterial->SetFragmentSource(fsSource);
+        m_vsSource = core_io::FileContents
+          (core_io::Path("Hard-coded default shader"), vsSource);
+        m_fsSource = core_io::FileContents
+          (core_io::Path("Hard-coded default shader"), fsSource);
       }
-      else
-      {
-        m_defaultMaterial->SetVertexSource(m_vsSource.GetContents());
-        m_defaultMaterial->SetFragmentSource(m_fsSource.GetContents());
-      }
+
+      m_defaultMaterial->SetVertexSource(m_vsSource);
+      m_defaultMaterial->SetFragmentSource(m_fsSource);
 
       auto result = 
         DoCompileAndLinkShaderProgram(core_sptr::ToVirtualPtr(m_defaultMaterial));
 
-      TLOC_LOG_GFX_WARN_IF(result != ErrorSuccess)
+      TLOC_LOG_GFX_WARN_NO_FILENAME_IF(result != ErrorSuccess)
         << "Default engine shader failed to compile and/or link";
     }
 
@@ -226,7 +235,8 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       auto matPtr = a_ent->GetComponent<gfx_cs::Material>(i);
 
-      TLOC_LOG_GFX_WARN_IF(matPtr->GetShaderOperator()->size_attributeVBOs() > 0)
+      TLOC_LOG_GFX_WARN_NO_FILENAME_IF
+        (matPtr->GetShaderOperator()->size_attributeVBOs() > 0)
         << "Material's ShaderOperator should not have any AttributeVBOs.";
 
       gl::VertexShader          vShader;

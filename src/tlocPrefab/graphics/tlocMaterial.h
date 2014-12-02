@@ -7,6 +7,7 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/io/tlocPath.h>
+#include <tlocCore/io/tlocFileContents.h>
 
 #include <tlocGraphics/opengl/tlocUniform.h>
 #include <tlocGraphics/opengl/tlocAttributeVBO.h>
@@ -27,7 +28,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef tl_size                                 size_type;
 
     typedef core_conts::Array<uniform_ptr_type>     uniform_array;
-
+    typedef core_io::FileContents                   file_contents;
 
     typedef uniform_array::iterator                 uniform_itr;
     typedef uniform_array::const_iterator           const_uniform_itr;
@@ -35,8 +36,8 @@ namespace tloc { namespace prefab { namespace graphics {
   public:
     Material(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
-    component_ptr Construct(BufferArg a_vertexShader,
-                            BufferArg a_fragmentShader) const;
+    component_ptr Construct(const file_contents& a_vertexShader,
+                            const file_contents& a_fragmentShader) const;
 
     entity_ptr    Create(const core_io::Path& a_vertexShader,
                          const core_io::Path& a_fragmentShader) const;
@@ -44,11 +45,11 @@ namespace tloc { namespace prefab { namespace graphics {
                       const core_io::Path& a_vertexShader,
                       const core_io::Path& a_fragmentShader) const;
 
-    entity_ptr    Create(BufferArg a_vertexShader,
-                         BufferArg a_fragmentShader) const;
+    entity_ptr    Create(const file_contents& a_vertexShader,
+                         const file_contents& a_fragmentShader) const;
     void          Add(entity_ptr a_ent,
-                      BufferArg a_vertexShader,
-                      BufferArg a_fragmentShader) const;
+                      const file_contents& a_vertexShader,
+                      const file_contents& a_fragmentShader) const;
 
     Material&     AddUniform(const uniform_ptr_type& a_uniform);
 

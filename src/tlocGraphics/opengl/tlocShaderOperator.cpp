@@ -23,6 +23,8 @@
 #define GL_SAMPLER_2D_SHADOW  GL_SAMPLER_2D_SHADOW_EXT
 #endif
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace gl {
 
   namespace {
@@ -777,7 +779,7 @@ namespace tloc { namespace graphics { namespace gl {
 
         if (shaderVarPtr->GetType() == GL_NONE)
         {
-          TLOC_LOG_GFX_WARN() << "Uniform*/Attribute*/AttributeVBO ("
+          TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Uniform*/Attribute*/AttributeVBO ("
             << shaderVarPtr->GetName()
             << ") Does not have a type. Did you forget to populate it with data?";
           shaderVarPtr->SetEnabled(false);
@@ -819,7 +821,7 @@ namespace tloc { namespace graphics { namespace gl {
                 DoSetReturn doSetRet = DoSet(*itrInfo, *shaderVarPtr, interleaveIndex);
                 variableLocations.push_back(doSetRet);
 
-                TLOC_LOG_GFX_WARN_IF(gl::Error().Succeeded() == false)
+                TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(gl::Error().Succeeded() == false)
                   << "glUniform*/glAttribute* failed for: " << shaderVarPtr->GetName();
 
                 itrInfo = svcInfoCopy.erase(itrInfo);
@@ -828,7 +830,8 @@ namespace tloc { namespace graphics { namespace gl {
               }
               else
               {
-                TLOC_LOG_GFX_WARN() << "Mismatched uniform/attribute type for: "
+                TLOC_LOG_GFX_WARN_FILENAME_ONLY() 
+                  << "Mismatched uniform/attribute type for: "
                   << shaderVarPtr->GetName();
                 shaderVarPtr->SetEnabled(false);
                 retError = ErrorFailure;
@@ -841,7 +844,8 @@ namespace tloc { namespace graphics { namespace gl {
           // We could not find the user specified uniform in the shader
           if (itrInfo == itrInfoEnd)
           {
-            TLOC_LOG_GFX_WARN() << "Uniform/Attribute type not found in shader: "
+            TLOC_LOG_GFX_WARN_FILENAME_ONLY() 
+              << "Uniform/Attribute type not found in shader: "
               << shaderVarPtr->GetName();
             shaderVarPtr->SetEnabled(false);
             retError = ErrorFailure;
@@ -908,7 +912,7 @@ namespace tloc { namespace graphics { namespace gl {
     AddUniform(const uniform_type& a_uniform)
   {
     TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
-    TLOC_LOG_GFX_WARN_IF
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
       (DoWillAnyPointersInvalidate(m_uniforms,
                                    core_cfg::BuildConfig::build_config_type()))
       << "Adding Uniform will invalidate previous Uniform pointers";
@@ -927,7 +931,7 @@ namespace tloc { namespace graphics { namespace gl {
     AddAttributeVBO(const vbo_type& a_vbo)
   {
     TLOC_ASSERT(a_vbo.Validate() == ErrorSuccess, "VBO is invalid");
-    TLOC_LOG_GFX_WARN_IF
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
       (DoWillAnyPointersInvalidate(m_VBOs,
                                    core_cfg::BuildConfig::build_config_type()))
       << "Adding AttributeVBO will invalidate previous AttributeVBO pointers";
@@ -1023,7 +1027,7 @@ namespace tloc { namespace graphics { namespace gl {
       }
       else if (itr->second[0] == g_invalidIndex)
       {
-        TLOC_LOG_GFX_WARN()
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY()
           << "Uniform (" << itr->first->GetName()
           << ") cannot be set. Did you forget to call PrepareAllUniforms?";
       }

@@ -8,6 +8,7 @@
 #include <tlocCore/containers/tlocArrayFixed.h>
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
+#include <tlocCore/io/tlocFileContents.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/opengl/tlocObject.h>
@@ -122,6 +123,9 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_conts::ArrayFixed
       <string_type, p_material::Attributes::k_count>        string_cont;
 
+    typedef core_io::FileContents                           file_contents;
+    typedef file_contents::path_type                        path_type;
+
     typedef tl_size                                         size_type;
 
   public:
@@ -145,9 +149,14 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECLARE_OPERATORS(Material);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (string_type, GetVertexSource, m_vertexProgram);
+      (string_type, GetVertexSource, m_vertexProgram.GetContents());
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (string_type, GetFragmentSource, m_fragmentProgram);
+      (string_type, GetFragmentSource, m_fragmentProgram.GetContents());
+
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (path_type, GetVertexPath, m_vertexProgram.GetPath());
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
+      (path_type, GetFragmentPath, m_fragmentProgram.GetPath());
 
     TLOC_DECL_AND_DEF_GETTER (const_shader_prog_ptr, GetShaderProg,
                               m_shaderProgram.get());
@@ -156,8 +165,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_NON_CONST(shader_op_ptr, GetShaderOperator, 
                                        m_shaderOp.get());
 
-    this_type& SetVertexSource(BufferArg a_source);
-    this_type& SetFragmentSource(BufferArg a_source);
+    this_type& SetVertexSource(const file_contents& a_vsSource);
+    this_type& SetFragmentSource(const file_contents& a_fsSource);
     this_type& SetShaderProgram(const gl::ShaderProgram& a_sp);
 
   public: // special uniforms that are passed depending on whether 
@@ -192,8 +201,8 @@ namespace tloc { namespace graphics { namespace component_system {
     const string_type& GetAttributeName(attribute_index_type a_index) const;
 
   private:
-    string_type            m_vertexProgram;
-    string_type            m_fragmentProgram;
+    file_contents          m_vertexProgram;
+    file_contents          m_fragmentProgram;
 
     shader_prog_vso        m_shaderProgram;
     shader_op_vso          m_shaderOp;

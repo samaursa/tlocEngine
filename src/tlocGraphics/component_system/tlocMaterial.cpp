@@ -132,9 +132,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   Material::this_type&
     Material::
-    SetVertexSource(BufferArg a_source)
+    SetVertexSource(const file_contents& a_fsSource)
   {
-    m_vertexProgram = a_source;
+    m_vertexProgram = a_fsSource;
     SetUpdateRequired(true);
     return *this;
   }
@@ -143,9 +143,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   Material::this_type&
     Material::
-    SetFragmentSource(BufferArg a_source)
+    SetFragmentSource(const file_contents& a_vsSource)
   {
-    m_fragmentProgram = a_source;
+    m_fragmentProgram = a_vsSource;
     SetUpdateRequired(true);
     return *this;
   }

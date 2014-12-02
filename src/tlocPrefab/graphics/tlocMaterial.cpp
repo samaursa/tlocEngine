@@ -26,7 +26,8 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Material::component_ptr
     Material::
-    Construct(BufferArg a_vertexShader, BufferArg a_fragmentShader) const
+    Construct(const file_contents& a_vertexShader, 
+              const file_contents& a_fragmentShader) const
   {
     m_newUniformPtrs.clear();
 
@@ -73,8 +74,8 @@ namespace tloc { namespace prefab { namespace graphics {
 
   Material::entity_ptr
     Material::
-    Create(BufferArg a_vertexShader,
-           BufferArg a_fragmentShader) const
+    Create(const file_contents& a_vertexShader,
+           const file_contents& a_fragmentShader) const
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent, a_vertexShader, a_fragmentShader);
@@ -96,7 +97,7 @@ namespace tloc { namespace prefab { namespace graphics {
     core_io::FileIO_ReadA vsFile = core_io::FileIO_ReadA(vsFullPath);
     core_io::FileIO_ReadA fsFile = core_io::FileIO_ReadA(fsFullPath);
 
-    core_str::String vsCode, fsCode;
+    file_contents vsCode, fsCode;
 
     core_err::Error err = ErrorSuccess;
     err = vsFile.Open();
@@ -132,7 +133,8 @@ namespace tloc { namespace prefab { namespace graphics {
   void
     Material::
     Add(entity_ptr a_ent, 
-        BufferArg a_vertexShader, BufferArg a_fragmentShader) const
+        const file_contents& a_vertexShader, 
+        const file_contents& a_fragmentShader) const
   {
     m_entMgr->InsertComponent( 
       insert_params(a_ent, Construct(a_vertexShader, a_fragmentShader)) 

@@ -498,7 +498,6 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     {
       SetMouseVisibility(true);
       ConfineMouseToWindow(false);
-      return;
     }
     else
     {

@@ -236,6 +236,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
     gProps.m_width  = actualRect.right - actualRect.left;
     gProps.m_height = actualRect.bottom - actualRect.top;
+
+    GetClipCursor(&m_defaultMouseClip);
   }
 
   WINDOW_IMPL_WIN_TYPE::size_type
@@ -487,10 +489,29 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   {
     if (m_handle == TLOC_NULL) { return; }
 
+    auto activeWindowHandle = GetActiveWindow();
+
+    // To ensure the mouse doesn't disappear or remains confined, the following 
+    // is necessary to check whether this is the active window because 
+    // DoProcessEvent is sometimes called when another window is active. 
+    if (activeWindowHandle != m_handle)
+    {
+      SetMouseVisibility(true);
+      ConfineMouseToWindow(false);
+      return;
+    }
+    else
+    {
+      SetMouseVisibility(m_parentWindow->IsMouseVisible());
+      ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
+    }
+
     switch (a_message)
     {
     case WM_DESTROY:
       {
+        SetMouseVisibility(true);
+        ConfineMouseToWindow(false);
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::destroy, GetWidth(), GetHeight()));
         DoCleanup();
@@ -498,21 +519,20 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
       }
     case WM_CLOSE:
       {
+        SetMouseVisibility(true);
+        ConfineMouseToWindow(false);
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::close, GetWidth(), GetHeight()));
         break;
       }
     case WM_SIZE:
       {
-        ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::resized, GetWidth(), GetHeight()));
         break;
       }
     case WM_SETFOCUS:
       {
-        SetMouseVisibility(m_parentWindow->IsMouseVisible());
-        ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
         m_parentWindow->SendEvent(WindowEvent
           (WindowEvent::gained_focus, GetWidth(), GetHeight()));
         break;
@@ -526,20 +546,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         break;
       }
     case WM_MOUSEMOVE:
-      {
-        // We rely on DirectInput for mouse movements, but here we need to make
-        // sure that the mouse cursor is set properly to avoid the problem
-        // where the mouse cursor's icon is not updated when re-entering
-        // client area
-        SetMouseVisibility(m_parentWindow->IsMouseVisible());
-        break;
-      }
-    default:
-      {
-        SetMouseVisibility(m_parentWindow->IsMouseVisible());
-        ConfineMouseToWindow(m_parentWindow->IsMouseConfined());
-        break;
-      }
+      { break; }
     }
 
     TLOC_UNUSED_2(a_wparam, a_lparam);

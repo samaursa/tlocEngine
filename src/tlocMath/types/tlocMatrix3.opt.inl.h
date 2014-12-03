@@ -669,7 +669,9 @@ namespace tloc { namespace math { namespace types {
     Orient(dir a_direction)
   {
     // assuming that the column vectors are LUD
-    Orient(a_direction, up( this->GetCol(1).template ConvertTo<vec_type>() ) );
+    auto upVec = this->GetCol(1).template ConvertTo<vec_type>();
+    upVec.Normalize();
+    Orient(a_direction, up(upVec) );
   }
 
   template <MATRIX_3_TEMP>

@@ -79,12 +79,6 @@ namespace tloc { namespace math { namespace types {
   typedef Vector_T<f64, 4>  Vec4f64;
   typedef Vector_T<f128, 4> Vec4f128;
 
-  typedef Vector_T<s32, 4>  Vec4s32;
-  typedef Vector_T<s64, 4>  Vec4s64;
-
-  typedef Vector_T<u32, 4>  Vec4u32;
-  typedef Vector_T<u64, 4>  Vec4u64;
-
   typedef Vector_T<tl_float, 4> Vec4f;
 
   //------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 #include "tlocMatrix3.h"
 
 #include <tlocCore/tlocAssert.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #include <tlocMath/types/tlocVector3.opt.inl.h>
 #include <tlocMath/types/tlocMatrix.opt.inl.h>
@@ -682,10 +683,10 @@ namespace tloc { namespace math { namespace types {
     const vec_type newDir = a_direction;
     const vec_type worldUp = a_up;
 
-    TLOC_ASSERT_LOW_LEVEL(IsEqual<value_type>(newDir.Length(), 1.0f), 
-                "Direction vector is not normalized");
-    TLOC_ASSERT_LOW_LEVEL(IsEqual<value_type>(worldUp.Length(), 1.0f), 
-                "Up vector is not normalized");
+    TLOC_LOG_MATH_WARN_IF(!math::Approx<value_type>(newDir.Length(), 1.0f, 0.01f))
+      << "Direction vector does not appear to be normalized";
+    TLOC_LOG_MATH_WARN_IF(!math::Approx<value_type>(worldUp.Length(), 1.0f, 0.01f))
+      << "Up vector does not appear to be normalized";
 
     TLOC_ASSERT(newDir.IsParallel(a_up) == false,
       "a_direction is parallel to a_up. Cannot LookAt() specified direction.");

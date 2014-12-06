@@ -1,6 +1,7 @@
 #include "tlocWindowImplIphone.h"
 
 #include <tlocCore/types/tlocAny.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 #import <UIKit/UIKit.h>
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
@@ -226,9 +227,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         [view SetAsCurrentContext];
       }
       else 
-      {
-        // LOG: Window already active
-      }
+      { TLOC_LOG_GFX_INFO() << "Window is already active"; }
     }
     else 
     {
@@ -237,9 +236,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         [EAGLContext setCurrentContext:nil];
       }
       else 
-      {
-        // LOG: Window is already inactive
-      }
+      { TLOC_LOG_GFX_INFO() << "Window is already inactivte"; }
     }
   }
   
@@ -267,15 +264,14 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     return m_handle;
   }
 
-  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool)
-  {
-    // LOG: iOS does not have vertical sync
-  }
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
+  { TLOC_LOG_GFX_INFO_IF(a_enable) << "iOS does not support vertical sync"; }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool)
-  {
-    // LOG: SetMouseVisibility() does nothing on iOS
-  }
+  { TLOC_LOG_GFX_INFO() << "SetMouseVisibility() does not nothing on iOS"; }
+  
+  void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::ConfineMouseToWindow(bool)
+  { TLOC_LOG_GFX_INFO() << "ConfineMouseToWindow() does not nothing on iOS"; }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetPosition(s32 a_x, s32 a_y)
   {
@@ -297,9 +293,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char*)
-  {
-    // LOG: iOS platform has no title
-  }
+  { TLOC_LOG_GFX_INFO() << "Cannot set window title on iOS platform"; }
 
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const
   {

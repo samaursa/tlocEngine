@@ -51,7 +51,8 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     m_internalShaderOp->reserve_uniforms(p_material::Uniforms::k_count);
 
-    for (tl_size i = 0; i < p_material::Uniforms::k_count; ++i)
+    for (p_material::Uniforms::value_type i = 0;
+         i < p_material::Uniforms::k_count; ++i)
     {
       auto uniformName = core_str::String(g_uniformNames[i]);
       auto uniformPtr = m_internalShaderOp->

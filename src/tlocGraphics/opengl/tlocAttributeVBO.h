@@ -7,6 +7,7 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/types/tlocStrongType.h>
+#include <tlocCore/platform/tlocPlatform.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -43,7 +44,6 @@ namespace tloc { namespace graphics { namespace gl {
     {
     public:
       typedef StrideInfo                                    this_type;
-      typedef gfx_t::gl_sizei                               gl_size_type;
       typedef gfx_t::gl_int                                 gl_int_type;
 
     public:
@@ -53,11 +53,11 @@ namespace tloc { namespace graphics { namespace gl {
       // e.g. Vec4 will be 4, Mat4 will be 4
       TLOC_DECL_PARAM_VAR(gl_int_type,  NumElements, m_numElements);
       // TotalElements - e.g. Vec4 will be 4, Mat4 will be 16
-      TLOC_DECL_PARAM_VAR(size_type,    TotalElements, m_totalElements);
+      TLOC_DECL_PARAM_VAR(gl_int_type,    TotalElements, m_totalElements);
       // GLType - see tlocGLType
       TLOC_DECL_PARAM_VAR(gl_enum_type, GLType, m_glType);
       // StrideInBytes - Stide for each interleaved type
-      TLOC_DECL_PARAM_VAR(gl_size_type, StrideInBytes, m_strideInBytes);
+      TLOC_DECL_PARAM_VAR(gl_int_type, StrideInBytes, m_strideInBytes);
       // DataStartIndex - The interleaved type starts from here
       TLOC_DECL_PARAM_VAR(size_type,    DataStartIndex, m_dataStartIndex);
     };
@@ -140,6 +140,58 @@ namespace tloc { namespace graphics { namespace gl {
 
   // -----------------------------------------------------------------------
   // template definitions
+  
+  namespace priv {
+  
+  template <typename T_Type>
+    void DoCheckAttributeVBOType(core_plat::p_platform_info::win)
+    {
+      type_traits::AssertTypeIsSupported<T_Type,
+          u32, s32, f32, 
+
+          core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+          core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
+
+          math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+          math_t::Mat2f32, math_t::Mat3f32, math_t::Mat4f32,
+
+          gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
+          gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
+
+          gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
+          gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+          gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+          gfx_t::Vert4fo
+         >();
+    }
+    
+    template <typename T_Type>
+    void DoCheckAttributeVBOType(core_plat::p_platform_info::iphone)
+    {
+      type_traits::AssertTypeIsSupported<T_Type,
+          s32, f32,
+
+          core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
+
+          math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
+
+          math_t::Mat2f32, math_t::Mat3f32, math_t::Mat4f32,
+
+          gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
+          gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
+
+          gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
+          gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
+
+          gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
+
+          gfx_t::Vert4fo
+         >();
+    }
+  }
 
   template <typename T_Target, typename T_Usage, typename T_Type>
   AttributeVBO::this_type&
@@ -153,26 +205,7 @@ namespace tloc { namespace graphics { namespace gl {
       p_vbo::usage::DynamicDraw, p_vbo::usage::DynamicRead,
       p_vbo::usage::DynamicCopy>();
 
-    type_traits::AssertTypeIsSupported<T_Type, 
-        u32, s32, f32, 
-
-        core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
-        core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
-
-        math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
-
-        math_t::Mat2f32, math_t::Mat3f32, math_t::Mat4f32,
-
-        gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
-        gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
-
-        gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
-
-        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
-
-        gfx_t::Vert4fo
-       >();
+    priv::DoCheckAttributeVBOType<T_Type>(core_plat::PlatformInfo::platform_type());
 
     return DoBufferData<T_Type>(T_Target::s_glParamName, 
                                 T_Usage::s_glParamName, a_array);
@@ -186,24 +219,7 @@ namespace tloc { namespace graphics { namespace gl {
     UpdateData(const core_conts::Array<T_Type>& a_array, 
                offset_index a_offset_index) const
   {
-    type_traits::AssertTypeIsSupported<T_Type, 
-        u32, s32, f32, 
-
-        core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
-        core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
-
-        math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
-
-        gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
-        gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
-
-        gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
-
-        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
-
-        gfx_t::Vert4fo
-       >();
+    priv::DoCheckAttributeVBOType<T_Type>(core_plat::PlatformInfo::platform_type());
 
     return DoBufferSubData<T_Type>(a_array, a_offset_index);
   }
@@ -215,24 +231,7 @@ namespace tloc { namespace graphics { namespace gl {
     AttributeVBO::
     GetValueAs(core_conts::Array<T_Type>& a_out, offset_index a_offset_index) const
   {
-    type_traits::AssertTypeIsSupported<T_Type, 
-        u32, s32, f32, 
-
-        core_ds::Tuple2s32, core_ds::Tuple3s32, core_ds::Tuple4s32,
-        core_ds::Tuple2u32, core_ds::Tuple3s32, core_ds::Tuple4u32,
-
-        math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32,
-
-        gfx_t::Vert2fp, gfx_t::Vert2fpc, gfx_t::Vert2fpt, gfx_t::Vert2fpn, 
-        gfx_t::Vert2fpnc, gfx_t::Vert2fpnt, gfx_t::Vert2fpnct,
-
-        gfx_t::Vert3fp, gfx_t::Vert3fpc, gfx_t::Vert3fpt, gfx_t::Vert3fpn, 
-        gfx_t::Vert3fpnc, gfx_t::Vert3fpnt, gfx_t::Vert3fpnct,
-
-        gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
-
-        gfx_t::Vert4fo
-       >();
+    priv::DoCheckAttributeVBOType<T_Type>(core_plat::PlatformInfo::platform_type());
 
     return DoGetValueAs<T_Type>(a_out, a_offset_index);
   }

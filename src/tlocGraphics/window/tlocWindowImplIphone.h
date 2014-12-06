@@ -171,6 +171,8 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     /// @param  a_visible true to show, false to hide.
     ///-------------------------------------------------------------------------
     void SetVisibility(bool a_visible);
+    
+    void ConfineMouseToWindow(bool a_confine);
 
     ///-------------------------------------------------------------------------
     /// @brief Sets the window title.

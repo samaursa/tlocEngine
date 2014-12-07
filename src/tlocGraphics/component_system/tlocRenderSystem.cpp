@@ -522,6 +522,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (uniformErr.Succeeded())
       { matSO->EnableAllUniforms(*m_shaderPtr); }
+      else
+      {
+        TLOC_LOG_GFX_WARN()
+          << "Shader #" << sp->GetHandle() << " encountered problems with "
+          << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
+      }
 
       uniformErr = 
         matPtr->m_internalShaderOp->PrepareAllUniforms(*m_shaderPtr);
@@ -529,6 +535,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (uniformErr.Succeeded())
     { matPtr->m_internalShaderOp->EnableAllUniforms(*m_shaderPtr); }
+    else
+    {
+      TLOC_LOG_GFX_WARN()
+        << "Shader #" << sp->GetHandle() << " encountered problems with "
+        << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
+    }
 
     // prepare/enable derived render system's shader operator
     if (a_di.m_shaderOp)
@@ -538,6 +550,12 @@ namespace tloc { namespace graphics { namespace component_system {
       uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
       if (uniformErr.Succeeded())
       { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
+      else
+      {
+        TLOC_LOG_GFX_WARN()
+          << "Shader #" << sp->GetHandle() << " encountered problems with "
+          << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
+      }
 
       vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr, 
                                                         *a_di.m_meshVAO);
@@ -551,6 +569,12 @@ namespace tloc { namespace graphics { namespace component_system {
       gl::VertexArrayObject::Bind b(*a_di.m_meshVAO);
       glDrawArrays(a_di.m_drawCommand, 0,
                    core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
+    }
+    else
+    {
+      TLOC_LOG_GFX_WARN()
+        << "Shader #" << sp->GetHandle() << " encountered problems with "
+        << "preparing AttributeVBOs for (" << a_di.m_entity->GetDebugName() << ")";
     }
   }
 

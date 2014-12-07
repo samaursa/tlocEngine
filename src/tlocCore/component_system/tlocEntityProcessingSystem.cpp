@@ -73,9 +73,7 @@ namespace tloc { namespace core { namespace component_system {
 
   error_type EntityProcessingSystem::
     ReactivateEntity(entity_vptr a_ent)
-  { 
-    return InitializeEntity(a_ent); 
-  }
+  { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

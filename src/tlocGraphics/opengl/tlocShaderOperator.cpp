@@ -722,9 +722,9 @@ namespace tloc { namespace graphics { namespace gl {
             a_attributeVBO.GetStrideInfo(a_interleaveIndex);
 
           // iteration number is 1 unless a Mat2/Mat3/Mat4 is encountered
-          tl_int iterations = si.m_totalElements / si.m_numElements;
+          auto iterations = si.m_totalElements / si.m_numElements;
 
-          for (tl_int i = 0; i < iterations; ++i)
+          for (decltype(iterations) i = 0; i < iterations; ++i)
           {
             // substride is 0 unless it is a Mat2/Mat3/Mat4 where Mat*::vec_type's 
             // size is the substride in each iteration

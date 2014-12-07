@@ -1,5 +1,6 @@
 #include "tlocTestCommon.h"
 
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocAngle.h>
 #include <tlocCore/rng/tlocRandom.h>
@@ -411,11 +412,13 @@ namespace TestingMatrix3
       CHECK(up[1] == Approx(1.0f));
       CHECK(left[2] == Approx(-1.0f));
 
+      math::GetLogger().SetBreakOnSeverity(core_log::p_log::severity::Warning::k_value);
       TLOC_TEST_ASSERT
       {
         a.Orient(Mat3f32::dir(Vec3f32(2, 0, 0)) );
       }
       TLOC_TEST_ASSERT_CHECK();
+      math::GetLogger().ResetBreakOnSeverity();
     }
 
     SECTION("LookAt() bug fix Issue #110", "newLeft and newUp in Matrix3 are "

@@ -87,6 +87,8 @@ namespace tloc { namespace graphics { namespace gl {
       
       return si;
     }
+    
+#ifndef TLOC_OS_IPHONE
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -155,6 +157,7 @@ namespace tloc { namespace graphics { namespace gl {
       
       return si;
     }
+#endif
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1024,15 +1027,20 @@ using namespace tloc::gfx_gl;
   template const AttributeVBO::this_type& AttributeVBO::\
   DoGetValueAs<_type_>(core_conts::Array<_type_>&, AttributeVBO::offset_index) const
 
+#ifndef TLOC_OS_IPHONE
+  TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(u32);
+  TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple2u32);
+  TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple3u32);
+  TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple4u32);
+#endif
+
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(s32);
-TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(u32);
+
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple2s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple3s32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple4s32);
-TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple2u32);
-TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple3u32);
-TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(core_ds::Tuple4u32);
+
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec2f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec3f32);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(math_t::Vec4f32);

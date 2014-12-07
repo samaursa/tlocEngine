@@ -52,7 +52,7 @@ namespace
     // -----------------------------------------------------------------------
     // shader files
 
-    core_str::String vsSource, fsSource;
+    core_io::FileContents vsSource, fsSource;
     {
       core_io::FileIO_ReadA f(core_io::Path(GetAssetsPath() + shaderPathVS));
       f.Open();
@@ -70,8 +70,8 @@ namespace
       component_ptr ptr = pref_gfx::Material(entMgr.get(), compMgr.get())
         .Construct(vsSource, fsSource);
 
-      CHECK(ptr->GetVertexSource().compare(vsSource) == 0);
-      CHECK(ptr->GetFragmentSource().compare(fsSource) == 0);
+      CHECK(ptr->GetVertexSource().compare(vsSource.GetContents()) == 0);
+      CHECK(ptr->GetFragmentSource().compare(fsSource.GetContents()) == 0);
     }
 
     //SECTION("Create", "")
@@ -83,8 +83,8 @@ namespace
 
       component_ptr ptr = ent->GetComponent<component_type>();
 
-      CHECK(ptr->GetVertexSource().compare(vsSource) == 0);
-      CHECK(ptr->GetFragmentSource().compare(fsSource) == 0);
+      CHECK(ptr->GetVertexSource().compare(vsSource.GetContents()) == 0);
+      CHECK(ptr->GetFragmentSource().compare(fsSource.GetContents()) == 0);
     }
 
     //SECTION("Add", "")
@@ -106,8 +106,8 @@ namespace
 
       component_ptr ptr = ent->GetComponent<component_type>();
 
-      CHECK(ptr->GetVertexSource().compare(vsSource) == 0);
-      CHECK(ptr->GetFragmentSource().compare(fsSource) == 0);
+      CHECK(ptr->GetVertexSource().compare(vsSource.GetContents()) == 0);
+      CHECK(ptr->GetFragmentSource().compare(fsSource.GetContents()) == 0);
 
       REQUIRE(matPrefab.size_uniforms() == 3);
       pref_gfx::Material::uniform_itr itr = matPrefab.begin_uniforms();

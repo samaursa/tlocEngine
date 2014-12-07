@@ -55,9 +55,9 @@ namespace tloc { namespace graphics { namespace component_system {
        void main()                                              \n\
        {                                                        \n\
           mat4 mvp = u_mvp;                                     \n\
-          if (u_mvp[0] == 0.0 &&                                \n\
-              u_mvp[1] == 0.0 &&                                \n\
-              u_mvp[2] == 0)                                    \n\
+          if (u_mvp[0][0] == 0.0 &&                             \n\
+              u_mvp[0][1] == 0.0 &&                             \n\
+              u_mvp[0][2] == 0.0)                               \n\
           { mvp = mat4(1.0); }                                  \n\
                                                                 \n\
           gl_Position = u_mvp * vec4(a_vertPos, 1);             \n\
@@ -127,10 +127,22 @@ namespace tloc { namespace graphics { namespace component_system {
           << "Could not link shader(s): " << a_matPtr->GetVertexPath().GetPath()
           << " and " << a_matPtr->GetFragmentPath().GetPath() << "\n"
           << sp->GetError().c_str();
+
+        if (result == ErrorSuccess)
+        {
+          core_str::String vsFileName, fsFileName;
+          a_matPtr->GetVertexPath().GetFileName(vsFileName);
+          a_matPtr->GetFragmentPath().GetFileName(fsFileName);
+
+          TLOC_LOG_GFX_INFO() << "Shader #" << sp->GetHandle() 
+            << " compiled successfully with programs (" << vsFileName 
+            << ") and (" << fsFileName << ")";
+        }
       }
 
       if (result == ErrorSuccess)
       {
+
         sp->LoadUniformInfo();
         sp->LoadAttributeInfo();
         sp->Disable();
@@ -200,9 +212,9 @@ namespace tloc { namespace graphics { namespace component_system {
       if (m_fsSource.GetContents().empty() || m_vsSource.GetContents().empty())
       {
         m_vsSource = core_io::FileContents
-          (core_io::Path("Hard-coded default shader"), vsSource);
+          (core_io::Path("hard_coded_default_shader/defaultVS.glsl"), vsSource);
         m_fsSource = core_io::FileContents
-          (core_io::Path("Hard-coded default shader"), fsSource);
+          (core_io::Path("hard_coded_default_shader/defaultFS.glsl"), fsSource);
       }
 
       m_defaultMaterial->SetVertexSource(m_vsSource);

@@ -86,12 +86,6 @@ namespace tloc { namespace math { namespace types {
   typedef Vector_T<f64, 3>  Vec3f64;
   typedef Vector_T<f128, 3> Vec3f128;
 
-  typedef Vector_T<s32, 3>  Vec3s32;
-  typedef Vector_T<s64, 3>  Vec3s64;
-
-  typedef Vector_T<u32, 3>  Vec3u32;
-  typedef Vector_T<u64, 3>  Vec3u64;
-
   typedef Vector_T<tl_float, 3> Vec3f;
 
   //------------------------------------------------------------------------

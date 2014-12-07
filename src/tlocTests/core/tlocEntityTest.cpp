@@ -38,11 +38,11 @@ namespace TestingEntity
   struct Component2
     : public Component_T<Component1, 
                          component_group::k_core, 
-                         components::k_listener + 1>
+                         g_component + 1>
   {
     typedef Component_T<Component1, 
                         component_group::k_core, 
-                        components::k_listener + 1>       base_type;
+                        g_component + 1>       base_type;
 
     Component2()
       : base_type("Component2")

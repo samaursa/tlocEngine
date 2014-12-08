@@ -134,7 +134,7 @@ namespace tloc { namespace graphics { namespace component_system {
           a_matPtr->GetVertexPath().GetFileName(vsFileName);
           a_matPtr->GetFragmentPath().GetFileName(fsFileName);
 
-          TLOC_LOG_GFX_INFO() << "Shader #" << sp->GetHandle() 
+          TLOC_LOG_GFX_INFO_NO_FILENAME() << "Shader #" << sp->GetHandle()
             << " compiled successfully with programs (" << vsFileName 
             << ") and (" << fsFileName << ")";
         }
@@ -156,7 +156,7 @@ namespace tloc { namespace graphics { namespace component_system {
         auto err = ErrorSuccess;
 
         err = so->PrepareAllUniforms(*sp);
-        TLOC_LOG_GFX_WARN_IF(err != ErrorSuccess)
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(err != ErrorSuccess)
           << "Unable to prepare all uniforms";
 
         sp->Disable();

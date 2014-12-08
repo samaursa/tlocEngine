@@ -9,7 +9,7 @@
 #include <tlocGraphics/opengl/tlocError.h>
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
-
+TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace graphics { namespace gl {
 
@@ -577,7 +577,7 @@ namespace tloc { namespace graphics { namespace gl {
     m_dim[1] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[1]);
 
     const gl_int target = GetTargetType();
-    TLOC_LOG_GFX_WARN_IF(target != DoGetTarget(a_image)) <<
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(target != DoGetTarget(a_image)) <<
       "TextureObject_T<>::target_type is different than incoming image";
 
     const gl_int internalFormat = m_params.GetInternalFormat() == 
@@ -641,23 +641,23 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // issue warnings for inconsistencies in image type
 
-    TLOC_LOG_GFX_WARN_IF(DoGetTarget(a_image) != target) 
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(DoGetTarget(a_image) != target)
       << "TextureObject initialized with different TARGET than "
       << "incoming image. Use Initialize() for a different image type.";
 
     // NOTE: no need to warn against 'internal format' as it is frequently 
     // different
 
-    TLOC_LOG_GFX_WARN_IF(DoGetImageFormatChannels(color_type()) != 
-                         m_params.GetFormatChannels()) 
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
+      (DoGetImageFormatChannels(color_type()) != m_params.GetFormatChannels())
       << "TextureObject initialized with different FORMAT than "
       << "incoming image. Use Initialize() for a different image type.";
 
-    TLOC_LOG_GFX_WARN_IF(DoGetImageType(color_type()) != type) 
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(DoGetImageType(color_type()) != type)
       << "TextureObject initialized with different IMAGE TYPE than "
       << "incoming image. Use Initialize() for a different image type.";
     
-    TLOC_LOG_GFX_WARN_IF(DoGetAlignment(color_type()) != alignment) 
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(DoGetAlignment(color_type()) != alignment)
       << "TextureObject initialized with different ALIGNMENT than "
       << "incoming image. Use Initialize() for a different image type.";
 
@@ -677,7 +677,7 @@ namespace tloc { namespace graphics { namespace gl {
     if (m_params.IsAutoGenMipMaps())
     {
       glGenerateMipmap(target);
-      TLOC_LOG_GFX_WARN_IF(gl::Error().Failed())
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(gl::Error().Failed())
         << "Error in glGenerateMipmap() for Texture with handle(" << GetHandle()
         << ") - Is texture valid and power of two?";
     }

@@ -224,10 +224,10 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
 
   private:
 
-    window_handle_type m_handle;
+    window_handle_type          m_handle;
     view_controller_handle_type m_viewController;
-    view_handle_type m_view;
-
+    view_handle_type            m_view;
+    core_utils::Checkpoints     m_warnings;
   };
 
 };};};};

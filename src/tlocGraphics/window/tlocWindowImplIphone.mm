@@ -7,6 +7,8 @@
 #import <tlocGraphics/window/tlocOpenGLViewIphone.h>
 #import <tlocGraphics/window/tlocOpenGLViewControllerIphone.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 //////////////////////////////////////////////////////////////////////////
 // helper function to figure out which device we have currently
 
@@ -64,6 +66,19 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     }
 
   }
+  
+  namespace {
+  
+    enum {
+      k_verticalSync = 0,
+      k_confineMouseToWindow,
+      k_mouseVisibility,
+      k_title,
+      
+      k_count
+    };
+    
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Global variables
@@ -77,6 +92,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     : WindowImplBase(a_parent)
     , m_viewController(nil)
     , m_view(nil)
+    , m_warnings(k_count)
   {
     m_handle.Assign(nil);
     TLOC_ASSERT_NOT_NULL(a_parent);
@@ -227,7 +243,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         [view SetAsCurrentContext];
       }
       else 
-      { TLOC_LOG_GFX_INFO() << "Window is already active"; }
+      { TLOC_LOG_GFX_INFO_FILENAME_ONLY() << "Window is already active"; }
     }
     else 
     {
@@ -236,7 +252,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
         [EAGLContext setCurrentContext:nil];
       }
       else 
-      { TLOC_LOG_GFX_INFO() << "Window is already inactivte"; }
+      { TLOC_LOG_GFX_INFO_FILENAME_ONLY() << "Window is already inactivte"; }
     }
   }
   
@@ -265,13 +281,25 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetVerticalSync(bool a_enable)
-  { TLOC_LOG_GFX_INFO_IF(a_enable) << "iOS does not support vertical sync"; }
+  {
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(a_enable && m_warnings.IsUnMarked(k_verticalSync))
+      << "iOS does not support vertical sync";
+    m_warnings.Mark(k_verticalSync);
+  }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetMouseVisibility(bool)
-  { TLOC_LOG_GFX_INFO() << "SetMouseVisibility() does not nothing on iOS"; }
+  {
+    TLOC_LOG_GFX_WARN_IF(m_warnings.IsUnMarked(k_mouseVisibility))
+      << "SetMouseVisibility() does not nothing on iOS";
+    m_warnings.Mark(k_mouseVisibility);
+  }
   
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::ConfineMouseToWindow(bool)
-  { TLOC_LOG_GFX_INFO() << "ConfineMouseToWindow() does not nothing on iOS"; }
+  {
+    TLOC_LOG_GFX_WARN_IF(m_warnings.IsUnMarked(k_confineMouseToWindow))
+      << "ConfineMouseToWindow() does not nothing on iOS";
+    m_warnings.Mark(k_confineMouseToWindow);
+  }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetPosition(s32 a_x, s32 a_y)
   {
@@ -293,7 +321,11 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
   }
 
   void WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::SetTitle(const char*)
-  { TLOC_LOG_GFX_INFO() << "Cannot set window title on iOS platform"; }
+  {
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(m_warnings.IsUnMarked(k_title))
+      << "Cannot set window title on iOS platform";
+    m_warnings.Mark(k_title);
+  }
 
   bool WindowImpl<WINDOW_IMPL_IPHONE_PARAMS>::IsCreated() const
   {

@@ -525,7 +525,7 @@ namespace tloc { namespace graphics { namespace component_system {
       else
       {
         TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-          << "Shader #" << sp->GetHandle() << " encountered problems with "
+          << "Shader ID#" << sp->GetHandle() << " encountered problems with "
           << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
       }
 
@@ -538,7 +538,7 @@ namespace tloc { namespace graphics { namespace component_system {
     else
     {
       TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-        << "Shader #" << sp->GetHandle() << " encountered problems with "
+        << "Shader ID#" << sp->GetHandle() << " encountered problems with "
         << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
     }
 
@@ -553,7 +553,7 @@ namespace tloc { namespace graphics { namespace component_system {
       else
       {
         TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-          << "Shader #" << sp->GetHandle() << " encountered problems with "
+          << "Shader ID#" << sp->GetHandle() << " encountered problems with "
           << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
       }
 
@@ -573,7 +573,7 @@ namespace tloc { namespace graphics { namespace component_system {
     else
     {
       TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-        << "Shader #" << sp->GetHandle() << " encountered problems with "
+        << "Shader ID#" << sp->GetHandle() << " encountered problems with "
         << "preparing AttributeVBOs for (" << a_di.m_entity->GetDebugName() << ")";
     }
   }

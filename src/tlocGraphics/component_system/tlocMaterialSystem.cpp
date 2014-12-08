@@ -134,7 +134,7 @@ namespace tloc { namespace graphics { namespace component_system {
           a_matPtr->GetVertexPath().GetFileName(vsFileName);
           a_matPtr->GetFragmentPath().GetFileName(fsFileName);
 
-          TLOC_LOG_GFX_INFO_NO_FILENAME() << "Shader #" << sp->GetHandle()
+          TLOC_LOG_GFX_INFO_NO_FILENAME() << "Shader ID#" << sp->GetHandle()
             << " compiled successfully with programs (" << vsFileName 
             << ") and (" << fsFileName << ")";
         }

@@ -34,11 +34,25 @@ function(tloc_install_library target_name include_folder)
     COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/${target_name}Copy.cmake")
 endfunction()
 
+function(tloc_check_paths path_list)
+  foreach(PATHDIR ${path_list})
+    if (${${PATHDIR}} MATCHES ${internal_FIXME})
+      message(FATAL_ERROR "Please enter a path for ${PATHDIR}")
+    endif()
+  endforeach()
+endfunction()
+
 #------------------------------------------------------------------------------
 # CACHE Variables
 
-set(TLOC_ENGINE_INSTALL_PATH ${internal_FIXME} CACHE PATH "The engine INSTALL path with the correct build folder.")
 set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The dependency INSTALL path with the correct build folder.")
+set(TLOC_ENGINE_INSTALL_PATH ${internal_FIXME} CACHE PATH "The engine INSTALL path with the correct build folder.")
+
+#--------------------------------------------------------------------------
+# Include the common platform settings file
+tloc_check_paths(${TLOC_DEP_INSTALL_PATH})
+set(TLOC_COMMON_CMAKE_PATH "${TLOC_DEP_INSTALL_PATH}/tlocCommon.cmake")
+include(${TLOC_COMMON_CMAKE_PATH})
 
 set(USER_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "Root folder of this project. You do not need to change this path.")
 set(USER_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the binaries")
@@ -46,22 +60,14 @@ set(USER_IOS_PLIST_PATH "" CACHE FILE "If you have your own custom plist, specif
 
 set(USER_ASSETS_PATH "${CMAKE_SOURCE_DIR}/assets" CACHE PATH "You can specify your custom assets path here. NOTE: In Distribution build, the assets from this folder are copied to be relative to the binary files.")
 
+#--------------------------------------------------------------------------
 # Variables to check for ${internal_FIXEM}
 set(TLOC_CHECK_PATHS
   TLOC_ENGINE_INSTALL_PATH
   TLOC_DEP_INSTALL_PATH
   )
 
-foreach(PATHDIR ${TLOC_CHECK_PATHS})
-  if (${${PATHDIR}} MATCHES ${internal_FIXME})
-    message(FATAL_ERROR "Please enter a path for ${PATHDIR}")
-  endif()
-endforeach()
-
-#--------------------------------------------------------------------------
-# Include the common platform settings file
-set(TLOC_COMMON_CMAKE_PATH "${TLOC_DEP_INSTALL_PATH}/tlocCommon.cmake")
-include(${TLOC_COMMON_CMAKE_PATH})
+tloc_check_paths(${TLOC_CHECK_PATHS})
 
 #------------------------------------------------------------------------------
 # Over-ride the project name with the correct suffix (iff user hasn't modified

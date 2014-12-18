@@ -9,9 +9,9 @@ endif()
 # Over-ride the project name with the correct suffix (iff user hasn't modified
 # it already)
 tloc_get_leaf_folder_name(${CMAKE_BINARY_DIR} TLOC_BUILD_FOLDER_NAME)
-if(${TLOC_SOLUTION_NAME} STREQUAL "solution")
-  set(TLOC_SOLUTION_NAME "tlocEngine_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
-  project(${TLOC_SOLUTION_NAME})
+if(${SOLUTION_NAME} STREQUAL "solution")
+  set(SOLUTION_NAME "tlocEngine_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
+  project(${SOLUTION_NAME})
 endif()
 
 if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL "${CMAKE_SOURCE_DIR}/INSTALL")

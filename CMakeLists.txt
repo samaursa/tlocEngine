@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(TLOC_SOLUTION_NAME "solution" CACHE STRING "You may change the name based on build configuration")
+set(SOLUTION_NAME "solution" CACHE STRING "You may change the name based on build configuration")
 
 #--------------------------------------------------------------------------
 # Project name
-project(${TLOC_SOLUTION_NAME})
+project(${SOLUTION_NAME})
 
 set(internal_FIXME "FIXME!")
 

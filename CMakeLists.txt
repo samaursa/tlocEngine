@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(TLOC_PROJECT_NAME "tlocEngine" CACHE STRING "You may change the name based on build configuration")
+set(TLOC_SOLUTION_NAME "solution" CACHE STRING "You may change the name based on build configuration")
 
 #--------------------------------------------------------------------------
 # Project name
-project(${TLOC_PROJECT_NAME})
+project(${TLOC_SOLUTION_NAME})
 
 set(internal_FIXME "FIXME!")
 
@@ -44,7 +44,16 @@ endfunction()
 # CACHE Variables
 
 set(TLOC_DEP_INSTALL_PATH ${internal_FIXME} CACHE PATH "The tloc dependency INSTALL path goes here.")
-set(TLOC_ENGINE_INSTALL_PATH ${internal_FIXME} CACHE PATH "Install directory for the engine")
+set(TLOC_ENGINE_INSTALL_PATH ${internal_FIXME} CACHE PATH "Install directory for the engine.")
+set(TLOC_INCLUDE_TESTS TRUE CACHE BOOL "Include tests in the project.")
+
+set(SOLUTION_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "Root folder for this project. You do not need to change this path" FORCE)
+set(SOLUTION_INSTALL_PATH ${CMAKE_SOURCE_DIR}/INSTALL CACHE PATH "Install directory for the binaries")
+set(SOLUTION_ASSETS_PATH ${CMAKE_SOURCE_DIR}/assets CACHE PATH "You can specify your custom assets path here. NOTE: In Distribution build, the assets from this folder are copied to be relative to the binary files.")
+
+if(TLOC_PLATFORM_IOS)
+  set(SOLUTION_IOS_PLIST_PATH "" CACHE PATH "If you have your own custom plist, specify here. If blank, 2LoC will generate one for you.")
+endif()
 
 #------------------------------------------------------------------------------
 # Common configuration file that sets up platform and compiler specific details
@@ -56,12 +65,20 @@ include(${TLOC_COMMON_CMAKE_PATH})
 # User adjustable variables
 include(tlocUserVars.cmake)
 
+#--------------------------------------------------------------------------
+# Check paths are valid
+
+set(TLOC_CHECK_PATHS
+    ${TLOC_CHECK_PATHS}
+    TLOC_DEP_INSTALL_PATH
+    TLOC_ENGINE_INSTALL_PATH
+    )
 tloc_check_paths(${TLOC_CHECK_PATHS})
 
 #--------------------------------------------------------------------------
 # Sanity checks
-list(LENGTH USER_EXECUTABLE_PROJECTS tlocExecProjLength)
-list(LENGTH USER_LIBRARY_PROJECTS tlocLibProjLength)
+list(LENGTH SOLUTION_EXECUTABLE_PROJECTS tlocExecProjLength)
+list(LENGTH SOLUTION_LIBRARY_PROJECTS tlocLibProjLength)
 if(${tlocExecProjLength} EQUAL 0 AND 
    ${tlocLibProjLength} EQUAL 0)
    message(SEND_ERROR "You must have at least one executable or library")

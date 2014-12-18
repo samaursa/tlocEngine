@@ -1,7 +1,7 @@
 #include "tlocWindowImplWin.h"
 
-#include "glext.h"
-#include "wglext.h"
+#include <3rdParty/Graphics/glext/glext.h>
+#include <3rdParty/Graphics/glext/wglext.h>
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>

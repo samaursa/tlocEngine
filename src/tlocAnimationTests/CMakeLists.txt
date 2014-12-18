@@ -7,7 +7,7 @@ set(TLOC_TESTS_ANIMATION
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsAnimation)
+set(TLOC_CURRENT_EXEC_NAME tlocAnimationTests)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}

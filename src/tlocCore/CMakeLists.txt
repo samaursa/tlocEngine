@@ -378,7 +378,7 @@ set(TLOC_ENGINE_CORE_UTILITIES
     utilities/tlocUtils.h
 )
 
-set(3RD_PARTY_FILE_WATCHER_PATH ${TLOC_ENGINE_PATH}/src/3rdParty/Core/FileWatcher/)
+set(3RD_PARTY_FILE_WATCHER_PATH ${SOLUTION_PATH}/src/3rdParty/Core/FileWatcher/)
 set(3RD_PARTY_FILE_WATCHER
   ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcher.h
   ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherImpl.h
@@ -467,6 +467,6 @@ source_group(threads FILES ${TLOC_ENGINE_CORE_THREADS})
 source_group(time FILES ${TLOC_ENGINE_CORE_TIME})
 source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
-source_group(3rd_party\\FileWatcher FILES ${3RD_PARTY_FILE_WATCHER})
+source_group(3rd_party/FileWatcher FILES ${3RD_PARTY_FILE_WATCHER})
 
 tloc_install_library(tlocCore tlocCore)

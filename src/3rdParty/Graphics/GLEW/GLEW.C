@@ -29,10 +29,10 @@
 ** THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <glew.h>
+#include "GLEW.H"
 
 #if defined(_WIN32)
-#  include <wglew.h>
+#  include "wglew.h"
 #elif !defined(__ANDROID__) && (!defined(__APPLE__) || defined(GLEW_APPLE_GLX))
 #  include <GL/glxew.h>
 #endif

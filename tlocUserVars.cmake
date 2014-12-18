@@ -4,24 +4,14 @@
 if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL ${internal_FIXME})
   set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
 endif()
-set(TLOC_ENGINE_PATH ${CMAKE_SOURCE_DIR} CACHE PATH "The root folder of this repository. You do not need to edit this manually")
-set(TLOC_INCLUDE_TESTS TRUE CACHE BOOL "Include tests in the project.")
-
-#------------------------------------------------------------------------------
-# Variables to check for ${internal_FIXEM}
-set(TLOC_CHECK_PATHS
-    ${TLOC_CHECK_PATHS}
-    TLOC_ENGINE_PATH
-    TLOC_DEP_INSTALL_PATH
-  )
 
 #------------------------------------------------------------------------------
 # Over-ride the project name with the correct suffix (iff user hasn't modified
 # it already)
 tloc_get_leaf_folder_name(${CMAKE_BINARY_DIR} TLOC_BUILD_FOLDER_NAME)
-if(${TLOC_PROJECT_NAME} STREQUAL "tlocEngine")
-  set(TLOC_PROJECT_NAME "tlocEngine_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
-  project(${TLOC_PROJECT_NAME})
+if(${TLOC_SOLUTION_NAME} STREQUAL "solution")
+  set(TLOC_SOLUTION_NAME "tlocEngine_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
+  project(${TLOC_SOLUTION_NAME})
 endif()
 
 if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL "${CMAKE_SOURCE_DIR}/INSTALL")
@@ -32,7 +22,7 @@ set(USER_INSTALL_PATH ${TLOC_ENGINE_INSTALL_PATH})
 
 #------------------------------------------------------------------------------
 # Copy the platform files
-file(COPY ${TLOC_ENGINE_PATH}/platform/ 
+file(COPY ${SOLUTION_PATH}/platform/ 
   DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/platform/ 
   FILES_MATCHING PATTERN "*.*"
   )
@@ -40,7 +30,7 @@ file(COPY ${TLOC_ENGINE_PATH}/platform/
 #------------------------------------------------------------------------------
 # Copy other source files
 
-file(COPY ${TLOC_ENGINE_PATH}/src/tlocTests
+file(COPY ${SOLUTION_PATH}/src/tlocTests
   DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/include/
   FILES_MATCHING PATTERN "*.h" PATTERN "*.cpp"
   )
@@ -48,28 +38,28 @@ file(COPY ${TLOC_ENGINE_PATH}/src/tlocTests
 #------------------------------------------------------------------------------
 # Copy the license file
 
-file(COPY ${TLOC_ENGINE_PATH}/LICENSE.pdf
+file(COPY ${SOLUTION_PATH}/LICENSE.pdf
   DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/)
 
 #------------------------------------------------------------------------------
 # Projects in this solution
 
 
-set(USER_EXECUTABLE_PROJECTS ";")
-#list(APPEND USER_EXECUTABLE_PROJECTS "nextExeProject;")
+set(SOLUTION_EXECUTABLE_PROJECTS "")
 
-set(USER_LIBRARY_PROJECTS "tlocCore;")
-list(APPEND USER_LIBRARY_PROJECTS "tlocMath;")
-list(APPEND USER_LIBRARY_PROJECTS "tlocInput;")
-list(APPEND USER_LIBRARY_PROJECTS "tlocGraphics;")
-list(APPEND USER_LIBRARY_PROJECTS "tlocPhysics;")
-list(APPEND USER_LIBRARY_PROJECTS "tlocPrefab;")
-list(APPEND USER_LIBRARY_PROJECTS "tlocAnimation;")
+set(SOLUTION_LIBRARY_PROJECTS "tlocCore;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "tlocMath;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "tlocInput;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "tlocGraphics;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "tlocPhysics;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "tlocPrefab;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "tlocAnimation;")
+list(APPEND SOLUTION_LIBRARY_PROJECTS "3rdParty;")
 
-set(USER_TEST_PROJECTS "tlocCoreTests;")
-list(APPEND USER_TEST_PROJECTS "tlocMathTests;")
-list(APPEND USER_TEST_PROJECTS "tlocInputTests;")
-list(APPEND USER_TEST_PROJECTS "tlocGraphicsTests;")
-list(APPEND USER_TEST_PROJECTS "tlocPhysicsTests;")
-list(APPEND USER_TEST_PROJECTS "tlocPrefabTests;")
-list(APPEND USER_TEST_PROJECTS "tlocAnimationTests;")
+set(SOLUTION_TEST_PROJECTS "tlocCoreTests;")
+list(APPEND SOLUTION_TEST_PROJECTS "tlocMathTests;")
+list(APPEND SOLUTION_TEST_PROJECTS "tlocInputTests;")
+list(APPEND SOLUTION_TEST_PROJECTS "tlocGraphicsTests;")
+list(APPEND SOLUTION_TEST_PROJECTS "tlocPhysicsTests;")
+list(APPEND SOLUTION_TEST_PROJECTS "tlocPrefabTests;")
+list(APPEND SOLUTION_TEST_PROJECTS "tlocAnimationTests;")

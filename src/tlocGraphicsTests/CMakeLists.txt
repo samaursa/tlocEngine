@@ -23,13 +23,13 @@ set(TLOC_TESTS_GRAPHICS
   )
 
 set(TLOC_TESTS_GRAPHICS_ASSETS
-  ${TLOC_ENGINE_PATH}/assets
+  ${SOLUTION_PATH}/assets
   )
 
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsGraphics)
+set(TLOC_CURRENT_EXEC_NAME tlocGraphicsTests)
 
 include_directories(
   ${TLOC_DEP_INSTALL_PATH}/include/FreeType/

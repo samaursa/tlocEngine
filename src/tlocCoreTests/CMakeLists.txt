@@ -61,7 +61,7 @@ set(TLOC_TESTS_CORE
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsCore)
+set(TLOC_CURRENT_EXEC_NAME tlocCoreTests)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}

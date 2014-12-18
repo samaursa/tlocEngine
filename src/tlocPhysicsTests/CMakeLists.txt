@@ -8,7 +8,7 @@ set(TLOC_TESTS_PHYSICS
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsPhysics)
+set(TLOC_CURRENT_EXEC_NAME tlocPhysicsTests)
 
 include_directories(
   ${TLOC_DEP_INSTALL_PATH}/include/Box2D/

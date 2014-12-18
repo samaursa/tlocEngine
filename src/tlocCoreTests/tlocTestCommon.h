@@ -11,7 +11,7 @@
 #include <tlocCore/types/tlocTypes.h>
 #include <tlocCore/tlocAssertCustomBreak.h>
 
-#include "tlocAssetsPath.h"
+#include <gameAssetsPath.h>
 
 namespace tloc { namespace tests {
 

@@ -28,7 +28,7 @@ set(TLOC_TESTS_MATH
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsMath)
+set(TLOC_CURRENT_EXEC_NAME tlocMathTests)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}

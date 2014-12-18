@@ -9,7 +9,7 @@ set(TLOC_GRAPHICS
   tloc_graphics.inl.h 
   )
 
-set(3RD_PARTY_PATH ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/)
+set(3RD_PARTY_PATH ${SOLUTION_PATH}/src/3rdParty/Graphics/)
 set(TLOC_GRAPHICS_3RD_PARTY_COMPRESSION
   ${3RD_PARTY_PATH}/miniz/miniz.c
   )

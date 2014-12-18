@@ -14,7 +14,7 @@ endif()
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsInput)
+set(TLOC_CURRENT_EXEC_NAME tlocInputTests)
 
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}

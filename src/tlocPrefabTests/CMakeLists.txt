@@ -20,13 +20,13 @@ set(TLOC_TESTS_PREFAB
   )
 
 set(TLOC_TESTS_PREFAB_ASSETS
-  ${TLOC_ENGINE_PATH}/assets
+  ${SOLUTION_PATH}/assets
   )
 
 #-------------------------------------------
 # Project setup
 
-set(TLOC_CURRENT_EXEC_NAME tlocTestsPrefab)
+set(TLOC_CURRENT_EXEC_NAME tlocPrefabTests)
 
 link_directories(
   ${TLOC_DEP_INSTALL_PATH}/lib/

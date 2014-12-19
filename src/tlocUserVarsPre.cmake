@@ -7,7 +7,7 @@ include(${SOLUTION_PATH}/INSTALL/tlocLibraries.cmake)
 # common includes
 include_directories(
   ${TLOC_DEP_INCLUDE_DIRECTORIES}
-  ${SOLUTION_PATH}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/
+  ${SOLUTION_PATH}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/
   ${SOLUTION_PATH}/src/
   )
 
@@ -50,3 +50,6 @@ if(TLOC_COMPILER_MSVC)
   endforeach()
 
 endif()
+
+# assets file name change
+set(ASSETS_PATH_FILE_NAME "tlocAssetsPath")

@@ -129,6 +129,10 @@ message(STATUS "-- Tests -- DONE")
 # Generate tlocAssetPath.h file
 # -----------------------------------------------------------------------------
 
+if (NOT ASSETS_PATH_FILE_NAME)
+  set(ASSETS_PATH_FILE_NAME "gameAssetsPath")
+endif()
+
 if(NOT DISTRIBUTION_BUILD)
   SET(ASSETS_PATH ${SOLUTION_ASSETS_PATH})
 else()
@@ -143,7 +147,7 @@ else()
 
 endif()
 
-FILE(WRITE "${SOLUTION_PATH}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/gameAssetsPath.h" 
+FILE(WRITE "${SOLUTION_PATH}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/${ASSETS_PATH_FILE_NAME}.h" 
 "
 #pragma once
 

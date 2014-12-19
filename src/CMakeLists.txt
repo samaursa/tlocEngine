@@ -99,31 +99,33 @@ message(STATUS "-- Executables -- DONE")
 # Add all test executables
 # -----------------------------------------------------------------------------
 
-tloc_add_definitions()
+if(TLOC_INCLUDE_TESTS)
+  tloc_add_definitions()
 
-message("")
-message(STATUS "-- Tests --")
-foreach(test ${SOLUTION_TEST_PROJECTS})
-  message(STATUS "Adding ${test} executable project")
-  set(SOLUTION_CURRENT_PROJECT_TYPE ${SOLUTION_PROJECT_TYPE_EXE})
-  set(SOLUTION_CURRENT_PROJECT_NAME ${test})
+  message("")
+  message(STATUS "-- Tests --")
+  foreach(test ${SOLUTION_TEST_PROJECTS})
+    message(STATUS "Adding ${test} executable project")
+    set(SOLUTION_CURRENT_PROJECT_TYPE ${SOLUTION_PROJECT_TYPE_EXE})
+    set(SOLUTION_CURRENT_PROJECT_NAME ${test})
 
-# test projects require exceptions and rtti to be enabled - build fails in xcode only
-if(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  # test projects require exceptions and rtti to be enabled - build fails in xcode only
+  if(TLOC_COMPILER_XCODE)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  endif()
+    
+    add_subdirectory(${test})
+
+    # put the executable in the "Tests" folder
+    set_target_properties(${test} 
+      PROPERTIES
+      FOLDER Tests 
+      )
+  endforeach()
+  message(STATUS "-- Tests -- DONE")
 endif()
-  
-  add_subdirectory(${test})
-
-  # put the executable in the "Tests" folder
-  set_target_properties(${test} 
-    PROPERTIES
-    FOLDER Tests 
-    )
-endforeach()
-message(STATUS "-- Tests -- DONE")
 
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file

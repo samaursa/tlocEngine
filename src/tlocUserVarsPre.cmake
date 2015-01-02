@@ -8,6 +8,7 @@ include(${SOLUTION_PATH}/INSTALL/tlocLibraries.cmake)
 include_directories(
   ${TLOC_DEP_INCLUDE_DIRECTORIES}
   ${SOLUTION_PATH}/INSTALL/
+  ${SOLUTION_PATH}/INSTALL/${SOLUTION_BUILD_FOLDER_NAME}
   ${SOLUTION_PATH}/src/
   )
 
@@ -48,7 +49,6 @@ if(TLOC_COMPILER_MSVC)
       message("Library ${lib} was not generated successfully.")
     endif()
   endforeach()
-
 endif()
 
 # assets file name change

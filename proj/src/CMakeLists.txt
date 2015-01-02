@@ -1,42 +1,16 @@
+include(tlocUserVarsPre.cmake)
+
 # -----------------------------------------------------------------------------
-# Functions
-
-function(add_common_libraries EXEC_NAME)
-  target_link_libraries(${EXEC_NAME}
-    tlocCore
-    tlocGraphics
-    tlocMath
-    tlocInput
-    tlocPhysics
-    tlocPrefab
-    tlocAnimation
-    FreeType
-    Box2D
-    )
-
-  if (TLOC_PLATFORM_WIN32)
-
-    # Add OpenGL libraries for Windows
-    target_link_libraries(${EXEC_NAME}
-      glu32.lib
-      OpenGL32.lib
-      dinput8.lib
-      )
-
-  endif()
-
-  if(TLOC_COMPILER_XCODE)
-  endif()
-
-endfunction()
+# functions
+# -----------------------------------------------------------------------------
 
 function(add_apple_plist EXEC_NAME ASSETS_PATH)
   if(TLOC_PLATFORM_IOS)
     # Check if a PLIST file was specified. If not, then go with default.
-    if(USER_IOS_PLIST_PATH)
-      set(PLIST_PATH ${USER_IOS_PLIST_PATH})
+    if(SOLUTION_IOS_PLIST_PATH)
+      set(PLIST_PATH ${SOLUTION_IOS_PLIST_PATH})
     else()
-      set(PLIST_PATH "${TLOC_ENGINE_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
+      set(PLIST_PATH "${SOLUTION_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
     endif()
 
     set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -49,39 +23,50 @@ function(add_apple_plist EXEC_NAME ASSETS_PATH)
   endif()
 endfunction()
 
+#------------------------------------------------------------------------------
+# Install function for libraries
+
+function(tloc_install_library target_name include_folder)
+  if(DISTRIBUTION_FULL_SOURCE)
+    file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
+      "file(COPY \"${SOLUTION_PATH}/src/${target_name}/${include_folder}\" 
+      DESTINATION \"${SOLUTION_INSTALL_PATH}/include/${target_name}\" 
+      FILE_PERMISSIONS OWNER_READ
+      FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.cpp\"
+      )")
+  else()
+    file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
+      "file(COPY \"${SOLUTION_PATH}/src/${target_name}/${include_folder}\" 
+      DESTINATION \"${SOLUTION_INSTALL_PATH}/include/${target_name}\" 
+      FILE_PERMISSIONS OWNER_READ
+      FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.opt.inl.h\" EXCLUDE
+      )")
+  endif()
+
+  add_custom_command(TARGET ${target_name} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/${target_name}Copy.cmake")
+endfunction()
+
+function(tloc_check_paths path_list)
+  foreach(PATHDIR ${path_list})
+    if (${${PATHDIR}} MATCHES ${internal_FIXME})
+      message(FATAL_ERROR "Please enter a path for ${PATHDIR}")
+    endif()
+  endforeach()
+endfunction()
+
 # -----------------------------------------------------------------------------
-# compiler flags
+# Start generating libraries, projects and tests
+# -----------------------------------------------------------------------------
 
 tloc_add_definitions_strict()
 
-# common includes
-include_directories(
-  ${TLOC_ENGINE_INSTALL_PATH}/
-  ${TLOC_ENGINE_INSTALL_PATH}/include/
-  ${TLOC_DEP_INSTALL_PATH}/include/
-  ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
-  ${TLOC_DEP_INSTALL_PATH}/include/CATCH/
-  ${USER_PATH}/src/
-
-  ${CMAKE_SOURCE_DIR}/src/
-  ${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/
-  )
-
-# common link directories
-link_directories(
-  ${TLOC_ENGINE_INSTALL_PATH}/lib/
-  ${TLOC_DEP_INSTALL_PATH}/lib/
-  )
-
-# -----------------------------------------------------------------------------
-# Add all libraries and executables
-
 message("")
 message(STATUS "-- Libraries --")
-foreach(lib ${USER_LIBRARY_PROJECTS})
+foreach(lib ${SOLUTION_LIBRARY_PROJECTS})
   message(STATUS "Adding ${lib} library project")
-  set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_LIB})
-  set(USER_CURRENT_PROJECT_NAME ${lib})
+  set(SOLUTION_CURRENT_PROJECT_TYPE ${SOLUTION_PROJECT_TYPE_LIB})
+  set(SOLUTION_CURRENT_PROJECT_NAME ${lib})
 
   add_subdirectory(${lib})
 
@@ -95,10 +80,10 @@ message(STATUS "-- Libraries -- DONE")
 
 message("")
 message(STATUS "-- Executables --")
-foreach(exec ${USER_EXECUTABLE_PROJECTS})
+foreach(exec ${SOLUTION_EXECUTABLE_PROJECTS})
   message(STATUS "Adding ${exec} executable project")
-  set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
-  set(USER_CURRENT_PROJECT_NAME ${exec})
+  set(SOLUTION_CURRENT_PROJECT_TYPE ${SOLUTION_PROJECT_TYPE_EXE})
+  set(SOLUTION_CURRENT_PROJECT_NAME ${exec})
   
   add_subdirectory(${exec})
 
@@ -111,58 +96,60 @@ endforeach()
 message(STATUS "-- Executables -- DONE")
 
 # -----------------------------------------------------------------------------
-# compiler flags
-#
-# NOTE: For tests we need regular compiler flags which enable RTTI and 
-#       exceptions
-
-tloc_add_definitions()
-
-# -----------------------------------------------------------------------------
 # Add all test executables
+# -----------------------------------------------------------------------------
 
-message("")
-message(STATUS "-- Tests --")
-foreach(test ${USER_TEST_PROJECTS})
-  message(STATUS "Adding ${test} executable project")
-  set(USER_CURRENT_PROJECT_TYPE ${USER_PROJECT_TYPE_EXE})
-  set(USER_CURRENT_PROJECT_NAME ${test})
+if(TLOC_INCLUDE_TESTS)
+  tloc_add_definitions()
 
-# test projects require exceptions and rtti to be enabled - build fails in xcode only
-if(TLOC_COMPILER_XCODE)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  message("")
+  message(STATUS "-- Tests --")
+  foreach(test ${SOLUTION_TEST_PROJECTS})
+    message(STATUS "Adding ${test} executable project")
+    set(SOLUTION_CURRENT_PROJECT_TYPE ${SOLUTION_PROJECT_TYPE_EXE})
+    set(SOLUTION_CURRENT_PROJECT_NAME ${test})
+
+  # test projects require exceptions and rtti to be enabled - build fails in xcode only
+  if(TLOC_COMPILER_XCODE)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_DEFAULT} -DTLOC_DEBUG -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE_DEFAULT} -DTLOC_RELEASE -std=c++11 -stdlib=libc++ -Wno-unused-function")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO_DEFAULT} -DTLOC_RELEASE_DEBUGINFO -std=c++11 -stdlib=libc++ -Wno-unused-function -g")
+  endif()
+    
+    add_subdirectory(${test})
+
+    # put the executable in the "Tests" folder
+    set_target_properties(${test} 
+      PROPERTIES
+      FOLDER Tests 
+      )
+  endforeach()
+  message(STATUS "-- Tests -- DONE")
 endif()
-  
-  add_subdirectory(${test})
-
-  # put the executable in the "Tests" folder
-  set_target_properties(${test} 
-    PROPERTIES
-    FOLDER Tests 
-    )
-endforeach()
-message(STATUS "-- Tests -- DONE")
 
 # -----------------------------------------------------------------------------
 # Generate tlocAssetPath.h file
+# -----------------------------------------------------------------------------
+
+if (NOT ASSETS_PATH_FILE_NAME)
+  set(ASSETS_PATH_FILE_NAME "gameAssetsPath")
+endif()
 
 if(NOT DISTRIBUTION_BUILD)
-  SET(ASSETS_PATH ${USER_ASSETS_PATH})
+  SET(ASSETS_PATH ${SOLUTION_ASSETS_PATH})
 else()
-  message(STATUS ${USER_ASSETS_PATH})
-  SET(ASSETS_PATH "../../assets/")
+  message(STATUS ${SOLUTION_ASSETS_PATH})
+  SET(ASSETS_PATH "../../../assets/")
 
   add_custom_target(tlocAssetsCopier ALL)
   add_custom_command(TARGET tlocAssetsCopier POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
       "${CMAKE_SOURCE_DIR}/assets"
-      "${USER_INSTALL_PATH}/assets")
+      "${SOLUTION_INSTALL_PATH}/assets")
 
 endif()
 
-FILE(WRITE "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/gameAssetsPath.h" 
+FILE(WRITE "${SOLUTION_PATH}/INSTALL/${SOLUTION_BUILD_FOLDER_NAME}/${ASSETS_PATH_FILE_NAME}.h" 
 "
 #pragma once
 
@@ -198,3 +185,4 @@ inline const char* GetAssetsPath()
 
 ")
 
+include(tlocUserVarsPost.cmake)

@@ -1,1 +1,1 @@
-include(../tlocCMakeListsProjects.txt)
+include(../tlocCMakeListsProjects.cmake)

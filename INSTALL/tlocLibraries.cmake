@@ -10,7 +10,12 @@
 #set(TLOCLIBRARY_PHYSICS   ON CACHE BOOL "Physics library")
 #set(TLOCLIBRARY_PREFAB    ON CACHE BOOL "Physics library")
 
-set(TLOC_LIBRARIES
+set(TLOC_DEP_LIBRARIES
+  FreeType
+  Box2D
+  )
+
+set(TLOC_ENGINE_LIBRARIES
   3rdParty
   tlocCore
   tlocMath
@@ -21,6 +26,15 @@ set(TLOC_LIBRARIES
   tlocPrefab
   )
 
+if (TLOC_PLATFORM_WIN32)
+  set(TLOC_ENGINE_LIBRARIES
+    ${TLOC_ENGINE_LIBRARIES}
+    glu32.lib
+    OpenGL32.lib
+    dinput8.lib
+    )
+endif()
+
 set(TLOC_DEP_INCLUDE_DIRECTORIES
   ${TLOC_DEP_INSTALL_PATH}/include/
   ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
@@ -28,7 +42,7 @@ set(TLOC_DEP_INCLUDE_DIRECTORIES
   )
 
 set(TLOC_ENGINE_INCLUDE_DIRECTORIES
-  ${TLOC_ENGINE_INSTALL_PATH}/include/
+  ${TLOC_ENGINE_INSTALL_PATH}/../include/
   )
 
 set(TLOC_INCLUDE_DIRECTORIES

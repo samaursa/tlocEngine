@@ -143,4 +143,4 @@ source_group(types            FILES ${TLOC_MATH_TYPES})
 source_group(utilities        FILES ${TLOC_MATH_UTILITIES})
 source_group(projection       FILES ${TLOC_MATH_PROJECTION})
 
-tloc_install_library(tlocMath tlocMath)
+tloc_install_library(tlocMath "")

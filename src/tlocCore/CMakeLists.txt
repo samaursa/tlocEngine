@@ -469,4 +469,4 @@ source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
 source_group(3rd_party/FileWatcher FILES ${3RD_PARTY_FILE_WATCHER})
 
-tloc_install_library(tlocCore tlocCore)
+tloc_install_library(tlocCore "")

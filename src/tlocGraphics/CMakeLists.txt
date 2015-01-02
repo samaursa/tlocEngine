@@ -312,4 +312,4 @@ source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
 source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
 source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
 
-tloc_install_library(tlocGraphics tlocGraphics)
+tloc_install_library(tlocGraphics "")

@@ -4,21 +4,21 @@
 # project.
 
 # Do NOT remove the following variables. Modify the variables to suit your project
-set(USER_SOURCE_FILES
+set(SOLUTION_SOURCE_FILES
   src/main.cpp
   )
 
 # Do not include individual assets here. Only add paths
-set(USER_ASSETS_PATH
+set(SOLUTION_ASSETS_PATH
   ../../assets
   )
 
 # Dependent project is compiled after dependency
-set(USER_PROJECT_DEPENDENCIES
+set(SOLUTION_PROJECT_DEPENDENCIES
   "skopworksLib"
   )
 
 # Libraries that the executable needs to link against
-set(USER_EXECUTABLE_LINK_LIBRARIES
+set(SOLUTION_EXECUTABLE_LINK_LIBRARIES
   "skopworksLib"
   )

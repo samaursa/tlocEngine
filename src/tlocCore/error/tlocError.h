@@ -112,9 +112,10 @@ namespace tloc { namespace core { namespace error {
     using base_type::DoSetErrorCode;
 
   private:
-    mutable bool          m_errorCheckedByUser;
-    mutable tl_int        m_line;
     mutable const char*   m_file;
+    mutable tl_int        m_line;
+    mutable bool          m_errorCheckedByUser;
+    char                  padding[3];
 
   };
 

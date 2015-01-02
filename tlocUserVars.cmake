@@ -1,21 +1,21 @@
+tloc_get_leaf_folder_name(${CMAKE_BINARY_DIR} SOLUTION_BUILD_FOLDER_NAME)
+
 #------------------------------------------------------------------------------
 # CACHED Variables setup
-
 if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL ${internal_FIXME})
-  set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
+  set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${SOLUTION_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
 endif()
 
 #------------------------------------------------------------------------------
 # Over-ride the project name with the correct suffix (iff user hasn't modified
 # it already)
-tloc_get_leaf_folder_name(${CMAKE_BINARY_DIR} TLOC_BUILD_FOLDER_NAME)
 if(${SOLUTION_NAME} STREQUAL "solution")
-  set(SOLUTION_NAME "tlocEngine_${TLOC_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
+  set(SOLUTION_NAME "tlocEngine_${SOLUTION_BUILD_FOLDER_NAME}" CACHE STRING "You may change the name based on build configurations" FORCE)
   project(${SOLUTION_NAME})
 endif()
 
 if(${TLOC_ENGINE_INSTALL_PATH} STREQUAL "${CMAKE_SOURCE_DIR}/INSTALL")
-  set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${TLOC_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
+  set(TLOC_ENGINE_INSTALL_PATH "${CMAKE_SOURCE_DIR}/INSTALL/${SOLUTION_BUILD_FOLDER_NAME}" CACHE PATH "Install directory for the engine" FORCE)
 endif()
 
 set(USER_INSTALL_PATH ${TLOC_ENGINE_INSTALL_PATH})
@@ -25,14 +25,6 @@ set(USER_INSTALL_PATH ${TLOC_ENGINE_INSTALL_PATH})
 file(COPY ${SOLUTION_PATH}/platform/ 
   DESTINATION ${SOLUTION_INSTALL_PATH}/platform/ 
   FILES_MATCHING PATTERN "*.*"
-  )
-
-#------------------------------------------------------------------------------
-# Copy other source files
-
-file(COPY ${SOLUTION_PATH}/src/tlocTests
-  DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/include/
-  FILES_MATCHING PATTERN "*.h" PATTERN "*.cpp"
   )
 
 #------------------------------------------------------------------------------

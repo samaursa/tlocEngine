@@ -7,10 +7,10 @@ include(tlocUserVarsPre.cmake)
 function(add_apple_plist EXEC_NAME ASSETS_PATH)
   if(TLOC_PLATFORM_IOS)
     # Check if a PLIST file was specified. If not, then go with default.
-    if(USER_IOS_PLIST_PATH)
-      set(PLIST_PATH ${USER_IOS_PLIST_PATH})
+    if(SOLUTION_IOS_PLIST_PATH)
+      set(PLIST_PATH ${SOLUTION_IOS_PLIST_PATH})
     else()
-      set(PLIST_PATH "${TLOC_ENGINE_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
+      set(PLIST_PATH "${SOLUTION_INSTALL_PATH}/platform/iOS/tlocEngine.plist")
     endif()
 
     set(EXECUTABLE_NAME "\${EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -29,15 +29,15 @@ endfunction()
 function(tloc_install_library target_name include_folder)
   if(DISTRIBUTION_FULL_SOURCE)
     file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
-      "file(COPY \"${USER_PATH}/src/${target_name}/${include_folder}\" 
-      DESTINATION \"${USER_INSTALL_PATH}/include/${target_name}\" 
+      "file(COPY \"${SOLUTION_PATH}/src/${target_name}/${include_folder}\" 
+      DESTINATION \"${SOLUTION_INSTALL_PATH}/include/${target_name}\" 
       FILE_PERMISSIONS OWNER_READ
       FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.cpp\"
       )")
   else()
     file(WRITE ${CMAKE_BINARY_DIR}/${target_name}Copy.cmake
-      "file(COPY \"${USER_PATH}/src/${target_name}/${include_folder}\" 
-      DESTINATION \"${USER_INSTALL_PATH}/include/${target_name}\" 
+      "file(COPY \"${SOLUTION_PATH}/src/${target_name}/${include_folder}\" 
+      DESTINATION \"${SOLUTION_INSTALL_PATH}/include/${target_name}\" 
       FILE_PERMISSIONS OWNER_READ
       FILES_MATCHING PATTERN \"*.h\" PATTERN \"*.opt.inl.h\" EXCLUDE
       )")
@@ -139,7 +139,7 @@ if(NOT DISTRIBUTION_BUILD)
   SET(ASSETS_PATH ${SOLUTION_ASSETS_PATH})
 else()
   message(STATUS ${SOLUTION_ASSETS_PATH})
-  SET(ASSETS_PATH "../../assets/")
+  SET(ASSETS_PATH "../../../assets/")
 
   add_custom_target(tlocAssetsCopier ALL)
   add_custom_command(TARGET tlocAssetsCopier POST_BUILD
@@ -149,7 +149,7 @@ else()
 
 endif()
 
-FILE(WRITE "${SOLUTION_PATH}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/include/${ASSETS_PATH_FILE_NAME}.h" 
+FILE(WRITE "${SOLUTION_PATH}/INSTALL/include/${ASSETS_PATH_FILE_NAME}.h" 
 "
 #pragma once
 

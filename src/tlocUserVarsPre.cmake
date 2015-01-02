@@ -7,7 +7,7 @@ include(${SOLUTION_PATH}/INSTALL/tlocLibraries.cmake)
 # common includes
 include_directories(
   ${TLOC_DEP_INCLUDE_DIRECTORIES}
-  ${SOLUTION_PATH}/INSTALL/${TLOC_BUILD_FOLDER_NAME}/
+  ${SOLUTION_PATH}/INSTALL/
   ${SOLUTION_PATH}/src/
   )
 

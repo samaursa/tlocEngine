@@ -110,4 +110,4 @@ source_group(math             FILES ${TLOC_PREFAB_MATH})
 source_group(physics          FILES ${TLOC_PREFAB_PHYSICS})
 source_group(animation        FILES ${TLOC_PREFAB_ANIMATION})
 
-tloc_install_library(tlocPrefab tlocPrefab)
+tloc_install_library(tlocPrefab "")

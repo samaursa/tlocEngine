@@ -77,4 +77,4 @@ source_group(box2d            FILES ${TLOC_PHYSICS_BOX2D})
 source_group(component_system FILES ${TLOC_PHYSICS_COMPONENT_SYSTEM})
 source_group(error            FILES ${TLOC_PHYSICS_ERROR})
 
-tloc_install_library(tlocPhysics tlocPhysics)
+tloc_install_library(tlocPhysics "")

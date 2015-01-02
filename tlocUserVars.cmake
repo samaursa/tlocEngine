@@ -23,7 +23,7 @@ set(USER_INSTALL_PATH ${TLOC_ENGINE_INSTALL_PATH})
 #------------------------------------------------------------------------------
 # Copy the platform files
 file(COPY ${SOLUTION_PATH}/platform/ 
-  DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/platform/ 
+  DESTINATION ${SOLUTION_INSTALL_PATH}/platform/ 
   FILES_MATCHING PATTERN "*.*"
   )
 
@@ -39,7 +39,7 @@ file(COPY ${SOLUTION_PATH}/src/tlocTests
 # Copy the license file
 
 file(COPY ${SOLUTION_PATH}/LICENSE.pdf
-  DESTINATION ${TLOC_ENGINE_INSTALL_PATH}/)
+  DESTINATION ${SOLUTION_INSTALL_PATH}/)
 
 #------------------------------------------------------------------------------
 # Projects in this solution

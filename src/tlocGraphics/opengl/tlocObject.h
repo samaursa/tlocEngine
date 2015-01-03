@@ -8,6 +8,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 
@@ -74,8 +75,7 @@ namespace tloc { namespace graphics { namespace gl {
 
         if ( IsLastRef() )
         {
-          delete m_refCount;
-          m_refCount = nullptr;
+          m_refCount.reset();
         }
         else
         { --(refCount); }
@@ -101,7 +101,7 @@ namespace tloc { namespace graphics { namespace gl {
     void SetHandle(object_handle const & a_handle)
     {
       TLOC_ASSERT(m_refCount == nullptr, "Object already has a handle!");
-      m_refCount = new size_type(0);
+      m_refCount = core_sptr::MakeShared<size_type>(0);
 
       base_type::SetHandle(a_handle);
     }
@@ -119,7 +119,7 @@ namespace tloc { namespace graphics { namespace gl {
     { }
 
   private:
-    size_type* m_refCount;
+    core_sptr::SharedPtr<size_type> m_refCount;
   };
 
   // ///////////////////////////////////////////////////////////////////////

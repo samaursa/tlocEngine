@@ -5,7 +5,7 @@
 // release mode. It should be added to *.cpp files for minimal impact on
 // overall program optimizations.
 
-#if !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
+#if defined(TLOC_RELEASE_DEBUGINFO) || defined(TLOC_RELEASE_DEBUGINFO_DLL)
 # ifdef TLOC_COMPILER_VISUAL_CPP
 #   pragma warning(disable:4748)
 #   pragma optimize("", off)
@@ -14,9 +14,9 @@
 #   pragma inline_recursion( off )
 #   pragma auto_inline( off )
 # endif
-#else
-# ifdef TLOC_FORCE_NO_OPT_H
-#   pragma error "FwNoOpt.h included in a Release build!"
+#elif defined(TLOC_RELEASE) || defined(TLOC_RELEASE_DLL)
+# ifndef TLOC_FORCE_NO_OPT_H
+#   error "tlocNoOpt.h included in a Release build!"
 # endif
 #endif
 

@@ -219,17 +219,32 @@ const char8* GetErrorString(GLenum a_errorCode)
   Error::value_type Error::s_lastError     = GL_NO_ERROR;
   bool              Error::s_ignoreAllErrors = false;
 
-  bool Error::Succeeded()
-  {
-    return GetError() == GL_NO_ERROR;
-  }
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  bool Error::Failed()
-  {
-    return !Succeeded();
-  }
+  Error::
+    Error()
+    : m_lastError(GL_NO_ERROR)
+  { }
 
-  Error::value_type Error::GetError()
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool 
+    Error::
+    Succeeded()
+  { return GetError() == GL_NO_ERROR; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool 
+    Error::
+    Failed()
+  { return !Succeeded(); }
+  
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Error::
+    GetError() -> value_type
   {
     m_lastError = DoGetOpenGLError(core_cfg::BuildConfig::build_config_type());
 
@@ -244,12 +259,18 @@ const char8* GetErrorString(GLenum a_errorCode)
     return m_lastError;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   template <typename T_String>
-  void Error::GetLastErrorAsString(T_String& a_out)
+  void 
+    Error::
+    GetLastErrorAsString(T_String& a_out)
   {
     const char* myError = GetErrorString(m_lastError);
     if (myError) { a_out = myError; }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     Error::

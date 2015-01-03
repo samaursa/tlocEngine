@@ -14,6 +14,8 @@ namespace tloc { namespace graphics { namespace gl {
     typedef s32                 value_type; // GLenum
 
   public:
+    Error();
+
     bool Succeeded();
     bool Failed();
 

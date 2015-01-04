@@ -106,7 +106,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     void                      DoDrawEntity(const DrawInfo& a_di);
 
-  private:
+  protected:
     const_shader_prog_ptr     m_shaderPtr;
 
     const_entity_ptr          m_sharedCam;

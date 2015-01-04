@@ -10,8 +10,19 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 
 #include <tlocGraphics/component_system/tlocRenderSystem.h>
+#include <tlocGraphics/component_system/tlocMaterial.h>
 
 namespace tloc { namespace graphics { namespace component_system {
+
+  struct InstanceInfo
+  {
+    core_conts::List<core_cs::entity_vptr> m_entities;
+    gfx_cs::material_sptr                 m_mat;
+    gfx_gl::ShaderOperator                m_so;
+    gfx_gl::VertexArrayObject             m_vao;
+  };
+  TLOC_TYPEDEF_ALL_SMART_PTRS(InstanceInfo, instance_info);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(InstanceInfo, instance_info);
 
   class QuadRenderSystem
     : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
@@ -25,13 +36,21 @@ namespace tloc { namespace graphics { namespace component_system {
     
     ~QuadRenderSystem();
 
+    virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
+    virtual void Pre_ProcessActiveEntities(f64);
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);
+    virtual void Post_ProcessActiveEntities(f64);
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+
+  private:
+    typedef core_conts::Array<instance_info_sptr>         instances;
+
+    instances m_quadsToDraw;
   };
 
   //------------------------------------------------------------------------

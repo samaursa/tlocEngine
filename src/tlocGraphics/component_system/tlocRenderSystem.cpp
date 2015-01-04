@@ -113,7 +113,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (IsSortingByMaterialEnabled())
     {
       core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
-                 MaterialCompareFromEntity());
+                 MaterialCompareFromEntity(), core::sort_quicksort_middlepivot());
     }
   }
 
@@ -422,7 +422,7 @@ namespace tloc { namespace graphics { namespace component_system {
         SetValueAs(DoInvertOrIdentity(scaleMat, "ScaleMatrix")); 
     }
 
-    // scale
+    // normal
     if (matPtr->IsUniformEnabled<k_normalMatrix>())
     { 
       math_t::Mat4f32 normMatrix = m_viewMatrix * modelMatrix;
@@ -453,7 +453,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // Don't 're-enable' the shader if it was already enabled by the previous
     // entity
-    if (m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
+    auto currShaderPtr = m_shaderPtr;
+    if (currShaderPtr == nullptr || currShaderPtr.get() != sp.get())
     {
       // -----------------------------------------------------------------------
       // populate and enable uniforms as needed
@@ -499,17 +500,17 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // switch shader
 
-      if (m_shaderPtr)
-      { m_shaderPtr->Disable(); }
-
-      if (sp->Enable().Failed())
-      {
-        TLOC_LOG_GFX_WARN_NO_FILENAME() << "ShaderProgram #" << sp->GetHandle()
-          << " could not be enabled.";
-        return;
-      }
+      if (currShaderPtr)
+      { currShaderPtr->Disable(); }
 
       m_shaderPtr = sp;
+      currShaderPtr = m_shaderPtr;
+      if (currShaderPtr->Enable().Failed())
+      {
+        TLOC_LOG_GFX_WARN_NO_FILENAME() << "ShaderProgram #" 
+          << currShaderPtr->GetHandle() << " could not be enabled.";
+        return;
+      }
 
       auto matSO = matPtr->GetShaderOperator();
 
@@ -518,10 +519,10 @@ namespace tloc { namespace graphics { namespace component_system {
         << "Material's ShaderOperator should not have any attributes";
 
       if (matSO->IsUniformsCached() == false)
-      { uniformErr = matSO->PrepareAllUniforms(*m_shaderPtr); }
+      { uniformErr = matSO->PrepareAllUniforms(*currShaderPtr); }
 
       if (uniformErr.Succeeded())
-      { matSO->EnableAllUniforms(*m_shaderPtr); }
+      { matSO->EnableAllUniforms(*currShaderPtr); }
       else
       {
         TLOC_LOG_GFX_WARN_FILENAME_ONLY()
@@ -530,11 +531,11 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       uniformErr = 
-        matPtr->m_internalShaderOp->PrepareAllUniforms(*m_shaderPtr);
+        matPtr->m_internalShaderOp->PrepareAllUniforms(*currShaderPtr);
     }
 
     if (uniformErr.Succeeded())
-    { matPtr->m_internalShaderOp->EnableAllUniforms(*m_shaderPtr); }
+    { matPtr->m_internalShaderOp->EnableAllUniforms(*currShaderPtr); }
     else
     {
       TLOC_LOG_GFX_WARN_FILENAME_ONLY()
@@ -547,9 +548,9 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       DoUpdateTexCoords(ent, *a_di.m_shaderOp);
 
-      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*m_shaderPtr);
+      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*currShaderPtr);
       if (uniformErr.Succeeded())
-      { a_di.m_shaderOp->EnableAllUniforms(*m_shaderPtr); }
+      { a_di.m_shaderOp->EnableAllUniforms(*currShaderPtr); }
       else
       {
         TLOC_LOG_GFX_WARN_FILENAME_ONLY()
@@ -557,7 +558,7 @@ namespace tloc { namespace graphics { namespace component_system {
           << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
       }
 
-      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*m_shaderPtr, 
+      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*currShaderPtr, 
                                                         *a_di.m_meshVAO);
     }
 

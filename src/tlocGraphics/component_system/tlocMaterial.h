@@ -82,6 +82,7 @@ namespace tloc { namespace graphics { namespace component_system {
   template <typename T_RendererSptr> 
   class RenderSystem_TI;
   class MaterialSystem;
+  class QuadRenderSystem;
 
   class Material
     : public core_cs::Component_T<Material, 
@@ -91,6 +92,7 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     template <typename T_RendererSptr> friend class RenderSystem_TI;
     friend class MaterialSystem;
+    friend class QuadRenderSystem;
 
   public:
     typedef Material                                        this_type;

@@ -191,6 +191,8 @@ endif()
 set(TLOC_GRAPHICS_RENDERER 
   renderer/tlocRenderer.cpp 
   renderer/tlocRenderer.h 
+  renderer/tlocDrawCommand.h
+  renderer/tlocDrawCommand.cpp
   renderer/tloc_renderer.cpp 
   renderer/tloc_renderer.h 
   renderer/tloc_renderer.inl.h

@@ -3,6 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocGraphics/renderer/tlocDrawCommand.h>
 #include <tlocGraphics/renderer/tlocRenderer.h>
 
 #endif

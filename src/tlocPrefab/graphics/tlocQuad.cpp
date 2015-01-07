@@ -23,20 +23,28 @@ namespace tloc { namespace prefab { namespace graphics {
   // ///////////////////////////////////////////////////////////////////////
   // Quad
 
-  Quad::
+#define QUAD_TEMPS  bool T_TextureCoords
+#define QUAD_PARAMS T_TextureCoords
+
+  template <QUAD_TEMPS>
+  Quad_T<QUAD_PARAMS>::
     Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
-    , m_texCoords(true) 
     , m_rect(rect_type(rect_type::width(1.0f),
                        rect_type::height(1.0f)) )
+    , m_meshPref(a_entMgr, a_poolMgr)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Quad::component_ptr
-    Quad::
-    Construct() const
+  template <QUAD_TEMPS>
+  auto
+    Quad_T<QUAD_PARAMS>::
+    Construct() const -> component_ptr
   {
+
+
+
     typedef ComponentPoolManager      pool_mgr;
 
     // Create the quad (and the quad pool if necessary)
@@ -53,9 +61,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Quad::entity_ptr
-    Quad::
-    Create() const
+  template <QUAD_TEMPS>
+  auto
+    Quad_T<QUAD_PARAMS>::
+    Create() const -> entity_ptr
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent);
@@ -63,8 +72,9 @@ namespace tloc { namespace prefab { namespace graphics {
     return ent;
   }
 
+  template <QUAD_TEMPS>
   void
-    Quad::
+    Quad_T<QUAD_PARAMS>::
     Add(entity_ptr a_ent) const
   {
     using namespace gfx_cs::components;

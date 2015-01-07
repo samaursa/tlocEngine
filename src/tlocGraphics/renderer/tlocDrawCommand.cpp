@@ -40,9 +40,9 @@ namespace tloc { namespace graphics { namespace renderer {
     DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp)
     : m_shaderProg(a_shader)
     , m_materialSO(a_materialOp)
-    , m_mode(mode::k_points)
+    , m_drawMode(mode::k_points) // points is least likely to fail if set incorrectly
     , m_startIndex(0)
-    , m_count(0)
+    , m_vertexCount(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

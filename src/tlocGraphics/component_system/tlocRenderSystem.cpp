@@ -14,6 +14,7 @@
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/renderer/tlocDrawCommand.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -113,7 +114,7 @@ namespace tloc { namespace graphics { namespace component_system {
     if (IsSortingByMaterialEnabled())
     {
       core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
-                 MaterialCompareFromEntity(), core::sort_quicksort_middlepivot());
+                 MaterialCompareFromEntity(), core::sort_insertionsort());
     }
   }
 
@@ -137,7 +138,10 @@ namespace tloc { namespace graphics { namespace component_system {
   RENDER_SYSTEM_TYPE::error_type
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
-  { return ErrorSuccess; }
+  { 
+    SortEntities();
+    return ErrorSuccess; 
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -443,140 +447,59 @@ namespace tloc { namespace graphics { namespace component_system {
                                       "NormalMatrix"));
     }
 
+    using namespace p_material::Uniforms;
+
     // -----------------------------------------------------------------------
-    // Prepare shader
+    // view matrix
 
-    const_shader_prog_ptr sp = matPtr->GetShaderProg();
+    if (matPtr->IsUniformEnabled<k_viewMatrix>())
+    { matPtr->GetUniform<k_viewMatrix>()->SetValueAs(m_viewMatrix); }
 
-    error_type uniformErr = ErrorSuccess;
-    error_type vboErr = ErrorSuccess;
-
-    // Don't 're-enable' the shader if it was already enabled by the previous
-    // entity
-    auto currShaderPtr = m_shaderPtr;
-    if (currShaderPtr == nullptr || currShaderPtr.get() != sp.get())
-    {
-      // -----------------------------------------------------------------------
-      // populate and enable uniforms as needed
-
-      using namespace p_material::Uniforms;
-
-      // -----------------------------------------------------------------------
-      // view matrix
-
-      if (matPtr->IsUniformEnabled<k_viewMatrix>())
-      { matPtr->GetUniform<k_viewMatrix>()->SetValueAs(m_viewMatrix); }
-
-      if (matPtr->IsUniformEnabled<k_viewMatrixInverse>())
-      { 
-        matPtr->GetUniform<k_viewMatrixInverse>()->
-          SetValueAs(DoInvertOrIdentity(m_viewMatrix, "ViewMatrix")); 
-      }
-
-      // -----------------------------------------------------------------------
-      // projection matrix
-
-      if (matPtr->IsUniformEnabled<k_projectionMatrix>())
-      { matPtr->GetUniform<k_projectionMatrix>()->SetValueAs(m_projMat); }
-
-      if (matPtr->IsUniformEnabled<k_projectionMatrix>())
-      { 
-        matPtr->GetUniform<k_projectionMatrix>()->
-          SetValueAs(DoInvertOrIdentity(m_projMat, "ProjectionMatrix"));
-      }
-
-      // -----------------------------------------------------------------------
-      // view projection matrix
-
-      if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
-      { matPtr->GetUniform<k_viewProjectionMatrix>()->SetValueAs(m_vpMatrix); }
-
-      if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
-      { 
-        matPtr->GetUniform<k_viewProjectionMatrix>()->
-          SetValueAs(DoInvertOrIdentity(m_vpMatrix, "ViewProjMatrix")); 
-      }
-
-      // -----------------------------------------------------------------------
-      // switch shader
-
-      if (currShaderPtr)
-      { currShaderPtr->Disable(); }
-
-      m_shaderPtr = sp;
-      currShaderPtr = m_shaderPtr;
-      if (currShaderPtr->Enable().Failed())
-      {
-        TLOC_LOG_GFX_WARN_NO_FILENAME() << "ShaderProgram #" 
-          << currShaderPtr->GetHandle() << " could not be enabled.";
-        return;
-      }
-
-      auto matSO = matPtr->GetShaderOperator();
-
-      // shader switch requires us to re-prepare the attributes/uniforms
-      TLOC_LOG_GFX_WARN_NO_FILENAME_IF(matSO->size_attributeVBOs() > 0)
-        << "Material's ShaderOperator should not have any attributes";
-
-      if (matSO->IsUniformsCached() == false)
-      { uniformErr = matSO->PrepareAllUniforms(*currShaderPtr); }
-
-      if (uniformErr.Succeeded())
-      { matSO->EnableAllUniforms(*currShaderPtr); }
-      else
-      {
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-          << "Shader ID#" << sp->GetHandle() << " encountered problems with "
-          << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
-      }
-
-      uniformErr = 
-        matPtr->m_internalShaderOp->PrepareAllUniforms(*currShaderPtr);
-    }
-
-    if (uniformErr.Succeeded())
-    { matPtr->m_internalShaderOp->EnableAllUniforms(*currShaderPtr); }
-    else
-    {
-      TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-        << "Shader ID#" << sp->GetHandle() << " encountered problems with "
-        << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
-    }
-
-    // prepare/enable derived render system's shader operator
-    if (a_di.m_shaderOp)
-    {
-      DoUpdateTexCoords(ent, *a_di.m_shaderOp);
-
-      uniformErr = a_di.m_shaderOp->PrepareAllUniforms(*currShaderPtr);
-      if (uniformErr.Succeeded())
-      { a_di.m_shaderOp->EnableAllUniforms(*currShaderPtr); }
-      else
-      {
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-          << "Shader ID#" << sp->GetHandle() << " encountered problems with "
-          << "preparing uniforms for (" << a_di.m_entity->GetDebugName() << ")";
-      }
-
-      vboErr = a_di.m_shaderOp->PrepareAllAttributeVBOs(*currShaderPtr, 
-                                                        *a_di.m_meshVAO);
+    if (matPtr->IsUniformEnabled<k_viewMatrixInverse>())
+    { 
+      matPtr->GetUniform<k_viewMatrixInverse>()->
+        SetValueAs(DoInvertOrIdentity(m_viewMatrix, "ViewMatrix")); 
     }
 
     // -----------------------------------------------------------------------
-    // Render
+    // projection matrix
 
-    if (vboErr == ErrorSuccess)
-    {
-      gl::VertexArrayObject::Bind b(*a_di.m_meshVAO);
-      glDrawArrays(a_di.m_drawCommand, 0,
-                   core_utils::CastNumber<gfx_t::gl_sizei>(a_di.m_numVertices));
+    if (matPtr->IsUniformEnabled<k_projectionMatrix>())
+    { matPtr->GetUniform<k_projectionMatrix>()->SetValueAs(m_projMat); }
+
+    if (matPtr->IsUniformEnabled<k_projectionMatrix>())
+    { 
+      matPtr->GetUniform<k_projectionMatrix>()->
+        SetValueAs(DoInvertOrIdentity(m_projMat, "ProjectionMatrix"));
     }
-    else
-    {
-      TLOC_LOG_GFX_WARN_FILENAME_ONLY()
-        << "Shader ID#" << sp->GetHandle() << " encountered problems with "
-        << "preparing AttributeVBOs for (" << a_di.m_entity->GetDebugName() << ")";
+
+    // -----------------------------------------------------------------------
+    // view projection matrix
+
+    if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
+    { matPtr->GetUniform<k_viewProjectionMatrix>()->SetValueAs(m_vpMatrix); }
+
+    if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
+    { 
+      matPtr->GetUniform<k_viewProjectionMatrix>()->
+        SetValueAs(DoInvertOrIdentity(m_vpMatrix, "ViewProjMatrix")); 
     }
+
+    auto matSO = matPtr->GetShaderOperator();
+
+    // shader switch requires us to re-prepare the attributes/uniforms
+    TLOC_LOG_GFX_WARN_NO_FILENAME_IF(matSO->size_attributeVBOs() > 0)
+      << "Material's ShaderOperator should not have any attributes";
+
+    DoUpdateTexCoords(ent, *a_di.m_shaderOp);
+
+    auto sp = matPtr->GetShaderProg();
+
+    gfx_rend::DrawCommand dc(sp, matSO);
+    dc.AddShaderOperator(a_di.m_shaderOp)
+      .Mode(a_di.m_drawCommand)
+      .StartIndex(0)
+      .Count(a_di.m_numVertices);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -586,7 +509,6 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities( f64 )
   {
     TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_shaderPtr.reset();
     m_renderOneFrame.reset();
   }
 

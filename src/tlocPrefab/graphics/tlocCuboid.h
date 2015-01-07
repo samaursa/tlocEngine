@@ -13,27 +13,39 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  class Cuboid
-    : public Prefab_TI<Cuboid, gfx_cs::Mesh>
+  template <bool T_TexCoords = true, bool T_Normals = true>
+  class Cuboid_T
+    : public Prefab_TI<Cuboid_T<T_TexCoords, T_Normals>, gfx_cs::Mesh>
   {
   public:
-    typedef Cuboid                                      this_type;
+    typedef Cuboid_T<T_TexCoords, T_Normals>            this_type;
     typedef Prefab_TI<this_type, component_type>        base_type;
     typedef math_t::Cuboidf32                           cuboid_type;
 
   public:
-    Cuboid(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
+    Cuboid_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
     component_ptr Construct();
 
     entity_ptr    Create();
     void          Add(entity_ptr a_ent);
 
-    TLOC_DECL_PARAM_VAR(bool, TexCoords, m_texCoords);
-    TLOC_DECL_PARAM_VAR(bool, Normals, m_normals);
     TLOC_DECL_PARAM_VAR(cuboid_type, Dimensions, m_cuboid);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsNormalsEnabled, T_Normals);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsTexCoordsEnabled, T_TexCoords);
 
   };
+
+  // -----------------------------------------------------------------------
+  // typedefs
+
+  typedef Cuboid_T<>                                Cuboid;
+  typedef Cuboid_T<true, false>                     cuboid_tex_no_normals;
+  typedef Cuboid_T<false, true>                     cuboid_normals_no_tex;
+
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<true TLOC_COMMA false>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<false TLOC_COMMA true>);
 
 };};};
 

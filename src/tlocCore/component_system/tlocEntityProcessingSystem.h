@@ -85,10 +85,10 @@ namespace tloc { namespace core { namespace component_system {
     core_cs::entity_ptr_array     m_entsToShutdown;
 
   protected:
-    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToReInit, m_entsToReInit);
-    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToDeactivate, m_entsDeactivated);
-    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToActivate, m_entsActivated);
-    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(entsToShutdown, m_entsToShutdown);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToReInit, m_entsToReInit);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToDeactivate, m_entsDeactivated);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToActivate, m_entsActivated);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToShutdown, m_entsToShutdown);
   };
   
   // -----------------------------------------------------------------------

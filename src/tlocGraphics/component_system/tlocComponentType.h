@@ -12,9 +12,8 @@ namespace tloc { namespace graphics { namespace component_system {
     enum type
     {
       k_mesh = core::component_system::component_group::k_graphics,
-      k_mesh_interleaved,
       k_quad, // specialized mesh
-      k_fan,
+      k_fan,  // specialized mesh
       k_material,
       k_texture_coords,
       k_texture_animator,

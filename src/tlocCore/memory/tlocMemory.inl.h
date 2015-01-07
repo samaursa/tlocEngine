@@ -46,10 +46,8 @@ namespace tloc { namespace core {
                                      IsRawItr)
     {
       typedef typename Loki::TypeTraits<T_OutputIterator>::PointeeType value_type;
-      return DoUninitializedCopyWithValueType(a_rangeBegin,
-                                              a_rangeEnd,
-                                              a_destRangeBegin,
-                                              value_type());
+      return DoUninitializedCopyWithValueType<value_type>
+        (a_rangeBegin, a_rangeEnd, a_destRangeBegin);
     }
 
     template <typename T_InputIterator, typename T_OutputIterator>
@@ -60,19 +58,16 @@ namespace tloc { namespace core {
                                      IsComplexItr)
     {
       typedef typename T_OutputIterator::value_type value_type;
-      return DoUninitializedCopyWithValueType(a_rangeBegin,
-                                              a_rangeEnd,
-                                              a_destRangeBegin,
-                                              value_type());
+      return DoUninitializedCopyWithValueType<value_type>
+        (a_rangeBegin, a_rangeEnd, a_destRangeBegin);
     }
 
-    template <typename T_InputIterator, typename T_OutputIterator,
-              typename T_ValueType>
+    template <typename T_ValueType, typename T_InputIterator, 
+              typename T_OutputIterator>
     T_OutputIterator
       DoUninitializedCopyWithValueType(T_InputIterator a_rangeBegin,
                                        T_InputIterator a_rangeEnd,
-                                       T_OutputIterator a_destRangeBegin,
-                                       T_ValueType)
+                                       T_OutputIterator a_destRangeBegin)
     {
       //TODO: Add proper checks for POD types.
       typedef typename Loki::TypeTraits<T_ValueType> value_type_traits;
@@ -81,32 +76,27 @@ namespace tloc { namespace core {
                              !(value_type_traits::isVolatile)>
                              assign_type;
 
-      return DoUninitializedCopy(a_rangeBegin,
-                                 a_rangeEnd,
-                                 a_destRangeBegin,
-                                 T_ValueType(),
-                                 assign_type());
+      return DoUninitializedCopy<T_ValueType>
+        (a_rangeBegin, a_rangeEnd, a_destRangeBegin, assign_type());
     }
 
-    template <typename T_InputIterator, typename T_OutputIterator,
-              typename T_ValueType>
+    template <typename T_ValueType, typename T_InputIterator, 
+              typename T_OutputIterator>
     T_OutputIterator
       DoUninitializedCopy (T_InputIterator aRangeBegin,
                            T_InputIterator aRangeEnd,
                            T_OutputIterator aDestRangeBegin,
-                           T_ValueType,
                            HasTrivalAssign)
     {
       return tloc::core::copy(aRangeBegin, aRangeEnd, aDestRangeBegin);
     }
 
-    template <typename T_InputIterator, typename T_OutputIterator,
-              typename T_ValueType>
+    template <typename T_ValueType, typename T_InputIterator, 
+              typename T_OutputIterator>
     T_OutputIterator
       DoUninitializedCopy (T_InputIterator aRangeBegin,
                            T_InputIterator aRangeEnd,
                            T_OutputIterator aDestRangeBegin,
-                           T_ValueType,
                            HasComplexAssign)
     {
       T_OutputIterator currentDestination(aDestRangeBegin);

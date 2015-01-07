@@ -15,6 +15,8 @@
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/opengl/tlocFramebufferObject.h>
 
+#include <tlocGraphics/renderer/tlocDrawCommand.h>
+
 namespace tloc { namespace graphics { namespace renderer {
 
   // ///////////////////////////////////////////////////////////////////////
@@ -126,6 +128,9 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef fbo_type::dimension_type                  dimension_type;
     typedef core_err::Error                           error_type;
 
+    typedef RenderPass                                render_pass;
+    typedef render_pass::command_type                 command_type;
+
   public:
     struct Params
     {
@@ -203,7 +208,10 @@ namespace tloc { namespace graphics { namespace renderer {
   public:
     Renderer_T(const Params& a_params);
 
+    this_type&        AddDrawCommand(const command_type& a_command);
+
     error_type        ApplyRenderSettings() const;
+    void              Render();
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
@@ -215,6 +223,7 @@ namespace tloc { namespace graphics { namespace renderer {
   private:
     Params                      m_params;
     mutable fbo_bind_ptr        m_fboBinder;
+    render_pass                 m_pass;
   };
 
   // -----------------------------------------------------------------------

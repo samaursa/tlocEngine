@@ -44,9 +44,6 @@ namespace
                             Cuboidf::height(2.0f), 
                             Cuboidf::depth(2.0f)) )
         .Construct();
-
-      CHECK(ptr->IsNormalsEnabled());
-      CHECK(ptr->IsTexCoordsEnabled());
     }
 
     //SECTION("Create", "")
@@ -57,16 +54,11 @@ namespace
         .Dimensions(Cuboidf(Cuboidf::width(2.0f), 
                             Cuboidf::height(2.0f), 
                             Cuboidf::depth(2.0f)) )
-        .Normals(false)
-        .TexCoords(false)
         .Create();
 
       REQUIRE(ent->HasComponent<component_type>());
 
       component_ptr ptr = ent->GetComponent<component_type>();
-
-      CHECK_FALSE(ptr->IsNormalsEnabled());
-      CHECK_FALSE(ptr->IsTexCoordsEnabled());
     }
 
     //SECTION("Add", "")
@@ -79,16 +71,11 @@ namespace
         .Dimensions(Cuboidf(Cuboidf::width(2.0f), 
                             Cuboidf::height(2.0f), 
                             Cuboidf::depth(2.0f)) )
-        .Normals(false)
-        .TexCoords(false)
         .Add(ent);
 
       REQUIRE(ent->HasComponent<component_type>());
 
       component_ptr ptr = ent->GetComponent<component_type>();
-
-      CHECK_FALSE(ptr->IsNormalsEnabled());
-      CHECK_FALSE(ptr->IsTexCoordsEnabled());
     }
 
     system->SetRenderer(win.GetRenderer());

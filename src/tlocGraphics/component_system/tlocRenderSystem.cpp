@@ -332,10 +332,6 @@ namespace tloc { namespace graphics { namespace component_system {
       m_viewMatrix.MakeIdentity();
       m_projMat.MakeIdentity();
     }
-    
-    TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame = 
-      core_sptr::MakeUnique<typename rof_uptr::value_type>(m_renderer.get());
 
     base_type::Pre_ProcessActiveEntities(a_deltaT);
   }
@@ -447,42 +443,50 @@ namespace tloc { namespace graphics { namespace component_system {
                                       "NormalMatrix"));
     }
 
-    using namespace p_material::Uniforms;
-
     // -----------------------------------------------------------------------
-    // view matrix
+    
+    auto sp = matPtr->GetShaderProg();
 
-    if (matPtr->IsUniformEnabled<k_viewMatrix>())
-    { matPtr->GetUniform<k_viewMatrix>()->SetValueAs(m_viewMatrix); }
+    // some uniforms need only be updated per shader switch
+    if (m_shaderPtr == nullptr || m_shaderPtr.get() != sp.get())
+    {
+      using namespace p_material::Uniforms;
 
-    if (matPtr->IsUniformEnabled<k_viewMatrixInverse>())
-    { 
-      matPtr->GetUniform<k_viewMatrixInverse>()->
-        SetValueAs(DoInvertOrIdentity(m_viewMatrix, "ViewMatrix")); 
-    }
+      // -----------------------------------------------------------------------
+      // view matrix
 
-    // -----------------------------------------------------------------------
-    // projection matrix
+      if (matPtr->IsUniformEnabled<k_viewMatrix>())
+      { matPtr->GetUniform<k_viewMatrix>()->SetValueAs(m_viewMatrix); }
 
-    if (matPtr->IsUniformEnabled<k_projectionMatrix>())
-    { matPtr->GetUniform<k_projectionMatrix>()->SetValueAs(m_projMat); }
+      if (matPtr->IsUniformEnabled<k_viewMatrixInverse>())
+      { 
+        matPtr->GetUniform<k_viewMatrixInverse>()->
+          SetValueAs(DoInvertOrIdentity(m_viewMatrix, "ViewMatrix")); 
+      }
 
-    if (matPtr->IsUniformEnabled<k_projectionMatrix>())
-    { 
-      matPtr->GetUniform<k_projectionMatrix>()->
-        SetValueAs(DoInvertOrIdentity(m_projMat, "ProjectionMatrix"));
-    }
+      // -----------------------------------------------------------------------
+      // projection matrix
 
-    // -----------------------------------------------------------------------
-    // view projection matrix
+      if (matPtr->IsUniformEnabled<k_projectionMatrix>())
+      { matPtr->GetUniform<k_projectionMatrix>()->SetValueAs(m_projMat); }
 
-    if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
-    { matPtr->GetUniform<k_viewProjectionMatrix>()->SetValueAs(m_vpMatrix); }
+      if (matPtr->IsUniformEnabled<k_projectionMatrix>())
+      { 
+        matPtr->GetUniform<k_projectionMatrix>()->
+          SetValueAs(DoInvertOrIdentity(m_projMat, "ProjectionMatrix"));
+      }
 
-    if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
-    { 
-      matPtr->GetUniform<k_viewProjectionMatrix>()->
-        SetValueAs(DoInvertOrIdentity(m_vpMatrix, "ViewProjMatrix")); 
+      // -----------------------------------------------------------------------
+      // view projection matrix
+
+      if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
+      { matPtr->GetUniform<k_viewProjectionMatrix>()->SetValueAs(m_vpMatrix); }
+
+      if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
+      { 
+        matPtr->GetUniform<k_viewProjectionMatrix>()->
+          SetValueAs(DoInvertOrIdentity(m_vpMatrix, "ViewProjMatrix")); 
+      }
     }
 
     auto matSO = matPtr->GetShaderOperator();
@@ -493,13 +497,15 @@ namespace tloc { namespace graphics { namespace component_system {
 
     DoUpdateTexCoords(ent, *a_di.m_shaderOp);
 
-    auto sp = matPtr->GetShaderProg();
-
     gfx_rend::DrawCommand dc(sp, matSO);
-    dc.AddShaderOperator(a_di.m_shaderOp)
+    dc.AddShaderOperator(core_sptr::ToVirtualPtr(matPtr->m_internalShaderOp))
+      .AddShaderOperator(a_di.m_shaderOp)
+      .SetVAO(a_di.m_meshVAO)
       .Mode(a_di.m_drawCommand)
       .StartIndex(0)
       .Count(a_di.m_numVertices);
+
+    m_renderer->AddDrawCommand(dc);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -507,10 +513,7 @@ namespace tloc { namespace graphics { namespace component_system {
   template <RENDER_SYSTEM_TEMPS>
   void RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities( f64 )
-  {
-    TLOC_ASSERT(m_renderer != nullptr, "No renderer attached");
-    m_renderOneFrame.reset();
-  }
+  { }
 
   // -----------------------------------------------------------------------
   // explicit instantiations

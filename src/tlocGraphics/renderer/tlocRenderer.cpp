@@ -275,7 +275,10 @@ namespace tloc { namespace graphics { namespace renderer {
   void
     Renderer_T<RENDERER_PARAMS>::
     Render()
-  { m_pass.Draw(); }
+  { 
+    RenderOneFrame rof(this);
+    m_pass.Draw();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

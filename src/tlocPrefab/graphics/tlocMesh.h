@@ -44,7 +44,7 @@ namespace tloc { namespace prefab { namespace graphics {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
 
-    typedef ComponentPoolManager    pool_mgr;
+    typedef core_cs::ComponentPoolManager                   pool_mgr;
 
     typedef core_conts::Array<T_VertexType>                 vert_cont;
     typedef vert_cont::const_iterator                       vert_cont_itr;
@@ -57,7 +57,7 @@ namespace tloc { namespace prefab { namespace graphics {
       = m_compPoolMgr->GetOrCreatePool<gfx_cs::Mesh>();
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
-    (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
+    (*itrMesh)->SetValue(core_sptr::MakeShared<gfx_cs::Mesh>() );
 
     gfx_cs::mesh_sptr meshPtr = *(*itrMesh)->GetValuePtr();
 

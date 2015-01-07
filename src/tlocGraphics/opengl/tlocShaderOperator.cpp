@@ -846,7 +846,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             TLOC_LOG_GFX_WARN_FILENAME_ONLY() 
               << "Uniform/Attribute type not found in shader: "
-              << shaderVarPtr->GetName();
+              << shaderVarPtr->GetName(interleaveIndex);
             shaderVarPtr->SetEnabled(false);
             retError = ErrorFailure;
           }

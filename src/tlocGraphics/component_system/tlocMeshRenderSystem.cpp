@@ -247,6 +247,8 @@ namespace tloc { namespace graphics { namespace component_system {
                   gfx_gl::p_vbo::usage::StaticDraw>(vbo, *meshType);
     DoAddVBONames(vbo, *meshType, *matPtr);
 
+    so->AddAttributeVBO(vbo);
+
     return base_type::InitializeEntity(a_ent);
   }
 
@@ -275,6 +277,7 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::DrawInfo di(a_ent, drawMode, numVertices);
     di.m_shaderOp = core_sptr::ToVirtualPtr(meshPtr->GetShaderOperator());
     di.m_meshVAO  = meshPtr->GetVAO();
+    di.m_drawCommand = gfx_rend::mode::k_triangles;
 
     base_type::DoDrawEntity(di);
   }

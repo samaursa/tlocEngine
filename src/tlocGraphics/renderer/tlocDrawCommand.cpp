@@ -39,7 +39,7 @@ namespace tloc { namespace graphics { namespace renderer {
   DrawCommand::
     DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp)
     : m_shaderProg(a_shader)
-    , m_materialOp(a_materialOp)
+    , m_materialSO(a_materialOp)
     , m_mode(mode::k_points)
     , m_startIndex(0)
     , m_count(0)
@@ -64,7 +64,7 @@ namespace tloc { namespace graphics { namespace renderer {
   { m_commands.push_back(a_command); return *this; }
 
   void
-    DoPrepAndEnableUniforms(DrawCommand::shader_op_ptr& a_so, 
+    DoPrepAndEnableUniforms(DrawCommand::shader_op_ptr a_so, 
                             const gfx_gl::ShaderProgram& a_sp)
   {
     auto err = a_so->PrepareAllUniforms(a_sp);
@@ -78,7 +78,7 @@ namespace tloc { namespace graphics { namespace renderer {
   }
 
   void
-    DoPrepAndEnableAttributeVBOs(DrawCommand::shader_op_ptr& a_so, 
+    DoPrepAndEnableAttributeVBOs(DrawCommand::shader_op_ptr a_so, 
                                  const gfx_gl::ShaderProgram& a_sp, 
                                  const gfx_gl::VertexArrayObject& a_vao)
   {
@@ -107,6 +107,8 @@ namespace tloc { namespace graphics { namespace renderer {
           TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "ShaderProgram #"
             << currShader->GetHandle() << " could not be enabled";
         }
+
+        DoPrepAndEnableUniforms(command.GetMaterialSO(), *currShader);
       }
 
       // prepare and enable uniforms/attributes

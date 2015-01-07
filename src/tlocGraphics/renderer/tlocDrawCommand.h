@@ -53,10 +53,11 @@ namespace tloc { namespace graphics { namespace renderer {
     TLOC_DECL_AND_DEF_GETTER(size_type,       GetCount, m_count);
     TLOC_DECL_AND_DEF_GETTER(vao_ptr,         GetVAO, m_vao);
     TLOC_DECL_AND_DEF_GETTER(shader_prog_ptr, GetShaderProgram, m_shaderProg);
+    TLOC_DECL_AND_DEF_GETTER(shader_op_ptr,   GetMaterialSO, m_materialSO);
 
   private:
     shader_prog_ptr m_shaderProg;
-    shader_op_ptr   m_materialOp;
+    shader_op_ptr   m_materialSO;
 
     mode_type       m_mode;
     index_type      m_startIndex;

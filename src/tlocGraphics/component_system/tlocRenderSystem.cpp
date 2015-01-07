@@ -501,9 +501,9 @@ namespace tloc { namespace graphics { namespace component_system {
     dc.AddShaderOperator(core_sptr::ToVirtualPtr(matPtr->m_internalShaderOp))
       .AddShaderOperator(a_di.m_shaderOp)
       .SetVAO(a_di.m_meshVAO)
-      .Mode(a_di.m_drawCommand)
-      .StartIndex(0)
-      .Count(a_di.m_numVertices);
+      .SetDrawMode(a_di.m_drawCommand)
+      .SetStartIndex(0)
+      .SetVertexCount(a_di.m_numVertices);
 
     m_renderer->AddDrawCommand(dc);
   }

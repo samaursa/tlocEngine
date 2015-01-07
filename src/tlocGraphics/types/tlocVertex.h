@@ -72,10 +72,13 @@ namespace tloc { namespace graphics { namespace types {
         return value_type(Get(0), Get(1), Get(2), Get(3)); 
       }
 
-      void SetColor(const color_type& a_normal)
+      void SetColor(const value_type& a_color)
+      { *this = static_cast<const VertexCol&>(a_color); }
+
+      void SetColor(const color_type& a_color)
       { 
         math_t::Vec4f32 temp;
-        a_normal.GetAs<gfx_t::p_color::format::RGBA>(temp); 
+        a_color.GetAs<gfx_t::p_color::format::RGBA>(temp); 
         operator[](0) = temp[0];
         operator[](1) = temp[1];
         operator[](2) = temp[2];
@@ -236,6 +239,9 @@ namespace tloc { namespace graphics { namespace types {
 
   namespace f_vertex {
 
+    // ///////////////////////////////////////////////////////////////////////
+    // Vertex to GL pointer info
+
     struct VertexAttribPointerInfo 
     {
       typedef s32                                       gl_int;
@@ -254,6 +260,296 @@ namespace tloc { namespace graphics { namespace types {
 
     VertexAttribPointerInfo 
       GetCustomGLTypeInfo(tl_int a_customGlType, tl_size a_interleaveIndex = 0);
+
+    // ///////////////////////////////////////////////////////////////////////
+    // Vertex filler
+    // NOTES: These classes are useful for filling a generic vertex properly
+    //        with the available values.
+
+    template <bool T_2D, bool T_Normals, bool T_Color, bool T_TexCoords>
+    struct VertexSelector;
+
+    // -----------------------------------------------------------------------
+    // 2D vertices
+
+    template <>
+    struct VertexSelector<true, true, true, true>
+    {
+      typedef gfx_t::Vert2fpnct                       value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+      typedef value_type::attrib_3_type::value_type   col_type;
+      typedef value_type::attrib_4_type::value_type   tex_coord_type;
+
+      value_type Fill(pos_type a_pos, norm_type a_norm, col_type a_col, 
+                      tex_coord_type a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+        vert.SetColor(a_col);
+        vert.SetTexCoord(a_texCoord);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<true, true, true, false>
+    {
+      typedef gfx_t::Vert2fpnc                        value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+      typedef value_type::attrib_3_type::value_type   col_type;
+
+      template <typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, norm_type a_norm, col_type a_col, 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+        vert.SetColor(a_col);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<true, true, false, true>
+    {
+      typedef gfx_t::Vert2fpnt                        value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+      typedef value_type::attrib_3_type::value_type   tex_coord_type;
+
+      template <typename T_ColType>
+      value_type Fill(pos_type a_pos, norm_type a_norm, T_ColType , 
+                      tex_coord_type a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+        vert.SetTexCoord(a_texCoord);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<true, false, false, true>
+    {
+      typedef gfx_t::Vert2fpt                         value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   tex_coord_type;
+
+      template <typename T_NormType, typename T_ColType>
+      value_type Fill(pos_type a_pos, T_NormType , T_ColType , 
+                      tex_coord_type a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetTexCoord(a_texCoord);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<true, false, true, false>
+    {
+      typedef gfx_t::Vert2fpc                         value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   col_type;
+
+      template <typename T_NormType, typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, T_NormType , col_type a_col, 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetColor(a_col);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<true, true, false, false>
+    {
+      typedef gfx_t::Vert2fpn                         value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+
+      template <typename T_ColType, typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, norm_type a_norm, T_ColType , 
+                      T_TexCoordType a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<true, false, false, false>
+    {
+      typedef gfx_t::Vert2fp                          value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+
+      template <typename T_NormType, typename T_ColType, typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, T_NormType , T_ColType , 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+
+        return vert;
+      }
+    };
+
+    // -----------------------------------------------------------------------
+    // 3D vertices
+
+    template <>
+    struct VertexSelector<false, true, true, true>
+    {
+      typedef gfx_t::Vert3fpnct                       value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+      typedef value_type::attrib_3_type::value_type   col_type;
+      typedef value_type::attrib_4_type::value_type   tex_coord_type;
+
+      value_type Fill(pos_type a_pos, norm_type a_norm, col_type a_col, 
+                      tex_coord_type a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+        vert.SetColor(a_col);
+        vert.SetTexCoord(a_texCoord);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<false, true, true, false>
+    {
+      typedef gfx_t::Vert3fpnc                        value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+      typedef value_type::attrib_3_type::value_type   col_type;
+
+      template <typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, norm_type a_norm, col_type a_col, 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+        vert.SetColor(a_col);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<false, true, false, true>
+    {
+      typedef gfx_t::Vert3fpnt                        value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+      typedef value_type::attrib_3_type::value_type   tex_coord_type;
+
+      template <typename T_ColType>
+      value_type Fill(pos_type a_pos, norm_type a_norm, T_ColType , 
+                      tex_coord_type a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+        vert.SetTexCoord(a_texCoord);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<false, false, false, true>
+    {
+      typedef gfx_t::Vert3fpt                         value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   tex_coord_type;
+
+      template <typename T_NormType, typename T_ColType>
+      value_type Fill(pos_type a_pos, T_NormType , T_ColType , 
+                      tex_coord_type a_texCoord)
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetTexCoord(a_texCoord);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<false, false, true, false>
+    {
+      typedef gfx_t::Vert3fpc                         value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   col_type;
+
+      template <typename T_NormType, typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, T_NormType , col_type a_col, 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetColor(a_col);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<false, true, false, false>
+    {
+      typedef gfx_t::Vert3fpn                         value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+      typedef value_type::attrib_2_type::value_type   norm_type;
+
+      template <typename T_ColType, typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, norm_type a_norm, T_ColType , 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+        vert.SetNormal(a_norm);
+
+        return vert;
+      }
+    };
+
+    template <>
+    struct VertexSelector<false, false, false, false>
+    {
+      typedef gfx_t::Vert3fp                          value_type;
+      typedef value_type::attrib_1_type::value_type   pos_type;
+
+      template <typename T_NormType, typename T_ColType, typename T_TexCoordType>
+      value_type Fill(pos_type a_pos, T_NormType , T_ColType , 
+                      T_TexCoordType )
+      {
+        value_type vert;
+        vert.SetPosition(a_pos);
+
+        return vert;
+      }
+    };
 
   };
 

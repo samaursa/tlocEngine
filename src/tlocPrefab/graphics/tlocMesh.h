@@ -8,6 +8,7 @@
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/component_system/tlocMesh.h>
+#include <tlocGraphics/renderer/tlocDrawCommand.h>
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -30,6 +31,8 @@ namespace tloc { namespace prefab { namespace graphics {
     template <typename T_VertexType>
     void         Add(entity_ptr a_ent, 
                      const core_conts::Array<T_VertexType>& a_vertices) const;
+
+    TLOC_DECL_PARAM_VAR(gfx_rend::mode::value_type, DrawMode, m_drawMode);
   };
 
   // -----------------------------------------------------------------------
@@ -64,6 +67,8 @@ namespace tloc { namespace prefab { namespace graphics {
     for (vert_cont_itr itr = a_vertices.begin(), itrEnd = a_vertices.end();
          itr != itrEnd; ++itr)
     { meshPtr->AddVertex(*itr); }
+
+    meshPtr->SetDrawMode(m_drawMode);
 
     return meshPtr;
   }

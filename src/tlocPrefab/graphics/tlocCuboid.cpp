@@ -35,58 +35,6 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <bool T_TexCoords, bool T_Normals>
-  struct VertType;
-
-  template <>
-  struct VertType<true, true>
-  { 
-    typedef gfx_t::Vert3fpnt        value_type;
-
-    template <typename T_Pos, typename T_Tex, typename T_Norm>
-    value_type Fill(T_Pos a_pos, T_Norm a_norm, T_Tex a_tex) const
-    {
-      value_type vert;
-      vert.SetPosition(a_pos);
-      vert.SetTexCoord(a_tex);
-      vert.SetNormal(a_norm);
-
-      return vert;
-    }
-  };
-
-  template <>
-  struct VertType<false, true>
-  { 
-    typedef gfx_t::Vert3fpn         value_type; 
-
-    template <typename T_Pos, typename T_Tex, typename T_Norm>
-    value_type Fill(T_Pos a_pos, T_Norm a_norm, T_Tex ) const
-    {
-      value_type vert;
-      vert.SetPosition(a_pos);
-      vert.SetNormal(a_norm);
-
-      return vert;
-    }
-  };
-
-  template <>
-  struct VertType<true, false>
-  { 
-    typedef gfx_t::Vert3fpt         value_type;
-
-    template <typename T_Pos, typename T_Tex, typename T_Norm>
-    value_type Fill(T_Pos a_pos, T_Norm , T_Tex a_tex) const
-    {
-      value_type vert;
-      vert.SetPosition(a_pos);
-      vert.SetTexCoord(a_tex);
-
-      return vert;
-    }
-  };
-
   template <CUBOID_TEMPS>
   auto
     Cuboid_T<CUBOID_PARAMS>::
@@ -97,7 +45,8 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef ComponentPoolManager                          pool_mgr;
 
-    typedef typename VertType<T_TexCoords, T_Normals>     vert_selector;
+    typedef typename gfx_t::f_vertex::VertexSelector
+      <false, T_Normals, false, T_TexCoords>              vert_selector;
     typedef typename vert_selector::value_type            vert_type;
     typedef core_conts::Array<vert_type>                  vert_cont;
     typedef vert_cont::iterator                           vert_itr;
@@ -153,94 +102,94 @@ namespace tloc { namespace prefab { namespace graphics {
     // Front face
 
     vert_selector vs;
-    *itr = vs.Fill(blf, frontNorm, Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, frontNorm, 0, Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trf, frontNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, frontNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(tlf, frontNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, frontNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    *itr = vs.Fill(blf, frontNorm,Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, frontNorm, 0, Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(brf, frontNorm,Vec2f32(uMulti * 0.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brf, frontNorm, 0, Vec2f32(uMulti * 0.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trf, frontNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, frontNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Top face
-    *itr = vs.Fill(tlf, topNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, topNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trb, topNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, topNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(tlb, topNorm,Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlb, topNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    *itr = vs.Fill(tlf, topNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, topNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trf, topNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, topNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trb, topNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, topNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Back face
-    *itr = vs.Fill(blb, backNorm,Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blb, backNorm, 0, Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(tlb, backNorm,Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlb, backNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trb, backNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, backNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    *itr = vs.Fill(blb, backNorm,Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blb, backNorm, 0, Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trb, backNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, backNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(brb, backNorm,Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brb, backNorm, 0, Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Side 1 (left face when looking down z-axis)
-    *itr = vs.Fill(brf, leftNorm,Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
+    *itr = vs.Fill(brf, leftNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trb, leftNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, leftNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trf, leftNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, leftNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    *itr = vs.Fill(brf, leftNorm,Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
+    *itr = vs.Fill(brf, leftNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(brb, leftNorm,Vec2f32(uMulti * 2.0f, vMulti  * 0.0f));
+    *itr = vs.Fill(brb, leftNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(trb, leftNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, leftNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Side 2 (right face when looking down z-axis)
-    *itr = vs.Fill(blb, rightNorm,Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
+    *itr = vs.Fill(blb, rightNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(tlf, rightNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, rightNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(tlb, rightNorm,Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlb, rightNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    *itr = vs.Fill(blb, rightNorm,Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
+    *itr = vs.Fill(blb, rightNorm, 0, Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(blf, rightNorm,Vec2f32(uMulti * 1.0f, vMulti  * 3.0f));
+    *itr = vs.Fill(blf, rightNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(tlf, rightNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, rightNorm, 0, Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // bottom
 
-    *itr = vs.Fill(blf, bottomNorm,Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, bottomNorm, 0, Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(brb, bottomNorm,Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brb, bottomNorm, 0, Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(brf, bottomNorm,Vec2f32(uMulti * 4.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brf, bottomNorm, 0, Vec2f32(uMulti * 4.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    *itr = vs.Fill(blf, bottomNorm,Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, bottomNorm, 0, Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(blb, bottomNorm,Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blb, bottomNorm, 0, Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    *itr = vs.Fill(brb, bottomNorm,Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brb, bottomNorm, 0, Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
 
     // -----------------------------------------------------------------------
 

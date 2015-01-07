@@ -42,15 +42,15 @@ namespace tloc { namespace graphics { namespace renderer {
   public:
     this_type&            AddShaderOperator(const shader_op_ptr& a_so);
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(mode_type, Mode, m_mode);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(index_type, StartIndex, m_startIndex);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(size_type, Count, m_count);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(mode_type, SetDrawMode, m_drawMode);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(index_type, SetStartIndex, m_startIndex);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(size_type, SetVertexCount, m_vertexCount);
 
     TLOC_DECL_AND_DEF_SETTER_CHAIN(vao_ptr, SetVAO, m_vao);
 
-    TLOC_DECL_AND_DEF_GETTER(mode_type,       GetMode, m_mode);
+    TLOC_DECL_AND_DEF_GETTER(mode_type,       GetMode, m_drawMode);
     TLOC_DECL_AND_DEF_GETTER(index_type,      GetStartIndex, m_startIndex);
-    TLOC_DECL_AND_DEF_GETTER(size_type,       GetCount, m_count);
+    TLOC_DECL_AND_DEF_GETTER(size_type,       GetCount, m_vertexCount);
     TLOC_DECL_AND_DEF_GETTER(vao_ptr,         GetVAO, m_vao);
     TLOC_DECL_AND_DEF_GETTER(shader_prog_ptr, GetShaderProgram, m_shaderProg);
     TLOC_DECL_AND_DEF_GETTER(shader_op_ptr,   GetMaterialSO, m_materialSO);
@@ -59,9 +59,9 @@ namespace tloc { namespace graphics { namespace renderer {
     shader_prog_ptr m_shaderProg;
     shader_op_ptr   m_materialSO;
 
-    mode_type       m_mode;
+    mode_type       m_drawMode;
     index_type      m_startIndex;
-    size_type       m_count;
+    size_type       m_vertexCount;
     shader_ops      m_shaderOps;
 
     vao_ptr         m_vao;

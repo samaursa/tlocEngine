@@ -277,7 +277,7 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::DrawInfo di(a_ent, drawMode, numVertices);
     di.m_shaderOp = core_sptr::ToVirtualPtr(meshPtr->GetShaderOperator());
     di.m_meshVAO  = meshPtr->GetVAO();
-    di.m_drawCommand = gfx_rend::mode::k_triangles;
+    di.m_drawCommand = meshPtr->GetDrawMode();
 
     base_type::DoDrawEntity(di);
   }

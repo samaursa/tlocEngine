@@ -198,6 +198,14 @@ namespace tloc { namespace graphics { namespace renderer {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <RENDERER_TEMPS>
+  RENDERER_TYPE::this_type&
+    Renderer_T<RENDERER_PARAMS>::
+    AddDrawCommand(const command_type& a_command)
+  { m_pass.AddDrawCommand(a_command); return *this; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
   RENDERER_TYPE::error_type
     Renderer_T<RENDERER_PARAMS>::
     ApplyRenderSettings() const
@@ -260,6 +268,14 @@ namespace tloc { namespace graphics { namespace renderer {
 
     return ErrorSuccess;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDERER_TEMPS>
+  void
+    Renderer_T<RENDERER_PARAMS>::
+    Render()
+  { m_pass.Draw(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

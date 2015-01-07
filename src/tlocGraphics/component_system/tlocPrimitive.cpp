@@ -4,171 +4,48 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  namespace p_primitive {
-
-    // -----------------------------------------------------------------------
-    // ArrayOfStructures
-
-    ArrayOfStructures::
-      ArrayOfStructures()
-      : m_vertexes(new cont_type())
-    { }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      ArrayOfStructures::
-      AddVertex(const vert_type& a_vertex)
-    {
-      m_vertexes->push_back(a_vertex);
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    ArrayOfStructures::vert_type
-      ArrayOfStructures::
-      GetVertex(size_type a_position) const
-    {
-      return (*m_vertexes)[a_position];
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      ArrayOfStructures::
-      ModifyVertex(size_type a_position, const vert_type& a_vertex)
-    {
-      (*m_vertexes)[a_position] = a_vertex;
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    ArrayOfStructures::size_type
-      ArrayOfStructures::
-      size() const
-    {
-      return m_vertexes->size();
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      ArrayOfStructures::
-      clear()
-    {
-      m_vertexes->clear();
-    }
-
-    // -----------------------------------------------------------------------
-    // StructureOfArrays
-
-    StructureOfArrays::
-      StructureOfArrays()
-      : m_positions(new cont_pos_type())
-      , m_normals(new cont_norm_type())
-      , m_tcoords(new cont_tcoord_type())
-    { }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      StructureOfArrays::
-      AddVertex(const vert_type& a_vertex)
-    {
-      pos_type     pos(a_vertex.GetPosition());
-      norm_type    norm(a_vertex.GetNormal());
-      tcoord_type  tcoord(a_vertex.GetTexCoord());
-
-      m_positions->push_back(pos);
-      m_normals->push_back(norm);
-      m_tcoords->push_back(tcoord);
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    StructureOfArrays::vert_type
-      StructureOfArrays::
-      GetVertex(size_type a_position) const
-    {
-      vert_type vertex;
-      vertex.SetPosition( (*m_positions)[a_position]);
-      vertex.SetNormal( (*m_normals)[a_position]);
-      vertex.SetTexCoord( (*m_tcoords)[a_position]);
-
-      return vertex;
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      StructureOfArrays::
-      ModifyVertex(size_type a_position, const vert_type& a_vertex)
-    {
-      pos_type     pos(a_vertex.GetPosition());
-      norm_type    norm(a_vertex.GetNormal());
-      tcoord_type  tcoord(a_vertex.GetTexCoord());
-
-      (*m_positions)[a_position] = pos;
-      (*m_normals)[a_position]   = norm;
-      (*m_tcoords)[a_position]   = tcoord;
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    StructureOfArrays::size_type
-      StructureOfArrays::
-      size() const
-    {
-      TLOC_ASSERT(m_positions->size() == m_normals->size() &&
-                  m_positions->size() == m_tcoords->size(),
-                  "Strucure of arrays size mismatch. Check logic of AddVertex "
-                  "and ModifyVertex methods");
-      return m_positions->size();
-    }
-
-    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    void
-      StructureOfArrays::
-      clear()
-    {
-      m_positions->clear();
-      m_normals->clear();
-      m_tcoords->clear();
-    }
-
-  };
-
   // -----------------------------------------------------------------------
-  // Primitive_TI
+  // Primitive_T
 
-#define PRIMITIVE_TEMPS   typename T_VertexStoragePolicy
-#define PRIMITIVE_PARAMS  T_VertexStoragePolicy
-#define PRIMITIVE_TYPE    typename Primitive_TI<PRIMITIVE_PARAMS>
+  Primitive_I::
+    Primitive_I()
+    : m_vertexType(0)
+    , m_numVertices(0)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <PRIMITIVE_TEMPS>
-  Primitive_TI<PRIMITIVE_PARAMS>::
-    Primitive_TI()
-  { }
+  bool
+    Primitive_I::
+    empty() const
+  { return m_vertices.IsEmpty(); }
 
-  // -----------------------------------------------------------------------
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Primitive_I::
+    clear()
+  { m_vertices.Reset(); m_vertexType = 0; m_numVertices = 0; }
+
+  // ///////////////////////////////////////////////////////////////////////
   // explicit instantiations
 
-  template class Primitive_TI<p_primitive::ArrayOfStructures>;
-  template class Primitive_TI<p_primitive::StructureOfArrays>;
+  typedef Primitive_I                                   this_type;
+  typedef gfx_t::Vert3fp                                vert_type;
+  typedef core_conts::Array<vert_type>                  cont_type;
+  typedef core_conts::Array<vert_type>::iterator        itr_type;
+  typedef core_conts::Array<vert_type>::const_iterator  const_itr_type;
+  typedef core_conts::Array<vert_type>::size_type       size_type;
+
+  template this_type&       Primitive_I::AddVertex(const vert_type&);
+  template vert_type        Primitive_I::GetVertex(size_type) const;
+  template this_type&       Primitive_I::ModifyVertex(size_type, const vert_type&);
+  template const cont_type& Primitive_I::GetVertices() const;
+
+  template itr_type       Primitive_I::begin<vert_type>();
+  template itr_type       Primitive_I::end<vert_type>();
+
+  template const_itr_type Primitive_I::begin<vert_type>() const;
+  template const_itr_type Primitive_I::end<vert_type>() const;
 
 };};};
-
-// -----------------------------------------------------------------------
-// explicit instantiations
-
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-
-using namespace tloc::gfx_cs;
-
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(p_primitive::ArrayOfStructures::cont_type);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(p_primitive::StructureOfArrays::cont_pos_type);
-//TLOC_EXPLICITLY_INSTANTIATE_SHARED_PTR(p_primitive::StructureOfArrays::cont_norm_type);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(p_primitive::StructureOfArrays::cont_tcoord_type);

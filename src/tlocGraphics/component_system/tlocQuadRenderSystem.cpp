@@ -81,8 +81,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     quad_buffer_cont             qList;
 
-    for (auto itr = DoGetActiveEntities().begin(), 
-              itrEnd = DoGetActiveEntities().end(); itr != itrEnd; ++itr)
+    for (auto itr = DoGetActiveEntities().begin(),
+         itrEnd = DoGetActiveEntities().end(); itr != itrEnd; ++itr)
     {
       auto ent = itr->first;
 
@@ -100,15 +100,15 @@ namespace tloc { namespace graphics { namespace component_system {
         {
           using namespace p_material::Attributes;
 
-          auto texCoordPrefix = 
+          auto texCoordPrefix =
             currInstanceInfo->m_mat->GetAttributeName<p_material::Attributes::k_texCoordPrefix>();
 
           gfx_gl::AttributeVBO vboQuad;
           vboQuad.AddName(matPtr->GetAttributeName<k_vertexPosition>());
-          vboQuad.AddName(core_str::Format("%s0", texCoordPrefix.c_str()) );
+          vboQuad.AddName(core_str::Format("%s0", texCoordPrefix.c_str()));
 
-          vboQuad.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-                             gfx_gl::p_vbo::usage::StaticDraw>(qList);
+          vboQuad.SetValueAs < gfx_gl::p_vbo::target::ArrayBuffer,
+            gfx_gl::p_vbo::usage::StaticDraw > (qList);
 
           currInstanceInfo->m_so.reserve_attributeVBOs(2);
           currInstanceInfo->m_so.AddAttributeVBO(vboQuad);
@@ -161,8 +161,8 @@ namespace tloc { namespace graphics { namespace component_system {
       vboQuad.AddName(currInstanceInfo->m_mat->GetAttributeName<k_vertexPosition>());
       vboQuad.AddName(core_str::Format("%s0", texCoordPrefix.c_str()));
 
-      vboQuad.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-                         gfx_gl::p_vbo::usage::StaticDraw>(qList);
+      vboQuad.SetValueAs < gfx_gl::p_vbo::target::ArrayBuffer,
+        gfx_gl::p_vbo::usage::StaticDraw > (qList);
 
       currInstanceInfo->m_so.reserve_attributeVBOs(2);
       currInstanceInfo->m_so.AddAttributeVBO(vboQuad);

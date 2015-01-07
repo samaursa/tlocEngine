@@ -3,6 +3,10 @@
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
 #include <tlocGraphics/opengl/tlocGLTypes.h>
 
+#include <tlocCore/logging/tlocLogger.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace renderer {
 
   namespace {
@@ -33,8 +37,10 @@ namespace tloc { namespace graphics { namespace renderer {
   // DrawCommands
 
   DrawCommand::
-    DrawCommand()
-    : m_mode(mode::k_points)
+    DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp)
+    : m_shaderProg(a_shader)
+    , m_materialOp(a_materialOp)
+    , m_mode(mode::k_points)
     , m_startIndex(0)
     , m_count(0)
   { }
@@ -53,30 +59,65 @@ namespace tloc { namespace graphics { namespace renderer {
   // Draw
 
   auto
-    Draw::
-    AddCommand(const command_type& a_command) -> this_type&
+    RenderPass::
+    AddDrawCommand(const command_type& a_command) -> this_type&
   { m_commands.push_back(a_command); return *this; }
 
   void
-    Draw::
-    Render()
+    DoPrepAndEnableUniforms(DrawCommand::shader_op_ptr& a_so, 
+                            const gfx_gl::ShaderProgram& a_sp)
   {
+    auto err = a_so->PrepareAllUniforms(a_sp);
+    if (err.Succeeded())
+    { a_so->EnableAllUniforms(a_sp); }
+    else
+    {
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Shader ID#" << a_sp.GetHandle() 
+        << " encountered problems preparing uniforms.";
+    }
+  }
+
+  void
+    DoPrepAndEnableAttributeVBOs(DrawCommand::shader_op_ptr& a_so, 
+                                 const gfx_gl::ShaderProgram& a_sp, 
+                                 const gfx_gl::VertexArrayObject& a_vao)
+  {
+    auto err = a_so->PrepareAllAttributeVBOs(a_sp, a_vao);
+    if (err.Failed())
+    {
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Shader ID#" << a_sp.GetHandle() 
+        << " encountered problems preparing attributes.";
+    }
+  }
+
+  void
+    RenderPass::
+    Draw()
+  {
+    shader_prog_ptr   currShader;
+
     for (auto& command : m_commands)
     {
-      if (m_currShader != command.GetShaderProgram())
+      // set or switch shader
+      if (currShader != command.GetShaderProgram())
       {
-        m_currShader = command.GetShaderProgram();
-        m_currShader->Enable();
+        currShader = command.GetShaderProgram();
+        if (currShader->Enable().Failed())
+        {
+          TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "ShaderProgram #"
+            << currShader->GetHandle() << " could not be enabled";
+        }
       }
+
+      // prepare and enable uniforms/attributes
+      auto vao = command.GetVAO();
 
       for (auto itr = command.begin_so(), itrEnd = command.end_so(); 
            itr != itrEnd; ++itr)
       {
-        if ((*itr)->PrepareAllUniforms(*m_currShader).Succeeded())
-        { (*itr)->EnableAllUniforms(*m_currShader); }
+        DoPrepAndEnableUniforms(*itr, *currShader);
+        DoPrepAndEnableAttributeVBOs(*itr, *currShader, *vao);
       }
-
-      auto vao = command.GetVAO();
 
       if (vao)
       {
@@ -86,6 +127,8 @@ namespace tloc { namespace graphics { namespace renderer {
         glDrawArrays(commandMode, command.GetStartIndex(), command.GetCount());
       }
     }
+
+    m_commands.clear();
   }
 
 };};};

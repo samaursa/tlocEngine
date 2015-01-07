@@ -14,18 +14,200 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  using namespace core::data_structs;
+  namespace {
 
-#define MESH_RENDER_SYSTEM_TEMPS    typename Mesh_T
-#define MESH_RENDER_SYSTEM_PARAMS   Mesh_T
-#define MESH_RENDER_SYSTEM_TYPE     typename MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Target, typename T_Usage>
+    void 
+      DoSetVBOValue(gfx_gl::AttributeVBO& a_vbo, const gfx_cs::Mesh& a_mesh)
+    {
+      switch(a_mesh.GetVertexType())
+      {
+        case(GL_FLOAT_VEC2):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fp>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(GL_FLOAT_VEC3):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fp>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        // POSITION2F
+        case(TLOC_GL_POSITION2F_NORMAL3F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpn>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_TEXTURE2F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpt>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_COLOR4F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpc>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_NORMAL3F_COLOR4F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpnc>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpnt>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpnct>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        // POSITION3F
+        case(TLOC_GL_POSITION3F_NORMAL3F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpn>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION3F_TEXTURE2F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpt>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION3F_COLOR4F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpc>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION3F_NORMAL3F_COLOR4F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpnc>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpnt>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        case(TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpnct>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
+        default: TLOC_LOG_GFX_WARN_NO_FILENAME() << "Unsupported vertex type in Mesh";
+      }
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    void 
+      DoAddVBONames(gfx_gl::AttributeVBO& a_vbo, const gfx_cs::Mesh& a_mesh, 
+                    gfx_cs::Material& a_material)
+    {
+      using namespace gfx_cs::p_material;
+
+      // all vertex types get a position
+      {
+        auto& name = a_material.GetAttributeName<Attributes::k_vertexPosition>();
+        a_vbo.AddName(name);
+      }
+
+      switch(a_mesh.GetVertexType())
+      {
+        // POSITION2F
+        case(TLOC_GL_POSITION2F_NORMAL3F):
+        case(TLOC_GL_POSITION3F_NORMAL3F):
+        {
+          auto& name = a_material.GetAttributeName<Attributes::k_vertexNormal>();
+          a_vbo.AddName(name);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_TEXTURE2F):
+        case(TLOC_GL_POSITION3F_TEXTURE2F):
+        {
+          auto& name = a_material.GetAttributeName<Attributes::k_texCoordPrefix>();
+          a_vbo.AddName(core_str::Format("%s0", name.c_str()));
+          break;
+        }
+        case(TLOC_GL_POSITION2F_COLOR4F):
+        case(TLOC_GL_POSITION3F_COLOR4F):
+        {
+          auto& name = a_material.GetAttributeName<Attributes::k_vertexColor>();
+          a_vbo.AddName(name);
+          break;
+        }
+        case(TLOC_GL_POSITION2F_NORMAL3F_COLOR4F):
+        case(TLOC_GL_POSITION3F_NORMAL3F_COLOR4F):
+        {
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_vertexNormal>();
+            a_vbo.AddName(name);
+          }
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_vertexColor>();
+            a_vbo.AddName(name);
+          }
+          break;
+        }
+        case(TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F):
+        case(TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F):
+        {
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_vertexNormal>();
+            a_vbo.AddName(name);
+          }
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_texCoordPrefix>();
+            a_vbo.AddName(core_str::Format("%s0", name.c_str()));
+          }
+          break;
+        }
+        case(TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F):
+        case(TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F):
+        {
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_vertexNormal>();
+            a_vbo.AddName(name);
+          }
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_vertexColor>();
+            a_vbo.AddName(name);
+          }
+          {
+            auto& name = a_material.GetAttributeName<Attributes::k_texCoordPrefix>();
+            a_vbo.AddName(core_str::Format("%s0", name.c_str()));
+          }
+          break;
+        }
+        default: TLOC_LOG_GFX_WARN_NO_FILENAME() << "Unsupported vertex type in Mesh";
+      }
+    }
+
+  };
+
+  using namespace core::data_structs;
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    MeshRenderSystem_T(event_manager_ptr a_eventMgr,
-                       entity_manager_ptr a_entityMgr)
+  MeshRenderSystem::
+    MeshRenderSystem(event_manager_ptr a_eventMgr, 
+                     entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 register_type().Add<mesh_type>(), 
                 "MeshRenderSystem")
@@ -33,18 +215,16 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    Pre_Initialize()
+  auto
+    MeshRenderSystem::
+    Pre_Initialize() -> error_type
   { return base_type::Pre_Initialize(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    InitializeEntity(entity_ptr a_ent)
+  auto
+    MeshRenderSystem::
+    InitializeEntity(entity_ptr a_ent) -> error_type
   {
     base_type::InitializeEntity(a_ent);
 
@@ -62,51 +242,25 @@ namespace tloc { namespace graphics { namespace component_system {
     
     const gfx_gl::shader_operator_vptr so = meshType->GetShaderOperator().get();
 
-    using namespace p_material::Attributes;
-    { // Positions
-      gfx_gl::AttributeVBO vbo;
-      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
-                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetPositions());
-      vbo.AddName(matPtr->GetAttributeName<k_vertexPosition>());
-      so->AddAttributeVBO(vbo);
-    }
-
-    // Normals
-    if (meshType->IsNormalsEnabled())
-    {
-      gfx_gl::AttributeVBO vbo;
-      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
-                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetNormals());
-      vbo.AddName(matPtr->GetAttributeName<k_vertexNormal>());
-      so->AddAttributeVBO(vbo);
-    }
-
-    // TexCoords
-    if (meshType->IsTexCoordsEnabled())
-    {
-      gfx_gl::AttributeVBO vbo;
-      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer, 
-                     gfx_gl::p_vbo::usage::StaticDraw>(*meshType->GetTCoords());
-      vbo.AddName(matPtr->GetAttributeName<k_texCoordPrefix>() + "0");
-      so->AddAttributeVBO(vbo);
-    }
+    gfx_gl::AttributeVBO vbo;
+    DoSetVBOValue<gfx_gl::p_vbo::target::ArrayBuffer,
+                  gfx_gl::p_vbo::usage::StaticDraw>(vbo, *meshType);
+    DoAddVBONames(vbo, *meshType, *matPtr);
 
     return base_type::InitializeEntity(a_ent);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <MESH_RENDER_SYSTEM_TEMPS>
-  MESH_RENDER_SYSTEM_TYPE::error_type
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    ShutdownEntity(entity_ptr)
+  auto
+    MeshRenderSystem::
+    ShutdownEntity(entity_ptr) -> error_type
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <MESH_RENDER_SYSTEM_TEMPS>
   void
-    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    MeshRenderSystem::
     ProcessEntity(entity_ptr a_ent, f64)
   {
     typedef gfx_cs::Material          mat_type;
@@ -114,21 +268,16 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_ent->HasComponent<gfx_cs::Material>() == false)
     { return; }
 
-    mesh_ptr                meshPtr = a_ent->GetComponent<Mesh_T>();
+    auto  meshPtr = a_ent->GetComponent<Mesh>();
+    auto  drawMode = meshPtr->GetDrawMode();
+    auto  numVertices = meshPtr->GetNumVertices();
 
-    const tl_size numVertices = meshPtr->size();
-
-    base_type::DrawInfo di(a_ent, GL_TRIANGLES, numVertices);
+    base_type::DrawInfo di(a_ent, drawMode, numVertices);
     di.m_shaderOp = core_sptr::ToVirtualPtr(meshPtr->GetShaderOperator());
     di.m_meshVAO  = meshPtr->GetVAO();
 
     base_type::DoDrawEntity(di);
   }
-
-  // -----------------------------------------------------------------------
-  // explicit instantiation
-
-  template class MeshRenderSystem_T<Mesh>;
 
 };};};
 

@@ -51,30 +51,27 @@ namespace tloc { namespace core {
                                      T_OutputIterator a_destRangeBegin,
                                      IsComplexItr);
 
-    template <typename T_InputIterator, typename T_OutputIterator,
-              typename T_ValueType>
+    template <typename T_ValueType, typename T_InputIterator, 
+              typename T_OutputIterator>
     T_OutputIterator
       DoUninitializedCopyWithValueType(T_InputIterator a_rangeBegin,
                                        T_InputIterator a_rangeEnd,
-                                       T_OutputIterator a_destRangeBegin,
-                                       T_ValueType);
+                                       T_OutputIterator a_destRangeBegin);
 
-    template <typename T_InputIterator, typename T_OutputIterator,
-              typename T_ValueType>
+    template <typename T_ValueType, typename T_InputIterator, 
+              typename T_OutputIterator>
     T_OutputIterator
       DoUninitializedCopy(T_InputIterator aRangeBegin,
                           T_InputIterator aRangeEnd,
                           T_OutputIterator aDestRangeBegin,
-                          T_ValueType,
                           HasTrivalAssign);
 
-    template <typename T_InputIterator, typename T_OutputIterator,
-              typename T_ValueType>
+    template <typename T_ValueType, typename T_InputIterator, 
+              typename T_OutputIterator>
     T_OutputIterator
       DoUninitializedCopy(T_InputIterator aRangeBegin,
                           T_InputIterator aRangeEnd,
                           T_OutputIterator aDestRangeBegin,
-                          T_ValueType,
                           HasComplexAssign);
 
     template <typename T_InputIterator, typename T_Count, typename T_ValueType>

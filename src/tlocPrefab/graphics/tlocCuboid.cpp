@@ -21,11 +21,13 @@ namespace tloc { namespace prefab { namespace graphics {
   // ///////////////////////////////////////////////////////////////////////
   // Cuboid
 
-  Cuboid::
-    Cuboid(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+#define CUBOID_TEMPS  bool T_TexCoords, bool T_Normals
+#define CUBOID_PARAMS T_TexCoords, T_Normals
+
+  template <CUBOID_TEMPS>
+  Cuboid_T<CUBOID_PARAMS>::
+    Cuboid_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
-    , m_texCoords(true) 
-    , m_normals(true) 
     , m_cuboid(cuboid_type (cuboid_type::width(1.0f),
                             cuboid_type::height(1.0f),
                             cuboid_type::depth(1.0f)) )
@@ -33,17 +35,72 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Cuboid::component_ptr
-    Cuboid::
-    Construct()
+  template <bool T_TexCoords, bool T_Normals>
+  struct VertType;
+
+  template <>
+  struct VertType<true, true>
+  { 
+    typedef gfx_t::Vert3fpnt        value_type;
+
+    template <typename T_Pos, typename T_Tex, typename T_Norm>
+    value_type Fill(T_Pos a_pos, T_Norm a_norm, T_Tex a_tex) const
+    {
+      value_type vert;
+      vert.SetPosition(a_pos);
+      vert.SetTexCoord(a_tex);
+      vert.SetNormal(a_norm);
+
+      return vert;
+    }
+  };
+
+  template <>
+  struct VertType<false, true>
+  { 
+    typedef gfx_t::Vert3fpn         value_type; 
+
+    template <typename T_Pos, typename T_Tex, typename T_Norm>
+    value_type Fill(T_Pos a_pos, T_Norm a_norm, T_Tex ) const
+    {
+      value_type vert;
+      vert.SetPosition(a_pos);
+      vert.SetNormal(a_norm);
+
+      return vert;
+    }
+  };
+
+  template <>
+  struct VertType<true, false>
+  { 
+    typedef gfx_t::Vert3fpt         value_type;
+
+    template <typename T_Pos, typename T_Tex, typename T_Norm>
+    value_type Fill(T_Pos a_pos, T_Norm , T_Tex a_tex) const
+    {
+      value_type vert;
+      vert.SetPosition(a_pos);
+      vert.SetTexCoord(a_tex);
+
+      return vert;
+    }
+  };
+
+  template <CUBOID_TEMPS>
+  auto
+    Cuboid_T<CUBOID_PARAMS>::
+    Construct() -> component_ptr
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
 
     typedef ComponentPoolManager                          pool_mgr;
 
-    typedef core_conts::Array<gfx_cs::Mesh::vert_type>    vert_cont;
-    typedef vert_cont::const_iterator                     vert_cont_itr;
+    typedef typename VertType<T_TexCoords, T_Normals>     vert_selector;
+    typedef typename vert_selector::value_type            vert_type;
+    typedef core_conts::Array<vert_type>                  vert_cont;
+    typedef vert_cont::iterator                           vert_itr;
 
     // -----------------------------------------------------------------------
 
@@ -84,11 +141,7 @@ namespace tloc { namespace prefab { namespace graphics {
     const f32 uMulti = 1.0f / 4.0f;
     const f32 vMulti = 1.0f / 3.0f;
 
-    typedef   mesh_sptr::value_type::vert_type      vert_type;
-    typedef   mesh_sptr::value_type::cont_type      vert_cont_type;
-    typedef   mesh_sptr::value_type::iterator       vert_itr;
-
-    vert_cont_type vertCont;
+    vert_cont vertCont;
     vertCont.resize(36);
 
     vert_itr itr = vertCont.begin();
@@ -98,166 +151,96 @@ namespace tloc { namespace prefab { namespace graphics {
   ++itr; TLOC_ASSERT(itr != itrEnd, "Not enough vertices reserved for this cube!")
 
     // Front face
-    itr->SetPosition(blf);
-    itr->SetNormal(frontNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
+
+    vert_selector vs;
+    *itr = vs.Fill(blf, frontNorm, Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trf);
-    itr->SetNormal(frontNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, frontNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlf);
-    itr->SetNormal(frontNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, frontNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    itr->SetPosition(blf);
-    itr->SetNormal(frontNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, frontNorm,Vec2f32(uMulti * 0.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brf);
-    itr->SetNormal(frontNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 0.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brf, frontNorm,Vec2f32(uMulti * 0.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trf);
-    itr->SetNormal(frontNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, frontNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Top face
-    itr->SetPosition(tlf);
-    itr->SetNormal(topNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, topNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trb);
-    itr->SetNormal(topNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, topNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlb);
-    itr->SetNormal(topNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlb, topNorm,Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    itr->SetPosition(tlf);
-    itr->SetNormal(topNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, topNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trf);
-    itr->SetNormal(topNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, topNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trb);
-    itr->SetNormal(topNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, topNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Back face
-    itr->SetPosition(blb);
-    itr->SetNormal(backNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blb, backNorm,Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlb);
-    itr->SetNormal(backNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlb, backNorm,Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trb);
-    itr->SetNormal(backNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, backNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    itr->SetPosition(blb);
-    itr->SetNormal(backNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blb, backNorm,Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trb);
-    itr->SetNormal(backNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, backNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brb);
-    itr->SetNormal(backNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brb, backNorm,Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Side 1 (left face when looking down z-axis)
-    itr->SetPosition(brf);
-    itr->SetNormal(leftNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
+    *itr = vs.Fill(brf, leftNorm,Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trb);
-    itr->SetNormal(leftNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, leftNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trf);
-    itr->SetNormal(leftNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trf, leftNorm,Vec2f32(uMulti * 1.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    itr->SetPosition(brf);
-    itr->SetNormal(leftNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
+    *itr = vs.Fill(brf, leftNorm,Vec2f32(uMulti * 1.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brb);
-    itr->SetNormal(leftNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 0.0f));
+    *itr = vs.Fill(brb, leftNorm,Vec2f32(uMulti * 2.0f, vMulti  * 0.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(trb);
-    itr->SetNormal(leftNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(trb, leftNorm,Vec2f32(uMulti * 2.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // Side 2 (right face when looking down z-axis)
-    itr->SetPosition(blb);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
+    *itr = vs.Fill(blb, rightNorm,Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlf);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, rightNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlb);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlb, rightNorm,Vec2f32(uMulti * 2.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    itr->SetPosition(blb);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
+    *itr = vs.Fill(blb, rightNorm,Vec2f32(uMulti * 2.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(blf);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 3.0f));
+    *itr = vs.Fill(blf, rightNorm,Vec2f32(uMulti * 1.0f, vMulti  * 3.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(tlf);
-    itr->SetNormal(rightNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(tlf, rightNorm,Vec2f32(uMulti * 1.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
 
     // bottom
 
-    itr->SetPosition(blf);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, bottomNorm,Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brb);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brb, bottomNorm,Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brf);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 4.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brf, bottomNorm,Vec2f32(uMulti * 4.0f, vMulti  * 1.0f));
     INCREMENT_AND_CHECK_ITR();
 
-    itr->SetPosition(blf);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blf, bottomNorm,Vec2f32(uMulti * 4.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(blb);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
+    *itr = vs.Fill(blb, bottomNorm,Vec2f32(uMulti * 3.0f, vMulti  * 2.0f));
     INCREMENT_AND_CHECK_ITR();
-    itr->SetPosition(brb);
-    itr->SetNormal(bottomNorm);
-    itr->SetTexCoord(Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
+    *itr = vs.Fill(brb, bottomNorm,Vec2f32(uMulti * 3.0f, vMulti  * 1.0f));
 
     // -----------------------------------------------------------------------
 
@@ -265,17 +248,15 @@ namespace tloc { namespace prefab { namespace graphics {
          itr != itrEnd; ++itr)
     { meshPtr->AddVertex(*itr); }
 
-    meshPtr->SetTexCoordsEnabled(m_texCoords);
-    meshPtr->SetNormalsEnabled(m_normals);
-
     return meshPtr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Cuboid::entity_ptr
-    Cuboid::
-    Create()
+  template <CUBOID_TEMPS>
+  auto
+    Cuboid_T<CUBOID_PARAMS>::
+    Create() -> entity_ptr
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent);
@@ -285,8 +266,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  template <CUBOID_TEMPS>
   void
-    Cuboid::
+    Cuboid_T<CUBOID_PARAMS>::
     Add(entity_ptr a_ent)
   {
 
@@ -303,4 +285,12 @@ namespace tloc { namespace prefab { namespace graphics {
                               .DispatchTo(GetListeners()) ); 
 
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template class Cuboid_T<>;
+  template class Cuboid_T<true, false>;
+  template class Cuboid_T<false, true>;
+
 };};};

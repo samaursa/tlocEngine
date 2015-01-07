@@ -36,7 +36,7 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
 
-    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(systems, m_systemsToProcess);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_systems, m_systemsToProcess);
   };
 
   // -----------------------------------------------------------------------

@@ -14,27 +14,27 @@ namespace tloc { namespace core { namespace utils {
   // macros for quickly exposing begin/end/size/empty of containers
 
 #define TLOC_DECL_AND_DEF_CONTAINER_BEGIN_CONST(_suffix_, _container_)\
-  auto begin_ ## _suffix_(int = 0) const -> decltype(_container_)::const_iterator \
+  auto begin ## _suffix_(int = 0) const -> decltype(_container_)::const_iterator \
   { return _container_.begin(); }
 
 #define TLOC_DECL_AND_DEF_CONTAINER_END_CONST(_suffix_, _container_)\
-  auto  end_ ## _suffix_(int = 0) const -> decltype(_container_)::const_iterator \
+  auto  end ## _suffix_(int = 0) const -> decltype(_container_)::const_iterator \
   { return _container_.end(); }
 
 #define TLOC_DECL_AND_DEF_CONTAINER_BEGIN(_suffix_, _container_)\
-  auto begin_ ## _suffix_(int = 0) -> decltype(_container_)::iterator \
+  auto begin ## _suffix_(int = 0) -> decltype(_container_)::iterator \
   { return _container_.begin(); }
 
 #define TLOC_DECL_AND_DEF_CONTAINER_END(_suffix_, _container_)\
-  auto end_ ## _suffix_(int = 0) -> decltype(_container_)::iterator \
+  auto end ## _suffix_(int = 0) -> decltype(_container_)::iterator \
   { return _container_.end(); }
 
 #define TLOC_DECL_AND_DEF_CONTAINER_SIZE(_suffix_, _container_)\
-  auto size_ ## _suffix_(int = 0) const -> decltype(_container_)::size_type \
+  auto size ## _suffix_(int = 0) const -> decltype(_container_)::size_type \
   { return _container_.size(); }
 
 #define TLOC_DECL_AND_DEF_CONTAINER_EMPTY(_suffix_, _container_)\
-  bool empty_ ## _suffix_(int = 0) const { return _container_.empty(); }
+  bool empty ## _suffix_(int = 0) const { return _container_.empty(); }
 
 #define TLOC_DECL_AND_DEF_CONTAINER_BEGIN_END_CONST(_suffix_, _container_)\
   TLOC_DECL_AND_DEF_CONTAINER_BEGIN_CONST(_suffix_, _container_);\

@@ -3,110 +3,173 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
-#include <tlocCore/component_system/tlocComponent.h>
-#include <tlocCore/containers/tlocContainers.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
-
-#include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/types/tlocVertex.h>
+#include <tlocGraphics/opengl/tlocGLTypes.h>
+
+#include <tlocCore/containers/tlocArray.h>
+#include <tlocCore/types/tlocAny.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  namespace p_primitive
-  {
-    class ArrayOfStructures
-    {
-    public:
-      enum { k_component_id = components::k_mesh_interleaved };
-
-    public:
-      typedef types::Vert3fpnt                                  vert_type;
-      typedef core_conts::Array<vert_type>                      cont_type;
-      typedef tl_size                                           size_type;
-      typedef core_sptr::VirtualPtr<cont_type>                  cont_sptr;
-
-    public:
-      ArrayOfStructures();
-
-      void      AddVertex(const vert_type& a_vertex);
-      vert_type GetVertex(size_type a_position) const;
-      void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
-      size_type size() const;
-      void      clear();
-
-    private:
-      cont_sptr m_vertexes;
-    };
-
-    class StructureOfArrays
-    {
-    public:
-      enum { k_component_id = components::k_mesh};
-
-    public:
-      typedef types::Vert3fpnt                                vert_type;
-      typedef math_t::Vec3f32                                 pos_type;
-      typedef math_t::Vec3f32                                 norm_type;
-      typedef math_t::Vec2f32                                 tcoord_type;
-
-      typedef core_conts::Array<pos_type>                     cont_pos_type;
-      typedef core_conts::Array<norm_type>                    cont_norm_type;
-      typedef core_conts::Array<tcoord_type>                  cont_tcoord_type;
-
-      typedef core_sptr::VirtualPtr<cont_pos_type>            cont_pos_ptr;
-      typedef core_sptr::VirtualPtr<cont_norm_type>           cont_norm_ptr;
-      typedef core_sptr::VirtualPtr<cont_tcoord_type>         cont_tcoord_ptr;
-
-      typedef tl_size                                         size_type;
-
-    public:
-      StructureOfArrays();
-
-      void      AddVertex(const vert_type& a_vertex);
-      vert_type GetVertex(size_type a_position) const;
-      void      ModifyVertex(size_type a_position, const vert_type& a_vertex);
-      size_type size() const;
-      void      clear();
-
-      TLOC_DECL_AND_DEF_GETTER(cont_pos_ptr, GetPositions, m_positions);
-      TLOC_DECL_AND_DEF_GETTER(cont_norm_ptr, GetNormals, m_normals);
-      TLOC_DECL_AND_DEF_GETTER(cont_tcoord_ptr, GetTCoords, m_tcoords);
-
-    private:
-      cont_pos_ptr     m_positions;
-      cont_norm_ptr    m_normals;
-      cont_tcoord_ptr  m_tcoords;
-    };
-  };
-
-  template <typename T_VertexStoragePolicy = p_primitive::StructureOfArrays>
-  class Primitive_TI
-    : public T_VertexStoragePolicy
+  class Primitive_I
   {
   public:
-    typedef types::Vert3fpnt                                vert_type;
-    typedef typename core_conts::tl_array<vert_type>::type  cont_type;
-    typedef typename cont_type::iterator                    iterator;
-    typedef typename cont_type::const_iterator              const_iterator;
-    typedef tl_size                                         size_type;
+    typedef Primitive_I                                       this_type;
 
-    typedef T_VertexStoragePolicy                           base_type;
+    typedef core_t::Any                                       any_cont;
+    typedef tl_size                                           size_type;
+    typedef gfx_t::gl_enum                                    gl_enum;
 
   public:
-    using base_type::AddVertex;
-    using base_type::GetVertex;
-    using base_type::ModifyVertex;
-    using base_type::size;
+    Primitive_I();
 
-  protected:
-    Primitive_TI();
+    template <typename T_VertType>
+    this_type&  AddVertex(const T_VertType& a_vertex)
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      if (m_vertices.IsEmpty())
+      { DoCreateArray<T_VertType>(); }
+      else
+      { DoAssertIsSameType<T_VertType>(); }
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      arr.push_back(a_vertex);
+
+      m_numVertices++;
+
+      return *this;
+    }
+
+    template <typename T_VertType>
+    T_VertType   GetVertex(size_type a_position) const
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      return arr[a_position];
+    }
+
+    template <typename T_VertType>
+    this_type&  ModifyVertex(size_type a_position, const T_VertType& a_vertex)
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      arr[a_position] = a_vertex;
+      return *this;
+    }
+
+    template <typename T_VertType>
+    typename core_conts::Array<T_VertType>::iterator          
+      begin()
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      return arr.begin();
+    }
+
+    template <typename T_VertType>
+    typename core_conts::Array<T_VertType>::iterator          
+      end()
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      return arr.end();
+    }
+
+    template <typename T_VertType>
+    typename core_conts::Array<T_VertType>::const_iterator          
+      begin() const
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      return arr.begin();
+    }
+
+    template <typename T_VertType>
+    typename core_conts::Array<T_VertType>::const_iterator          
+      end() const
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      return arr.end();
+    }
+
+    template <typename T_VertType>
+    typename core_conts::Array<T_VertType>::size_type
+      size() const
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+
+      if (empty())
+      { return 0; }
+      else
+      {
+        auto& arr = m_vertices.Cast<cont_type>();
+        return arr.size();
+      }
+    }
+
+    template <typename T_VertType>
+    const core_conts::Array<T_VertType>&
+      GetVertices() const
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      DoAssertIsSameType<T_VertType>();
+      TLOC_ASSERT(m_vertices.IsEmpty() == false, "Vertex array is empty");
+
+      auto& arr = m_vertices.Cast<cont_type>();
+      return arr;
+    }
+
+    bool          empty() const;
+    void          clear();
+
+    TLOC_DECL_AND_DEF_GETTER(gl_enum, GetVertexType, m_vertexType);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumVertices, m_numVertices);
+
+  private:
+    template <typename T_VertType>
+    void          DoCreateArray()
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      TLOC_ASSERT(m_vertices.IsEmpty(), "Vertex array is NOT empty");
+
+      m_vertexType = gfx_t::type_to_gl::Get<T_VertType>();
+
+      m_vertices = cont_type();
+    }
+
+    template <typename T_VertType>
+    void          DoAssertIsSameType() const
+    {
+      typedef core_conts::Array<T_VertType>           cont_type;
+      TLOC_ASSERT(m_vertices.IsSameType(cont_type()), 
+                  "T_VertType is not the same as previously selected.");
+    }
+
+  private:
+    any_cont      m_vertices;
+    size_type     m_numVertices;
+    gl_enum       m_vertexType;
   };
-
-  // -----------------------------------------------------------------------
-  // extern template
-
-  TLOC_EXTERN_TEMPLATE_CLASS(Primitive_TI<p_primitive::ArrayOfStructures>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Primitive_TI<p_primitive::StructureOfArrays>);
 
 };};};
 

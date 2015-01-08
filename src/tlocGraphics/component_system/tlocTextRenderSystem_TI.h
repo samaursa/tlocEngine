@@ -12,7 +12,8 @@
 #include <tlocCore/io/tlocPath.h>
 
 #include <tlocGraphics/component_system/tlocMaterial.h>
-#include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
+#include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
@@ -78,7 +79,7 @@ namespace tloc { namespace graphics { namespace component_system {
     core_cs::event_manager_vso          m_textEventMgr;
     core_cs::entity_manager_vso         m_textEntityMgr;
     gfx_cs::SceneGraphSystem            m_textSceneGraphSys;
-    gfx_cs::QuadRenderSystem            m_textQuadRenderSys;
+    gfx_cs::MeshRenderSystem            m_textQuadRenderSys;
     gfx_cs::TextureAnimatorSystem       m_textAnimSys;
   };
 

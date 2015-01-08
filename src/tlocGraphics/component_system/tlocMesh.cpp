@@ -4,9 +4,36 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  Mesh::
-    Mesh()
+  // ///////////////////////////////////////////////////////////////////////
+  // 2D Mesh
+
+  Mesh_T<p_mesh::Mesh2D, p_mesh::Dynamic>::
+    Mesh_T()
+    : base_type("Mesh2D")
+  { }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // 2D Mesh - STATIC
+
+  Mesh_T<p_mesh::Mesh2D, p_mesh::Static>::
+    Mesh_T()
+    : base_type("Mesh2DStatic")
+  { }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // 3D Mesh
+
+  Mesh_T<p_mesh::Mesh3D, p_mesh::Dynamic>::
+    Mesh_T()
     : base_type("Mesh")
+  { }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // 3D Mesh - STATIC
+
+  Mesh_T<p_mesh::Mesh3D, p_mesh::Static>::
+    Mesh_T()
+    : base_type("MeshStatic")
   { }
 
 };};};

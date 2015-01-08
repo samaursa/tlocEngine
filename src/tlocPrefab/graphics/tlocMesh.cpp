@@ -20,14 +20,45 @@ namespace tloc { namespace prefab { namespace graphics {
   // ///////////////////////////////////////////////////////////////////////
   // Mesh
 
-  Mesh::
-    Mesh(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+#define MESH_TEMPS  typename T_MeshType, typename T_StaticDynamic
+#define MESH_PARAMS T_MeshType, T_StaticDynamic
+
+  template <MESH_TEMPS>
+  Mesh_T<MESH_PARAMS>::
+    Mesh_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_drawMode(gfx_rend::mode::k_triangles)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_TEMPS>
+  void
+    Mesh_T<MESH_PARAMS>::
+    DoAddTransformComponent(entity_ptr a_ent, gfx_cs::p_mesh::Dynamic) const
+  {
+    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_TEMPS>
+  void
+    Mesh_T<MESH_PARAMS>::
+    DoAddTransformComponent(entity_ptr , gfx_cs::p_mesh::Static) const
+  {
+    // Static meshes don't have a transform component
+  }
+
   // -----------------------------------------------------------------------
   // explicit instantiations
+
+  template class Mesh_T<gfx_cs::p_mesh::Mesh2D, gfx_cs::p_mesh::Static>;
+  template class Mesh_T<gfx_cs::p_mesh::Mesh2D, gfx_cs::p_mesh::Dynamic>;
+
+  template class Mesh_T<gfx_cs::p_mesh::Mesh3D, gfx_cs::p_mesh::Static>;
+  template class Mesh_T<gfx_cs::p_mesh::Mesh3D, gfx_cs::p_mesh::Dynamic>;
 
   typedef Mesh::entity_ptr      entity_ptr;
   typedef Mesh::component_ptr   component_ptr;

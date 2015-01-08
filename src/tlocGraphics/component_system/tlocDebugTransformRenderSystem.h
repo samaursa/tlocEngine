@@ -8,8 +8,8 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
+#include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 
-#include <tlocGraphics/component_system/tlocRenderSystem.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
@@ -21,10 +21,10 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class DebugTransformRenderSystem
-    : public gfx_cs::RenderSystem_TI<renderer::renderer_sptr>
+    : public core_cs::EntityProcessingSystem
   {
   public:
-    typedef gfx_cs::RenderSystem_TI<renderer::renderer_sptr>      base_type;
+    typedef EntityProcessingSystem                            base_type;
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec4f32                              vec4_type;

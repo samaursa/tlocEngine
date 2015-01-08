@@ -262,18 +262,63 @@ namespace tloc { namespace graphics { namespace types {
       GetCustomGLTypeInfo(tl_int a_customGlType, tl_size a_interleaveIndex = 0);
 
     // ///////////////////////////////////////////////////////////////////////
-    // Vertex filler
+    // VertexSelector and filler
     // NOTES: These classes are useful for filling a generic vertex properly
     //        with the available values.
 
-    template <bool T_2D, bool T_Normals, bool T_Color, bool T_TexCoords>
-    struct VertexSelector;
+    namespace p_vertex_selector
+    {
+      class Pos2D      {};
+      class Pos3D      {};
+
+      template <bool T_Enable = true>
+      class Normals    {};
+
+      template <bool T_Enable = true>
+      class Color      {};
+
+      template <bool T_Enable = true>
+      class TexCoords  {};
+    };
+
+    // -----------------------------------------------------------------------
+    // template base
+
+    template <typename T_PositionType, 
+              typename T_Normals, 
+              typename T_Color, 
+              typename T_TexCoords>
+    struct VertexSelector
+    {
+      TLOC_STATIC_ASSERT(
+        (Loki::IsSameType<T_PositionType, p_vertex_selector::Pos2D>::value ||
+        (Loki::IsSameType<T_PositionType, p_vertex_selector::Pos3D>::value)),
+         Use_p_vertex_selector_Pos2D_or_Pos3D);
+
+      TLOC_STATIC_ASSERT(
+        (Loki::IsSameType<T_Normals, p_vertex_selector::Normals<true>>::value ||
+        (Loki::IsSameType<T_Normals, p_vertex_selector::Normals<false>>::value)),
+         Use_p_vertex_selector_Normals);
+
+      TLOC_STATIC_ASSERT(
+        (Loki::IsSameType<T_Color, p_vertex_selector::Color<true>>::value ||
+        (Loki::IsSameType<T_Color, p_vertex_selector::Color<false>>::value)),
+         Use_p_vertex_selector_Color);
+
+      TLOC_STATIC_ASSERT(
+        (Loki::IsSameType<T_Color, p_vertex_selector::TexCoords<true>>::value ||
+        (Loki::IsSameType<T_Color, p_vertex_selector::TexCoords<false>>::value)),
+         Use_p_vertex_selector_TexCoords);
+    };
 
     // -----------------------------------------------------------------------
     // 2D vertices
 
     template <>
-    struct VertexSelector<true, true, true, true>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<true>,
+                          p_vertex_selector::TexCoords<true>>
     {
       typedef gfx_t::Vert2fpnct                       value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -295,7 +340,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<true, true, true, false>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<true>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert2fpnc                        value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -316,7 +364,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<true, true, false, true>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<true>>
     {
       typedef gfx_t::Vert2fpnt                        value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -337,7 +388,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<true, false, false, true>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<false>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<true>>
     {
       typedef gfx_t::Vert2fpt                         value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -356,7 +410,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<true, false, true, false>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<false>, 
+                          p_vertex_selector::Color<true>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert2fpc                         value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -375,7 +432,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<true, true, false, false>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert2fpn                         value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -394,7 +454,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<true, false, false, false>
+    struct VertexSelector<p_vertex_selector::Pos2D, 
+                          p_vertex_selector::Normals<false>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert2fp                          value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -414,7 +477,10 @@ namespace tloc { namespace graphics { namespace types {
     // 3D vertices
 
     template <>
-    struct VertexSelector<false, true, true, true>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<true>,
+                          p_vertex_selector::TexCoords<true>>
     {
       typedef gfx_t::Vert3fpnct                       value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -436,7 +502,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<false, true, true, false>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<true>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert3fpnc                        value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -457,7 +526,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<false, true, false, true>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<true>>
     {
       typedef gfx_t::Vert3fpnt                        value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -478,7 +550,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<false, false, false, true>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<false>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<true>>
     {
       typedef gfx_t::Vert3fpt                         value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -497,7 +572,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<false, false, true, false>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<false>, 
+                          p_vertex_selector::Color<true>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert3fpc                         value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -516,7 +594,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<false, true, false, false>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<true>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert3fpn                         value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;
@@ -535,7 +616,10 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <>
-    struct VertexSelector<false, false, false, false>
+    struct VertexSelector<p_vertex_selector::Pos3D, 
+                          p_vertex_selector::Normals<false>, 
+                          p_vertex_selector::Color<false>,
+                          p_vertex_selector::TexCoords<false>>
     {
       typedef gfx_t::Vert3fp                          value_type;
       typedef value_type::attrib_1_type::value_type   pos_type;

@@ -206,7 +206,8 @@ namespace tloc { namespace graphics { namespace component_system {
       else
       { tMatrix = t->GetTransformation().Cast<Mat4f32>(); }
 
-      Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
+      //Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
+      Mat4f32 tFinalMat = tMatrix;
 
       // Generate the mvp matrix
       m_uniVpMat->SetValueAs(tFinalMat);

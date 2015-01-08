@@ -498,8 +498,7 @@ namespace tloc { namespace graphics { namespace component_system {
     DoUpdateTexCoords(ent, *a_di.m_shaderOp);
 
     gfx_rend::DrawCommand dc(sp, matSO);
-    dc.AddShaderOperator(core_sptr::ToVirtualPtr(matPtr->m_internalShaderOp))
-      .AddShaderOperator(a_di.m_shaderOp)
+    dc.AddShaderOperator(a_di.m_shaderOp)
       .SetVAO(a_di.m_meshVAO)
       .SetDrawMode(a_di.m_drawCommand)
       .SetStartIndex(0)

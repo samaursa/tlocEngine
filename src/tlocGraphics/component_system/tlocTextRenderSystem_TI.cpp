@@ -271,8 +271,8 @@ namespace tloc { namespace graphics { namespace component_system {
         Rectf_bl(Rectf_bl::width(finalDim[0]), Rectf_bl::height(finalDim[1]));
 
       entity_ptr q = 
-        pref_gfx::Quad(m_textEntityMgr.get(), m_textCompMgr.get()).
-        TexCoords(true).Dimensions(rect).Create();
+        pref_gfx::Quad(m_textEntityMgr.get(), m_textCompMgr.get())
+        .Dimensions(rect).Create();
 
       q->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
 

@@ -14,17 +14,20 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
-  template <bool T_TextureCoords = true>
+  template <bool T_TexCoords = true>
   class Quad_T
-    : public Prefab_TI<Quad_T<T_TextureCoords>, gfx_cs::Quad>
+    : public Prefab_TI<Quad_T<T_TexCoords>, gfx_cs::Mesh>
   {
   public:
-    typedef Quad_T<T_TextureCoords>                 this_type;
+    typedef Quad_T<T_TexCoords>                     this_type;
     typedef Prefab_TI<this_type, component_type>    base_type;
     typedef math_t::Rectf32_c                       rect_type;
 
+    typedef gfx_t::f_vertex::p_vertex_selector::
+            TexCoords<T_TexCoords>                      texcoords_selected;
+
   public:
-    Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
+    Quad_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 
     component_ptr Construct() const;
 
@@ -36,6 +39,9 @@ namespace tloc { namespace prefab { namespace graphics {
   private:
     pref_gfx::Mesh    m_meshPref;
   };
+
+  typedef Quad_T<>                                  Quad;
+  typedef Quad_T<false>                             QuadNoTexCoords;
 
 };};};
 

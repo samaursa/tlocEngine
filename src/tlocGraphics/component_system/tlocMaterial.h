@@ -79,8 +79,9 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // Material
 
-  template <typename T_RendererSptr> 
-  class RenderSystem_TI;
+  template <class T1, class T2, class T3> 
+  class MeshRenderSystem_T;
+
   class MaterialSystem;
   class QuadRenderSystem;
 
@@ -90,7 +91,9 @@ namespace tloc { namespace graphics { namespace component_system {
                                  components::k_material>
   {
   public:
-    template <typename T_RendererSptr> friend class RenderSystem_TI;
+    template <class T1, class T2, class T3> 
+    friend class MeshRenderSystem_T;
+
     friend class MaterialSystem;
     friend class QuadRenderSystem;
 

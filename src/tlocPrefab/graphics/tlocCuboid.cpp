@@ -18,6 +18,9 @@ namespace tloc { namespace prefab { namespace graphics {
   using math_cs::Transform;
   using math_cs::transform_sptr;
 
+  typedef gfx_t::f_vertex::p_vertex_selector::
+          Color<false>                                color_selected;
+
   // ///////////////////////////////////////////////////////////////////////
   // Cuboid
 
@@ -42,11 +45,16 @@ namespace tloc { namespace prefab { namespace graphics {
   {
     using namespace gfx_cs::components;
     using namespace math_cs::components;
+    using namespace gfx_t::f_vertex::p_vertex_selector;
 
     typedef ComponentPoolManager                          pool_mgr;
 
     typedef typename gfx_t::f_vertex::VertexSelector
-      <false, T_Normals, false, T_TexCoords>              vert_selector;
+      <Pos3D, 
+       normals_selected, 
+       color_selected, 
+       texcoords_selected>                                vert_selector;
+
     typedef typename vert_selector::value_type            vert_type;
     typedef core_conts::Array<vert_type>                  vert_cont;
     typedef vert_cont::iterator                           vert_itr;

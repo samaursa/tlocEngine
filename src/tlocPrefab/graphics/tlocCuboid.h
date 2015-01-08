@@ -22,6 +22,10 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef Prefab_TI<this_type, component_type>        base_type;
     typedef math_t::Cuboidf32                           cuboid_type;
 
+    typedef gfx_t::f_vertex::p_vertex_selector::
+            TexCoords<T_TexCoords>                      texcoords_selected;
+    typedef gfx_t::f_vertex::p_vertex_selector::
+            Normals<T_Normals>                          normals_selected;
   public:
     Cuboid_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
 

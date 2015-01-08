@@ -60,8 +60,6 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocDynamicTextRenderSystem.cpp
   component_system/tlocFan.cpp 
   component_system/tlocFan.h 
-  component_system/tlocFanRenderSystem.cpp 
-  component_system/tlocFanRenderSystem.h 
   component_system/tlocMaterial.cpp 
   component_system/tlocMaterial.h 
   component_system/tlocMaterialSystem.cpp 
@@ -99,8 +97,6 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocTextureCoords.cpp
   component_system/tlocQuad.cpp 
   component_system/tlocQuad.h 
-  component_system/tlocQuadRenderSystem.cpp 
-  component_system/tlocQuadRenderSystem.h 
   component_system/tloc_component_system.cpp 
   component_system/tloc_component_system.h 
   component_system/tloc_component_system.inl.h

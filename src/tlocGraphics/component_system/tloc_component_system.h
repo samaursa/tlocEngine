@@ -25,10 +25,8 @@
 #include <tlocGraphics/component_system/tlocCameraSystem.h>
 #include <tlocGraphics/component_system/tlocDebugTransformRenderSystem.h>
 #include <tlocGraphics/component_system/tlocDynamicTextRenderSystem.h>
-#include <tlocGraphics/component_system/tlocFanRenderSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
-#include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocStaticTextRenderSystem.h>
 #include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>

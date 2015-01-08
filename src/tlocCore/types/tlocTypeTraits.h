@@ -276,7 +276,7 @@ namespace tloc
   template <typename T>
   struct PointeeType
   {
-    typedef typename priv::PointeeType
+    typedef typename tloc::priv::PointeeType
       <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
   };
 
@@ -302,7 +302,7 @@ namespace tloc
   template <typename T>
   struct PointerType
   {
-    typedef typename priv::PointerType
+    typedef typename tloc::priv::PointerType
       <T, Loki::TypeTraits<T>::isPointer>::value_type     value_type;
   };
 

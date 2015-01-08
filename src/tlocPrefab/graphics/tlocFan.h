@@ -13,6 +13,7 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
+  template <bool T_TexCoords = true>
   class Fan
     : public Prefab_TI<Fan, gfx_cs::Fan>
   {

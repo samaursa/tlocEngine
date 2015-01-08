@@ -1,5 +1,6 @@
 #include "tlocQuad.h"
 
+#include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
@@ -20,15 +21,21 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using math_t::Rectangle_T;
 
+
+  typedef gfx_t::f_vertex::p_vertex_selector::
+          Normals<false>                              normals_selected;
+  typedef gfx_t::f_vertex::p_vertex_selector::
+          Color<false>                                color_selected;
+
   // ///////////////////////////////////////////////////////////////////////
   // Quad
 
-#define QUAD_TEMPS  bool T_TextureCoords
-#define QUAD_PARAMS T_TextureCoords
+#define QUAD_TEMPS  bool T_TexCoords 
+#define QUAD_PARAMS T_TexCoords
 
   template <QUAD_TEMPS>
   Quad_T<QUAD_PARAMS>::
-    Quad(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+    Quad_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_rect(rect_type(rect_type::width(1.0f),
                        rect_type::height(1.0f)) )
@@ -42,21 +49,42 @@ namespace tloc { namespace prefab { namespace graphics {
     Quad_T<QUAD_PARAMS>::
     Construct() const -> component_ptr
   {
+    // prepare quad vertices
+    using namespace gfx_t::f_vertex::p_vertex_selector;
 
+    typedef typename gfx_t::f_vertex::VertexSelector
+      <Pos2D, 
+       normals_selected, 
+       color_selected, 
+       texcoords_selected>                                vert_selector;
 
+    typedef typename vert_selector::value_type            vert_type;
+    typedef core_conts::Array<vert_type>                  vert_cont;
+    typedef vert_cont::iterator                           vert_itr;
 
-    typedef ComponentPoolManager      pool_mgr;
+    using namespace math_t;
 
-    // Create the quad (and the quad pool if necessary)
-    typedef gfx_cs::quad_pool         quad_pool;
+    auto pos0 = Vec2f32(m_rect.GetValue<rect_type::right>(), 
+                        m_rect.GetValue<rect_type::top>());
+    auto pos1 = Vec2f32(m_rect.GetValue<rect_type::left>(), 
+                        m_rect.GetValue<rect_type::top>());
+    auto pos2 = Vec2f32(m_rect.GetValue<rect_type::right>(), 
+                        m_rect.GetValue<rect_type::bottom>());
+    auto pos3 = Vec2f32(m_rect.GetValue<rect_type::left>(), 
+                        m_rect.GetValue<rect_type::bottom>());
 
-    gfx_cs::quad_pool_vptr quadPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Quad>();
+    auto tex0 = Vec2f32(1.0f, 1.0f);
+    auto tex1 = Vec2f32(0.0f, 1.0f);
+    auto tex2 = Vec2f32(1.0f, 0.0f);
+    auto tex3 = Vec2f32(0.0f, 0.0f);
 
-    quad_pool::iterator itrQuad = quadPool->GetNext();
-    (*itrQuad)->SetValue(MakeShared<gfx_cs::Quad>(m_rect) );
+    vert_cont verts;
+    verts.push_back(vert_selector().Fill(pos0, 0, 0, tex0));
+    verts.push_back(vert_selector().Fill(pos1, 0, 0, tex1));
+    verts.push_back(vert_selector().Fill(pos2, 0, 0, tex2));
+    verts.push_back(vert_selector().Fill(pos3, 0, 0, tex3));
 
-    return *(*itrQuad)->GetValuePtr();
+    return m_meshPref.Construct(verts);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -91,17 +119,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
     m_entMgr->InsertComponent(insert_params(a_ent, Construct())
                               .DispatchTo(GetListeners()) );
-
-    // Create the texture coords (and the texture coord pool if necessary)
-    if (m_texCoords)
-    {
-      pref_gfx::TextureCoords(m_entMgr, m_compPoolMgr)
-      .AddCoord(math_t::Vec2f32(1.0f, 1.0f))
-      .AddCoord(math_t::Vec2f32(0.0f, 1.0f))
-      .AddCoord(math_t::Vec2f32(1.0f, 0.0f))
-      .AddCoord(math_t::Vec2f32(0.0f, 0.0f))
-      .Add(a_ent);
-    }
   }
+
+  template class Quad_T<true>;
+  template class Quad_T<false>;
 
 };};};

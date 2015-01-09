@@ -911,7 +911,9 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     AddUniform(const uniform_type& a_uniform)
   {
-    TLOC_ASSERT(a_uniform.GetName().size() > 0, "Uniform name is empty");
+    if (a_uniform.GetName().size() == 0)
+    { TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Uniform name is empty"; return nullptr; }
+
     TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
       (DoWillAnyPointersInvalidate(m_uniforms,
                                    core_cfg::BuildConfig::build_config_type()))
@@ -930,7 +932,9 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     AddAttributeVBO(const vbo_type& a_vbo)
   {
-    TLOC_ASSERT(a_vbo.Validate() == ErrorSuccess, "VBO is invalid");
+    if (a_vbo.Validate().Failed())
+    { TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "VBO is invalid"; return nullptr; }
+
     TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
       (DoWillAnyPointersInvalidate(m_VBOs,
                                    core_cfg::BuildConfig::build_config_type()))

@@ -4,41 +4,20 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  // ///////////////////////////////////////////////////////////////////////
+  namespace {
 
-  const char* g_uniformNames [] = 
-  {
-    "u_model",
-    "u_modelInv",
+    const char* g_uniformNames [] = 
+    {
+      "u_vp",
+      "u_vpInv",
 
-    "u_mv",
-    "u_mvInv",
+      "u_view",
+      "u_viewInv",
 
-    "u_mvp",
-    "u_mvpInv",
+      "u_proj",
+      "u_projInv",
+    };
 
-    "u_vp",
-    "u_vpInv",
-
-    "u_view",
-    "u_viewInv",
-
-    "u_proj",
-    "u_projInv",
-
-    "u_scale",
-    "u_scaleInv",
-
-    "u_normal",
-    "u_normalInv",
-  };
-
-  const char* g_attributeNames [] = 
-  {
-    "a_vertPos",
-    "a_vertNorm",
-    "a_vertCol",
-    "a_vertTexCoord"
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -49,10 +28,10 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type("Material")
     , m_isDirty(true)
   { 
-    m_internalShaderOp->reserve_uniforms(p_material::Uniforms::k_count);
+    m_internalShaderOp->reserve_uniforms(p_material::uniforms::k_count);
 
-    for (p_material::Uniforms::value_type i = 0;
-         i < p_material::Uniforms::k_count; ++i)
+    for (p_material::uniforms::value_type i = 0;
+         i < p_material::uniforms::k_count; ++i)
     {
       auto uniformName = core_str::String(g_uniformNames[i]);
       auto uniformPtr = m_internalShaderOp->
@@ -62,10 +41,7 @@ namespace tloc { namespace graphics { namespace component_system {
       SetEnableUniform(i, false);
     }
 
-    SetEnableUniform<p_material::Uniforms::k_modelViewProjectionMatrix>();
-
-    for (tl_size i = 0; i < p_material::Attributes::k_count; ++i)
-    { m_attributeNames.push_back(core_str::String(g_attributeNames[i])); }
+    SetEnableUniform<p_material::uniforms::k_viewProjectionMatrix>();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -78,12 +54,11 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_shaderProgram(a_other.m_shaderProgram)
     , m_shaderOp(a_other.m_shaderOp)
     , m_internalShaderOp(a_other.m_internalShaderOp)
-    , m_attributeNames(a_other.m_attributeNames)
     , m_isDirty(true)
   { 
     auto itr = m_internalShaderOp->begin_uniforms(),
          itrEnd = m_internalShaderOp->end_uniforms();
-    for (tl_size i = 0; i < p_material::Uniforms::k_count; ++i)
+    for (tl_size i = 0; i < p_material::uniforms::k_count; ++i)
     {
       auto itrCopy = itr;
       core::advance(itrCopy, i);
@@ -117,7 +92,6 @@ namespace tloc { namespace graphics { namespace component_system {
     swap(m_shaderProgram, a_other.m_shaderProgram);
     swap(m_shaderOp, a_other.m_shaderOp);
     swap(m_internalUniforms, a_other.m_internalUniforms);
-    swap(m_attributeNames, a_other.m_attributeNames);
     swap(m_internalUniforms, a_other.m_internalUniforms);
     swap(m_isDirty, a_other.m_isDirty);
   }
@@ -164,13 +138,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Material::this_type&
-    Material::
-    SetUniformName(uniform_index_type a_index, BufferArg a_name)
-  { m_internalUniforms[a_index].second = a_name; return *this; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
   const Material::string_type&
     Material::
     GetUniformName(uniform_index_type a_index) const
@@ -203,20 +170,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Material::this_type&
-    Material::
-    SetAttributeName(attribute_index_type a_index, BufferArg a_name)
-  { m_attributeNames[a_index] = a_name; return *this; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  const Material::string_type&
-    Material::
-    GetAttributeName(attribute_index_type a_index) const
-  { return m_attributeNames[a_index]; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
   bool 
     Material::
     operator ==(const Material& a_other) const
@@ -239,11 +192,13 @@ namespace tloc { namespace graphics { namespace component_system {
 // Explicit Instantiation
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/containers/tlocArrayFixed.inl.h>
 
 using namespace tloc::gfx_cs;
 
 // array
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(Material::shader_op_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(Material::uniform_string_pair, p_material::uniforms::k_count);
 
 // SmartPtr
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Material);

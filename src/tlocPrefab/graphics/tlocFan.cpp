@@ -22,42 +22,110 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using math_t::Circle_T;
 
+  typedef gfx_t::f_vertex::p_vertex_selector::
+          Normals<false>                              normals_selected;
+  typedef gfx_t::f_vertex::p_vertex_selector::
+          Color<false>                                color_selected;
+
   // ///////////////////////////////////////////////////////////////////////
   // Fan
 
-  Fan::
-    Fan(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
+#define FAN_TEMPS   bool T_TexCoords
+#define FAN_PARAMS  T_TexCoords
+
+  template <FAN_TEMPS>
+  Fan_T<FAN_PARAMS>::
+    Fan_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_circle(circle_type(circle_type::radius(1.0f)) )
     , m_numSides(8)
-    , m_texCoords(true)
-  { }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  Fan::component_ptr
-    Fan::
-    Construct() const
+    , m_sectorAngle(360.0f)
+    , m_meshPref(a_entMgr, a_poolMgr)
   {
-    typedef ComponentPoolManager    pool_mgr;
-    typedef gfx_cs::fan_pool        fan_pool;
-
-    gfx_cs::fan_pool_vptr fanPool 
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Fan>();
-
-    fan_pool::iterator itr = fanPool->GetNext();
-    (*itr)->SetValue(
-      MakeShared<gfx_cs::Fan>(m_circle, gfx_cs::Fan::sides(m_numSides)
-      ));
-
-    return *(*itr)->GetValuePtr();
+    m_meshPref.DrawMode(gfx_rend::mode::k_triangle_fan);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Fan::entity_ptr
-    Fan::
-    Create() const
+  template <FAN_TEMPS>
+  auto
+    Fan_T<FAN_PARAMS>::
+    Construct() const -> component_ptr
+  {
+    // prepare vertices
+    using namespace gfx_t::f_vertex::p_vertex_selector;
+    using namespace math_t;
+
+    typedef typename gfx_t::f_vertex::VertexSelector
+      <Pos2D, 
+       normals_selected, 
+       color_selected, 
+       texcoords_selected>                                vert_selector;
+
+    typedef typename vert_selector::value_type            vert_type;
+    typedef core_conts::Array<vert_type>                  vert_cont;
+    typedef vert_cont::iterator                           vert_itr;
+
+    typedef core_conts::Array<Vec2f32>                    vec2_cont;
+
+    const auto angleInterval = m_sectorAngle.Get() / m_numSides;
+
+    // POSITIONS
+
+    vec2_cont positions;
+    // push the center vertex
+    {
+      auto newCoord = m_circle.GetPosition();
+      positions.push_back(newCoord);
+    }
+
+    for (f32 i = 0; i <= m_numSides; ++i)
+    {
+      auto newCoord = m_circle.GetCoord(degree_f32(angleInterval * i));
+      positions.push_back(newCoord);
+    }
+
+    // TEXTURE COORDINATES
+
+    vec2_cont texCoords;
+
+    typedef math_t::Circlef32 circle_type;
+    // Create the texture co-ordinates
+    circle_type circForTex;
+    circForTex.SetRadius(0.5f);
+    circForTex.SetPosition(Vec2f32(0.5f, 0.5f));
+
+    using math_t::degree_f32;
+
+    texCoords.push_back(circForTex.GetPosition());
+    for (f32 i = 0; i <= m_numSides; ++i)
+    {
+      auto newTexCoord =
+        circForTex.GetCoord(degree_f32(angleInterval * i));
+      texCoords.push_back(newTexCoord);
+    }
+
+    // VERTEXES
+    TLOC_ASSERT(positions.size() == texCoords.size(), 
+                "Position/texcoords size mismatch");
+
+    vert_cont verts;
+    verts.reserve(m_numSides + 2);
+
+    for (tl_size i = 0; i < positions.size(); ++i)
+    {
+      verts.push_back(vert_selector().Fill(positions[i], 0, 0, texCoords[i]));
+    }
+
+    return m_meshPref.Construct(verts);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <FAN_TEMPS>
+  auto
+    Fan_T<FAN_PARAMS>::
+    Create() const -> entity_ptr
   {
     entity_ptr ent = m_entMgr->CreateEntity();
     Add(ent);
@@ -65,8 +133,11 @@ namespace tloc { namespace prefab { namespace graphics {
     return ent;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <FAN_TEMPS>
   void
-    Fan::
+    Fan_T<FAN_PARAMS>::
     Add(entity_ptr a_ent) const
   {
     // -----------------------------------------------------------------------
@@ -80,31 +151,12 @@ namespace tloc { namespace prefab { namespace graphics {
 
     m_entMgr->InsertComponent( insert_params(a_ent, Construct())
                               .DispatchTo(GetListeners()) );
-
-    // Create the texture coords (and the texture coord pool if necessary)
-    if (m_texCoords)
-    {
-      typedef math_t::Circlef32 circle_type;
-      // Create the texture co-ordinates
-      circle_type circForTex;
-      circForTex.SetRadius(0.5f);
-
-      using math_t::degree_f32;
-      const f32 angleInterval = 360.0f/m_numSides;
-
-      TextureCoords tCoords(m_entMgr, m_compPoolMgr);
-
-      tCoords.AddCoord(math_t::Vec2f32(0.5f, 0.5f));
-      for (f32 i = 0; i <= m_numSides; ++i)
-      {
-        math_t::Vec2f32 newTexCoord =
-          circForTex.GetCoord(degree_f32(angleInterval * i));
-        newTexCoord += math_t::Vec2f32(0.5f, 0.5f); // tex co-ordinates start from 0, 0
-        tCoords.AddCoord(newTexCoord);
-      }
-
-      tCoords.Add(a_ent);
-    }
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
+
+  template class Fan_T<true>;
+  template class Fan_T<false>;
 
 };};};

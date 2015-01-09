@@ -7,12 +7,12 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 
 #include <tlocGraphics/opengl/tlocShaderProgram.h>
 #include <tlocGraphics/opengl/tlocShaderOperator.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
 #include <tlocGraphics/renderer/tlocRenderer.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
 
 #include <tlocMath/types/tlocMatrix4.h>
 
@@ -28,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
             typename T_MeshCompType = Mesh, 
             typename T_RenderingTechnique = p_mesh_render_sytem::NonInstanced>
   class MeshRenderSystem_T
-    : public core_cs::EntityProcessingSystem
+    : public gfx_cs::RenderSystem_TI<T_RendererSptr>
   {
     TLOC_STATIC_ASSERT(
       (Loki::IsSameType<T_RendererSptr, gfx_rend::renderer_sptr>::value ||
@@ -57,7 +57,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef MeshRenderSystem_T<renderer_type, 
                                mesh_comp_type, 
                                rendering_technique>       this_type;
-    typedef core_cs::EntityProcessingSystem               base_type;
+    typedef gfx_cs::RenderSystem_TI<renderer_type>        base_type;
 
     typedef typename mesh_comp_type::mesh_type            mesh_type;
     typedef typename mesh_comp_type::static_dynamic_type  static_dynamic_type;
@@ -83,34 +83,13 @@ namespace tloc { namespace graphics { namespace component_system {
     void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
-    void          SetCamera(const_entity_ptr a_cameraEntity);
-    virtual void  SortEntities();
-
-
-    TLOC_DECL_AND_DEF_GETTER(const_entity_ptr, GetCamera, m_sharedCam);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (matrix_type, GetViewProjectionMatrix, m_vpMatrix);
-    TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
-    TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
-
-    TLOC_DECL_AND_DEF_GETTER(bool, IsSortingByMaterialEnabled, m_sortingByMaterial);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE(bool, SetEnabledSortingByMaterial, m_sortingByMaterial);
-
   private:
     //void  DoInitializeTexCoords(entity_ptr a_ent, so_type& a_so) const;
     //void  DoUpdateTexCoords(entity_ptr a_ent, so_type& a_so) const;
 
-
   private:
     const_shader_prog_ptr     m_shaderPtr;
 
-    const_entity_ptr          m_sharedCam;
-    renderer_type             m_renderer;
-    matrix_type               m_vpMatrix;
-    matrix_type               m_projMat;
-    matrix_type               m_viewMatrix;
-    bool                      m_sortingByMaterial;
-
   private:
     void         DoProcessMesh(entity_ptr a_ent, p_mesh::Static,
                                p_mesh_render_sytem::Instanced);
@@ -120,8 +99,6 @@ namespace tloc { namespace graphics { namespace component_system {
                                p_mesh_render_sytem::Instanced);
     void         DoProcessMesh(entity_ptr a_ent, p_mesh::Dynamic,
                                p_mesh_render_sytem::NonInstanced);
-  private:
-    gl::shader_operator_vso   so_mesh;
   };
 
   // -----------------------------------------------------------------------

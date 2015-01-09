@@ -25,20 +25,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
   namespace p_material {
 
-    namespace Uniforms {
+    namespace uniforms {
 
       enum 
       {
-        k_modelMatrix = 0,
-        k_modelMatrixInverse,
-
-        k_modelViewMatrix,
-        k_modelViewMatrixInverse,
-
-        k_modelViewProjectionMatrix,
-        k_modelViewProjectionMatrixInverse,
-
-        k_viewProjectionMatrix,
+        k_viewProjectionMatrix = 0,
         k_viewProjectionMatrixInverse,
 
         k_viewMatrix,
@@ -46,27 +37,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
         k_projectionMatrix,
         k_projectionMatrixInverse, 
-
-        k_scaleMatrix,
-        k_scaleMatrixInverse,
-
-        k_normalMatrix,
-        k_normalMatrixInverse,
-
-        k_count
-
-      }; typedef s32                               value_type;                                                                
-
-    };
-
-    namespace Attributes {
-
-      enum 
-      {
-        k_vertexPosition = 0,
-        k_vertexNormal,
-        k_vertexColor,
-        k_texCoordPrefix,
 
         k_count
 
@@ -115,18 +85,14 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::uniform_vptr                                uniform_ptr;
     typedef gl::attributeVBO_vptr                           attribute_ptr;
 
+    typedef core_str::String                                string_type;
     typedef core::Pair<uniform_ptr, string_type>            uniform_string_pair;
 
-    typedef p_material::Uniforms::value_type                uniform_index_type;
-    typedef p_material::Attributes::value_type              attribute_index_type;
+    typedef p_material::uniforms::value_type                uniform_index_type;
 
     typedef core_conts::ArrayFixed
       <uniform_string_pair, 
-       p_material::Uniforms::k_count>                       uniform_pair_cont;
-
-    typedef core_str::String                                string_type;
-    typedef core_conts::ArrayFixed
-      <string_type, p_material::Attributes::k_count>        string_cont;
+       p_material::uniforms::k_count>                       uniform_pair_cont;
 
     typedef core_io::FileContents                           file_contents;
     typedef file_contents::path_type                        path_type;
@@ -176,10 +142,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public: // special uniforms that are passed depending on whether 
           // they are enabled or not
-
-    template <s32 T_UniformIndex>
-    this_type& SetUniformName(BufferArg a_name);
-    this_type& SetUniformName(uniform_index_type a_index, BufferArg a_name);
     
     template <s32 T_UniformIndex>
     const string_type& GetUniformName() const;
@@ -196,14 +158,6 @@ namespace tloc { namespace graphics { namespace component_system {
     template <s32 T_UniformIndex>
     bool IsUniformEnabled();
     bool IsUniformEnabled(uniform_index_type a_index);
-    
-    template <s32 T_AttributeIndex>
-    this_type& SetAttributeName(BufferArg a_name);
-    this_type& SetAttributeName(attribute_index_type a_index, BufferArg a_name);
-
-    template <s32 T_AttributeIndex>
-    const string_type& GetAttributeName() const;
-    const string_type& GetAttributeName(attribute_index_type a_index) const;
 
   private:
     file_contents          m_vertexProgram;
@@ -213,21 +167,12 @@ namespace tloc { namespace graphics { namespace component_system {
     shader_op_vso          m_shaderOp;
 
     shader_op_vso          m_internalShaderOp;
-    string_cont            m_attributeNames; 
     uniform_pair_cont      m_internalUniforms;
     bool                   m_isDirty;
   };
 
   // -----------------------------------------------------------------------
   // template definitions
-
-  template <s32 T_UniformIndex>
-  Material::this_type&
-    Material::
-    SetUniformName(BufferArg a_name)
-  { return SetUniformName(T_UniformIndex, a_name); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <s32 T_UniformIndex>
   const Material::string_type&
@@ -258,22 +203,6 @@ namespace tloc { namespace graphics { namespace component_system {
     Material::
     IsUniformEnabled()
   { return IsUniformEnabled(T_UniformIndex); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <s32 T_AttributeIndex>
-  Material::this_type&
-    Material::
-    SetAttributeName(BufferArg a_name)
-  { return SetAttributeName(T_AttributeIndex, a_name); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <s32 T_AttributeIndex>
-  const Material::string_type&
-    Material::
-    GetAttributeName() const
-  { return GetAttributeName(T_AttributeIndex); }
 
   //------------------------------------------------------------------------
   // typedefs

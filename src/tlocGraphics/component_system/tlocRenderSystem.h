@@ -58,30 +58,8 @@ namespace tloc { namespace graphics { namespace component_system {
     void         SetCamera(const_entity_ptr a_cameraEntity);
 
     TLOC_DECL_AND_DEF_GETTER(const_entity_ptr, GetCamera, m_sharedCam);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
-      (matrix_type, GetViewProjectionMatrix, m_vpMatrix);
     TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
-
-  protected:
-
-    struct DrawInfo
-    {
-    public:
-      DrawInfo();
-      DrawInfo(entity_ptr a_ent, 
-               gfx_t::gl_int a_drawCommand, 
-               tl_size a_numVertices);
-
-    public:
-      entity_ptr                m_entity;
-      gl::shader_operator_vptr  m_shaderOp;
-      gl::vao_vptr              m_meshVAO;
-
-      gfx_t::gl_int   m_drawCommand;
-      tl_size         m_numVertices;
-
-    };
 
   protected:
     RenderSystem_TI(event_manager_ptr              a_eventMgr,
@@ -92,26 +70,15 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void              SortEntities();
 
     virtual error_type        Pre_Initialize();
-    void                      DoInitializeTexCoords(entity_ptr a_ent, 
-                                                    so_type& a_so) const;
-    void                      DoUpdateTexCoords(entity_ptr a_ent, 
-                                                so_type& a_so) const;
     virtual error_type        InitializeEntity(entity_ptr a_ent);
-    virtual error_type        Post_Initialize();
 
     virtual error_type        Post_ReInitialize();
 
     virtual void              Pre_ProcessActiveEntities(f64);
-    virtual void              Post_ProcessActiveEntities(f64);
-
-    void                      DoDrawEntity(const DrawInfo& a_di);
 
   protected:
-    const_shader_prog_ptr     m_shaderPtr;
-
     const_entity_ptr          m_sharedCam;
     renderer_type             m_renderer;
-    rof_uptr                  m_renderOneFrame;
     matrix_type               m_vpMatrix;
     matrix_type               m_projMat;
     matrix_type               m_viewMatrix;

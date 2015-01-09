@@ -21,7 +21,6 @@ namespace tloc { namespace prefab { namespace graphics {
 
   using math_t::Rectangle_T;
 
-
   typedef gfx_t::f_vertex::p_vertex_selector::
           Normals<false>                              normals_selected;
   typedef gfx_t::f_vertex::p_vertex_selector::
@@ -40,7 +39,9 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_rect(rect_type(rect_type::width(1.0f),
                        rect_type::height(1.0f)) )
     , m_meshPref(a_entMgr, a_poolMgr)
-  { }
+  { 
+    m_meshPref.DrawMode(gfx_rend::mode::k_triangle_strip);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -49,8 +50,9 @@ namespace tloc { namespace prefab { namespace graphics {
     Quad_T<QUAD_PARAMS>::
     Construct() const -> component_ptr
   {
-    // prepare quad vertices
+    // prepare vertices
     using namespace gfx_t::f_vertex::p_vertex_selector;
+    using namespace math_t;
 
     typedef typename gfx_t::f_vertex::VertexSelector
       <Pos2D, 
@@ -61,8 +63,6 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef typename vert_selector::value_type            vert_type;
     typedef core_conts::Array<vert_type>                  vert_cont;
     typedef vert_cont::iterator                           vert_itr;
-
-    using namespace math_t;
 
     auto pos0 = Vec2f32(m_rect.GetValue<rect_type::right>(), 
                         m_rect.GetValue<rect_type::top>());

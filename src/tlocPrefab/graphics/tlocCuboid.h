@@ -2,6 +2,7 @@
 #define _TLOC_PREFAB_GRAPHICS_CUBOID_H_
 
 #include <tlocPrefab/tlocPrefabBase.h>
+#include <tlocPrefab/graphics/tlocMesh.h>
 
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
@@ -38,6 +39,8 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_AND_DEF_GETTER(bool, IsNormalsEnabled, T_Normals);
     TLOC_DECL_AND_DEF_GETTER(bool, IsTexCoordsEnabled, T_TexCoords);
 
+  private:
+    pref_gfx::Mesh    m_meshPref;
   };
 
   // -----------------------------------------------------------------------

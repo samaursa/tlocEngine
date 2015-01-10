@@ -8,12 +8,12 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocEntity.h>
-#include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
 
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector4.h>
@@ -21,10 +21,10 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class DebugTransformRenderSystem
-    : public core_cs::EntityProcessingSystem
+    : public gfx_cs::RenderSystem_TI<gfx_rend::renderer_sptr>
   {
   public:
-    typedef EntityProcessingSystem                            base_type;
+    typedef gfx_cs::RenderSystem_TI<gfx_rend::renderer_sptr>  base_type;
 
     typedef math::types::Vec3f32                              vec3_type;
     typedef math::types::Vec4f32                              vec4_type;
@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef vec3_type::value_type                             real_type;
 
-    typedef gl::const_shader_program_vptr                     const_shader_prog_ptr;
+    typedef gl::shader_program_vptr                           shader_prog_ptr;
     typedef gl::uniform_vptr                                  uniform_ptr;
     typedef gl::vao_vso                                       vao_vso;
 
@@ -73,7 +73,7 @@ namespace tloc { namespace graphics { namespace component_system {
     uniform_ptr                     m_uniVpMat;
     
     core_cs::entity_vptr            m_linesMaterial;
-    const_shader_prog_ptr           m_shaderPtr;
+    shader_prog_ptr                 m_shaderPtr;
     vertex_cont                     m_lineList;
 
     real_type                       m_scale;

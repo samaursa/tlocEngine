@@ -355,7 +355,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(2)
                    .TotalElements(2)
                    .StrideInBytes(sizeof(real_type)*4)
-                   .DataStartIndex(3)
+                   .DataStartIndex(2)
                    .GLType(type_to_gl::Get<Array<Vert2fpt::attrib_2_type::value_type> >())
                    );
       
@@ -380,7 +380,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(3)
                    .TotalElements(3)
                    .StrideInBytes(sizeof(real_type)*5)
-                   .DataStartIndex(3)
+                   .DataStartIndex(2)
                    .GLType(type_to_gl::Get<Array<Vert2fpn::attrib_2_type::value_type> >())
                    );
       
@@ -405,7 +405,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(3)
                    .TotalElements(3)
                    .StrideInBytes(sizeof(real_type)*9)
-                   .DataStartIndex(3)
+                   .DataStartIndex(2)
                    .GLType(type_to_gl::Get<Array<Vert2fpnc::attrib_2_type::value_type> >())
                    );
 
@@ -413,7 +413,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(4)
                    .TotalElements(4)
                    .StrideInBytes(sizeof(real_type)*9)
-                   .DataStartIndex(6)
+                   .DataStartIndex(5)
                    .GLType(type_to_gl::Get<Array<Vert2fpnc::attrib_3_type::value_type> >())
                    );
       
@@ -438,7 +438,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(3)
                    .TotalElements(3)
                    .StrideInBytes(sizeof(real_type)*7)
-                   .DataStartIndex(3)
+                   .DataStartIndex(2)
                    .GLType(type_to_gl::Get<Array<Vert2fpnt::attrib_2_type::value_type> >())
                    );
 
@@ -446,7 +446,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(2)
                    .TotalElements(2)
                    .StrideInBytes(sizeof(real_type)*7)
-                   .DataStartIndex(6)
+                   .DataStartIndex(5)
                    .GLType(type_to_gl::Get<Array<Vert2fpnt::attrib_3_type::value_type> >())
                    );
       
@@ -471,7 +471,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(3)
                    .TotalElements(3)
                    .StrideInBytes(sizeof(real_type)*23)
-                   .DataStartIndex(3)
+                   .DataStartIndex(2)
                    .GLType(type_to_gl::Get<Array<Vert2fpnto::attrib_2_type::value_type> >())
                    );
 
@@ -479,7 +479,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(2)
                    .TotalElements(2)
                    .StrideInBytes(sizeof(real_type)*23)
-                   .DataStartIndex(6)
+                   .DataStartIndex(5)
                    .GLType(type_to_gl::Get<Array<Vert2fpnto::attrib_3_type::value_type> >())
                    );
 
@@ -487,7 +487,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(4)
                    .TotalElements(16)
                    .StrideInBytes(sizeof(real_type)*23)
-                   .DataStartIndex(8)
+                   .DataStartIndex(7)
                    .GLType(type_to_gl::Get<Array<Vert2fpnto::attrib_4_type::value_type> >())
                    );
       
@@ -512,7 +512,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(3)
                    .TotalElements(3)
                    .StrideInBytes(sizeof(real_type)*11)
-                   .DataStartIndex(3)
+                   .DataStartIndex(2)
                    .GLType(type_to_gl::Get<Array<Vert2fpnct::attrib_2_type::value_type> >())
                    );
 
@@ -520,7 +520,7 @@ namespace tloc { namespace graphics { namespace gl {
                    .NumElements(4)
                    .TotalElements(4)
                    .StrideInBytes(sizeof(real_type)*11)
-                   .DataStartIndex(6)
+                   .DataStartIndex(5)
                    .GLType(type_to_gl::Get<Array<Vert2fpnct::attrib_3_type::value_type> >())
                    );
 

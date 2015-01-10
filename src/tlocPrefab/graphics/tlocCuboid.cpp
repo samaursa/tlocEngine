@@ -34,7 +34,10 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_cuboid(cuboid_type (cuboid_type::width(1.0f),
                             cuboid_type::height(1.0f),
                             cuboid_type::depth(1.0f)) )
-  { }
+    , m_meshPref(a_entMgr, a_poolMgr)
+  { 
+    m_meshPref.DrawMode(gfx_rend::mode::k_triangles);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -69,8 +72,6 @@ namespace tloc { namespace prefab { namespace graphics {
     mesh_pool::iterator itrMesh = meshPool->GetNext();
     (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
 
-    gfx_cs::mesh_sptr meshPtr = *(*itrMesh)->GetValuePtr();
-
     // -----------------------------------------------------------------------
     // Generate cuboid vertices
 
@@ -98,11 +99,11 @@ namespace tloc { namespace prefab { namespace graphics {
     const f32 uMulti = 1.0f / 4.0f;
     const f32 vMulti = 1.0f / 3.0f;
 
-    vert_cont vertCont;
-    vertCont.resize(36);
+    vert_cont verts;
+    verts.resize(36);
 
-    vert_itr itr = vertCont.begin();
-    vert_itr itrEnd = vertCont.end();
+    vert_itr itr = verts.begin();
+    vert_itr itrEnd = verts.end();
 
 #define INCREMENT_AND_CHECK_ITR()\
   ++itr; TLOC_ASSERT(itr != itrEnd, "Not enough vertices reserved for this cube!")
@@ -201,11 +202,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     // -----------------------------------------------------------------------
 
-    for (itr = vertCont.begin(), itrEnd = vertCont.end();
-         itr != itrEnd; ++itr)
-    { meshPtr->AddVertex(*itr); }
-
-    return meshPtr;
+    return m_meshPref.Construct(verts);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

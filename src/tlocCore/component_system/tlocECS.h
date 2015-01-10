@@ -40,32 +40,34 @@ namespace tloc { namespace core { namespace component_system {
 
     template <typename T_System>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem();
+      AddSystem(bool a_processManually = false);
 
     template <typename T_System, 
               typename T1>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1>& a_param);
+      AddSystem(const Args<T1>& a_param, bool a_processManually = false);
 
     template <typename T_System, 
               typename T1, typename T2>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1, T2>& a_param);
+      AddSystem(const Args<T1, T2>& a_param, bool a_processManually = false);
 
     template <typename T_System, 
               typename T1, typename T2, typename T3>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1, T2, T3>& a_param);
+      AddSystem(const Args<T1, T2, T3>& a_param, bool a_processManually = false);
     
     template <typename T_System, 
               typename T1, typename T2, typename T3, typename T4>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1, T2, T3, T4>& a_param);
+      AddSystem(const Args<T1, T2, T3, T4>& a_param,
+                bool a_processManually = false);
 
     template <typename T_System, 
               typename T1, typename T2, typename T3, typename T4, typename T5>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1, T2, T3, T4, T5>& a_param);
+      AddSystem(const Args<T1, T2, T3, T4, T5>& a_param, 
+                bool a_processManually = false);
 
   public: // prefab construction
 
@@ -129,7 +131,7 @@ namespace tloc { namespace core { namespace component_system {
   template <typename T_System>
   core_sptr::VirtualPtr<T_System> 
     ECS::
-    AddSystem()
+    AddSystem(bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get());
@@ -137,7 +139,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    m_sysProcessor->Add(sysPtr);
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
 
     return sysPtr;
   }
@@ -148,7 +150,7 @@ namespace tloc { namespace core { namespace component_system {
             typename T1>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1>& a_param)
+    AddSystem(const Args<T1>& a_param, bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), a_param.m_arg1);
@@ -156,7 +158,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    m_sysProcessor->Add(sysPtr);
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
 
     return sysPtr;
   }
@@ -167,7 +169,7 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2>& a_param)
+    AddSystem(const Args<T1, T2>& a_param, bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -187,7 +189,7 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2, typename T3>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2, T3>& a_param)
+    AddSystem(const Args<T1, T2, T3>& a_param, bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -196,7 +198,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    m_sysProcessor->Add(sysPtr);
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
 
     return sysPtr;
   }
@@ -207,7 +209,7 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2, typename T3, typename T4>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2, T3, T4>& a_param)
+    AddSystem(const Args<T1, T2, T3, T4>& a_param, bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -216,7 +218,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    m_sysProcessor->Add(sysPtr);
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
 
     return sysPtr;
   }
@@ -227,7 +229,7 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2, typename T3, typename T4, typename T5>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2, T3, T4, T5>& a_param)
+    AddSystem(const Args<T1, T2, T3, T4, T5>& a_param, bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -237,7 +239,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    m_sysProcessor->Add(sysPtr);
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
 
     return sysPtr;
   }

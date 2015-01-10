@@ -206,14 +206,13 @@ namespace tloc { namespace graphics { namespace component_system {
       else
       { tMatrix = t->GetTransformation().Cast<Mat4f32>(); }
 
-      //Mat4f32 tFinalMat = GetViewProjectionMatrix() * tMatrix;
-      Mat4f32 tFinalMat = tMatrix;
+      Mat4f32 tFinalMat = m_vpMatrix * tMatrix;
 
       // Generate the mvp matrix
       m_uniVpMat->SetValueAs(tFinalMat);
 
       gfx_cs::material_sptr matPtr = m_linesMaterial->GetComponent<gfx_cs::Material>();
-      const_shader_prog_ptr sp = matPtr->GetShaderProg();
+      auto sp = matPtr->GetShaderProg();
 
       error_type uniformErr = ErrorSuccess;
       error_type attribErr = ErrorSuccess;

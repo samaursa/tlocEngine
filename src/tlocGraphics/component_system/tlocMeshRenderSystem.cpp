@@ -572,7 +572,7 @@ namespace tloc { namespace graphics { namespace component_system {
       normMatrix = DoInvertOrIdentity(normMatrix, "ViewModelMatrix");
       normMatrix = normMatrix.Transpose();
 
-      meshPtr->GetUniform<k_normalMatrix>()->
+      meshPtr->GetUniform<k_normalMatrixInverse>()->
         SetValueAs(DoInvertOrIdentity(normMatrix.ConvertTo<math_t::Mat3f32>(), 
                                       "NormalMatrix"));
     }

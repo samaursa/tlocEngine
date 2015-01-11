@@ -47,9 +47,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     typedef core_conts::Array<uniform_pair_type>	        uniform_cont_type;
     typedef uniform_cont_type::iterator                   uniform_iterator;
+    typedef uniform_cont_type::const_iterator             const_uniform_iterator;
 
     typedef core_conts::Array<vbo_pair_type>              attributeVBO_cont_type;
     typedef attributeVBO_cont_type::iterator              attributeVBO_iterator;
+    typedef attributeVBO_cont_type::const_iterator        const_attributeVBO_iterator;
 
     typedef core_conts::tl_array<index_type>::type        index_cont_type;
     typedef index_cont_type::iterator                     index_iterator;
@@ -91,8 +93,14 @@ namespace tloc { namespace graphics { namespace gl {
     uniform_iterator begin_uniforms();
     uniform_iterator end_uniforms();
 
+    const_uniform_iterator begin_uniforms() const;
+    const_uniform_iterator end_uniforms() const;
+
     attributeVBO_iterator begin_attributeVBOs();
     attributeVBO_iterator end_attributeVBOs();
+
+    const_attributeVBO_iterator begin_attributeVBOs() const;
+    const_attributeVBO_iterator end_attributeVBOs() const;
 
     ///-------------------------------------------------------------------------
     /// @brief

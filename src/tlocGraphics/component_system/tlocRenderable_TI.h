@@ -51,8 +51,7 @@ namespace tloc { namespace graphics { namespace component_system {
         k_vertexPosition = 0,
         k_vertexNormal,
         k_vertexColor,
-        k_texCoord,
-        k_multiTexCoordPrefix,
+        k_texCoordPrefix,
 
         k_count
 
@@ -65,13 +64,20 @@ namespace tloc { namespace graphics { namespace component_system {
   // ///////////////////////////////////////////////////////////////////////
   // Renderable_I
 
+  template <class T1, class T2, class T3>
+  class MeshRenderSystem_T;
+
   class Renderable_I
   {
+    template <class T1, class T2, class T3> 
+    friend class MeshRenderSystem_T;
+
   public:
     typedef Renderable_I                                this_type;
     typedef core_str::String                            string_type;
 
     typedef gfx_gl::shader_operator_vso                 so_type;
+    typedef gfx_gl::shader_operator_vptr                so_ptr;
     typedef gfx_gl::vao_vso                             vao_vso;
     typedef gfx_gl::vao_vptr                            vao_ptr;
 
@@ -94,7 +100,11 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
 
     Renderable_I();
+    Renderable_I(const this_type& a_other);
     virtual ~Renderable_I();
+
+    this_type& operator=(this_type a_other);
+    void swap(this_type& a_other);
 
     template <s32 T_AttributeIndex>
     const string_type& GetAttributeName() const;
@@ -116,21 +126,29 @@ namespace tloc { namespace graphics { namespace component_system {
     bool IsUniformEnabled();
     bool IsUniformEnabled(uniform_index_type a_index);
 
-  public:
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(so_type, GetShaderOperator, m_shaderOp);
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST(vao_ptr, GetVAO, m_vao.get());
     TLOC_DECL_AND_DEF_GETTER(draw_mode, GetDrawMode, m_drawMode);
     TLOC_DECL_AND_DEF_GETTER(bool, GetUniformsUpdated, m_uniformsUpdated);
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(so_ptr, GetUserShaderOperator, m_userShaderOp.get());
 
     TLOC_DECL_SETTER_BY_VALUE_CHAIN(draw_mode, SetDrawMode);
 
   private:
-    so_type                 m_shaderOp;
-    vao_vso                 m_vao;
+    void DoUpdateUniformAndNames();
+
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(so_ptr, DoGetShaderOperator, m_shaderOp.get());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(vao_ptr, DoGetVAO, m_vao.get());
+
+  private:
     draw_mode               m_drawMode;
+
+    so_type                 m_shaderOp;
     attribute_string_cont   m_attributeNames;
     uniform_pair_cont       m_uniformsAndNames;
     bool                    m_uniformsUpdated;
+
+    so_type                 m_userShaderOp;
+
+    vao_vso                 m_vao;
   };
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -147,7 +165,11 @@ namespace tloc { namespace graphics { namespace component_system {
   auto
     Renderable_I::
     GetUniform() const -> uniform_ptr
-  { return GetUniform(T_UniformIndex); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_renderable::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+    return GetUniform(T_UniformIndex);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -155,7 +177,11 @@ namespace tloc { namespace graphics { namespace component_system {
   auto
     Renderable_I::
     SetEnableUniform(bool a_enable) -> this_type&
-  { return SetEnableUniform(T_UniformIndex, a_enable); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_renderable::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+    return SetEnableUniform(T_UniformIndex, a_enable);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -163,7 +189,11 @@ namespace tloc { namespace graphics { namespace component_system {
   bool
     Renderable_I::
     IsUniformEnabled()
-  { return IsUniformEnabled(T_UniformIndex); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_renderable::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+    return IsUniformEnabled(T_UniformIndex);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -171,7 +201,11 @@ namespace tloc { namespace graphics { namespace component_system {
   auto
     Renderable_I::
     GetAttributeName() const -> const string_type&
-  { return GetAttributeName(T_AttributeIndex); }
+  { 
+    TLOC_STATIC_ASSERT(T_AttributeIndex < p_renderable::attributes::k_count, 
+                       Attribute_index_out_of_range); 
+    return GetAttributeName(T_AttributeIndex);
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // Renderable_TI

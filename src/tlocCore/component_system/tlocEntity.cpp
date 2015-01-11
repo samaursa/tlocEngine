@@ -49,14 +49,11 @@ namespace tloc { namespace core { namespace component_system {
 
   bool 
     Entity::
-    HasComponent(component_info_type a_info) const
+    HasComponent(component_info_type a_info, size_type a_index) const
   {
-    const component_list& cl = m_allComponents[a_info.m_groupIndex];
+    const auto compSize = size_components(a_info);
 
-    component_list::const_iterator itr = 
-      core::find_if_all(cl, algos::component::compare::ComponentType_Deref(a_info));
-
-    return itr != cl.end();
+    return compSize > a_index;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -65,17 +62,15 @@ namespace tloc { namespace core { namespace component_system {
     Entity::
     GetComponent(component_info_type a_info, size_type a_index) const
   {
-    const_component_iterator itr    = begin_components(a_info);
-    const_component_iterator itrEnd = end_components(a_info);
+    auto itr    = begin_components(a_info);
+    auto itrEnd = end_components(a_info);
 
-    for (size_type i = 0; i < a_index; ++i)
-    {
-      TLOC_UNUSED_RELEASE(itrEnd);
-      TLOC_ASSERT(itr != itrEnd, 
-                  "Component at index does not exist in this entity");
-      ++itr;
-    }
+    const auto numComponents = core::distance(itr, itrEnd);
+    TLOC_UNUSED_RELEASE(numComponents);
+    TLOC_ASSERT(a_index < core_utils::CastNumber<size_type>(numComponents), 
+                "Component at index does not exist in this entity");
 
+    core::advance(itr, a_index);
     return *itr;
   }
 
@@ -122,10 +117,13 @@ namespace tloc { namespace core { namespace component_system {
 
     const component_list& cl = m_allComponents[a_info.m_groupIndex];
 
-    const_component_iterator toRet = 
-      core::find_if_end(cl.begin(), cl.end(), ComponentType_Deref(a_info));
+    auto itr    = cl.begin();
+    auto itrEnd = cl.end();
 
-    return ++toRet;
+    const_component_iterator toRet = 
+      core::find_if_end(itr, itrEnd, ComponentType_Deref(a_info));
+
+    return toRet == itrEnd ? toRet : ++toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -205,9 +203,6 @@ namespace tloc { namespace core { namespace component_system {
     Entity::
     size_components(component_info_type a_info) const
   { 
-    if (HasComponent(a_info) == false)
-    { return 0; }
-
     const_component_iterator  itr    = begin_components(a_info);
     const_component_iterator  itrEnd = end_components(a_info);
 

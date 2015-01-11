@@ -79,6 +79,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     using core::swap;
 
     swap(m_value, a_other.m_value);
+    m_cachedPtr = nullptr;
+    m_constCachedPtr = nullptr;
+    a_other.m_cachedPtr = nullptr;
+    a_other.m_constCachedPtr = nullptr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -307,6 +311,10 @@ namespace tloc { namespace core { namespace smart_ptr {
     using core::swap;
 
     swap(m_value, a_other.m_value);
+    m_cachedPtr = nullptr;
+    m_constCachedPtr = nullptr;
+    a_other.m_cachedPtr = nullptr;
+    a_other.m_constCachedPtr = nullptr;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

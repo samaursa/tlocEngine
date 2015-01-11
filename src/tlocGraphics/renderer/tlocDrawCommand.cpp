@@ -98,10 +98,12 @@ namespace tloc { namespace graphics { namespace renderer {
 
     for (auto& command : m_commands)
     {
+      auto newShader = command.GetShaderProgram();
+
       // set or switch shader
-      if (currShader != command.GetShaderProgram())
+      if (currShader != newShader)
       {
-        currShader = command.GetShaderProgram();
+        currShader = newShader;
         if (currShader->Enable().Failed())
         {
           TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "ShaderProgram #"

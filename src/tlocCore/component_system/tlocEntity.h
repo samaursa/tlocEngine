@@ -56,12 +56,13 @@ namespace tloc { namespace core { namespace component_system {
     bool                      operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
-    bool                      HasComponent(component_info_type a_info) const;
+    bool                      HasComponent(component_info_type a_info, 
+                                           size_type a_index = 0) const;
     component_ptr_type        GetComponent(component_info_type a_info, 
                                            size_type a_index = 0) const;
 
     template <typename T_Component>
-    bool                      HasComponent() const;
+    bool                      HasComponent(size_type a_index = 0) const;
     template <typename T_Component>
     core_sptr::SharedPtr<T_Component>
                               GetComponent(size_type a_index = 0) const;
@@ -156,11 +157,11 @@ namespace tloc { namespace core { namespace component_system {
 
   template <typename T_Component>
   bool
-    Entity::HasComponent() const
+    Entity::HasComponent(size_type a_index) const
   { 
     return HasComponent(typename T_Component::Info()
                         .GroupIndex(T_Component::k_component_group)
-                        .Type(T_Component::k_component_type));
+                        .Type(T_Component::k_component_type), a_index);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

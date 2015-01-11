@@ -324,7 +324,12 @@ namespace tloc { namespace core { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ECS, ecs);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ECS, ecs);
 
 };};};
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::core_cs::ECS);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::core_cs::ECS);
 
 #endif

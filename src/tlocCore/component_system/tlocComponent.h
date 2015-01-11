@@ -21,10 +21,14 @@ namespace tloc { namespace core { namespace component_system {
 #define TLOC_DECL_AND_DEF_COMPONENT_SETTER(_type_, _name_, _var_)\
   TLOC_DECL_SETTER(_type_, _name_) { SetUpdateRequired(true); _var_ = a_in; }
 
+  class EntityManager;
+
   class Component 
     : public base_classes::DebugName
     , public utils::ObjectCounter<Component>
   {
+    friend class EntityManager;
+
   public:
     typedef Component                       this_type;
     typedef base_classes::DebugName         base_type;

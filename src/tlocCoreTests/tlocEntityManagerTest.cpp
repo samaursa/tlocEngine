@@ -58,6 +58,7 @@ namespace TestingEntityManager
     EntityTracker() : m_entEventCounter(0)
                     , m_disableEntityCounter(0)
                     , m_compEventCounter(0)
+                    , m_disableComponentCounter(0)
                     , m_totalEvents(0)
     {}
 
@@ -98,6 +99,16 @@ namespace TestingEntityManager
           m_compEventCounter--;
           return EventReturn(true, false);
         }
+      case entity_events::disable_component:
+        {
+          m_disableComponentCounter++;
+          return EventReturn(true, true);
+        }
+      case entity_events::enable_component:
+        {
+          m_disableComponentCounter--;
+          return EventReturn(true, false);
+        }
       default:
         {
           return EventReturn(false, false);
@@ -108,6 +119,7 @@ namespace TestingEntityManager
     tl_uint m_entEventCounter;
     tl_int  m_disableEntityCounter;
     tl_int  m_compEventCounter;
+    tl_int  m_disableComponentCounter;
     tl_int  m_totalEvents;
   };
   TLOC_TYPEDEF_ALL_SMART_PTRS(EntityTracker, entity_tracker);
@@ -249,6 +261,14 @@ namespace TestingEntityManager
                              .DispatchTo(entTrack2.get().get()) );
           CHECK(entTrack->m_compEventCounter == 1);
           CHECK(entTrack2->m_compEventCounter == 2);
+      }
+
+      {
+        auto compCounter = entTrack->m_disableComponentCounter;
+        eMgr.DisableComponent(core::MakePair(newEnt, testComp));
+        CHECK(entTrack->m_disableComponentCounter == compCounter + 1);
+        eMgr.EnableComponent(core::MakePair(newEnt, testComp));
+        CHECK(entTrack->m_disableComponentCounter == compCounter);
       }
 
       component_sptr invalidComp = MakeShared<EmptyComponent2>();

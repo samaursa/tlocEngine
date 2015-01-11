@@ -107,6 +107,18 @@ namespace TestingEntity
     CHECK_FALSE(e->HasComponent<Component1>() );
     CHECK_FALSE(e->HasComponent<Component2>() );
 
+    // BUGFIX: Getting a component that doesn't exist would cause a crash
+    // because end_components() would return an end+1 when empty and GetComponent<>
+    // uses end_components()
+    core_cs::const_entity_vptr eConst = e.get();
+    auto itr    = eConst->begin_components<Component1>();
+    auto itrEnd = eConst->end_components<Component1>();
+    CHECK(itr == itrEnd);
+
+    TLOC_TEST_ASSERT
+    { e->GetComponent<Component1>(); }
+    TLOC_TEST_ASSERT_CHECK();
+
     CHECK(e->size_components(component_group::k_core) == 0);
 
     CHECK(e->size_components<Component1>() == 0);

@@ -1,6 +1,7 @@
 #include "tlocRenderable_TI.h"
 
 #include <tlocGraphics/renderer/tlocDrawCommand.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -33,7 +34,6 @@ namespace tloc { namespace graphics { namespace component_system {
       "a_vertNorm",
       "a_vertCol",
       "a_vertTexCoord",
-      "a_multiTexCoord",
     };
 
   };
@@ -64,6 +64,46 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (tl_size i = 0; i < p_renderable::attributes::k_count; ++i)
     { m_attributeNames.push_back(core_str::String(g_attributeNames[i])); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Renderable_I::
+    Renderable_I(const this_type& a_other)
+    : m_drawMode(a_other.m_drawMode)
+    , m_shaderOp(a_other.m_shaderOp)
+    , m_attributeNames(a_other.m_attributeNames)
+    , m_uniformsUpdated(true)
+  {
+    DoUpdateUniformAndNames();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Renderable_I::
+    operator =(this_type a_other) -> this_type&
+  {
+    swap(a_other);
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    Renderable_I::
+    swap(this_type& a_other)
+  {
+    using core::swap;
+
+    swap(m_drawMode        , a_other.m_drawMode);
+
+    swap(m_shaderOp        , a_other.m_shaderOp);
+    swap(m_vao             , a_other.m_vao);
+    swap(m_attributeNames  , a_other.m_attributeNames);
+    swap(m_uniformsUpdated , a_other.m_uniformsUpdated);
+
+    DoUpdateUniformAndNames();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -120,6 +160,31 @@ namespace tloc { namespace graphics { namespace component_system {
     Renderable_I::
     GetAttributeName(attribute_index_type a_index) const -> const string_type&
   { return m_attributeNames[a_index]; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+  Renderable_I::
+    DoUpdateUniformAndNames()
+  {
+    m_uniformsAndNames.clear();
+
+    const auto itr = m_shaderOp->begin_uniforms();
+
+    for (p_renderable::uniforms::value_type i = 0;
+         i < p_renderable::uniforms::k_count; ++i)
+    {
+      auto itrAdvance = itr;
+      core::advance(itrAdvance, i);
+
+      auto uniformName = core_str::String(g_uniformNames[i]);
+      auto uniformPtr = itrAdvance->first.get();
+
+      m_uniformsAndNames.push_back(core::MakePair(uniformPtr, uniformName));
+    }
+  }
 
 };};};
 

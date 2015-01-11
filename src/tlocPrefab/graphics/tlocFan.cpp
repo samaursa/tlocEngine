@@ -1,11 +1,14 @@
 #include "tlocFan.h"
 
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocGraphics/component_system/tlocFan.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -40,6 +43,7 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_circle(circle_type(circle_type::radius(1.0f)) )
     , m_numSides(8)
     , m_sectorAngle(360.0f)
+    , m_sprite(false)
     , m_meshPref(a_entMgr, a_poolMgr)
   {
     m_meshPref.DrawMode(gfx_rend::mode::k_triangle_fan);
@@ -86,24 +90,7 @@ namespace tloc { namespace prefab { namespace graphics {
     }
 
     // TEXTURE COORDINATES
-
-    vec2_cont texCoords;
-
-    typedef math_t::Circlef32 circle_type;
-    // Create the texture co-ordinates
-    circle_type circForTex;
-    circForTex.SetRadius(0.5f);
-    circForTex.SetPosition(Vec2f32(0.5f, 0.5f));
-
-    using math_t::degree_f32;
-
-    texCoords.push_back(circForTex.GetPosition());
-    for (f32 i = 0; i <= m_numSides; ++i)
-    {
-      auto newTexCoord =
-        circForTex.GetCoord(degree_f32(angleInterval * i));
-      texCoords.push_back(newTexCoord);
-    }
+    const auto& texCoords = DoGenerateTexCoords();
 
     // VERTEXES
     TLOC_ASSERT(positions.size() == texCoords.size(), 
@@ -135,6 +122,24 @@ namespace tloc { namespace prefab { namespace graphics {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  namespace {
+
+    using namespace gfx_t::f_vertex::p_vertex_selector;
+
+    void DoIssueTextureCoordinateWarning(TexCoords<true>)
+    {
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY()
+        << "Interleaved texture coordinates of this Quad will be overridden by "
+        << "its animated (sprite) texture coordinates";
+    }
+
+    void DoIssueTextureCoordinateWarning(TexCoords<false>)
+    {
+      // intentionally empty
+    }
+
+  }
+
   template <FAN_TEMPS>
   void
     Fan_T<FAN_PARAMS>::
@@ -147,10 +152,58 @@ namespace tloc { namespace prefab { namespace graphics {
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
+    // sprite
+
+    if (m_sprite)
+    {
+      DoIssueTextureCoordinateWarning(texcoords_selected());
+
+      const auto& texCoords = DoGenerateTexCoords();
+
+      TextureCoords tCoords(m_entMgr, m_compPoolMgr);
+      {
+        for (auto& coord : texCoords)
+        { tCoords.AddCoord(coord); }
+        tCoords.Add(a_ent);
+      }
+    }
+
+    // -----------------------------------------------------------------------
     // fan component
 
     m_entMgr->InsertComponent( insert_params(a_ent, Construct())
                               .DispatchTo(GetListeners()) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <FAN_TEMPS>
+  auto
+    Fan_T<FAN_PARAMS>::
+    DoGenerateTexCoords() const -> vec2_cont
+  {
+    using namespace math_t;
+    // TEXTURE COORDINATES
+
+    const auto angleInterval = m_sectorAngle.Get() / m_numSides;
+
+    vec2_cont texCoords;
+
+    typedef Circlef32 circle_type;
+    // Create the texture co-ordinates
+    circle_type circForTex;
+    circForTex.SetRadius(0.5f);
+    circForTex.SetPosition(Vec2f32(0.5f, 0.5f));
+
+    texCoords.push_back(circForTex.GetPosition());
+    for (f32 i = 0; i <= m_numSides; ++i)
+    {
+      auto newTexCoord =
+        circForTex.GetCoord(degree_f32(angleInterval * i));
+      texCoords.push_back(newTexCoord);
+    }
+
+    return texCoords;
   }
 
   // -----------------------------------------------------------------------

@@ -214,6 +214,78 @@ namespace tloc { namespace core { namespace component_system {
     return true;
   }
 
+  void 
+    EntityManager::
+    EnableComponent(ent_comp_pair_type  a_entComp)
+  {
+    TLOC_ASSERT(core::find_all(m_entities, a_entComp.first) != m_entities.end(),
+                "Entity pointer not found in this EntityManager.");
+
+    auto  a_entity  = a_entComp.first;
+    auto  a_comp    = a_entComp.second;
+
+    component_iterator itr    = a_entity->begin_components(a_comp->GetInfo());
+    component_iterator itrEnd = a_entity->end_components(a_comp->GetInfo());
+
+    if (itr == itrEnd)
+    {
+      TLOC_LOG_CORE_WARN() << "Entity (" << a_entity->GetDebugName() << ")"
+        << " does not have this Component (" << a_entity->GetDebugName() << ")";
+      return ;
+    }
+
+    component_iterator foundItr = core::find(itr, itrEnd, a_comp);
+
+    if (foundItr == itrEnd)
+    {
+      TLOC_LOG_CORE_WARN() << "Component (" << a_comp->GetDebugName() << ")"
+        << " not found in Entity (" << a_entity->GetDebugName() << ")";
+      return ;
+    }
+
+    a_comp->SetEnabled(true);
+    EntityComponentEvent evt(entity_events::enable_component, 
+                             ToVirtualPtr(a_entity),
+                             a_comp);
+    m_eventMgr->DispatchNow(evt);
+  }
+
+  void 
+    EntityManager::
+    DisableComponent(ent_comp_pair_type  a_entComp)
+  {
+    TLOC_ASSERT(core::find_all(m_entities, a_entComp.first) != m_entities.end(),
+                "Entity pointer not found in this EntityManager.");
+
+    auto  a_entity  = a_entComp.first;
+    auto  a_comp    = a_entComp.second;
+
+    component_iterator itr    = a_entity->begin_components(a_comp->GetInfo());
+    component_iterator itrEnd = a_entity->end_components(a_comp->GetInfo());
+
+    if (itr == itrEnd)
+    {
+      TLOC_LOG_CORE_WARN() << "Entity (" << a_entity->GetDebugName() << ")"
+        << " does not have this Component (" << a_entity->GetDebugName() << ")";
+      return ;
+    }
+
+    component_iterator foundItr = core::find(itr, itrEnd, a_comp);
+
+    if (foundItr == itrEnd)
+    {
+      TLOC_LOG_CORE_WARN() << "Component (" << a_comp->GetDebugName() << ")"
+        << " not found in Entity (" << a_entity->GetDebugName() << ")";
+      return ;
+    }
+
+    a_comp->SetEnabled(false);
+    EntityComponentEvent evt(entity_events::disable_component, 
+                             ToVirtualPtr(a_entity),
+                             a_comp);
+    m_eventMgr->DispatchNow(evt);
+  }
+
   void EntityManager::
     DoUpdateAndCleanComponents()
   {

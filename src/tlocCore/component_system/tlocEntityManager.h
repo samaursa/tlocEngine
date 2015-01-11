@@ -85,6 +85,8 @@ namespace tloc { namespace core { namespace component_system {
 
     void              InsertComponent(const Params& a_params);
     bool              RemoveComponent(ent_comp_pair_type a_entityAndComponent);
+    void              EnableComponent(ent_comp_pair_type a_entityAndComponent);
+    void              DisableComponent(ent_comp_pair_type a_entityAndComponent);
 
     void              Update();
 

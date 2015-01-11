@@ -7,10 +7,7 @@
 #include <tlocCore/logging/tlocLogger.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
 
-#include <tlocMath/component_system/tlocTransform.h>
-
 #include <tlocGraphics/component_system/tlocSceneNode.h>
-#include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocText_I.h>
 #include <tlocGraphics/media/tlocFont.h>
 
@@ -42,7 +39,7 @@ namespace tloc { namespace graphics { namespace component_system {
                 register_type().Add<text_type>(), a_debugName)
     , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
     , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
-    , m_textQuadRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textMeshRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
     , m_textAnimSys(m_textEventMgr.get(), m_textEntityMgr.get())
   { }
 
@@ -58,8 +55,8 @@ namespace tloc { namespace graphics { namespace component_system {
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
   void
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
-    DoAlignLine(const_ent_ptr_cont_itr a_begin, 
-                const_ent_ptr_cont_itr a_end, 
+    DoAlignLine(const_glyph_info_itr a_begin, 
+                const_glyph_info_itr a_end, 
                 tl_int a_beginIndex,
                 text_ptr a_text, 
                 size_type a_lineNumber)
@@ -71,16 +68,16 @@ namespace tloc { namespace graphics { namespace component_system {
     math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
 
-    const_ent_ptr_cont_itr itrLast = a_begin;
+    auto itrLast = a_begin;
 
-    for (const_ent_ptr_cont_itr itr = a_begin, itrEnd = a_end; 
+    for (auto itr = a_begin, itrEnd = a_end; 
          itr != itrEnd; ++itr)
     {
       itrLast = itr;
       using core_sptr::ToVirtualPtr;
 
-      math_cs::transform_sptr t = (*itr)->GetComponent<math_cs::Transform>();
-      gfx_cs::quad_sptr       q = (*itr)->GetComponent<gfx_cs::Quad>();
+      auto t = itr->m_trans;
+      auto q = itr->m_rect;
 
       if (count != a_beginIndex)
       {
@@ -105,11 +102,11 @@ namespace tloc { namespace graphics { namespace component_system {
     // the end position
     if (itrLast != a_end)
     {
-      math_cs::transform_sptr t = (*itrLast)->GetComponent<math_cs::Transform>();
-      gfx_cs::quad_sptr       q = (*itrLast)->GetComponent<gfx_cs::Quad>();
+      auto t = itrLast->m_trans;
+      auto q = itrLast->m_rect;
 
       endPos = t->GetPosition();
-      endPos[0] += q->GetRectangleRef().GetWidth() - 
+      endPos[0] += q.GetWidth() - 
         a_text->GetFont()->GetCachedParams().m_paddingDim[0] * 2;
     }
 
@@ -123,10 +120,9 @@ namespace tloc { namespace graphics { namespace component_system {
       else if (a_text->GetAlignment() == alignment::k_align_right)
       { totalTextWidth = totalTextWidth * -1.0f; }
 
-      for (const_ent_ptr_cont_itr itr = a_begin, itrEnd = a_end; 
-           itr != itrEnd; ++itr)
+      for (auto itr = a_begin, itrEnd = a_end; itr != itrEnd; ++itr)
       {
-        math_cs::transform_sptr t = (*itr)->GetComponent<math_cs::Transform>();
+        math_cs::transform_sptr t = itr->m_trans;
         t->SetPosition(t->GetPosition() + totalTextWidth);
       }
     }
@@ -146,9 +142,9 @@ namespace tloc { namespace graphics { namespace component_system {
     if (a_pair.second.size() == 0)
     { return; }
 
-    const_ent_ptr_cont_itr itr    = a_pair.second.begin();
-    const_ent_ptr_cont_itr prevItr = itr;
-    const_ent_ptr_cont_itr itrEnd = a_pair.second.end();
+    auto itr    = a_pair.second.begin();
+    auto prevItr = itr;
+    auto itrEnd = a_pair.second.end();
 
     const typename text_type::str_type& str = text->Get();
 
@@ -270,41 +266,44 @@ namespace tloc { namespace graphics { namespace component_system {
       Rectf_bl rect = 
         Rectf_bl(Rectf_bl::width(finalDim[0]), Rectf_bl::height(finalDim[1]));
 
-      entity_ptr q = 
-        pref_gfx::Quad(m_textEntityMgr.get(), m_textCompMgr.get())
-        .Dimensions(rect).Create();
+      entity_ptr character = 
+        pref_gfx::QuadNoTexCoords(m_textEntityMgr.get(), m_textCompMgr.get())
+        .Sprite(true).Dimensions(rect).Create();
 
-      q->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
+      character->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
 
       if (matPtr)
       { 
         m_textEntityMgr->InsertComponent
-          (entity_manager::Params(q, matPtr).Orphan(true));
+          (entity_manager::Params(character, matPtr).Orphan(true));
       }
 
       // we need the quad later for other operations
-      tqp.second.push_back(q);
+      auto ci = CharacterInfo()
+        .Transformation(character->GetComponent<math_cs::Transform>())
+        .Rectangle(rect);
+      tqp.second.push_back(ci);
 
       // disable rendering of empty characters (spaces, \n) - we could simply
       // not create it but other logic relies on these characters
       // TODO: Refactor later to not create the quad in the first place
       if (core_str::IsSpace(core_str::CharWideToAscii(text[i])))
-      { q->Deactivate(); }
+      { character->Deactivate(); }
 
       // -----------------------------------------------------------------------
       // make it a node
 
       pref_gfx::SceneNode(m_textEntityMgr.get(), m_textCompMgr.get())
-        .Parent(core_sptr::ToVirtualPtr(sceneNode)).Add(q);
+        .Parent(core_sptr::ToVirtualPtr(sceneNode)).Add(character);
 
       // -----------------------------------------------------------------------
       // add sprite animation to quad with one texture coordinate only
 
       pref_gfx::SpriteAnimation(m_textEntityMgr.get(), m_textCompMgr.get())
-        .Paused(false).Add(q, itrSs, itrEndSs);
+        .Paused(false).Add(character, itrSs, itrEndSs);
 
       if (a_ent->IsActive() == false)
-      { q->Deactivate(); }
+      { character->Deactivate(); }
     }
 
     DoAlignText(tqp);
@@ -330,7 +329,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   real_type
     DoSetTextQuadPosition(math_cs::transform_sptr                 a_entPos, 
-                          gfx_cs::quad_sptr                       a_entQuad,
+                          math_t::Rectf32_bl                      a_rect,
                           gfx_cs::text_i_vptr                     a_entText,
                           gfx_med::Font::glyph_metrics::char_code a_charCode, 
                           real_type                               a_startingPosX,
@@ -354,7 +353,6 @@ namespace tloc { namespace graphics { namespace component_system {
       itr->m_horizontalBearing.ConvertTo<math_t::Vec2f>();
 
     using math_cs::transform_sptr;
-    math_t::Rectf_bl rect = a_entQuad->GetRectangleRef();
 
     const real_type yPos = (fParams.m_fontSize.GetHeightInPixels() * 1.2f + 
                             a_entText->GetVerticalKerning()) * a_lineNumber;
@@ -365,7 +363,7 @@ namespace tloc { namespace graphics { namespace component_system {
     a_entPos->
       SetPosition(a_entPos->GetPosition() +
       math_t::Vec3f(horBearing[0] - padDim[0], 
-                    horBearing[1] - rect.GetHeight() + padDim[1], 
+                    horBearing[1] - a_rect.GetHeight() + padDim[1], 
                     0));
 
     // advance pen's position
@@ -378,7 +376,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   real_type
     DoSetTextQuadPosition(math_cs::transform_sptr                   a_entPos, 
-                          gfx_cs::quad_sptr                         a_entQuad,
+                          math_t::Rectf32_bl                        a_rect,
                           gfx_cs::text_i_vptr                       a_entText,
                           gfx_med::Font::glyph_metrics:: char_code  a_prevCode, 
                           gfx_med::Font::glyph_metrics:: char_code  a_charCode, 
@@ -386,7 +384,7 @@ namespace tloc { namespace graphics { namespace component_system {
                           size_type                                 a_lineNumber)
   {
     real_type advanceToRet = 
-      DoSetTextQuadPosition(a_entPos, a_entQuad, a_entText, a_charCode, 
+      DoSetTextQuadPosition(a_entPos, a_rect, a_entText, a_charCode, 
                             a_startingPosX, a_lineNumber);
 
     // -----------------------------------------------------------------------
@@ -441,12 +439,12 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_Initialize()
   {
-    m_textQuadRenderSys.SetRenderer(GetRenderer());
+    m_textMeshRenderSys.SetRenderer(GetRenderer());
 
     if (GetCamera() != nullptr)
-    { m_textQuadRenderSys.SetCamera(GetCamera()); }
+    { m_textMeshRenderSys.SetCamera(GetCamera()); }
     
-    m_textQuadRenderSys.Initialize();
+    m_textMeshRenderSys.Initialize();
     m_textSceneGraphSys.Initialize();
     m_textAnimSys.Initialize();
 
@@ -495,7 +493,7 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     m_textSceneGraphSys.ProcessActiveEntities(a_deltaT);
     m_textAnimSys.ProcessActiveEntities(a_deltaT);
-    m_textQuadRenderSys.ProcessActiveEntities(a_deltaT);
+    m_textMeshRenderSys.ProcessActiveEntities(a_deltaT);
   }
 
   // -----------------------------------------------------------------------

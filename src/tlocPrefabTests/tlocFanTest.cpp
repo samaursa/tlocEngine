@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocGraphics/component_system/tlocFan.h>
-#include <tlocGraphics/component_system/tlocFanRenderSystem.h>
+#include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -13,10 +13,10 @@ namespace
   using namespace tloc;
 
   typedef core_cs::entity_vptr                    entity_ptr;
-  typedef gfx_cs::Fan                             component_type;
-  typedef gfx_cs::fan_sptr                        component_ptr;
+  typedef gfx_cs::Mesh                            component_type;
+  typedef gfx_cs::mesh_sptr                       component_ptr;
 
-  typedef gfx_cs::fan_render_system_vso           system_vso;
+  typedef gfx_cs::mesh_render_system_vso          system_vso;
 
   TEST_CASE("prefab/gfx/Fan", "")
   {
@@ -42,9 +42,6 @@ namespace
         .Circle(math_t::Circlef(math_t::Circlef::diameter(2.0f)) )
         .Sides(24)
         .Construct();
-
-      CHECK(ptr->GetEllipseRef().GetRadius() == Approx(1.0f));
-      CHECK(ptr->GetNumSides() == 24);
     }
 
     //SECTION("Create", "")
@@ -58,19 +55,30 @@ namespace
 
       component_ptr ptr = ent->GetComponent<component_type>();
 
+      CHECK_FALSE(ent->HasComponent<gfx_cs::TextureCoords>());
+    }
+
+    {
+      entity_ptr ent = pref_gfx::FanNoTexCoords(entMgr.get(), compMgr.get())
+        .Circle(math_t::Circlef(math_t::Circlef::diameter(4.0f)) )
+        .Sides(100)
+        .Sprite(true)
+        .Create();
+
+      REQUIRE(ent->HasComponent<component_type>());
+
+      component_ptr ptr = ent->GetComponent<component_type>();
+
       CHECK(ent->HasComponent<gfx_cs::TextureCoords>());
-      CHECK(ptr->GetEllipseRef().GetRadius() == Approx(2.0f));
-      CHECK(ptr->GetNumSides() == 100);
     }
 
     //SECTION("Add", "")
     {
       entity_ptr ent = entMgr->CreateEntity();
 
-      ent = pref_gfx::Fan(entMgr.get(), compMgr.get())
+      ent = pref_gfx::FanNoTexCoords(entMgr.get(), compMgr.get())
         .Circle(math_t::Circlef(math_t::Circlef::diameter(4.0f)) )
         .Sides(100)
-        .TexCoords(false)
         .Create();
 
       REQUIRE(ent->HasComponent<component_type>());
@@ -78,8 +86,6 @@ namespace
       component_ptr ptr = ent->GetComponent<component_type>();
 
       CHECK_FALSE(ent->HasComponent<gfx_cs::TextureCoords>());
-      CHECK(ptr->GetEllipseRef().GetRadius() == Approx(2.0f));
-      CHECK(ptr->GetNumSides() == 100);
     }
 
     system->SetRenderer(win.GetRenderer());

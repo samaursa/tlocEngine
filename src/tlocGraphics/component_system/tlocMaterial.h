@@ -178,7 +178,11 @@ namespace tloc { namespace graphics { namespace component_system {
   const Material::string_type&
     Material::
     GetUniformName() const
-  { return GetUniformName(T_UniformIndex); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_material::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+    return GetUniformName(T_UniformIndex);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -186,7 +190,11 @@ namespace tloc { namespace graphics { namespace component_system {
   Material::uniform_ptr
     Material::
     GetUniform() const
-  { return GetUniform(T_UniformIndex); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_material::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+    return GetUniform(T_UniformIndex);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -194,7 +202,11 @@ namespace tloc { namespace graphics { namespace component_system {
    Material::this_type&
     Material::
     SetEnableUniform(bool a_enable)
-  { return SetEnableUniform(T_UniformIndex, a_enable); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_material::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+     return SetEnableUniform(T_UniformIndex, a_enable);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -202,7 +214,11 @@ namespace tloc { namespace graphics { namespace component_system {
   bool
     Material::
     IsUniformEnabled()
-  { return IsUniformEnabled(T_UniformIndex); }
+  { 
+    TLOC_STATIC_ASSERT(T_UniformIndex < p_material::uniforms::k_count, 
+                       Uniform_index_out_of_range); 
+    return IsUniformEnabled(T_UniformIndex);
+  }
 
   //------------------------------------------------------------------------
   // typedefs

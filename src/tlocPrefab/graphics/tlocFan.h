@@ -23,6 +23,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef Fan_T<T_TexCoords>                            this_type;
     typedef Prefab_TI<this_type, component_type>          base_type;
     typedef math_t::Circlef32                             circle_type;
+    typedef core_conts::Array<math_t::Vec2f32>            vec2_cont;
 
     typedef gfx_t::f_vertex::p_vertex_selector::
             TexCoords<T_TexCoords>                      texcoords_selected;
@@ -38,6 +39,10 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_PARAM_VAR(circle_type, Circle, m_circle);
     TLOC_DECL_PARAM_VAR(tl_size, Sides, m_numSides);
     TLOC_DECL_PARAM_VAR(math_t::Degree, SectorAngle, m_sectorAngle);
+    TLOC_DECL_PARAM_VAR(bool, Sprite, m_sprite);
+
+  private:
+    vec2_cont DoGenerateTexCoords() const;
 
   private:
     pref_gfx::Mesh    m_meshPref;

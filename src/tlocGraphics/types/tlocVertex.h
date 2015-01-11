@@ -272,13 +272,13 @@ namespace tloc { namespace graphics { namespace types {
       class Pos3D      {};
 
       template <bool T_Enable = true>
-      class Normals    {};
+      class Normals    { public: enum { k_value = T_Enable }; };
 
       template <bool T_Enable = true>
-      class Color      {};
+      class Color      { public: enum { k_value = T_Enable }; };
 
       template <bool T_Enable = true>
-      class TexCoords  {};
+      class TexCoords  { public: enum { k_value = T_Enable }; };
     };
 
     // -----------------------------------------------------------------------

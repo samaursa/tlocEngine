@@ -11,6 +11,9 @@
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/io/tlocPath.h>
 
+#include <tlocMath/component_system/tlocTransform.h>
+#include <tlocMath/types/tlocRectangle.h>
+
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocRenderSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
@@ -34,13 +37,21 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math_t::Mat2f32                                   scale_type;
     typedef tl_float                                          real_type;
 
+    struct CharacterInfo
+    {
+      typedef CharacterInfo     this_type;
+
+      TLOC_DECL_PARAM_VAR(math_cs::transform_sptr, Transformation, m_trans);
+      TLOC_DECL_PARAM_VAR(math_t::Rectf_bl, Rectangle, m_rect);
+    };
+
   public:
-    typedef core_cs::const_entity_ptr_array                   ent_ptr_cont;
-    typedef ent_ptr_cont::iterator                            ent_ptr_cont_itr;
-    typedef ent_ptr_cont::const_iterator                      const_ent_ptr_cont_itr;
-    typedef core::Pair<const_entity_ptr, ent_ptr_cont>        text_quads_pair;
+    typedef core_conts::Array<CharacterInfo>                  glyph_info_cont;
+    typedef typename glyph_info_cont::iterator                glyph_info_itr;
+    typedef typename glyph_info_cont::const_iterator          const_glyph_info_itr;
+    typedef core::Pair<const_entity_ptr, glyph_info_cont>     text_quads_pair;
     typedef core_conts::Array<text_quads_pair>                text_quads_cont;
-    typedef text_quads_cont::iterator                         text_quads_iterator;
+    typedef typename text_quads_cont::iterator                text_quads_iterator;
 
   public:
 
@@ -60,8 +71,8 @@ namespace tloc { namespace graphics { namespace component_system {
     
     ~TextRenderSystem_TI();
 
-    void         DoAlignLine(const_ent_ptr_cont_itr a_begin, 
-                             const_ent_ptr_cont_itr a_end,
+    void         DoAlignLine(const_glyph_info_itr a_begin, 
+                             const_glyph_info_itr a_end,
                              tl_int a_beginIndex,
                              text_ptr a_text,
                              size_type a_lineNumber);
@@ -79,7 +90,7 @@ namespace tloc { namespace graphics { namespace component_system {
     core_cs::event_manager_vso          m_textEventMgr;
     core_cs::entity_manager_vso         m_textEntityMgr;
     gfx_cs::SceneGraphSystem            m_textSceneGraphSys;
-    gfx_cs::MeshRenderSystem            m_textQuadRenderSys;
+    gfx_cs::MeshRenderSystem            m_textMeshRenderSys;
     gfx_cs::TextureAnimatorSystem       m_textAnimSys;
   };
 

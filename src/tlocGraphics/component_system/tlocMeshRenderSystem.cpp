@@ -5,9 +5,10 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocProjectionComponent.h>
 
-#include <tlocGraphics/component_system/tlocSceneNode.h>
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMesh.h>
+#include <tlocGraphics/component_system/tlocSceneNode.h>
+#include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
 #include <tlocGraphics/component_system/tlocCamera.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -152,6 +153,11 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       using namespace gfx_cs::p_renderable;
 
+      const auto& texCoordPrefix = a_mesh.GetAttributeName
+        <p_renderable::attributes::k_texCoordPrefix>();
+      const auto& texCoordName =
+        core_str::Format("%s0", texCoordPrefix.c_str());
+
       // all vertex types get a position
       {
         auto& name = a_mesh.GetAttributeName<attributes::k_vertexPosition>();
@@ -177,8 +183,7 @@ namespace tloc { namespace graphics { namespace component_system {
         case(TLOC_GL_POSITION2F_TEXTURE2F):
         case(TLOC_GL_POSITION3F_TEXTURE2F):
         {
-          auto& name = a_mesh.GetAttributeName<attributes::k_texCoord>();
-          a_vbo.AddName(name);
+          a_vbo.AddName(texCoordName);
           break;
         }
         case(TLOC_GL_POSITION2F_COLOR4F):
@@ -209,8 +214,7 @@ namespace tloc { namespace graphics { namespace component_system {
             a_vbo.AddName(name);
           }
           {
-            auto& name = a_mesh.GetAttributeName<attributes::k_texCoord>();
-          a_vbo.AddName(name);
+            a_vbo.AddName(texCoordName);
           }
           break;
         }
@@ -226,8 +230,7 @@ namespace tloc { namespace graphics { namespace component_system {
             a_vbo.AddName(name);
           }
           {
-            auto& name = a_mesh.GetAttributeName<attributes::k_texCoord>();
-            a_vbo.AddName(name);
+            a_vbo.AddName(texCoordName);
           }
           break;
         }
@@ -277,23 +280,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<gfx_cs::Material>() == false) 
       << "Entity (" << a_ent->GetDebugName() << ") doesn't have a material.";
 
-    auto meshPtr = a_ent->GetComponent<mesh_comp_type>();
-    meshPtr->SetUpdateRequired(false);
-
-    gfx_cs::material_sptr matPtr;
-    if (a_ent->HasComponent<gfx_cs::Material>())
-    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
-    else // create material temporarily for names
-    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
-    
-    auto so = meshPtr->GetShaderOperator().get();
-
-    gfx_gl::AttributeVBO vbo;
-    DoSetVBOValue<gfx_gl::p_vbo::target::ArrayBuffer,
-                  gfx_gl::p_vbo::usage::StaticDraw>(vbo, *meshPtr);
-    DoAddVBONames(vbo, *meshPtr);
-
-    so->AddAttributeVBO(vbo);
+    DoInitializeMesh(a_ent, static_dynamic_type(), rendering_technique());
+    DoInitializeTexCoords(a_ent, static_dynamic_type(), rendering_technique());
 
     return ErrorSuccess;
   }
@@ -339,6 +327,7 @@ namespace tloc { namespace graphics { namespace component_system {
     auto  matPtr = a_ent->GetComponent<gfx_cs::Material>();
 
     DoProcessMesh(a_ent, static_dynamic_type(), rendering_technique());
+    DoProcessTextureCoords(a_ent, static_dynamic_type(), rendering_technique());
 
     auto  sp = matPtr->GetShaderProg();
 
@@ -391,13 +380,14 @@ namespace tloc { namespace graphics { namespace component_system {
       << "Material's ShaderOperator should not have any attributes";
 
     auto  meshPtr = a_ent->GetComponent<mesh_comp_type>();
-    auto  meshSO = meshPtr->GetShaderOperator().get();
+    auto  meshSO = meshPtr->DoGetShaderOperator();
     //DoUpdateTexCoords(a_ent, *meshSO);
 
     gfx_rend::DrawCommand dc(sp, matSO);
     dc.AddShaderOperator(core_sptr::ToVirtualPtr(matPtr->m_internalShaderOp))
       .AddShaderOperator(meshSO)
-      .SetVAO(meshPtr->GetVAO())
+      .AddShaderOperator(meshPtr->GetUserShaderOperator())
+      .SetVAO(meshPtr->DoGetVAO())
       .SetDrawMode(meshPtr->GetDrawMode())
       .SetStartIndex(0)
       .SetVertexCount(meshPtr->GetNumVertices());
@@ -412,6 +402,109 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities( f64 )
   { m_shaderPtr.reset(); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeMesh(entity_ptr a_ent, p_mesh::Static , 
+                     p_mesh_render_sytem::Instanced )
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeMesh(entity_ptr a_ent, p_mesh::Static , 
+                     p_mesh_render_sytem::NonInstanced )
+  {
+  }
+
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeMesh(entity_ptr a_ent, p_mesh::Dynamic , 
+                     p_mesh_render_sytem::Instanced )
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeMesh(entity_ptr a_ent, p_mesh::Dynamic , 
+                     p_mesh_render_sytem::NonInstanced )
+  {
+    auto meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    meshPtr->SetUpdateRequired(false);
+
+    gfx_cs::material_sptr matPtr;
+    if (a_ent->HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+    else // create material temporarily for names
+    { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
+    
+    auto so = meshPtr->DoGetShaderOperator();
+
+    gfx_gl::AttributeVBO vbo;
+    DoSetVBOValue<gfx_gl::p_vbo::target::ArrayBuffer,
+                  gfx_gl::p_vbo::usage::StaticDraw>(vbo, *meshPtr);
+    DoAddVBONames(vbo, *meshPtr);
+
+    if (so->size_attributeVBOs() > 0)
+    { *so->begin_attributeVBOs()->first = vbo; }
+    else
+    { so->AddAttributeVBO(vbo); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeTexCoords(entity_ptr a_ent, p_mesh::Static , 
+                          p_mesh_render_sytem::Instanced )
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeTexCoords(entity_ptr a_ent, p_mesh::Static , 
+                          p_mesh_render_sytem::NonInstanced )
+  {
+  }
+
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeTexCoords(entity_ptr a_ent, p_mesh::Dynamic , 
+                          p_mesh_render_sytem::Instanced )
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoInitializeTexCoords(entity_ptr a_ent, p_mesh::Dynamic dyn, 
+                          p_mesh_render_sytem::NonInstanced ni)
+  {
+    DoProcessTextureCoords(a_ent, dyn, ni);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -439,7 +532,7 @@ namespace tloc { namespace graphics { namespace component_system {
   template <MESH_RENDER_SYSTEM_TEMPS>
   void
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
-    DoProcessMesh(entity_ptr a_ptr, p_mesh::Dynamic , 
+    DoProcessMesh(entity_ptr a_ent, p_mesh::Dynamic , 
                   p_mesh_render_sytem::Instanced )
   {
   }
@@ -475,6 +568,12 @@ namespace tloc { namespace graphics { namespace component_system {
     // populate and enable uniforms/attributes as needed
 
     auto  meshPtr = a_ent->GetComponent<mesh_comp_type>();
+
+    if (meshPtr->IsUpdateRequired())
+    {
+      InitializeEntity(a_ent);
+      meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    }
 
     using namespace p_renderable::uniforms;
 
@@ -575,6 +674,94 @@ namespace tloc { namespace graphics { namespace component_system {
       meshPtr->GetUniform<k_normalMatrixInverse>()->
         SetValueAs(DoInvertOrIdentity(normMatrix.ConvertTo<math_t::Mat3f32>(), 
                                       "NormalMatrix"));
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoProcessTextureCoords(entity_ptr a_ent, p_mesh::Static , 
+                           p_mesh_render_sytem::Instanced )
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoProcessTextureCoords(entity_ptr a_ent, p_mesh::Static , 
+                           p_mesh_render_sytem::NonInstanced )
+  {
+  }
+
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoProcessTextureCoords(entity_ptr a_ent, p_mesh::Dynamic , 
+                           p_mesh_render_sytem::Instanced )
+  {
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_RENDER_SYSTEM_TEMPS>
+  void
+    MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
+    DoProcessTextureCoords(entity_ptr a_ent, p_mesh::Dynamic , 
+                           p_mesh_render_sytem::NonInstanced )
+  {
+    if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
+    { return ; }
+
+    auto meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    auto so = meshPtr->DoGetShaderOperator();
+    const auto& texCoordPrefix = 
+      meshPtr->GetAttributeName<p_renderable::attributes::k_texCoordPrefix>();
+
+    const auto numTexCoords = a_ent->size_components<gfx_cs::TextureCoords>();
+
+    typedef gfx_cs::TextureCoords::set_index          set_index;
+
+    for (tl_size i = 0; i < numTexCoords; ++i)
+    {
+      auto tcPtr = a_ent->GetComponent<gfx_cs::TextureCoords>(i);
+
+      if (tcPtr->IsUpdateRequired() == false)
+      { continue; }
+      tcPtr->SetUpdateRequired(false);
+
+      if (tcPtr->GetNumSets() != 0)
+      {
+        auto texCoordCont = tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
+
+        const auto& currTexCoordName = 
+          core_str::Format("%s%d", texCoordPrefix.c_str(), i);
+
+        using gl::algos::shader_operator::compare::AttributeVBOName;
+        auto itr = core::find_if(so->begin_attributeVBOs(),
+                                 so->end_attributeVBOs(),
+                                 AttributeVBOName(currTexCoordName));
+
+        if (itr != so->end_attributeVBOs())
+        {
+          itr->first->UpdateData(*texCoordCont);
+        }
+        else
+        {
+          gfx_gl::AttributeVBO  vbo;
+          vbo.AddName(currTexCoordName);
+          vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
+                         gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
+
+          so->AddAttributeVBO(vbo);
+        }
+      }
     }
   }
 

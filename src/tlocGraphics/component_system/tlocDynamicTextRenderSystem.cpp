@@ -6,7 +6,6 @@
 
 #include <tlocGraphics/component_system/tlocDynamicText.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
-#include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>
 

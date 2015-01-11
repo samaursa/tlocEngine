@@ -25,26 +25,29 @@ namespace tloc { namespace graphics { namespace component_system {
     // ///////////////////////////////////////////////////////////////////////
     // Entity Compare Materials
 
-    struct MaterialCompareFromEntity
+    TLOC_DECL_ALGO_BINARY(MaterialCompareFromEntity_T, const);
+    TLOC_DEFINE_ALGO_BINARY(MaterialCompareFromEntity_T, const)
     {
       typedef gfx_cs::material_sptr                         ptr_type;
       typedef core_cs::EntitySystemBase::entity_count_pair  entity_ptr_type;
       typedef ptr_type::value_type                          comp_type;
 
-      bool
-        operator()(entity_ptr_type a, entity_ptr_type b)
-      {
-        if (a.first->HasComponent<comp_type>() == false)
-        { return true; }
-        else if (b.first->HasComponent<comp_type>() == false)
-        { return false; }
+      const auto& aa = extract()(a);
+      const auto& bb = extract()(b);
 
-        ptr_type first = a.first->GetComponent<comp_type>();
-        ptr_type second = b.first->GetComponent<comp_type>();
+      if (aa.first->HasComponent<comp_type>() == false)
+      { return true; }
+      else if (bb.first->HasComponent<comp_type>() == false)
+      { return false; }
 
-        return first < second;
-      }
-    };
+      ptr_type first = aa.first->GetComponent<comp_type>();
+      ptr_type second = bb.first->GetComponent<comp_type>();
+
+      return first < second;
+    }
+
+    typedef MaterialCompareFromEntity_T<core::use_reference> MaterialCompareFromEntity;
+    typedef MaterialCompareFromEntity_T<core::use_pointee>   MaterialCompareFromEntityPointer;
 
   };
 

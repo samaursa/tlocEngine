@@ -614,6 +614,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_INT_VEC2:
@@ -621,6 +622,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_INT_VEC3:
@@ -628,6 +630,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_INT_VEC4:
@@ -635,6 +638,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_UNSIGNED_INT:
@@ -642,6 +646,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
 #ifdef TLOC_OS_WIN // TODO: Change to TLOC_GFX_PLATFORM_GL
@@ -650,6 +655,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_UNSIGNED_INT_VEC3:
@@ -657,6 +663,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_UNSIGNED_INT_VEC4:
@@ -664,6 +671,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
 #endif
@@ -672,6 +680,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 1, GL_FLOAT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_FLOAT_VEC2:
@@ -679,6 +688,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 2, GL_FLOAT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_FLOAT_VEC3:
@@ -686,6 +696,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 3, GL_FLOAT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case GL_FLOAT_VEC4:
@@ -693,6 +704,7 @@ namespace tloc { namespace graphics { namespace gl {
           VertexBufferObject::bind_array vboBind(a_attributeVBO.GetVBO());
           gl::vertex_attrib_array::Enable(a_info.m_location);
           glVertexAttribPointer(a_info.m_location, 4, GL_FLOAT, GL_FALSE, 0, 0);
+          glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           break;
         }
       case TLOC_GL_POSITION2F_NORMAL3F:
@@ -738,6 +750,7 @@ namespace tloc { namespace graphics { namespace gl {
                                   GL_FALSE, 
                                   si.m_strideInBytes, 
                                   (void*)(sizeof(f32) * si.m_dataStartIndex + subStride));
+            glVertexAttribDivisor(a_info.m_location, a_attributeVBO.GetDivisor());
           }
 
           break;
@@ -1106,6 +1119,13 @@ namespace tloc { namespace graphics { namespace gl {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  auto
+    ShaderOperator::
+    begin_uniforms() const -> const_uniform_iterator
+  { return m_uniforms.begin(); }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   ShaderOperator::uniform_iterator 
     ShaderOperator::
     end_uniforms()
@@ -1116,6 +1136,15 @@ namespace tloc { namespace graphics { namespace gl {
   ShaderOperator::attributeVBO_iterator 
     ShaderOperator::
     begin_attributeVBOs()
+  {
+    return m_VBOs.begin();
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    ShaderOperator::
+    begin_attributeVBOs() const -> const_attributeVBO_iterator
   {
     return m_VBOs.begin();
   }

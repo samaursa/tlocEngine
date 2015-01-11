@@ -1,7 +1,7 @@
 #include "tlocTestCommon.h"
 
 #include <tlocGraphics/component_system/tlocQuad.h>
-#include <tlocGraphics/component_system/tlocQuadRenderSystem.h>
+#include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
 
 #include <tlocGraphics/window/tlocWindow.h>
 #include <tlocGraphics/opengl/tlocOpenGL.h>
@@ -13,10 +13,10 @@ namespace
   using namespace tloc;
 
   typedef core_cs::entity_vptr                    entity_ptr;
-  typedef gfx_cs::Quad                            component_type;
-  typedef gfx_cs::quad_sptr                       component_ptr;
+  typedef gfx_cs::Mesh                            component_type;
+  typedef gfx_cs::mesh_sptr                       component_ptr;
 
-  typedef gfx_cs::quad_render_system_vso          system_vso;
+  typedef gfx_cs::mesh_render_system_vso          system_vso;
 
   TEST_CASE("prefab/gfx/Quad", "")
   {
@@ -43,10 +43,6 @@ namespace
       component_ptr ptr = pref_gfx::Quad(entMgr.get(), compMgr.get())
         .Dimensions(Rectf_c(Rectf_c::width(1.0f), Rectf_c::height(2.0f)) )
         .Construct();
-
-      CHECK(ptr->GetRectangleRef().GetCenter() == math_t::Vec2f32(0, 0));
-      CHECK(ptr->GetRectangleRef().GetWidth() == Approx(1.0f));
-      CHECK(ptr->GetRectangleRef().GetHeight() == Approx(2.0f));
     }
 
     //SECTION("Create", "")
@@ -61,10 +57,22 @@ namespace
 
       component_ptr ptr = ent->GetComponent<component_type>();
 
+      CHECK_FALSE(ent->HasComponent<gfx_cs::TextureCoords>());
+    }
+
+    {
+      using math_t::Rectf_bl;
+
+      entity_ptr ent = pref_gfx::QuadNoTexCoords(entMgr.get(), compMgr.get())
+        .Dimensions(Rectf_bl(Rectf_bl::width(2.0f), Rectf_bl::height(1.0f)) )
+        .Sprite(true)
+        .Create();
+
+      REQUIRE(ent->HasComponent<component_type>());
+
+      component_ptr ptr = ent->GetComponent<component_type>();
+
       CHECK(ent->HasComponent<gfx_cs::TextureCoords>());
-      CHECK(ptr->GetRectangleRef().GetCenter() == math_t::Vec2f32(1.0f, 0.5f));
-      CHECK(ptr->GetRectangleRef().GetWidth() == Approx(2.0f));
-      CHECK(ptr->GetRectangleRef().GetHeight() == Approx(1.0f));
     }
 
     //SECTION("Add", "")
@@ -73,9 +81,8 @@ namespace
 
       entity_ptr ent = entMgr->CreateEntity();
 
-      pref_gfx::Quad(entMgr.get(), compMgr.get())
+      pref_gfx::QuadNoTexCoords(entMgr.get(), compMgr.get())
         .Dimensions(Rectf_bl(Rectf_bl::width(2.0f), Rectf_bl::height(1.0f)) )
-        .TexCoords(false)
         .Add(ent);
 
       REQUIRE(ent->HasComponent<component_type>());
@@ -83,9 +90,6 @@ namespace
       component_ptr ptr = ent->GetComponent<component_type>();
 
       CHECK_FALSE(ent->HasComponent<gfx_cs::TextureCoords>());
-      CHECK(ptr->GetRectangleRef().GetCenter() == math_t::Vec2f32(1.0f, 0.5f));
-      CHECK(ptr->GetRectangleRef().GetWidth() == Approx(2.0f));
-      CHECK(ptr->GetRectangleRef().GetHeight() == Approx(1.0f));
     }
 
     system->SetRenderer(win.GetRenderer());

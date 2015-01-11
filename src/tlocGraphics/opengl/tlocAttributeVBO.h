@@ -88,6 +88,7 @@ namespace tloc { namespace graphics { namespace gl {
   public:
     TLOC_DECL_AND_DEF_GETTER(bool, IsEnabled, m_enabled);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetEnabled, m_enabled);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(gl_enum_type, SetDivisor, m_divisor);
 
     const string_type& GetName(size_type a_nameIndex = 0) const;
     this_type&         AddName(BufferArg a_name);
@@ -106,6 +107,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetType, m_type);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetUsage, m_usage);
     TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetTarget, m_target);
+    TLOC_DECL_AND_DEF_GETTER(gl_enum_type,    GetDivisor, m_divisor);
     TLOC_DECL_AND_DEF_GETTER(gfx_t::gl_sizei, GetDataSize, m_dataSize);
     TLOC_DECL_AND_DEF_GETTER(size_type, size_names, m_names.size());
     TLOC_DECL_AND_DEF_GETTER(size_type, size_strideInfo, m_strideInfo.size());
@@ -128,6 +130,7 @@ namespace tloc { namespace graphics { namespace gl {
     gl_enum_type        m_type;
     gl_enum_type        m_usage;
     gl_enum_type        m_target;
+    gl_enum_type        m_divisor;
     gfx_t::gl_sizei     m_dataSize;
     gfx_t::gl_sizei     m_dataTypeSize;
     string_cont         m_names;

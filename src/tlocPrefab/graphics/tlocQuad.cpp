@@ -1,5 +1,7 @@
 #include "tlocQuad.h"
 
+#include <tlocCore/logging/tlocLogger.h>
+
 #include <tlocMath/types/tlocRectangle.h>
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
@@ -7,6 +9,8 @@
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace prefab { namespace graphics {
 
@@ -39,6 +43,7 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_rect(rect_type(rect_type::width(1.0f),
                        rect_type::height(1.0f)) )
     , m_meshPref(a_entMgr, a_poolMgr)
+    , m_sprite(false)
   { 
     m_meshPref.DrawMode(gfx_rend::mode::k_triangle_strip);
   }
@@ -73,16 +78,13 @@ namespace tloc { namespace prefab { namespace graphics {
     auto pos3 = Vec2f32(m_rect.GetValue<rect_type::left>(), 
                         m_rect.GetValue<rect_type::bottom>());
 
-    auto tex0 = Vec2f32(1.0f, 1.0f);
-    auto tex1 = Vec2f32(0.0f, 1.0f);
-    auto tex2 = Vec2f32(1.0f, 0.0f);
-    auto tex3 = Vec2f32(0.0f, 0.0f);
+    const auto& texCoords = DoGenerateTexCoords();
 
     vert_cont verts;
-    verts.push_back(vert_selector().Fill(pos0, 0, 0, tex0));
-    verts.push_back(vert_selector().Fill(pos1, 0, 0, tex1));
-    verts.push_back(vert_selector().Fill(pos2, 0, 0, tex2));
-    verts.push_back(vert_selector().Fill(pos3, 0, 0, tex3));
+    verts.push_back(vert_selector().Fill(pos0, 0, 0, texCoords[0]));
+    verts.push_back(vert_selector().Fill(pos1, 0, 0, texCoords[1]));
+    verts.push_back(vert_selector().Fill(pos2, 0, 0, texCoords[2]));
+    verts.push_back(vert_selector().Fill(pos3, 0, 0, texCoords[3]));
 
     return m_meshPref.Construct(verts);
   }
@@ -100,6 +102,24 @@ namespace tloc { namespace prefab { namespace graphics {
     return ent;
   }
 
+  namespace {
+
+    using namespace gfx_t::f_vertex::p_vertex_selector;
+
+    void DoIssueTextureCoordinateWarning(TexCoords<true>)
+    {
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY()
+        << "Interleaved texture coordinates of this Quad will be overridden by "
+        << "its animated (sprite) texture coordinates";
+    }
+
+    void DoIssueTextureCoordinateWarning(TexCoords<false>)
+    {
+      // intentionally empty
+    }
+
+  }
+
   template <QUAD_TEMPS>
   void
     Quad_T<QUAD_PARAMS>::
@@ -115,11 +135,50 @@ namespace tloc { namespace prefab { namespace graphics {
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
+    // sprite
+
+    if (m_sprite)
+    {
+      DoIssueTextureCoordinateWarning(texcoords_selected());
+
+      const auto& texCoords = DoGenerateTexCoords();
+      TextureCoords(m_entMgr, m_compPoolMgr)
+        .AddCoord(texCoords[0])
+        .AddCoord(texCoords[1])
+        .AddCoord(texCoords[2])
+        .AddCoord(texCoords[3])
+        .Add(a_ent);
+    }
+
+    // -----------------------------------------------------------------------
     // quad component
 
     m_entMgr->InsertComponent(insert_params(a_ent, Construct())
                               .DispatchTo(GetListeners()) );
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <QUAD_TEMPS>
+  auto
+    Quad_T<QUAD_PARAMS>::
+    DoGenerateTexCoords() const -> vec2_cont
+  {
+    using namespace math_t;
+
+    vec2_cont texCoords;
+    
+    texCoords.push_back(Vec2f32(1.0f, 1.0f));
+    texCoords.push_back(Vec2f32(0.0f, 1.0f));
+    texCoords.push_back(Vec2f32(1.0f, 0.0f));
+    texCoords.push_back(Vec2f32(0.0f, 0.0f));
+
+    return texCoords;
+  }
+
+
+  // -----------------------------------------------------------------------
+  // explicit instantiations
 
   template class Quad_T<true>;
   template class Quad_T<false>;

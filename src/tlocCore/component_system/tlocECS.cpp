@@ -41,3 +41,10 @@ namespace tloc { namespace core { namespace component_system {
   }
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::core_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(ECS);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(ECS);

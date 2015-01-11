@@ -796,6 +796,7 @@ namespace tloc { namespace graphics { namespace gl {
     : m_type(GL_NONE)
     , m_usage(GL_NONE)
     , m_target(GL_NONE)
+    , m_divisor(0)
     , m_dataSize(0)
     , m_dataTypeSize(0)
     , m_enabled(true)

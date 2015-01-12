@@ -134,6 +134,14 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
+// override feature
+
+// some compilers don't support the feature directly
+#ifdef TLOC_COMPILER_VISUAL_CPP_2010
+#  define override 
+#endif
+
+//////////////////////////////////////////////////////////////////////////
 // Exceptions
 
 #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS

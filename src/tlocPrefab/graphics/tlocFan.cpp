@@ -162,8 +162,9 @@ namespace tloc { namespace prefab { namespace graphics {
 
       TextureCoords tCoords(m_entMgr, m_compPoolMgr);
       {
-        for (auto& coord : texCoords)
-        { tCoords.AddCoord(coord); }
+        for (auto itr = texCoords.begin(), itrEnd = texCoords.end(); 
+             itr != itrEnd; ++itr)
+        { tCoords.AddCoord(*itr); }
         tCoords.Add(a_ent);
       }
     }

@@ -18,10 +18,15 @@ namespace tloc { namespace core { namespace io {
   public:
     Path(const BufferArg& a_path);
 
-    void GetFileName(string_type& a_out) const;
-    void GetFileNameWithoutExtension(string_type& a_out) const;
-    void GetExtension(string_type& a_out) const;
-    void GetPathWithoutFileName(string_type& a_out) const;
+    const this_type& GetFileName(string_type& a_out) const;
+    const this_type& GetFileNameWithoutExtension(string_type& a_out) const;
+    const this_type& GetExtension(string_type& a_out) const;
+    const this_type& GetPathWithoutFileName(string_type& a_out) const;
+
+    string_type GetFileName() const;
+    string_type GetFileNameWithoutExtension() const;
+    string_type GetExtension() const;
+    string_type GetPathWithoutFileName() const;
 
     ///-------------------------------------------------------------------------
     /// @brief Queries if the file in the path exists.
@@ -43,7 +48,7 @@ namespace tloc { namespace core { namespace io {
     bool HasFilename() const;
 
     TLOC_DECL_AND_DEF_GETTER(const char*, GetPath, m_path.c_str());
-    void SetPath(const BufferArg& a_path);
+    this_type& SetPath(const BufferArg& a_path);
 
     bool operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);

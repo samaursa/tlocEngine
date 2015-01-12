@@ -9,6 +9,8 @@
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace media {
 
   using core::string::String;
@@ -47,7 +49,8 @@ namespace tloc { namespace graphics { namespace media {
     DoLoadImageFromMemory(const_color_ptr a_buffer, dimention_type a_dim,
                           size_type a_channels)
   {
-    return m_image.Load(a_buffer, a_dim, a_channels);
+    m_image = core_sptr::MakeShared<image_ptr::value_type>();
+    return m_image->Load(a_buffer, a_dim, a_channels);
   }
 
   //------------------------------------------------------------------------
@@ -93,5 +96,37 @@ namespace tloc { namespace graphics { namespace media {
   // Explicit instantiation for ImageLoader
 
   template class ImageLoader_TI<ImageLoaderPng>;
+
+  // -----------------------------------------------------------------------
+
+  namespace f_image_loader {
+
+    core_err::Error
+      SaveImage(const Image& a_imgToWrite,
+                const core_io::Path& a_path)
+    {
+      const uchar8* buffer = reinterpret_cast<const uchar8*>(a_imgToWrite.get().get());
+
+      tl_uint outSize;
+      uchar8* encodedBuffer = nullptr;
+
+      lodepng_encode32(&encodedBuffer, &outSize, 
+                       buffer, a_imgToWrite.GetWidth(), a_imgToWrite.GetHeight());
+
+      if (buffer == nullptr)
+      { 
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Failed to encode image to PNG32";
+        return ErrorFailure;
+      }
+
+      core_io::FileIO_WriteB file(a_path);
+      auto err = file.Open();
+      if (err == ErrorSuccess)
+      { err = file.Write((char8*)encodedBuffer, outSize); }
+
+      return err;
+    }
+
+  };
 
 };};};

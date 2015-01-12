@@ -77,25 +77,52 @@ namespace TestingFileIO
 
     io::FileIO_AppendA fileAppend( (core_io::Path(path)) );
 
-    TLOC_TEST_ASSERT
-    { fileAppend.Write(appendedWords); }
-    TLOC_TEST_ASSERT_CHECK();
+    {
+      TLOC_TEST_ASSERT
+      { fileAppend.Write(appendedWords); }
+      TLOC_TEST_ASSERT_CHECK();
 
-    REQUIRE(fileAppend.Open() == ErrorSuccess);
-    REQUIRE(fileAppend.Write(appendedWords) == ErrorSuccess);
-    REQUIRE(fileAppend.Close() == ErrorSuccess);
+      REQUIRE(fileAppend.Open() == ErrorSuccess);
+      REQUIRE(fileAppend.Write(appendedWords) == ErrorSuccess);
+      REQUIRE(fileAppend.Close() == ErrorSuccess);
 
-    REQUIRE(fileReader.Open() == ErrorSuccess);
-    String appendedFileContents;
-    fileReader.GetContents(appendedFileContents);
-    CHECK(appendedFileContents.compare(String(sentence) + appendedWords) == 0);
-    REQUIRE(fileReader.Close() == ErrorSuccess);
+      REQUIRE(fileReader.Open() == ErrorSuccess);
+      String appendedFileContents;
+      fileReader.GetContents(appendedFileContents);
+      CHECK(appendedFileContents.compare(String(sentence) + appendedWords) == 0);
+      REQUIRE(fileReader.Close() == ErrorSuccess);
 
-    using namespace core_io::f_file_io;
-    CHECK(OpenAndGetContents<core_io::p_file_io::Ascii>
-          (core_io::Path(path), appendedFileContents) == ErrorSuccess);
+      TLOC_TEST_ASSERT
+      { fileAppend.Write(appendedWords); }
+      TLOC_TEST_ASSERT_CHECK();
 
-    CHECK(fileReader.Delete() == common_error_types::error_success );
+      {
+        core_str::String fileContents;
+        using namespace core_io::f_file_io;
+        CHECK(OpenAndGetContents<core_io::p_file_io::Ascii>
+              (core_io::Path(path), fileContents) == ErrorSuccess);
+      }
+
+      CHECK(fileReader.Delete() == common_error_types::error_success);
+    }
+
+    {
+      // write something to the file that has new lines
+      const char* twoLines = "Two\nLines.";
+
+      REQUIRE(fileAppend.Open() == ErrorSuccess);
+      REQUIRE(fileAppend.Write(twoLines, 
+                               core_str::StrLen(twoLines)) == ErrorSuccess);
+      REQUIRE(fileAppend.Close() == ErrorSuccess);
+
+      REQUIRE(fileReader.Open() == ErrorSuccess);
+      String appendedFileContents;
+      fileReader.GetContents(appendedFileContents);
+      CHECK(appendedFileContents.compare(twoLines) == 0);
+      REQUIRE(fileReader.Close() == ErrorSuccess);
+
+      CHECK(fileReader.Delete() == common_error_types::error_success);
+    }
 
     io::FileIO_ReadA fileReaderNoFile(core_io::Path("fileDoesNotExist.txt"));
     CHECK(fileReaderNoFile.Open() != ErrorSuccess);

@@ -48,6 +48,7 @@ namespace tloc { namespace core { namespace io {
     error_type      Close();
     error_type      Delete();
     error_type      Write(BufferArg a_string) const;
+    error_type      Write(BufferArg a_string, tl_size a_buffSize) const;
     error_type      GetContents(string_type& a_out) const;
     error_type      GetContents(FileContents& a_out) const;
     void            swap(this_type& a_other);

@@ -33,46 +33,98 @@ namespace tloc { namespace core { namespace io {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     Path::
-    GetFileName(String& a_out) const
+    GetFileName(String& a_out) const -> const this_type&
   {
     tl_size pos = m_path.find_last_of(g_pathSlash);
     if (pos != String::npos)
     { a_out = m_path.substr(pos + 1); }
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     Path::
-    GetFileNameWithoutExtension(String& a_out) const
+    GetFileNameWithoutExtension(String& a_out) const -> const this_type&
   {
     GetFileName(a_out);
     tl_size pos = a_out.find_last_of(g_extension);
     if (pos != String::npos)
     { a_out = a_out.substr(0, pos); }
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     Path::
-    GetExtension(String& a_out) const
+    GetExtension(String& a_out) const -> const this_type&
   {
     tl_size pos = m_path.find_last_of(g_extension);
     if (pos != String::npos)
     { a_out = m_path.substr(pos + 1); }
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     Path::
-    GetPathWithoutFileName(String& a_out) const
+    GetPathWithoutFileName(String& a_out) const -> const this_type&
   {
     tl_size pos = m_path.find_last_of(g_pathSlash);
     a_out = m_path.substr(0, pos);
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Path::
+    GetFileName() const -> string_type
+  {
+    string_type toRet;
+    GetFileName(toRet);
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Path::
+    GetFileNameWithoutExtension() const -> string_type
+  {
+    string_type toRet;
+    GetFileNameWithoutExtension(toRet);
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Path::
+    GetExtension() const -> string_type
+  {
+    string_type toRet;
+    GetExtension(toRet);
+    return toRet;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Path::
+    GetPathWithoutFileName() const -> string_type
+  {
+    string_type toRet;
+    GetPathWithoutFileName(toRet);
+    return toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -129,12 +181,14 @@ namespace tloc { namespace core { namespace io {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     Path::
-    SetPath(const BufferArg& a_path)
+    SetPath(const BufferArg& a_path) -> this_type&
   {
     m_path = a_path;
     DoFixPath();
+
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

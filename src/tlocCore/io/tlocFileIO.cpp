@@ -195,6 +195,23 @@ namespace tloc { namespace core { namespace io {
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
     FileIO_T<FILE_IO_PARAMS>::
+    Write(BufferArg a_string, tl_size a_buffSize) const
+  {
+    TLOC_ASSERT(IsOpen(), "Attempting to write/append to a file that is not open");
+
+    if (fwrite((char*)a_string.GetPtr(), 1, a_buffSize, m_file) != a_buffSize)
+    {
+      return TLOC_ERROR(common_error_types::error_file_write);
+    }
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <FILE_IO_TEMP>
+  FILE_IO_TYPE::error_type
+    FileIO_T<FILE_IO_PARAMS>::
     GetContents(String& a_out) const
   {
     TLOC_ASSERT(m_file, "No file to read - did you forget to call Open()?");

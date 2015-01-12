@@ -33,12 +33,12 @@ namespace TestingImageLoader
     REQUIRE(png.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;
-    const media::Image& img = png.GetImage();
-    for (tl_size i_width = 0; i_width < img.GetWidth(); ++i_width)
+    auto img = png.GetImage();
+    for (tl_size i_width = 0; i_width < img->GetWidth(); ++i_width)
     {
-      for (tl_size j_height = 0; j_height < img.GetHeight(); ++j_height)
+      for (tl_size j_height = 0; j_height < img->GetHeight(); ++j_height)
       {
-        color_type col = img.GetPixel(i_width, j_height);
+        color_type col = img->GetPixel(i_width, j_height);
         if (col != png_test_1[i_width][j_height])
         {
           testPassed = false; break;
@@ -55,12 +55,12 @@ namespace TestingImageLoader
     REQUIRE(png.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;
-    const media::Image& img = png.GetImage();
-    for (tl_size i_width = 0; i_width < img.GetWidth(); ++i_width)
+    auto img = png.GetImage();
+    for (tl_size i_width = 0; i_width < img->GetWidth(); ++i_width)
     {
-      for (tl_size j_height = 0; j_height < img.GetHeight(); ++j_height)
+      for (tl_size j_height = 0; j_height < img->GetHeight(); ++j_height)
       {
-        color_type col = img.GetPixel(i_width, j_height);
+        color_type col = img->GetPixel(i_width, j_height);
         if (col != png_test_2[i_width][j_height])
         {
           testPassed = false; break;

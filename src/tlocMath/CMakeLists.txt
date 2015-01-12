@@ -13,6 +13,8 @@ set(TLOC_MATH
   tlocRange.h
   tlocRange.inl.h
   tlocRange.cpp
+  tlocBounds.h
+  tlocBounds.cpp
   )
 
 set(TLOC_MATH_STATISTICS

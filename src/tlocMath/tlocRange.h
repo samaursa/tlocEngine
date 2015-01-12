@@ -1,7 +1,7 @@
 #ifndef _TLOC_MATH_RANGE_H_
 #define _TLOC_MATH_RANGE_H_
 
-#include <tlocCore/tlocBase.h>
+#include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/iterators/tlocIterator.h>
 #include <tlocCore/types/tlocStrongType.h>

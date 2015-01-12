@@ -228,7 +228,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
       pixelCont.push_back(finalColor);
     }
 
-    image_ptr fontImg(new image_ptr::value_type());
+    image_ptr fontImg = core_sptr::MakeShared<image_ptr::value_type>();
     fontImg->Load(pixelCont, core_ds::MakeTuple(bmp.width, bmp.rows));
 
     return fontImg;

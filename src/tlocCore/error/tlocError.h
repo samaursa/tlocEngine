@@ -193,7 +193,9 @@ namespace tloc { namespace core { namespace error {
 
 };};};
 
-namespace tloc { namespace core {
+#include <tlocCore/logging/tlocLog.h>
+
+namespace tloc { namespace core { 
 
   //------------------------------------------------------------------------
   // swap
@@ -210,6 +212,22 @@ namespace tloc { namespace core {
   TL_I void swap(core_err::Error_T<T_BuildConfig>& a,
                  core_err::Error_T<T_BuildConfig>& b)
   { a.swap(b); }
+
+
+  namespace logging {
+
+    template <typename T_BuildConfig>
+    core::logging::Log_I&
+      operator << (core::logging::Log_I& a_log,
+                   const core_err::Error_T<T_BuildConfig>& a_err)
+    {
+      a_log << "Error code (" << a_err.GetErrorCode() << ")\n";
+      a_log << "File: " << a_err.GetFileName() 
+            << "(" << a_err.GetLineNumber() << ")";
+      return a_log;
+    }
+
+  };
 
 };};
 

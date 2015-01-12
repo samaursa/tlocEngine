@@ -7,6 +7,25 @@
 
 using namespace tloc;
 
+namespace {
+
+#if defined (TLOC_OS_WIN)
+    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_2D.glsl");
+#elif defined (TLOC_OS_IPHONE)
+    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_2D_gl_es_2_0.glsl");
+#endif
+
+#if defined (TLOC_OS_WIN)
+    core_str::String shaderPathFS("/shaders/tlocOneTextureFS.glsl");
+#elif defined (TLOC_OS_IPHONE)
+    core_str::String shaderPathFS("/shaders/tlocOneTextureFS_gl_es_2_0.glsl");
+#endif
+
+};
+
+// ///////////////////////////////////////////////////////////////////////
+// WindowCallback handler
+
 class WindowCallback
 {
 public:
@@ -26,6 +45,8 @@ public:
   bool  m_endProgram;
 };
 TLOC_DEF_TYPE(WindowCallback);
+
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 int TLOC_MAIN(int argc, char *argv[])
 {
@@ -47,43 +68,12 @@ int TLOC_MAIN(int argc, char *argv[])
     return 1;
   }
 
-  //------------------------------------------------------------------------
-  // A component pool manager manages all the components in a particular
-  // session/level/section.
-  core_cs::component_pool_mgr_vso cpoolMgr;
+  core_cs::ECS scene;
+  scene.AddSystem<gfx_cs::MaterialSystem>();
+  auto meshSys = scene.AddSystem<gfx_cs::MeshRenderSystem>();
+  meshSys->SetRenderer(win.GetRenderer());
 
   //------------------------------------------------------------------------
-  // All systems in the engine require an event manager and an entity manager
-  core_cs::event_manager_vso  eventMgr;
-  core_cs::entity_manager_vso entityMgr( MakeArgs(eventMgr.get()) );
-
-  //------------------------------------------------------------------------
-  // To render a fan, we need a fan render system - this is a specialized
-  // system to render this primitive
-  gfx_cs::QuadRenderSystem quadSys(eventMgr.get(), entityMgr.get());
-  quadSys.SetRenderer(win.GetRenderer());
-
-  //------------------------------------------------------------------------
-  // We cannot render anything without materials and its system
-  gfx_cs::MaterialSystem    matSys(eventMgr.get(), entityMgr.get());
-
-  // NOTE: The fan render system expects a few shader variables to be declared
-  //       and used by the shader (i.e. not compiled out). See the listed
-  //       vertex and fragment shaders for more info.
-#if defined (TLOC_OS_WIN)
-    core_str::String shaderPathVS("/shaders/tlocOneTextureVS.glsl");
-#elif defined (TLOC_OS_IPHONE)
-    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_gl_es_2_0.glsl");
-#endif
-
-#if defined (TLOC_OS_WIN)
-    core_str::String shaderPathFS("/shaders/tlocOneTextureFS.glsl");
-#elif defined (TLOC_OS_IPHONE)
-    core_str::String shaderPathFS("/shaders/tlocOneTextureFS_gl_es_2_0.glsl");
-#endif
-
-  //------------------------------------------------------------------------
-  // Prepare a texture for the material
 
   gfx_med::ImageLoaderPng png;
   core_io::Path path( (core_str::String(GetAssetsPath()) +
@@ -100,27 +90,25 @@ int TLOC_MAIN(int argc, char *argv[])
   u_to->SetName("s_texture").SetValueAs(*to);
 
   //------------------------------------------------------------------------
-  // The prefab library has some prefabricated entities for us
 
   math_t::Rectf_c rect(math_t::Rectf_c::width(1.0f * 1.5f),
                        math_t::Rectf_c::height(win.GetAspectRatio().Get() * 1.5f ) );
 
-  core_cs::entity_vptr q = pref_gfx::Quad(entityMgr.get(), cpoolMgr.get()).
-    Dimensions(rect).Create();
+  core_cs::entity_vptr q = scene.CreatePrefab<pref_gfx::Quad>()
+    .Dimensions(rect).Create();
 
-  pref_gfx::Material(entityMgr.get(), cpoolMgr.get())
+  scene.CreatePrefab<pref_gfx::Material>()
     .AssetsPath(GetAssetsPath())
     .AddUniform(u_to.get())
     .Add(q, core_io::Path(shaderPathVS), core_io::Path(shaderPathFS));
 
   //------------------------------------------------------------------------
-  // All systems need to be initialized once
 
-  quadSys.Initialize();
-  matSys.Initialize();
+  scene.Initialize();
 
   //------------------------------------------------------------------------
   // Main loop
+  auto renderer = win.GetRenderer();
   while (win.IsValid() && !winCallback.m_endProgram)
   {
     gfx_win::WindowEvent  evt;
@@ -128,8 +116,9 @@ int TLOC_MAIN(int argc, char *argv[])
     { }
 
     // Finally, process the fan
-    win.GetRenderer()->ApplyRenderSettings();
-    quadSys.ProcessActiveEntities();
+    renderer->ApplyRenderSettings();
+    scene.Process(0.0f);
+    renderer->Render();
 
     win.SwapBuffers();
   }

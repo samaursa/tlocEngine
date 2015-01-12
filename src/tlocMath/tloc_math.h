@@ -5,6 +5,7 @@
 
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/tlocRange.h>
+#include <tlocMath/tlocBounds.h>
 
 #include <tlocMath/component_system/tloc_component_system.h>
 #include <tlocMath/statistics/tloc_statistics.h>

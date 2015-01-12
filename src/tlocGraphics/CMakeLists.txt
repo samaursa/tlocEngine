@@ -47,6 +47,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocArcBall.cpp
   component_system/tlocArcBallSystem.h
   component_system/tlocArcBallSystem.cpp
+  component_system/tlocBoundingBox.h
+  component_system/tlocBoundingBox.cpp
+  component_system/tlocBoundingBoxRenderSystem.h
+  component_system/tlocBoundingBoxRenderSystem.cpp
   component_system/tlocCamera.h
   component_system/tlocCamera.cpp
   component_system/tlocCameraSystem.h
@@ -72,6 +76,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocSceneNode.cpp
   component_system/tlocPrimitive.cpp 
   component_system/tlocPrimitive.h 
+  component_system/tlocRaypick.h
+  component_system/tlocRaypick.cpp
+  component_system/tlocRaypickSystem.h
+  component_system/tlocRaypickSystem.cpp
   component_system/tlocRenderSystem.h
   component_system/tlocRenderSystem.cpp
   component_system/tlocRenderSystem_I.h

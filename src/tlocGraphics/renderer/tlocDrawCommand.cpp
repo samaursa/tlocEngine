@@ -96,8 +96,10 @@ namespace tloc { namespace graphics { namespace renderer {
   {
     shader_prog_ptr   currShader;
 
-    for (auto& command : m_commands)
+    for (auto itr = m_commands.begin(), itrEnd = m_commands.end(); 
+         itr != itrEnd; ++itr)
     {
+      auto& command = *itr;
       auto newShader = command.GetShaderProgram();
 
       // set or switch shader

@@ -308,7 +308,7 @@ namespace tloc { namespace core { namespace io {
     template <typename T_FileFormat>
     typename FileIO_T<p_file_io::Read, T_FileFormat>::error_type
       OpenAndGetContents(const core_io::Path& a_filePath, 
-                         core_str::String& a_contentOut)
+                         core_io::FileContents& a_contentOut)
     {
       typedef FileIO_T<p_file_io::Read, T_FileFormat>       file_io_type;
 
@@ -331,7 +331,7 @@ namespace tloc { namespace core { namespace io {
 
 #define TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(_fileFormat_)\
   template FileIO_T<p_file_io::Read, _fileFormat_>::error_type\
-  OpenAndGetContents<_fileFormat_>(const core_io::Path&, core_str::String&)
+  OpenAndGetContents<_fileFormat_>(const core_io::Path&, core_io::FileContents&)
 
     TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::Ascii);
     TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::Binary);

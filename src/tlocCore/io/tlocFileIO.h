@@ -126,7 +126,7 @@ namespace tloc { namespace core { namespace io {
     template <typename T_FileFormat>
     typename FileIO_T<p_file_io::Read, T_FileFormat>::error_type
       OpenAndGetContents(const core_io::Path& a_filePath, 
-                         core_str::String& a_contentOut);
+                         core_io::FileContents& a_contentOut);
 
   };
 

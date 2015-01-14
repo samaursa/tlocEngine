@@ -92,6 +92,21 @@ namespace TestingEntitySystemBase
       return ErrorSuccess;
     }
 
+    virtual error_type Pre_ReInitialize()
+    {
+      return ErrorSuccess;
+    }
+
+    virtual error_type DoReInitialize(const entity_count_cont& )
+    {
+      return ErrorSuccess;
+    }
+
+    virtual error_type Post_ReInitialize()
+    {
+      return ErrorSuccess;
+    }
+
     virtual error_type Pre_Shutdown()
     {
       return ErrorSuccess;

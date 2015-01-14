@@ -73,6 +73,7 @@ namespace tloc { namespace core { namespace component_system {
     virtual       ~EntitySystemBase();
 
     error_type    Initialize();
+    error_type    ReInitialize();
     bool          IsInitialized() const;
     error_type    Shutdown();
 
@@ -111,6 +112,21 @@ namespace tloc { namespace core { namespace component_system {
     /// @brief Called after DoInitializeEntity is called
     ///-------------------------------------------------------------------------
     virtual error_type Post_Initialize() = 0;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Called before DoReInitializeEntity is called
+    ///-------------------------------------------------------------------------
+    virtual error_type Pre_ReInitialize() = 0;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Called by ReInitialize()
+    ///-------------------------------------------------------------------------
+    virtual error_type DoReInitialize(const entity_count_cont& a_entities) = 0;
+
+    ///-------------------------------------------------------------------------
+    /// @brief Called after DoReInitializeEntity is called
+    ///-------------------------------------------------------------------------
+    virtual error_type Post_ReInitialize() = 0;
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called

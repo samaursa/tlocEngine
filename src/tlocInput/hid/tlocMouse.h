@@ -22,6 +22,38 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_Policy, typename T_Platform> class Mouse;
 
   ///-------------------------------------------------------------------------
+  /// This class is for convenience. You do NOT need to inherit from a callback
+  /// class to enable callbacks to work on your class
+  ///-------------------------------------------------------------------------
+
+  class MouseListener 
+  {
+  public:
+    typedef core_dispatch::Event                        event_type;
+
+  public:
+    event_type
+      OnMouseButtonPress(const tl_size ,
+                         const MouseEvent& ,
+                         const MouseEvent::button_code_type ) const
+    { return core_dispatch::f_event::Continue(); }
+
+    event_type
+      OnMouseButtonRelease(const tl_size ,
+                           const MouseEvent& ,
+                           const MouseEvent::button_code_type ) const
+    { return core_dispatch::f_event::Continue(); }
+
+    event_type
+      OnMouseMove(const tl_size , const MouseEvent& ) const
+    { return core_dispatch::f_event::Continue(); }
+
+  protected:
+    MouseListener() { }
+    ~MouseListener() { }
+  };
+
+  ///-------------------------------------------------------------------------
   /// This class itself is for internal use only.
   ///
   /// If a class is registered with Keyboard to receive callbacks, this class

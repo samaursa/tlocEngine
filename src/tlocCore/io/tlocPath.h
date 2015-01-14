@@ -61,4 +61,31 @@ namespace tloc { namespace core { namespace io {
 
 };};};
 
+#include <tlocCore/logging/tlocLog.h>
+
+namespace tloc { namespace core { 
+
+  namespace logging {
+
+    template <typename T_Logger, typename T_BuildConfig>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+                   const core_io::Path& a_path)
+    {
+      if (a_path.HasFilename())
+      {
+        a_log << a_path.GetFileName() << "(" 
+          << a_path.GetPathWithoutFileName() << ")";
+      }
+      else
+      {
+        a_log << a_path.GetPath();
+      }
+      return a_log;
+    }
+
+  };
+
+};};
+
 #endif

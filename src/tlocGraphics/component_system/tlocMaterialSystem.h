@@ -33,6 +33,7 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual error_type Pre_Initialize();
 
     virtual error_type InitializeEntity(entity_ptr a_ent);
+    virtual error_type ReInitializeEntity(entity_ptr a_ent);
     virtual error_type ShutdownEntity(entity_ptr a_ent);
 
     virtual void ProcessEntity(entity_ptr a_ent, f64 a_deltaT);

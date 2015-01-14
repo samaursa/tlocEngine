@@ -75,7 +75,7 @@ namespace tloc { namespace core { namespace component_system {
                                           f64 a_deltaT);
 
     virtual error_type DoInitialize(const entity_count_cont& a_entities);
-
+    virtual error_type DoReInitialize(const entity_count_cont& a_entities);
     virtual error_type DoShutdown(const entity_count_cont& a_entities);
 
   private:

@@ -168,7 +168,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     shader_op_vso          m_internalShaderOp;
     uniform_pair_cont      m_internalUniforms;
-    bool                   m_isDirty;
   };
 
   // -----------------------------------------------------------------------
@@ -226,6 +225,15 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Material, material);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Material, material);
   TLOC_TYPEDEF_COMPONENT_POOL(Material, material);
+
+  // -----------------------------------------------------------------------
+
+  namespace f_material {
+
+    core_err::Error
+      CompileAndLinkShaderProgram(Material& a_completeMaterial);
+
+  };
 
 };};};
 

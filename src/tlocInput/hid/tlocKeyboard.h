@@ -20,6 +20,28 @@ namespace tloc { namespace input { namespace hid {
   template <typename T_Policy, typename T_Platform> class Keyboard;
 
   ///-------------------------------------------------------------------------
+  /// This class is for convenience. You do NOT need to inherit from a callback
+  /// class to enable callbacks to work on your class
+  ///-------------------------------------------------------------------------
+
+  class KeyboardListener
+  {
+  public:
+    typedef core_dispatch::Event                        event_type;
+
+  public:
+    event_type OnKeyPress(const tl_size, const KeyboardEvent& ) const 
+    { return core_dispatch::f_event::Continue(); }
+
+    event_type OnKeyRelease(const tl_size, const KeyboardEvent& ) const
+    { return core_dispatch::f_event::Continue(); }
+
+  protected:
+    KeyboardListener() { }
+    ~KeyboardListener() { }
+  };
+
+  ///-------------------------------------------------------------------------
   /// This class itself is for internal use only.
   ///
   /// If a class is registered with Keyboard to receive callbacks, this class

@@ -79,7 +79,7 @@ namespace tloc { namespace graphics { namespace gl {
     enum flags
     {
       k_uniformsCached = 0,
-      k_VBOsCached,
+      k_attributeVBOsCached,
       k_count
     };
 
@@ -764,6 +764,70 @@ namespace tloc { namespace graphics { namespace gl {
       return toRet;
     }
 
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    // some types can be downcasted/upcasted in GLSL so a direct comparison
+    // is not good enough
+    bool 
+      DoCheckTypeCompatibility(gfx_t::gl_enum a_ourType, 
+                               gfx_t::gl_enum a_shaderType)
+    {
+      if (a_ourType == a_shaderType) { return true; }
+
+      switch(a_shaderType)
+      {
+        // -----------------------------------------------------------------------
+        // GL_INT
+
+        case GL_INT_VEC4:
+        case GL_INT_VEC3:
+        case GL_INT_VEC2:
+          switch(a_ourType)
+          {
+          case GL_INT_VEC4:
+          case GL_INT_VEC3:
+          case GL_INT_VEC2:
+            return true;
+          default : return false;
+          }
+          break;
+
+        // -----------------------------------------------------------------------
+        // GL_UNSIGNED_INT
+
+        case GL_UNSIGNED_INT_VEC4:
+        case GL_UNSIGNED_INT_VEC2:
+        case GL_UNSIGNED_INT_VEC3:
+          switch(a_ourType)
+          {
+          case GL_UNSIGNED_INT_VEC4:
+          case GL_UNSIGNED_INT_VEC3:
+          case GL_UNSIGNED_INT_VEC2:
+            return true;
+          default : return false;
+          }
+          break;
+
+        // -----------------------------------------------------------------------
+        // GL_FLOAT
+
+        case GL_FLOAT_VEC4:
+        case GL_FLOAT_VEC3:
+        case GL_FLOAT_VEC2:
+          switch(a_ourType)
+          {
+          case GL_FLOAT_VEC4:
+          case GL_FLOAT_VEC3:
+          case GL_FLOAT_VEC2:
+            return true;
+          default : return false;
+          }
+          break;
+
+        default: return false;
+      }
+    }
+
     template <typename T_ShaderVariableContainer,
     typename T_ShaderVariableInfoContainer>
     ErrorShaderVarIndexContPair
@@ -827,7 +891,7 @@ namespace tloc { namespace graphics { namespace gl {
                 shaderVarType = shaderVarPtr->GetInterleavedType(interleaveIndex);
               }
 
-              if ( shaderVarType == itrInfo->m_type &&
+              if ( DoCheckTypeCompatibility(shaderVarType, itrInfo->m_type) &&
                    itrInfo->m_location != g_unableToFindIndex)
               {
                 itr->second[interleaveIndex] = index;
@@ -910,6 +974,8 @@ namespace tloc { namespace graphics { namespace gl {
   ShaderOperator::
     ShaderOperator()
     : m_flags(k_count)
+    , m_uniformCachedShaderHandle(0)
+    , m_attributeCachedShaderHandle(0)
   { }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -956,7 +1022,7 @@ namespace tloc { namespace graphics { namespace gl {
     index_cont indexCont(a_vbo.size_names(), -1);
 
     m_VBOs.push_back(core::MakePair(vbo_vso(MakeArgs(a_vbo)), indexCont) );
-    m_flags.Unmark(k_VBOsCached);
+    m_flags.Unmark(k_attributeVBOsCached);
 
     return m_VBOs.back().first.get();
   }
@@ -1064,8 +1130,14 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type retError = ErrorSuccess;
 
+    if (m_flags.IsMarked(k_uniformsCached) && 
+        m_uniformCachedShaderHandle != a_shaderProgram.GetHandle())
+    { ClearUniformsCache(); }
+
     if (m_flags.ReturnAndMark(k_uniformsCached) == false)
     {
+      m_uniformCachedShaderHandle = a_shaderProgram.GetHandle();
+
       // bail early
       if (size_uniforms() == 0) { return retError; }
 
@@ -1093,8 +1165,14 @@ namespace tloc { namespace graphics { namespace gl {
 
     error_type retError = ErrorSuccess;
 
-    if (m_flags.ReturnAndMark(k_VBOsCached) == false)
+    if (m_flags.IsMarked(k_attributeVBOsCached) && 
+        m_attributeCachedShaderHandle != a_shaderProgram.GetHandle())
+    { ClearAttributeVBOsCache(); }
+
+    if (m_flags.ReturnAndMark(k_attributeVBOsCached) == false)
     {
+      m_attributeCachedShaderHandle = a_shaderProgram.GetHandle();
+
       // bail early
       if (size_attributeVBOs() == 0) { return retError; }
 
@@ -1185,7 +1263,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderOperator::
     ClearAttributeVBOsCache()
   { 
-    m_flags.Unmark(k_VBOsCached);
+    m_flags.Unmark(k_attributeVBOsCached);
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1210,7 +1288,7 @@ namespace tloc { namespace graphics { namespace gl {
   bool 
     ShaderOperator::
     IsAttributeVBOsCached()
-  { return m_flags[k_VBOsCached]; }
+  { return m_flags[k_attributeVBOsCached]; }
 
   // -----------------------------------------------------------------------
 

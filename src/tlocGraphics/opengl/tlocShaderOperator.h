@@ -132,9 +132,11 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_DECL_AND_DEF_GETTER(size_type, size_attributeVBOs, m_VBOs.size());
 
   private:
-    uniform_cont_type           m_uniforms;
-    attributeVBO_cont_type      m_VBOs;
-    core::utils::Checkpoints    m_flags;
+    uniform_cont_type                 m_uniforms;
+    attributeVBO_cont_type            m_VBOs;
+    core::utils::Checkpoints          m_flags;
+    gfx_gl::ObjectBase::object_handle m_uniformCachedShaderHandle;
+    gfx_gl::ObjectBase::object_handle m_attributeCachedShaderHandle;
   };
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(ShaderOperator, shader_operator);

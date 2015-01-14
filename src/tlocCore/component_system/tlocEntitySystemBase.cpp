@@ -86,6 +86,26 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  error_type
+    EntitySystemBase::
+    ReInitialize()
+  {
+    TLOC_ASSERT(m_flags.IsMarked(k_systemInitialized), 
+                "System was never initialized");
+
+    if (Pre_ReInitialize() == ErrorSuccess)
+    {
+      if (DoReInitialize(m_activeEntities) == ErrorSuccess)
+      {
+        return Post_ReInitialize();
+      }
+    }
+
+    return ErrorFailure;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   bool
     EntitySystemBase::
     IsInitialized() const

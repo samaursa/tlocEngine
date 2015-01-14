@@ -1,6 +1,9 @@
 #include "tlocMaterial.h"
 
+#include <tlocCore/logging/tlocLogger.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -26,7 +29,6 @@ namespace tloc { namespace graphics { namespace component_system {
   Material::
     Material()
     : base_type("Material")
-    , m_isDirty(true)
   { 
     m_internalShaderOp->reserve_uniforms(p_material::uniforms::k_count);
 
@@ -54,7 +56,6 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_shaderProgram(a_other.m_shaderProgram)
     , m_shaderOp(a_other.m_shaderOp)
     , m_internalShaderOp(a_other.m_internalShaderOp)
-    , m_isDirty(true)
   { 
     auto itr = m_internalShaderOp->begin_uniforms(),
          itrEnd = m_internalShaderOp->end_uniforms();
@@ -93,7 +94,6 @@ namespace tloc { namespace graphics { namespace component_system {
     swap(m_shaderOp, a_other.m_shaderOp);
     swap(m_internalUniforms, a_other.m_internalUniforms);
     swap(m_internalUniforms, a_other.m_internalUniforms);
-    swap(m_isDirty, a_other.m_isDirty);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -157,7 +157,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SetEnableUniform(uniform_index_type a_index, bool a_enable)
   {  
     m_internalUniforms[a_index].first->SetEnabled(a_enable); 
-    m_isDirty = true; 
+    SetUpdateRequired(true);
     return *this;
   }
 
@@ -185,6 +185,102 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     return GetUniqueGroupID() < a_other.GetUniqueGroupID();
   }
+
+  // -----------------------------------------------------------------------
+  
+  namespace f_material { 
+
+    core_err::Error
+      CompileAndLinkShaderProgram(Material& a_mat)
+    {
+      gl::VertexShader          vShader;
+      gl::FragmentShader        fShader;
+
+      auto  result   = ErrorSuccess;
+      auto  sp       = a_mat.GetShaderProg();
+      const auto& vsSource = a_mat.GetVertexSource();
+      const auto& fsSource = a_mat.GetFragmentSource();
+
+      if (sp->IsLinked() == false)
+      {
+        // TODO: Log this instead
+        const auto vertSourceSize = vsSource.size();
+        const auto fragSourceSize = fsSource.size();
+
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(vertSourceSize == 0)
+          << "Vertex shader source is empty";
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(fragSourceSize == 0)
+          << "Fragment shader source is empty";
+
+        result = vShader.Load(a_mat.GetVertexSource().c_str() );
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Failed to load the shader: " << a_mat.GetVertexPath().GetPath();
+        result = vShader.Compile();
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not compile vertex shader: " 
+          << a_mat.GetVertexPath().GetPath() << "\n"
+          << vShader.GetError().c_str();
+
+        result = fShader.Load(a_mat.GetFragmentSource().c_str());
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Failed to load the shader: " << a_mat.GetVertexPath().GetPath();
+        result = fShader.Compile();
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not compile fragment shader: "
+          << a_mat.GetFragmentPath().GetPath() << "\n"
+          << fShader.GetError().c_str();
+
+        result = sp->AttachShaders
+          (gl::ShaderProgram::two_shader_components(&vShader, &fShader) );
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not attach shader program(s)";
+
+        result = sp->Link();
+
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
+          << "Could not link shader(s): " << a_mat.GetVertexPath().GetPath()
+          << " and " << a_mat.GetFragmentPath().GetPath() << "\n"
+          << sp->GetError().c_str();
+
+        if (result == ErrorSuccess)
+        {
+          core_str::String vsFileName, fsFileName;
+          a_mat.GetVertexPath().GetFileName(vsFileName);
+          a_mat.GetFragmentPath().GetFileName(fsFileName);
+
+          TLOC_LOG_GFX_INFO_NO_FILENAME() << "Shader ID#" << sp->GetHandle()
+            << " compiled successfully with programs (" << vsFileName 
+            << ") and (" << fsFileName << ")";
+        }
+      }
+
+      if (result == ErrorSuccess)
+      {
+
+        sp->LoadUniformInfo();
+        sp->LoadAttributeInfo();
+        sp->Disable();
+
+        //------------------------------------------------------------------------
+        // Add user attributes and uniforms
+
+        sp->Enable();
+
+        auto so = a_mat.GetShaderOperator();
+        auto err = ErrorSuccess;
+
+        err = so->PrepareAllUniforms(*sp);
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(err != ErrorSuccess)
+          << "Unable to prepare all uniforms";
+
+        sp->Disable();
+      }
+
+      return result;
+    }
+
+
+  };
 
 };};};
 

@@ -43,6 +43,24 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  error_type EntityProcessingSystem::
+    DoReInitialize(const entity_count_cont& a_entities)
+  {
+    TLOC_LOG_CORE_WARN_IF(a_entities.size() == 0) 
+      <<  GetDebugName() << " (" << core_utils::GetMemoryAddress(this) 
+      << ") does not have any components to ReInitialize (or process)";
+
+    for (entity_count_cont::const_iterator itr = a_entities.begin(),
+         itrEnd = a_entities.end(); itr != itrEnd; ++itr)
+    {
+      ReInitializeEntity(itr->first).Ignore();
+    }
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   error_type EntityProcessingSystem::Post_Initialize()
   { return ErrorSuccess; }
 

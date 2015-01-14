@@ -97,7 +97,7 @@ namespace TestingFileIO
       TLOC_TEST_ASSERT_CHECK();
 
       {
-        core_str::String fileContents;
+        core_io::FileContents fileContents;
         using namespace core_io::f_file_io;
         CHECK(OpenAndGetContents<core_io::p_file_io::Ascii>
               (core_io::Path(path), fileContents) == ErrorSuccess);

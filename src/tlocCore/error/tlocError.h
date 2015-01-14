@@ -216,14 +216,21 @@ namespace tloc { namespace core {
 
   namespace logging {
 
-    template <typename T_BuildConfig>
-    core::logging::Log_I&
-      operator << (core::logging::Log_I& a_log,
+    template <typename T_Logger, typename T_BuildConfig>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
                    const core_err::Error_T<T_BuildConfig>& a_err)
     {
-      a_log << "Error code (" << a_err.GetErrorCode() << ")\n";
-      a_log << "File: " << a_err.GetFileName() 
-            << "(" << a_err.GetLineNumber() << ")";
+      if (a_err == ErrorSuccess)
+      {
+        a_log << "No Error";
+      }
+      else
+      {
+        a_log << "Error code (" << a_err.GetErrorCode() << ")\n";
+        a_log << "File: " << a_err.GetFileName() 
+              << "(" << a_err.GetLineNumber() << ")";
+      }
       return a_log;
     }
 

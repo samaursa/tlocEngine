@@ -3,6 +3,7 @@
 #include <tlocCore/containers/tlocContainers.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 #include <tlocCore/utilities/tlocPointerUtils.h>
+#include <tlocCore/io/tlocFileIO.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocMaterial.h>
@@ -22,17 +23,24 @@ namespace tloc { namespace graphics { namespace component_system {
       "#version 330 core                                        \n\
                                                                 \n\
        in vec3 a_vertPos;                                       \n\
-       uniform mat4 u_mvp;                                      \n\
+       uniform mat4 u_vp;                                       \n\
+       uniform mat4 u_model;                                    \n\
                                                                 \n\
        void main()                                              \n\
        {                                                        \n\
-          mat4 mvp = u_mvp;                                     \n\
-          if (u_mvp[0][0] == 0.0 &&                             \n\
-              u_mvp[0][1] == 0.0 &&                             \n\
-              u_mvp[0][2] == 0.0)                               \n\
-          { mvp = mat4(1.0); }                                  \n\
+          mat4 vp = u_vp;                                       \n\
+          if (u_vp[0][0] == 0.0 &&                              \n\
+              u_vp[0][1] == 0.0 &&                              \n\
+              u_vp[0][2] == 0.0)                                \n\
+          { vp = mat4(1.0); }                                   \n\
                                                                 \n\
-          gl_Position = mvp * vec4(a_vertPos, 1);               \n\
+          mat4 model = u_model;                                 \n\
+          if (u_model[0][0] == 0.0 &&                           \n\
+              u_model[0][1] == 0.0 &&                           \n\
+              u_model[0][2] == 0.0)                             \n\
+          { model = mat4(1.0); }                                \n\
+                                                                \n\
+          gl_Position = vp * model * vec4(a_vertPos, 1);        \n\
        }                                                        \n\
       ";
 
@@ -73,97 +81,6 @@ namespace tloc { namespace graphics { namespace component_system {
        }                                                        \n\
       ";
 #endif
-
-  // ///////////////////////////////////////////////////////////////////////
-
-    core_err::Error
-      DoCompileAndLinkShaderProgram(gfx_cs::material_vptr a_matPtr)
-    {
-      gl::VertexShader          vShader;
-      gl::FragmentShader        fShader;
-
-      auto  result   = ErrorSuccess;
-      auto  sp       = a_matPtr->GetShaderProg();
-      auto& vsSource = a_matPtr->GetVertexSource();
-      auto& fsSource = a_matPtr->GetFragmentSource();
-
-      if (sp->IsLinked() == false)
-      {
-        // TODO: Log this instead
-        const auto vertSourceSize = vsSource.size();
-        const auto fragSourceSize = fsSource.size();
-
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(vertSourceSize == 0)
-          << "Vertex shader source is empty";
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(fragSourceSize == 0)
-          << "Fragment shader source is empty";
-
-        result = vShader.Load(a_matPtr->GetVertexSource().c_str() );
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
-          << "Failed to load the shader: " << a_matPtr->GetVertexPath().GetPath();
-        result = vShader.Compile();
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
-          << "Could not compile vertex shader: " 
-          << a_matPtr->GetVertexPath().GetPath() << "\n"
-          << vShader.GetError().c_str();
-
-        result = fShader.Load(a_matPtr->GetFragmentSource().c_str());
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
-          << "Failed to load the shader: " << a_matPtr->GetVertexPath().GetPath();
-        result = fShader.Compile();
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
-          << "Could not compile fragment shader: "
-          << a_matPtr->GetFragmentPath().GetPath() << "\n"
-          << fShader.GetError().c_str();
-
-        result = sp->AttachShaders
-          (gl::ShaderProgram::two_shader_components(&vShader, &fShader) );
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
-          << "Could not attach shader program(s)";
-
-        result = sp->Link();
-
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(result != ErrorSuccess)
-          << "Could not link shader(s): " << a_matPtr->GetVertexPath().GetPath()
-          << " and " << a_matPtr->GetFragmentPath().GetPath() << "\n"
-          << sp->GetError().c_str();
-
-        if (result == ErrorSuccess)
-        {
-          core_str::String vsFileName, fsFileName;
-          a_matPtr->GetVertexPath().GetFileName(vsFileName);
-          a_matPtr->GetFragmentPath().GetFileName(fsFileName);
-
-          TLOC_LOG_GFX_INFO_NO_FILENAME() << "Shader ID#" << sp->GetHandle()
-            << " compiled successfully with programs (" << vsFileName 
-            << ") and (" << fsFileName << ")";
-        }
-      }
-
-      if (result == ErrorSuccess)
-      {
-
-        sp->LoadUniformInfo();
-        sp->LoadAttributeInfo();
-        sp->Disable();
-
-        //------------------------------------------------------------------------
-        // Add user attributes and uniforms
-
-        sp->Enable();
-
-        auto so = a_matPtr->GetShaderOperator();
-        auto err = ErrorSuccess;
-
-        err = so->PrepareAllUniforms(*sp);
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(err != ErrorSuccess)
-          << "Unable to prepare all uniforms";
-
-        sp->Disable();
-      }
-
-      return result;
-    }
 
   };
 
@@ -221,7 +138,7 @@ namespace tloc { namespace graphics { namespace component_system {
       m_defaultMaterial->SetFragmentSource(m_fsSource);
 
       auto result = 
-        DoCompileAndLinkShaderProgram(core_sptr::ToVirtualPtr(m_defaultMaterial));
+        f_material::CompileAndLinkShaderProgram(*m_defaultMaterial);
 
       TLOC_LOG_GFX_WARN_NO_FILENAME_IF(result != ErrorSuccess)
         << "Default engine shader failed to compile and/or link";
@@ -251,14 +168,70 @@ namespace tloc { namespace graphics { namespace component_system {
         (matPtr->GetShaderOperator()->size_attributeVBOs() > 0)
         << "Material's ShaderOperator should not have any AttributeVBOs.";
 
-      gl::VertexShader          vShader;
-      gl::FragmentShader        fShader;
-
       auto  result = 
-        DoCompileAndLinkShaderProgram(core_sptr::ToVirtualPtr(matPtr));
+        f_material::CompileAndLinkShaderProgram(*matPtr);
 
       if (result != ErrorSuccess)
       { *matPtr->GetShaderProg() = *m_defaultMaterial->GetShaderProg(); }
+    }
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type
+    MaterialSystem::
+    ReInitializeEntity(entity_ptr a_ent)
+  {
+    using namespace core::component_system;
+
+    auto numMaterialComponents = a_ent->size_components<gfx_cs::Material>();
+
+    // Material should have vertex and fragment shader data, for now we will
+    // assume that both exist
+
+    for ( size_type i = 0; i < numMaterialComponents; ++i )
+    {
+      auto matPtr = a_ent->GetComponent<gfx_cs::Material>(i);
+
+      const auto& currVSContents = matPtr->GetVertexSource();
+      const auto& currFSContents = matPtr->GetFragmentSource();
+
+      core_io::FileContents vs, fs;
+      {
+        using namespace core_io;
+        auto err =
+          f_file_io::OpenAndGetContents<p_file_io::Ascii>(matPtr->GetVertexPath(), vs);
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(err != ErrorSuccess) 
+          << "Failed to open shader: " << matPtr->GetVertexPath();
+      }
+      {
+        using namespace core_io;
+        auto err =
+          f_file_io::OpenAndGetContents<p_file_io::Ascii>(matPtr->GetFragmentPath(), fs);
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(err != ErrorSuccess)
+          << "Failed to open shader: " << matPtr->GetFragmentPath();
+      }
+
+      if (currVSContents != vs.GetContents() ||
+          currFSContents != fs.GetContents())
+      {
+        matPtr->SetVertexSource(vs);
+        matPtr->SetFragmentSource(fs);
+        *matPtr->GetShaderProg() = gfx_gl::ShaderProgram();
+        matPtr->SetUpdateRequired(true);
+
+        TLOC_LOG_GFX_WARN_NO_FILENAME_IF
+          (matPtr->GetShaderOperator()->size_attributeVBOs() > 0)
+          << "Material's ShaderOperator should not have any AttributeVBOs.";
+
+        auto  result = 
+          f_material::CompileAndLinkShaderProgram(*matPtr);
+
+        if (result != ErrorSuccess)
+        { *matPtr->GetShaderProg() = *m_defaultMaterial->GetShaderProg(); }
+      }
     }
 
     return ErrorSuccess;
@@ -278,9 +251,9 @@ namespace tloc { namespace graphics { namespace component_system {
     ProcessEntity(entity_ptr a_ent, f64)
   { 
     auto matPtr = a_ent->GetComponent<gfx_cs::Material>();
-    if (matPtr->m_isDirty)
+    if (matPtr->IsUpdateRequired())
     {
-      matPtr->m_isDirty = false;
+      matPtr->SetUpdateRequired(false);
       matPtr->m_internalShaderOp->ClearCache();
     }
   }

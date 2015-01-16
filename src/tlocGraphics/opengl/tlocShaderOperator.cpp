@@ -800,6 +800,7 @@ namespace tloc { namespace graphics { namespace gl {
         // -----------------------------------------------------------------------
         // GL_UNSIGNED_INT
 
+#if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
         case GL_UNSIGNED_INT_VEC4:
         case GL_UNSIGNED_INT_VEC2:
         case GL_UNSIGNED_INT_VEC3:
@@ -812,6 +813,7 @@ namespace tloc { namespace graphics { namespace gl {
           default : return false;
           }
           break;
+#endif
 
         // -----------------------------------------------------------------------
         // GL_FLOAT

@@ -37,7 +37,7 @@ namespace tloc { namespace prefab { namespace graphics {
     Mesh_T<MESH_PARAMS>::
     DoAddTransformComponent(entity_ptr a_ent, gfx_cs::p_mesh::Dynamic) const
   {
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    if (a_ent->template HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
   }
 

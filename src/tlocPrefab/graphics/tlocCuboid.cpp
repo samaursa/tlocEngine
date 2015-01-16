@@ -60,14 +60,14 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef typename vert_selector::value_type            vert_type;
     typedef core_conts::Array<vert_type>                  vert_cont;
-    typedef vert_cont::iterator                           vert_itr;
+    typedef typename vert_cont::iterator                  vert_itr;
 
     // -----------------------------------------------------------------------
 
     typedef gfx_cs::mesh_pool             mesh_pool;
 
     gfx_cs::mesh_pool_vptr  meshPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Mesh>();
+      = m_compPoolMgr->template GetOrCreatePool<gfx_cs::Mesh>();
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
     (*itrMesh)->SetValue(MakeShared<gfx_cs::Mesh>() );
@@ -229,14 +229,14 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // transform component
 
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    if (a_ent->template HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // mesh component
 
-    m_entMgr->InsertComponent(insert_params(a_ent, Construct())
-                              .DispatchTo(GetListeners()) ); 
+    m_entMgr->template InsertComponent(insert_params(a_ent, Construct())
+                                       .DispatchTo(GetListeners()) ); 
 
   }
 

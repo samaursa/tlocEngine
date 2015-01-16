@@ -597,6 +597,11 @@ namespace tloc { namespace graphics { namespace gl {
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+// TODO: Change to TLOC_GFX_PLATFORM_GL and add check for IOS 7.0
+#if defined (TLOC_OS_IPHONE)
+# define glVertexAttribDivisor(_index_, _divisor_)  glVertexAttribDivisorEXT(_index_, _divisor_)
+#endif
+
     DoSetReturn
       DoSet(const ShaderVariableInfo& a_info, const AttributeVBO& a_attributeVBO,
             tl_size a_interleaveIndex)

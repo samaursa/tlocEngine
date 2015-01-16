@@ -68,7 +68,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef typename vert_selector::value_type            vert_type;
     typedef core_conts::Array<vert_type>                  vert_cont;
-    typedef vert_cont::iterator                           vert_itr;
+    typedef typename vert_cont::iterator                  vert_itr;
 
     typedef core_conts::Array<Vec2f32>                    vec2_cont;
 
@@ -148,7 +148,7 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // transform component
 
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    if (a_ent->template HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------

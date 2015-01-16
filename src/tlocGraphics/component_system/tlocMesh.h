@@ -116,7 +116,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef Primitive_I                                   base_primitive_type;
     typedef Mesh_T<mesh_type, static_dynamic_type>        this_type;
-    typedef Mesh_T<p_mesh::Mesh3D, p_mesh::Dynamic>       this_type;
     typedef gfx_cs::Renderable_TI
       <this_type, gfx_cs::components::k_mesh>             base_type;
 
@@ -149,7 +148,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef Primitive_I                                   base_primitive_type;
     typedef Mesh_T<mesh_type, static_dynamic_type>        this_type;
-    typedef Mesh_T<p_mesh::Mesh3D, p_mesh::Static>        this_type;
     typedef gfx_cs::Renderable_TI
       <this_type, gfx_cs::components::k_mesh_static>      base_type;
 

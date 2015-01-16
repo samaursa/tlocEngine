@@ -20,12 +20,21 @@ namespace tloc { namespace prefab { namespace graphics {
   {
   public:
     typedef Quad_T<T_TexCoords>                     this_type;
-    typedef Prefab_TI<this_type, component_type>    base_type;
+    typedef Prefab_TI<this_type, gfx_cs::Mesh>      base_type;
+
+    typedef typename base_type::component_ptr       component_ptr;
+    typedef typename base_type::insert_params       insert_params;
+    typedef typename base_type::entity_mgr_ptr      entity_mgr_ptr;
+    typedef typename base_type::comp_pool_mgr_ptr   comp_pool_mgr_ptr;
+    typedef typename base_type::entity_ptr          entity_ptr;
+
     typedef math_t::Rectf32_c                       rect_type;
     typedef core_conts::Array<math_t::Vec2f32>      vec2_cont;
 
     typedef gfx_t::f_vertex::p_vertex_selector::
             TexCoords<T_TexCoords>                      texcoords_selected;
+
+    using base_type::GetListeners;
 
   public:
     Quad_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
@@ -42,6 +51,9 @@ namespace tloc { namespace prefab { namespace graphics {
     vec2_cont DoGenerateTexCoords() const;
 
   private:
+    using base_type::m_entMgr;
+    using base_type::m_compPoolMgr;
+
     pref_gfx::Mesh    m_meshPref;
   };
 

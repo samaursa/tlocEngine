@@ -35,13 +35,13 @@ namespace tloc { namespace graphics { namespace component_system {
       const auto& aa = extract()(a);
       const auto& bb = extract()(b);
 
-      if (aa.first->HasComponent<comp_type>() == false)
+      if (aa.first->template HasComponent<comp_type>() == false)
       { return true; }
-      else if (bb.first->HasComponent<comp_type>() == false)
+      else if (bb.first->template HasComponent<comp_type>() == false)
       { return false; }
 
-      ptr_type first = aa.first->GetComponent<comp_type>();
-      ptr_type second = bb.first->GetComponent<comp_type>();
+      ptr_type first = aa.first->template GetComponent<comp_type>();
+      ptr_type second = bb.first->template GetComponent<comp_type>();
 
       return first < second;
     }

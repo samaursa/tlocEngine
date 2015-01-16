@@ -137,7 +137,7 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
-    text_ptr text = a_pair.first->GetComponent<text_type>();
+    text_ptr text = a_pair.first->template GetComponent<text_type>();
 
     if (a_pair.second.size() == 0)
     { return; }
@@ -425,7 +425,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { sn->RemoveChild(*sn->begin()); }
 
     // remove the cached entity
-    text_quads_cont::iterator itr = 
+    typename text_quads_cont::iterator itr =
       find_if_all(m_allText, core::algos::pair::compare::MakeFirst(a_ent));
 
     if (itr != m_allText.end())
@@ -476,7 +476,7 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       DoReInitializeEntity(*itr);
 
-      text_quads_cont::const_iterator itrRes = core::find_if_all
+      typename text_quads_cont::const_iterator itrRes = core::find_if_all
         (m_allText, core::algos::pair::compare::MakeFirst(const_entity_ptr(*itr)));
 
       DoAlignText(*itrRes);

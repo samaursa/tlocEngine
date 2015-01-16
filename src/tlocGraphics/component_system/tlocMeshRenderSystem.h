@@ -62,6 +62,12 @@ namespace tloc { namespace graphics { namespace component_system {
                                rendering_technique>       this_type;
     typedef gfx_cs::RenderSystem_TI<renderer_type>        base_type;
 
+    typedef typename base_type::error_type                error_type;
+    typedef typename base_type::event_manager_ptr         event_manager_ptr;
+    typedef typename base_type::entity_manager_ptr        entity_manager_ptr;
+    typedef typename base_type::entity_ptr                entity_ptr;
+    typedef typename base_type::register_type             register_type;
+
     typedef math::types::Mat4f32                          matrix_type;
     typedef gl::ShaderOperator                            so_type;
     typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
@@ -126,6 +132,12 @@ namespace tloc { namespace graphics { namespace component_system {
                                         p_mesh_render_sytem::Instanced);
     void         DoProcessTextureCoords(entity_ptr a_ent, p_mesh::Dynamic,
                                         p_mesh_render_sytem::NonInstanced);
+
+  private:
+    using base_type::m_renderer;
+    using base_type::m_vpMatrix;
+    using base_type::m_projMat;
+    using base_type::m_viewMatrix;
   };
 
   // -----------------------------------------------------------------------

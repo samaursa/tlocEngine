@@ -14,6 +14,12 @@ namespace tloc { namespace math { namespace component_system {
       k_transform = core::component_system::component_group::k_math,
       k_projection,
 
+      k_bounding_box_2d,
+      k_bounding_box_3d,
+
+      k_raypick_2d,
+      k_raypick_3d,
+
       k_count
     }; typedef tl_int value_type;
   };

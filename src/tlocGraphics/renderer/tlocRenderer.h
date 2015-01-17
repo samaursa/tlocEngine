@@ -93,6 +93,15 @@ namespace tloc { namespace graphics { namespace renderer {
       struct FrontAndBack             { static const value_type s_glParamName; };
     };
 
+    namespace polygon_mode
+    {
+      typedef s32                     value_type;
+
+      struct Point                    { static const value_type s_glParamName; };
+      struct Line                     { static const value_type s_glParamName; };
+      struct Fill                     { static const value_type s_glParamName; };
+    };
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -111,6 +120,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef p_renderer::enable_disable::value_type    disable_value_type;
     typedef p_renderer::clear::value_type             clear_value_type;
     typedef p_renderer::cull_face::value_type         cull_face_value_type;
+    typedef p_renderer::polygon_mode::value_type      polygon_mode;
     typedef core::Pair<blend_function_value_type,
                        blend_function_value_type>     blend_pair_type;
 
@@ -159,6 +169,9 @@ namespace tloc { namespace graphics { namespace renderer {
       template <typename T_Face>
       this_type& Cull();
 
+      template <typename T_Face>
+      this_type& PolygonMode();
+
       TLOC_DECL_AND_DEF_GETTER
         (depth_function_value_type, GetDepthFunction, m_depthFunction);
       TLOC_DECL_AND_DEF_GETTER
@@ -171,6 +184,8 @@ namespace tloc { namespace graphics { namespace renderer {
         (clear_value_type, GetClearBits, m_clearBits);
       TLOC_DECL_AND_DEF_GETTER
         (cull_face_value_type, GetFaceToCull, m_faceToCull);
+      TLOC_DECL_AND_DEF_GETTER
+        (polygon_mode, GetPolygonMode, m_polyMode);
 
       TLOC_DECL_AND_DEF_GETTER(color_type, GetClearColor, m_clearColor);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(color_type, SetClearColor, m_clearColor);
@@ -191,6 +206,7 @@ namespace tloc { namespace graphics { namespace renderer {
       disable_cont                m_disableFeatures;
       clear_value_type            m_clearBits;
       cull_face_value_type        m_faceToCull;
+      polygon_mode                m_polyMode;
     };
 
   public:
@@ -360,6 +376,24 @@ namespace tloc { namespace graphics { namespace renderer {
        Front, Back, FrontAndBack>();
 
     m_faceToCull = T_Face::s_glParamName;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DepthPrecision>
+  template <typename T_Mode> 
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
+    Renderer_T<T_DepthPrecision>::Params::
+    PolygonMode()
+  {
+    using namespace p_renderer::polygon_mode;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_Mode,
+       Point, Line, Fill>();
+
+    m_polyMode = T_Mode::s_glParamName;
     return *this;
   }
 

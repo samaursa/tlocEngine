@@ -2,13 +2,13 @@
 #define _TLOC_PREFAB_GRAPHICS_QUAD_H_
 
 #include <tlocPrefab/tlocPrefabBase.h>
-#include <tlocPrefab/graphics/tlocMesh.h>
 
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/component_system/tlocQuad.h>
+#include <tlocGraphics/component_system/tlocMesh.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 
@@ -23,6 +23,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef Prefab_TI<this_type, component_type>    base_type;
     typedef math_t::Rectf32_c                       rect_type;
     typedef core_conts::Array<math_t::Vec2f32>      vec2_cont;
+    typedef gfx_rend::mode::value_type              draw_mode;
 
     typedef gfx_t::f_vertex::p_vertex_selector::
             TexCoords<T_TexCoords>                      texcoords_selected;
@@ -37,12 +38,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
     TLOC_DECL_PARAM_VAR(rect_type, Dimensions, m_rect);
     TLOC_DECL_PARAM_VAR(bool, Sprite, m_sprite);
+    TLOC_DECL_PARAM_VAR(draw_mode, DrawMode, m_drawMode);
 
   private:
     vec2_cont DoGenerateTexCoords() const;
-
-  private:
-    pref_gfx::Mesh    m_meshPref;
   };
 
   typedef Quad_T<>                                  Quad;

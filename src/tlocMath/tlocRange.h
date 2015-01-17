@@ -213,6 +213,9 @@ namespace tloc { namespace math {
   template <typename T, typename T_Inclusive = p_range::Exclusive>
   struct MakeRangef
   {
+    operator Range_T<T>()
+    { return Get(); }
+
     Range_T<T>
       Get(T a_begin, T a_end)
     {
@@ -226,6 +229,9 @@ namespace tloc { namespace math {
   template <typename T, typename T_Inclusive = p_range::Exclusive>
   struct Range0to1
   {
+    operator Range_T<T>()
+    { return Get(); }
+
     Range_T<T>
       Get()
     {
@@ -238,6 +244,9 @@ namespace tloc { namespace math {
   template <typename T, typename T_Inclusive = p_range::Exclusive>
   struct RangeNeg1to1
   {
+    operator Range_T<T>()
+    { return Get(); }
+
     Range_T<T>
       Get()
     {
@@ -250,6 +259,9 @@ namespace tloc { namespace math {
   template <typename T, typename T_Inclusive = p_range::Exclusive>
   struct Range0to128
   {
+    operator Range_T<T>()
+    { return Get(); }
+
     Range_T<T>
       Get()
     {
@@ -263,6 +275,9 @@ namespace tloc { namespace math {
   template <typename T, typename T_Inclusive = p_range::Exclusive>
   struct Range0to256
   {
+    operator Range_T<T>()
+    { return Get(); }
+
     Range_T<T>
       Get()
     {

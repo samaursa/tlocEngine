@@ -117,6 +117,14 @@ namespace tloc { namespace graphics { namespace renderer {
 
     };
 
+    namespace polygon_mode {
+
+      const value_type Point::s_glParamName            = GL_POINT;
+      const value_type Line::s_glParamName             = GL_LINE;
+      const value_type Fill::s_glParamName             = GL_FILL;
+
+    };
+
   };
 
   //------------------------------------------------------------------------
@@ -136,6 +144,7 @@ namespace tloc { namespace graphics { namespace renderer {
     , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
     , m_clearBits(0)
     , m_faceToCull(GL_NONE)
+    , m_polyMode(GL_FILL)
   {
     using namespace p_renderer;
 
@@ -231,6 +240,8 @@ namespace tloc { namespace graphics { namespace renderer {
     glBlendFunc(m_params.GetBlendFunction().first,
                 m_params.GetBlendFunction().second);
     TLOC_ASSERT(gl::Error().Succeeded(), "glBlenFunc returned an error");
+    glPolygonMode(GL_FRONT_AND_BACK, m_params.GetPolygonMode());
+    TLOC_ASSERT(gl::Error().Succeeded(), "glPolygonMode returned an error");
 
     for (enable_cont::const_iterator itr = m_params.GetFeaturesToEnable().begin(),
       itrEnd = m_params.GetFeaturesToEnable().end(); itr != itrEnd; ++itr)

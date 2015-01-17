@@ -7,6 +7,7 @@
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
+#include <tlocPrefab/graphics/tlocMesh.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -44,9 +45,8 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_numSides(8)
     , m_sectorAngle(360.0f)
     , m_sprite(false)
-    , m_meshPref(a_entMgr, a_poolMgr)
+    , m_drawMode(gfx_rend::mode::k_triangle_fan)
   {
-    m_meshPref.DrawMode(gfx_rend::mode::k_triangle_fan);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -56,6 +56,9 @@ namespace tloc { namespace prefab { namespace graphics {
     Fan_T<FAN_PARAMS>::
     Construct() const -> component_ptr
   {
+    pref_gfx::Mesh meshPref(m_entMgr, m_compPoolMgr);
+    meshPref.DrawMode(m_drawMode);
+
     // prepare vertices
     using namespace gfx_t::f_vertex::p_vertex_selector;
     using namespace math_t;
@@ -104,7 +107,7 @@ namespace tloc { namespace prefab { namespace graphics {
       verts.push_back(vert_selector().Fill(positions[i], 0, 0, texCoords[i]));
     }
 
-    return m_meshPref.Construct(verts);
+    return meshPref.Construct(verts);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

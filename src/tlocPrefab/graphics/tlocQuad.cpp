@@ -9,6 +9,7 @@
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
+#include <tlocPrefab/graphics/tlocMesh.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -42,11 +43,9 @@ namespace tloc { namespace prefab { namespace graphics {
     : base_type(a_entMgr, a_poolMgr)
     , m_rect(rect_type(rect_type::width(1.0f),
                        rect_type::height(1.0f)) )
-    , m_meshPref(a_entMgr, a_poolMgr)
     , m_sprite(false)
-  { 
-    m_meshPref.DrawMode(gfx_rend::mode::k_triangle_strip);
-  }
+    , m_drawMode(gfx_rend::mode::k_triangle_strip)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -55,6 +54,9 @@ namespace tloc { namespace prefab { namespace graphics {
     Quad_T<QUAD_PARAMS>::
     Construct() const -> component_ptr
   {
+    pref_gfx::Mesh m_meshPref(m_entMgr, m_compPoolMgr);
+    m_meshPref.DrawMode(m_drawMode);
+
     // prepare vertices
     using namespace gfx_t::f_vertex::p_vertex_selector;
     using namespace math_t;

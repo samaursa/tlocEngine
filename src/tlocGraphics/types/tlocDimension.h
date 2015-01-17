@@ -45,6 +45,36 @@ namespace tloc { namespace graphics { namespace types {
   typedef core::data_structs::Tuple3u64    Dimension3u64;
   typedef core::data_structs::Tuple3f64    Dimension3f64;
 
+  namespace f_dimension {
+
+    template <typename T, typename T2>
+    core_ds::Tuple<T, 2>
+      ModifyAndKeepRatioX(const core_ds::Tuple<T, 2>& a_dim,
+                          T2 a_newX)
+    {
+      const auto newXDim  = core_utils::CastNumber<tl_float>(a_newX);
+      const auto oldXDim  = core_utils::CastNumber<tl_float>(a_dim[0]);
+      const auto ratio    = newXDim / oldXDim;
+      const auto newYDim  = core_utils::CastNumber<T>(a_dim[1] * ratio);
+
+      return core_ds::MakeTuple(core_utils::CastNumber<T>(a_newX), newYDim);
+    }
+
+    template <typename T, typename T2>
+    core_ds::Tuple<T, 2>
+      ModifyAndKeepRatioY(const core_ds::Tuple<T, 2>& a_dim,
+                          T2 a_newY)
+    {
+      const auto newYDim  = core_utils::CastNumber<tl_float>(a_newY);
+      const auto oldYDim  = core_utils::CastNumber<tl_float>(a_dim[1]);
+      const auto ratio    = newYDim / oldYDim;
+      const auto newXDim  = core_utils::CastNumber<T>(a_dim[0] * ratio);
+
+      return core_ds::MakeTuple(newXDim, core_utils::CastNumber<T>(a_newY));
+    }
+
+  };
+
 };};};
 
 #endif

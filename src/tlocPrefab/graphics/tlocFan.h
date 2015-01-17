@@ -2,13 +2,13 @@
 #define _TLOC_PREFAB_GRAPHICS_FAN_H_
 
 #include <tlocPrefab/tlocPrefabBase.h>
-#include <tlocPrefab/graphics/tlocMesh.h>
 
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 
 #include <tlocGraphics/component_system/tlocFan.h>
+#include <tlocGraphics/component_system/tlocMesh.h>
 
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/types/tlocAngle.h>
@@ -24,6 +24,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef Prefab_TI<this_type, component_type>          base_type;
     typedef math_t::Circlef32                             circle_type;
     typedef core_conts::Array<math_t::Vec2f32>            vec2_cont;
+    typedef gfx_rend::mode::value_type                    draw_mode;
 
     typedef gfx_t::f_vertex::p_vertex_selector::
             TexCoords<T_TexCoords>                      texcoords_selected;
@@ -40,12 +41,10 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_PARAM_VAR(tl_size, Sides, m_numSides);
     TLOC_DECL_PARAM_VAR(math_t::Degree, SectorAngle, m_sectorAngle);
     TLOC_DECL_PARAM_VAR(bool, Sprite, m_sprite);
+    TLOC_DECL_PARAM_VAR(draw_mode, DrawMode, m_drawMode);
 
   private:
     vec2_cont DoGenerateTexCoords() const;
-
-  private:
-    pref_gfx::Mesh    m_meshPref;
   };
 
   typedef Fan_T<>                                         Fan;

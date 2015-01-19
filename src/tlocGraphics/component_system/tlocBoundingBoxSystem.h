@@ -20,16 +20,8 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     BoundingBoxSystem(event_manager_ptr, entity_manager_ptr);
 
-    virtual error_type Pre_Initialize();
-    virtual error_type InitializeEntity(entity_ptr);
-    virtual error_type ShutdownEntity(entity_ptr);
-
-    virtual void Pre_ProcessActiveEntities(f64 );
-    virtual void ProcessEntity(entity_ptr, f64 a_deltaT);
-    virtual void Post_ProcessActiveEntities(f64 );
-
-    virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
-    virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+    virtual error_type InitializeEntity(entity_ptr) override;
+    virtual void       ProcessEntity(entity_ptr, f64 a_deltaT) override;
 
   };
 

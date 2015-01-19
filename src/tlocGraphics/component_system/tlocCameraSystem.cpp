@@ -28,29 +28,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
   auto
     CameraSystem::
-    Pre_Initialize() -> error_type
-  { return ErrorSuccess; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  auto
-    CameraSystem::
     InitializeEntity(entity_ptr) -> error_type
   { return ErrorSuccess; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  auto
-    CameraSystem::
-    ShutdownEntity(entity_ptr) -> error_type
-  { return ErrorSuccess; }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    CameraSystem::
-    Pre_ProcessActiveEntities(f64)
-  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -100,13 +79,6 @@ namespace tloc { namespace graphics { namespace component_system {
     cam->SetViewMatrix(viewMat);
     cam->SetViewProj(m_vpMatrix);
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  void
-    CameraSystem::
-    Post_ProcessActiveEntities(f64)
-  { }
 
 };};};
 

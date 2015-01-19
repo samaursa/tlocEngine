@@ -44,8 +44,8 @@ namespace tloc { namespace math {
   typedef Bounds_T<math_t::Vec3f>               Bounds3D;
 
   typedef Bounds_T<math_t::Vec2f32>             bounds_2d_f32;
-  typedef Bounds_T<math_t::Vec3f64>             bounds_2d_f64;
-  typedef Bounds_T<math_t::Vec2f32>             bounds_3d_f32;
+  typedef Bounds_T<math_t::Vec2f64>             bounds_2d_f64;
+  typedef Bounds_T<math_t::Vec3f32>             bounds_3d_f32;
   typedef Bounds_T<math_t::Vec3f64>             bounds_3d_f64;
 
 };};

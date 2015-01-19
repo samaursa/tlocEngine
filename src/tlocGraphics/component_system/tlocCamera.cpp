@@ -1,9 +1,5 @@
 #include "tlocCamera.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
-
 namespace tloc { namespace graphics { namespace component_system {
 
   namespace
@@ -83,9 +79,11 @@ namespace tloc { namespace graphics { namespace component_system {
 // Explicit Instantiations
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 using namespace tloc::gfx_cs;
 
 // SmartPtr
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Camera);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Camera);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Camera);

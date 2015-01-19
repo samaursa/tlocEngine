@@ -1,6 +1,6 @@
 #include "tlocBoundingBox.h"
 
-namespace tloc { namespace math { namespace component_system {
+namespace tloc { namespace graphics { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
   // BoundingBox2D
@@ -38,3 +38,19 @@ namespace tloc { namespace math { namespace component_system {
   { }
 
 };};};
+
+// -----------------------------------------------------------------------
+// Explicit Instantiations
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(BoundingBox2D);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(BoundingBox2D);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(BoundingBox2D);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(BoundingBox3D);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(BoundingBox3D);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(BoundingBox3D);

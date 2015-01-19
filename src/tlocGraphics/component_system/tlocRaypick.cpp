@@ -1,6 +1,6 @@
 #include "tlocRaypick.h"
 
-namespace tloc { namespace math { namespace component_system {
+namespace tloc { namespace graphics { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
   // Raypick2D

@@ -11,19 +11,19 @@
 
 namespace tloc { namespace graphics { namespace component_sytem {
 
-  class BoundingBoxRenderSystem
-    : public core_cs::EntityProcessingSystem
-  {
-  public:
-    typedef core_cs::EntityProcessingSystem                     base_type;
-    typedef BoundingBoxRenderSystem                             this_type;
+  //class BoundingBoxRenderSystem
+  //  : public core_cs::EntityProcessingSystem
+  //{
+  //public:
+  //  typedef core_cs::EntityProcessingSystem                     base_type;
+  //  typedef BoundingBoxRenderSystem                             this_type;
 
-  public:
+  //public:
 
-  private:
+  //private:
 
 
-  };
+  //};
 
 };};};
 

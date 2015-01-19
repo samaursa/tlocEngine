@@ -76,13 +76,13 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef ComponentPoolManager                    pool_mgr;
     typedef gfx_cs::camera_pool                     p_pool;
-    camera_pool_vptr  pPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Camera>();
 
-    p_pool::iterator itrProjection = pPool->GetNext();
-    (*itrProjection)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
+    auto pPool = m_compPoolMgr->GetOrCreatePool<gfx_cs::Camera>();
 
-    return *(*itrProjection)->GetValuePtr();
+    auto itr = pPool->GetNext();
+    (*itr)->SetValue(MakeShared<gfx_cs::Camera>(a_frustum) );
+
+    return *(*itr)->GetValuePtr();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

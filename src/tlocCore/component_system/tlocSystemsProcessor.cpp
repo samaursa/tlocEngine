@@ -3,6 +3,17 @@
 namespace tloc { namespace core { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
+  // SystemInfo
+
+  SystemsProcessor::SystemInfo::
+    SystemInfo()
+    : m_updateDeltaT(0.0)
+    , m_accumulatedTime(0.0)
+    , m_updatedSinceLastFrame(false)
+  {
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
   // SystemsProcessor
 
   SystemsProcessor::
@@ -14,9 +25,13 @@ namespace tloc { namespace core { namespace component_system {
 
   SystemsProcessor::this_type&
     SystemsProcessor::
-    Add(processing_system_ptr a_system)
+    Add(processing_system_ptr a_system, time_type a_updateDeltaT)
   {
-    m_systemsToProcess.push_back(a_system);
+    SystemInfo si;
+    si.m_system = a_system;
+    si.m_updateDeltaT = a_updateDeltaT;
+
+    m_systemsToProcess.push_back(si);
     return *this;
   }
 
@@ -25,14 +40,32 @@ namespace tloc { namespace core { namespace component_system {
   void
     SystemsProcessor::
     Initialize()
-  { core::for_each_all(m_systemsToProcess, algos::entity_system::Initialize_Deref()); }
+  { 
+    core::for_each_all(m_systemsToProcess, 
+                       algos::system_processor::Initialize_FromSystemInfo()); 
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
     SystemsProcessor::
     Process(time_type a_deltaT)
-  { core::for_each_all(m_systemsToProcess, algos::entity_system::Process_Deref(a_deltaT)); }
+  { 
+    for (auto itr = m_systemsToProcess.begin(), itrEnd = m_systemsToProcess.end();
+         itr != itrEnd; ++itr)
+    {
+      auto& si = *itr;
+      si.m_accumulatedTime += a_deltaT;
+      si.m_updatedSinceLastFrame = false;
+
+      while (si.m_updateDeltaT <= si.m_accumulatedTime)
+      {
+        si.m_system->ProcessActiveEntities(si.m_updateDeltaT);
+        si.m_accumulatedTime -= si.m_updateDeltaT;
+        si.m_updatedSinceLastFrame = true;
+      }
+    }
+  }
 
 };};};
 

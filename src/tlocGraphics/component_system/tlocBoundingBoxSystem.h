@@ -1,10 +1,8 @@
 #pragma once
-#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_CAMERA_SYSTEM_H_
-#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_CAMERA_SYSTEM_H_
+#ifndef _TLOC_GRAPHICS_COMPONENT_SYSTEM_BOUNDING_BOX_SYSTEM_H_
+#define _TLOC_GRAPHICS_COMPONENT_SYSTEM_BOUNDING_BOX_SYSTEM_H_
 
 #include <tlocGraphics/tlocGraphicsBase.h>
-
-#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
@@ -12,15 +10,15 @@
 
 namespace tloc { namespace graphics { namespace component_system {
 
-  class CameraSystem
-    : public core::component_system::EntityProcessingSystem
+  class BoundingBoxSystem
+    : public core_cs::EntityProcessingSystem
   {
   public:
-    typedef core::component_system::EntityProcessingSystem      base_type;
-    typedef CameraSystem                                        this_type;
+    typedef core_cs::EntityProcessingSystem                     base_type;
+    typedef BoundingBoxSystem                                   this_type;
 
   public:
-    CameraSystem(event_manager_ptr, entity_manager_ptr);
+    BoundingBoxSystem(event_manager_ptr, entity_manager_ptr);
 
     virtual error_type Pre_Initialize();
     virtual error_type InitializeEntity(entity_ptr);
@@ -32,20 +30,21 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
     virtual void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
+
   };
 
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_ALL_SMART_PTRS(CameraSystem, camera_system);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(CameraSystem, camera_system);
-  
+  TLOC_TYPEDEF_ALL_SMART_PTRS(BoundingBoxSystem, bounding_box_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(BoundingBoxSystem, bounding_box_system);
+
 };};};
 
 // -----------------------------------------------------------------------
-// extern template
+// extern templates
 
-TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::CameraSystem);
-TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::CameraSystem);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::BoundingBoxSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::BoundingBoxSystem);
 
 #endif

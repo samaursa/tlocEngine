@@ -141,8 +141,8 @@ namespace tloc { namespace graphics { namespace component_system {
           a_vbo.SetValueAs<T_Target, T_Usage>(arr);
           break;
         }
-        default: TLOC_LOG_GFX_WARN_FILENAME_ONLY() 
-          << "Unsupported vertex type in Mesh";
+        default: TLOC_LOG_GFX_ERR_FILENAME_ONLY() 
+          << "Unsupported vertex type (" << a_mesh.GetVertexType() << ") in Mesh";
       }
     }
 
@@ -234,8 +234,8 @@ namespace tloc { namespace graphics { namespace component_system {
           }
           break;
         }
-        default: TLOC_LOG_GFX_WARN_FILENAME_ONLY() 
-          << "Unsupported vertex type in Mesh";
+        default: TLOC_LOG_GFX_ERR_FILENAME_ONLY() 
+          << "Unsupported vertex type (" << a_mesh.GetVertexType() << ") in Mesh";
       }
     }
 

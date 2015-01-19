@@ -32,6 +32,7 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBox2D(const bounds_type& a_newBounds);
 
     TLOC_DECL_AND_DEF_GETTER(bounds_type, Get, m_boundingBox);
+    TLOC_DECL_AND_DEF_SETTER(bounds_type, Set, m_boundingBox);
 
   private:
     bounds_type m_boundingBox;
@@ -64,6 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBox3D(const bounds_type& a_newBounds);
 
     TLOC_DECL_AND_DEF_GETTER(bounds_type, Get, m_boundingBox);
+    TLOC_DECL_AND_DEF_SETTER(bounds_type, Set, m_boundingBox);
 
   private:
     bounds_type m_boundingBox;

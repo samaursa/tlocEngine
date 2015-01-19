@@ -204,6 +204,11 @@ namespace tloc { namespace core { namespace component_system {
   error_type EntityProcessingSystem::Pre_Shutdown()
   { return ErrorSuccess; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  error_type EntityProcessingSystem::ShutdownEntity(entity_ptr)
+  { return ErrorSuccess; }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   error_type EntityProcessingSystem::

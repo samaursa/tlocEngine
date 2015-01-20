@@ -1,5 +1,9 @@
 #include "tlocSystemsProcessor.h"
 
+#include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocMath/tlocMath.h>
+
 namespace tloc { namespace core { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
@@ -42,7 +46,7 @@ namespace tloc { namespace core { namespace component_system {
     Initialize()
   { 
     core::for_each_all(m_systemsToProcess, 
-                       algos::system_processor::Initialize_FromSystemInfo()); 
+                       algos::systems_processor::Initialize_FromSystemInfo()); 
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -58,14 +62,47 @@ namespace tloc { namespace core { namespace component_system {
       si.m_accumulatedTime += a_deltaT;
       si.m_updatedSinceLastFrame = false;
 
-      while (si.m_updateDeltaT <= si.m_accumulatedTime)
+      if (math::IsEqualToZero(si.m_updateDeltaT))
+      { continue; }
+      else
       {
-        si.m_system->ProcessActiveEntities(si.m_updateDeltaT);
-        si.m_accumulatedTime -= si.m_updateDeltaT;
-        si.m_updatedSinceLastFrame = true;
+        while (si.m_updateDeltaT <= si.m_accumulatedTime)
+        {
+          si.m_system->ProcessActiveEntities(si.m_updateDeltaT);
+          si.m_accumulatedTime -= si.m_updateDeltaT;
+          si.m_updatedSinceLastFrame = true;
+        }
       }
     }
   }
+
+  // -----------------------------------------------------------------------
+
+  namespace f_systems_processor {
+
+    core::Pair<requested_itr, end_itr>
+      GetSystemInfo(SystemsProcessor& a_sysProcessor,
+                    entity_processing_system_vptr a_system)
+    {
+      auto itr =  core::find_if(a_sysProcessor.begin_systems(), 
+                                a_sysProcessor.end_systems(), 
+                                algos::systems_processor::compare::System(a_system));
+      return core::MakePair(itr, a_sysProcessor.end_systems());
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    core::Pair<const_requested_itr, const_end_itr>
+      GetSystemInfo(const SystemsProcessor& a_sysProcessor, 
+                    const_entity_processing_system_vptr a_system)
+    {
+      auto itr =  core::find_if(a_sysProcessor.begin_systems(), 
+                                a_sysProcessor.end_systems(), 
+                                algos::systems_processor::compare::System(a_system));
+      return core::MakePair(itr, a_sysProcessor.end_systems());
+    }
+
+  };
 
 };};};
 

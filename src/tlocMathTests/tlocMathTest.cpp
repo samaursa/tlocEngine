@@ -38,10 +38,10 @@ namespace TestingTlocMath
   TEST_CASE("Math/Approx", "")
   {
     f32 a = 1.0f, b = 1.0f;
-    CHECK(math::IsEqual(a, b));
+    CHECK(math::Approx(a, b, NumericLimits_T<f32>::min()));
     a = 1.23456789f;
     b = 1.23456789f;
-    CHECK(math::IsEqual(a, b));
+    CHECK(math::Approx(a, b, NumericLimits_T<f32>::min()));
   }
 
   TEST_CASE("Math/IsPowerOfTwo", "")
@@ -146,13 +146,23 @@ namespace TestingTlocMath
     SECTION("floats", "")
     {
       CHECK(math::IsEqual(1.0f, 1.0f) );
+      CHECK(math::IsEqualToZero(0.0f) );
+      CHECK(math::IsEqualToOne(1.0f) );
+
       CHECK_FALSE(math::IsEqual(1.0f, 1.0001f) );
+      CHECK_FALSE(math::IsEqualToZero(0.1f) );
+      CHECK_FALSE(math::IsEqualToOne(1.1f) );
     }
 
     SECTION("non floats", "")
     {
       CHECK(math::IsEqual(1, 1) );
+      CHECK(math::IsEqualToZero(0) );
+      CHECK(math::IsEqualToOne(1) );
+
       CHECK_FALSE(math::IsEqual(1, 2) );
+      CHECK_FALSE(math::IsEqualToZero(1) );
+      CHECK_FALSE(math::IsEqualToOne(2) );
     }
   }
 };

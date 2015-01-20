@@ -24,8 +24,19 @@ namespace tloc { namespace core { namespace component_system {
   public:
     struct SystemInfo
     {
+      friend class SystemsProcessor;
+
+    public:
       SystemInfo();
 
+      TLOC_DECL_AND_DEF_GETTER(processing_system_ptr, GetSystem, m_system);
+      TLOC_DECL_AND_DEF_GETTER(time_type, GetUpdateDeltaT, m_updateDeltaT);
+      TLOC_DECL_AND_DEF_GETTER(time_type, GetIsUpdatedSinceLastFrame, 
+                               m_updatedSinceLastFrame);
+
+      TLOC_DECL_AND_DEF_SETTER(time_type, SetUpdateDeltaT, m_updateDeltaT);
+
+    private:
       processing_system_ptr             m_system;
       time_type                         m_updateDeltaT;
       time_type                         m_accumulatedTime;
@@ -33,9 +44,9 @@ namespace tloc { namespace core { namespace component_system {
     };
 
   public:
-    typedef core_conts::Array<SystemInfo>             processing_system_cont;
-    typedef processing_system_cont::iterator          processing_system_iterator;
-    typedef processing_system_cont::const_iterator    const_processing_system_iterator;
+    typedef core_conts::Array<SystemInfo>             sys_info_cont;
+    typedef sys_info_cont::iterator                   sys_info_iterator;
+    typedef sys_info_cont::const_iterator             const_sys_info_iterator;
 
   public:
     SystemsProcessor(BufferArg a_debugName = "SystemsProcessor");
@@ -44,10 +55,10 @@ namespace tloc { namespace core { namespace component_system {
                     time_type a_updateDeltaT = 1.0/60.0);
 
     void        Initialize();
-    void        Process(time_type a_deltaT);
+    void        Process(time_type a_deltaT = 1.0/60.0);
 
   private:
-    processing_system_cont  m_systemsToProcess;
+    sys_info_cont  m_systemsToProcess;
 
   public:
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_systems, m_systemsToProcess);
@@ -61,7 +72,7 @@ namespace tloc { namespace core { namespace component_system {
 
   // -----------------------------------------------------------------------
 
-  namespace algos { namespace system_processor {
+  namespace algos { namespace systems_processor {
 
     struct use_system_info
     {
@@ -70,7 +81,7 @@ namespace tloc { namespace core { namespace component_system {
 
       value_type&
         operator()(SystemsProcessor::SystemInfo& a) const 
-      { return *a.m_system; }
+      { return *a.GetSystem(); }
     };
 
     typedef entity_system::Initialize_T<use_system_info>     Initialize_FromSystemInfo;
@@ -78,29 +89,40 @@ namespace tloc { namespace core { namespace component_system {
 
     namespace compare {
 
-      TLOC_DECL_ALGO_WITH_CTOR_UNARY(System_T, entity_processing_system_vptr, const);
+      TLOC_DECL_ALGO_WITH_CTOR_UNARY(System_T, const_entity_processing_system_vptr, const);
       TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(System_T, const)
-      { return extract()(a).m_system == m_value; }
+      { return extract()(a).GetSystem() == m_value; }
 
       typedef System_T<use_reference>             System;
       typedef System_T<use_pointee>               System_Deref;
-
-      //struct System
-      //{
-      //  System(entity_processing_system_vptr a_sys)
-      //    : m_value(a_sys)
-      //  { }
-
-      //  bool operator()(SystemsProcessor::SystemInfo& a_info) const
-      //  {
-      //    return m_value == a_info.m_system;
-      //  }
-
-      //  entity_processing_system_vptr m_value;
-      //};
     }
 
   };};
+
+  // -----------------------------------------------------------------------
+
+  namespace f_systems_processor {
+
+    // -----------------------------------------------------------------------
+
+    typedef SystemsProcessor::sys_info_iterator         requested_itr;
+    typedef SystemsProcessor::sys_info_iterator         end_itr;
+    typedef SystemsProcessor::const_sys_info_iterator   const_requested_itr;
+    typedef SystemsProcessor::const_sys_info_iterator   const_end_itr;
+
+    // -----------------------------------------------------------------------
+
+    core::Pair<requested_itr, end_itr>
+      GetSystemInfo(SystemsProcessor& a_sysProcessor,
+                    entity_processing_system_vptr a_system);
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    core::Pair<const_requested_itr, const_end_itr>
+      GetSystemInfo(const SystemsProcessor& a_sysProcessor,
+                    const_entity_processing_system_vptr a_system);
+
+  }
 
 };};};
 

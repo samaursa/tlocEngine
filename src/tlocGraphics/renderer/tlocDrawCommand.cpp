@@ -56,7 +56,12 @@ namespace tloc { namespace graphics { namespace renderer {
   }
 
   // ///////////////////////////////////////////////////////////////////////
-  // Draw
+  // RenderPass
+
+  RenderPass::
+    RenderPass()
+    : m_numDrawCalls(0)
+  { }
 
   auto
     RenderPass::
@@ -94,6 +99,7 @@ namespace tloc { namespace graphics { namespace renderer {
     RenderPass::
     Draw()
   {
+    m_numDrawCalls = 0;
     shader_prog_ptr   currShader;
 
     for (auto itr = m_commands.begin(), itrEnd = m_commands.end(); 
@@ -130,6 +136,7 @@ namespace tloc { namespace graphics { namespace renderer {
         gl::VertexArrayObject::Bind b(*vao);
         auto commandMode = DoGetOpenGLModeType(command.GetMode());
 
+        m_numDrawCalls++;
         glDrawArrays(commandMode, command.GetStartIndex(), command.GetCount());
       }
     }

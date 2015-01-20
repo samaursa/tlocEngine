@@ -20,6 +20,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef systems_processor_vso                       sys_processor_vso;
     typedef systems_processor_vptr                      sys_processor_ptr;
     typedef SystemsProcessor::time_type                 time_type;
+    typedef SystemsProcessor::sys_info_iterator         sys_info_itr;
 
     typedef event_manager_vso                           event_manager_vso;
     typedef entity_manager_vso                          entity_manager_vso;
@@ -106,7 +107,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     void  Initialize();
     void  Update();
-    void  Process(time_type a_deltaT);
+    void  Process(time_type a_deltaT = 1.0/60.0);
 
   public:
     TLOC_DECL_AND_DEF_GETTER_NON_CONST

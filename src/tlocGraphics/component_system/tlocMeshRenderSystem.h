@@ -84,10 +84,6 @@ namespace tloc { namespace graphics { namespace component_system {
     void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
 
   private:
-    //void  DoInitializeTexCoords(entity_ptr a_ent, so_type& a_so) const;
-    //void  DoUpdateTexCoords(entity_ptr a_ent, so_type& a_so) const;
-
-  private:
     const_shader_prog_ptr     m_shaderPtr;
 
   private:

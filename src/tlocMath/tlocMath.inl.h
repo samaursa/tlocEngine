@@ -158,6 +158,26 @@ namespace tloc {
     { return Approx(a_num1, a_num2, Epsilon<T>()); }
 
     template <typename T>
+    bool IsEqualToZero(T a_num1)
+    { return IsEqual(a_num1, (T)0); }
+
+    template <typename T>
+    bool IsNotEqualToZero(T a_num1)
+    { return IsNotEqualToZero(a_num1) == false; }
+
+    template <typename T>
+    bool IsEqualToOne(T a_num1)
+    { return IsEqual(a_num1, (T)1); }
+
+    template <typename T>
+    bool IsNotEqualToOne(T a_num1)
+    { return IsEqualToOne(a_num1) == false; }
+
+    template <typename T>
+    bool IsNotEqual(T a_num1, T a_num2)
+    { return IsEqual(a_num1, a_num2) == false; }
+
+    template <typename T>
     T 
       Ceil(T aValue)
     {

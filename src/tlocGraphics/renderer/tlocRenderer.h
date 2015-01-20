@@ -140,6 +140,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
     typedef RenderPass                                render_pass;
     typedef render_pass::command_type                 command_type;
+    typedef render_pass::size_type                    size_type;
 
   public:
     struct Params
@@ -231,6 +232,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(Params, GetParams, m_params);
     TLOC_DECL_AND_DEF_SETTER(Params, SetParams, m_params);
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumDrawCalls, m_pass.GetNumDrawCalls());
 
   private:
     error_type  DoStart() const;

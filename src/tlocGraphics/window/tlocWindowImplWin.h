@@ -180,7 +180,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ///
     /// @param  a_title The title of the window.
     ///-------------------------------------------------------------------------
-    void SetTitle(const char* a_title);
+    void SetTitle(BufferArg a_title);
 
     ///-------------------------------------------------------------------------
     /// @brief Calls IsWindow() on the handle and returns the result

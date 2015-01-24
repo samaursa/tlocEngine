@@ -79,6 +79,9 @@ namespace tloc { namespace math {
       min = DoGetMin(*itr, min);
       max = DoGetMax(*itr, max);
     }
+
+    m_min = min;
+    m_max = max;
   }
 
   // -----------------------------------------------------------------------

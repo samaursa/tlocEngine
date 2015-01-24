@@ -769,6 +769,8 @@ namespace tloc { namespace graphics { namespace component_system {
   // explicit instantiation
 
   template class MeshRenderSystem_T<>;
+  template class MeshRenderSystem_T<gfx_rend::renderer_depth32_sptr>;
+  template class MeshRenderSystem_T<gfx_rend::renderer_depth64_sptr>;
 
 };};};
 

@@ -166,6 +166,15 @@ namespace tloc { namespace core { namespace logging {
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type&
+    Log_I::
+    operator<<(core_utils::MemoryAddress a_memAddress)
+  {
+    m_finalString += core_str::Format("%p", a_memAddress);
+    return *this;
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -196,6 +205,5 @@ namespace tloc { namespace core { namespace logging {
 
   void swap(Log_I& a, Log_I& b)
   { a.swap(b); }
-
 
 };};};

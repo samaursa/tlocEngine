@@ -82,6 +82,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     // calculate the new up
     pos_type dirVec = vecToRot.IsZero() ? pos_type(0, 0, -1) : vecToRot;
+
+    // bail if normalizing camera's direction vector will result in a crash
+    if (math::IsEqualToZero(dirVec.LengthSquared()) )
+    { return; }
+
     dirVec.Normalize();
     upVec = dirVec.Cross(leftVec);
     upVec.Normalize();

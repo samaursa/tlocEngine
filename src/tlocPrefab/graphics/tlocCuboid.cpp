@@ -246,5 +246,6 @@ namespace tloc { namespace prefab { namespace graphics {
   template class Cuboid_T<>;
   template class Cuboid_T<true, false>;
   template class Cuboid_T<false, true>;
+  template class Cuboid_T<false, false>;
 
 };};};

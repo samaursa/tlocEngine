@@ -29,6 +29,24 @@ namespace tloc { namespace prefab { namespace graphics {
     void            Add   (entity_ptr a_ent);
   };
 
+  // ///////////////////////////////////////////////////////////////////////
+  // BoundingBox3D
+
+  class BoundingBox3D
+    : public Prefab_TI<BoundingBox3D, gfx_cs::BoundingBox3D>
+  {
+  public:
+    typedef BoundingBox3D                             this_type;
+    typedef Prefab_TI<this_type, component_type>      base_type;
+
+  public:
+    BoundingBox3D(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
+
+    component_ptr   Construct();
+    entity_ptr      Create();
+    void            Add   (entity_ptr a_ent);
+  };
+
 };};};
 
 #endif

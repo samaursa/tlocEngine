@@ -269,6 +269,23 @@ namespace tloc { namespace core { namespace logging {
     return *this;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type&
+    Log_T<TLOC_LOG_PARAMS>::
+    operator<<(core_utils::MemoryAddress a_memAddress)
+  {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::operator<<(a_memAddress); }
+
+    return *this;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // write_policy
 

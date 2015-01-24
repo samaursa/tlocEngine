@@ -80,9 +80,6 @@ namespace tloc { namespace graphics { namespace component_system {
     void ProcessEntity(entity_ptr a_ent, f64 a_deltaT) override;
     void Post_ProcessActiveEntities(f64) override;
 
-    void OnComponentDisable(const core_cs::EntityComponentEvent&) {}
-    void OnComponentEnable(const core_cs::EntityComponentEvent&) {}
-
   private:
     const_shader_prog_ptr     m_shaderPtr;
 
@@ -131,6 +128,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(MeshRenderSystem, mesh_render_system);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(MeshRenderSystem, mesh_render_system);
+
+  // -----------------------------------------------------------------------
+  // extern template
+
+  TLOC_EXTERN_TEMPLATE_CLASS(MeshRenderSystem_T<gfx_rend::renderer_sptr>);
+  TLOC_EXTERN_TEMPLATE_CLASS(MeshRenderSystem_T<gfx_rend::renderer_depth32_sptr>);
+  TLOC_EXTERN_TEMPLATE_CLASS(MeshRenderSystem_T<gfx_rend::renderer_depth64_sptr>);
   
 };};};
 

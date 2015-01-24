@@ -50,6 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     TLOC_DECL_PARAM_VAR(gfx_rend::mode::value_type, DrawMode, m_drawMode);
     TLOC_DECL_PARAM_VAR(math_cs::Transform, Transformation, m_transform);
+    TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_bb);
 
   private:
 
@@ -63,10 +64,10 @@ namespace tloc { namespace prefab { namespace graphics {
       DoTransformStaticMesh(const core_conts::Array<T_VertexType>& a_vertices, 
                             gfx_cs::p_mesh::Dynamic) const;
 
-    void  DoAddTransformComponent(entity_ptr a_ent,
-                                  gfx_cs::p_mesh::Static) const;
-    void  DoAddTransformComponent(entity_ptr a_ent,
-                                  gfx_cs::p_mesh::Dynamic) const;
+    void  DoAddTransformComponent(entity_ptr, gfx_cs::p_mesh::Static) const;
+    void  DoAddTransformComponent(entity_ptr, gfx_cs::p_mesh::Dynamic) const;
+
+    void  DoAddBoundingBox(entity_ptr) const;
   };
 
   // -----------------------------------------------------------------------
@@ -148,6 +149,12 @@ namespace tloc { namespace prefab { namespace graphics {
     // Transform component
 
     DoAddTransformComponent(a_ent, static_dynamic_type());
+
+    // -----------------------------------------------------------------------
+    // BoundingBox
+
+    if (m_bb)
+    { DoAddBoundingBox(a_ent); }
 
     // -----------------------------------------------------------------------
     // Mesh component

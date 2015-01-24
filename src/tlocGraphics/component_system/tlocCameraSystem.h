@@ -22,8 +22,8 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     CameraSystem(event_manager_ptr, entity_manager_ptr);
 
-    virtual error_type InitializeEntity(entity_ptr);
-    virtual void       ProcessEntity(entity_ptr, f64 a_deltaT);
+    virtual error_type InitializeEntity(entity_ptr) override;
+    virtual void       ProcessEntity(entity_ptr, f64 a_deltaT) override;
   };
 
   // -----------------------------------------------------------------------

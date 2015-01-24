@@ -76,6 +76,18 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  Entity::component_ptr_type
+    Entity::
+    GetComponentIfExists(component_info_type a_info, size_type a_index) const
+  {
+    if (HasComponent(a_info, a_index))
+    { return GetComponent(a_info, a_index); }
+
+    return nullptr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   Entity::const_component_iterator
     Entity::
     begin_components(component_group_type a_groupIndex) const

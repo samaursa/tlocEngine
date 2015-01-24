@@ -155,8 +155,8 @@ namespace tloc { namespace graphics { namespace component_system {
       return ErrorSuccess;
     }
 
-    auto bb2d = a_ent->GetComponent<gfx_cs::BoundingBox2D>();
-    auto bb3d = a_ent->GetComponent<gfx_cs::BoundingBox3D>();
+    auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
+    auto bb3d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox3D>();
 
     DoCalculateBoundingBox(*mesh, bt3d, bt2d);
 
@@ -176,3 +176,10 @@ namespace tloc { namespace graphics { namespace component_system {
   { }
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(BoundingBoxSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(BoundingBoxSystem);

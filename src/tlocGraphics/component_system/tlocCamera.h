@@ -27,7 +27,7 @@ namespace tloc { namespace graphics { namespace component_system {
     friend class CameraSystem;
 
     typedef Camera                                      this_type;
-    typedef Component_T
+    typedef core_cs::Component_T
       <this_type, k_component_group, k_component_type>  base_type;
     typedef math_proj::frustum_f32                      frustum_type;
     typedef frustum_type::matrix_type                   matrix_type;

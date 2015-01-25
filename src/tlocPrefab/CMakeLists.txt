@@ -10,6 +10,8 @@ set(TLOC_PREFAB_CORE
   core/tloc_core.cpp 
   core/tloc_core.h 
   core/tloc_core.inl.h 
+  core/tlocUserData.h
+  core/tlocUserData.cpp
   )
 
 set(TLOC_PREFAB_GRAPHICS

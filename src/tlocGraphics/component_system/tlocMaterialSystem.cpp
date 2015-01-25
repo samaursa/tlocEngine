@@ -97,7 +97,11 @@ namespace tloc { namespace graphics { namespace component_system {
                    entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
                 register_type().Add<gfx_cs::Material>(), 
-                "MaterialSystem")
+                "MaterialSystem") 
+    , m_vsSource(core_io::FileContents(core_io::Path
+        ("hard_coded_default_shader/defaultVS.glsl"), vsSource))
+    , m_fsSource(core_io::FileContents(core_io::Path
+        ("hard_coded_default_shader/defaultFS.glsl"), fsSource))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -125,14 +129,6 @@ namespace tloc { namespace graphics { namespace component_system {
     if (m_defaultMaterial == nullptr)
     {
       m_defaultMaterial = core_sptr::MakeUnique<gfx_cs::Material>();
-
-      if (m_fsSource.GetContents().empty() || m_vsSource.GetContents().empty())
-      {
-        m_vsSource = core_io::FileContents
-          (core_io::Path("hard_coded_default_shader/defaultVS.glsl"), vsSource);
-        m_fsSource = core_io::FileContents
-          (core_io::Path("hard_coded_default_shader/defaultFS.glsl"), fsSource);
-      }
 
       m_defaultMaterial->SetVertexSource(m_vsSource);
       m_defaultMaterial->SetFragmentSource(m_fsSource);
@@ -168,8 +164,10 @@ namespace tloc { namespace graphics { namespace component_system {
         (matPtr->GetShaderOperator()->size_attributeVBOs() > 0)
         << "Material's ShaderOperator should not have any AttributeVBOs.";
 
-      auto  result = 
-        f_material::CompileAndLinkShaderProgram(*matPtr);
+      auto result = ErrorFailure;
+      if (matPtr->GetVertexSource().empty() == false || 
+          matPtr->GetFragmentSource().empty() == false)
+      { result = f_material::CompileAndLinkShaderProgram(*matPtr); }
 
       if (result != ErrorSuccess)
       { *matPtr->GetShaderProg() = *m_defaultMaterial->GetShaderProg(); }
@@ -195,6 +193,13 @@ namespace tloc { namespace graphics { namespace component_system {
     {
       auto matPtr = a_ent->GetComponent<gfx_cs::Material>(i);
 
+      if (matPtr->GetVertexSource().empty() || matPtr->GetFragmentSource().empty())
+      { 
+        matPtr->SetVertexSource(m_vsSource);
+        *matPtr->GetShaderProg() = *m_defaultMaterial->GetShaderProg();
+        return ErrorSuccess;
+      }
+
       const auto& currVSContents = matPtr->GetVertexSource();
       const auto& currFSContents = matPtr->GetFragmentSource();
 
@@ -215,7 +220,8 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       if (currVSContents != vs.GetContents() ||
-          currFSContents != fs.GetContents())
+          currFSContents != fs.GetContents() ||
+          matPtr->GetShaderProg()->IsLinked() == false)
       {
         matPtr->SetVertexSource(vs);
         matPtr->SetFragmentSource(fs);

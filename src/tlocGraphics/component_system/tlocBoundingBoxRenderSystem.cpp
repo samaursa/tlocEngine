@@ -93,9 +93,27 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr,
                 register_type().Add<BoundingBox2D>().Add<BoundingBox3D>(), 
                 "BoundingBoxRenderSystem")
+    , m_vsSource(core_io::FileContents(core_io::Path
+        ("hard_coded_default_shader/defaultVSBoundingBox.glsl"), vsSource))
+    , m_fsSource(core_io::FileContents(core_io::Path
+        ("hard_coded_default_shader/defaultFSBoundingBox.glsl"), fsSource))
   { 
-    m_scene.AddSystem<gfx_cs::MaterialSystem>();
+    m_matSys = m_scene.AddSystem<gfx_cs::MaterialSystem>();
+    m_matSys->SetDefaultShaders(m_vsSource, m_fsSource);
+
     m_meshSys = m_scene.AddSystem<mesh_sys_ptr::value_type>();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BOUNDING_BOX_RENDER_SYSTEM_TEMPS>
+  auto
+    BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
+    SetDefaultShaders(core_io::FileContents a_vs, core_io::FileContents a_fs)
+    -> this_type&
+  {
+    m_matSys->SetDefaultShaders(a_vs, a_fs);
+    return *this;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -115,6 +133,21 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
     InitializeEntity(entity_ptr a_ent) -> error_type
   {
+    return ReInitializeEntity(a_ent);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BOUNDING_BOX_RENDER_SYSTEM_TEMPS>
+  auto
+    BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
+    ReInitializeEntity(entity_ptr a_ent) -> error_type
+  {
+    // if we have already processed this entity, then do nothing
+    if (core::find_if_all(m_entityPairs, core::algos::pair::compare::MakeFirst(a_ent)) 
+        != m_entityPairs.end())
+    { return ErrorSuccess; }
+
     if (a_ent->HasComponent<math_cs::Transformf32>() == false)
     {
       TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Entity " << a_ent 
@@ -127,25 +160,46 @@ namespace tloc { namespace graphics { namespace component_system {
     auto entMgr = m_scene.GetEntityManager();
     auto newEnt = entMgr->CreateEntity();
 
-    auto vss = core_io::FileContents
-      (core_io::Path("hard_coded_default_shader/defaultVS.glsl"), vsSource);
-    auto fss = core_io::FileContents
-      (core_io::Path("hard_coded_default_shader/defaultFS.glsl"), fsSource);
+    m_entityPairs.push_back(core::MakePair(a_ent, newEnt));
       
     if (a_ent->HasComponent<BoundingBox2D>())
     {
       auto bb = a_ent->GetComponent<BoundingBox2D>();
-      entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t).Orphan(true));
-      m_scene.CreatePrefab<pref_gfx::QuadNoTexCoords>().Dimensions(bb->Get()).Add(newEnt);
-      m_scene.CreatePrefab<pref_gfx::Material>().Add(newEnt, vss, fss);
+      entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t)
+                              .Orphan(true));
+      m_scene.CreatePrefab<pref_gfx::QuadNoTexCoords>()
+        .Dimensions(bb->Get()).Add(newEnt);
+      m_scene.CreatePrefab<pref_gfx::Material>()
+        .Add(newEnt, core_io::FileContents(), core_io::FileContents());
     }
     else
     {
       auto bb = a_ent->GetComponent<BoundingBox3D>();
-      entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t).Orphan(true));
+      entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t)
+                              .Orphan(true));
       m_scene.CreatePrefab<pref_gfx::cuboid_no_normals_no_tex>()
         .Dimensions(bb->Get()).Add(newEnt);
-      m_scene.CreatePrefab<pref_gfx::Material>().Add(newEnt, vss, fss);
+      m_scene.CreatePrefab<pref_gfx::Material>()
+        .Add(newEnt, core_io::FileContents(), core_io::FileContents());
+    }
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_BOUNDING_BOX_RENDER_SYSTEM_TEMPS>
+  auto
+    BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
+    ShutdownEntity(entity_ptr a_ent) -> error_type
+  {
+    auto itr = find_if_all(m_entityPairs, 
+                           core::algos::pair::compare::MakeFirst(a_ent));
+
+    if (itr != m_entityPairs.end())
+    { 
+      m_scene.GetEntityManager()->DestroyEntity(itr->second);
+      m_entityPairs.erase(itr);
     }
 
     return ErrorSuccess;
@@ -189,8 +243,13 @@ namespace tloc { namespace graphics { namespace component_system {
   template <TLOC_BOUNDING_BOX_RENDER_SYSTEM_TEMPS>
   void
     BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
-    Pre_ProcessActiveEntities(f64)
-  { m_scene.Process(); }
+    Pre_ProcessActiveEntities(f64 a_deltaT)
+  { 
+    base_type::Pre_ProcessActiveEntities(a_deltaT);
+
+    m_scene.Process();
+    m_scene.Update();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

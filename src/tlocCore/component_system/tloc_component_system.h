@@ -5,22 +5,17 @@
 
 #include <tlocCore/component_system/tlocComponent.h>
 #include <tlocCore/component_system/tlocComponentMapper.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponentType.h>
-
 #include <tlocCore/component_system/tlocECS.h>
-
 #include <tlocCore/component_system/tlocEntity.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
-
 #include <tlocCore/component_system/tlocEvent.h>
 #include <tlocCore/component_system/tlocEntityEvent.h>
 #include <tlocCore/component_system/tlocEventManager.h>
-
 #include <tlocCore/component_system/tlocEntitySystemBase.h>
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
-
-#include <tlocCore/component_system/tlocComponentPoolManager.h>
-
 #include <tlocCore/component_system/tlocSystemsProcessor.h>
+#include <tlocCore/component_system/tlocUserData.h>
 
 #endif

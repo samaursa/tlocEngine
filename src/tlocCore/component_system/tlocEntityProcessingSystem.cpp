@@ -278,6 +278,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void 
     EntityProcessingSystem::
     OnEntityDeactivate(const EntityComponentEvent& a_event)

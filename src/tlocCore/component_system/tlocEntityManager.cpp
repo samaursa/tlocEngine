@@ -39,6 +39,7 @@ namespace tloc { namespace core { namespace component_system {
   EntityManager::
     EntityManager(event_manager_vptr a_eventManager)
     : m_eventMgr(a_eventManager), m_nextId(0)
+    , m_clearEntitiesToRemoveArray(false)
   { }
 
   EntityManager::
@@ -128,7 +129,7 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(),
       "Entity is not part of this EntityManager OR has been destroyed already");
 
-    m_entitiesToRemove.push_back(m_entities[a_entity->GetIndex()]);
+    m_entitiesToRemoveNext.push_back(m_entities[a_entity->GetIndex()]);
 
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, 
                                         ToVirtualPtr(a_entity)) );
@@ -303,10 +304,29 @@ namespace tloc { namespace core { namespace component_system {
 
   void EntityManager::
     DoUpdateAndCleanEntities()
-  { m_entitiesToRemove.clear(); }
+  { 
+    if (m_clearEntitiesToRemoveArray)
+    { 
+      for (auto itr = m_entitiesToRemove.begin(), 
+           itrEnd = m_entitiesToRemove.end(); itr != itrEnd; ++itr)
+      { m_removedEntities.push_back( (*itr)->GetIndex() ); }
+
+      m_entitiesToRemove.clear(); 
+      m_clearEntitiesToRemoveArray = false; 
+    }
+  }
 
   void EntityManager::Update()
   {
+    // Update the components (which involves removing them)
+    DoUpdateAndCleanComponents();
+
+    // Update the entities (which involves removing them)
+    DoUpdateAndCleanEntities();
+
+    m_entitiesToRemove =  m_entitiesToRemoveNext;
+    m_entitiesToRemoveNext.clear();
+
     // Go through all the entities that we have to remove, and mark their
     // components for removal - if any entity is deactivated and is NOT in
     // m_disabledEntities, disable it through DeactivateEntity()
@@ -326,14 +346,8 @@ namespace tloc { namespace core { namespace component_system {
           RemoveComponent(MakePair(ToVirtualPtr(*itr), *compItr));
         }
       }
-
-      m_removedEntities.push_back( (*itr)->GetIndex());
+      m_clearEntitiesToRemoveArray = true;
     }
-
-    // Update the components (which involves removing them)
-    DoUpdateAndCleanComponents();
-    // Update the entities (which involves removing them)
-    DoUpdateAndCleanEntities();
   }
 
 };};};

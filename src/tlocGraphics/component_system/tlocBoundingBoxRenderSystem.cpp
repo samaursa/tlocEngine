@@ -247,8 +247,8 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     base_type::Pre_ProcessActiveEntities(a_deltaT);
 
-    m_scene.Process();
     m_scene.Update();
+    m_scene.Process();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

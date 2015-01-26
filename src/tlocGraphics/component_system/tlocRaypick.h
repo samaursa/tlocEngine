@@ -26,6 +26,12 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     Raypick2D();
 
+    TLOC_DECL_AND_DEF_GETTER(bool, GetIsAlwaysRaypicked, m_noDistanceCheck);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetIsAlwaysRaypicked, m_noDistanceCheck);
+
+  private:
+    bool m_noDistanceCheck;
+
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -44,6 +50,12 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     Raypick3D();
+
+    TLOC_DECL_AND_DEF_GETTER(bool, GetIsNoDistanceCheck, m_noDistanceCheck);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetNoDistanceCheck, m_noDistanceCheck);
+
+  private:
+    bool m_noDistanceCheck;
   };
 
 };};};

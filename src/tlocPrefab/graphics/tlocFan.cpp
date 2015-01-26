@@ -8,6 +8,7 @@
 #include <tlocPrefab/math/tlocTransform.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
 #include <tlocPrefab/graphics/tlocMesh.h>
+#include <tlocPrefab/graphics/tlocBoundingBox.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -46,6 +47,7 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_sectorAngle(360.0f)
     , m_sprite(false)
     , m_drawMode(gfx_rend::mode::k_triangle_fan)
+    , m_boundingBox(false)
   {
   }
 
@@ -153,6 +155,12 @@ namespace tloc { namespace prefab { namespace graphics {
 
     if (a_ent->HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // bounding box
+
+    if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && m_boundingBox)
+    { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // sprite

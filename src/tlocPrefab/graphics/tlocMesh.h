@@ -50,7 +50,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     TLOC_DECL_PARAM_VAR(gfx_rend::mode::value_type, DrawMode, m_drawMode);
     TLOC_DECL_PARAM_VAR(math_cs::Transform, Transformation, m_transform);
-    TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_bb);
+    TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_boundingBox);
 
   private:
 
@@ -153,7 +153,7 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // BoundingBox
 
-    if (m_bb)
+    if (m_boundingBox)
     { DoAddBoundingBox(a_ent); }
 
     // -----------------------------------------------------------------------

@@ -7,9 +7,11 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/component_system/tlocBoundingBox.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
 #include <tlocPrefab/graphics/tlocMesh.h>
+#include <tlocPrefab/graphics/tlocBoundingBox.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -45,6 +47,7 @@ namespace tloc { namespace prefab { namespace graphics {
                        rect_type::height(1.0f)) )
     , m_sprite(false)
     , m_drawMode(gfx_rend::mode::k_triangle_strip)
+    , m_boundingBox(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -135,6 +138,12 @@ namespace tloc { namespace prefab { namespace graphics {
 
     if (a_ent->HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // bounding box
+
+    if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && m_boundingBox)
+    { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // sprite

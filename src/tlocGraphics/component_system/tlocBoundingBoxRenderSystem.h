@@ -49,8 +49,10 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void        Pre_ProcessActiveEntities(f64) override;
     virtual void        ProcessEntity(entity_ptr, f64 a_deltaT) override;
 
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(core_cs::ecs_vptr, GetSceneECS, m_scene.get());
+
   private:
-    core_cs::ECS                    m_scene;
+    core_cs::ecs_vso                m_scene;
     mesh_sys_ptr                    m_meshSys;
     mat_sys_ptr                     m_matSys;
     core_io::FileContents           m_vsSource;

@@ -25,19 +25,40 @@ namespace tloc { namespace graphics { namespace component_system {
       a_out = T_BoundsOut(b.GetMin(), b.GetMax());
     }
 
+    template <typename T_BoundsType, typename T_MeshArray, typename T_BoundsOut>
+    void DoCalculateBoundingCircle(const T_MeshArray& a_mesh, T_BoundsOut& a_out)
+    {
+      typename T_BoundsType::vec_cont positions;
+      for (auto itr = a_mesh.begin(), itrEnd = a_mesh.end(); itr != itrEnd; ++itr)
+      { positions.push_back(itr->GetPosition()); }
+
+      typedef typename T_BoundsOut::position position;
+      typedef typename T_BoundsOut::radius   radius;
+
+      T_BoundsType b(positions);
+      a_out = T_BoundsOut(radius(b.GetRadius()), position(b.GetCenter()));
+    }
+
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     void
       DoCalculateBoundingBox(const gfx_cs::Mesh& a_mesh, 
                              gfx_cs::BoundingBox3D::bounds_type& a_out3d,
-                             gfx_cs::BoundingBox2D::bounds_type& a_out2d)
+                             gfx_cs::BoundingBox2D::bounds_type& a_out2d,
+                             gfx_cs::BoundingBox2D::circular_bounds_type& a_outCirc2d, 
+                             bool a_circular = false)
     {
       switch(a_mesh.GetVertexType())
       {
         case(GL_FLOAT_VEC2):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fp>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         case(GL_FLOAT_VEC3):
@@ -50,37 +71,67 @@ namespace tloc { namespace graphics { namespace component_system {
         case(TLOC_GL_POSITION2F_NORMAL3F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpn>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         case(TLOC_GL_POSITION2F_TEXTURE2F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpt>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         case(TLOC_GL_POSITION2F_COLOR4F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpc>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         case(TLOC_GL_POSITION2F_NORMAL3F_COLOR4F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpnc>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         case(TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpnt>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         case(TLOC_GL_POSITION2F_NORMAL3F_COLOR4F_TEXTURE2F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert2fpnct>();
-          DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d);
+
+          if (a_circular == false)
+          { DoCalculateBoundingBox<math::bounds_2d_f32>(arr, a_out2d); }
+          else
+          { DoCalculateBoundingCircle<math::circular_bounds_2d_f32>(arr, a_outCirc2d); }
+
           break;
         }
         // POSITION3F
@@ -144,8 +195,9 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBoxSystem::
     InitializeEntity(entity_ptr a_ent) -> error_type
   { 
-    gfx_cs::BoundingBox2D::bounds_type bt2d;
-    gfx_cs::BoundingBox3D::bounds_type bt3d;
+    gfx_cs::BoundingBox2D::bounds_type          bt2d;
+    gfx_cs::BoundingBox2D::circular_bounds_type circ_bt2d;
+    gfx_cs::BoundingBox3D::bounds_type          bt3d;
 
     auto mesh = a_ent->GetComponent<gfx_cs::Mesh>();
     if (mesh == nullptr)
@@ -158,12 +210,17 @@ namespace tloc { namespace graphics { namespace component_system {
     auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
     auto bb3d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox3D>();
 
-    DoCalculateBoundingBox(*mesh, bt3d, bt2d);
+    DoCalculateBoundingBox(*mesh, bt3d, bt2d, circ_bt2d);
 
     if (bb2d)
-    { bb2d->Set(bt2d); }
+    { 
+      if (bb2d->GetIsCircular())
+      { *bb2d = gfx_cs::BoundingBox2D(circ_bt2d); }
+      else
+      { *bb2d = gfx_cs::BoundingBox2D(bt2d); }
+    }
     else
-    { bb3d->Set(bt3d); }
+    { *bb3d = gfx_cs::BoundingBox3D(bt3d); }
 
     return ErrorSuccess; 
   }

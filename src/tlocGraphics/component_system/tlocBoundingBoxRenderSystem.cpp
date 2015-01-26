@@ -5,6 +5,7 @@
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocPrefab/graphics/tlocQuad.h>
+#include <tlocPrefab/graphics/tlocFan.h>
 #include <tlocPrefab/graphics/tlocCuboid.h>
 #include <tlocPrefab/graphics/tlocMaterial.h>
 
@@ -98,10 +99,10 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_fsSource(core_io::FileContents(core_io::Path
         ("hard_coded_default_shader/defaultFSBoundingBox.glsl"), fsSource))
   { 
-    m_matSys = m_scene.AddSystem<gfx_cs::MaterialSystem>();
+    m_matSys = m_scene->AddSystem<gfx_cs::MaterialSystem>();
     m_matSys->SetDefaultShaders(m_vsSource, m_fsSource);
 
-    m_meshSys = m_scene.AddSystem<mesh_sys_ptr::value_type>();
+    m_meshSys = m_scene->AddSystem<mesh_sys_ptr::value_type>();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -157,7 +158,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     auto t      = a_ent->GetComponent<math_cs::Transformf32>();
-    auto entMgr = m_scene.GetEntityManager();
+    auto entMgr = m_scene->GetEntityManager();
     auto newEnt = entMgr->CreateEntity();
 
     m_entityPairs.push_back(core::MakePair(a_ent, newEnt));
@@ -167,19 +168,28 @@ namespace tloc { namespace graphics { namespace component_system {
       auto bb = a_ent->GetComponent<BoundingBox2D>();
       entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t)
                               .Orphan(true));
-      m_scene.CreatePrefab<pref_gfx::QuadNoTexCoords>()
-        .Dimensions(bb->Get()).Add(newEnt);
-      m_scene.CreatePrefab<pref_gfx::Material>()
+      m_scene->CreatePrefab<pref_gfx::Material>()
         .Add(newEnt, core_io::FileContents(), core_io::FileContents());
+
+      if (bb->GetIsCircular())
+      {
+        m_scene->CreatePrefab<pref_gfx::FanNoTexCoords>()
+          .Circle(bb->GetCircularBounds()).Add(newEnt);
+      }
+      else
+      {
+        m_scene->CreatePrefab<pref_gfx::QuadNoTexCoords>()
+          .Dimensions(bb->GetBounds()).Add(newEnt);
+      }
     }
     else
     {
       auto bb = a_ent->GetComponent<BoundingBox3D>();
       entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t)
                               .Orphan(true));
-      m_scene.CreatePrefab<pref_gfx::cuboid_no_normals_no_tex>()
-        .Dimensions(bb->Get()).Add(newEnt);
-      m_scene.CreatePrefab<pref_gfx::Material>()
+      m_scene->CreatePrefab<pref_gfx::cuboid_no_normals_no_tex>()
+        .Dimensions(bb->GetBounds()).Add(newEnt);
+      m_scene->CreatePrefab<pref_gfx::Material>()
         .Add(newEnt, core_io::FileContents(), core_io::FileContents());
     }
 
@@ -198,7 +208,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (itr != m_entityPairs.end())
     { 
-      m_scene.GetEntityManager()->DestroyEntity(itr->second);
+      m_scene->GetEntityManager()->DestroyEntity(itr->second);
       m_entityPairs.erase(itr);
     }
 
@@ -212,7 +222,7 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
     Post_Initialize() -> error_type
   {
-    m_scene.Initialize();
+    m_scene->Initialize();
     return ErrorSuccess;
   }
 
@@ -247,8 +257,8 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     base_type::Pre_ProcessActiveEntities(a_deltaT);
 
-    m_scene.Update();
-    m_scene.Process();
+    m_scene->Update();
+    m_scene->Process();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -4,6 +4,7 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
 #include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/types/tlocCuboid.h>
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
@@ -26,16 +27,21 @@ namespace tloc { namespace graphics { namespace component_system {
       core_cs::component_group::k_graphics,
       components::k_bounding_box_2d>          base_type;
     typedef math_t::Rectf_c                   bounds_type;
+    typedef math_t::Circlef                   circular_bounds_type;
 
   public:
     BoundingBox2D();
-    BoundingBox2D(const bounds_type& a_newBounds);
+    explicit BoundingBox2D(const bounds_type& a_newBounds);
+    explicit BoundingBox2D(const circular_bounds_type& a_newBounds);
 
-    TLOC_DECL_AND_DEF_GETTER(bounds_type, Get, m_boundingBox);
-    TLOC_DECL_AND_DEF_SETTER(bounds_type, Set, m_boundingBox);
+    TLOC_DECL_GETTER(bounds_type, GetBounds);
+    TLOC_DECL_GETTER(circular_bounds_type, GetCircularBounds);
+    TLOC_DECL_AND_DEF_GETTER(bool, GetIsCircular, m_circular);
 
   private:
-    bounds_type m_boundingBox;
+    bounds_type           m_boundingBox;
+    circular_bounds_type  m_circularBounds;
+    bool                  m_circular;
   };
 
   // -----------------------------------------------------------------------
@@ -64,8 +70,7 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBox3D();
     BoundingBox3D(const bounds_type& a_newBounds);
 
-    TLOC_DECL_AND_DEF_GETTER(bounds_type, Get, m_boundingBox);
-    TLOC_DECL_AND_DEF_SETTER(bounds_type, Set, m_boundingBox);
+    TLOC_DECL_AND_DEF_GETTER(bounds_type, GetBounds, m_boundingBox);
 
   private:
     bounds_type m_boundingBox;

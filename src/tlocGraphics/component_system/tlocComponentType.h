@@ -32,6 +32,8 @@ namespace tloc { namespace graphics { namespace component_system {
       k_bounding_box_2d,
       k_bounding_box_3d,
 
+      k_bounding_circle_2d,
+
       k_raypick_2d,
       k_raypick_3d,
 

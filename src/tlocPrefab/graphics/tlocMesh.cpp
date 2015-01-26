@@ -29,7 +29,7 @@ namespace tloc { namespace prefab { namespace graphics {
     Mesh_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_drawMode(gfx_rend::mode::k_triangles)
-    , m_bb(false)
+    , m_boundingBox(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

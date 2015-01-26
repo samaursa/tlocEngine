@@ -42,6 +42,7 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_PARAM_VAR(math_t::Degree, SectorAngle, m_sectorAngle);
     TLOC_DECL_PARAM_VAR(bool, Sprite, m_sprite);
     TLOC_DECL_PARAM_VAR(draw_mode, DrawMode, m_drawMode);
+    TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_boundingBox);
 
   private:
     vec2_cont DoGenerateTexCoords() const;

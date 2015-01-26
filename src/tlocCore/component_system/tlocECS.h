@@ -2,6 +2,7 @@
 #define _TLOC_CORE_COMPONENT_SYSTEM_ECS_H_
 
 #include <tlocCore/tlocCoreBase.h>
+#include <tlocCore/time/tlocTime.h>
 #include <tlocCore/component_system/tlocSystemsProcessor.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
@@ -108,6 +109,7 @@ namespace tloc { namespace core { namespace component_system {
     void  Initialize();
     void  Update();
     void  Process(time_type a_deltaT = 1.0/60.0);
+    void  RecycleAllUnusedComponents();
 
   public:
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
@@ -120,6 +122,12 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
       (component_pool_manager_ptr, GetComponentPoolManager, m_compPoolMgr.get());
 
+    TLOC_DECL_AND_DEF_GETTER(time_type, SetRecycleDeltaT, m_autoRecycleDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN
+      (time_type, SetRecycleDeltaT, m_autoRecycleDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN
+      (bool, SetAutoRecycleUnusedComponents, m_autoRecycleUnusedComponents);
+
   private:
     component_pool_manager_vso  m_compPoolMgr;
     event_manager_vso           m_eventMgr;
@@ -127,6 +135,10 @@ namespace tloc { namespace core { namespace component_system {
 
     systems_cont                m_systems;
     sys_processor_vso           m_sysProcessor;
+
+    time_type                   m_autoRecycleDeltaT;
+    time_type                   m_autoRecycleTimer;
+    bool                        m_autoRecycleUnusedComponents;
   };
 
   // -----------------------------------------------------------------------

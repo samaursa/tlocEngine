@@ -13,11 +13,11 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   class CameraSystem
-    : public core::component_system::EntityProcessingSystem
+    : public core_cs::EntityProcessingSystem
   {
   public:
-    typedef core::component_system::EntityProcessingSystem      base_type;
-    typedef CameraSystem                                        this_type;
+    typedef core_cs::EntityProcessingSystem                 base_type;
+    typedef CameraSystem                                    this_type;
 
   public:
     CameraSystem(event_manager_ptr, entity_manager_ptr);

@@ -9,6 +9,7 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBox2D()
     : base_type("BoundingBox2D")
     , m_boundingBox(bounds_type::width(1), bounds_type::height(1))
+    , m_circular(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -17,7 +18,37 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBox2D(const bounds_type& a_newBounds)
     : base_type("BoundingBox2D")
     , m_boundingBox(a_newBounds)
+    , m_circular(false)
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  BoundingBox2D::
+    BoundingBox2D(const circular_bounds_type& a_newBounds)
+    : base_type("BoundingBox2D")
+    , m_circularBounds(a_newBounds)
+    , m_circular(true)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    BoundingBox2D::
+    GetBounds() const -> bounds_type
+  {
+    TLOC_ASSERT(m_circular == false, "Bounds are circular");
+    return m_boundingBox;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    BoundingBox2D::
+    GetCircularBounds() const -> circular_bounds_type
+  {
+    TLOC_ASSERT(m_circular == false, "Bounds are NOT circular");
+    return m_circularBounds;
+  }
 
   // ///////////////////////////////////////////////////////////////////////
   // BoundingBox3D

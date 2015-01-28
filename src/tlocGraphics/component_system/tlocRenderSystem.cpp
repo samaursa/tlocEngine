@@ -103,7 +103,7 @@ namespace tloc { namespace graphics { namespace component_system {
     InitializeEntity(entity_ptr a_ent)
   {
     TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<gfx_cs::Material>() == false) 
-      << "Entity (" << a_ent->GetDebugName() << ") doesn't have a material.";
+      << "Entity " << *a_ent << " doesn't have a material.";
 
     return ErrorSuccess;
   }

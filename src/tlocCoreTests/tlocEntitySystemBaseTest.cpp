@@ -288,6 +288,7 @@ namespace TestingEntitySystemBase
       totalComps += ent2->size_components<EmptyComponent2>();
       entMgr->DestroyEntity(ent2);
       entMgr->Update();
+      entMgr->Update(); // second update required because entity destruction is delayed by one frame
       CHECK(e.m_componentInsert == currCompInsertVal - 
                                    core_utils::CastNumber<tl_int>(totalComps));
       CHECK(entMgr->GetUnusedEntities() == 1);

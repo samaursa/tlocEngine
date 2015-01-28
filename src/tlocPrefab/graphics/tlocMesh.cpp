@@ -4,6 +4,7 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocPrefab/graphics/tlocBoundingBox.h>
+#include <tlocPrefab/graphics/tlocRaypick.h>
 #include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -30,6 +31,7 @@ namespace tloc { namespace prefab { namespace graphics {
     : base_type(a_entMgr, a_poolMgr)
     , m_drawMode(gfx_rend::mode::k_triangles)
     , m_boundingBox(false)
+    , m_raypick(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -62,6 +64,19 @@ namespace tloc { namespace prefab { namespace graphics {
   {
     if (a_ent->HasComponent<gfx_cs::BoundingBox3D>() == false)
     { pref_gfx::BoundingBox3D(m_entMgr, m_compPoolMgr).Add(a_ent); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_TEMPS>
+  void
+    Mesh_T<MESH_PARAMS>::
+    DoAddRaypicking(entity_ptr a_ent) const
+  {
+    DoAddBoundingBox(a_ent);
+
+    if (a_ent->HasComponent<gfx_cs::Raypick>() == false)
+    { pref_gfx::Raypick(m_entMgr, m_compPoolMgr).Add(a_ent); }
   }
 
   // -----------------------------------------------------------------------

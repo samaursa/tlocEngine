@@ -10,52 +10,40 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
-  // Raypick2D
+  // Raypick
 
-  class Raypick2D
-    : public core_cs::Component_T<Raypick2D, 
+  class Raypick
+    : public core_cs::Component_T<Raypick, 
                                   core_cs::component_group::k_graphics,
-                                  components::k_raypick_2d>
+                                  components::k_raypick>
   {
   public:
-    typedef Raypick2D                                 this_type;
+    typedef Raypick                                   this_type;
     typedef core_cs::Component_T<this_type,
       core_cs::component_group::k_graphics,
-      components::k_raypick_2d>                       base_type;
+      components::k_raypick>                          base_type;
 
   public:
-    Raypick2D();
+    Raypick();
 
-    TLOC_DECL_AND_DEF_GETTER(bool, GetIsAlwaysRaypicked, m_noDistanceCheck);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetIsAlwaysRaypicked, m_noDistanceCheck);
+    TLOC_DECL_AND_DEF_GETTER(bool, GetIsDistanceChecked, m_distanceChecked);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetDistanceChecked, m_distanceChecked);
 
   private:
-    bool m_noDistanceCheck;
-
+    bool m_distanceChecked;
   };
 
-  // ///////////////////////////////////////////////////////////////////////
-  // Raypick3D
+  // -----------------------------------------------------------------------
+  // typedefs
 
-  class Raypick3D
-    : public core_cs::Component_T<Raypick3D, 
-                                  core_cs::component_group::k_graphics,
-                                  components::k_raypick_3d>
-  {
-  public:
-    typedef Raypick3D                                 this_type;
-    typedef core_cs::Component_T<this_type,
-      core_cs::component_group::k_graphics,
-      components::k_raypick_3d>                       base_type;
-
-  public:
-    Raypick3D();
-
-    TLOC_DECL_AND_DEF_GETTER(bool, GetIsNoDistanceCheck, m_noDistanceCheck);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetNoDistanceCheck, m_noDistanceCheck);
-
-  private:
-    bool m_noDistanceCheck;
-  };
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Raypick, raypick);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Raypick, raypick);
+  TLOC_TYPEDEF_COMPONENT_POOL(Raypick, raypick);
 
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::Raypick);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_cs::Raypick);

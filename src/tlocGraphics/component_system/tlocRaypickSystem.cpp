@@ -26,14 +26,28 @@ namespace tloc { namespace graphics { namespace component_system {
     : m_noDistanceCheck(false)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RaypickEvent::
+    operator==(const this_type& a_other) const
+  { 
+    return m_pickedEnt == a_other.m_pickedEnt && 
+           m_cameraEnt == a_other.m_cameraEnt && 
+           m_camToEntVec == a_other.m_camToEntVec &&
+           m_mouseCoords == a_other.m_mouseCoords && 
+           m_noDistanceCheck == a_other.m_noDistanceCheck;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // RaypickSystem
 
   RaypickSystem::
     RaypickSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entMgr)
     : base_type(a_eventMgr, a_entMgr, 
-                register_type().Add<Raypick2D>().Add<Raypick3D>(),
+                register_type().Add<Raypick>(),
                 "RaypickSystem")
+    , m_windowDim(core_ds::MakeTuple(1000.0f, 1000.0f))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -42,11 +56,10 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickSystem::
     InitializeEntity(entity_ptr a_ent) -> error_type
   { 
-    auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
-    auto bb3d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox3D>();
+    auto bb2d = a_ent->GetComponentIfExists<BoundingBox2D>();
+    auto bb3d = a_ent->GetComponentIfExists<BoundingBox3D>();
 
-    auto r2d = a_ent->GetComponentIfExists<gfx_cs::Raypick2D>();
-    auto r3d = a_ent->GetComponentIfExists<gfx_cs::Raypick3D>();
+    auto r = a_ent->GetComponentIfExists<Raypick>();
 
     TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(bb2d == nullptr && bb3d == nullptr)
       << "Entity " << *a_ent << " does not have a BoundingBox component. "
@@ -55,14 +68,6 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(bb2d && bb3d)
       << "Entity " << *a_ent << " has both BoundingBox2D and BoundingBox3D. "
       << "Raypicking may not work as expected.";
-
-    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(r2d == nullptr && r3d && bb2d && bb3d == nullptr)
-      << "Entity " << *a_ent << " has Raypick3D but a BoundingBox2D. "
-      << "Raypicking will not work.";
-
-    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(r2d && r3d == nullptr && bb2d == nullptr && bb3d)
-      << "Entity " << *a_ent << " has Raypick2D but a BoundingBox3D. "
-      << "Raypicking will not work.";
 
     return ErrorSuccess;
 
@@ -121,8 +126,7 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickSystem::
     ProcessEntity(entity_ptr a_ent, f64)
   {
-    auto r2d = a_ent->GetComponentIfExists<gfx_cs::Raypick2D>();
-    auto r3d = a_ent->GetComponentIfExists<gfx_cs::Raypick3D>();
+    auto r = a_ent->GetComponentIfExists<gfx_cs::Raypick>();
 
     auto t = a_ent->GetComponentIfExists<math_cs::Transform>();
     auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
@@ -161,20 +165,20 @@ namespace tloc { namespace graphics { namespace component_system {
         {
           const auto& bounds = bb2d->GetCircularBounds();
           if (bounds.Intersects(ray2))
-          { m_raypickEvents.push(event); }
+          { m_raypickEvents.push_back(event); }
         }
         else
         {
           const auto& bounds = bb2d->GetBounds();
           if (bounds.Intersects(ray2))
-          { m_raypickEvents.push(event); }
+          { m_raypickEvents.push_back(event); }
         }
       }
       else
       {
         const auto& bounds = bb3d->GetBounds();
         if (bounds.Intersects(ray))
-        { m_raypickEvents.push(event); }
+        { m_raypickEvents.push_back(event); }
       }
     }
   }
@@ -185,6 +189,7 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickSystem::
     Post_ProcessActiveEntities(f64)
   {
+    m_mouseMovements.clear();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -218,3 +223,16 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/containers/tlocArray.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(RaypickSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(RaypickSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(RaypickEvent);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(RaypickSystem::ray_type);

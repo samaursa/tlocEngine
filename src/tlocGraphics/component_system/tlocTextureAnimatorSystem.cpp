@@ -45,7 +45,7 @@ namespace tloc { namespace graphics { namespace component_system {
     const auto textureCoordsSize = a_ent->size_components<TextureCoords>();
 
     TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(size > textureCoordsSize) 
-      << "Entity (" << a_ent->GetDebugName() << ") has " << size 
+      << "Entity " << *a_ent << " has " << size 
       << " TextureAnimators and only " << textureCoordsSize << " TextureCoords";
 
     for (tl_size i = 0; i < size; ++i)
@@ -130,7 +130,7 @@ namespace tloc { namespace graphics { namespace component_system {
         else
         {
           TLOC_LOG_GFX_WARN_FILENAME_ONLY() 
-            << "Entity (" << a_ent->GetDebugName() << ") does not have enough "
+            << "Entity " << *a_ent << " does not have enough "
             << "TextureCoords. " << "Disabling " << i << "th TextureAnimator";
           DoGetEntityManager()->DisableComponent(core::MakePair(a_ent, texAnim));
         }

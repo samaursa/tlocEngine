@@ -14,6 +14,9 @@
 
 namespace tloc { namespace prefab { namespace graphics {
 
+  // ///////////////////////////////////////////////////////////////////////
+  // Mesh_T<>
+
   template <typename T_MeshType, typename T_StaticDynamic>
   class Mesh_T
     : public Prefab_TI<Mesh_T<T_MeshType, T_StaticDynamic>, 
@@ -51,6 +54,7 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_PARAM_VAR(gfx_rend::mode::value_type, DrawMode, m_drawMode);
     TLOC_DECL_PARAM_VAR(math_cs::Transform, Transformation, m_transform);
     TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_boundingBox);
+    TLOC_DECL_PARAM_VAR(bool, Raypick, m_raypick);
 
   private:
 
@@ -68,6 +72,7 @@ namespace tloc { namespace prefab { namespace graphics {
     void  DoAddTransformComponent(entity_ptr, gfx_cs::p_mesh::Dynamic) const;
 
     void  DoAddBoundingBox(entity_ptr) const;
+    void  DoAddRaypicking(entity_ptr) const;
   };
 
   // -----------------------------------------------------------------------
@@ -155,6 +160,12 @@ namespace tloc { namespace prefab { namespace graphics {
 
     if (m_boundingBox)
     { DoAddBoundingBox(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // Raypick
+
+    if (m_raypick)
+    { DoAddRaypicking(a_ent); }
 
     // -----------------------------------------------------------------------
     // Mesh component

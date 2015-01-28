@@ -202,8 +202,8 @@ namespace tloc { namespace graphics { namespace component_system {
     auto mesh = a_ent->GetComponent<gfx_cs::Mesh>();
     if (mesh == nullptr)
     {
-      TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Entity (" << a_ent->GetDebugName() 
-        << ") doesn't have a Mesh to use for BoundingBox.";
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Entity " << *a_ent
+        << " doesn't have a Mesh to use for BoundingBox.";
       return ErrorSuccess;
     }
 

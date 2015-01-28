@@ -158,9 +158,8 @@ namespace tloc { namespace core { namespace component_system {
     {
       TLOC_LOG_CORE_WARN_FILENAME_ONLY_IF(a_params.m_orphan == false) 
         << a_params.m_component->GetDebugName() 
-        << " component inserted into Entity (" 
-        << a_params.m_entity->GetDebugName() 
-        << ") is without a system.";
+        << " component inserted into Entity "  << *a_params.m_entity
+        << " is without a system.";
     }
   }
 
@@ -230,8 +229,8 @@ namespace tloc { namespace core { namespace component_system {
 
     if (itr == itrEnd)
     {
-      TLOC_LOG_CORE_WARN() << "Entity (" << a_entity->GetDebugName() << ")"
-        << " does not have this Component (" << a_entity->GetDebugName() << ")";
+      TLOC_LOG_CORE_WARN_FILENAME_ONLY() << "Entity " << *a_entity 
+        << " does not have this Component " << *a_comp;
       return ;
     }
 
@@ -239,8 +238,8 @@ namespace tloc { namespace core { namespace component_system {
 
     if (foundItr == itrEnd)
     {
-      TLOC_LOG_CORE_WARN() << "Component (" << a_comp->GetDebugName() << ")"
-        << " not found in Entity (" << a_entity->GetDebugName() << ")";
+      TLOC_LOG_CORE_WARN_FILENAME_ONLY() << "Component " << *a_comp
+        << " not found in Entity " << *a_entity;
       return ;
     }
 
@@ -266,8 +265,8 @@ namespace tloc { namespace core { namespace component_system {
 
     if (itr == itrEnd)
     {
-      TLOC_LOG_CORE_WARN() << "Entity (" << a_entity->GetDebugName() << ")"
-        << " does not have this Component (" << a_entity->GetDebugName() << ")";
+      TLOC_LOG_CORE_WARN_FILENAME_ONLY() << "Entity " << *a_entity 
+        << " does not have this Component " << *a_comp;
       return ;
     }
 
@@ -275,8 +274,8 @@ namespace tloc { namespace core { namespace component_system {
 
     if (foundItr == itrEnd)
     {
-      TLOC_LOG_CORE_WARN() << "Component (" << a_comp->GetDebugName() << ")"
-        << " not found in Entity (" << a_entity->GetDebugName() << ")";
+      TLOC_LOG_CORE_WARN_FILENAME_ONLY() << "Component " << *a_comp
+        << " not found in Entity " << *a_entity;
       return ;
     }
 

@@ -63,7 +63,7 @@ namespace tloc { namespace input { namespace component_system {
     InitializeEntity(entity_ptr a_ent)
   {
     TLOC_LOG_INPUT_WARN_IF(a_ent->HasComponent<gfx_cs::ArcBall>() == false)
-      << "Entity (" << a_ent->GetDebugName() << ") doesn't have an ArcBall "
+      << "Entity " << *a_ent << " doesn't have an ArcBall "
       << "component. CANNOT control using ArcBallControl.";
 
     return ErrorSuccess;

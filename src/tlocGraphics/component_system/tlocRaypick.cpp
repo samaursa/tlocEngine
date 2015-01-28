@@ -3,21 +3,24 @@
 namespace tloc { namespace graphics { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
-  // Raypick2D
-
-  Raypick2D::
-    Raypick2D()
-    : base_type("Raypick2D")
-    , m_noDistanceCheck(false)
-  { }
-
-  // ///////////////////////////////////////////////////////////////////////
   // Rapick3D
 
-  Raypick3D::
-    Raypick3D()
-    : base_type("Raypick3D")
-    , m_noDistanceCheck(false)
+  Raypick::
+    Raypick()
+    : base_type("Raypick")
+    , m_distanceChecked(true)
   { }
 
 };};};
+
+// -----------------------------------------------------------------------
+// explicit instantiation
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
+
+using namespace tloc::gfx_cs;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Raypick);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Raypick);
+TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Raypick);

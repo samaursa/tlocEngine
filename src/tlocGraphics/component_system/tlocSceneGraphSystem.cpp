@@ -10,6 +10,8 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core::data_structs;
@@ -76,7 +78,8 @@ namespace tloc { namespace graphics { namespace component_system {
     SceneGraphSystem::
     InitializeEntity(entity_ptr a_ent)
   {
-    TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<math_cs::Transform>() == false)
+    TLOC_LOG_CORE_WARN_FILENAME_ONLY_IF
+      (a_ent->HasComponent<math_cs::Transform>() == false)
       << "SceneNode component with Entity(" 
       << a_ent->GetDebugName()
       << ") requires math_cs::Transform component";
@@ -87,14 +90,13 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (currNodeEnt == nullptr)
     { 
-      TLOC_LOG_GFX_INFO() 
-        << "Adding missing entity pointer to SceneNode in Entity (" 
-        << a_ent->GetDebugName() << ")";
+      TLOC_LOG_GFX_INFO_FILENAME_ONLY() 
+        << "Adding missing entity pointer to SceneNode in Entity " << *a_ent;
       node->m_entity = a_ent;
     }
     else
     {
-      TLOC_LOG_GFX_WARN_IF(currNodeEnt && currNodeEnt != a_ent)
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(currNodeEnt && currNodeEnt != a_ent)
         << "The SceneNode component has pointer to Entity("
         << currNodeEnt->GetDebugName()
         << ") while being attached to Entity(" 

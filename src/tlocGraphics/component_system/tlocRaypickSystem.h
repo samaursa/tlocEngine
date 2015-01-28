@@ -11,7 +11,6 @@
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/containers/tlocArray.h>
-#include <tlocCore/containers/tlocQueue.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -30,12 +29,16 @@ namespace tloc { namespace graphics { namespace component_system {
   struct RaypickEvent
   {
   public:
+    typedef RaypickEvent                          this_type;
     typedef core_cs::entity_vptr                  entity_ptr;
     typedef math_t::Vec3f                         vec3_type;
     typedef math_t::Vec2f                         vec2_type;
 
   public:
     RaypickEvent();
+
+    bool operator ==(const this_type& a_other) const;
+    TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
   public:
     entity_ptr      m_pickedEnt;
@@ -97,7 +100,7 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     typedef core_cs::EntityProcessingSystem             base_type;
     typedef RaypickSystem                               this_type;
-    typedef core_conts::Queue<RaypickEvent>             raypick_even_queue;
+    typedef core_conts::Array<RaypickEvent>             raypick_event_cont;
 
     typedef core_dispatch::Event                        event_type;
     typedef math_t::Vec2f                               vec2_type;
@@ -120,11 +123,14 @@ namespace tloc { namespace graphics { namespace component_system {
     void  SetCamera(entity_ptr a_camera);
     TLOC_DECL_AND_DEF_GETTER(entity_ptr, GetCamera, m_sharedCamera);
 
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(dim_type, SetWindowDimensions, m_windowDim);
+    TLOC_DECL_AND_DEF_GETTER(dim_type, GetWindowDimensions, m_windowDim);
+
   public:
     event_type OnMouseMove(const tl_size, const input_hid::MouseEvent&);
 
   private:
-    raypick_even_queue    m_raypickEvents;
+    raypick_event_cont    m_raypickEvents;
     entity_ptr            m_currentPick;
 
     vec2_cont             m_mouseMovements;
@@ -139,6 +145,15 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(RaypickSystem, raypick_system);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(RaypickSystem, raypick_system);
+  
 };};};
+
+// -----------------------------------------------------------------------
+// extern template
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_cs::RaypickSystem);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::gfx_cs::RaypickSystem);
 
 #endif

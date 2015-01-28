@@ -277,8 +277,9 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T<MESH_RENDER_SYSTEM_PARAMS>::
     InitializeEntity(entity_ptr a_ent) -> error_type
   {
-    TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<gfx_cs::Material>() == false) 
-      << "Entity (" << a_ent->GetDebugName() << ") doesn't have a material.";
+    TLOC_LOG_CORE_WARN_FILENAME_ONLY_IF
+      (a_ent->HasComponent<gfx_cs::Material>() == false) 
+      << "Entity " << *a_ent << " doesn't have a material.";
 
     DoInitializeMesh(a_ent, static_dynamic_type(), rendering_technique());
     DoInitializeTexCoords(a_ent, static_dynamic_type(), rendering_technique());

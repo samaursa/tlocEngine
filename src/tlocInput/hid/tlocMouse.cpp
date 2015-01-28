@@ -99,13 +99,13 @@ namespace tloc { namespace input { namespace hid {
     Clamp(event_type& a_event) const
   {
     // TODO: Replace with Clamp<>() method when available
-    a_event.m_X.m_abs() =
-      core::Clamp(a_event.m_X.m_abs(),
+    a_event.m_X.m_abs =
+      core::Clamp(a_event.m_X.m_abs,
                   GetClampX().front(),
                   GetClampX().back());
 
-    a_event.m_Y.m_abs() =
-      core::Clamp(a_event.m_Y.m_abs(),
+    a_event.m_Y.m_abs =
+      core::Clamp(a_event.m_Y.m_abs,
                   GetClampY().front(),
                   GetClampY().back());
   }

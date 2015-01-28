@@ -10,7 +10,15 @@
 #include <tlocCore/component_system/tlocEntityProcessingSystem.h>
 #include <tlocCore/component_system/tlocEventManager.h>
 #include <tlocCore/component_system/tlocEntityManager.h>
+#include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocQueue.h>
+
+#include <tlocMath/types/tlocVector2.h>
+#include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix4.h>
+#include <tlocMath/types/tlocRay.h>
+
+#include <tlocGraphics/types/tlocDimension.h>
 
 #include <tlocInput/hid/tlocMouse.h>
 
@@ -84,6 +92,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : public core_cs::EntityProcessingSystem
     , public core_dispatch::DispatcherBaseArray<RaypickCallbacks, 
                                                 RaypickCallbackGroup_T>::type
+    , public input_hid::MouseListener
   {
   public:
     typedef core_cs::EntityProcessingSystem             base_type;
@@ -92,33 +101,38 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef core_dispatch::Event                        event_type;
     typedef math_t::Vec2f                               vec2_type;
-    typedef core_conts::Queue<vec2_type>                vec2_queue;
+    typedef core_conts::Array<vec2_type>                vec2_cont;
+
+    typedef math_t::Ray3f32                             ray_type;
+    typedef core_conts::Array<ray_type>                 ray_cont;
+
+    typedef math_t::Mat4f32                             matrix_type;
+    typedef gfx_t::Dimension2                           dim_type;
 
   public:
     RaypickSystem(event_manager_ptr, entity_manager_ptr);
 
     virtual error_type InitializeEntity(entity_ptr) override;
+    virtual void       Pre_ProcessActiveEntities(f64) override;
     virtual void       ProcessEntity(entity_ptr, f64) override;
     virtual void       Post_ProcessActiveEntities(f64) override;
 
-    void  SetCamera();
-    TLOC_DECL_AND_DEF_GETTER(entity_ptr, GetCamera, m_camera);
+    void  SetCamera(entity_ptr a_camera);
+    TLOC_DECL_AND_DEF_GETTER(entity_ptr, GetCamera, m_sharedCamera);
 
   public:
-    event_type OnMouseButtonPress(const tl_size, 
-                                  const input_hid::MouseEvent&,
-                                  const input_hid::MouseEvent::button_code_type);
-
-    event_type OnMouseButtonRelease(const tl_size, 
-                                    const input_hid::MouseEvent&,
-                                    const input_hid::MouseEvent::button_code_type);
-
     event_type OnMouseMove(const tl_size, const input_hid::MouseEvent&);
 
   private:
     raypick_even_queue    m_raypickEvents;
-    vec2_queue            m_mouseMovements;
-    entity_ptr            m_camera;
+    entity_ptr            m_currentPick;
+
+    vec2_cont             m_mouseMovements;
+    dim_type              m_windowDim;
+    ray_cont              m_rays;
+
+    entity_ptr            m_sharedCamera;
+    matrix_type           m_camTransMat;
   };
   TLOC_DEF_TYPE(RaypickSystem);
 

@@ -229,8 +229,8 @@ namespace tloc { namespace input { namespace component_system {
     ArcBallControlSystem::
     OnMouseMove(const tl_size, const input_hid::MouseEvent& a_event)
   {
-    m_xRel = core_utils::CastNumber<f32>(a_event.m_X.m_rel());
-    m_yRel = core_utils::CastNumber<f32>(a_event.m_Y.m_rel());
+    m_xRel = core_utils::CastNumber<f32>(a_event.m_X.m_rel);
+    m_yRel = core_utils::CastNumber<f32>(a_event.m_Y.m_rel);
 
     if (m_flags.IsMarked(k_rotating))
     {
@@ -290,8 +290,8 @@ namespace tloc { namespace input { namespace component_system {
     {
       m_currentTouch = a_event.m_touchHandle;
       m_flags.Mark(k_rotating);
-      m_xPos = a_event.m_X.m_abs();
-      m_yPos = a_event.m_Y.m_abs();
+      m_xPos = a_event.m_X.m_abs;
+      m_yPos = a_event.m_Y.m_abs;
     }
 
     return core::dispatch::f_event::Continue();
@@ -320,10 +320,10 @@ namespace tloc { namespace input { namespace component_system {
   {
     if (a_event.m_touchHandle == m_currentTouch)
     {
-      m_xRel = a_event.m_X.m_abs() - m_xPos;
-      m_yRel = a_event.m_Y.m_abs() - m_yPos;
-      m_xPos = a_event.m_X.m_abs();
-      m_yPos = a_event.m_Y.m_abs();
+      m_xRel = a_event.m_X.m_abs - m_xPos;
+      m_yRel = a_event.m_Y.m_abs - m_yPos;
+      m_xPos = a_event.m_X.m_abs;
+      m_yPos = a_event.m_Y.m_abs;
       
       m_flags.Mark(k_updated);
     }

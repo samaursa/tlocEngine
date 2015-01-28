@@ -141,6 +141,7 @@ namespace tloc { namespace graphics { namespace renderer {
   Renderer_T<RENDERER_PARAMS>::Params::
     Params()
     : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
+    , m_pointSize(1.0f)
     , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
     , m_clearBits(0)
     , m_faceToCull(GL_NONE)
@@ -242,6 +243,8 @@ namespace tloc { namespace graphics { namespace renderer {
     TLOC_ASSERT(gl::Error().Succeeded(), "glBlenFunc returned an error");
     glPolygonMode(GL_FRONT_AND_BACK, m_params.GetPolygonMode());
     TLOC_ASSERT(gl::Error().Succeeded(), "glPolygonMode returned an error");
+    glPointSize(m_params.GetPointSize());
+    TLOC_ASSERT(gl::Error().Succeeded(), "glPointSize returned an error");
 
     for (enable_cont::const_iterator itr = m_params.GetFeaturesToEnable().begin(),
       itrEnd = m_params.GetFeaturesToEnable().end(); itr != itrEnd; ++itr)

@@ -140,8 +140,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     const touch_container_type::iterator itr = DoFindTouch(a_touchHandle);
     if (itr != GetCurrentTouches().end())
     {
-      (*itr).m_X.m_abs() = a_x;
-      (*itr).m_Y.m_abs() = a_y;
+      itr->m_X.m_abs = a_x;
+      itr->m_Y.m_abs = a_y;
     }
   }
 
@@ -181,8 +181,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     else
     {
 //      (*touchItr) = a_elem.m_event;
-      (*touchItr).m_X.m_abs() = a_elem.m_event.m_X.m_abs();
-      (*touchItr).m_Y.m_abs() = a_elem.m_event.m_Y.m_abs();
+      touchItr->m_X.m_abs = a_elem.m_event.m_X.m_abs;
+      touchItr->m_Y.m_abs = a_elem.m_event.m_Y.m_abs;
     }
   }
 
@@ -216,8 +216,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
     else
     {
-      (*itr).m_X.m_abs() = a_x;
-      (*itr).m_Y.m_abs() = a_y;
+      itr->m_X.m_abs = a_x;
+      itr->m_Y.m_abs = a_y;
     }
   }
 
@@ -239,8 +239,8 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     }
     else
     {
-      (*itr).m_X.m_abs() = a_x;
-      (*itr).m_Y.m_abs() = a_y;
+      itr->m_X.m_abs = a_x;
+      itr->m_Y.m_abs = a_y;
     }
 
   }

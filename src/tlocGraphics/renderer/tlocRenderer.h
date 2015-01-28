@@ -114,6 +114,7 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef Renderer_T<T_DepthPrecision>              this_type;
 
     typedef gfx_t::Color                              color_type;
+    typedef gfx_t::gl_float                           point_size;
     typedef p_renderer::depth_function::value_type    depth_function_value_type;
     typedef p_renderer::blend_function::value_type    blend_function_value_type;
     typedef p_renderer::enable_disable::value_type    enable_value_type;
@@ -191,6 +192,9 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_DECL_AND_DEF_GETTER(color_type, GetClearColor, m_clearColor);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(color_type, SetClearColor, m_clearColor);
 
+      TLOC_DECL_AND_DEF_GETTER(point_size, GetPointSize, m_pointSize);
+      TLOC_DECL_AND_DEF_SETTER_CHAIN(point_size, SetPointSize, m_pointSize);
+
       TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(fbo_sptr, GetFBO, m_fbo);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(fbo_sptr, SetFBO, m_fbo);
 
@@ -199,6 +203,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
     private:
       color_type                  m_clearColor;
+      point_size                  m_pointSize;
       fbo_sptr                    m_fbo;
       dimension_type              m_dim;
       depth_function_value_type   m_depthFunction;

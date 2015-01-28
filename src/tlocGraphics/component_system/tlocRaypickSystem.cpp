@@ -23,7 +23,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   RaypickEvent::
     RaypickEvent()
-    : m_noDistanceCheck(false)
+    : m_distanceChecked(true)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -35,8 +35,7 @@ namespace tloc { namespace graphics { namespace component_system {
     return m_pickedEnt == a_other.m_pickedEnt && 
            m_cameraEnt == a_other.m_cameraEnt && 
            m_camToEntVec == a_other.m_camToEntVec &&
-           m_mouseCoords == a_other.m_mouseCoords && 
-           m_noDistanceCheck == a_other.m_noDistanceCheck;
+           m_distanceChecked == a_other.m_distanceChecked;
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -80,29 +79,29 @@ namespace tloc { namespace graphics { namespace component_system {
     Pre_ProcessActiveEntities(f64)
   { 
     m_currentPick = nullptr;
-    m_rays.clear();
 
     m_camTransMat = matrix_type::IDENTITY;
-
-    auto const camTransMatInv = m_camTransMat.Invert();
+    m_camTransMatInv = matrix_type::IDENTITY;
 
     if (m_sharedCamera)
     { 
       m_camTransMat = 
-        m_sharedCamera->GetComponent<math_cs::Transform>()->GetTransformation();
+        m_sharedCamera->GetComponent<gfx_cs::Camera>()->GetViewMatrix();
+      
+      m_camTransMatInv = m_camTransMat.Invert();
     }
 
     for (auto itr = m_mouseMovements.begin(), itrEnd = m_mouseMovements.end(); 
          itr != itrEnd; ++itr)
     {
-      range_small   smallR(-1.0f, 1.1f);
+      range_small   smallR = math::RangeNeg1to1<f32, math::p_range::Inclusive>();
       range_large   largeRX(0.0f, (f32)m_windowDim[0]);
       range_large   largeRY(0.0f, (f32)m_windowDim[1]);
       scale_f32_f32 scx(smallR, largeRX);
       scale_f32_f32 scy(smallR, largeRY);
 
       Vec3f32 xyz(scx.ScaleDown((*itr)[0]), 
-                  scy.ScaleDown((f32)m_windowDim[1] - (*itr)[1] - 1.0f), 0.0f );
+                  scy.ScaleDown((f32)m_windowDim[1] - (*itr)[1] - 1.0f), -1.0f );
 
       ray_type ray  = math_t::Ray3f32(Ray3f32::origin(xyz), 
                                       Ray3f32::direction(Vec3f32(0.0f, 0.0f, -1.0f)));
@@ -114,7 +113,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       // the ray is now in world space
-      ray = ray * camTransMatInv;
+      ray = ray * m_camTransMatInv;
 
       m_rays.push_back(ray);
     }
@@ -136,17 +135,20 @@ namespace tloc { namespace graphics { namespace component_system {
     { return; }
 
     auto objTransMat = matrix_type::IDENTITY;
+    auto objTransMatInv = matrix_type::IDENTITY;
 
     if (t)
-    { objTransMat = t->GetTransformation(); }
-
-    const auto objTransMatInv = objTransMat.Invert();
+    { 
+      objTransMat = t->GetTransformation();
+      objTransMatInv = t->Invert().GetTransformation(); 
+    }
 
     RaypickEvent event;
     event.m_pickedEnt = a_ent;
     event.m_cameraEnt = m_sharedCamera;
     event.m_camToEntVec = m_camTransMat.GetCol(3).ConvertTo<Vec3f32>() - 
                           objTransMat.GetCol(3).ConvertTo<Vec3f32>();
+    event.m_distanceChecked = r->GetIsDistanceChecked();
 
     for (auto itr = m_rays.begin(), itrEnd = m_rays.end(); 
          itr != itrEnd; ++itr)
@@ -190,6 +192,17 @@ namespace tloc { namespace graphics { namespace component_system {
     Post_ProcessActiveEntities(f64)
   {
     m_mouseMovements.clear();
+    m_rays.clear();
+
+    // send all events
+    for (u32 i = 0; i < m_allObservers.size(); ++i)
+    {
+      for (auto itr = m_raypickEvents.begin(), itrEnd = m_raypickEvents.end();
+           itr != itrEnd; ++itr)
+      { m_allObservers[i]->OnRaypickEvent(*itr); }
+    }
+    
+    m_raypickEvents.clear();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

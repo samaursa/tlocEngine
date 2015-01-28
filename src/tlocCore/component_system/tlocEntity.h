@@ -269,8 +269,10 @@ namespace tloc { namespace core {
       operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
                    const core_cs::Entity& a_entity)
     {
-      a_log << "(" << a_entity->GetDebugName() << ")[" 
-        << core_utils::MemoryAddress(a_entity) << "]";
+      a_log << "(" << a_entity.GetDebugName() << ")[" 
+        << core_utils::MemoryAddress(&a_entity) << "]";
+
+      return a_log;
     }
 
   };

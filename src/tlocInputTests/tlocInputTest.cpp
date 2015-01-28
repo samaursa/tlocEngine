@@ -610,44 +610,44 @@ namespace TestingInput
     mouse->SetClamped(false);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
-    CHECK(evt.m_X.m_rel() == 5);
-    CHECK(evt.m_Y.m_rel() == 0);
-    CHECK(evt.m_X.m_abs().Get() == 5);
-    CHECK(evt.m_Y.m_abs().Get() == 0);
+    CHECK(evt.m_X.m_rel == 5);
+    CHECK(evt.m_Y.m_rel == 0);
+    CHECK(evt.m_X.m_abs.Get() == 5);
+    CHECK(evt.m_Y.m_abs.Get() == 0);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 5, 0, 0);
-    CHECK(evt.m_X.m_rel() == 5);
-    CHECK(evt.m_Y.m_rel() == 0);
-    CHECK(evt.m_X.m_abs().Get() == 10);
-    CHECK(evt.m_Y.m_abs().Get() == 0);
+    CHECK(evt.m_X.m_rel == 5);
+    CHECK(evt.m_Y.m_rel == 0);
+    CHECK(evt.m_X.m_abs.Get() == 10);
+    CHECK(evt.m_Y.m_abs.Get() == 0);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
-    CHECK(evt.m_X.m_rel() == 0);
-    CHECK(evt.m_Y.m_rel() == 5);
-    CHECK(evt.m_X.m_abs().Get() == 10);
-    CHECK(evt.m_Y.m_abs().Get() == 5);
+    CHECK(evt.m_X.m_rel == 0);
+    CHECK(evt.m_Y.m_rel == 5);
+    CHECK(evt.m_X.m_abs.Get() == 10);
+    CHECK(evt.m_Y.m_abs.Get() == 5);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_MOVE, 0, 5, 0);
-    CHECK(evt.m_X.m_rel() == 0);
-    CHECK(evt.m_Y.m_rel() == 5);
-    CHECK(evt.m_X.m_abs().Get() == 10);
-    CHECK(evt.m_Y.m_abs().Get() == 10);
+    CHECK(evt.m_X.m_rel == 0);
+    CHECK(evt.m_Y.m_rel == 5);
+    CHECK(evt.m_X.m_abs.Get() == 10);
+    CHECK(evt.m_Y.m_abs.Get() == 10);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -5, -5, 1);
-    CHECK(evt.m_X.m_rel() == -5);
-    CHECK(evt.m_Y.m_rel() == -5);
-    CHECK(evt.m_Z.m_rel() == 1);
-    CHECK(evt.m_Z.m_abs() == 1);
-    CHECK(evt.m_X.m_abs().Get() == 5);
-    CHECK(evt.m_Y.m_abs().Get() == 5);
+    CHECK(evt.m_X.m_rel == -5);
+    CHECK(evt.m_Y.m_rel == -5);
+    CHECK(evt.m_Z.m_rel == 1);
+    CHECK(evt.m_Z.m_abs == 1);
+    CHECK(evt.m_X.m_abs.Get() == 5);
+    CHECK(evt.m_Y.m_abs.Get() == 5);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
-    CHECK(evt.m_X.m_rel() == -10);
-    CHECK(evt.m_Y.m_rel() == -20);
-    CHECK(evt.m_Z.m_rel() == 1);
-    CHECK(evt.m_Z.m_abs() == 2);
-    CHECK(evt.m_X.m_abs().Get() == -5);
-    CHECK(evt.m_Y.m_abs().Get() == -15);
+    CHECK(evt.m_X.m_rel == -10);
+    CHECK(evt.m_Y.m_rel == -20);
+    CHECK(evt.m_Z.m_rel == 1);
+    CHECK(evt.m_Z.m_abs == 2);
+    CHECK(evt.m_X.m_abs.Get() == -5);
+    CHECK(evt.m_Y.m_abs.Get() == -15);
 
     mouse->SetClamped(true);
     mouse->SetClampX(mouse_type::abs_range_type(0, 1000));
@@ -662,18 +662,18 @@ namespace TestingInput
     mouse->SetClampY(mouse_type::abs_range_type(0, 0));
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, 0, 0, 1);
 
-    CHECK(evt.m_X.m_abs().Get() == 0);
-    CHECK(evt.m_Y.m_abs().Get() == 0);
+    CHECK(evt.m_X.m_abs.Get() == 0);
+    CHECK(evt.m_Y.m_abs.Get() == 0);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
-    CHECK(evt.m_X.m_abs().Get() == 0);
-    CHECK(evt.m_Y.m_abs().Get() == 0);
+    CHECK(evt.m_X.m_abs.Get() == 0);
+    CHECK(evt.m_Y.m_abs.Get() == 0);
 
     mouse->SetClamped(false);
 
     evt = TestMouseMove(&inputMgr, wnd, MOUSEEVENTF_WHEEL, -10, -20, 1);
-    CHECK(evt.m_X.m_abs().Get() == -10);
-    CHECK(evt.m_Y.m_abs().Get() == -20);
+    CHECK(evt.m_X.m_abs.Get() == -10);
+    CHECK(evt.m_Y.m_abs.Get() == -20);
   }
 
   template <typename T_InputManagerType>

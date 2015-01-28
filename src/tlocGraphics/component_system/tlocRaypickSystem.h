@@ -44,8 +44,7 @@ namespace tloc { namespace graphics { namespace component_system {
     entity_ptr      m_pickedEnt;
     entity_ptr      m_cameraEnt;
     vec3_type       m_camToEntVec;
-    vec2_type       m_mouseCoords;
-    bool            m_noDistanceCheck;
+    bool            m_distanceChecked;
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -99,6 +98,10 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     typedef core_cs::EntityProcessingSystem             base_type;
+    typedef core_dispatch::
+      DispatcherBaseArray<RaypickCallbacks, 
+                          RaypickCallbackGroup_T>::type dispatcher_base_type;
+
     typedef RaypickSystem                               this_type;
     typedef core_conts::Array<RaypickEvent>             raypick_event_cont;
 
@@ -129,6 +132,8 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     event_type OnMouseMove(const tl_size, const input_hid::MouseEvent&);
 
+    using dispatcher_base_type::Register;
+
   private:
     raypick_event_cont    m_raypickEvents;
     entity_ptr            m_currentPick;
@@ -139,6 +144,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     entity_ptr            m_sharedCamera;
     matrix_type           m_camTransMat;
+    matrix_type           m_camTransMatInv;
   };
   TLOC_DEF_TYPE(RaypickSystem);
 

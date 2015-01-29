@@ -10,6 +10,7 @@ namespace tloc { namespace prefab { namespace graphics {
   BoundingBox2D::
     BoundingBox2D(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr)
     : base_type(a_entMgr, a_poolMgr)
+    , m_circular(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -27,7 +28,14 @@ namespace tloc { namespace prefab { namespace graphics {
     auto pPool = m_compPoolMgr->GetOrCreatePool<component_type>();
 
     auto itr = pPool->GetNext();
-    (*itr)->SetValue(core_sptr::MakeShared<component_type>());
+
+    if (m_circular)
+    { 
+      auto circBoundsType = component_type::circular_bounds_type();
+      ( *itr )->SetValue(core_sptr::MakeShared<component_type>(circBoundsType));
+    }
+    else
+    { ( *itr )->SetValue(core_sptr::MakeShared<component_type>()); }
 
     return *(*itr)->GetValuePtr();
   }

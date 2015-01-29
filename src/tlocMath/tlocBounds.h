@@ -27,6 +27,7 @@ namespace tloc { namespace math {
     typedef core_conts::Array<vec_type>           vec_cont;
 
   public:
+    Bounds_T();
     Bounds_T(const vec_cont& a_allPoints);
 
     TLOC_DECL_AND_DEF_GETTER(vec_type, GetMax, m_max);
@@ -68,6 +69,7 @@ namespace tloc { namespace math {
     typedef typename vec_type::value_type         real_type;
 
   public:
+    Bounds_T();
     Bounds_T(const vec_cont& a_allPoints);
 
     TLOC_DECL_AND_DEF_GETTER(real_type, GetRadius, m_radius);

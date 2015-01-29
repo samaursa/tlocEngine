@@ -156,16 +156,16 @@ namespace tloc { namespace prefab { namespace graphics {
     DoAddTransformComponent(a_ent, static_dynamic_type());
 
     // -----------------------------------------------------------------------
-    // BoundingBox
-
-    if (m_boundingBox)
-    { DoAddBoundingBox(a_ent); }
-
-    // -----------------------------------------------------------------------
     // Raypick
 
     if (m_raypick)
     { DoAddRaypicking(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // BoundingBox
+
+    if (m_boundingBox || m_raypick)
+    { DoAddBoundingBox(a_ent); }
 
     // -----------------------------------------------------------------------
     // Mesh component

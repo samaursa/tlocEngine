@@ -43,6 +43,7 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_PARAM_VAR(bool, Sprite, m_sprite);
     TLOC_DECL_PARAM_VAR(draw_mode, DrawMode, m_drawMode);
     TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_boundingBox);
+    TLOC_DECL_PARAM_VAR(bool, Raypick, m_raypick);
 
   private:
     vec2_cont DoGenerateTexCoords() const;

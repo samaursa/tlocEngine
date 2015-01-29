@@ -17,6 +17,17 @@ namespace tloc { namespace graphics { namespace component_system {
   using     math_utils::scale_f32_f32;
   typedef   math_utils::scale_f32_f32::range_small          range_small;
   typedef   math_utils::scale_f32_f32::range_large          range_large;
+
+  namespace {
+
+    TLOC_DECL_ALGO_WITH_CTOR_UNARY(RaypickEventByEntity_T, core_cs::entity_vptr, );
+    TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(RaypickEventByEntity_T, )
+    { return extract()(a).m_ent == m_value; }
+
+    typedef RaypickEventByEntity_T<core::use_reference>   RaypickEventByEntity;
+    typedef RaypickEventByEntity_T<core::use_pointee>     RaypickEventPointerByEntity;
+
+  };
   
   // ///////////////////////////////////////////////////////////////////////
   // RaypickEvent
@@ -32,7 +43,7 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickEvent::
     operator==(const this_type& a_other) const
   { 
-    return m_pickedEnt == a_other.m_pickedEnt && 
+    return m_ent == a_other.m_ent && 
            m_cameraEnt == a_other.m_cameraEnt && 
            m_camToEntVec == a_other.m_camToEntVec &&
            m_distanceChecked == a_other.m_distanceChecked;
@@ -78,17 +89,18 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickSystem::
     Pre_ProcessActiveEntities(f64)
   { 
-    m_currentPick = nullptr;
-
+    m_camViewMat = matrix_type::IDENTITY;
+    m_camViewMatInv = matrix_type::IDENTITY;
     m_camTransMat = matrix_type::IDENTITY;
-    m_camTransMatInv = matrix_type::IDENTITY;
 
     if (m_sharedCamera)
     { 
-      m_camTransMat = 
+      m_camViewMat = 
         m_sharedCamera->GetComponent<gfx_cs::Camera>()->GetViewMatrix();
-      
-      m_camTransMatInv = m_camTransMat.Invert();
+      m_camViewMatInv = m_camViewMat.Invert();
+
+      m_camTransMat = 
+        m_sharedCamera->GetComponent<math_cs::Transform>()->GetTransformation();
     }
 
     for (auto itr = m_mouseMovements.begin(), itrEnd = m_mouseMovements.end(); 
@@ -113,7 +125,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
 
       // the ray is now in world space
-      ray = ray * m_camTransMatInv;
+      ray = ray * m_camViewMatInv;
 
       m_rays.push_back(ray);
     }
@@ -125,14 +137,10 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickSystem::
     ProcessEntity(entity_ptr a_ent, f64)
   {
-    auto r = a_ent->GetComponentIfExists<gfx_cs::Raypick>();
+    if (m_mouseMovements.size() == 0) { return; }
 
     auto t = a_ent->GetComponentIfExists<math_cs::Transform>();
-    auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
-    auto bb3d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox3D>();
-
-    if (bb2d == nullptr && bb3d == nullptr)
-    { return; }
+    auto r = a_ent->GetComponentIfExists<gfx_cs::Raypick>();
 
     auto objTransMat = matrix_type::IDENTITY;
     auto objTransMatInv = matrix_type::IDENTITY;
@@ -143,17 +151,43 @@ namespace tloc { namespace graphics { namespace component_system {
       objTransMatInv = t->Invert().GetTransformation(); 
     }
 
-    RaypickEvent event;
-    event.m_pickedEnt = a_ent;
-    event.m_cameraEnt = m_sharedCamera;
-    event.m_camToEntVec = m_camTransMat.GetCol(3).ConvertTo<Vec3f32>() - 
-                          objTransMat.GetCol(3).ConvertTo<Vec3f32>();
-    event.m_distanceChecked = r->GetIsDistanceChecked();
+    const auto camToEntVec = objTransMat.GetCol(3).ConvertTo<Vec3f32>() - 
+                             m_camTransMat.GetCol(3).ConvertTo<Vec3f32>();
+
+    RaypickEvent evt;
+
+    // if this entity has already been picked before, then we may be unpicking it
+    auto itrEvent = core::find_if_all(m_alreadyRaypicked, RaypickEventByEntity(a_ent));
+    if (itrEvent == m_alreadyRaypicked.end())
+    {
+      evt.m_ent = a_ent;
+      evt.m_cameraEnt = m_sharedCamera;
+      evt.m_camToEntVec = camToEntVec;
+      evt.m_distanceChecked = r->GetIsDistanceChecked();
+    }
+    else
+    { evt = *itrEvent; }
+
+    // We check whether the last selection is still closer to the camera. This
+    // does not take into account frustum culling
+    if (m_closestToCamera.m_cameraEnt)
+    {
+      if (r->GetIsDistanceChecked() && camToEntVec.LengthSquared() > 
+          m_closestToCamera.m_camToEntVec.LengthSquared())
+      { return; }
+    }
+
+    auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
+    auto bb3d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox3D>();
+
+    if (bb2d == nullptr && bb3d == nullptr)
+    { return; }
 
     for (auto itr = m_rays.begin(), itrEnd = m_rays.end(); 
          itr != itrEnd; ++itr)
     {
-      const auto ray = (*itr) * objTransMatInv;
+      evt.m_rayInWorldSpace = *itr;
+      const auto ray = evt.m_rayInWorldSpace * objTransMatInv;
 
       if (bb2d)
       {
@@ -167,20 +201,80 @@ namespace tloc { namespace graphics { namespace component_system {
         {
           const auto& bounds = bb2d->GetCircularBounds();
           if (bounds.Intersects(ray2))
-          { m_raypickEvents.push_back(event); }
+          { 
+            if (r->GetIsDistanceChecked())
+            { m_closestToCamera = evt; }
+            else
+            { 
+              if (itrEvent == m_alreadyRaypicked.end())
+              { 
+                m_raypickEvents.push_back(evt);
+                itrEvent = m_raypickEvents.end() - 1;
+              }
+            }
+          }
+          else
+          {
+            if (itrEvent != m_alreadyRaypicked.end())
+            { 
+              if (core::find_if_all(m_unraypickEvents, RaypickEventByEntity(a_ent))
+                  == m_unraypickEvents.end())
+              { m_unraypickEvents.push_back(evt); }
+            }
+          }
         }
         else
         {
           const auto& bounds = bb2d->GetBounds();
           if (bounds.Intersects(ray2))
-          { m_raypickEvents.push_back(event); }
+          { 
+            if (r->GetIsDistanceChecked())
+            { m_closestToCamera = evt; }
+            else
+            { 
+              if (itrEvent == m_alreadyRaypicked.end())
+              { 
+                m_raypickEvents.push_back(evt); 
+                itrEvent = m_raypickEvents.end() - 1;
+              }
+            }
+          }
+          else
+          {
+            if (itrEvent != m_alreadyRaypicked.end())
+            { 
+              if (core::find_if_all(m_unraypickEvents, RaypickEventByEntity(a_ent))
+                  == m_unraypickEvents.end())
+              { m_unraypickEvents.push_back(evt); }
+            }
+          }
         }
       }
       else
       {
         const auto& bounds = bb3d->GetBounds();
         if (bounds.Intersects(ray))
-        { m_raypickEvents.push_back(event); }
+        { 
+          if (r->GetIsDistanceChecked())
+          { m_closestToCamera = evt; }
+          else
+          { 
+            if (itrEvent == m_alreadyRaypicked.end())
+            { 
+              m_raypickEvents.push_back(evt);
+              itrEvent = m_raypickEvents.end() - 1;
+            }
+          }
+        }
+        else
+        {
+          if (itrEvent != m_alreadyRaypicked.end())
+          { 
+            if (core::find_if_all(m_unraypickEvents, RaypickEventByEntity(a_ent)) 
+                == m_unraypickEvents.end() )
+            { m_unraypickEvents.push_back(evt); }
+          }
+        }
       }
     }
   }
@@ -194,15 +288,49 @@ namespace tloc { namespace graphics { namespace component_system {
     m_mouseMovements.clear();
     m_rays.clear();
 
-    // send all events
+    if (m_closestToCamera.m_ent)
+    { 
+      auto itrEvent = core::find_if_all
+        (m_alreadyRaypicked, RaypickEventByEntity(m_closestToCamera.m_ent));
+
+      if (itrEvent == m_alreadyRaypicked.end())
+      { m_raypickEvents.push_back(m_closestToCamera); }
+    }
+    m_closestToCamera = RaypickEvent();
+
+    // send all pick events
     for (u32 i = 0; i < m_allObservers.size(); ++i)
     {
       for (auto itr = m_raypickEvents.begin(), itrEnd = m_raypickEvents.end();
            itr != itrEnd; ++itr)
       { m_allObservers[i]->OnRaypickEvent(*itr); }
     }
-    
+
+    // transfer all the recent events to m_alreadyRaypicked
+    for (auto itr = m_raypickEvents.begin(), itrEnd = m_raypickEvents.end();
+         itr != itrEnd; ++itr)
+    { m_alreadyRaypicked.push_back(*itr); }
     m_raypickEvents.clear();
+
+    // send all unpick events
+    for (u32 i = 0; i < m_allObservers.size(); ++i)
+    {
+      for (auto itr = m_unraypickEvents.begin(), itrEnd = m_unraypickEvents.end();
+           itr != itrEnd; ++itr)
+      { m_allObservers[i]->OnRayUnpickEvent(*itr); }
+    }
+
+    for (auto itr = m_unraypickEvents.begin(), itrEnd = m_unraypickEvents.end();
+         itr != itrEnd; ++itr)
+    {
+      auto itrEvent = core::find_if_all
+        (m_alreadyRaypicked, RaypickEventByEntity(itr->m_ent));
+
+      if (itrEvent != m_alreadyRaypicked.end())
+      { m_alreadyRaypicked.erase(itrEvent); }
+    }
+
+    m_unraypickEvents.clear();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -210,7 +210,7 @@ namespace tloc { namespace graphics { namespace component_system {
     auto bb2d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox2D>();
     auto bb3d = a_ent->GetComponentIfExists<gfx_cs::BoundingBox3D>();
 
-    DoCalculateBoundingBox(*mesh, bt3d, bt2d, circ_bt2d);
+    DoCalculateBoundingBox(*mesh, bt3d, bt2d, circ_bt2d, bb2d ? bb2d->GetIsCircular() : false);
 
     if (bb2d)
     { 

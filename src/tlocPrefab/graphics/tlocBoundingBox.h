@@ -27,6 +27,8 @@ namespace tloc { namespace prefab { namespace graphics {
     component_ptr   Construct();
     entity_ptr      Create();
     void            Add   (entity_ptr a_ent);
+
+    TLOC_DECL_PARAM_VAR(bool, Circular, m_circular);
   };
 
   // ///////////////////////////////////////////////////////////////////////

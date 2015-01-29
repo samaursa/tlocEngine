@@ -12,6 +12,7 @@
 #include <tlocPrefab/math/tlocTransform.h>
 #include <tlocPrefab/graphics/tlocMesh.h>
 #include <tlocPrefab/graphics/tlocBoundingBox.h>
+#include <tlocPrefab/graphics/tlocRaypick.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -48,6 +49,7 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_sprite(false)
     , m_drawMode(gfx_rend::mode::k_triangle_strip)
     , m_boundingBox(false)
+    , m_raypick(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -140,9 +142,16 @@ namespace tloc { namespace prefab { namespace graphics {
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
+    // raypick
+
+    if (a_ent->HasComponent<gfx_cs::Raypick>() == false && m_raypick)
+    { pref_gfx::Raypick(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
     // bounding box
 
-    if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && m_boundingBox)
+    if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && 
+        (m_boundingBox || m_raypick))
     { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------

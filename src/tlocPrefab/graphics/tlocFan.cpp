@@ -169,7 +169,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && 
         (m_boundingBox || m_raypick))
-    { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Add(a_ent); }
+    { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Circular(true).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // sprite

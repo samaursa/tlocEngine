@@ -46,7 +46,7 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBox2D::
     GetCircularBounds() const -> circular_bounds_type
   {
-    TLOC_ASSERT(m_circular == false, "Bounds are NOT circular");
+    TLOC_ASSERT(m_circular, "Bounds are NOT circular");
     return m_circularBounds;
   }
 

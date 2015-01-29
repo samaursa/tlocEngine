@@ -65,6 +65,13 @@ namespace tloc { namespace math {
     }
 
   };
+  
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <BOUNDS_TEMPS>
+  Bounds_T<BOUNDS_PARAMS>::
+    Bounds_T()
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -100,20 +107,38 @@ namespace tloc { namespace math {
 
   template <BOUNDS_TEMPS_CIRCULAR>
   Bounds_T<BOUNDS_PARAMS_CIRCULAR>::
+    Bounds_T()
+  { }
+
+  template <BOUNDS_TEMPS_CIRCULAR>
+  Bounds_T<BOUNDS_PARAMS_CIRCULAR>::
     Bounds_T(const vec_cont& a_allPoints)
   {
     const auto size = a_allPoints.size();
     const real_type sizef = core_utils::CastNumber<real_type>(size);
 
+    // last vertex - this is a bad solution as we are assuming the last vertex 
+    // is a duplicate of the second vertex
+    // TODO: come up with a better way to get the average of vertices arranged
+    //       in a circle
     vec_type center = typename vec_type::ZERO;
-    for (auto itr = a_allPoints.begin(), itrEnd = a_allPoints.end();
+    for (auto itr = a_allPoints.begin(), itrEnd = a_allPoints.end() - 1;
          itr != itrEnd; ++itr)
     { center += (*itr)/sizef; }
 
-    // use the first point for the radius - for non-circular objects this will
-    // NOT produce a good circular bound
-    if (size > 0)
-    { m_radius = (a_allPoints.front() - center).Length(); }
+    // find the largest radius
+
+    real_type largestRadius = 0.0f;
+    for (auto itr = a_allPoints.begin(), itrEnd = a_allPoints.end();
+         itr != itrEnd; ++itr)
+    {
+      auto diff = *itr - center;
+      if (diff.LengthSquared() > largestRadius )
+      { largestRadius = diff.LengthSquared(); }
+    }
+
+    m_center = center;
+    m_radius = math::Sqrt(largestRadius);
   }
 
   // -----------------------------------------------------------------------

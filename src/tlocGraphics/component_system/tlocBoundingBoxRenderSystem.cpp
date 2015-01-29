@@ -174,7 +174,7 @@ namespace tloc { namespace graphics { namespace component_system {
       if (bb->GetIsCircular())
       {
         m_scene->CreatePrefab<pref_gfx::FanNoTexCoords>()
-          .Circle(bb->GetCircularBounds()).Add(newEnt);
+          .Circle(bb->GetCircularBounds()).Sides(12).Add(newEnt);
       }
       else
       {

@@ -33,6 +33,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_cs::entity_vptr                  entity_ptr;
     typedef math_t::Vec3f                         vec3_type;
     typedef math_t::Vec2f                         vec2_type;
+    typedef math_t::Ray3f32                       ray_type;
 
   public:
     RaypickEvent();
@@ -41,9 +42,10 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
   public:
-    entity_ptr      m_pickedEnt;
+    entity_ptr      m_ent;
     entity_ptr      m_cameraEnt;
     vec3_type       m_camToEntVec;
+    ray_type        m_rayInWorldSpace;
     bool            m_distanceChecked;
   };
 
@@ -57,6 +59,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   public:
     virtual event_type  OnRaypickEvent(const RaypickEvent& a_event) = 0;
+    virtual event_type  OnRayUnpickEvent(const RaypickEvent& a_event) = 0;
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -76,10 +79,22 @@ namespace tloc { namespace graphics { namespace component_system {
   public:
     virtual event_type OnRaypickEvent(const RaypickEvent& a_event) override
     {
-      const auto size = m_observers.size();
-      for (u32 i = 0 ; i < size; ++i)
+      for (auto itr = m_observers.begin(), itrEnd = m_observers.end(); 
+           itr != itrEnd; ++itr)
       {
-        if (m_observers[i]->OnRaypickEvent(a_event).IsVeto())
+        if ((*itr)->OnRaypickEvent(a_event).IsVeto())
+        { return core_dispatch::f_event::Veto(); }
+      }
+
+      return core_dispatch::f_event::Continue();
+    }
+
+    virtual event_type OnRayUnpickEvent(const RaypickEvent& a_event) override
+    {
+      for (auto itr = m_observers.begin(), itrEnd = m_observers.end(); 
+           itr != itrEnd; ++itr)
+      {
+        if ((*itr)->OnRayUnpickEvent(a_event).IsVeto())
         { return core_dispatch::f_event::Veto(); }
       }
 
@@ -136,15 +151,18 @@ namespace tloc { namespace graphics { namespace component_system {
 
   private:
     raypick_event_cont    m_raypickEvents;
-    entity_ptr            m_currentPick;
+    raypick_event_cont    m_alreadyRaypicked;
+    raypick_event_cont    m_unraypickEvents;
+    RaypickEvent          m_closestToCamera;
 
     vec2_cont             m_mouseMovements;
     dim_type              m_windowDim;
     ray_cont              m_rays;
 
     entity_ptr            m_sharedCamera;
+    matrix_type           m_camViewMat;
+    matrix_type           m_camViewMatInv;
     matrix_type           m_camTransMat;
-    matrix_type           m_camTransMatInv;
   };
   TLOC_DEF_TYPE(RaypickSystem);
 

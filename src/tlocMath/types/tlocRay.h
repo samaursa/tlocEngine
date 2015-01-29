@@ -114,4 +114,25 @@ namespace tloc { namespace math { namespace types {
 
 };};};
 
+#include <tlocCore/logging/tlocLogger.h>
+
+namespace tloc { namespace core {
+
+  namespace logging {
+
+    template <typename T_Logger, typename T_BuildConfig, typename T, tl_size T_Size>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+                   const math_t::Ray_T<T, T_Size>& a_ray)
+    {
+      a_log << "orig: [" << a_ray.GetOrigin() << "] dir: [" 
+        << a_ray.GetDirection() << "]"; 
+
+      return a_log;
+    }
+
+  };
+
+};};
+
 #endif

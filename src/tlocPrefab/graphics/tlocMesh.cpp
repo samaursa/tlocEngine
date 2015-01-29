@@ -73,8 +73,6 @@ namespace tloc { namespace prefab { namespace graphics {
     Mesh_T<MESH_PARAMS>::
     DoAddRaypicking(entity_ptr a_ent) const
   {
-    DoAddBoundingBox(a_ent);
-
     if (a_ent->HasComponent<gfx_cs::Raypick>() == false)
     { pref_gfx::Raypick(m_entMgr, m_compPoolMgr).Add(a_ent); }
   }

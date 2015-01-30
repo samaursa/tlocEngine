@@ -167,6 +167,7 @@ namespace tloc { namespace core { namespace logging {
     this_type& operator << (tl_ulong   )  { return *this; }
     this_type& operator << (tl_float   )  { return *this; }
     this_type& operator << (tl_double  )  { return *this; }
+    this_type& operator << (core_utils::MemoryAddress ) { return *this; }
   };
 
 };};};

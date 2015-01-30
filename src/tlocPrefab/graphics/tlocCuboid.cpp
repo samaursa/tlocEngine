@@ -104,9 +104,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
     vert_itr itr = verts.begin();
     vert_itr itrEnd = verts.end();
+    TLOC_UNUSED_RELEASE(itrEnd);
 
 #define INCREMENT_AND_CHECK_ITR()\
-  ++itr; TLOC_ASSERT(itr != itrEnd, "Not enough vertices reserved for this cube!")
+    ++itr; TLOC_ASSERT(itr != itrEnd, "Not enough vertices reserved for this cube!")
 
     // Front face
 

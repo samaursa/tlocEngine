@@ -1,5 +1,7 @@
 #include "tlocCamera.h"
 
+#include <tlocMath/component_system/tlocTransform.h>
+
 namespace tloc { namespace graphics { namespace component_system {
 
   namespace
@@ -72,6 +74,37 @@ namespace tloc { namespace graphics { namespace component_system {
     m_target.first = false;
     return flag;
   }
+
+  // -----------------------------------------------------------------------
+
+  namespace f_camera
+  {
+    math_t::Ray3f
+      GetRayInWorldSpace(const core_cs::Entity& a_camEnt, 
+                         gfx_cs::Camera::point_type a_normalizedCoord)
+    {
+      auto camTrans = a_camEnt.GetComponent<math_cs::Transform>();
+      // already inverted
+      auto cam         = a_camEnt.GetComponent<gfx_cs::Camera>();
+      auto camTransInv = camTrans->GetTransformation();
+
+      return GetRayInWorldSpace(cam->GetFrustumRef(), camTransInv, 
+                                a_normalizedCoord);
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    math_t::Ray3f
+      GetRayInWorldSpace(const gfx_cs::Camera::frustum_type& a_frustum, 
+                         gfx_cs::Camera::matrix_type a_camTransMatInv,
+                         gfx_cs::Camera::point_type a_normalizedCoord)
+    {
+      auto ray = a_frustum.GetRay(a_normalizedCoord);
+      ray = ray * a_camTransMatInv;
+
+      return ray;
+    }
+  };
 
 };};};
 

@@ -58,6 +58,7 @@ namespace tloc { namespace graphics { namespace component_system {
                 register_type().Add<Raypick>(),
                 "RaypickSystem")
     , m_windowDim(core_ds::MakeTuple(1000.0f, 1000.0f))
+    , m_continuousRaypick(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -354,11 +355,32 @@ namespace tloc { namespace graphics { namespace component_system {
 
   auto
     RaypickSystem::
+    OnMouseButtonPress(const tl_size, 
+                       const input_hid::MouseEvent& a_event, 
+                       const input_hid::MouseEvent::button_code_type a_button) 
+                       -> event_type
+  {
+    if (m_continuousRaypick == false && a_button == input_hid::MouseEvent::left)
+    {
+      auto autopos =  vec2_type((f32)a_event.m_X.m_abs, (f32)a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
+
+    return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
     OnMouseMove(const tl_size, const input_hid::MouseEvent& a_event) -> event_type
   {
-    auto autopos =  vec2_type((f32)a_event.m_X.m_abs, 
-                              (f32)a_event.m_Y.m_abs);
-    m_mouseMovements.push_back(autopos);
+    if (m_continuousRaypick)
+    {
+      auto autopos =  vec2_type((f32)a_event.m_X.m_abs, 
+                                (f32)a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
     
     return core_dispatch::f_event::Continue();
   }

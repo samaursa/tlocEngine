@@ -22,8 +22,6 @@
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
-#include <tlocGraphics/component_system/tlocRaypickSystem.h>
-#include <tlocGraphics/component_system/tlocRenderSystem.h>
 #include <tlocGraphics/component_system/tlocArcBallSystem.h>
 #include <tlocGraphics/component_system/tlocBoundingBoxSystem.h>
 #include <tlocGraphics/component_system/tlocBoundingBoxRenderSystem.h>
@@ -32,6 +30,8 @@
 #include <tlocGraphics/component_system/tlocDynamicTextRenderSystem.h>
 #include <tlocGraphics/component_system/tlocMaterialSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>
+#include <tlocGraphics/component_system/tlocRaypickSystem.h>
+#include <tlocGraphics/component_system/tlocRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
 #include <tlocGraphics/component_system/tlocStaticTextRenderSystem.h>
 #include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>

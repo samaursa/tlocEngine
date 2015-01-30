@@ -42,6 +42,9 @@ namespace TestingRay
     ray_type  r1(ray_type::origin(vec_type(1, 2)) );
     ray_type  r2(ray_type::origin(vec_type(3, 5)) );
 
+    CHECK(r1 == r1);
+    CHECK(r2 == r2);
+
     ray_type res = r1 + r2;
     CHECK( (res.GetOrigin() == vec_type(4, 7)) );
     CHECK( (res.GetDirection() == dir_vec_type(0, 0, 1)) );

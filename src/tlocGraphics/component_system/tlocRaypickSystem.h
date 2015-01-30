@@ -142,9 +142,14 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(entity_ptr, GetCamera, m_sharedCamera);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(dim_type, SetWindowDimensions, m_windowDim);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(bool, SetContinuousRaypick, m_continuousRaypick);
     TLOC_DECL_AND_DEF_GETTER(dim_type, GetWindowDimensions, m_windowDim);
+    TLOC_DECL_AND_DEF_GETTER(bool, GetIsContinuousRaypick, m_continuousRaypick);
 
   public:
+    event_type OnMouseButtonPress(const tl_size, 
+                                  const input_hid::MouseEvent&, 
+                                  const input_hid::MouseEvent::button_code_type);
     event_type OnMouseMove(const tl_size, const input_hid::MouseEvent&);
 
     using dispatcher_base_type::Register;
@@ -163,6 +168,8 @@ namespace tloc { namespace graphics { namespace component_system {
     matrix_type           m_camViewMat;
     matrix_type           m_camViewMatInv;
     matrix_type           m_camTransMat;
+
+    bool                  m_continuousRaypick;
   };
   TLOC_DEF_TYPE(RaypickSystem);
 

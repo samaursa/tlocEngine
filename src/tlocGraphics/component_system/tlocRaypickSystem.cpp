@@ -193,16 +193,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (bb2d)
       {
-        auto rayPos2f = ray.GetOrigin().ConvertTo<Vec2f32>();
-        auto rayDir2f = ray.GetDirection().ConvertTo<Vec2f32>();
-
-        auto ray2 = Ray2f32(Ray2f32::origin(rayPos2f), 
-                            Ray2f32::direction(rayDir2f));
-
         if (bb2d->GetIsCircular())
         {
           const auto& bounds = bb2d->GetCircularBounds();
-          if (bounds.Intersects(ray2))
+          if (bounds.Intersects(ray))
           { 
             if (r->GetIsDistanceChecked())
             { m_closestToCamera = evt; }
@@ -228,7 +222,7 @@ namespace tloc { namespace graphics { namespace component_system {
         else
         {
           const auto& bounds = bb2d->GetBounds();
-          if (bounds.Intersects(ray2))
+          if (bounds.Intersects(ray).first)
           { 
             if (r->GetIsDistanceChecked())
             { m_closestToCamera = evt; }

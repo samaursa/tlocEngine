@@ -3,7 +3,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 
-#include <tlocMath/types/tlocVector2.opt.inl.h>
+#include <tlocMath/types/tlocPlane.h>
 
 namespace tloc { namespace math { namespace types {
 
@@ -164,6 +164,21 @@ namespace tloc { namespace math { namespace types {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_CIRCLE_TEMP>
+  bool Circle_T<TLOC_CIRCLE_PARAMS>::
+    Intersects(const ray3d_type& a_ray) const
+  {
+    typedef Plane_T<value_type>             plane_type;
+    typedef typename plane_type::vec_type   vec3_type;
+
+    plane_type p(typename plane_type::origin(vec3_type(m_position, 0)));
+    auto point = p.GetIntersect(a_ray);
+
+    return point.Length() <= m_radius;
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_CIRCLE_TEMP>
   TLOC_CIRCLE_TYPE::point_type  Circle_T<TLOC_CIRCLE_PARAMS>::
     GetCoord(Radian_T<value_type> a_angle) const
   {
@@ -180,7 +195,6 @@ namespace tloc { namespace math { namespace types {
 
   template class Circle_T<f32>;
   template class Circle_T<f64>;
-  template class Circle_T<f128>;
 
 };};};
 
@@ -191,4 +205,3 @@ namespace tloc { namespace math { namespace types {
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef32::point_type);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef64::point_type);
-TLOC_INSTANTIATE_STRONG_TYPE(tloc::math::types::Circlef128::point_type);

@@ -42,6 +42,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  void 
+    DynamicText::
+    SetHorizontalAlignment(align_type a_alignment)
+  { 
+    base_type::SetUpdateRequired(true);
+    m_flags.Mark(k_alignment_updated);
+    Text_I::SetHorizontalAlignment(a_alignment);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   void
     DynamicText::
     Set(BufferArgW a_text)

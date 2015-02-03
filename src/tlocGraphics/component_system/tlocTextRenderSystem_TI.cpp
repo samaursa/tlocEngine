@@ -64,8 +64,10 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
     real_type advance = 0;
-    real_type maxHeight = -100;
-    real_type minHeight = 100;
+    real_type maxHeight = 0;
+    real_type minHeight = 0;
+
+    const auto& fontParams = a_text->GetFont()->GetCachedParams();
 
     math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
@@ -101,10 +103,12 @@ namespace tloc { namespace graphics { namespace component_system {
       // at bottom left). The minHeight is the absolute minimum which is just 
       // the position (i.e. bottom left of the quad)
       const auto& newPos = t->GetPosition();
-      if (maxHeight < newPos[1] + q.GetHeight())
-      { maxHeight = newPos[1] + q.GetHeight(); }
-      else if (minHeight > newPos[1])
-      { minHeight = newPos[1]; }
+      const auto& actualHeight = q.GetHeight() - (fontParams.m_paddingDim[1]);
+
+      if (maxHeight < newPos[1] + actualHeight)
+      { maxHeight = newPos[1] + actualHeight; }
+      else if (minHeight > newPos[1] + (fontParams.m_paddingDim[1]) )
+      { minHeight = newPos[1] + (fontParams.m_paddingDim[1]); }
 
       ++count;
     }
@@ -512,14 +516,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (itr_type itr = m_entsToReinit.begin(), itrEnd = m_entsToReinit.end();
          itr != itrEnd; ++itr)
-    {
-      DoReInitializeEntity(*itr);
-
-      text_quads_cont::const_iterator itrRes = core::find_if_all
-        (m_allText, core::algos::pair::compare::MakeFirst(const_entity_ptr(*itr)));
-
-      DoAlignText(*itrRes);
-    }
+    { DoReInitializeEntity(*itr); }
     m_entsToReinit.clear();
   }
 

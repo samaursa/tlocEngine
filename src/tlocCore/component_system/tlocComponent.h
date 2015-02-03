@@ -229,7 +229,6 @@ namespace tloc { namespace core { namespace component_system {
 
   };};
 
-
 };};};
 
 //------------------------------------------------------------------------
@@ -241,5 +240,25 @@ TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::core_cs::Component);
 TLOC_EXTERN_TEMPLATE_ARRAY(tloc::core_cs::component_vptr);
 TLOC_EXTERN_TEMPLATE_ARRAY(tloc::core_cs::component_sptr);
 
+#include <tlocCore/logging/tlocLog.h>
+
+namespace tloc { namespace core {
+
+  namespace logging {
+
+    template <typename T_Logger, typename T_BuildConfig>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+                   const core_cs::Component& a_comp)
+    {
+      a_log << "(" << a_comp.GetDebugName() << ")[" 
+        << core_utils::MemoryAddress(&a_comp) << "]";
+
+      return a_log;
+    }
+
+  };
+
+};};
 
 #endif

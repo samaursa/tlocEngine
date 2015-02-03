@@ -203,21 +203,21 @@ namespace tloc { namespace graphics { namespace component_system {
 
     if (font == nullptr)
     {
-      TLOC_LOG_GFX_WARN() << "Text entity (" << a_ent->GetDebugName() << ") "
+      TLOC_LOG_GFX_WARN() << "Text Entity " << *a_ent 
         << "does not have a font assigned";
       return TLOC_ERROR(common_error_types::error_null_pointer);
     }
 
     if (font->IsInitialized() == false)
     {
-      TLOC_LOG_GFX_WARN() << "Text entity (" << a_ent->GetDebugName() << ") "
+      TLOC_LOG_GFX_WARN() << "Text Entity " << *a_ent 
         << "font is not initialized";
       return TLOC_ERROR(common_error_types::error_initialize);
     }
 
     if (font->IsCached() == false)
     {
-      TLOC_LOG_GFX_WARN() << "Text entity (" << a_ent->GetDebugName() << ") "
+      TLOC_LOG_GFX_WARN() << "Text Entity " << *a_ent
         << "font does not have glyphs cached";
       return TLOC_ERROR(common_error_types::error_initialize);
     }

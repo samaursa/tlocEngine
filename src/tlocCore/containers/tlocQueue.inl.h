@@ -105,4 +105,10 @@ namespace tloc { namespace core { namespace containers {
 
 };};};
 
+#include <tlocCore/containers/tlocList.inl.h>
+
+#define TLOC_EXPLICITLY_INSTANTIATE_QUEUE(_type_)\
+  template class tloc::core_conts::Queue<_type_, tloc::core_conts::List<_type_> >;\
+  TLOC_EXPLICITLY_INSTANTIATE_LIST(_type_)
+
 #endif

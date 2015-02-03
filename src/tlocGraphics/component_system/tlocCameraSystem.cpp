@@ -1,7 +1,5 @@
 #include "tlocCameraSystem.h"
 
-#include <tlocCore/component_system/tlocComponentType.h>
-
 #include <tlocGraphics/component_system/tlocCamera.h>
 
 #include <tlocMath/component_system/tlocTransform.h>
@@ -20,9 +18,16 @@ namespace tloc { namespace graphics { namespace component_system {
   CameraSystem::
     CameraSystem(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<gfx_cs::Camera>(), 
+                register_type().Add<Camera>(), 
                 "CameraSystem")
   { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    CameraSystem::
+    InitializeEntity(entity_ptr) -> error_type
+  { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

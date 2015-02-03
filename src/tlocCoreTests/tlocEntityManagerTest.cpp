@@ -155,6 +155,7 @@ namespace TestingEntityManager
       CHECK(entTrack->m_entEventCounter == 0);
 
       eMgr.Update();
+      eMgr.Update(); // second update required because entity destruction is delayed by one frame
 
       // -----------------------------------------------------------------------
       // create entity with count entityCount
@@ -211,6 +212,7 @@ namespace TestingEntityManager
         (*itr)->Deactivate();
       }
       eMgr.Update();
+      eMgr.Update();
       CHECK(entTrack->m_disableEntityCounter == entityCount);
       CHECK(entTrack2->m_disableEntityCounter == 0); // not listening for this event
 
@@ -220,6 +222,7 @@ namespace TestingEntityManager
         (*itr)->Activate();
       }
       eMgr.Update();
+      eMgr.Update(); // second update required because entity destruction is delayed by one frame
       CHECK(entTrack->m_disableEntityCounter == 0);
       CHECK(entTrack2->m_disableEntityCounter == 0);
 
@@ -239,6 +242,7 @@ namespace TestingEntityManager
       myList.clear();
 
       eMgr.Update();
+      eMgr.Update(); // second update required because entity destruction is delayed by one frame
       CHECK(entTrack->m_entEventCounter == 0);
       CHECK(eMgr.GetUnusedEntities() == entityCount);
 
@@ -275,16 +279,19 @@ namespace TestingEntityManager
 
       CHECK_FALSE(eMgr.RemoveComponent( core::MakePair(newEnt, invalidComp)) );
       eMgr.Update();
+      eMgr.Update(); // second update required because entity destruction is delayed by one frame
       CHECK(entTrack->m_compEventCounter == 1);
 
       CHECK(eMgr.RemoveComponent( core::MakePair(newEnt, testComp)) );
       eMgr.Update();
+      eMgr.Update(); // second update required because entity destruction is delayed by one frame
       CHECK(entTrack->m_compEventCounter == 0);
 
       eMgr.DestroyEntity(newEnt);
       newEnt.reset();
 
       eMgr.Update();
+      eMgr.Update(); // second update required because entity destruction is delayed by one frame
       CHECK(entTrack->m_entEventCounter == 0);
       CHECK(eMgr.GetUnusedEntities() == entityCount); // +1 because of line 84
     }

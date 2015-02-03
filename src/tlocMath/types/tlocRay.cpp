@@ -3,10 +3,6 @@
 #include <tlocCore/types/tlocStrongType.inl.h>
 #include <tlocCore/types/tlocStrongTypeExplicitMacros.h>
 
-#include <tlocMath/types/tlocVector2.h>
-#include <tlocMath/types/tlocVector3.h>
-#include <tlocMath/types/tlocMatrix3.h>
-
 namespace tloc { namespace math { namespace types {
 
   // ///////////////////////////////////////////////////////////////////////
@@ -39,11 +35,10 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY_PARAMS>::
     operator+(const this_type& a_other) const
   {
-    vec_type pos = GetOrigin() + a_other.GetOrigin();
-    vec_type dir = GetDirection() + a_other.GetDirection();
-    dir.Normalize();
+    this_type temp(*this);
+    temp += a_other;
 
-    return this_type(origin(pos), direction(dir) );
+    return temp;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -53,11 +48,10 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY_PARAMS>::
     operator-(const this_type& a_other) const
   {
-    vec_type pos = GetOrigin() - a_other.GetOrigin();
-    vec_type dir = GetDirection() - a_other.GetDirection();
-    dir.Normalize();
+    this_type temp(*this);
+    temp -= a_other;
 
-    return this_type(origin(pos), direction(dir) );
+    return temp;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -67,17 +61,10 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY_PARAMS>::
     operator*(const transform_type& a_trans) const
   {
-    typedef Vector_T<T, 4>    vec4_type;
+    this_type temp(*this);
+    temp *= a_trans;
 
-    vec4_type newPos = a_trans * m_origin.template ConvertTo<vec4_type>();
-
-    Matrix_T<T, 3> mRot(a_trans[0], a_trans[4], a_trans[8],
-                        a_trans[1], a_trans[5], a_trans[9],
-                        a_trans[2], a_trans[6], a_trans[10]);
-
-    vec_type newDir = mRot * m_direction;
-
-    return this_type(origin(newPos.template ConvertTo<vec_type>()), direction(newDir) );
+    return temp;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -87,10 +74,82 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY_PARAMS>::
     operator*(const orientation_type& a_rotMat) const
   {
-    vec_type      newPos = a_rotMat * m_origin;
-    dir_vec_type  newDir = a_rotMat * m_direction;
+    this_type temp(*this);
+    temp *= a_rotMat;
 
-    return this_type(origin(newPos), direction(newDir) );
+    return temp;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY_TEMPS>
+  RAY_TYPE::this_type&
+  Ray_T<RAY_PARAMS>::
+    operator+=(const this_type& a_other)
+  {
+    m_origin = GetOrigin() + a_other.GetOrigin();
+    m_direction = GetDirection() + a_other.GetDirection();
+    m_direction.Normalize();
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY_TEMPS>
+  RAY_TYPE::this_type&
+  Ray_T<RAY_PARAMS>::
+    operator-=(const this_type& a_other)
+  {
+    m_origin = GetOrigin() - a_other.GetOrigin();
+    m_direction = GetDirection() - a_other.GetDirection();
+    m_direction.Normalize();
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY_TEMPS>
+  RAY_TYPE::this_type&
+  Ray_T<RAY_PARAMS>::
+    operator*=(const transform_type& a_trans)
+  {
+    typedef Vector_T<T, 4>    vec4_type;
+
+    auto newOrigin = a_trans * m_origin.template ConvertTo<vec4_type>();
+
+    Matrix_T<T, 3> mRot(a_trans[0], a_trans[4], a_trans[8],
+                        a_trans[1], a_trans[5], a_trans[9],
+                        a_trans[2], a_trans[6], a_trans[10]);
+
+    m_origin = newOrigin.ConvertTo<vec_type>();
+    m_direction = mRot * m_direction;
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY_TEMPS>
+  RAY_TYPE::this_type&
+  Ray_T<RAY_PARAMS>::
+    operator*=(const orientation_type& a_rotMat)
+  {
+    m_origin = a_rotMat * m_origin;
+    m_direction = a_rotMat * m_direction;
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY_TEMPS>
+  bool
+  Ray_T<RAY_PARAMS>::
+    operator==(const this_type& a_other) const
+  {
+    return m_origin == a_other.m_origin && m_direction == a_other.m_direction;
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -121,9 +180,9 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY2_PARAMS>::
     operator+(const this_type& a_other) const
   {
-    vec_type pos = GetOrigin() + a_other.GetOrigin();
-
-    return this_type(origin(pos));
+    this_type temp(*this);
+    temp += a_other;
+    return temp;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -133,9 +192,41 @@ namespace tloc { namespace math { namespace types {
   Ray_T<RAY2_PARAMS>::
     operator-(const this_type& a_other) const
   {
-    vec_type pos = GetOrigin() - a_other.GetOrigin();
+    this_type temp(*this);
+    temp -= a_other;
+    return temp;
+  }
 
-    return this_type(origin(pos));
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY2_TEMPS>
+  RAY2_TYPE::this_type&
+  Ray_T<RAY2_PARAMS>::
+    operator+=(const this_type& a_other)
+  {
+    m_origin = GetOrigin() + a_other.GetOrigin();
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY2_TEMPS>
+  RAY2_TYPE::this_type&
+  Ray_T<RAY2_PARAMS>::
+    operator-=(const this_type& a_other)
+  {
+    m_origin = GetOrigin() - a_other.GetOrigin();
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RAY2_TEMPS>
+  bool
+  Ray_T<RAY2_PARAMS>::
+    operator==(const this_type& a_other) const
+  {
+    return m_origin == a_other.m_origin;
   }
 
   //------------------------------------------------------------------------
@@ -153,8 +244,3 @@ TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec2f32);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec2f64);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec3f32);
 TLOC_INSTANTIATE_STRONG_TYPE(tloc::math_t::Vec3f64);
-
-typedef tloc::math_t::Vector_T<tloc::f32, 2> Vector2f32;
-typedef tloc::math_t::Vector_T<tloc::f64, 2> Vector2f64;
-typedef tloc::math_t::Vector_T<tloc::f32, 3> Vector3f32;
-typedef tloc::math_t::Vector_T<tloc::f64, 3> Vector3f64;

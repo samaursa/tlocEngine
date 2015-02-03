@@ -35,6 +35,7 @@ namespace tloc { namespace core { namespace component_system {
     {
       k_invalid   = component_group::k_invalid,
       k_listener  = 0, // used for callback functionality
+      k_user_data,    
 
       k_count
     }; typedef tl_int     value_type;

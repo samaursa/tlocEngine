@@ -188,7 +188,7 @@ namespace
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
 
-      ecs.Process(0.0f);
+      ecs.Process();
 
       REQUIRE(ecs.GetSystemsProcessor()->size_systems() == 2);
       CHECK(sys1->m_flags.IsMarked(k_initializeCalled));

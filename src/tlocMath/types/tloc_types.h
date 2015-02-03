@@ -8,6 +8,7 @@
 #include <tlocMath/types/tlocCircle.h>
 #include <tlocMath/types/tlocCuboid.h>
 #include <tlocMath/types/tlocFOV.h>
+#include <tlocMath/types/tlocPlane.h>
 #include <tlocMath/types/tlocRay.h>
 #include <tlocMath/types/tlocRectangle.h>
 

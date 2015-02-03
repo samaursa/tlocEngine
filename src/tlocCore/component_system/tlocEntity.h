@@ -60,12 +60,17 @@ namespace tloc { namespace core { namespace component_system {
                                            size_type a_index = 0) const;
     component_ptr_type        GetComponent(component_info_type a_info, 
                                            size_type a_index = 0) const;
+    component_ptr_type        GetComponentIfExists (component_info_type a_info, 
+                                                    size_type a_index = 0) const;
 
     template <typename T_Component>
     bool                      HasComponent(size_type a_index = 0) const;
     template <typename T_Component>
     core_sptr::SharedPtr<T_Component>
                               GetComponent(size_type a_index = 0) const;
+    template <typename T_Component>
+    core_sptr::SharedPtr<T_Component>
+                              GetComponentIfExists(size_type a_index = 0) const;
 
     const_component_iterator  begin_components(component_group_type a_groupIndex) const;
     const_component_iterator  end_components(component_group_type a_groupIndex) const;
@@ -149,6 +154,19 @@ namespace tloc { namespace core { namespace component_system {
     return 
       core_sptr::static_pointer_cast<T_Component>
       (GetComponent(typename T_Component::Info()
+        .GroupIndex(T_Component::k_component_group) 
+        .Type(T_Component::k_component_type), a_index) );
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_Component>
+  core_sptr::SharedPtr<T_Component>
+    Entity::GetComponentIfExists(size_type a_index) const
+  {
+    return 
+      core_sptr::static_pointer_cast<T_Component>
+      (GetComponentIfExists(typename T_Component::Info()
         .GroupIndex(T_Component::k_component_group) 
         .Type(T_Component::k_component_type), a_index) );
   }
@@ -241,5 +259,24 @@ namespace tloc { namespace core { namespace component_system {
 
 TLOC_EXTERN_TEMPLATE_ARRAY_FIXED(tloc::core_cs::Entity::component_list,
                                  tloc::core_cs::component_group::k_count);
+
+namespace tloc { namespace core {
+
+  namespace logging {
+
+    template <typename T_Logger, typename T_BuildConfig>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+                   const core_cs::Entity& a_entity)
+    {
+      a_log << "(" << a_entity.GetDebugName() << ")[" 
+        << core_utils::MemoryAddress(&a_entity) << "]";
+
+      return a_log;
+    }
+
+  };
+
+};};
 
 #endif

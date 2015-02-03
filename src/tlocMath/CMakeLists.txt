@@ -69,6 +69,8 @@ set(TLOC_MATH_TYPES
   types/tlocMatrix4.cpp 
   types/tlocMatrix4.h 
   types/tlocMatrix4.opt.inl.h 
+  types/tlocPlane.h
+  types/tlocPlane.cpp
   types/tlocRay.h
   types/tlocRay.cpp
   types/tlocRectangle.cpp 

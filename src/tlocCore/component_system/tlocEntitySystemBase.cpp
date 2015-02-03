@@ -210,10 +210,10 @@ namespace tloc { namespace core { namespace component_system {
             auto entItr = core::find_if_all
               (m_activeEntities, core::algos::pair::compare::MakeFirst(ent));
 
-            OnComponentRemove(entEvent);
-
             if (entItr != m_activeEntities.end())
             {
+              OnComponentRemove(entEvent);
+
               if (entItr->second == 1)
               {
                 m_activeEntities.erase(entItr);

@@ -103,7 +103,7 @@ namespace tloc { namespace graphics { namespace component_system {
     InitializeEntity(entity_ptr a_ent)
   {
     TLOC_LOG_CORE_WARN_IF(a_ent->HasComponent<gfx_cs::Material>() == false) 
-      << "Entity (" << a_ent->GetDebugName() << ") doesn't have a material.";
+      << "Entity " << *a_ent << " doesn't have a material.";
 
     return ErrorSuccess;
   }
@@ -120,118 +120,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_sharedCam = a_cameraEntity;
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <RENDER_SYSTEM_TEMPS>
-  //void 
-  //  RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-  //  DoInitializeTexCoords(entity_ptr a_ent, so_type& a_so) const
-  //{
-  //  string_type texCoordPrefix = "a_vertTexCoord0";
-  //  if (a_ent->HasComponent<gfx_cs::Material>())
-  //  {
-  //    auto matPtr = a_ent->GetComponent<gfx_cs::Material>();
-  //    texCoordPrefix = 
-  //      matPtr->GetAttributeName<p_material::Attributes::k_texCoordPrefix>();
-  //  }
-
-  //  // populate the texture coordinate attributes
-  //  if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
-  //  { return; }
-
-  //  const size_type texCoordIndex =
-  //    a_ent->size_components<gfx_cs::TextureCoords>();
-
-  //  typedef gfx_cs::TextureCoords::set_index        set_index;
-
-  //  for (tl_size i = 0; i < texCoordIndex; ++i)
-  //  {
-  //    gfx_cs::texture_coords_sptr tcPtr =
-  //      a_ent->GetComponent<gfx_cs::TextureCoords>(i);
-  //    tcPtr->SetUpdateRequired(false);
-
-  //    if (tcPtr->GetNumSets() != 0)
-  //    {
-  //      gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
-  //        tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
-
-  //      gfx_gl::AttributeVBO vbo;
-
-  //      // hard coded tex-coord names
-  //      vbo.AddName(core_str::Format("%s%i", texCoordPrefix.c_str(), i));
-
-  //      vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-  //                     gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
-
-  //      a_so.AddAttributeVBO(vbo);
-  //    }
-  //  }
-  //}
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  //template <RENDER_SYSTEM_TEMPS>
-  //void 
-  //  RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
-  //  DoUpdateTexCoords(entity_ptr a_ent, so_type& a_so) const
-  //{
-  //  string_type texCoordPrefix = "a_vertTexCoord0";
-  //  if (a_ent->HasComponent<gfx_cs::Material>())
-  //  {
-  //    auto matPtr = a_ent->GetComponent<gfx_cs::Material>();
-  //    texCoordPrefix = 
-  //      matPtr->GetAttributeName<p_material::Attributes::k_texCoordPrefix>();
-  //  }
-
-  //  if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
-  //  { return; }
-
-  //  const size_type numTexCoords =
-  //    a_ent->size_components<gfx_cs::TextureCoords>();
-
-  //  typedef gfx_cs::TextureCoords::set_index        set_index;
-
-  //  for (tl_size i = 0; i < numTexCoords; ++i)
-  //  {
-  //    gfx_cs::texture_coords_sptr tcPtr =
-  //      a_ent->GetComponent<gfx_cs::TextureCoords>(i);
-
-  //    if (tcPtr->IsUpdateRequired() == false)
-  //    { continue; }
-
-  //    tcPtr->SetUpdateRequired(false);
-
-  //    if (tcPtr->GetNumSets() != 0)
-  //    {
-  //      gfx_cs::TextureCoords::cont_type_ptr texCoordCont =
-  //        tcPtr->GetCoords(set_index(tcPtr->GetCurrentSet()));
-
-  //      core_str::String currTextureName = 
-  //        core_str::Format("%s%i", texCoordPrefix.c_str(), i);
-
-  //      using gl::algos::shader_operator::compare::AttributeVBOName;
-  //      gl::ShaderOperator::attributeVBO_iterator itr = 
-  //        core::find_if(a_so.begin_attributeVBOs(), 
-  //                      a_so.end_attributeVBOs(), 
-  //                      AttributeVBOName(currTextureName));
-
-  //      if (itr != a_so.end_attributeVBOs())
-  //      {
-  //        itr->first->UpdateData(*texCoordCont);
-  //      }
-  //      else
-  //      {
-  //        gfx_gl::AttributeVBO vbo;
-  //        vbo.AddName(currTextureName);
-  //        vbo.SetValueAs<gfx_gl::p_vbo::target::ArrayBuffer,
-  //                       gfx_gl::p_vbo::usage::DynamicDraw>(*texCoordCont);
-
-  //        a_so.AddAttributeVBO(vbo);
-  //      }
-  //    }
-  //  }
-  //}
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

@@ -164,9 +164,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   template <MOUSE_IMPL_TEMP>
   void MouseImpl<MOUSE_IMPL_PARAMS>::DoUpdate(InputPolicy::Buffered)
   {
-    m_currentState.m_X.m_rel() = 0;
-    m_currentState.m_Y.m_rel() = 0;
-    m_currentState.m_Z.m_rel() = 0;
+    m_currentState.m_X.m_rel = 0;
+    m_currentState.m_Y.m_rel = 0;
+    m_currentState.m_Z.m_rel = 0;
 
     DIDEVICEOBJECTDATA diBuff[buffer_size::mouse_buffer_size];
     DWORD entries = buffer_size::mouse_buffer_size;
@@ -223,19 +223,19 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         {
         case DIMOFS_X:
           {
-            m_currentState.m_X.m_rel() += (tl_int)diBuff[i].dwData;
+            m_currentState.m_X.m_rel += (tl_int)diBuff[i].dwData;
             axesUpdated = true;
             break;
           }
         case DIMOFS_Y:
           {
-            m_currentState.m_Y.m_rel() += (tl_int)diBuff[i].dwData;
+            m_currentState.m_Y.m_rel += (tl_int)diBuff[i].dwData;
             axesUpdated = true;
             break;
           }
         case DIMOFS_Z:
           {
-            m_currentState.m_Z.m_rel() += (tl_int)diBuff[i].dwData;
+            m_currentState.m_Z.m_rel += (tl_int)diBuff[i].dwData;
             axesUpdated = true;
             break;
           }
@@ -253,15 +253,15 @@ namespace tloc { namespace input { namespace hid { namespace priv {
         POINT point;
         GetCursorPos(&point);
         ScreenToClient(m_windowPtr, &point);
-        m_currentState.m_X.m_abs() = point.x;
-        m_currentState.m_Y.m_abs() = point.y;
+        m_currentState.m_X.m_abs = point.x;
+        m_currentState.m_Y.m_abs = point.y;
       }
       else
       {
-        m_currentState.m_X.m_abs() += m_currentState.m_X.m_rel();
-        m_currentState.m_Y.m_abs() += m_currentState.m_Y.m_rel();
+        m_currentState.m_X.m_abs += m_currentState.m_X.m_rel;
+        m_currentState.m_Y.m_abs += m_currentState.m_Y.m_rel;
       }
-      m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
+      m_currentState.m_Z.m_abs += m_currentState.m_Z.m_rel;
 
       // Clamp the values
       if (m_parent.IsClamped())
@@ -288,9 +288,9 @@ namespace tloc { namespace input { namespace hid { namespace priv {
     if (hRes != DI_OK)
     { return; }
 
-    m_currentState.m_X.m_rel() = m_mouseBuffer.lX;
-    m_currentState.m_Y.m_rel() = m_mouseBuffer.lY;
-    m_currentState.m_Z.m_rel() = m_mouseBuffer.lZ;
+    m_currentState.m_X.m_rel = m_mouseBuffer.lX;
+    m_currentState.m_Y.m_rel = m_mouseBuffer.lY;
+    m_currentState.m_Z.m_rel = m_mouseBuffer.lZ;
 
     // Going with OIS's suggestion here
     if (m_params.m_param4 == param_options::TL_WIN_DISCL_NONEXCLUSIVE)
@@ -298,15 +298,15 @@ namespace tloc { namespace input { namespace hid { namespace priv {
       POINT point;
       GetCursorPos(&point);
       ScreenToClient(m_windowPtr, &point);
-      m_currentState.m_X.m_abs() = point.x;
-      m_currentState.m_Y.m_abs() = point.y;
+      m_currentState.m_X.m_abs = point.x;
+      m_currentState.m_Y.m_abs = point.y;
     }
     else
     {
-      m_currentState.m_X.m_abs() += m_currentState.m_X.m_rel();
-      m_currentState.m_Y.m_abs() += m_currentState.m_Y.m_rel();
+      m_currentState.m_X.m_abs += m_currentState.m_X.m_rel;
+      m_currentState.m_Y.m_abs += m_currentState.m_Y.m_rel;
     }
-    m_currentState.m_Z.m_abs() += m_currentState.m_Z.m_rel();
+    m_currentState.m_Z.m_abs += m_currentState.m_Z.m_rel;
 
     if(m_mouseBuffer.rgbButtons[0] & 0x80)
       m_currentState.m_buttonCode |= MouseEvent::left;

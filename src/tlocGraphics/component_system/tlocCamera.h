@@ -8,6 +8,7 @@
 
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/component_system/tlocComponent.h>
+#include <tlocCore/component_system/tlocEntity.h>
 
 #include <tlocGraphics/component_system/tlocComponentType.h>
 
@@ -27,7 +28,7 @@ namespace tloc { namespace graphics { namespace component_system {
     friend class CameraSystem;
 
     typedef Camera                                      this_type;
-    typedef Component_T
+    typedef core_cs::Component_T
       <this_type, k_component_group, k_component_type>  base_type;
     typedef math_proj::frustum_f32                      frustum_type;
     typedef frustum_type::matrix_type                   matrix_type;
@@ -73,6 +74,22 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_ALL_SMART_PTRS(Camera, camera);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Camera, camera);
   TLOC_TYPEDEF_COMPONENT_POOL(Camera, camera);
+
+  // -----------------------------------------------------------------------
+
+  namespace f_camera
+  {
+    math_t::Ray3f
+      GetRayInWorldSpace(const core_cs::Entity& a_camEnt, 
+                         gfx_cs::Camera::point_type a_normalizedCoord);
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    math_t::Ray3f
+      GetRayInWorldSpace(const gfx_cs::Camera::frustum_type& a_frustum, 
+                         gfx_cs::Camera::matrix_type a_camTransMatInv,
+                         gfx_cs::Camera::point_type a_normalizedCoord);
+  };
 
 };};};
 

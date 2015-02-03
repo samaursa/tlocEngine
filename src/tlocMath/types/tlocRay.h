@@ -1,5 +1,5 @@
-#ifndef _TLOC_MATH_TYPES_H_
-#define _TLOC_MATH_TYPES_H_
+#ifndef _TLOC_MATH_TYPES_RAY_H_
+#define _TLOC_MATH_TYPES_RAY_H_
 
 #include <tlocMath/tlocMathBase.h>
 
@@ -45,6 +45,14 @@ namespace tloc { namespace math { namespace types {
     this_type             operator*(const transform_type& a_transform) const;
     this_type             operator*(const orientation_type& a_transform) const;
 
+    this_type&            operator+=(const this_type& a_other);
+    this_type&            operator-=(const this_type& a_other);
+    this_type&            operator*=(const transform_type& a_transform);
+    this_type&            operator*=(const orientation_type& a_transform);
+
+    bool                  operator==(const this_type& a_other) const;
+    TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, m_direction);
 
@@ -74,17 +82,23 @@ namespace tloc { namespace math { namespace types {
     this_type             operator+(const this_type& a_other) const;
     this_type             operator-(const this_type& a_other) const;
 
+    this_type&            operator+=(const this_type& a_other);
+    this_type&            operator-=(const this_type& a_other);
+
+    bool                  operator==(const this_type& a_other) const;
+    TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(vec_type, GetOrigin, m_origin);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, s_direction);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(dir_vec_type, GetDirection, m_direction);
 
   private:
     vec_type                  m_origin;
-    static const dir_vec_type s_direction;
+    static const dir_vec_type m_direction;
   };
 
   template <typename T>
   typename Ray_T<T, 2>::dir_vec_type
-    const Ray_T<T, 2>::s_direction =
+    const Ray_T<T, 2>::m_direction =
     typename Ray_T<T, 2>::dir_vec_type(core_ds::Variadic<T, 3>(0, 0, 1));
 
   //------------------------------------------------------------------------
@@ -113,5 +127,26 @@ namespace tloc { namespace math { namespace types {
 
 
 };};};
+
+#include <tlocCore/logging/tlocLogger.h>
+
+namespace tloc { namespace core {
+
+  namespace logging {
+
+    template <typename T_Logger, typename T_BuildConfig, typename T, tl_size T_Size>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+                   const math_t::Ray_T<T, T_Size>& a_ray)
+    {
+      a_log << "orig: [" << a_ray.GetOrigin() << "] dir: [" 
+        << a_ray.GetDirection() << "]"; 
+
+      return a_log;
+    }
+
+  };
+
+};};
 
 #endif

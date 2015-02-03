@@ -2,6 +2,7 @@
 #define _TLOC_CORE_COMPONENT_SYSTEM_ECS_H_
 
 #include <tlocCore/tlocCoreBase.h>
+#include <tlocCore/time/tlocTime.h>
 #include <tlocCore/component_system/tlocSystemsProcessor.h>
 #include <tlocCore/component_system/tlocComponentPoolManager.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
@@ -20,6 +21,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef systems_processor_vso                       sys_processor_vso;
     typedef systems_processor_vptr                      sys_processor_ptr;
     typedef SystemsProcessor::time_type                 time_type;
+    typedef SystemsProcessor::sys_info_iterator         sys_info_itr;
 
     typedef event_manager_vso                           event_manager_vso;
     typedef entity_manager_vso                          entity_manager_vso;
@@ -40,34 +42,37 @@ namespace tloc { namespace core { namespace component_system {
 
     template <typename T_System>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(bool a_processManually = false);
+      AddSystem(time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
 
     template <typename T_System, 
               typename T1>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1>& a_param, bool a_processManually = false);
+      AddSystem(const Args<T1>& a_param, 
+                time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
 
     template <typename T_System, 
               typename T1, typename T2>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1, T2>& a_param, bool a_processManually = false);
+      AddSystem(const Args<T1, T2>& a_param, 
+                time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
 
     template <typename T_System, 
               typename T1, typename T2, typename T3>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(const Args<T1, T2, T3>& a_param, bool a_processManually = false);
+      AddSystem(const Args<T1, T2, T3>& a_param,
+                time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
     
     template <typename T_System, 
               typename T1, typename T2, typename T3, typename T4>
     core_sptr::VirtualPtr<T_System> 
       AddSystem(const Args<T1, T2, T3, T4>& a_param,
-                bool a_processManually = false);
+                time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
 
     template <typename T_System, 
               typename T1, typename T2, typename T3, typename T4, typename T5>
     core_sptr::VirtualPtr<T_System> 
       AddSystem(const Args<T1, T2, T3, T4, T5>& a_param, 
-                bool a_processManually = false);
+                time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
 
   public: // prefab construction
 
@@ -103,7 +108,8 @@ namespace tloc { namespace core { namespace component_system {
   public:
     void  Initialize();
     void  Update();
-    void  Process(time_type a_deltaT);
+    void  Process(time_type a_deltaT = 1.0/60.0);
+    void  RecycleAllUnusedComponents();
 
   public:
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
@@ -116,6 +122,12 @@ namespace tloc { namespace core { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER_NON_CONST
       (component_pool_manager_ptr, GetComponentPoolManager, m_compPoolMgr.get());
 
+    TLOC_DECL_AND_DEF_GETTER(time_type, SetRecycleDeltaT, m_autoRecycleDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN
+      (time_type, SetRecycleDeltaT, m_autoRecycleDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN
+      (bool, SetAutoRecycleUnusedComponents, m_autoRecycleUnusedComponents);
+
   private:
     component_pool_manager_vso  m_compPoolMgr;
     event_manager_vso           m_eventMgr;
@@ -123,6 +135,10 @@ namespace tloc { namespace core { namespace component_system {
 
     systems_cont                m_systems;
     sys_processor_vso           m_sysProcessor;
+
+    time_type                   m_autoRecycleDeltaT;
+    time_type                   m_autoRecycleTimer;
+    bool                        m_autoRecycleUnusedComponents;
   };
 
   // -----------------------------------------------------------------------
@@ -131,7 +147,7 @@ namespace tloc { namespace core { namespace component_system {
   template <typename T_System>
   core_sptr::VirtualPtr<T_System> 
     ECS::
-    AddSystem(bool a_processManually)
+    AddSystem(time_type a_deltaT, bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get());
@@ -139,7 +155,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr, a_deltaT); }
 
     return sysPtr;
   }
@@ -150,7 +166,8 @@ namespace tloc { namespace core { namespace component_system {
             typename T1>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1>& a_param, bool a_processManually)
+    AddSystem(const Args<T1>& a_param, time_type a_deltaT, 
+              bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), a_param.m_arg1);
@@ -158,7 +175,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr, a_deltaT); }
 
     return sysPtr;
   }
@@ -169,7 +186,8 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2>& a_param, bool a_processManually)
+    AddSystem(const Args<T1, T2>& a_param, time_type a_deltaT,
+              bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -178,7 +196,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    m_sysProcessor->Add(sysPtr);
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr, a_deltaT); }
 
     return sysPtr;
   }
@@ -189,7 +207,8 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2, typename T3>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2, T3>& a_param, bool a_processManually)
+    AddSystem(const Args<T1, T2, T3>& a_param, time_type a_deltaT, 
+              bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -198,7 +217,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr, a_deltaT); }
 
     return sysPtr;
   }
@@ -209,7 +228,8 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2, typename T3, typename T4>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2, T3, T4>& a_param, bool a_processManually)
+    AddSystem(const Args<T1, T2, T3, T4>& a_param, time_type a_deltaT, 
+              bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -218,7 +238,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr, a_deltaT); }
 
     return sysPtr;
   }
@@ -229,7 +249,8 @@ namespace tloc { namespace core { namespace component_system {
             typename T1, typename T2, typename T3, typename T4, typename T5>
   core_sptr::VirtualPtr<T_System> 
   ECS::
-    AddSystem(const Args<T1, T2, T3, T4, T5>& a_param, bool a_processManually)
+    AddSystem(const Args<T1, T2, T3, T4, T5>& a_param, time_type a_deltaT, 
+              bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
@@ -239,7 +260,7 @@ namespace tloc { namespace core { namespace component_system {
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
     m_systems.push_back(core_sptr::static_pointer_cast<EntitySystemBase>(sys));
-    if (!a_processManually) { m_sysProcessor->Add(sysPtr); }
+    if (!a_processManually) { m_sysProcessor->Add(sysPtr, a_deltaT); }
 
     return sysPtr;
   }

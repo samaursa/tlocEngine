@@ -203,8 +203,8 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     AssertIsInitialized();
 
     // scaling setup
-    math::range_s32 r0to256 = math::Range0to256<s32, math::p_range::Inclusive>().Get();
-    math::range_f32 r0to1 = math::Range0to1<f32, math::p_range::Inclusive>().Get();
+    math::range_s32 r0to256 = math::Range0to256<s32, math::p_range::Inclusive>();
+    math::range_f32 r0to1 = math::Range0to1<f32, math::p_range::Inclusive>();
     math_utils::scale_f32_s32 scale(r0to1, r0to256);
 
     FreeTypeGlyph g = LoadGlyph(a_charCode);

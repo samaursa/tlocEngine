@@ -61,10 +61,12 @@ namespace tloc { namespace prefab { namespace graphics {
   typedef Cuboid_T<>                                Cuboid;
   typedef Cuboid_T<true, false>                     cuboid_tex_no_normals;
   typedef Cuboid_T<false, true>                     cuboid_normals_no_tex;
+  typedef Cuboid_T<false, false>                    cuboid_no_normals_no_tex;
 
   TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<>);
   TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<true TLOC_COMMA false>);
   TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<false TLOC_COMMA true>);
+  TLOC_EXTERN_TEMPLATE_CLASS(Cuboid_T<false TLOC_COMMA false>);
 
 };};};
 

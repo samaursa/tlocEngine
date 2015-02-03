@@ -3,6 +3,8 @@
 #include <tlocMath/component_system/tlocTransform.h>
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocPrefab/graphics/tlocBoundingBox.h>
+#include <tlocPrefab/graphics/tlocRaypick.h>
 #include <tlocPrefab/math/tlocTransform.h>
 
 namespace tloc { namespace prefab { namespace graphics {
@@ -28,6 +30,8 @@ namespace tloc { namespace prefab { namespace graphics {
     Mesh_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_drawMode(gfx_rend::mode::k_triangles)
+    , m_boundingBox(false)
+    , m_raypick(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -49,6 +53,28 @@ namespace tloc { namespace prefab { namespace graphics {
     DoAddTransformComponent(entity_ptr , gfx_cs::p_mesh::Static) const
   {
     // Static meshes don't have a transform component
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_TEMPS>
+  void
+    Mesh_T<MESH_PARAMS>::
+    DoAddBoundingBox(entity_ptr a_ent) const
+  {
+    if (a_ent->HasComponent<gfx_cs::BoundingBox3D>() == false)
+    { pref_gfx::BoundingBox3D(m_entMgr, m_compPoolMgr).Add(a_ent); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <MESH_TEMPS>
+  void
+    Mesh_T<MESH_PARAMS>::
+    DoAddRaypicking(entity_ptr a_ent) const
+  {
+    if (a_ent->HasComponent<gfx_cs::Raypick>() == false)
+    { pref_gfx::Raypick(m_entMgr, m_compPoolMgr).Add(a_ent); }
   }
 
   // -----------------------------------------------------------------------

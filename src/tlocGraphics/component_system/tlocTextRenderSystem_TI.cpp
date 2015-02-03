@@ -69,8 +69,6 @@ namespace tloc { namespace graphics { namespace component_system {
     math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
 
-    const auto& fontParams = a_text->GetFont()->GetCachedParams();
-
     auto itrLast = a_begin;
 
     for (auto itr = a_begin, itrEnd = a_end; 
@@ -82,7 +80,13 @@ namespace tloc { namespace graphics { namespace component_system {
       auto t = itr->m_trans;
       auto q = itr->m_rect;
 
-      maxHeight += q.GetHeight() - fontParams.m_paddingDim[1] * 2;
+      gfx_med::Font::const_glyph_metrics_iterator charMetricsItr = 
+        a_text->GetFont()->GetGlyphMetric(itr->m_char);
+
+      auto horBearingY = charMetricsItr->m_horizontalBearing[1];
+
+      if (horBearingY > maxHeight)
+      { maxHeight = horBearingY; }
 
       if (count != a_beginIndex)
       {
@@ -101,8 +105,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
       ++count;
     }
-
-    maxHeight /= count;
 
     math_t::Vec3f totalTextWidth(advance, 0, 0);
     
@@ -172,15 +174,25 @@ namespace tloc { namespace graphics { namespace component_system {
     allLinesHeight += maxHeight;
     heights.push_back(maxHeight);
 
-    const auto& fontParams = text->GetFont()->GetCachedParams();
-    const auto vertKerningTotal = text->GetVerticalKerning() * heights.size()-1;
-    const auto allLinesHeightHalf = allLinesHeight * 0.5f + vertKerningTotal - fontParams.m_fontSize.GetHeightInPixels();
-
-    count = 0;
-    itr = a_pair.second.begin();
-    prevItr = itr;
     if (text->GetHorizontalAlignment() == horizontal_alignment::k_align_middle)
     {
+      const auto vertKerningTotal = text->GetVerticalKerning() * heights.size()-1.0f;
+
+      // This offset is found empirically. Without this, the alignment doesn't
+      // 'look right'
+      // TODO: remove this firstLineOffset magic number and use freetype to 
+      //       determine the offset, if any
+      auto const firstLineOffset = 2.0f;
+
+      auto allLinesHeightHalf = 
+        allLinesHeight * 0.5f + vertKerningTotal - heights[0] + firstLineOffset;
+
+      if (heights.size() == 1)
+      { allLinesHeightHalf = -heights[0] * 0.5f + firstLineOffset; }
+
+      count = 0;
+      itr = a_pair.second.begin();
+      prevItr = itr;
       for ( ; itr != itrEnd; ++itr)
       {
         auto t = itr->m_trans;
@@ -292,7 +304,8 @@ namespace tloc { namespace graphics { namespace component_system {
         pref_gfx::QuadNoTexCoords(m_textEntityMgr.get(), m_textCompMgr.get())
         .Sprite(true).Dimensions(rect).Create();
 
-      character->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
+      const char8 currChar = core_str::CharWideToAscii(text[i]);
+      character->SetDebugName( core_str::String(1, currChar) );
 
       if (matPtr)
       { 
@@ -303,7 +316,8 @@ namespace tloc { namespace graphics { namespace component_system {
       // we need the quad later for other operations
       auto ci = CharacterInfo()
         .Transformation(character->GetComponent<math_cs::Transform>())
-        .Rectangle(rect);
+        .Rectangle(rect)
+        .Character(text[i]);
       tqp.second.push_back(ci);
 
       // disable rendering of empty characters (spaces, \n) - we could simply

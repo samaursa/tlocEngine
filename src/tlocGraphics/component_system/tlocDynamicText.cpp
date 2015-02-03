@@ -22,9 +22,10 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   DynamicText::
-    DynamicText(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
+    DynamicText(BufferArgW a_text, font_ptr a_font, align_type a_alignment, 
+                align_type a_horAlignment)
     : base_type("DynamicText")
-    , Text_I(a_text, a_font, a_alignment)
+    , Text_I(a_text, a_font, a_alignment, a_horAlignment)
     , m_flags(k_count)
   { }
 

@@ -1,8 +1,6 @@
 #include "tlocCamera.h"
 
-#include <tlocCore/smart_ptr/tlocSharedPtr.inl.h>
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
+#include <tlocMath/component_system/tlocTransform.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -77,15 +75,48 @@ namespace tloc { namespace graphics { namespace component_system {
     return flag;
   }
 
+  // -----------------------------------------------------------------------
+
+  namespace f_camera
+  {
+    math_t::Ray3f
+      GetRayInWorldSpace(const core_cs::Entity& a_camEnt, 
+                         gfx_cs::Camera::point_type a_normalizedCoord)
+    {
+      auto camTrans = a_camEnt.GetComponent<math_cs::Transform>();
+      // already inverted
+      auto cam         = a_camEnt.GetComponent<gfx_cs::Camera>();
+      auto camTransInv = camTrans->GetTransformation();
+
+      return GetRayInWorldSpace(cam->GetFrustumRef(), camTransInv, 
+                                a_normalizedCoord);
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    math_t::Ray3f
+      GetRayInWorldSpace(const gfx_cs::Camera::frustum_type& a_frustum, 
+                         gfx_cs::Camera::matrix_type a_camTransMatInv,
+                         gfx_cs::Camera::point_type a_normalizedCoord)
+    {
+      auto ray = a_frustum.GetRay(a_normalizedCoord);
+      ray = ray * a_camTransMatInv;
+
+      return ray;
+    }
+  };
+
 };};};
 
 // -----------------------------------------------------------------------
 // Explicit Instantiations
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+#include <tlocCore/component_system/tlocComponentPoolManager.inl.h>
 
 using namespace tloc::gfx_cs;
 
 // SmartPtr
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Camera);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Camera);
 TLOC_EXPLICITLY_INSTANTIATE_COMPONENT_POOL(Camera);

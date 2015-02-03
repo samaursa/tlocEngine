@@ -293,7 +293,7 @@ namespace tloc { namespace graphics { namespace win {
 
   template <WINDOW_TEMP>
   void Window_T<WINDOW_PARAMS>::
-    SetTitle(const char* a_title)
+    SetTitle(BufferArg a_title)
   {
     VALIDATE_WINDOW();
     m_impl->SetTitle(a_title);

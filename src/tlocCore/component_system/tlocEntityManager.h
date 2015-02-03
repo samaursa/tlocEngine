@@ -110,7 +110,10 @@ namespace tloc { namespace core { namespace component_system {
     entity_id_type          m_nextId;
 
     ent_comp_pair_cont      m_compToRemove;
+
+    bool                    m_clearEntitiesToRemoveArray;
     entity_cont             m_entitiesToRemove;
+    entity_cont             m_entitiesToRemoveNext;
   };
 
 

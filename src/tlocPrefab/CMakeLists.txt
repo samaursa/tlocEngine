@@ -10,11 +10,15 @@ set(TLOC_PREFAB_CORE
   core/tloc_core.cpp 
   core/tloc_core.h 
   core/tloc_core.inl.h 
+  core/tlocUserData.h
+  core/tlocUserData.cpp
   )
 
 set(TLOC_PREFAB_GRAPHICS
   graphics/tlocArcBall.h
   graphics/tlocArcBall.cpp
+  graphics/tlocBoundingBox.h
+  graphics/tlocBoundingBox.cpp
   graphics/tlocCamera.cpp 
   graphics/tlocCamera.h 
   graphics/tlocCuboid.h
@@ -29,6 +33,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocMesh.cpp
   graphics/tlocQuad.cpp 
   graphics/tlocQuad.h 
+  graphics/tlocRaypick.h
+  graphics/tlocRaypick.cpp
   graphics/tlocSceneNode.h
   graphics/tlocSceneNode.cpp
   graphics/tlocSprite.h

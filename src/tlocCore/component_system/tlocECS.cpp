@@ -9,6 +9,8 @@ namespace tloc { namespace core { namespace component_system {
    ECS(BufferArg a_debugName)
    : core_bclass::DebugName(a_debugName)
    , m_entMgr(MakeArgs(m_eventMgr.get()))
+   , m_autoRecycleUnusedComponents(true)
+   , m_autoRecycleDeltaT(0.5)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -29,7 +31,9 @@ namespace tloc { namespace core { namespace component_system {
   void
     ECS::
     Update()
-  { m_entMgr->Update(); }
+  { 
+    m_entMgr->Update();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -38,7 +42,21 @@ namespace tloc { namespace core { namespace component_system {
     Process(time_type a_deltaT)
   { 
     m_sysProcessor->Process(a_deltaT); 
+
+    m_autoRecycleTimer += a_deltaT;
+    if (m_autoRecycleTimer > m_autoRecycleDeltaT && m_autoRecycleUnusedComponents)
+    {
+      RecycleAllUnusedComponents();
+      m_autoRecycleTimer = 0.0;
+    }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    ECS::
+    RecycleAllUnusedComponents()
+  { m_compPoolMgr->RecycleAllUnused(); }
 
 };};};
 

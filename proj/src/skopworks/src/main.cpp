@@ -10,9 +10,9 @@ using namespace tloc;
 namespace {
 
 #if defined (TLOC_OS_WIN)
-    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_2D.glsl");
+    core_str::String shaderPathVS("/shaders/tlocOneTextureVS.glsl");
 #elif defined (TLOC_OS_IPHONE)
-    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_2D_gl_es_2_0.glsl");
+    core_str::String shaderPathVS("/shaders/tlocOneTextureVS_gl_es_2_0.glsl");
 #endif
 
 #if defined (TLOC_OS_WIN)
@@ -84,7 +84,7 @@ int TLOC_MAIN(int argc, char *argv[])
 
   // gl::Uniform supports quite a few types, including a TextureObject
   gfx_gl::texture_object_vso to;
-  to->Initialize(png.GetImage());
+  to->Initialize(*png.GetImage());
 
   gfx_gl::uniform_vso  u_to;
   u_to->SetName("s_texture").SetValueAs(*to);
@@ -117,7 +117,7 @@ int TLOC_MAIN(int argc, char *argv[])
 
     // Finally, process the fan
     renderer->ApplyRenderSettings();
-    scene.Process(0.0f);
+    scene.Process();
     renderer->Render();
 
     win.SwapBuffers();

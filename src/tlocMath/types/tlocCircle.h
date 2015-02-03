@@ -26,6 +26,7 @@ namespace tloc { namespace math { namespace types {
     typedef Circle_T<value_type>                      this_type;
     typedef Vector_T<value_type, 2>                   point_type;
     typedef Ray_T<value_type, 2>                      ray_type;
+    typedef Ray_T<value_type, 3>                      ray3d_type;
     typedef tl_size                                   size_type;
 
     typedef core::types::StrongType_T<value_type, 0>  radius;
@@ -55,6 +56,7 @@ namespace tloc { namespace math { namespace types {
 
     bool        Intersects(const this_type& a_other) const;
     bool        Intersects(const ray_type& a_ray) const;
+    bool        Intersects(const ray3d_type& a_ray) const;
 
     // The angle follows the ASTC rules when it comes to start/end points
     point_type  GetCoord(Radian_T<value_type> a_angle) const;
@@ -91,7 +93,6 @@ namespace tloc { namespace math { namespace types {
   typedef Circle_T<tl_float>  Circlef;
   typedef Circle_T<f32>       Circlef32;
   typedef Circle_T<f64>       Circlef64;
-  typedef Circle_T<f128>      Circlef128;
 
   // -----------------------------------------------------------------------
   // extern template
@@ -99,7 +100,6 @@ namespace tloc { namespace math { namespace types {
   TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<tl_float>);
   TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<f32>);
   TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<f64>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Circle_T<f128>);
 
 };};};
 

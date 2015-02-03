@@ -3,4 +3,6 @@
 
 #include <tlocPrefab/tlocPrefabBase.h>
 
+#include <tlocPrefab/core/tlocUserData.h>
+
 #endif

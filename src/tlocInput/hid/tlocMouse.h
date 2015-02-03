@@ -160,7 +160,7 @@ namespace tloc { namespace input { namespace hid {
     typedef T_Platform                                  platform_type;
     typedef T_Policy                                    policy_type;
     typedef MouseEvent                                  event_type;
-    typedef event_type::axis_type::abs_type::value_type abs_value_type;
+    typedef event_type::axis_type::abs_type             abs_value_type;
     typedef math::Range_T<abs_value_type>               abs_range_type;
     typedef event_type::axis_type::rel_type             rel_value_type;
     typedef event_type::button_code_type                button_code_type;

@@ -321,7 +321,7 @@ namespace tloc { namespace graphics { namespace win {
     ///
     /// @param  a_title The title of the window.
     ///-------------------------------------------------------------------------
-    void SetTitle(const char* a_title);
+    void SetTitle(BufferArg a_title);
 
     ///-------------------------------------------------------------------------
     /// Calls the OS specific display update.

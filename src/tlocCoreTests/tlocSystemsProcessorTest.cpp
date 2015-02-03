@@ -199,7 +199,7 @@ namespace
 
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
-      sp.Process(0.0f);
+      sp.Process();
       CHECK(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK(sys2->m_flags.IsMarked(k_processingCalled));
     }
@@ -224,9 +224,26 @@ namespace
 
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
-      sp.Process(0.0f);
+      sp.Process();
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK(sys2->m_flags.IsMarked(k_processingCalled));
+
+      auto itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys1.get());
+      CHECK(itrSysInfo.first != itrSysInfo.second);
+    }
+
+    SECTION("GetSystemInfo", "")
+    {
+      core_cs::SystemsProcessor sp;
+      sp.Add(sys1.get());
+      sp.Add(sys2.get());
+
+      auto itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys1.get());
+      CHECK(itrSysInfo.first != itrSysInfo.second);
+
+      dummy_sys2_vso sys2(MakeArgs(eventMgr.get(), entMgr.get()));
+      itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys2.get());
+      CHECK(itrSysInfo.first == itrSysInfo.second);
     }
   }
 }

@@ -89,25 +89,88 @@ namespace tloc { namespace input {
       struct RelativeAndAbsolute{};
     };
 
+    // ///////////////////////////////////////////////////////////////////////
+    // Axis_T<>
+
+    template <typename T_PolicyType, typename T_ValueType>
+    struct Axis_T;
+
+    // ///////////////////////////////////////////////////////////////////////
+
+    template <typename T_ValueType>
+    struct Axis_T<p_axis::RelativeOnly, T_ValueType>
+    {
+    public:
+      typedef T_ValueType                             value_type;
+      typedef value_type                              rel_type;
+      typedef value_type                              abs_type;
+
+    public:
+      Axis_T(value_type = 0, value_type a_rel = 0) : m_rel(a_rel) { }
+
+    public:
+      value_type m_rel;
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+
+    template <typename T_ValueType>
+    struct Axis_T<p_axis::AbsoluteOnly, T_ValueType>
+    {
+    public:
+      typedef T_ValueType                             value_type;
+      typedef value_type                              rel_type;
+      typedef value_type                              abs_type;
+
+    public:
+      Axis_T(value_type a_abs = 0, value_type = 0) : m_abs(a_abs) { }
+
+    public:
+      value_type m_abs;
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+
+    template <typename T_ValueType>
+    struct Axis_T<p_axis::RelativeAndAbsolute, T_ValueType>
+    {
+    public:
+      typedef T_ValueType                             value_type;
+      typedef value_type                              rel_type;
+      typedef value_type                              abs_type;
+
+    public:
+      Axis_T(value_type a_abs = 0, value_type a_rel = 0) 
+        : m_abs(a_abs), m_rel(a_rel) { }
+
+    public:
+      value_type m_rel;
+      value_type m_abs;
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+    // Generic axis type
+
     // Base component type
     template <typename T_ComponentType,
               typename T_PolicyType = p_axis::RelativeAndAbsolute,
-              typename T_ValueType = void> struct Type;
+              typename T_ValueType = void> struct Type_T;
 
     template<>
-    struct Type<p_type::Button>
+    struct Type_T<p_type::Button, p_axis::RelativeAndAbsolute, int>
     {
-      Type(bool a_pressed = false) : m_pressed(a_pressed) {}
+      Type_T(bool a_pressed = false) : m_pressed(a_pressed) {}
 
       bool m_pressed;
     };
 
     template <typename T_PolicyType, typename T_ValueType>
-    struct Type<p_type::Axis, T_PolicyType, T_ValueType>
+    struct Type_T<p_type::Axis, T_PolicyType, T_ValueType>
+      : public Axis_T<T_PolicyType, T_ValueType>
     {
     public:
 
-      typedef Type<p_type::Axis, T_PolicyType, T_ValueType>   this_type;
+      typedef Type_T<p_type::Axis, T_PolicyType, T_ValueType>   this_type;
 
       typedef T_PolicyType                                    policy_type;
       typedef T_ValueType                                     value_type;
@@ -116,97 +179,25 @@ namespace tloc { namespace input {
         Loki::Int2Type<Loki::IsSameType<policy_type,
         p_axis::RelativeAndAbsolute>::value>                  policy_result_type;
 
-      // Relative and absolute types
-      typedef core::ConditionalTypePackage
-              <value_type, value_type,
-               policy_result_type::value>                     rel_and_abs;
+      typedef Axis_T<policy_type, value_type>                 base_type;
       typedef value_type                                      rel_type;
-      typedef typename rel_and_abs::cond_type                 abs_type;
+      typedef value_type                                      abs_type;
 
-      Type(value_type a_abs = 0, value_type a_rel = 0)
-      {
-        m_abs() = a_abs; m_rel() = a_rel;
-      }
-
-      Type(const this_type& a_other)
-      {
-        m_absoluteAndRelative = a_other.m_absoluteAndRelative;
-        m_absoluteAndRelative.m_var = a_other.m_absoluteAndRelative.m_var;
-      }
-
-      this_type& operator= (const this_type& a_other)
-      {
-        m_absoluteAndRelative = a_other.m_absoluteAndRelative;
-        m_absoluteAndRelative.m_var = a_other.m_absoluteAndRelative.m_var;
-
-        return *this;
-      }
-
-      TL_FI rel_type&       m_rel()
-      { return m_absoluteAndRelative.m_var; }
-      TL_FI const rel_type& m_rel() const
-      { return m_absoluteAndRelative.m_var; }
-      TL_FI abs_type&       m_abs()
-      { return (abs_type&)m_absoluteAndRelative; }
-      TL_FI const abs_type& m_abs() const
-      { return (abs_type&)m_absoluteAndRelative; }
-
-    protected:
-      rel_and_abs m_absoluteAndRelative;
-    };
-
-
-    template <typename T_ValueType>
-    struct Type<p_type::Axis, p_axis::AbsoluteOnly, T_ValueType>
-      : public Type<p_type::Axis, p_axis::RelativeOnly, T_ValueType>
-    {
-    public:
-      typedef
-        Type<p_type::Axis, p_axis::AbsoluteOnly, T_ValueType>  this_type;
-
-      typedef
-        Type<p_type::Axis, p_axis::RelativeOnly, T_ValueType>  base_type;
-
-      typedef typename base_type::value_type                    value_type;
-
-      typedef p_axis::AbsoluteOnly                              policy_type;
-
-      typedef typename base_type::rel_and_abs                   rel_and_abs;
-
-      // Note: These are intentionally switched, as base_type::abs_type does not
-      // "exist" due to the conditional type.
-      typedef typename base_type::rel_type                      abs_type;
-      typedef typename base_type::abs_type                      rel_type;
-
-      using base_type::m_absoluteAndRelative;
-
-      Type(value_type a_abs = 0, value_type a_rel = 0)
+      Type_T(value_type a_abs = 0, value_type a_rel = 0)
         : base_type(a_abs, a_rel)
-      {
-        m_abs() = a_abs; m_rel() = a_rel;
-      }
-
-      Type(const this_type& a_other)
-        : base_type(a_other)
       { }
-
-      TL_FI rel_type&       m_rel()
-      { return (rel_type&)m_absoluteAndRelative; }
-      TL_FI const rel_type& m_rel() const
-      { return (rel_type&)m_absoluteAndRelative; }
-      TL_FI abs_type&       m_abs()
-      { return m_absoluteAndRelative.m_var; }
-      TL_FI const abs_type& m_abs() const
-      { return m_absoluteAndRelative.m_var; }
     };
 
-    typedef Type<p_type::Button>     Button;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_int>         AxisRel;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_int>         AxisAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_int>  AxisRelAbs;
-    typedef Type<p_type::Axis, p_axis::RelativeOnly, tl_float>         AxisRelf;
-    typedef Type<p_type::Axis, p_axis::AbsoluteOnly, tl_float>         AxisAbsf;
-    typedef Type<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
+    // -----------------------------------------------------------------------
+    // typedefs
+
+    typedef Type_T<p_type::Button>     Button;
+    typedef Type_T<p_type::Axis, p_axis::RelativeOnly, tl_int>         AxisRel;
+    typedef Type_T<p_type::Axis, p_axis::AbsoluteOnly, tl_int>         AxisAbs;
+    typedef Type_T<p_type::Axis, p_axis::RelativeAndAbsolute, tl_int>  AxisRelAbs;
+    typedef Type_T<p_type::Axis, p_axis::RelativeOnly, tl_float>         AxisRelf;
+    typedef Type_T<p_type::Axis, p_axis::AbsoluteOnly, tl_float>         AxisAbsf;
+    typedef Type_T<p_type::Axis, p_axis::RelativeAndAbsolute, tl_float>  AxisRelAbsf;
     //typedef Type<Slider>  Slider;
     //typedef Type<Vector3> Vector3;
 

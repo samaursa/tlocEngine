@@ -49,6 +49,8 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocArcBallSystem.cpp
   component_system/tlocBoundingBox.h
   component_system/tlocBoundingBox.cpp
+  component_system/tlocBoundingBoxSystem.h
+  component_system/tlocBoundingBoxSystem.cpp
   component_system/tlocBoundingBoxRenderSystem.h
   component_system/tlocBoundingBoxRenderSystem.cpp
   component_system/tlocCamera.h

@@ -6,6 +6,7 @@
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/configs/tlocBuildConfig.h>
 #include <tlocCore/memory/tlocBufferArg.h>
+#include <tlocCore/utilities/tlocPointerUtils.h>
 
 namespace tloc { namespace core { namespace logging {
 
@@ -58,6 +59,7 @@ namespace tloc { namespace core { namespace logging {
     this_type& operator << (tl_ulong  a_value);
     this_type& operator << (tl_float  a_value);
     this_type& operator << (tl_double a_value);
+    this_type& operator << (core_utils::MemoryAddress a_memAddress);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (str_type, GetFinalString, m_finalString);
@@ -121,6 +123,7 @@ namespace tloc { namespace core { namespace logging {
     this_type& operator << (tl_ulong  a_value);
     this_type& operator << (tl_float  a_value);
     this_type& operator << (tl_double a_value);
+    this_type& operator << (core_utils::MemoryAddress a_memAddress);
 
   private:
     T_Logger* m_logger;
@@ -164,6 +167,7 @@ namespace tloc { namespace core { namespace logging {
     this_type& operator << (tl_ulong   )  { return *this; }
     this_type& operator << (tl_float   )  { return *this; }
     this_type& operator << (tl_double  )  { return *this; }
+    this_type& operator << (core_utils::MemoryAddress ) { return *this; }
   };
 
 };};};

@@ -16,6 +16,20 @@ namespace tloc { namespace core { namespace utils {
     return (tl_uintptr)(a);
   }
 
+  // ///////////////////////////////////////////////////////////////////////
+  // MemoryAddress class
+
+  class MemoryAddress
+  {
+  public:
+
+    template <typename T>
+    explicit MemoryAddress(const T& a_value)
+    { m_memAddress = GetMemoryAddress(a_value); }
+
+    tl_uintptr  m_memAddress;
+  };
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // Pointer comparison utility
 

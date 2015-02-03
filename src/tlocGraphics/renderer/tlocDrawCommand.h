@@ -79,16 +79,22 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef RenderPass                          this_type;
     typedef DrawCommand                         command_type;
     typedef core_conts::Array<command_type>     command_buffer;
+    typedef tl_size                             size_type;
 
     typedef command_type::shader_op_ptr         shader_op_ptr;
     typedef command_type::shader_prog_ptr       shader_prog_ptr;
 
   public:
+    RenderPass();
+
     this_type&            AddDrawCommand(const command_type& a_command);
     void                  Draw();
 
+    TLOC_DECL_AND_DEF_GETTER(size_type, GetNumDrawCalls, m_numDrawCalls);
+
   private:
     command_buffer        m_commands;
+    size_type             m_numDrawCalls;
 
   public:
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_commands, m_commands);

@@ -417,7 +417,7 @@ namespace tloc { namespace graphics { namespace win { namespace priv {
     ShowWindow(m_handle, a_visible ? SW_SHOW : SW_HIDE);
   }
 
-  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetTitle(const char* a_title)
+  void WindowImpl<WINDOW_IMPL_WIN_PARAMS>::SetTitle(BufferArg a_title)
   {
     SetWindowText(m_handle, a_title);
   }

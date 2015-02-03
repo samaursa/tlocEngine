@@ -79,6 +79,8 @@ set(TLOC_ENGINE_CORE_COMPONENT_SYSTEM
     component_system/tlocEventManager.cpp
     component_system/tlocSystemsProcessor.h
     component_system/tlocSystemsProcessor.cpp
+    component_system/tlocUserData.h
+    component_system/tlocUserData.cpp
 )
 set(TLOC_ENGINE_CORE_CONFIGS
     configs/tloc_configs.h

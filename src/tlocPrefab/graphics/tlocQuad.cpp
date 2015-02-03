@@ -7,8 +7,12 @@
 #include <tlocMath/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocQuad.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
+#include <tlocGraphics/component_system/tlocBoundingBox.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>
 #include <tlocPrefab/math/tlocTransform.h>
+#include <tlocPrefab/graphics/tlocMesh.h>
+#include <tlocPrefab/graphics/tlocBoundingBox.h>
+#include <tlocPrefab/graphics/tlocRaypick.h>
 
 TLOC_DEFINE_THIS_FILE_NAME();
 
@@ -43,10 +47,10 @@ namespace tloc { namespace prefab { namespace graphics {
     , m_rect(rect_type(rect_type::width(1.0f),
                        rect_type::height(1.0f)) )
     , m_sprite(false)
-    , m_meshPref(a_entMgr, a_poolMgr)
-  { 
-    m_meshPref.DrawMode(gfx_rend::mode::k_triangle_strip);
-  }
+    , m_drawMode(gfx_rend::mode::k_triangle_strip)
+    , m_boundingBox(false)
+    , m_raypick(false)
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -55,6 +59,9 @@ namespace tloc { namespace prefab { namespace graphics {
     Quad_T<QUAD_PARAMS>::
     Construct() const -> component_ptr
   {
+    pref_gfx::Mesh m_meshPref(m_entMgr, m_compPoolMgr);
+    m_meshPref.DrawMode(m_drawMode);
+
     // prepare vertices
     using namespace gfx_t::f_vertex::p_vertex_selector;
     using namespace math_t;
@@ -133,6 +140,19 @@ namespace tloc { namespace prefab { namespace graphics {
 
     if (a_ent->template HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // raypick
+
+    if (a_ent->HasComponent<gfx_cs::Raypick>() == false && m_raypick)
+    { pref_gfx::Raypick(m_entMgr, m_compPoolMgr).Add(a_ent); }
+
+    // -----------------------------------------------------------------------
+    // bounding box
+
+    if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && 
+        (m_boundingBox || m_raypick))
+    { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // sprite

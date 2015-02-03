@@ -100,4 +100,23 @@ namespace tloc { namespace math { namespace types {
 
 };};};
 
+#include <tlocCore/logging/tlocLog.h>
+
+namespace tloc { namespace core { 
+
+  namespace logging {
+
+    template <typename T_Logger, typename T_BuildConfig, typename T>
+    Log_T<T_Logger, T_BuildConfig>&
+      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+                   const math_t::Vector_T<T, 2>& a_vec)
+    {
+      a_log << a_vec[0] << ", " << a_vec[1];
+      return a_log;
+    }
+
+  };
+
+};};
+
 #endif

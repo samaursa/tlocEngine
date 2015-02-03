@@ -57,7 +57,7 @@ namespace tloc { namespace core { namespace component_system {
 
   protected: // Shutdown
     virtual error_type Pre_Shutdown();
-    virtual error_type ShutdownEntity(entity_vptr a_ent) = 0;
+    virtual error_type ShutdownEntity(entity_vptr a_ent);
     virtual error_type Post_Shutdown();
 
   protected: // component insert/remove

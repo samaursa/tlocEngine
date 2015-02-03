@@ -52,7 +52,7 @@ namespace tloc { namespace graphics { namespace component_system {
     explicit Text_I(BufferArgW a_text, 
                     font_ptr a_font,
                     align_type a_alignment = alignment::k_align_left,
-                    align_type a_horAlignment = horizontal_alignment::k_align_middle);
+                    align_type a_horAlignment = horizontal_alignment::k_none);
 
   private:
     str_type                m_text;

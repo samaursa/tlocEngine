@@ -44,6 +44,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       TLOC_DECL_PARAM_VAR(math_cs::transform_sptr, Transformation, m_trans);
       TLOC_DECL_PARAM_VAR(math_t::Rectf_bl, Rectangle, m_rect);
+      TLOC_DECL_PARAM_VAR(tl_ulong, Character, m_char);
     };
 
   public:

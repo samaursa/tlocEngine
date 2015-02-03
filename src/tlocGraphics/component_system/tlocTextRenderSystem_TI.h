@@ -37,6 +37,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math_t::Mat2f32                                   scale_type;
     typedef tl_float                                          real_type;
 
+  public:
     struct CharacterInfo
     {
       typedef CharacterInfo     this_type;
@@ -71,7 +72,7 @@ namespace tloc { namespace graphics { namespace component_system {
     
     ~TextRenderSystem_TI();
 
-    void         DoAlignLine(const_glyph_info_itr a_begin, 
+    real_type    DoAlignLine(const_glyph_info_itr a_begin, 
                              const_glyph_info_itr a_end,
                              tl_int a_beginIndex,
                              text_ptr a_text,

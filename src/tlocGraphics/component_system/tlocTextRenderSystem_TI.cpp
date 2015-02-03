@@ -53,20 +53,23 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
-  void
+  auto
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     DoAlignLine(const_glyph_info_itr a_begin, 
                 const_glyph_info_itr a_end, 
                 tl_int a_beginIndex,
                 text_ptr a_text, 
-                size_type a_lineNumber)
+                size_type a_lineNumber) -> real_type
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
     real_type advance = 0;
+    real_type maxHeight = 0;
 
     math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
+
+    const auto& fontParams = a_text->GetFont()->GetCachedParams();
 
     auto itrLast = a_begin;
 
@@ -78,6 +81,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       auto t = itr->m_trans;
       auto q = itr->m_rect;
+
+      maxHeight += q.GetHeight() - fontParams.m_paddingDim[1] * 2;
 
       if (count != a_beginIndex)
       {
@@ -97,20 +102,9 @@ namespace tloc { namespace graphics { namespace component_system {
       ++count;
     }
 
-    // if itrLast == a_end then this means a_begin == a_end, otherwise, 
-    // itrLast is the last character on this line from which we will calculate
-    // the end position
-    if (itrLast != a_end)
-    {
-      auto t = itrLast->m_trans;
-      auto q = itrLast->m_rect;
+    maxHeight /= count;
 
-      endPos = t->GetPosition();
-      endPos[0] += q.GetWidth() - 
-        a_text->GetFont()->GetCachedParams().m_paddingDim[0] * 2;
-    }
-
-    math_t::Vec3f totalTextWidth = endPos - starPos;
+    math_t::Vec3f totalTextWidth(advance, 0, 0);
     
     // only center and right alignment needs adjustment
     if (a_text->GetAlignment() != alignment::k_align_left)
@@ -126,6 +120,8 @@ namespace tloc { namespace graphics { namespace component_system {
         t->SetPosition(t->GetPosition() + totalTextWidth);
       }
     }
+
+    return maxHeight;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -151,11 +147,19 @@ namespace tloc { namespace graphics { namespace component_system {
     tl_int count = 0;
     tl_int beginIndex = count;
     tl_int lineNumber = 0;
+
+    typedef core_conts::Array<real_type>          real_cont;
+    real_cont heights;
+    real_type allLinesHeight = 0;
+
     for ( ; itr != itrEnd; ++itr)
     {
       if (core_str::g_newlineStrW.find(str[count]) != core_str::StringW::npos)
       {
-        DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+        auto maxHeight = DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+        allLinesHeight += maxHeight;
+        heights.push_back(maxHeight);
+
         prevItr = itr + 1;
         beginIndex = count + 1;
         ++lineNumber;
@@ -164,7 +168,25 @@ namespace tloc { namespace graphics { namespace component_system {
       ++count;
     }
 
-    DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+    auto maxHeight = DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+    allLinesHeight += maxHeight;
+    heights.push_back(maxHeight);
+
+    const auto& fontParams = text->GetFont()->GetCachedParams();
+    const auto vertKerningTotal = text->GetVerticalKerning() * heights.size()-1;
+    const auto allLinesHeightHalf = allLinesHeight * 0.5f + vertKerningTotal - fontParams.m_fontSize.GetHeightInPixels();
+
+    count = 0;
+    itr = a_pair.second.begin();
+    prevItr = itr;
+    if (text->GetHorizontalAlignment() == horizontal_alignment::k_align_middle)
+    {
+      for ( ; itr != itrEnd; ++itr)
+      {
+        auto t = itr->m_trans;
+        t->SetPosition(t->GetPosition() + math_t::Vec3f(0, allLinesHeightHalf, 0));
+      }
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -354,7 +376,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     using math_cs::transform_sptr;
 
-    const real_type yPos = (fParams.m_fontSize.GetHeightInPixels() * 1.2f + 
+    const real_type yPos = (fParams.m_fontSize.GetHeightInPixels() + 
                             a_entText->GetVerticalKerning()) * a_lineNumber;
 
     a_entPos->SetPosition

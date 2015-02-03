@@ -12,15 +12,18 @@ namespace tloc { namespace graphics { namespace component_system {
     Text_I()
     : m_verticalKerning(0)
     , m_alignment(alignment::k_align_left)
+    , m_horAlignment(horizontal_alignment::k_none)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Text_I::
-    Text_I(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
+    Text_I(BufferArgW a_text, font_ptr a_font, align_type a_alignment, 
+           align_type a_horAlignment)
     : m_text(a_text)
     , m_verticalKerning(0)
     , m_alignment(a_alignment)
+    , m_horAlignment(a_horAlignment)
     , m_font(a_font)
   { }
 

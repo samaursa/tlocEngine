@@ -36,6 +36,7 @@ namespace tloc { namespace graphics { namespace component_system {
                 align_type a_horAlignment = horizontal_alignment::k_none);
 
     void SetAlignment(align_type a_alignment);
+    void SetHorizontalAlignment(align_type a_alignment);
 
     bool IsTextUpdated() const;
     bool IsAlignmentUpdated() const;

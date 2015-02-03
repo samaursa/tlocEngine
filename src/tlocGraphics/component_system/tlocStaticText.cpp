@@ -30,6 +30,16 @@ namespace tloc { namespace graphics { namespace component_system {
     Text_I::SetAlignment(a_alignment);
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    StaticText::
+    SetHorizontalAlignment(align_type a_alignment)
+  { 
+    base_type::SetUpdateRequired(true);
+    Text_I::SetHorizontalAlignment(a_alignment);
+  }
+
 };};};
 
 //////////////////////////////////////////////////////////////////////////

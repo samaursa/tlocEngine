@@ -53,17 +53,21 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
-  void
+  auto
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     DoAlignLine(const_glyph_info_itr a_begin, 
                 const_glyph_info_itr a_end, 
                 tl_int a_beginIndex,
                 text_ptr a_text, 
-                size_type a_lineNumber)
+                size_type a_lineNumber) -> real_pair
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
     real_type advance = 0;
+    real_type maxHeight = 0;
+    real_type minHeight = 0;
+
+    const auto& fontParams = a_text->GetFont()->GetCachedParams();
 
     math_t::Vec3f starPos, endPos;
     tl_int count = a_beginIndex;
@@ -94,23 +98,22 @@ namespace tloc { namespace graphics { namespace component_system {
         starPos = t->GetPosition();
       }
 
+      // Algorithm: maxHeight is the absolute maximum this line of text has, 
+      // which is the position of the quad + its height (because the quad starts
+      // at bottom left). The minHeight is the absolute minimum which is just 
+      // the position (i.e. bottom left of the quad)
+      const auto& newPos = t->GetPosition();
+      const auto& actualHeight = q.GetHeight() - (fontParams.m_paddingDim[1]);
+
+      if (maxHeight < newPos[1] + actualHeight)
+      { maxHeight = newPos[1] + actualHeight; }
+      else if (minHeight > newPos[1] + (fontParams.m_paddingDim[1]) )
+      { minHeight = newPos[1] + (fontParams.m_paddingDim[1]); }
+
       ++count;
     }
 
-    // if itrLast == a_end then this means a_begin == a_end, otherwise, 
-    // itrLast is the last character on this line from which we will calculate
-    // the end position
-    if (itrLast != a_end)
-    {
-      auto t = itrLast->m_trans;
-      auto q = itrLast->m_rect;
-
-      endPos = t->GetPosition();
-      endPos[0] += q.GetWidth() - 
-        a_text->GetFont()->GetCachedParams().m_paddingDim[0] * 2;
-    }
-
-    math_t::Vec3f totalTextWidth = endPos - starPos;
+    math_t::Vec3f totalTextWidth(advance, 0, 0);
     
     // only center and right alignment needs adjustment
     if (a_text->GetAlignment() != alignment::k_align_left)
@@ -126,6 +129,8 @@ namespace tloc { namespace graphics { namespace component_system {
         t->SetPosition(t->GetPosition() + totalTextWidth);
       }
     }
+
+    return core::MakePair(minHeight, maxHeight);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -151,11 +156,19 @@ namespace tloc { namespace graphics { namespace component_system {
     tl_int count = 0;
     tl_int beginIndex = count;
     tl_int lineNumber = 0;
+
+    typedef core_conts::Array<real_pair>          real_cont;
+    real_cont heights;
+    real_type allLinesHeight = 0;
+
     for ( ; itr != itrEnd; ++itr)
     {
       if (core_str::g_newlineStrW.find(str[count]) != core_str::StringW::npos)
       {
-        DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+        auto minMax = DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+        allLinesHeight += (minMax.second - minMax.first);
+        heights.push_back(minMax);
+
         prevItr = itr + 1;
         beginIndex = count + 1;
         ++lineNumber;
@@ -164,7 +177,35 @@ namespace tloc { namespace graphics { namespace component_system {
       ++count;
     }
 
-    DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+    auto minMax = DoAlignLine(prevItr, itr, beginIndex, text, lineNumber);
+    allLinesHeight += (minMax.second - minMax.first);
+    heights.push_back(minMax);
+
+    // Algorithm: Take total height of all lines divided by 2. That is the 
+    // 'main' offset. But the first line starts on the baseline. We will pretend
+    // that it starts just below the baseline which means we have to subtract
+    // the amount of text that is 'above' the baseline.
+    if (text->GetHorizontalAlignment() == horizontal_alignment::k_align_middle)
+    {
+      const auto vertKerningTotal = text->GetVerticalKerning() * (heights.size()-1);
+
+      // our parent entity (which is the text component the user created) is
+      // our base line
+      const auto& parentEntPos = a_pair.first->GetComponent<math_cs::Transform>()->GetPosition();
+      const auto firstLineOffset = heights[0].second - parentEntPos[1];
+
+      auto allLinesHeightHalf = 
+        allLinesHeight * 0.5f + vertKerningTotal - firstLineOffset;
+
+      count = 0;
+      itr = a_pair.second.begin();
+      prevItr = itr;
+      for ( ; itr != itrEnd; ++itr)
+      {
+        auto t = itr->m_trans;
+        t->SetPosition(t->GetPosition() + math_t::Vec3f(0, allLinesHeightHalf, 0));
+      }
+    }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -270,7 +311,8 @@ namespace tloc { namespace graphics { namespace component_system {
         pref_gfx::QuadNoTexCoords(m_textEntityMgr.get(), m_textCompMgr.get())
         .Sprite(true).Dimensions(rect).Create();
 
-      character->SetDebugName( core_str::String(1, core_str::CharWideToAscii(text[i])) );
+      const char8 currChar = core_str::CharWideToAscii(text[i]);
+      character->SetDebugName( core_str::String(1, currChar) );
 
       if (matPtr)
       { 
@@ -281,7 +323,8 @@ namespace tloc { namespace graphics { namespace component_system {
       // we need the quad later for other operations
       auto ci = CharacterInfo()
         .Transformation(character->GetComponent<math_cs::Transform>())
-        .Rectangle(rect);
+        .Rectangle(rect)
+        .Character(text[i]);
       tqp.second.push_back(ci);
 
       // disable rendering of empty characters (spaces, \n) - we could simply
@@ -354,7 +397,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     using math_cs::transform_sptr;
 
-    const real_type yPos = (fParams.m_fontSize.GetHeightInPixels() * 1.2f + 
+    const real_type yPos = (fParams.m_fontSize.GetHeightInPixels() + 
                             a_entText->GetVerticalKerning()) * a_lineNumber;
 
     a_entPos->SetPosition
@@ -473,14 +516,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     for (itr_type itr = m_entsToReinit.begin(), itrEnd = m_entsToReinit.end();
          itr != itrEnd; ++itr)
-    {
-      DoReInitializeEntity(*itr);
-
-      typename text_quads_cont::const_iterator itrRes = core::find_if_all
-        (m_allText, core::algos::pair::compare::MakeFirst(const_entity_ptr(*itr)));
-
-      DoAlignText(*itrRes);
-    }
+    { DoReInitializeEntity(*itr); }
     m_entsToReinit.clear();
   }
 

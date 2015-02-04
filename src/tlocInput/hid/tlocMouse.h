@@ -50,7 +50,7 @@ namespace tloc { namespace input { namespace hid {
 
   protected:
     MouseListener() { }
-    ~MouseListener() { }
+    virtual ~MouseListener() { }
   };
 
   ///-------------------------------------------------------------------------

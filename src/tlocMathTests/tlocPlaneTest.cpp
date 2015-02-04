@@ -24,10 +24,11 @@ namespace TestingRay
 
     // the ray will intersect the plane at 1, 0, 0
 
-    auto r = ray_type(ray_type::origin(rayOrigin), ray_type::direction(rayDir));
+    auto r = ray_type(typename ray_type::origin(rayOrigin),
+                      typename ray_type::direction(rayDir));
 
-    auto p = plane_type(plane_type::origin(planeOrigin),
-                        plane_type::direction(planeDir));
+    auto p = plane_type(typename plane_type::origin(planeOrigin),
+                        typename plane_type::direction(planeDir));
 
     REQUIRE_FALSE(p.GetIsParallel(r));
     auto intersectPoint = p.GetIntersect(r);

@@ -777,9 +777,12 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // explicit instantiation
 
-  template class MeshRenderSystem_T<>;
-  template class MeshRenderSystem_T<gfx_rend::renderer_depth32_sptr>;
+  template class MeshRenderSystem_T<gfx_rend::renderer_sptr>;
   template class MeshRenderSystem_T<gfx_rend::renderer_depth64_sptr>;
+
+  // Note: Since the Renderer, and Renderer_depth32 are both Renderer_T<f32>
+  // we can only explicitly instantiate one of them
+  // template class MeshRenderSystem_T<gfx_rend::renderer_depth32_sptr>;
 
 };};};
 

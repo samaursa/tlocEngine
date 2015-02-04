@@ -20,6 +20,7 @@
 #include <tlocGraphics/types/tlocDimension.h>
 
 #include <tlocInput/hid/tlocMouse.h>
+#include <tlocInput/hid/tlocTouchSurface.h>
 
 namespace tloc { namespace graphics { namespace component_system {
 
@@ -142,6 +143,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef p_raypick_system::mode                      picking_mode;
     typedef input_hid::MouseEvent::button_code_type     button_code;
+    typedef input::TouchSurfaceEvent::touch_handle_type touch_handle_type;
 
   public:
     RaypickSystem(event_manager_ptr, entity_manager_ptr);
@@ -171,6 +173,10 @@ namespace tloc { namespace graphics { namespace component_system {
                                     const input_hid::MouseEvent::button_code_type);
     event_type OnMouseMove(const tl_size, const input_hid::MouseEvent&);
 
+    event_type OnTouchPress(const tl_size, const input::TouchSurfaceEvent& );
+    event_type OnTouchRelease(const tl_size, const input::TouchSurfaceEvent& );
+    event_type OnTouchMove(const tl_size, const input::TouchSurfaceEvent& );
+
     using dispatcher_base_type::Register;
 
   private:
@@ -189,7 +195,8 @@ namespace tloc { namespace graphics { namespace component_system {
     matrix_type           m_camTransMat;
 
     picking_mode          m_pickingMode;
-    button_code           m_pickingButton;  
+    button_code           m_pickingButton;
+    touch_handle_type     m_currentTouch;
   };
 
   // -----------------------------------------------------------------------

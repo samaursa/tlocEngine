@@ -42,18 +42,23 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(align_type, SetAlignment, m_alignment);
     TLOC_DECL_AND_DEF_GETTER(align_type, GetAlignment, m_alignment);
+    
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(align_type, SetHorizontalAlignment, m_horAlignment);
+    TLOC_DECL_AND_DEF_GETTER(align_type, GetHorizontalAlignment, m_horAlignment);
 
   protected:
     Text_I();
     ~Text_I();
     explicit Text_I(BufferArgW a_text, 
                     font_ptr a_font,
-                    align_type a_alignment = alignment::k_align_left);
+                    align_type a_alignment = alignment::k_align_left,
+                    align_type a_horAlignment = horizontal_alignment::k_none);
 
   private:
     str_type                m_text;
     real_type               m_verticalKerning;
     align_type              m_alignment;
+    align_type              m_horAlignment;
     font_ptr                m_font;
   };
 

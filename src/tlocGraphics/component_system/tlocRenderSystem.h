@@ -51,7 +51,9 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gl::shader_operator_vptr                      shader_operator_ptr;
     typedef gl::const_shader_program_vptr                 const_shader_prog_ptr;
 
-    typedef core_conts::Array<uniform_ptr>                uniform_array;
+    typedef typename entity_count_cont::iterator            entity_count_itr;
+    typedef core::Pair<entity_count_itr, entity_count_itr>  entity_count_itr_pair;
+    typedef core_conts::Array<entity_count_itr_pair>        entity_count_itr_cont;
 
   public:
 
@@ -66,6 +68,10 @@ namespace tloc { namespace graphics { namespace component_system {
                     entity_manager_ptr             a_entityMgr,
                     register_type                  a_registerTypes,
                     BufferArg                      a_debugName);
+
+    virtual void              ForceSortEntitiesByMaterial();
+    virtual void              ForceSortEntitiesFrontToBack();
+    virtual void              ForceSortEntitiesBackToFront();
 
     virtual void              SortEntities();
 
@@ -82,6 +88,7 @@ namespace tloc { namespace graphics { namespace component_system {
     matrix_type               m_vpMatrix;
     matrix_type               m_projMat;
     matrix_type               m_viewMatrix;
+    entity_count_itr_cont     m_entPairsSegmentByMat;
   };
 
   // -----------------------------------------------------------------------

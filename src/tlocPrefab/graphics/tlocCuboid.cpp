@@ -236,8 +236,8 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // mesh component
 
-    m_entMgr->template InsertComponent(insert_params(a_ent, Construct())
-                                       .DispatchTo(GetListeners()) ); 
+    m_entMgr->InsertComponent(insert_params(a_ent, Construct())
+            .DispatchTo(GetListeners()) ); 
 
   }
 

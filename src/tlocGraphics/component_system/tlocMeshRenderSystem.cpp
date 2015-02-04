@@ -379,7 +379,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
     }
 
-    auto matSO = matPtr->template GetShaderOperator();
+    auto matSO = matPtr->GetShaderOperator();
 
     // shader switch requires us to re-prepare the attributes/uniforms
     TLOC_LOG_GFX_WARN_NO_FILENAME_IF(matSO->size_attributeVBOs() > 0)

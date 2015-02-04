@@ -191,7 +191,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // our parent entity (which is the text component the user created) is
       // our base line
-      const auto& parentEntPos = a_pair.first->GetComponent<math_cs::Transform>()->GetPosition();
+      const auto& parentEntPos =
+        a_pair.first->template GetComponent<math_cs::Transform>()->GetPosition();
       const auto firstLineOffset = heights[0].second - parentEntPos[1];
 
       auto allLinesHeightHalf = 

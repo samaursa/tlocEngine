@@ -191,7 +191,6 @@ namespace tloc { namespace graphics { namespace component_system {
     picking_mode          m_pickingMode;
     button_code           m_pickingButton;  
   };
-  TLOC_DEF_TYPE(RaypickSystem);
 
   // -----------------------------------------------------------------------
   // typedefs
@@ -200,6 +199,8 @@ namespace tloc { namespace graphics { namespace component_system {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(RaypickSystem, raypick_system);
   
 };};};
+
+TLOC_DEF_TYPE(tloc::gfx_cs::RaypickSystem);
 
 // -----------------------------------------------------------------------
 // extern template

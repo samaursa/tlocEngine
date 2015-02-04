@@ -20,15 +20,23 @@ namespace tloc { namespace graphics { namespace component_system {
     : public RenderSystem_TI<T_RendererSptr>
   {
   public:
-    typedef T_RendererSptr                                      renderer_type;
-    typedef RenderSystem_TI<renderer_type>                      base_type;
-    typedef BoundingBoxRenderSystem_T                           this_type;
-    typedef core_sptr::VirtualPtr
-      <MeshRenderSystem_T<renderer_type>>                       mesh_sys_ptr;
-    typedef gfx_cs::material_system_vptr                        mat_sys_ptr;
+    typedef T_RendererSptr                                    renderer_type;
+    typedef BoundingBoxRenderSystem_T                         this_type;
+    typedef RenderSystem_TI<renderer_type>                    base_type;
 
-    typedef core::Pair<entity_ptr, entity_ptr>                  entity_pair;
-    typedef core_conts::Array<entity_pair>                      entity_pair_cont;
+    typedef typename base_type::error_type                    error_type;
+    typedef typename base_type::event_manager_ptr             event_manager_ptr;
+    typedef typename base_type::entity_manager_ptr            entity_manager_ptr;
+    typedef typename base_type::entity_ptr                    entity_ptr;
+    typedef typename base_type::const_entity_ptr              const_entity_ptr;
+    typedef typename base_type::register_type                 register_type;
+
+    typedef core_sptr::VirtualPtr
+      <MeshRenderSystem_T<renderer_type>>                     mesh_sys_ptr;
+    typedef gfx_cs::material_system_vptr                      mat_sys_ptr;
+
+    typedef core::Pair<entity_ptr, entity_ptr>                entity_pair;
+    typedef core_conts::Array<entity_pair>                    entity_pair_cont;
 
   public:
     BoundingBoxRenderSystem_T(event_manager_ptr, entity_manager_ptr);

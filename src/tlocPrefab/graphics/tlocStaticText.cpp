@@ -18,6 +18,7 @@ namespace tloc { namespace prefab { namespace graphics {
     StaticText(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr) 
     : base_type(a_entMgr, a_poolMgr)
     , m_alignment(gfx_cs::alignment::k_align_left)
+    , m_horAlignment(gfx_cs::horizontal_alignment::k_none)
     , m_verticalKern(0)
   { }
 
@@ -38,7 +39,7 @@ namespace tloc { namespace prefab { namespace graphics {
     st_pool::iterator itrSt = stPool->GetNext();
 
     gfx_cs::static_text_sptr text = 
-      MakeShared<gfx_cs::StaticText>(a_text, a_font, m_alignment);
+      MakeShared<gfx_cs::StaticText>(a_text, a_font, m_alignment, m_horAlignment);
     text->SetVerticalKerning(m_verticalKern);
 
     (*itrSt)->SetValue(text);

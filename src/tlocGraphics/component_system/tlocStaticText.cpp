@@ -14,9 +14,10 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   StaticText::
-    StaticText(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
+    StaticText(BufferArgW a_text, font_ptr a_font, align_type a_alignment, 
+               align_type a_horAlignment)
     : base_type("StaticText")
-    , Text_I(a_text, a_font, a_alignment)
+    , Text_I(a_text, a_font, a_alignment, a_horAlignment)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -27,6 +28,16 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     base_type::SetUpdateRequired(true);
     Text_I::SetAlignment(a_alignment);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    StaticText::
+    SetHorizontalAlignment(align_type a_alignment)
+  { 
+    base_type::SetUpdateRequired(true);
+    Text_I::SetHorizontalAlignment(a_alignment);
   }
 
 };};};

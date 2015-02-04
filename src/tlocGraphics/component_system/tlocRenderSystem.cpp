@@ -199,7 +199,6 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     ForceSortEntitiesFrontToBack()
   {
-    core_time::Timer t;
     if (m_sharedCam)
     {
       for (auto itr = m_entPairsSegmentByMat.begin(), itrEnd = m_entPairsSegmentByMat.end();
@@ -209,7 +208,6 @@ namespace tloc { namespace graphics { namespace component_system {
                    CompareFrontToBack(m_sharedCam), core::sort_insertionsort());
       }
     }
-    TLOC_LOG_GFX_DEBUG_FILENAME_ONLY() << "Sorting took: " << t.ElapsedSeconds();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -219,7 +217,6 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     ForceSortEntitiesBackToFront()
   {
-    core_time::Timer t;
     if (m_sharedCam)
     {
       for (auto itr = m_entPairsSegmentByMat.begin(), itrEnd = m_entPairsSegmentByMat.end();
@@ -229,7 +226,6 @@ namespace tloc { namespace graphics { namespace component_system {
                    CompareBackToFront(m_sharedCam), core::sort_insertionsort());
       }
     }
-    TLOC_LOG_GFX_DEBUG_FILENAME_ONLY() << "Sorting took: " << t.ElapsedSeconds();
   }
   
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

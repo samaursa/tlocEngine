@@ -22,9 +22,10 @@ namespace tloc { namespace graphics { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   DynamicText::
-    DynamicText(BufferArgW a_text, font_ptr a_font, align_type a_alignment)
+    DynamicText(BufferArgW a_text, font_ptr a_font, align_type a_alignment, 
+                align_type a_horAlignment)
     : base_type("DynamicText")
-    , Text_I(a_text, a_font, a_alignment)
+    , Text_I(a_text, a_font, a_alignment, a_horAlignment)
     , m_flags(k_count)
   { }
 
@@ -37,6 +38,17 @@ namespace tloc { namespace graphics { namespace component_system {
     base_type::SetUpdateRequired(true);
     m_flags.Mark(k_alignment_updated);
     Text_I::SetAlignment(a_alignment);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void 
+    DynamicText::
+    SetHorizontalAlignment(align_type a_alignment)
+  { 
+    base_type::SetUpdateRequired(true);
+    m_flags.Mark(k_alignment_updated);
+    Text_I::SetHorizontalAlignment(a_alignment);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

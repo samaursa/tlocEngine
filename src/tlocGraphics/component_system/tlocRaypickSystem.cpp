@@ -58,6 +58,8 @@ namespace tloc { namespace graphics { namespace component_system {
                 register_type().Add<Raypick>(),
                 "RaypickSystem")
     , m_windowDim(core_ds::MakeTuple(1000.0f, 1000.0f))
+    , m_pickingMode(p_raypick_system::k_on_click)
+    , m_pickingButton(input_hid::MouseEvent::k_left)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -191,16 +193,10 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (bb2d)
       {
-        auto rayPos2f = ray.GetOrigin().ConvertTo<Vec2f32>();
-        auto rayDir2f = ray.GetDirection().ConvertTo<Vec2f32>();
-
-        auto ray2 = Ray2f32(Ray2f32::origin(rayPos2f), 
-                            Ray2f32::direction(rayDir2f));
-
         if (bb2d->GetIsCircular())
         {
           const auto& bounds = bb2d->GetCircularBounds();
-          if (bounds.Intersects(ray2))
+          if (bounds.Intersects(ray))
           { 
             if (r->GetIsDistanceChecked())
             { m_closestToCamera = evt; }
@@ -226,7 +222,7 @@ namespace tloc { namespace graphics { namespace component_system {
         else
         {
           const auto& bounds = bb2d->GetBounds();
-          if (bounds.Intersects(ray2))
+          if (bounds.Intersects(ray).first)
           { 
             if (r->GetIsDistanceChecked())
             { m_closestToCamera = evt; }
@@ -335,9 +331,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void 
+  auto
     RaypickSystem::
-    SetCamera(entity_ptr a_camera)
+    SetCamera(entity_ptr a_camera) -> this_type&
   {
     if (a_camera->HasComponent<gfx_cs::Camera>())
     { m_sharedCamera = a_camera; }
@@ -348,6 +344,66 @@ namespace tloc { namespace graphics { namespace component_system {
       m_sharedCamera = nullptr;
     }
 
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
+    SetPickingMode(picking_mode a_mode, button_code a_button) -> this_type&
+  {
+    m_pickingMode = a_mode;
+    m_pickingButton = a_button;
+
+    TLOC_LOG_GFX_DEBUG_FILENAME_ONLY_IF(a_button == input_hid::MouseEvent::none)
+      << "Raypicking disabled (button_code = none).";
+
+    if (m_pickingButton < input_hid::MouseEvent::none ||
+        m_pickingButton >= input_hid::MouseEvent::k_count)
+    {
+      TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Invalid button for raypicking.";
+      m_pickingButton = input_hid::MouseEvent::none;
+    }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
+    OnMouseButtonPress(const tl_size, 
+                       const input_hid::MouseEvent& a_event, 
+                       const input_hid::MouseEvent::button_code_type a_button) 
+                       -> event_type
+  {
+    if (a_button == m_pickingButton)
+    {
+      auto autopos =  vec2_type((f32)a_event.m_X.m_abs, (f32)a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
+
+    return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
+    OnMouseButtonRelease(const tl_size, 
+                         const input_hid::MouseEvent& a_event, 
+                         const input_hid::MouseEvent::button_code_type a_button) 
+                        -> event_type
+  {
+    if (m_pickingMode != p_raypick_system::k_on_click && 
+        a_button == m_pickingButton)
+    {
+      auto autopos =  vec2_type((f32)a_event.m_X.m_abs, (f32)a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
+
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -356,8 +412,16 @@ namespace tloc { namespace graphics { namespace component_system {
     RaypickSystem::
     OnMouseMove(const tl_size, const input_hid::MouseEvent& a_event) -> event_type
   {
-    auto autopos =  vec2_type((f32)a_event.m_X.m_abs, 
-                              (f32)a_event.m_Y.m_abs);
+    if (m_pickingMode == p_raypick_system::k_on_click)
+    { return core_dispatch::f_event::Continue(); }
+
+    if (m_pickingMode == p_raypick_system::k_continuous_on_click)
+    {
+      if ( (a_event.m_buttonCode & m_pickingButton) == false)
+      { return core_dispatch::f_event::Continue(); }
+    }
+
+    auto autopos = vec2_type((f32) a_event.m_X.m_abs, (f32) a_event.m_Y.m_abs);
     m_mouseMovements.push_back(autopos);
     
     return core_dispatch::f_event::Continue();

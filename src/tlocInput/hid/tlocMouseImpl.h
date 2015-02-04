@@ -19,17 +19,26 @@ namespace tloc { namespace input { namespace hid {
   public:
     enum ButtonCode
     {
-      none    = 0,
-      left    = 1 << 0,
-      right   = 1 << 1,
-      middle  = 1 << 2,
-      button4 = 1 << 3,
-      button5 = 1 << 4,
-      button6 = 1 << 5,
-      button7 = 1 << 6,
-      button8 = 1 << 7,
+      none      = 0,
+      left      = 1 << 0,
+      k_left    = left,
+      right     = 1 << 1,
+      k_right   = right,
+      middle    = 1 << 2,
+      k_middle  = middle,
+      button4   = 1 << 3,
+      k_button4 = button4,
+      button5   = 1 << 4,
+      k_button5 = button5,
+      button6   = 1 << 5,
+      k_button6 = button6,
+      button7   = 1 << 6,
+      k_button7 = button7,
+      button8   = 1 << 7,
+      k_button8 = button8,
 
       count = core::utils::EnumCounter_T<button8, true>::result,
+      k_count = count,
     };  typedef s32 button_code_type;
 
   public:

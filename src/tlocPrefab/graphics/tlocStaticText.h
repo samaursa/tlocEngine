@@ -35,6 +35,7 @@ namespace tloc { namespace prefab { namespace graphics {
     void          Add(entity_ptr a_ent, BufferArgW a_text, font_ptr a_font) const;
 
     TLOC_DECL_PARAM_VAR(align_type, Alignment, m_alignment);
+    TLOC_DECL_PARAM_VAR(align_type, HorizontalAlignment, m_horAlignment);
     TLOC_DECL_PARAM_VAR(real_type, VerticalKerning, m_verticalKern);
   };
 

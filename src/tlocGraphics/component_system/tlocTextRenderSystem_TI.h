@@ -36,13 +36,16 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_str::String                                  string_type;
     typedef math_t::Mat2f32                                   scale_type;
     typedef tl_float                                          real_type;
+    typedef core::Pair<real_type, real_type>                  real_pair;
 
+  public:
     struct CharacterInfo
     {
       typedef CharacterInfo     this_type;
 
       TLOC_DECL_PARAM_VAR(math_cs::transform_sptr, Transformation, m_trans);
       TLOC_DECL_PARAM_VAR(math_t::Rectf_bl, Rectangle, m_rect);
+      TLOC_DECL_PARAM_VAR(tl_ulong, Character, m_char);
     };
 
   public:
@@ -71,7 +74,7 @@ namespace tloc { namespace graphics { namespace component_system {
     
     ~TextRenderSystem_TI();
 
-    void         DoAlignLine(const_glyph_info_itr a_begin, 
+    real_pair    DoAlignLine(const_glyph_info_itr a_begin, 
                              const_glyph_info_itr a_end,
                              tl_int a_beginIndex,
                              text_ptr a_text,

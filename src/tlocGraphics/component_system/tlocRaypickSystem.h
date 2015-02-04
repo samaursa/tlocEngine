@@ -102,6 +102,16 @@ namespace tloc { namespace graphics { namespace component_system {
     }
   };
 
+  namespace p_raypick_system
+  {
+    typedef enum
+    {
+      k_continuous,
+      k_continuous_on_click,
+      k_on_click,
+    } mode;
+  };
+
   // ///////////////////////////////////////////////////////////////////////
   // RaypickSystem
 
@@ -130,6 +140,9 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef math_t::Mat4f32                             matrix_type;
     typedef gfx_t::Dimension2                           dim_type;
 
+    typedef p_raypick_system::mode                      picking_mode;
+    typedef input_hid::MouseEvent::button_code_type     button_code;
+
   public:
     RaypickSystem(event_manager_ptr, entity_manager_ptr);
 
@@ -138,13 +151,24 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void       ProcessEntity(entity_ptr, f64) override;
     virtual void       Post_ProcessActiveEntities(f64) override;
 
-    void  SetCamera(entity_ptr a_camera);
+    this_type&  SetCamera(entity_ptr a_camera);
     TLOC_DECL_AND_DEF_GETTER(entity_ptr, GetCamera, m_sharedCamera);
 
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(dim_type, SetWindowDimensions, m_windowDim);
     TLOC_DECL_AND_DEF_GETTER(dim_type, GetWindowDimensions, m_windowDim);
 
+    this_type& SetPickingMode(picking_mode a_mode, 
+                              button_code a_button = input_hid::MouseEvent::left);
+    TLOC_DECL_AND_DEF_GETTER(picking_mode, GetPickingMode, m_pickingMode);
+    TLOC_DECL_AND_DEF_GETTER(button_code, GetPickingButton, m_pickingButton);
+
   public:
+    event_type OnMouseButtonPress(const tl_size, 
+                                  const input_hid::MouseEvent&, 
+                                  const input_hid::MouseEvent::button_code_type);
+    event_type OnMouseButtonRelease(const tl_size, 
+                                    const input_hid::MouseEvent&, 
+                                    const input_hid::MouseEvent::button_code_type);
     event_type OnMouseMove(const tl_size, const input_hid::MouseEvent&);
 
     using dispatcher_base_type::Register;
@@ -163,6 +187,9 @@ namespace tloc { namespace graphics { namespace component_system {
     matrix_type           m_camViewMat;
     matrix_type           m_camViewMatInv;
     matrix_type           m_camTransMat;
+
+    picking_mode          m_pickingMode;
+    button_code           m_pickingButton;  
   };
   TLOC_DEF_TYPE(RaypickSystem);
 

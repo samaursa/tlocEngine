@@ -256,7 +256,7 @@ namespace tloc { namespace graphics { namespace component_system {
     MeshRenderSystem_T(event_manager_ptr a_eventMgr, 
                        entity_manager_ptr a_entityMgr)
     : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<mesh_comp_type>(), 
+                register_type().template Add<mesh_comp_type>(),
                 "MeshRenderSystem")
   { }
 
@@ -278,7 +278,7 @@ namespace tloc { namespace graphics { namespace component_system {
     InitializeEntity(entity_ptr a_ent) -> error_type
   {
     TLOC_LOG_CORE_WARN_FILENAME_ONLY_IF
-      (a_ent->HasComponent<gfx_cs::Material>() == false) 
+      (a_ent->template HasComponent<gfx_cs::Material>() == false) 
       << "Entity " << *a_ent << " doesn't have a material.";
 
     DoInitializeMesh(a_ent, static_dynamic_type(), rendering_technique());
@@ -322,10 +322,10 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     typedef gfx_cs::Material          mat_type;
 
-    if (a_ent->HasComponent<gfx_cs::Material>() == false)
+    if (a_ent->template HasComponent<gfx_cs::Material>() == false)
     { return; }
 
-    auto  matPtr = a_ent->GetComponent<gfx_cs::Material>();
+    auto  matPtr = a_ent->template GetComponent<gfx_cs::Material>();
 
     DoProcessMesh(a_ent, static_dynamic_type(), rendering_technique());
     DoProcessTextureCoords(a_ent, static_dynamic_type(), rendering_technique());
@@ -340,36 +340,41 @@ namespace tloc { namespace graphics { namespace component_system {
       // -----------------------------------------------------------------------
       // view matrix
 
-      if (matPtr->IsUniformEnabled<k_viewMatrix>())
-      { matPtr->GetUniform<k_viewMatrix>()->SetValueAs(m_viewMatrix); }
+      if (matPtr->template IsUniformEnabled<k_viewMatrix>())
+      { matPtr->template GetUniform<k_viewMatrix>()->SetValueAs(m_viewMatrix); }
 
-      if (matPtr->IsUniformEnabled<k_viewMatrixInverse>())
+      if (matPtr->template IsUniformEnabled<k_viewMatrixInverse>())
       { 
-        matPtr->GetUniform<k_viewMatrixInverse>()->
+        matPtr->template GetUniform<k_viewMatrixInverse>()->
           SetValueAs(DoInvertOrIdentity(m_viewMatrix, "ViewMatrix")); 
       }
 
       // -----------------------------------------------------------------------
       // projection matrix
 
-      if (matPtr->IsUniformEnabled<k_projectionMatrix>())
-      { matPtr->GetUniform<k_projectionMatrix>()->SetValueAs(m_projMat); }
+      if (matPtr->template IsUniformEnabled<k_projectionMatrix>())
+      {
+        matPtr->template GetUniform<k_projectionMatrix>()->SetValueAs(m_projMat);
+      }
 
-      if (matPtr->IsUniformEnabled<k_projectionMatrixInverse>())
+      if (matPtr->template IsUniformEnabled<k_projectionMatrixInverse>())
       { 
-        matPtr->GetUniform<k_projectionMatrixInverse>()->
+        matPtr->template GetUniform<k_projectionMatrixInverse>()->
           SetValueAs(DoInvertOrIdentity(m_projMat, "ProjectionMatrix"));
       }
 
       // -----------------------------------------------------------------------
       // view projection matrix
 
-      if (matPtr->IsUniformEnabled<k_viewProjectionMatrix>())
-      { matPtr->GetUniform<k_viewProjectionMatrix>()->SetValueAs(m_vpMatrix); }
+      if (matPtr->template IsUniformEnabled<k_viewProjectionMatrix>())
+      {
+        matPtr->template GetUniform<k_viewProjectionMatrix>()->
+          SetValueAs(m_vpMatrix);
+      }
 
-      if (matPtr->IsUniformEnabled<k_viewProjectionMatrixInverse>())
+      if (matPtr->template IsUniformEnabled<k_viewProjectionMatrixInverse>())
       { 
-        matPtr->GetUniform<k_viewProjectionMatrixInverse>()->
+        matPtr->template GetUniform<k_viewProjectionMatrixInverse>()->
           SetValueAs(DoInvertOrIdentity(m_vpMatrix, "ViewProjMatrix")); 
       }
     }
@@ -380,7 +385,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_LOG_GFX_WARN_NO_FILENAME_IF(matSO->size_attributeVBOs() > 0)
       << "Material's ShaderOperator should not have any attributes";
 
-    auto  meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    auto  meshPtr = a_ent->template GetComponent<mesh_comp_type>();
     auto  meshSO = meshPtr->DoGetShaderOperator();
     //DoUpdateTexCoords(a_ent, *meshSO);
 
@@ -443,12 +448,12 @@ namespace tloc { namespace graphics { namespace component_system {
     DoInitializeMesh(entity_ptr a_ent, p_mesh::Dynamic , 
                      p_mesh_render_sytem::NonInstanced )
   {
-    auto meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    auto meshPtr = a_ent->template GetComponent<mesh_comp_type>();
     meshPtr->SetUpdateRequired(false);
 
     gfx_cs::material_sptr matPtr;
-    if (a_ent->HasComponent<gfx_cs::Material>())
-    { matPtr = a_ent->GetComponent<gfx_cs::Material>(); }
+    if (a_ent->template HasComponent<gfx_cs::Material>())
+    { matPtr = a_ent->template GetComponent<gfx_cs::Material>(); }
     else // create material temporarily for names
     { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
     
@@ -551,16 +556,17 @@ namespace tloc { namespace graphics { namespace component_system {
 
     using math_t::Mat4f32; using math_t::Mat3f32; using math_t::Vec4f32;
 
-    math_cs::transform_f32_sptr t = a_ent->GetComponent<math_cs::Transformf32>();
+    math_cs::transform_f32_sptr t =
+      a_ent->template GetComponent<math_cs::Transformf32>();
 
     const auto scaleVec = t->GetScale();
 
     Mat4f32 modelMatrix; modelMatrix.MakeIdentity();
-    if (a_ent->HasComponent<gfx_cs::SceneNode>())
+    if (a_ent->template HasComponent<gfx_cs::SceneNode>())
     { 
-      modelMatrix = a_ent->GetComponent<gfx_cs::SceneNode>()->GetWorldTransform();
+      modelMatrix = a_ent->template GetComponent<gfx_cs::SceneNode>()->GetWorldTransform();
     }
-    else if (a_ent->HasComponent<math_cs::Transform>())
+    else if (a_ent->template HasComponent<math_cs::Transform>())
     { 
       modelMatrix = t->GetTransformation().Cast<Mat4f32>();
     }
@@ -568,58 +574,59 @@ namespace tloc { namespace graphics { namespace component_system {
     // -----------------------------------------------------------------------
     // populate and enable uniforms/attributes as needed
 
-    auto  meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    auto  meshPtr = a_ent->template GetComponent<mesh_comp_type>();
 
     if (meshPtr->IsUpdateRequired())
     {
       InitializeEntity(a_ent);
-      meshPtr = a_ent->GetComponent<mesh_comp_type>();
+      meshPtr = a_ent->template GetComponent<mesh_comp_type>();
     }
 
     using namespace p_renderable::uniforms;
 
     // model view projection
-    if (meshPtr->IsUniformEnabled<k_modelViewProjectionMatrix>())
+    if (meshPtr->template IsUniformEnabled<k_modelViewProjectionMatrix>())
     { 
       // mvp matrix
       Mat4f32 tFinalMat = m_vpMatrix * modelMatrix;
-      meshPtr->GetUniform<k_modelViewProjectionMatrix>()->SetValueAs(tFinalMat);
+      meshPtr->template GetUniform<k_modelViewProjectionMatrix>()->
+        SetValueAs(tFinalMat);
     }
     
-    if (meshPtr->IsUniformEnabled<k_modelViewProjectionMatrixInverse>())
+    if (meshPtr->template IsUniformEnabled<k_modelViewProjectionMatrixInverse>())
     { 
       Mat4f32 tFinalMat = m_vpMatrix * modelMatrix;
-      meshPtr->GetUniform<k_modelViewProjectionMatrixInverse>()->
+      meshPtr->template GetUniform<k_modelViewProjectionMatrixInverse>()->
         SetValueAs(DoInvertOrIdentity(tFinalMat, "ModelViewProjectionMatrix")); 
     }
 
     // model view
-    if (meshPtr->IsUniformEnabled<k_modelViewMatrix>())
+    if (meshPtr->template IsUniformEnabled<k_modelViewMatrix>())
     { 
       const auto mvMat = m_viewMatrix * modelMatrix;
-      meshPtr->GetUniform<k_modelViewMatrix>()->SetValueAs(mvMat);
+      meshPtr->template GetUniform<k_modelViewMatrix>()->SetValueAs(mvMat);
     }
     
-    if (meshPtr->IsUniformEnabled<k_modelViewMatrixInverse>())
+    if (meshPtr->template IsUniformEnabled<k_modelViewMatrixInverse>())
     { 
       auto mvMatInv = m_viewMatrix * modelMatrix;
       mvMatInv = DoInvertOrIdentity(mvMatInv, "ModelViewMatrix");
 
-      meshPtr->GetUniform<k_modelViewMatrixInverse>()->SetValueAs(mvMatInv); 
+      meshPtr->template GetUniform<k_modelViewMatrixInverse>()->SetValueAs(mvMatInv);
     }
 
     // model
-    if (meshPtr->IsUniformEnabled<k_modelMatrix>())
-    { meshPtr->GetUniform<k_modelMatrix>()->SetValueAs(modelMatrix); }
+    if (meshPtr->template IsUniformEnabled<k_modelMatrix>())
+    { meshPtr->template GetUniform<k_modelMatrix>()->SetValueAs(modelMatrix); }
 
-    if (meshPtr->IsUniformEnabled<k_modelMatrixInverse>())
+    if (meshPtr->template IsUniformEnabled<k_modelMatrixInverse>())
     { 
-      meshPtr->GetUniform<k_modelMatrixInverse>()->
+      meshPtr->template GetUniform<k_modelMatrixInverse>()->
         SetValueAs(DoInvertOrIdentity(modelMatrix, "ModelMatrix")); 
     }
 
     // scale
-    if (meshPtr->IsUniformEnabled<k_scaleMatrix>())
+    if (meshPtr->template IsUniformEnabled<k_scaleMatrix>())
     { 
       Mat3f32 scaleMat;
 
@@ -628,10 +635,10 @@ namespace tloc { namespace graphics { namespace component_system {
       scaleMat[4] = scaleVec[1];
       scaleMat[8] = scaleVec[2];
 
-      meshPtr->GetUniform<k_scaleMatrix>()->SetValueAs(scaleMat);
+      meshPtr->template GetUniform<k_scaleMatrix>()->SetValueAs(scaleMat);
     }
 
-    if (meshPtr->IsUniformEnabled<k_scaleMatrixInverse>())
+    if (meshPtr->template IsUniformEnabled<k_scaleMatrixInverse>())
     { 
       Mat3f32 scaleMat;
 
@@ -640,39 +647,39 @@ namespace tloc { namespace graphics { namespace component_system {
       scaleMat[4] = scaleVec[1];
       scaleMat[8] = scaleVec[2];
 
-      meshPtr->GetUniform<k_scaleMatrixInverse>()->
+      meshPtr->template GetUniform<k_scaleMatrixInverse>()->
         SetValueAs(DoInvertOrIdentity(scaleMat, "ScaleMatrix")); 
     }
 
     // scale vector
-    if (meshPtr->IsUniformEnabled<k_scaleMatrix>())
+    if (meshPtr->template IsUniformEnabled<k_scaleMatrix>())
     {
-      meshPtr->GetUniform<k_scaleVector>()->SetValueAs(scaleVec);
+      meshPtr->template GetUniform<k_scaleVector>()->SetValueAs(scaleVec);
     }
 
-    if (meshPtr->IsUniformEnabled<k_scaleMatrixInverse>())
+    if (meshPtr->template IsUniformEnabled<k_scaleMatrixInverse>())
     { 
-      meshPtr->GetUniform<k_scaleMatrixInverse>()->
+      meshPtr->template GetUniform<k_scaleMatrixInverse>()->
         SetValueAs(scaleVec.Inverse()); 
     }
 
     // normal
-    if (meshPtr->IsUniformEnabled<k_normalMatrix>())
+    if (meshPtr->template IsUniformEnabled<k_normalMatrix>())
     { 
       math_t::Mat4f32 normMatrix = m_viewMatrix * modelMatrix;
       normMatrix = DoInvertOrIdentity(normMatrix, "NormalMatrix");
       normMatrix = normMatrix.Transpose();
 
-      meshPtr->GetUniform<k_normalMatrix>()->
+      meshPtr->template GetUniform<k_normalMatrix>()->
         SetValueAs(normMatrix.ConvertTo<math_t::Mat3f32>());
     }
-    if (meshPtr->IsUniformEnabled<k_normalMatrixInverse>())
+    if (meshPtr->template IsUniformEnabled<k_normalMatrixInverse>())
     { 
       math_t::Mat4f32 normMatrix = m_viewMatrix * modelMatrix;
       normMatrix = DoInvertOrIdentity(normMatrix, "ViewModelMatrix");
       normMatrix = normMatrix.Transpose();
 
-      meshPtr->GetUniform<k_normalMatrixInverse>()->
+      meshPtr->template GetUniform<k_normalMatrixInverse>()->
         SetValueAs(DoInvertOrIdentity(normMatrix.ConvertTo<math_t::Mat3f32>(), 
                                       "NormalMatrix"));
     }
@@ -717,21 +724,22 @@ namespace tloc { namespace graphics { namespace component_system {
     DoProcessTextureCoords(entity_ptr a_ent, p_mesh::Dynamic , 
                            p_mesh_render_sytem::NonInstanced )
   {
-    if (a_ent->HasComponent<gfx_cs::TextureCoords>() == false)
+    if (a_ent->template HasComponent<gfx_cs::TextureCoords>() == false)
     { return ; }
 
-    auto meshPtr = a_ent->GetComponent<mesh_comp_type>();
+    gfx_cs::mesh_sptr meshPtr = a_ent->template GetComponent<mesh_comp_type>();
     auto so = meshPtr->DoGetShaderOperator();
     const auto& texCoordPrefix = 
       meshPtr->GetAttributeName<p_renderable::attributes::k_texCoordPrefix>();
 
-    const auto numTexCoords = a_ent->size_components<gfx_cs::TextureCoords>();
+    const auto numTexCoords =
+      a_ent->template size_components<gfx_cs::TextureCoords>();
 
     typedef gfx_cs::TextureCoords::set_index          set_index;
 
     for (tl_size i = 0; i < numTexCoords; ++i)
     {
-      auto tcPtr = a_ent->GetComponent<gfx_cs::TextureCoords>(i);
+      auto tcPtr = a_ent->template GetComponent<gfx_cs::TextureCoords>(i);
 
       if (tcPtr->IsUpdateRequired() == false)
       { continue; }
@@ -769,9 +777,12 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // explicit instantiation
 
-  template class MeshRenderSystem_T<>;
-  template class MeshRenderSystem_T<gfx_rend::renderer_depth32_sptr>;
+  template class MeshRenderSystem_T<gfx_rend::renderer_sptr>;
   template class MeshRenderSystem_T<gfx_rend::renderer_depth64_sptr>;
+
+  // Note: Since the Renderer, and Renderer_depth32 are both Renderer_T<f32>
+  // we can only explicitly instantiate one of them
+  // template class MeshRenderSystem_T<gfx_rend::renderer_depth32_sptr>;
 
 };};};
 

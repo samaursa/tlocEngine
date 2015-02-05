@@ -119,9 +119,21 @@ namespace tloc { namespace graphics { namespace renderer {
 
     namespace polygon_mode {
 
+#if defined (TLOC_OS_WIN)
+
       const value_type Point::s_glParamName            = GL_POINT;
       const value_type Line::s_glParamName             = GL_LINE;
       const value_type Fill::s_glParamName             = GL_FILL;
+
+#elif defined (TLOC_OS_IPHONE)
+
+      const value_type Point::s_glParamName            = TLOC_GL_UNSUPPORTED;
+      const value_type Line::s_glParamName             = TLOC_GL_UNSUPPORTED;
+      const value_type Fill::s_glParamName             = GL_TRUE;
+
+#else
+# error "WIP"
+#endif
 
     };
 
@@ -145,7 +157,7 @@ namespace tloc { namespace graphics { namespace renderer {
     , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
     , m_clearBits(0)
     , m_faceToCull(GL_NONE)
-    , m_polyMode(GL_FILL)
+    , m_polyMode(p_renderer::polygon_mode::Fill::s_glParamName)
   {
     using namespace p_renderer;
 
@@ -214,6 +226,19 @@ namespace tloc { namespace graphics { namespace renderer {
   { m_pass.AddDrawCommand(a_command); return *this; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#if defined (TLOC_OS_IPHONE)
+  void glPolygonMode(GLenum , GLenum a_mode)
+  {
+    TLOC_LOG_GFX_WARN_IF(a_mode != p_renderer::polygon_mode::Fill::s_glParamName)
+      << "Invalid polygon mode! OpenGL ES 2.0 only supports Fill";
+  }
+  void glPointSize(GLfloat a_size)
+  {
+    TLOC_LOG_GFX_WARN_IF(a_size != 1.0f)
+      << "Invalid point size! OpenGL ES 2.0 only supports a default size of 1.0f";
+  }
+#endif
 
   template <RENDERER_TEMPS>
   RENDERER_TYPE::error_type

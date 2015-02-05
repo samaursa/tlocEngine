@@ -33,10 +33,20 @@ namespace tloc { namespace prefab { namespace graphics {
        Unsupported_mesh_type);
 
   public:
-    typedef T_MeshType                                    mesh_type;
-    typedef T_StaticDynamic                               static_dynamic_type;
-    typedef Mesh_T<mesh_type, static_dynamic_type>        this_type;
-    typedef Prefab_TI<this_type, component_type>          base_type;
+    typedef T_MeshType                                      mesh_type;
+    typedef T_StaticDynamic                                 static_dynamic_type;
+    typedef gfx_cs::Mesh_T<mesh_type, static_dynamic_type>  component_type;
+
+    typedef Mesh_T<mesh_type, static_dynamic_type>          this_type;
+    typedef Prefab_TI<this_type, component_type>            base_type;
+
+    typedef typename base_type::component_ptr               component_ptr;
+    typedef typename base_type::insert_params               insert_params;
+    typedef typename base_type::entity_mgr_ptr              entity_mgr_ptr;
+    typedef typename base_type::comp_pool_mgr_ptr           comp_pool_mgr_ptr;
+    typedef typename base_type::entity_ptr                  entity_ptr;
+
+    using base_type::GetListeners;
 
   public:
     Mesh_T(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);
@@ -73,6 +83,10 @@ namespace tloc { namespace prefab { namespace graphics {
 
     void  DoAddBoundingBox(entity_ptr) const;
     void  DoAddRaypicking(entity_ptr) const;
+
+  private:
+    using base_type::m_entMgr;
+    using base_type::m_compPoolMgr;
   };
 
   // -----------------------------------------------------------------------
@@ -100,14 +114,14 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef core_cs::ComponentPoolManager                   pool_mgr;
 
     typedef core_conts::Array<T_VertexType>                 vert_cont;
-    typedef vert_cont::const_iterator                       vert_cont_itr;
+    typedef typename vert_cont::const_iterator              vert_cont_itr;
 
     // -----------------------------------------------------------------------
 
     typedef gfx_cs::mesh_pool                     mesh_pool;
 
     gfx_cs::mesh_pool_vptr meshPool
-      = m_compPoolMgr->GetOrCreatePool<gfx_cs::Mesh>();
+      = m_compPoolMgr->template GetOrCreatePool<gfx_cs::Mesh>();
 
     mesh_pool::iterator itrMesh = meshPool->GetNext();
     (*itrMesh)->SetValue(core_sptr::MakeShared<gfx_cs::Mesh>() );

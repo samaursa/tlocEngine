@@ -14,7 +14,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   class VirtualPtr
     : public SmartPtr
   {
-    template <class T, class T2> friend class VirtualPtr;
+    template <class U, class T2> friend class VirtualPtr;
 
   public:
     typedef SmartPtr                                  base_type;

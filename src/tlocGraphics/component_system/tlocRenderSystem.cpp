@@ -173,10 +173,10 @@ namespace tloc { namespace graphics { namespace component_system {
     while (currItr != activeEnts.end())
     {
       material_sptr matPtr = currItr->first->GetComponentIfExists<Material>();
-      while (matPtr == nullptr)
+      if (matPtr == nullptr)
       {
         ++currItr;
-        matPtr = currItr->first->GetComponentIfExists<Material>();
+        continue;
       }
       
       auto endItr = currItr;

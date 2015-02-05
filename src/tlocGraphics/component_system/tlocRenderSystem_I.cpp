@@ -7,6 +7,8 @@ namespace tloc { namespace graphics { namespace component_system {
     enum {
 
       k_enableSortingByMaterial,
+      k_enableSortingFrontToBack,
+      k_enableSortingBackToFront,
 
       k_isDirty,
 
@@ -23,6 +25,7 @@ namespace tloc { namespace graphics { namespace component_system {
     : m_flags(k_count)
   { 
     SetEnabledSortingByMaterial(true);
+    SetEnabledSortingFrontToBack(true);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -40,6 +43,48 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_I::
     SetEnabledSortingByMaterial(bool a_value)
   { m_flags[k_enableSortingByMaterial] = a_value; m_flags.Mark(k_isDirty); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsSortingFrontToBackEnabled() const
+  { return m_flags.IsMarked(k_enableSortingFrontToBack); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledSortingFrontToBack(bool a_value)
+  { 
+    m_flags[k_enableSortingFrontToBack] = a_value; 
+
+    if (IsSortingBackToFrontEnabled() && IsSortingFrontToBackEnabled())
+    { SetEnabledSortingBackToFront(false); }
+
+    m_flags.Mark(k_isDirty);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsSortingBackToFrontEnabled() const
+  { return m_flags.IsMarked(k_enableSortingBackToFront); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledSortingBackToFront(bool a_value)
+  { 
+    m_flags[k_enableSortingBackToFront] = a_value; 
+
+    if (IsSortingBackToFrontEnabled() && IsSortingFrontToBackEnabled())
+    { SetEnabledSortingFrontToBack(false); }
+
+    m_flags.Mark(k_isDirty); 
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

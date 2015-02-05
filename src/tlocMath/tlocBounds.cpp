@@ -121,7 +121,7 @@ namespace tloc { namespace math {
     // is a duplicate of the second vertex
     // TODO: come up with a better way to get the average of vertices arranged
     //       in a circle
-    vec_type center = typename vec_type::ZERO;
+    vec_type center = vec_type::ZERO;
     for (auto itr = a_allPoints.begin(), itrEnd = a_allPoints.end() - 1;
          itr != itrEnd; ++itr)
     { center += (*itr)/sizef; }

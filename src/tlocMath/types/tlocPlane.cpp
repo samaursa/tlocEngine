@@ -153,7 +153,7 @@ namespace tloc { namespace math { namespace types {
                           a_trans[1], a_trans[5], a_trans[9],
                           a_trans[2], a_trans[6], a_trans[10]);
 
-    m_origin = newOrigin.ConvertTo<vec_type>();
+    m_origin = newOrigin.template ConvertTo<vec_type>();
     m_direction = mRot * m_direction;
 
     return *this;

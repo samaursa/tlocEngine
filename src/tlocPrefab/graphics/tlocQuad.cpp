@@ -74,7 +74,7 @@ namespace tloc { namespace prefab { namespace graphics {
 
     typedef typename vert_selector::value_type            vert_type;
     typedef core_conts::Array<vert_type>                  vert_cont;
-    typedef vert_cont::iterator                           vert_itr;
+    typedef typename vert_cont::iterator                  vert_itr;
 
     auto pos0 = Vec2f32(m_rect.GetValue<rect_type::right>(), 
                         m_rect.GetValue<rect_type::top>());
@@ -138,19 +138,19 @@ namespace tloc { namespace prefab { namespace graphics {
     // -----------------------------------------------------------------------
     // transform component
 
-    if (a_ent->HasComponent<math_cs::Transform>() == false)
+    if (a_ent->template HasComponent<math_cs::Transform>() == false)
     { pref_math::Transform(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // raypick
 
-    if (a_ent->HasComponent<gfx_cs::Raypick>() == false && m_raypick)
+    if (a_ent->template HasComponent<gfx_cs::Raypick>() == false && m_raypick)
     { pref_gfx::Raypick(m_entMgr, m_compPoolMgr).Add(a_ent); }
 
     // -----------------------------------------------------------------------
     // bounding box
 
-    if (a_ent->HasComponent<gfx_cs::BoundingBox2D>() == false && 
+    if (a_ent->template HasComponent<gfx_cs::BoundingBox2D>() == false && 
         (m_boundingBox || m_raypick))
     { pref_gfx::BoundingBox2D(m_entMgr, m_compPoolMgr).Add(a_ent); }
 

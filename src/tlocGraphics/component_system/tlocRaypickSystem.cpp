@@ -60,6 +60,7 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_windowDim(core_ds::MakeTuple(1000.0f, 1000.0f))
     , m_pickingMode(p_raypick_system::k_on_click)
     , m_pickingButton(input_hid::MouseEvent::k_left)
+    , m_currentTouch(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -423,6 +424,62 @@ namespace tloc { namespace graphics { namespace component_system {
 
     auto autopos = vec2_type((f32) a_event.m_X.m_abs, (f32) a_event.m_Y.m_abs);
     m_mouseMovements.push_back(autopos);
+    
+    return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
+    OnTouchPress(const tl_size,
+                 const input::TouchSurfaceEvent& a_event)
+                 -> event_type
+  {
+    if (m_currentTouch == 0)
+    {
+      m_currentTouch = a_event.m_touchHandle;
+      auto autopos =  vec2_type((f32)a_event.m_X.m_abs, (f32)a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
+
+    return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
+    OnTouchRelease(const tl_size,
+                   const input::TouchSurfaceEvent& a_event)
+                   -> event_type
+  {
+    if (a_event.m_touchHandle != m_currentTouch)
+    { return core_dispatch::f_event::Continue(); }
+
+    m_currentTouch = 0;
+
+    if (m_pickingMode != p_raypick_system::k_on_click)
+    {
+      auto autopos =  vec2_type((f32)a_event.m_X.m_abs, (f32)a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
+
+    return core_dispatch::f_event::Continue();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    RaypickSystem::
+    OnTouchMove(const tl_size, const input::TouchSurfaceEvent& a_event) -> event_type
+  {
+    if (a_event.m_touchHandle == m_currentTouch &&
+        m_pickingMode != p_raypick_system::k_on_click)
+    {
+      auto autopos = vec2_type((f32) a_event.m_X.m_abs, (f32) a_event.m_Y.m_abs);
+      m_mouseMovements.push_back(autopos);
+    }
     
     return core_dispatch::f_event::Continue();
   }

@@ -91,9 +91,10 @@ namespace tloc { namespace graphics { namespace component_system {
   BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
     BoundingBoxRenderSystem_T(event_manager_ptr a_eventMgr, 
                               entity_manager_ptr a_entityMgr)
-    : base_type(a_eventMgr, a_entityMgr,
-                register_type().Add<BoundingBox2D>().Add<BoundingBox3D>(), 
-                "BoundingBoxRenderSystem")
+    : base_type
+      (a_eventMgr, a_entityMgr,
+       register_type().template Add<BoundingBox2D>().template Add<BoundingBox3D>(),
+       "BoundingBoxRenderSystem")
     , m_vsSource(core_io::FileContents(core_io::Path
         ("hard_coded_default_shader/defaultVSBoundingBox.glsl"), vsSource))
     , m_fsSource(core_io::FileContents(core_io::Path
@@ -102,7 +103,7 @@ namespace tloc { namespace graphics { namespace component_system {
     m_matSys = m_scene->AddSystem<gfx_cs::MaterialSystem>();
     m_matSys->SetDefaultShaders(m_vsSource, m_fsSource);
 
-    m_meshSys = m_scene->AddSystem<mesh_sys_ptr::value_type>();
+    m_meshSys = m_scene->AddSystem<typename mesh_sys_ptr::value_type>();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -149,7 +150,7 @@ namespace tloc { namespace graphics { namespace component_system {
         != m_entityPairs.end())
     { return ErrorSuccess; }
 
-    if (a_ent->HasComponent<math_cs::Transformf32>() == false)
+    if (a_ent->template HasComponent<math_cs::Transformf32>() == false)
     {
       TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "Entity " << a_ent 
         << " does not have a Transform component.";
@@ -157,15 +158,15 @@ namespace tloc { namespace graphics { namespace component_system {
       return ErrorFailure;
     }
 
-    auto t      = a_ent->GetComponent<math_cs::Transformf32>();
+    auto t      = a_ent->template GetComponent<math_cs::Transformf32>();
     auto entMgr = m_scene->GetEntityManager();
     auto newEnt = entMgr->CreateEntity();
 
     m_entityPairs.push_back(core::MakePair(a_ent, newEnt));
       
-    if (a_ent->HasComponent<BoundingBox2D>())
+    if (a_ent->template HasComponent<BoundingBox2D>())
     {
-      auto bb = a_ent->GetComponent<BoundingBox2D>();
+      auto bb = a_ent->template GetComponent<BoundingBox2D>();
       entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t)
                               .Orphan(true));
       m_scene->CreatePrefab<pref_gfx::Material>()
@@ -184,7 +185,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
     else
     {
-      auto bb = a_ent->GetComponent<BoundingBox3D>();
+      auto bb = a_ent->template GetComponent<BoundingBox3D>();
       entMgr->InsertComponent(core_cs::EntityManager::Params(newEnt, t)
                               .Orphan(true));
       m_scene->CreatePrefab<pref_gfx::cuboid_no_normals_no_tex>()
@@ -272,9 +273,12 @@ namespace tloc { namespace graphics { namespace component_system {
   // -----------------------------------------------------------------------
   // explicit instantiation
 
-  template class BoundingBoxRenderSystem_T<>;
-  template class BoundingBoxRenderSystem_T<gfx_rend::renderer_depth32_sptr>;
+  template class BoundingBoxRenderSystem_T<gfx_rend::renderer_sptr>;
   template class BoundingBoxRenderSystem_T<gfx_rend::renderer_depth64_sptr>;
+
+  // Note: Since the Renderer, and Renderer_depth32 are both Renderer_T<f32>
+  // we can only explicitly instantiate one of them
+  // template class BoundingBoxRenderSystem_T<gfx_rend::Renderer_depth32_sptr>;
 
 };};};
 

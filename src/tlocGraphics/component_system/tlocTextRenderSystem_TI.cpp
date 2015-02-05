@@ -142,7 +142,7 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     typedef core_cs::const_entity_ptr_array       ent_cont;
 
-    text_ptr text = a_pair.first->GetComponent<text_type>();
+    text_ptr text = a_pair.first->template GetComponent<text_type>();
 
     if (a_pair.second.size() == 0)
     { return; }
@@ -191,7 +191,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       // our parent entity (which is the text component the user created) is
       // our base line
-      const auto& parentEntPos = a_pair.first->GetComponent<math_cs::Transform>()->GetPosition();
+      const auto& parentEntPos =
+        a_pair.first->template GetComponent<math_cs::Transform>()->GetPosition();
       const auto firstLineOffset = heights[0].second - parentEntPos[1];
 
       auto allLinesHeightHalf = 
@@ -468,7 +469,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { sn->RemoveChild(*sn->begin()); }
 
     // remove the cached entity
-    text_quads_cont::iterator itr = 
+    typename text_quads_cont::iterator itr =
       find_if_all(m_allText, core::algos::pair::compare::MakeFirst(a_ent));
 
     if (itr != m_allText.end())

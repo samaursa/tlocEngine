@@ -219,12 +219,10 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     if (m_sharedCam)
     {
-      for (auto itr = m_entPairsSegmentByMat.begin(), itrEnd = m_entPairsSegmentByMat.end();
-           itr != itrEnd; ++itr)
-      {
-        core::sort(DoGetActiveEntities().begin(), DoGetActiveEntities().end(), 
-                   CompareBackToFront(m_sharedCam), core::sort_insertionsort());
-      }
+      auto& activeEnts = DoGetActiveEntities();
+      
+      core::sort(activeEnts.begin(), activeEnts.end(),
+                 CompareBackToFront(m_sharedCam), core::sort_insertionsort());
     }
   }
   

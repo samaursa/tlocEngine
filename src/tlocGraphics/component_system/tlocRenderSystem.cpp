@@ -34,7 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const auto& aa = extract()(a);
 
-      auto matPtr = aa.first->GetComponentIfExists<comp_type>();
+      auto matPtr = aa.first->template GetComponentIfExists<comp_type>();
 
       if (matPtr)
       { return matPtr == m_value; }
@@ -81,8 +81,8 @@ namespace tloc { namespace graphics { namespace component_system {
       const auto& aa = extract()(a);
       const auto& bb = extract()(b);
 
-      const auto& aaTrans  = aa.first->GetComponent<comp_type>();
-      const auto& bbTrans  = bb.first->GetComponent<comp_type>();
+      const auto& aaTrans  = aa.first->template GetComponent<comp_type>();
+      const auto& bbTrans  = bb.first->template GetComponent<comp_type>();
       const auto& camTrans = m_value->GetComponent<comp_type>();
 
       const auto& aaPos   = aaTrans->GetPosition();
@@ -111,8 +111,8 @@ namespace tloc { namespace graphics { namespace component_system {
       const auto& aa = extract()(a);
       const auto& bb = extract()(b);
 
-      const auto& aaTrans  = aa.first->GetComponent<comp_type>();
-      const auto& bbTrans  = bb.first->GetComponent<comp_type>();
+      const auto& aaTrans  = aa.first->template GetComponent<comp_type>();
+      const auto& bbTrans  = bb.first->template GetComponent<comp_type>();
       const auto& camTrans = m_value->GetComponent<comp_type>();
 
       const auto& aaPos   = aaTrans->GetPosition();
@@ -172,7 +172,7 @@ namespace tloc { namespace graphics { namespace component_system {
     auto currItr = activeEnts.begin();
     while (currItr != activeEnts.end())
     {
-      material_sptr matPtr = currItr->first->GetComponentIfExists<Material>();
+      material_sptr matPtr = currItr->first->template GetComponentIfExists<Material>();
       if (matPtr == nullptr)
       {
         ++currItr;

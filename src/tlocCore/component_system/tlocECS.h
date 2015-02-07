@@ -74,6 +74,10 @@ namespace tloc { namespace core { namespace component_system {
       AddSystem(const Args<T1, T2, T3, T4, T5>& a_param, 
                 time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
 
+    template <typename T_ComponentPtr>
+    void 
+      InsertComponent(core_cs::entity_vptr a_ent, T_ComponentPtr a_comp);
+
   public: // prefab construction
 
     template <typename T_Prefab>
@@ -264,6 +268,14 @@ namespace tloc { namespace core { namespace component_system {
 
     return sysPtr;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_ComponentPtr>
+  void
+    ECS::
+    InsertComponent(core_cs::entity_vptr a_ent, T_ComponentPtr a_comp)
+  { m_entMgr->InsertComponent(core_cs::EntityManager::Params(a_ent, a_comp)); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

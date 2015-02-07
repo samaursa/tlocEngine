@@ -22,10 +22,19 @@ namespace tloc { namespace core { namespace utils {
   class MemoryAddress
   {
   public:
+    typedef MemoryAddress               this_type;
+
+  public:
 
     template <typename T>
     explicit MemoryAddress(const T& a_value)
     { m_memAddress = GetMemoryAddress(a_value); }
+
+    bool operator==(const this_type& a_other) const
+    { return m_memAddress == a_other.m_memAddress; }
+    bool operator< (const this_type& a_other) const
+    { return m_memAddress < a_other.m_memAddress; }
+    TLOC_DECLARE_OPERATORS(this_type);
 
     tl_uintptr  m_memAddress;
   };

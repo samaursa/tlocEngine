@@ -33,11 +33,15 @@ namespace tloc { namespace graphics { namespace renderer {
     typedef gl::shader_operator_vptr            shader_op_ptr;
     typedef gl::shader_program_vptr             shader_prog_ptr;
     typedef gl::vao_vptr                        vao_ptr;
+    typedef core_utils::MemoryAddress           mem_address;
 
     typedef core_conts::Array<shader_op_ptr>    shader_ops;
 
   public:
-    DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp);
+    // Material pointer address is to help us figure out if we can avoid 
+    // unnecessary shader-operator operations in subsequent draw calls
+    DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp, 
+                mem_address a_matPtrAddress);
 
   public:
     this_type&            AddShaderOperator(const shader_op_ptr& a_so);
@@ -54,10 +58,12 @@ namespace tloc { namespace graphics { namespace renderer {
     TLOC_DECL_AND_DEF_GETTER(vao_ptr,         GetVAO, m_vao);
     TLOC_DECL_AND_DEF_GETTER(shader_prog_ptr, GetShaderProgram, m_shaderProg);
     TLOC_DECL_AND_DEF_GETTER(shader_op_ptr,   GetMaterialSO, m_materialSO);
+    TLOC_DECL_AND_DEF_GETTER(mem_address,     GetMaterialAddress, m_matPtrAddress);
 
   private:
     shader_prog_ptr m_shaderProg;
     shader_op_ptr   m_materialSO;
+    mem_address     m_matPtrAddress;
 
     mode_type       m_drawMode;
     index_type      m_startIndex;
@@ -83,6 +89,7 @@ namespace tloc { namespace graphics { namespace renderer {
 
     typedef command_type::shader_op_ptr         shader_op_ptr;
     typedef command_type::shader_prog_ptr       shader_prog_ptr;
+    typedef command_type::mem_address           mem_address;
 
   public:
     RenderPass();

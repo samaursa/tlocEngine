@@ -57,13 +57,6 @@ namespace tloc { namespace graphics { namespace media {
   class ImageLoaderPng;
   TLOC_EXTERN_TEMPLATE_CLASS(ImageLoader_TI<ImageLoaderPng>);
 
-  namespace p_image_loader {
-
-    core_err::Error
-      SaveImage(const Image::const_color_type_ptr& a_imgToWrite);
-
-  };
-
   // -----------------------------------------------------------------------
 
   namespace f_image_loader {

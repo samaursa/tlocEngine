@@ -170,8 +170,8 @@ namespace
     auto ent = ecs.GetEntityManager()->CreateEntity();
     auto ent2 = ecs.GetEntityManager()->CreateEntity();
 
-    ecs.GetEntityManager()->InsertComponent(EntityManager::Params(ent, dummyComp1) );
-    ecs.GetEntityManager()->InsertComponent(EntityManager::Params(ent2, dummyComp2) );
+    ecs.InsertComponent(ent, dummyComp1);
+    ecs.InsertComponent(ent2, dummyComp2);
 
     SECTION("Initialize", "")
     {

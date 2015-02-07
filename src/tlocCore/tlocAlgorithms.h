@@ -56,6 +56,10 @@ namespace tloc { namespace core {
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
     find_if_all(T_Container& a_container, T_Predicate a_pred);
 
+  template <typename T_Container, typename T_Predicate>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    find_if_not_all(T_Container& a_container, T_Predicate a_pred);
+
   template <typename T_InputIterator, typename T>
   T_InputIterator
     find(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
@@ -65,6 +69,11 @@ namespace tloc { namespace core {
   T_InputIterator
     find_if(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
             T_Predicate a_pred);
+
+  template <typename T_InputIterator, typename T_Predicate>
+  T_InputIterator
+    find_if_not(T_InputIterator a_rangeBegin, T_InputIterator a_rangeEnd,
+                T_Predicate a_pred);
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)

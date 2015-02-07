@@ -405,6 +405,23 @@ namespace TestingAlgorithms
     CHECK(*it == 25);
   }
 
+  TEST_CASE("Core/Algorithms/FindIfNot", "")
+  {
+    List<s32> myvector;
+    List<s32>::iterator it;
+
+    myvector.push_back(1);
+    myvector.push_back(3);
+    myvector.push_back(5);
+    myvector.push_back(7);
+    myvector.push_back(10);
+    myvector.push_back(13);
+    myvector.push_back(17);
+
+    it = find_if_not(myvector.begin(), myvector.end(), IsOdd);
+    CHECK(*it == 10);
+  }
+
   bool myfunction (s32 i, s32 j)
   {
     return (i==j);

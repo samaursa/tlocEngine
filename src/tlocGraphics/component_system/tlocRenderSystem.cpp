@@ -182,7 +182,7 @@ namespace tloc { namespace graphics { namespace component_system {
       auto endItr = currItr;
       if (matPtr)
       {
-        endItr = core::find_if(currItr, end, MaterialCompare(matPtr));
+        endItr = core::find_if_not(currItr, end, MaterialCompare(matPtr));
         if (endItr != end)
         { ++endItr; } // we are always looking for past-the-end itr
       }

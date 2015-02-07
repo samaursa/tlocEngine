@@ -75,6 +75,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
     virtual void              SortEntities();
 
+    virtual error_type        Post_Shutdown();
+
     virtual error_type        Pre_Initialize();
     virtual error_type        InitializeEntity(entity_ptr a_ent);
 

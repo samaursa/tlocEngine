@@ -201,10 +201,20 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     if (m_sharedCam)
     {
-      for (auto itr = m_entPairsSegmentByMat.begin(), itrEnd = m_entPairsSegmentByMat.end();
-           itr != itrEnd; ++itr)
+      if (m_entPairsSegmentByMat.size() > 0)
       {
-        core::sort(itr->first, itr->second, 
+        for (auto itr = m_entPairsSegmentByMat.begin(), itrEnd = m_entPairsSegmentByMat.end();
+             itr != itrEnd; ++itr)
+        {
+          core::sort(itr->first, itr->second, 
+                     CompareFrontToBack(m_sharedCam), core::sort_insertionsort());
+        }
+      }
+      else
+      {
+        auto& activeEnts = DoGetActiveEntities();
+
+        core::sort(activeEnts.begin(), activeEnts.end(),
                    CompareFrontToBack(m_sharedCam), core::sort_insertionsort());
       }
     }
@@ -244,10 +254,32 @@ namespace tloc { namespace graphics { namespace component_system {
   template <RENDER_SYSTEM_TEMPS>
   RENDER_SYSTEM_TYPE::error_type
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    Post_Shutdown()
+  { 
+    if (this->IsSortingByMaterialEnabled())
+    { ForceSortEntitiesByMaterial(); }
+    else
+    { m_entPairsSegmentByMat.clear(); }
+
+    SortEntities();
+
+    return base_type::Post_Shutdown(); 
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  RENDER_SYSTEM_TYPE::error_type
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Pre_Initialize()
   { 
-    ForceSortEntitiesByMaterial();
+    if (this->IsSortingByMaterialEnabled())
+    { ForceSortEntitiesByMaterial(); }
+    else
+    { m_entPairsSegmentByMat.clear(); }
+
     SortEntities();
+
     return ErrorSuccess; 
   }
 
@@ -284,7 +316,11 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Post_ReInitialize()
   {
-    ForceSortEntitiesByMaterial();
+    if (this->IsSortingByMaterialEnabled())
+    { ForceSortEntitiesByMaterial(); }
+    else
+    { m_entPairsSegmentByMat.clear(); }
+
     SortEntities();
     return base_type::Post_ReInitialize();
   }
@@ -296,8 +332,6 @@ namespace tloc { namespace graphics { namespace component_system {
     RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
     Pre_ProcessActiveEntities( f64 a_deltaT )
   {
-    SortEntities();
-
     if (m_sharedCam && m_sharedCam->HasComponent<gfx_cs::Camera>())
     {
       m_vpMatrix = m_sharedCam->GetComponent<Camera>()->GetViewProjRef();
@@ -312,6 +346,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     base_type::Pre_ProcessActiveEntities(a_deltaT);
+    SortEntities();
   }
 
   // -----------------------------------------------------------------------

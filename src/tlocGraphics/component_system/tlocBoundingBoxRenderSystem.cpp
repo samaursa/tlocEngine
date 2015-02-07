@@ -256,10 +256,9 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
     Pre_ProcessActiveEntities(f64 a_deltaT)
   { 
-    base_type::Pre_ProcessActiveEntities(a_deltaT);
-
     m_scene->Update();
     m_scene->Process();
+    base_type::Pre_ProcessActiveEntities(a_deltaT);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

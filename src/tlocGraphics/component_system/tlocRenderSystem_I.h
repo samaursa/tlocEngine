@@ -22,6 +22,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
   protected:
     RenderSystem_I();
+    virtual ~RenderSystem_I();
 
   private:
     core_utils::Checkpoints   m_flags;

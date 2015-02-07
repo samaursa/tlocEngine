@@ -389,7 +389,7 @@ namespace tloc { namespace graphics { namespace component_system {
     auto  meshSO = meshPtr->DoGetShaderOperator();
     //DoUpdateTexCoords(a_ent, *meshSO);
 
-    gfx_rend::DrawCommand dc(sp, matSO);
+    gfx_rend::DrawCommand dc(sp, matSO, core_utils::MemoryAddress(matPtr.get()));
     dc.AddShaderOperator(core_sptr::ToVirtualPtr(matPtr->m_internalShaderOp))
       .AddShaderOperator(meshSO)
       .AddShaderOperator(meshPtr->GetUserShaderOperator())

@@ -37,9 +37,11 @@ namespace tloc { namespace graphics { namespace renderer {
   // DrawCommands
 
   DrawCommand::
-    DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp)
+    DrawCommand(shader_prog_ptr a_shader, shader_op_ptr a_materialOp, 
+                mem_address a_matPtrAddress)
     : m_shaderProg(a_shader)
     , m_materialSO(a_materialOp)
+    , m_matPtrAddress(a_matPtrAddress)
     , m_drawMode(mode::k_points) // points is least likely to fail if set incorrectly
     , m_startIndex(0)
     , m_vertexCount(0)
@@ -101,6 +103,7 @@ namespace tloc { namespace graphics { namespace renderer {
   {
     m_numDrawCalls = 0;
     shader_prog_ptr   currShader;
+    mem_address       currMatAddress(nullptr);
 
     for (auto itr = m_commands.begin(), itrEnd = m_commands.end(); 
          itr != itrEnd; ++itr)
@@ -117,6 +120,11 @@ namespace tloc { namespace graphics { namespace renderer {
           TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "ShaderProgram #"
             << currShader->GetHandle() << " could not be enabled";
         }
+      }
+
+      if (currMatAddress != command.GetMaterialAddress())
+      {
+        currMatAddress = command.GetMaterialAddress();
 
         DoPrepAndEnableUniforms(command.GetMaterialSO(), *currShader);
       }

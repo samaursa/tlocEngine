@@ -9,6 +9,8 @@ namespace tloc { namespace graphics { namespace component_system {
       k_enableSortingByMaterial,
       k_enableSortingFrontToBack,
       k_enableSortingBackToFront,
+      k_enableSortingFrontToBack_2d,
+      k_enableSortingBackToFront_2d,
 
       k_isDirty,
 
@@ -65,8 +67,12 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     m_flags[k_enableSortingFrontToBack] = a_value; 
 
-    if (IsSortingBackToFrontEnabled() && IsSortingFrontToBackEnabled())
-    { SetEnabledSortingBackToFront(false); }
+    if (IsSortingFrontToBackEnabled())
+    { 
+      SetEnabledSortingBackToFront_2D(false);
+      SetEnabledSortingFrontToBack_2D(false);
+      SetEnabledSortingBackToFront(false);
+    }
 
     m_flags.Mark(k_isDirty);
   }
@@ -86,8 +92,62 @@ namespace tloc { namespace graphics { namespace component_system {
   { 
     m_flags[k_enableSortingBackToFront] = a_value; 
 
-    if (IsSortingBackToFrontEnabled() && IsSortingFrontToBackEnabled())
-    { SetEnabledSortingFrontToBack(false); }
+    if (IsSortingBackToFrontEnabled())
+    { 
+      SetEnabledSortingBackToFront_2D(false);
+      SetEnabledSortingFrontToBack_2D(false);
+      SetEnabledSortingFrontToBack(false);
+    }
+
+    m_flags.Mark(k_isDirty); 
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsSortingFrontToBackEnabled_2D() const
+  { return m_flags.IsMarked(k_enableSortingFrontToBack_2d); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledSortingFrontToBack_2D(bool a_value)
+  { 
+    m_flags[k_enableSortingFrontToBack_2d] = a_value; 
+
+    if (IsSortingFrontToBackEnabled_2D())
+    { 
+      SetEnabledSortingBackToFront_2D(false);
+      SetEnabledSortingFrontToBack(false);
+      SetEnabledSortingBackToFront(false);
+    }
+
+    m_flags.Mark(k_isDirty);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    RenderSystem_I::
+    IsSortingBackToFrontEnabled_2D() const
+  { return m_flags.IsMarked(k_enableSortingBackToFront_2d); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    SetEnabledSortingBackToFront_2D(bool a_value)
+  { 
+    m_flags[k_enableSortingBackToFront_2d] = a_value; 
+
+    if (IsSortingBackToFrontEnabled_2D())
+    { 
+      SetEnabledSortingFrontToBack_2D(false);
+      SetEnabledSortingFrontToBack(false);
+      SetEnabledSortingBackToFront(false);
+    }
 
     m_flags.Mark(k_isDirty); 
   }

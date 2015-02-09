@@ -386,14 +386,13 @@ namespace tloc { namespace graphics { namespace component_system {
       << "Material's ShaderOperator should not have any attributes";
 
     auto  meshPtr = a_ent->template GetComponent<mesh_comp_type>();
-    auto  meshSO = meshPtr->DoGetShaderOperator();
-    //DoUpdateTexCoords(a_ent, *meshSO);
+    auto  meshSO = meshPtr->GetShaderOperator();
 
     gfx_rend::DrawCommand dc(sp, matSO, core_utils::MemoryAddress(matPtr.get()));
     dc.AddShaderOperator(core_sptr::ToVirtualPtr(matPtr->m_internalShaderOp))
       .AddShaderOperator(meshSO)
       .AddShaderOperator(meshPtr->GetUserShaderOperator())
-      .SetVAO(meshPtr->DoGetVAO())
+      .SetVAO(meshPtr->GetVAO())
       .SetDrawMode(meshPtr->GetDrawMode())
       .SetStartIndex(0)
       .SetVertexCount(meshPtr->GetNumVertices());
@@ -457,7 +456,7 @@ namespace tloc { namespace graphics { namespace component_system {
     else // create material temporarily for names
     { matPtr = core_sptr::MakeShared<gfx_cs::Material>(); }
     
-    auto so = meshPtr->DoGetShaderOperator();
+    auto so = meshPtr->GetShaderOperator();
 
     gfx_gl::AttributeVBO vbo;
     DoSetVBOValue<gfx_gl::p_vbo::target::ArrayBuffer,
@@ -728,7 +727,7 @@ namespace tloc { namespace graphics { namespace component_system {
     { return ; }
 
     gfx_cs::mesh_sptr meshPtr = a_ent->template GetComponent<mesh_comp_type>();
-    auto so = meshPtr->DoGetShaderOperator();
+    auto so = meshPtr->GetShaderOperator();
     const auto& texCoordPrefix = 
       meshPtr->GetAttributeName<p_renderable::attributes::k_texCoordPrefix>();
 

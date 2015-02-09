@@ -132,11 +132,11 @@ namespace tloc { namespace graphics { namespace component_system {
 
     TLOC_DECL_SETTER_BY_VALUE_CHAIN(draw_mode, SetDrawMode);
 
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(so_ptr, GetShaderOperator, m_shaderOp.get());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(vao_ptr, GetVAO, m_vao.get());
+
   private:
     void DoUpdateUniformAndNames();
-
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST(so_ptr, DoGetShaderOperator, m_shaderOp.get());
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST(vao_ptr, DoGetVAO, m_vao.get());
 
   private:
     draw_mode               m_drawMode;

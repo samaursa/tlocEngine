@@ -77,16 +77,28 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DEFINE_ALGO_WITH_CTOR_BINARY(CompareFrontToBack_T, const)
     {
       typedef math_cs::Transform                    comp_type;
+      typedef gfx_cs::SceneNode                     scene_node;
 
       const auto& aa = extract()(a);
       const auto& bb = extract()(b);
 
-      const auto& aaTrans  = aa.first->template GetComponent<comp_type>();
-      const auto& bbTrans  = bb.first->template GetComponent<comp_type>();
+      auto aaSceneNode = aa.first->template GetComponentIfExists<scene_node>();
+      auto bbSceneNode = bb.first->template GetComponentIfExists<scene_node>();
+
+      const auto& aaLocal = 
+        aa.first->template GetComponent<comp_type>()->GetTransformation();
+      const auto& bbLocal = 
+        bb.first->template GetComponent<comp_type>()->GetTransformation();
+
+      const auto& aaTrans  = 
+        aaSceneNode ? aaSceneNode->GetWorldTransform() : aaLocal;
+      const auto& bbTrans  = 
+        bbSceneNode ? bbSceneNode->GetWorldTransform() : bbLocal;
+
       const auto& camTrans = m_value->GetComponent<comp_type>();
 
-      const auto& aaPos   = aaTrans->GetPosition();
-      const auto& bbPos   = bbTrans->GetPosition();
+      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
       const auto& camPos  = camTrans->GetPosition();
 
       const auto aaDisToCam = aaPos.DistanceSquared(camPos);
@@ -107,16 +119,28 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DEFINE_ALGO_WITH_CTOR_BINARY(CompareBackToFront_T, const)
     {
       typedef math_cs::Transform                    comp_type;
+      typedef gfx_cs::SceneNode                     scene_node;
 
       const auto& aa = extract()(a);
       const auto& bb = extract()(b);
 
-      const auto& aaTrans  = aa.first->template GetComponent<comp_type>();
-      const auto& bbTrans  = bb.first->template GetComponent<comp_type>();
+      auto aaSceneNode = aa.first->template GetComponentIfExists<scene_node>();
+      auto bbSceneNode = bb.first->template GetComponentIfExists<scene_node>();
+
+      const auto& aaLocal = 
+        aa.first->template GetComponent<comp_type>()->GetTransformation();
+      const auto& bbLocal = 
+        bb.first->template GetComponent<comp_type>()->GetTransformation();
+
+      const auto& aaTrans  = 
+        aaSceneNode ? aaSceneNode->GetWorldTransform() : aaLocal;
+      const auto& bbTrans  = 
+        bbSceneNode ? bbSceneNode->GetWorldTransform() : bbLocal;
+
       const auto& camTrans = m_value->GetComponent<comp_type>();
 
-      const auto& aaPos   = aaTrans->GetPosition();
-      const auto& bbPos   = bbTrans->GetPosition();
+      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
       const auto& camPos  = camTrans->GetPosition();
 
       const auto aaDisToCam = aaPos.DistanceSquared(camPos);
@@ -130,6 +154,74 @@ namespace tloc { namespace graphics { namespace component_system {
 
     typedef CompareBackToFront_T<core::use_reference> CompareBackToFront;
     typedef CompareBackToFront_T<core::use_pointee>   CompareBackToFrontPointer;
+
+    // ///////////////////////////////////////////////////////////////////////
+
+    TLOC_DECL_ALGO_BINARY(CompareFrontToBack_2D_T, const);
+    TLOC_DEFINE_ALGO_BINARY(CompareFrontToBack_2D_T, const)
+    {
+      typedef math_cs::Transform                    comp_type;
+      typedef gfx_cs::SceneNode                     scene_node;
+
+      const auto& aa = extract()(a);
+      const auto& bb = extract()(b);
+
+      auto aaSceneNode = aa.first->template GetComponentIfExists<scene_node>();
+      auto bbSceneNode = bb.first->template GetComponentIfExists<scene_node>();
+
+      const auto& aaLocal = 
+        aa.first->template GetComponent<comp_type>()->GetTransformation();
+      const auto& bbLocal = 
+        bb.first->template GetComponent<comp_type>()->GetTransformation();
+
+      const auto& aaTrans  = 
+        aaSceneNode ? aaSceneNode->GetWorldTransform() : aaLocal;
+      const auto& bbTrans  = 
+        bbSceneNode ? bbSceneNode->GetWorldTransform() : bbLocal;
+
+      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+
+      if (aaPos[2] > bbPos[2]) { return true; }
+      else { return false; }
+    }
+
+    typedef CompareFrontToBack_2D_T<core::use_reference> CompareFrontToBack_2D;
+    typedef CompareFrontToBack_2D_T<core::use_pointee>   CompareFrontToBackPointer_2D;
+
+    // ///////////////////////////////////////////////////////////////////////
+
+    TLOC_DECL_ALGO_BINARY(CompareBackToFront_2D_T, const);
+    TLOC_DEFINE_ALGO_BINARY(CompareBackToFront_2D_T, const)
+    {
+      typedef math_cs::Transform                    comp_type;
+      typedef gfx_cs::SceneNode                     scene_node;
+
+      const auto& aa = extract()(a);
+      const auto& bb = extract()(b);
+
+      auto aaSceneNode = aa.first->template GetComponentIfExists<scene_node>();
+      auto bbSceneNode = bb.first->template GetComponentIfExists<scene_node>();
+
+      const auto& aaLocal = 
+        aa.first->template GetComponent<comp_type>()->GetTransformation();
+      const auto& bbLocal = 
+        bb.first->template GetComponent<comp_type>()->GetTransformation();
+
+      const auto& aaTrans  = 
+        aaSceneNode ? aaSceneNode->GetWorldTransform() : aaLocal;
+      const auto& bbTrans  = 
+        bbSceneNode ? bbSceneNode->GetWorldTransform() : bbLocal;
+
+      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+
+      if (aaPos[2] < bbPos[2]) { return true; }
+      else { return false; }
+    }
+
+    typedef CompareBackToFront_2D_T<core::use_reference> CompareBackToFront_2D;
+    typedef CompareBackToFront_2D_T<core::use_pointee>   CompareBackToFrontPointer_2D;
 
   };
 
@@ -235,6 +327,47 @@ namespace tloc { namespace graphics { namespace component_system {
                  CompareBackToFront(m_sharedCam), core::sort_insertionsort());
     }
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    ForceSortEntitiesFrontToBack_2D()
+  {
+    if (m_entPairsSegmentByMat.size() > 0)
+    {
+      for (auto itr = m_entPairsSegmentByMat.begin(), itrEnd = m_entPairsSegmentByMat.end();
+           itr != itrEnd; ++itr)
+      {
+        core::sort(itr->first, itr->second, 
+                   CompareFrontToBack_2D(), core::sort_insertionsort());
+      }
+    }
+    else
+    {
+      auto& activeEnts = DoGetActiveEntities();
+
+      core::sort(activeEnts.begin(), activeEnts.end(),
+                 CompareFrontToBack_2D(), core::sort_insertionsort());
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <RENDER_SYSTEM_TEMPS>
+  void
+    RenderSystem_TI<RENDER_SYSTEM_PARAMS>::
+    ForceSortEntitiesBackToFront_2D()
+  {
+    if (m_sharedCam)
+    {
+      auto& activeEnts = DoGetActiveEntities();
+      
+      core::sort(activeEnts.begin(), activeEnts.end(),
+                 CompareBackToFront_2D(), core::sort_insertionsort());
+    }
+  }
   
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -245,8 +378,12 @@ namespace tloc { namespace graphics { namespace component_system {
   {
     if (IsSortingFrontToBackEnabled())
     { ForceSortEntitiesFrontToBack(); }
-    else
+    else if (IsSortingBackToFrontEnabled())
     { ForceSortEntitiesBackToFront(); }
+    else if (IsSortingFrontToBackEnabled_2D())
+    { ForceSortEntitiesFrontToBack_2D(); }
+    else if (IsSortingBackToFrontEnabled_2D())
+    { ForceSortEntitiesBackToFront_2D(); }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

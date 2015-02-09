@@ -72,6 +72,8 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void              ForceSortEntitiesByMaterial();
     virtual void              ForceSortEntitiesFrontToBack();
     virtual void              ForceSortEntitiesBackToFront();
+    virtual void              ForceSortEntitiesFrontToBack_2D();
+    virtual void              ForceSortEntitiesBackToFront_2D();
 
     virtual void              SortEntities();
 

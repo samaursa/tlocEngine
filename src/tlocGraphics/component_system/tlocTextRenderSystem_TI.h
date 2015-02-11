@@ -81,6 +81,9 @@ namespace tloc { namespace graphics { namespace component_system {
                              size_type a_lineNumber);
     void         DoAlignText(const text_quads_pair& a_pair);
 
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(gfx_cs::MeshRenderSystem, 
+                                    GetMeshRenderSystem, m_textMeshRenderSys);
+
   private:
     error_type   DoReInitializeEntity(entity_ptr a_ent);
     void         DoRemoveText(const const_entity_ptr a_ent);

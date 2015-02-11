@@ -67,6 +67,9 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
+    TLOC_DECL_AND_DEF_GETTER_DIRECT(gfx_cs::MeshRenderSystem, 
+      GetMeshRenderSystem, m_textMeshRenderSys);
+
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
                         entity_manager_ptr a_entityMgr,
@@ -80,9 +83,6 @@ namespace tloc { namespace graphics { namespace component_system {
                              text_ptr a_text,
                              size_type a_lineNumber);
     void         DoAlignText(const text_quads_pair& a_pair);
-
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(gfx_cs::MeshRenderSystem, 
-                                    GetMeshRenderSystem, m_textMeshRenderSys);
 
   private:
     error_type   DoReInitializeEntity(entity_ptr a_ent);

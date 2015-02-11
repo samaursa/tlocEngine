@@ -97,8 +97,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const auto& camTrans = m_value->GetComponent<comp_type>();
 
-      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
-      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& aaPos   = aaTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
       const auto& camPos  = camTrans->GetPosition();
 
       const auto aaDisToCam = aaPos.DistanceSquared(camPos);
@@ -139,8 +139,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const auto& camTrans = m_value->GetComponent<comp_type>();
 
-      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
-      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& aaPos   = aaTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
       const auto& camPos  = camTrans->GetPosition();
 
       const auto aaDisToCam = aaPos.DistanceSquared(camPos);
@@ -179,8 +179,8 @@ namespace tloc { namespace graphics { namespace component_system {
       const auto& bbTrans  = 
         bbSceneNode ? bbSceneNode->GetWorldTransform() : bbLocal;
 
-      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
-      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& aaPos   = aaTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
 
       if (aaPos[2] > bbPos[2]) { return true; }
       else { return false; }
@@ -213,8 +213,8 @@ namespace tloc { namespace graphics { namespace component_system {
       const auto& bbTrans  = 
         bbSceneNode ? bbSceneNode->GetWorldTransform() : bbLocal;
 
-      const auto& aaPos   = aaTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
-      const auto& bbPos   = bbTrans.GetCol(3).ConvertTo<math_t::Vec3f32>();
+      const auto& aaPos   = aaTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
+      const auto& bbPos   = bbTrans.GetCol(3).template ConvertTo<math_t::Vec3f32>();
 
       if (aaPos[2] < bbPos[2]) { return true; }
       else { return false; }

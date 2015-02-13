@@ -248,6 +248,26 @@ namespace tloc { namespace core {
     equal(T_InputIterator1 a_rangeBegin, T_InputIterator1 a_rangeEnd,
           T_InputIterator2 aRangeToCompare, T_BinaryPred a_pred);
 
+  template <typename T_ForwardIterator, typename T>
+  Pair<T_ForwardIterator, T_ForwardIterator>
+    equal_range(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                const T& a_value);
+
+  template <typename T_ForwardIterator, typename T, typename T_Compare>
+  Pair<T_ForwardIterator, T_ForwardIterator>
+    equal_range(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                const T& a_value, T_Compare a_comp);
+
+  template <typename T_Container, typename T>
+  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container), 
+       TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)>
+    equal_range_all(T_Container& a_cont, const T& a_value);
+
+  template <typename T_Container, typename T, typename T_Compare>
+  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container), 
+       TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)>
+    equal_range_all(T_Container& a_cont, const T& a_value, T_Compare a_comp);
+
   template <typename T_RandomAccessContainer>
   void
     random_shuffle_all(T_RandomAccessContainer& a_toShuffle);
@@ -269,6 +289,60 @@ namespace tloc { namespace core {
     random_shuffle(T_RandomAccessIterator a_first,
                    T_RandomAccessIterator a_last,
                    T_RandomNumberGenerator a_rng);
+
+  template <typename T_ForwardIterator, typename T>
+  bool 
+    binary_search(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                  const T& a_value);
+
+  template <typename T_ForwardIterator, typename T, typename T_Compare>
+  bool 
+    binary_search(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                  const T& a_value, T_Compare a_compare);
+
+  template <typename T_Container, typename T>
+  bool 
+    binary_search_all(T_Container& a_toSearch,
+                      const T& a_value);
+
+  template <typename T_Container, typename T, typename T_Compare>
+  bool 
+    binary_search_all(T_Container& a_toSearch,
+                      const T& a_value, T_Compare a_compare);
+
+  template <typename T_ForwardIterator>
+  T_ForwardIterator
+    min_element(T_ForwardIterator a_first, T_ForwardIterator a_last);
+
+  template <typename T_ForwardIterator, typename T_Compare>
+  T_ForwardIterator
+    min_element(T_ForwardIterator a_first, T_ForwardIterator a_last, 
+                T_Compare a_comp);
+
+  template <typename T_Container>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    min_element_all(T_Container& a_cont);
+
+  template <typename T_Container, typename T_Compare>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    min_element_all(T_Container& a_cont, T_Compare a_comp);
+
+  template <typename T_ForwardIterator>
+  T_ForwardIterator
+    max_element(T_ForwardIterator a_first, T_ForwardIterator a_last);
+
+  template <typename T_ForwardIterator, typename T_Compare>
+  T_ForwardIterator
+    max_element(T_ForwardIterator a_first, T_ForwardIterator a_last, 
+                T_Compare a_comp);
+
+  template <typename T_Container>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    max_element_all(T_Container& a_cont);
+
+  template <typename T_Container, typename T_Compare>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    max_element_all(T_Container& a_cont, T_Compare a_comp);
 
   template <typename T_Container1, typename T_Container2>
   TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container1)
@@ -552,6 +626,20 @@ namespace tloc { namespace core {
     sort(T_InputIterator a_first, T_InputIterator a_last, T_Compare a_comp,
          T_SortAlgorithm);
 
+  template <typename T_Container>
+  void
+    sort_all(T_Container& a_toSort);
+
+  template <typename T_Container, typename T_Compare_or_SortAlgorithm>
+  void
+    sort_all(T_Container& a_toSort,
+         T_Compare_or_SortAlgorithm a_comp);
+
+  template <typename T_Container, typename T_SortAlgorithm,
+            typename T_Compare>
+  void
+    sort_all(T_Container a_toSort, T_Compare a_comp, T_SortAlgorithm);
+
   //------------------------------------------------------------------------
   // Min / Max
 
@@ -649,6 +737,25 @@ namespace tloc { namespace core {
   template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
   T_ForwardIterator
     lower_bound(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                T const & a_value, T_BinaryPred a_comp);
+
+  template <typename T_Container, typename T>
+  typename T_Container::iterator
+    upper_bound_all(T_Container& a_toSearch, T const & a_value);
+
+  template <typename T_Container, typename T, typename T_BinaryPred>
+  typename T_Container::iterator
+    upper_bound_all(T_Container& a_toSearch, T const & a_value,
+                    T_BinaryPred a_pred);
+
+  template <typename T_ForwardIterator, typename T>
+  T_ForwardIterator
+    upper_bound(T_ForwardIterator a_first,
+                T_ForwardIterator a_last, T const & a_value);
+
+  template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
+  T_ForwardIterator
+    upper_bound(T_ForwardIterator a_first, T_ForwardIterator a_last,
                 T const & a_value, T_BinaryPred a_comp);
 
   // Does not work on associative containers

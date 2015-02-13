@@ -120,6 +120,9 @@ set(TLOC_ENGINE_CORE_CONTAINERS
     containers/tlocQueue.h
     containers/tlocQueue.inl.h
     containers/tlocQueue.cpp
+    containers/tlocSet.h
+    containers/tlocSet.inl.h
+    containers/tlocSet.cpp
     containers/tlocStack.h
     containers/tlocStack.inl.h
     containers/tlocStack.cpp

@@ -6,17 +6,13 @@
 #include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/containers/tlocArrayFixed.h>
 
+#include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/containers/tlocHashmap.h>
-
 #include <tlocCore/containers/tlocHashtable.h>
-
 #include <tlocCore/containers/tlocForwardList.h>
 #include <tlocCore/containers/tlocList.h>
-
 #include <tlocCore/containers/tlocQueue.h>
-
+#include <tlocCore/containers/tlocSet.h>
 #include <tlocCore/containers/tlocStack.h>
-
-#include <tlocCore/containers/tlocContainers.h>
 
 #endif

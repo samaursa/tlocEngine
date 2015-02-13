@@ -32,10 +32,10 @@
 
 namespace tloc { namespace core { namespace containers {
 
-	template <typename T, typename T_Container = List<T> >
-	class Stack
-	{
-	public:
+  template <typename T, typename T_Container = List<T> >
+  class Stack
+  {
+  public:
     //------------------------------------------------------------------------
     // typedefs (similar to stack)
     typedef T_Container                               container_type;

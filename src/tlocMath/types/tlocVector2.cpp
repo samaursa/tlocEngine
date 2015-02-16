@@ -11,7 +11,6 @@ namespace tloc { namespace math { namespace types {
 
   template class Vector_T<tloc::f32, 2>;
   template class Vector_T<tloc::f64, 2>;
-  template class Vector_T<tloc::f128, 2>;
 
 };};};
 
@@ -25,4 +24,3 @@ using namespace math_t;
 
 TLOC_EXPLICITLY_INSTANTIATE_VECTOR_ALL_ACCURACIES(f32, 2, Vec2f32);
 TLOC_EXPLICITLY_INSTANTIATE_VECTOR_ALL_ACCURACIES(f64, 2, Vec2f64);
-TLOC_EXPLICITLY_INSTANTIATE_VECTOR_ALL_ACCURACIES(f128, 2, Vec2f128);

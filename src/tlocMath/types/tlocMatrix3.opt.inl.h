@@ -683,9 +683,9 @@ namespace tloc { namespace math { namespace types {
     const vec_type newDir = a_direction;
     const vec_type worldUp = a_up;
 
-    TLOC_LOG_MATH_WARN_IF(!math::Approx<value_type>(newDir.Length(), 1.0f, 0.01f))
+    TLOC_LOG_MATH_WARN_IF(math::IsNotEqual<value_type>(newDir.Length(), 1.0f))
       << "Direction vector does not appear to be normalized";
-    TLOC_LOG_MATH_WARN_IF(!math::Approx<value_type>(worldUp.Length(), 1.0f, 0.01f))
+    TLOC_LOG_MATH_WARN_IF(math::IsNotEqual<value_type>(worldUp.Length(), 1.0f))
       << "Up vector does not appear to be normalized";
 
     TLOC_ASSERT(newDir.IsParallel(a_up) == false,

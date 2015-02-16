@@ -65,9 +65,5 @@ namespace tloc { namespace core {
     hash<f64>::operator()(f64 a_value) const
   { return static_cast<tl_size>(a_value); }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  tl_size
-    hash<f128>::operator()(f128 a_value) const
-  { return static_cast<tl_size>(a_value); }
 
 };};

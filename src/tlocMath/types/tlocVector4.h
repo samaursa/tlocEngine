@@ -77,7 +77,6 @@ namespace tloc { namespace math { namespace types {
   // Typedefs
   typedef Vector_T<f32, 4>  Vec4f32;
   typedef Vector_T<f64, 4>  Vec4f64;
-  typedef Vector_T<f128, 4> Vec4f128;
 
   typedef Vector_T<tl_float, 4> Vec4f;
 
@@ -110,11 +109,9 @@ namespace tloc { namespace math { namespace types {
 
   TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f32 TLOC_COMMA 4>);
   TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f64 TLOC_COMMA 4>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Vector_T<f128 TLOC_COMMA 4>);
 
   TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f32 TLOC_COMMA 4 TLOC_COMMA  Vec4f32>);
   TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f64 TLOC_COMMA 4 TLOC_COMMA  Vec4f64>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Vector_TI<f128 TLOC_COMMA 4 TLOC_COMMA  Vec4f128>);
 
 };};};
 

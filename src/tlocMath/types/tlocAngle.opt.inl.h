@@ -115,7 +115,7 @@ namespace tloc { namespace math { namespace types {
     Angle_T<ANGLE_PARAMS>::
     operator/ (this_type a_other) const
   {
-    TLOC_ASSERT(!math::IsEqual<value_type>(a_other.m_angle, 0), "Divide by zero!");
+    TLOC_ASSERT(!math::IsEqual<value_type>(a_other.m_angle, value_type(0)), "Divide by zero!");
     return m_angle / a_other.m_angle;
   }
 
@@ -124,7 +124,7 @@ namespace tloc { namespace math { namespace types {
     Angle_T<ANGLE_PARAMS>::
     operator/= (this_type a_other)
   {
-    TLOC_ASSERT(!math::IsEqual<value_type>(a_other.m_angle, 0), "Divide by zero!");
+    TLOC_ASSERT(!math::IsEqual<value_type>(a_other.m_angle, value_type(0)), "Divide by zero!");
     m_angle /= a_other.m_angle;
     return *This();
   }

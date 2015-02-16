@@ -63,7 +63,6 @@ namespace tloc
   typedef TLOC_INT64_TYPE   s64;
   typedef float             f32;
   typedef double            f64;
-  typedef long double       f128;
 
   typedef unsigned char     uchar8;
   typedef TLOC_U_INT8_TYPE   u8;
@@ -140,6 +139,7 @@ namespace tloc
   public:
     static  value_type        min();
     static  value_type        max();
+    static  value_type        epsilon();
   };
 
 };

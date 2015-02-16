@@ -251,7 +251,7 @@ namespace tloc { namespace math { namespace types {
     det = m_values[0] * inv[0] + m_values[1] * inv[4] +
           m_values[2] * inv[8] + m_values[3] * inv[12];
 
-    TLOC_ASSERT_LOW_LEVEL(tloc::math::IsEqual<value_type>(det, 0) == false,
+    TLOC_ASSERT_LOW_LEVEL(tloc::math::IsEqualRelative<value_type>(det, 0) == false,
       "Determinant is zero (will result in divide by zero)!");
 
     det = 1.0f / det;

@@ -31,6 +31,16 @@ namespace tloc {
     return std::numeric_limits<value_type>::max();
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <NUMERIC_LIMITS_TEMPS>
+  NUMERIC_LIMITS_TYPE::value_type
+    NumericLimits_T<NUMERIC_LIMITS_PARAMS>::
+    epsilon()
+  {
+    return std::numeric_limits<value_type>::epsilon();
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // explicit specializations
   
@@ -44,7 +54,6 @@ namespace tloc {
   template class NumericLimits_T<s64>;
   template class NumericLimits_T<f32>;
   template class NumericLimits_T<f64>;
-  template class NumericLimits_T<f128>;
   template class NumericLimits_T<tl_size>;
 
 };

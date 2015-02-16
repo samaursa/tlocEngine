@@ -54,10 +54,55 @@ namespace tloc {
     T Epsilon();
 
     template <typename T>
-    bool Approx(T a_num1, T a_num2, T eps);
+    bool Approx(T a_num1, T a_num2, tl_int a_maxUnitsInLastPlace);
+
+    template <typename T>
+    bool ApproxRelative(T a_num1, T a_num2, T a_epsilon);
+
+    template <typename T>
+    bool ApproxAbsolute(T a_num1, T a_num2, T a_epsilon);
 
     template <typename T>
     bool IsEqual(T a_num1, T a_num2);
+    template <typename T>
+    bool IsEqualRelative(T a_num1, T a_num2);
+    template <typename T>
+    bool IsEqualAbsolute(T a_num1, T a_num2);
+
+    template <typename T>
+    bool IsEqualToZero(T a_num1);
+    template <typename T>
+    bool IsEqualToZeroRelative(T a_num1);
+    template <typename T>
+    bool IsEqualToZeroAbsolute(T a_num1);
+
+    template <typename T>
+    bool IsNotEqualToZero(T a_num1);
+    template <typename T>
+    bool IsNotEqualToZeroRelative(T a_num1);
+    template <typename T>
+    bool IsNotEqualToZeroAbsolute(T a_num1);
+
+    template <typename T>
+    bool IsEqualToOne(T a_num1);
+    template <typename T>
+    bool IsEqualToOneRelative(T a_num1);
+    template <typename T>
+    bool IsEqualToOneAbsolute(T a_num1);
+
+    template <typename T>
+    bool IsNotEqualToOne(T a_num1);
+    template <typename T>
+    bool IsNotEqualToOneRelative(T a_num1);
+    template <typename T>
+    bool IsNotEqualToOneAbsolute(T a_num1);
+
+    template <typename T>
+    bool IsNotEqual(T a_num1, T a_num2);
+    template <typename T>
+    bool IsNotEqualRelative(T a_num1, T a_num2);
+    template <typename T>
+    bool IsNotEqualAbsolute(T a_num1, T a_num2);
 
     template <typename T>
     T Ceil(T a_value);

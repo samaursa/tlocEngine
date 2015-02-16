@@ -38,10 +38,10 @@ namespace TestingTlocMath
   TEST_CASE("Math/Approx", "")
   {
     f32 a = 1.0f, b = 1.0f;
-    CHECK(math::Approx(a, b, NumericLimits_T<f32>::min()));
+    CHECK(math::Approx(a, b, 1));
     a = 1.23456789f;
     b = 1.23456789f;
-    CHECK(math::Approx(a, b, NumericLimits_T<f32>::min()));
+    CHECK(math::Approx(a, b, 1));
   }
 
   TEST_CASE("Math/IsPowerOfTwo", "")
@@ -129,15 +129,34 @@ namespace TestingTlocMath
   {
     SECTION("floats", "")
     {
-      CHECK(math::Approx(1.0f, 1.0f, math::Epsilon<tl_float>()) );
-      CHECK_FALSE(math::Approx(1.0f, 1.0001f, math::Epsilon<tl_float>()) );
+      CHECK(math::Approx(1.0f, 1.0f, 1) );
+      CHECK_FALSE(math::Approx(1.0f, 1.0001f, 1) );
     }
 
     SECTION("non floats", "")
     {
-      CHECK(math::Approx(1, 1, math::Epsilon<tl_int>()) );
-      CHECK(math::Approx(1, 2, 1) );
-      CHECK_FALSE(math::Approx(1, 2, math::Epsilon<tl_int>()) );
+      CHECK(math::Approx(1, 1, 0) );
+      CHECK(math::Approx(1.0f, 1.0f, 1) );
+      CHECK(math::Approx(0.0f, 0.0f, 1) );
+      CHECK(math::Approx(-0.0f, +0.0f, 1) );
+
+      const auto f32_eps = NumericLimits_T<f32>::epsilon();
+      const auto s32_eps = NumericLimits_T<s32>::epsilon();
+
+      CHECK(math::ApproxAbsolute(1, 1, s32_eps) );
+      CHECK(math::ApproxAbsolute(1.0f, 1.0f, f32_eps) );
+      CHECK(math::ApproxAbsolute(0.0f, 0.0f, f32_eps) );
+      CHECK(math::ApproxAbsolute(-0.0f, +0.0f, f32_eps) );
+
+      CHECK(math::ApproxRelative(1, 1, s32_eps) );
+      CHECK(math::ApproxRelative(1.0f, 1.0f, f32_eps) );
+      CHECK(math::ApproxRelative(0.0f, 0.0f, f32_eps) );
+      CHECK(math::ApproxRelative(-0.0f, +0.0f, f32_eps) );
+
+      CHECK_FALSE(math::Approx(f32_eps, f32_eps + f32_eps, 1) );
+
+      CHECK(math::ApproxRelative(1.0f, 2.0f, 0.5f) );
+      CHECK_FALSE(math::ApproxRelative(1, 2, math::Epsilon<tl_int>()) );
     }
   }
 

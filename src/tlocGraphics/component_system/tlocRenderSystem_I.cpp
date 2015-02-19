@@ -153,6 +153,21 @@ namespace tloc { namespace graphics { namespace component_system {
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    RenderSystem_I::
+    DisableSorting()
+  { 
+    SetEnabledSortingByMaterial(false);
+    SetEnabledSortingFrontToBack_2D(false);
+    SetEnabledSortingBackToFront_2D(false);
+    SetEnabledSortingFrontToBack(false);
+    SetEnabledSortingBackToFront(false);
+
+    m_flags.Mark(k_isDirty); 
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // has any flag changed?
 

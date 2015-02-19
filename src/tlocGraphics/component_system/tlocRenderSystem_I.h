@@ -23,6 +23,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_GETTER(bool, IsSortingBackToFrontEnabled_2D);
     TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront_2D);
 
+    void DisableSorting();
+
   protected:
     TLOC_DECL_GETTER_NON_CONST(bool, DoGetDirtyAndUmark);
 

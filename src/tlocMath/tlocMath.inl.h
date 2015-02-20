@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
 
 namespace tloc {
 
@@ -136,9 +137,25 @@ namespace tloc {
         T relativeError;
 
         if (fabs(a_num2) > fabs(a_num1))
-        { relativeError = fabs(( a_num1 - a_num2 ) / a_num2); }
+        { 
+          if (math::IsEqualToZeroAbsolute(a_num2))
+          {
+            TLOC_LOG_MATH_ERR_NO_FILENAME() << 
+              "Approximate (relative) will result in divide by 0";
+            return false;
+          }
+          relativeError = fabs(( a_num1 - a_num2 ) / a_num2);
+        }
         else
-        { relativeError = fabs(( a_num1 - a_num2 ) / a_num1); }
+        { 
+          if (math::IsEqualToZeroAbsolute(a_num1))
+          {
+            TLOC_LOG_MATH_ERR_NO_FILENAME() << 
+              "Approximate (relative) will result in divide by 0";
+            return false;
+          }
+          relativeError = fabs(( a_num1 - a_num2 ) / a_num1);
+        }
 
         if (relativeError <= a_epsilon)
         { return true; }

@@ -14,6 +14,7 @@
 #include <tlocGraphics/component_system/tlocComponentType.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
 #include <tlocGraphics/component_system/tlocTextAlignment.h>
+#include <tlocGraphics/opengl/tlocShaderOperator.h>
 
 #include <tlocMath/types/tlocRectangle.h>
 
@@ -25,6 +26,8 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef Text_I                                          this_type;
 
     typedef core_str::StringW                               str_type;
+    typedef gfx_gl::shader_operator_vso                     so_type;
+    typedef gfx_gl::shader_operator_vptr                    so_ptr;
     typedef alignment::align_type                           align_type;
     typedef gfx_med::font_sptr                              font_ptr;
     typedef tl_float                                        real_type;
@@ -46,6 +49,8 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(align_type, SetHorizontalAlignment, m_horAlignment);
     TLOC_DECL_AND_DEF_GETTER(align_type, GetHorizontalAlignment, m_horAlignment);
 
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(so_ptr, GetUserShaderOperator, m_userShaderOp.get());
+
   protected:
     Text_I();
     ~Text_I();
@@ -60,6 +65,7 @@ namespace tloc { namespace graphics { namespace component_system {
     align_type              m_alignment;
     align_type              m_horAlignment;
     font_ptr                m_font;
+    so_type                 m_userShaderOp;
   };
 
   // -----------------------------------------------------------------------

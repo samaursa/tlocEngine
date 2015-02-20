@@ -321,6 +321,10 @@ namespace tloc { namespace graphics { namespace component_system {
           (entity_manager::Params(character, matPtr).Orphan(true));
       }
 
+      // set the user shader operator which may have unique uniforms
+      const auto& mesh = character->GetComponent<gfx_cs::Mesh>();
+      *mesh->GetUserShaderOperator() = *textPtr->GetUserShaderOperator();
+
       // we need the quad later for other operations
       auto ci = CharacterInfo()
         .Transformation(character->GetComponent<math_cs::Transform>())

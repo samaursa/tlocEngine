@@ -179,6 +179,33 @@ namespace tloc { namespace core { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T>
+  void
+    Any::
+    Update(const T& a_other)
+  {
+    auto& currVar = Cast<T>();
+    currVar = a_other;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  void
+    Any::
+    UpdateOrAssign(const T& a_other)
+  {
+    if (IsEmpty() == false && m_object)
+    {
+      auto& currVar = Cast<T>();
+      currVar = a_other;
+    }
+    else
+    { Assign(a_other); }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
   Any::this_type&
     Any::
     operator =(const T& a_other)

@@ -101,7 +101,8 @@ namespace tloc { namespace graphics { namespace renderer {
     RenderPass::
     Draw()
   {
-    m_numDrawCalls = 0;
+    size_type numShaderSwitches = 0, numDrawCalls = 0;
+
     shader_prog_ptr   currShader;
     mem_address       currMatAddress(nullptr);
 
@@ -112,9 +113,10 @@ namespace tloc { namespace graphics { namespace renderer {
       auto newShader = command.GetShaderProgram();
 
       // set or switch shader
-      if (currShader != newShader)
+      if (!currShader || currShader->GetHandle() != newShader->GetHandle())
       {
         currShader = newShader;
+        numShaderSwitches++;
         if (currShader->Enable().Failed())
         {
           TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "ShaderProgram #"
@@ -144,11 +146,13 @@ namespace tloc { namespace graphics { namespace renderer {
         gl::VertexArrayObject::Bind b(*vao);
         auto commandMode = DoGetOpenGLModeType(command.GetMode());
 
-        m_numDrawCalls++;
+        numDrawCalls++;
         glDrawArrays(commandMode, command.GetStartIndex(), command.GetCount());
       }
     }
 
+    m_numDrawCalls = numDrawCalls;
+    m_numShaderSwitches = numShaderSwitches;
     m_commands.clear();
   }
 

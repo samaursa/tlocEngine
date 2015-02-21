@@ -67,8 +67,14 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void Pre_ProcessActiveEntities(f64 a_deltaT);
     virtual void Post_ProcessActiveEntities(f64 a_deltaT);
 
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(gfx_cs::MeshRenderSystem, 
-      GetMeshRenderSystem, m_textMeshRenderSys);
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST(gfx_cs::mesh_render_system_vptr, 
+                             GetMeshRenderSystem, m_textMeshRenderSys.get());
+
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingByMaterial);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingFrontToBack);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingFrontToBack_2D);
+    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront_2D);
 
   protected:
     TextRenderSystem_TI(event_manager_ptr a_eventMgr,
@@ -92,12 +98,12 @@ namespace tloc { namespace graphics { namespace component_system {
     text_quads_cont                     m_allText;
     core_cs::entity_ptr_array           m_entsToReinit;
 
-    core_cs::component_pool_mgr_vso     m_textCompMgr;
-    core_cs::event_manager_vso          m_textEventMgr;
-    core_cs::entity_manager_vso         m_textEntityMgr;
-    gfx_cs::SceneGraphSystem            m_textSceneGraphSys;
-    gfx_cs::MeshRenderSystem            m_textMeshRenderSys;
-    gfx_cs::TextureAnimatorSystem       m_textAnimSys;
+    core_cs::component_pool_mgr_vso       m_textCompMgr;
+    core_cs::event_manager_vso            m_textEventMgr;
+    core_cs::entity_manager_vso           m_textEntityMgr;
+    gfx_cs::scene_graph_system_vso        m_textSceneGraphSys;
+    gfx_cs::mesh_render_system_vso        m_textMeshRenderSys;
+    gfx_cs::texture_animation_system_vso  m_textAnimSys;
   };
 
   // -----------------------------------------------------------------------

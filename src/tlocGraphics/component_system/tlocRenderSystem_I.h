@@ -9,21 +9,21 @@ namespace tloc { namespace graphics { namespace component_system {
   {
   public:
     TLOC_DECL_GETTER(bool, IsSortingByMaterialEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingByMaterial);
+    virtual TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingByMaterial);
 
     TLOC_DECL_GETTER(bool, IsSortingFrontToBackEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingFrontToBack);
+    virtual TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingFrontToBack);
 
     TLOC_DECL_GETTER(bool, IsSortingBackToFrontEnabled);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront);
+    virtual TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront);
 
     TLOC_DECL_GETTER(bool, IsSortingFrontToBackEnabled_2D);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingFrontToBack_2D);
+    virtual TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingFrontToBack_2D);
 
     TLOC_DECL_GETTER(bool, IsSortingBackToFrontEnabled_2D);
-    TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront_2D);
+    virtual TLOC_DECL_SETTER_BY_VALUE(bool, SetEnabledSortingBackToFront_2D);
 
-    void DisableSorting();
+    virtual void DisableSorting();
 
   protected:
     TLOC_DECL_GETTER_NON_CONST(bool, DoGetDirtyAndUmark);

@@ -17,24 +17,38 @@ namespace tloc { namespace graphics { namespace media {
   };
 
   // ///////////////////////////////////////////////////////////////////////
-  // Image_I
+  // ImageBase_TI<2D>
 
-  Image_I::
-    Image_I()
+  ImageBase_TI<p_image::dim_2d>::
+    ImageBase_TI()
     : m_dim(0)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Image_I::
-    ~Image_I()
+  ImageBase_TI<p_image::dim_2d>::
+    ~ImageBase_TI()
+  { }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // ImageBase_TI<3D>
+
+  ImageBase_TI<p_image::dim_3d>::
+    ImageBase_TI()
+    : m_dim(0)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  ImageBase_TI<p_image::dim_3d>::
+    ~ImageBase_TI()
   { }
 
   // ///////////////////////////////////////////////////////////////////////
   // Image_TI<>
 
-#define TLOC_IMAGE_INTERNAL_TEMPS   typename T_ColorType
-#define TLOC_IMAGE_INTERNAL_PARAMS  T_ColorType, p_image::storage::Internal
+#define TLOC_IMAGE_INTERNAL_TEMPS   typename T_Dim, typename T_ColorType
+#define TLOC_IMAGE_INTERNAL_PARAMS  T_Dim, T_ColorType, p_image::storage::Internal
 #define TLOC_IMAGE_INTERNAL_TYPE    typename Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -106,14 +120,22 @@ namespace tloc { namespace graphics { namespace media {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  template <TLOC_IMAGE_INTERNAL_TEMPS>
-  TLOC_IMAGE_INTERNAL_TYPE::error_type
-    Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
-    AddPadding(dimension_type a_padding, const color_type& a_color)
+  template <typename T_ImageTI, typename T_ColorType>
+  typename T_ImageTI::error_type
+    DoAddPadding(T_ImageTI* a_this, types::Dimension2 a_padding, 
+                 const T_ColorType& a_color)
   {
+    typedef T_ImageTI                                   this_type;
+    typedef typename this_type::dimension_type          dimension_type;
+    typedef typename this_type::size_type               size_type;
+    typedef typename this_type::error_type              error_type;
+    typedef typename this_type::pixel_container_type    pixel_container_type;
+
+    const dimension_type m_dim     = a_this->GetDimensions();
+    pixel_container_type& m_pixels = a_this->m_pixels;
+
     dimension_type a_paddingTotal = core_ds::Add(a_padding, a_padding);
-    dimension_type newDim = core_ds::MakeTuple
-      (m_dim[0] + a_paddingTotal[0], m_dim[1] + a_paddingTotal[1]);
+    dimension_type newDim = core_ds::Add(m_dim, a_paddingTotal);
 
     pixel_container_type newImg(newDim[0] * newDim[1]);
 
@@ -140,10 +162,68 @@ namespace tloc { namespace graphics { namespace media {
     }
 
     this_type temp;
-    error_type err = Load(newImg, newDim);
+    error_type err = a_this->Load(newImg, newDim);
 
     return err;
   }
+
+  template <typename T_ImageTI, typename T_ColorType>
+  typename T_ImageTI::error_type
+    DoAddPadding(T_ImageTI* a_this, types::Dimension3 a_padding, 
+                 const T_ColorType& a_color)
+  {
+    typedef T_ImageTI                                   this_type;
+    typedef typename this_type::dimension_type          dimension_type;
+    typedef typename this_type::size_type               size_type;
+    typedef typename this_type::error_type              error_type;
+    typedef typename this_type::pixel_container_type    pixel_container_type;
+
+    const dimension_type m_dim     = a_this->GetDimensions();
+    pixel_container_type& m_pixels = a_this->m_pixels;
+
+    dimension_type a_paddingTotal = core_ds::Add(a_padding, a_padding);
+    dimension_type newDim = core_ds::Add(m_dim, a_paddingTotal);
+
+    pixel_container_type newImg(newDim[0] * newDim[1]);
+
+    for (size_type z = 0; z < newDim[2]; ++z)
+    {
+      for (size_type y = 0; y < newDim[1]; ++y)
+      {
+        for (size_type x = 0; x < newDim[0]; ++x)
+        {
+          tl_int index = core_utils::GetIndex(newDim, core_ds::MakeTuple(x, y, z));
+
+          if (x < a_padding[0] || (x >= m_dim[0] + a_padding[0]) ||
+              y < a_padding[1] || (y >= m_dim[1] + a_padding[1]) ||
+              z < a_padding[2] || (z >= m_dim[2] + a_padding[2]) )
+          {
+            newImg[index] = a_color;
+          }
+          else
+          {
+            tl_int currImgIndex = core_utils::GetIndex
+              (m_dim, core_ds::MakeTuple(x - a_padding[0],
+                                         y - a_padding[1], 
+                                         z - a_padding[2]));
+
+            newImg[index] = m_pixels[currImgIndex];
+          }
+        }
+      }
+    }
+
+    this_type temp;
+    error_type err = a_this->Load(newImg, newDim);
+
+    return err;
+  }
+
+  template <TLOC_IMAGE_INTERNAL_TEMPS>
+  TLOC_IMAGE_INTERNAL_TYPE::error_type
+    Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
+    AddPadding(dimension_type a_padding, const color_type& a_color)
+  { return DoAddPadding(this, a_padding, a_color); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -186,8 +266,8 @@ namespace tloc { namespace graphics { namespace media {
   // ///////////////////////////////////////////////////////////////////////
   // Image_TI<External>
 
-#define TLOC_IMAGE_EXTERNAL_TEMPS   typename T_ColorType
-#define TLOC_IMAGE_EXTERNAL_PARAMS  T_ColorType, p_image::storage::External
+#define TLOC_IMAGE_EXTERNAL_TEMPS   typename T_Dim, typename T_ColorType
+#define TLOC_IMAGE_EXTERNAL_PARAMS  T_Dim, T_ColorType, p_image::storage::External
 #define TLOC_IMAGE_EXTERNAL_TYPE    typename Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -289,10 +369,10 @@ namespace tloc { namespace graphics { namespace media {
   { return m_pixels.get()[a_index]; }
 
   // ///////////////////////////////////////////////////////////////////////
-  // Image_T<>
+  // Image_T<2D>
 
 #define TLOC_IMAGE_TEMPS    typename T_ColorType, typename T_StorageType
-#define TLOC_IMAGE_PARAMS   T_ColorType, T_StorageType
+#define TLOC_IMAGE_PARAMS   p_image::dim_2d, T_ColorType, T_StorageType
 #define TLOC_IMAGE_TYPE     typename Image_T<TLOC_IMAGE_PARAMS>
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -307,10 +387,10 @@ namespace tloc { namespace graphics { namespace media {
   template <TLOC_IMAGE_TEMPS>
   void
     Image_T<TLOC_IMAGE_PARAMS>::
-    SetPixel(size_type a_X, size_type a_Y, const color_type& a_color)
+    SetPixel(size_type a_x, size_type a_y, const color_type& a_color)
   {
     tl_int index = core_utils::GetIndex(this->GetDimensions(), 
-                                        core_ds::MakeTuple(a_X, a_Y));
+                                        core_ds::MakeTuple(a_x, a_y));
     this->DoSet(index, a_color);
   }
 
@@ -338,10 +418,10 @@ namespace tloc { namespace graphics { namespace media {
   template <TLOC_IMAGE_TEMPS>
   const TLOC_IMAGE_TYPE::color_type&
     Image_T<TLOC_IMAGE_PARAMS>::
-    GetPixel(size_type a_X, size_type a_Y) const
+    GetPixel(size_type a_x, size_type a_y) const
   {
     tl_int index = core_utils::GetIndex(this->GetDimensions(), 
-                                        core_ds::MakeTuple(a_X, a_Y));
+                                        core_ds::MakeTuple(a_x, a_y));
     return this->DoGet(index);
   }
 
@@ -368,6 +448,100 @@ namespace tloc { namespace graphics { namespace media {
 
     return img;
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Image_T<3D>
+
+#define TLOC_IMAGE_3D_TEMPS    typename T_ColorType, typename T_StorageType
+#define TLOC_IMAGE_3D_PARAMS   p_image::dim_3d, T_ColorType, T_StorageType
+#define TLOC_IMAGE_3D_TYPE     typename Image_T<TLOC_IMAGE_3D_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  Image_T<TLOC_IMAGE_3D_PARAMS>::
+    Image_T()
+    : base_type()
+  { }
+
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  void
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    SetPixel(size_type a_x, size_type a_y, size_type a_z, 
+             const color_type& a_color)
+  {
+    tl_int index = core_utils::GetIndex(this->GetDimensions(), 
+                                        core_ds::MakeTuple(a_x, a_y, a_z));
+    this->DoSet(index, a_color);
+  }
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  void
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    SetImage(size_type a_x, size_type a_y, size_type a_z, 
+             const this_type& a_image)
+  {
+    const dimension_type imgDim = a_image.GetDimensions();
+
+    TLOC_ASSERT(imgDim[0] + a_x <= this->GetDimensions()[0], 
+                "Incoming image does not fit in X");
+    TLOC_ASSERT(imgDim[1] + a_y <= this->GetDimensions()[1], 
+                "Incoming image does not fit in Y");
+    TLOC_ASSERT(imgDim[2] + a_z <= this->GetDimensions()[2], 
+                "Incoming image does not fit in Z");
+
+    for (size_type z = 0; z < imgDim[2]; ++z)
+    {
+      for (size_type y = 0; y < imgDim[1]; ++y)
+      {
+        for (size_type x = 0; x < imgDim[0]; ++x)
+        {
+          SetPixel(x + a_x, y + a_y, z + a_z, a_image.GetPixel(x, y, z));
+        }
+      }
+    }
+  }
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  const TLOC_IMAGE_3D_TYPE::color_type&
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    GetPixel(size_type a_x, size_type a_y, size_type a_z) const
+  {
+    tl_int index = core_utils::GetIndex(this->GetDimensions(), 
+                                        core_ds::MakeTuple(a_x, a_y, a_z));
+    return this->DoGet(index);
+  }
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  TLOC_IMAGE_3D_TYPE::image_sptr
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    GetImage(size_type a_x, size_type a_y, size_type a_z, 
+             dimension_type a_dimToGet) const
+  {
+    TLOC_ASSERT(a_x + a_dimToGet[0] <= this->GetDimensions()[0], 
+                "Dimensions out of range");
+    TLOC_ASSERT(a_y + a_dimToGet[1] <= this->GetDimensions()[1], 
+                "Dimensions out of range");
+    TLOC_ASSERT(a_z + a_dimToGet[2] <= this->GetDimensions()[2], 
+                "Dimensions out of range");
+
+    image_sptr img = core_sptr::MakeShared<this_type>();
+    img->Create(a_dimToGet, color_type::COLOR_BLACK);
+
+    for (size_type z = 0; z < a_dimToGet[2]; ++z)
+    {
+      for (size_type y = 0; y < a_dimToGet[1]; ++y)
+      {
+        for (size_type x = 0; x < a_dimToGet[0]; ++x)
+        {
+          img->SetPixel(x, y, z, GetPixel(x + a_x, y + a_y, z + a_z));
+        }
+      }
+    }
+
+    return img;
+  }
   
   // -----------------------------------------------------------------------
   // explicitly instantiate Image_T<> types
@@ -377,21 +551,33 @@ namespace tloc { namespace graphics { namespace media {
   typedef p_image::storage::Internal          internal_store;
   typedef p_image::storage::External          external_store;
 
-#define TLOC_EXPLICITLY_INSTANTIATE_IMAGE(_colorType_)\
-  template class Image_TI<_colorType_, internal_store>;\
-  template class Image_TI<_colorType_, external_store>;\
-  template class Image_T<_colorType_, internal_store>;\
-  template class Image_T<_colorType_, external_store>
+#define TLOC_EXPLICITLY_INSTANTIATE_IMAGE(_dim_, _colorType_)\
+  template class Image_TI<_dim_, _colorType_, internal_store>;\
+  template class Image_TI<_dim_, _colorType_, external_store>;\
+  template class Image_T<_dim_, _colorType_, internal_store>;\
+  template class Image_T<_dim_, _colorType_, external_store>
 
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(Color);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_rgb);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_rg);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_r);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_u16_rgba);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_u16_rgb);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_u16_rg);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_u16_r);
-  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(color_f32_r);
+  using p_image::dim_2d; 
+  using p_image::dim_3d;;
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, Color);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_rgb);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_rg);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_r);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_rgba);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_rgb);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_rg);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_r);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_f32_r);
+
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, Color);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_rgb);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_rg);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_r);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_rgba);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_rgb);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_rg);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_r);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_f32_r);
 
 };};};
 

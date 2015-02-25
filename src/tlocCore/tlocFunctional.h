@@ -289,11 +289,6 @@ namespace tloc { namespace core {
   struct hash<f64>
   { tl_size operator()(f64 a_value) const; };
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  template <>
-  struct hash<f128>
-  { tl_size operator()(f128 a_value) const; };
-
   //////////////////////////////////////////////////////////////////////////
   // Use self/first/second
 

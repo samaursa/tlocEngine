@@ -269,17 +269,22 @@ namespace tloc { namespace graphics { namespace component_system {
         auto so = a_mat.GetShaderOperator();
         auto err = ErrorSuccess;
 
+        core_str::String vsFileName, fsFileName;
+        a_mat.GetVertexPath().GetFileName(vsFileName);
+        a_mat.GetFragmentPath().GetFileName(fsFileName);
+
         err = so->PrepareAllUniforms(*sp);
-        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(err != ErrorSuccess)
-          << "Unable to prepare all uniforms";
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(err != ErrorSuccess) 
+          << "Shader ID#" << sp->GetHandle() << "  with programs (" 
+          << a_mat.GetVertexPath().GetFileName() << ") and (" 
+          << a_mat.GetFragmentPath().GetFileName() << ") "
+          << "- unable to prepare all uniforms";
 
         sp->Disable();
       }
 
       return result;
     }
-
-
   };
 
 };};};

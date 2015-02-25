@@ -89,9 +89,7 @@ namespace tloc { namespace core { namespace time {
   // extern template
 
   TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f128>);
   TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f64 TLOC_COMMA u64 TLOC_COMMA p_timer_t::NoAdjust>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f128 TLOC_COMMA u64 TLOC_COMMA p_timer_t::NoAdjust>);
 
   TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f32 TLOC_COMMA u32 TLOC_COMMA p_timer_t::Adjust>);
   TLOC_EXTERN_TEMPLATE_CLASS(Timer_T<f32 TLOC_COMMA u32 TLOC_COMMA p_timer_t::NoAdjust>);

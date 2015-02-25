@@ -10,6 +10,7 @@
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/platform/tlocPlatform.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocGraphics/error/tlocErrorTypes.h>
 #include <tlocGraphics/types/tlocColor.h>
@@ -168,6 +169,9 @@ namespace tloc { namespace graphics { namespace renderer {
       template <typename T_ClearValue>
       this_type& AddClearBit();
 
+      template <typename T_ClearValue>
+      this_type& RemoveClearBit();
+
       template <typename T_Face>
       this_type& Cull();
 
@@ -324,8 +328,10 @@ namespace tloc { namespace graphics { namespace renderer {
       <T_Enable,
       Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
 
-    TLOC_ASSERT(core::find_all(m_disableFeatures, T_Enable::s_glParamName) ==
-      m_disableFeatures.end(), "You are disabling then enabling the feature");
+    auto itrFound = core::find_all(m_disableFeatures, T_Enable::s_glParamName);
+    if (itrFound != m_disableFeatures.end())
+    { m_disableFeatures.erase(itrFound); }
+
     m_enableFeatures.push_back(T_Enable::s_glParamName);
     return *this;
   }
@@ -344,8 +350,10 @@ namespace tloc { namespace graphics { namespace renderer {
       <T_Enable,
       Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
 
-    TLOC_ASSERT(core::find_all(m_enableFeatures, T_Enable::s_glParamName) ==
-      m_enableFeatures.end(), "You are enabling then disabling the feature");
+    auto itrFound = core::find_all(m_enableFeatures, T_Enable::s_glParamName);
+    if (itrFound != m_enableFeatures.end())
+    { m_enableFeatures.erase(itrFound); }
+
     m_disableFeatures.push_back(T_Enable::s_glParamName);
     return *this;
   }
@@ -365,6 +373,25 @@ namespace tloc { namespace graphics { namespace renderer {
        ColorBufferBit, DepthBufferBit, StencilBufferBit>();
 
     m_clearBits |= T_ClearValue::s_glParamName;
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_DepthPrecision>
+  template <typename T_ClearValue>
+  typename Renderer_T<T_DepthPrecision>::Params::this_type&
+    Renderer_T<T_DepthPrecision>::Params::
+    RemoveClearBit()
+  {
+    using namespace p_renderer::clear;
+
+    tloc::type_traits::AssertTypeIsSupported
+      <T_ClearValue,
+       ColorBufferBit, DepthBufferBit, StencilBufferBit>();
+
+    if (m_clearBits & T_ClearValue::s_glParamName)
+    { m_clearBits ^= T_ClearValue::s_glParamName; }
     return *this;
   }
 

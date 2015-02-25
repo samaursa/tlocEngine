@@ -102,6 +102,7 @@ namespace tloc { namespace graphics { namespace renderer {
   private:
     command_buffer        m_commands;
     size_type             m_numDrawCalls;
+    size_type             m_numShaderSwitches;
 
   public:
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_commands, m_commands);

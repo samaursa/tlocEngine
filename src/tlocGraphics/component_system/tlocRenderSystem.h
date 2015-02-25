@@ -63,12 +63,7 @@ namespace tloc { namespace graphics { namespace component_system {
     TLOC_DECL_AND_DEF_GETTER(renderer_type, GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_SETTER(renderer_type, SetRenderer, m_renderer);
 
-  protected:
-    RenderSystem_TI(event_manager_ptr              a_eventMgr,
-                    entity_manager_ptr             a_entityMgr,
-                    register_type                  a_registerTypes,
-                    BufferArg                      a_debugName);
-
+  public:
     virtual void              ForceSortEntitiesByMaterial();
     virtual void              ForceSortEntitiesFrontToBack();
     virtual void              ForceSortEntitiesBackToFront();
@@ -76,6 +71,12 @@ namespace tloc { namespace graphics { namespace component_system {
     virtual void              ForceSortEntitiesBackToFront_2D();
 
     virtual void              SortEntities();
+
+  protected:
+    RenderSystem_TI(event_manager_ptr              a_eventMgr,
+                    entity_manager_ptr             a_entityMgr,
+                    register_type                  a_registerTypes,
+                    BufferArg                      a_debugName);
 
     virtual error_type        Post_Shutdown();
 

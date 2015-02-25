@@ -194,8 +194,8 @@ namespace TestingCircle
       circle_type::point_type pFromC = c1.GetCoord(Degree(5.0f));
 
       // cos/sin accuracy is terrible
-      CHECK(math::Approx(pFromC[0], p[0], 0.01f));
-      CHECK(math::Approx(pFromC[1], p[1], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[0], p[0], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[1], p[1], 0.01f));
     }
 
     {
@@ -207,8 +207,8 @@ namespace TestingCircle
       circle_type::point_type pFromC = c1.GetCoord(Degree(-5.0f));
 
       // cos/sin accuracy is terrible
-      CHECK(math::Approx(pFromC[0], p[0], 0.01f));
-      CHECK(math::Approx(-pFromC[1], p[1], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[0], p[0], 0.01f));
+      CHECK(math::ApproxRelative(-pFromC[1], p[1], 0.01f));
     }
 
     {
@@ -220,8 +220,8 @@ namespace TestingCircle
       circle_type::point_type pFromC = c1.GetCoord(Degree(85.0f));
 
       // cos/sin accuracy is terrible
-      CHECK(math::Approx(pFromC[0], p[0], 0.01f));
-      CHECK(math::Approx(pFromC[1], p[1], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[0], p[0], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[1], p[1], 0.01f));
     }
 
     {
@@ -233,8 +233,8 @@ namespace TestingCircle
       circle_type::point_type pFromC = c1.GetCoord(Degree(95.0f));
 
       // cos/sin accuracy is terrible
-      CHECK(math::Approx(-pFromC[0], p[0], 0.01f));
-      CHECK(math::Approx(pFromC[1], p[1], 0.01f));
+      CHECK(math::ApproxRelative(-pFromC[0], p[0], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[1], p[1], 0.01f));
     }
 
     {
@@ -246,8 +246,8 @@ namespace TestingCircle
       circle_type::point_type pFromC = c1.GetCoord(Degree(355.0f));
 
       // cos/sin accuracy is terrible
-      CHECK(math::Approx(pFromC[0], p[0], 0.01f));
-      CHECK(math::Approx(-pFromC[1], p[1], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[0], p[0], 0.01f));
+      CHECK(math::ApproxRelative(-pFromC[1], p[1], 0.01f));
     }
 
     circle_type c2(circle_type::radius(1.0f),
@@ -263,8 +263,8 @@ namespace TestingCircle
       circle_type::point_type pFromC = c2.GetCoord(Degree(5.0f));
 
       // cos/sin accuracy is terrible
-      CHECK(math::Approx(pFromC[0], p[0], 0.01f));
-      CHECK(math::Approx(pFromC[1], p[1], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[0], p[0], 0.01f));
+      CHECK(math::ApproxRelative(pFromC[1], p[1], 0.01f));
     }
   }
 };

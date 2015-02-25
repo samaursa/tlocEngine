@@ -123,7 +123,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
     DoSetType(type_to_gl::Get<T>());
-    DoGetValueRef().Assign(a_value);
+    DoGetValueRef().UpdateOrAssign(a_value);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -138,7 +138,7 @@ namespace tloc { namespace graphics { namespace gl {
     TLOC_ASSERT(DoGetValueRef().IsEmpty() || DoGetValueRef().IsSameType(a_value),
       "Cannot change uniform TYPE after construction");
     DoSetType(type_to_gl::Get<T>());
-    DoGetValueRef().Assign(a_value);
+    DoGetValueRef().UpdateOrAssign(a_value);
     m_isArrayPtr = true;
     return *(static_cast<derived_type*>(this));
   }
@@ -155,7 +155,7 @@ namespace tloc { namespace graphics { namespace gl {
       "Cannot change uniform TYPE after construction");
     DoSetType(type_to_gl::Get<T>());
     m_isArray = true;
-    DoGetValueRef().Assign(a_array);
+    DoGetValueRef().UpdateOrAssign(a_array);
     return *(static_cast<derived_type*>(this));
   }
 
@@ -171,7 +171,7 @@ namespace tloc { namespace graphics { namespace gl {
       "Cannot change uniform TYPE after construction");
     DoSetType(type_to_gl::Get<T>());
     m_isArray = true;
-    DoGetValueRef().Assign(Array<T>());
+    DoGetValueRef().UpdateOrAssign(Array<T>());
     DoGetValueRef().template Cast<Array<T> >().swap(a_array);
     return *(static_cast<derived_type*>(this));
   }
@@ -189,7 +189,7 @@ namespace tloc { namespace graphics { namespace gl {
     DoSetType(type_to_gl::Get<T>());
     m_isArray = true;
     m_isArrayPtr = true;
-    DoGetValueRef().Assign(a_array);
+    DoGetValueRef().UpdateOrAssign(a_array);
     return *(static_cast<derived_type*>(this));
   }
 

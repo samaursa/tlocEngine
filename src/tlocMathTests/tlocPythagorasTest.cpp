@@ -20,42 +20,42 @@ namespace TestingPythagoras
     {
       pyth p(pyth::base(2.0), pyth::hypotenuse(2.5));
       CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
-      CHECK(math::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(math::ApproxRelative(p.GetAngle().Get(), 36.869896f, 0.01f));
       CHECK(math::IsEqual(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::hypotenuse(2.5), pyth::base(2.0));
       CHECK(p.GetSide<pyth::opposite>() == Approx(1.5));
-      CHECK(math::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(math::ApproxRelative(p.GetAngle().Get(), 36.869896f, 0.01f));
       CHECK(math::IsEqual(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::opposite(1.5), pyth::base(2.0));
       CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
-      CHECK(math::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(math::ApproxRelative(p.GetAngle().Get(), 36.869896f, 0.01f));
       CHECK(math::IsEqual(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::base(2.0), pyth::opposite(1.5));
       CHECK(p.GetSide<pyth::hypotenuse>() == Approx(2.5));
-      CHECK(math::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(math::ApproxRelative(p.GetAngle().Get(), 36.869896f, 0.01f));
       CHECK(math::IsEqual(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::opposite(1.5), pyth::hypotenuse(2.5));
       CHECK(p.GetSide<pyth::base>() == Approx(2.0));
-      CHECK(math::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(math::ApproxRelative(p.GetAngle().Get(), 36.869896f, 0.01f));
       CHECK(math::IsEqual(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 
     {
       pyth p(pyth::hypotenuse(2.5), pyth::opposite(1.5));
       CHECK(p.GetSide<pyth::base>() == Approx(2.0));
-      CHECK(math::Approx(p.GetAngle().Get(), 36.869896f, 0.01f));
+      CHECK(math::ApproxRelative(p.GetAngle().Get(), 36.869896f, 0.01f));
       CHECK(math::IsEqual(p.GetAngleOpposite().Get(), 90 - p.GetAngle().Get()) );
     }
 

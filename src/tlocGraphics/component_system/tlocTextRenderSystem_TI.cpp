@@ -38,9 +38,9 @@ namespace tloc { namespace graphics { namespace component_system {
     : base_type(a_eventMgr, a_entityMgr,
                 register_type().Add<text_type>(), a_debugName)
     , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
-    , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
-    , m_textMeshRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
-    , m_textAnimSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textSceneGraphSys( MakeArgs(m_textEventMgr.get(), m_textEntityMgr.get()) )
+    , m_textMeshRenderSys( MakeArgs(m_textEventMgr.get(), m_textEntityMgr.get()) )
+    , m_textAnimSys( MakeArgs(m_textEventMgr.get(), m_textEntityMgr.get()) )
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -321,6 +321,10 @@ namespace tloc { namespace graphics { namespace component_system {
           (entity_manager::Params(character, matPtr).Orphan(true));
       }
 
+      // set the user shader operator which may have unique uniforms
+      const auto& mesh = character->GetComponent<gfx_cs::Mesh>();
+      *mesh->GetUserShaderOperator() = *textPtr->GetUserShaderOperator();
+
       // we need the quad later for other operations
       auto ci = CharacterInfo()
         .Transformation(character->GetComponent<math_cs::Transform>())
@@ -483,14 +487,14 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_Initialize()
   {
-    m_textMeshRenderSys.SetRenderer(GetRenderer());
+    m_textMeshRenderSys->SetRenderer(GetRenderer());
 
     if (GetCamera() != nullptr)
-    { m_textMeshRenderSys.SetCamera(GetCamera()); }
+    { m_textMeshRenderSys->SetCamera(GetCamera()); }
     
-    m_textMeshRenderSys.Initialize();
-    m_textSceneGraphSys.Initialize();
-    m_textAnimSys.Initialize();
+    m_textMeshRenderSys->Initialize();
+    m_textSceneGraphSys->Initialize();
+    m_textAnimSys->Initialize();
 
     return ErrorSuccess;
   }
@@ -528,9 +532,64 @@ namespace tloc { namespace graphics { namespace component_system {
     TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
     Post_ProcessActiveEntities(f64 a_deltaT)
   {
-    m_textSceneGraphSys.ProcessActiveEntities(a_deltaT);
-    m_textAnimSys.ProcessActiveEntities(a_deltaT);
-    m_textMeshRenderSys.ProcessActiveEntities(a_deltaT);
+    m_textSceneGraphSys->ProcessActiveEntities(a_deltaT);
+    m_textAnimSys->ProcessActiveEntities(a_deltaT);
+    m_textMeshRenderSys->ProcessActiveEntities(a_deltaT);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    SetEnabledSortingByMaterial(bool a_value)
+  { 
+    base_type::SetEnabledSortingByMaterial(a_value); 
+    m_textMeshRenderSys->SetEnabledSortingByMaterial(a_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    SetEnabledSortingFrontToBack(bool a_value)
+  { 
+    base_type::SetEnabledSortingFrontToBack(a_value); 
+    m_textMeshRenderSys->SetEnabledSortingFrontToBack(a_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    SetEnabledSortingBackToFront(bool a_value)
+  { 
+    base_type::SetEnabledSortingBackToFront(a_value); 
+    m_textMeshRenderSys->SetEnabledSortingBackToFront(a_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    SetEnabledSortingFrontToBack_2D(bool a_value)
+  { 
+    base_type::SetEnabledSortingFrontToBack_2D(a_value); 
+    m_textMeshRenderSys->SetEnabledSortingFrontToBack_2D(a_value);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_TEXT_RENDER_SYSTEM_TEMPS>
+  void
+    TextRenderSystem_TI<TLOC_TEXT_RENDER_SYSTEM_PARAMS>::
+    SetEnabledSortingBackToFront_2D(bool a_value)
+  { 
+    base_type::SetEnabledSortingBackToFront_2D(a_value); 
+    m_textMeshRenderSys->SetEnabledSortingBackToFront_2D(a_value);
   }
 
   // -----------------------------------------------------------------------

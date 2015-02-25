@@ -19,7 +19,6 @@ namespace tloc { namespace core {
 
   INSTANTIATE(f32);
   INSTANTIATE(f64);
-  INSTANTIATE(f128);
 
   INSTANTIATE(u8);
   INSTANTIATE(u16);

@@ -133,6 +133,13 @@ namespace TestingMatrix3
     CHECK_MATRIX3F(a, 0.041585f, -0.04269f, -0.00977f,
                      -0.03954f,   0.059680,  0.002504f,
                       0.021004f, -0.03683f,  0.011604f);
+
+    a = Mat3f::ZERO;
+    TLOC_TEST_ASSERT
+    {
+      a.Inverse();
+    }
+    TLOC_TEST_ASSERT_CHECK();
   }
 
   TEST_CASE_METHOD(Matrix3Fixture, "Math/Matrix3/Adj",
@@ -169,16 +176,16 @@ namespace TestingMatrix3
     a.MakeZero();
     a.Set(values, Mat3f::k_RowMajor);
     a = a.FastOrthonormalize();
-    tl_float prec = 1e-1f;
-    CHECK( (math::Approx(a[0], 0.10f, prec)) == true );
-    CHECK( (math::Approx(a[1], 0.40f, prec)) == true );
-    CHECK( (math::Approx(a[2], 0.90f, prec)) == true );
-    CHECK( (math::Approx(a[3], 0.83f, prec)) == true );
-    CHECK( (math::Approx(a[4], -0.52f, prec)) == true );
-    CHECK( (math::Approx(a[5], 0.14f, prec)) == true );
-    CHECK( (math::Approx(a[6], 0.53f, prec)) == true );
-    CHECK( (math::Approx(a[7], 0.74f, prec)) == true );
-    CHECK( (math::Approx(a[8], -0.39f, prec)) == true );
+
+    CHECK(( math::IsEqual(a[0], 0.100865297f) ));
+    CHECK(( math::IsEqual(a[1], 0.403461188f) ));
+    CHECK(( math::IsEqual(a[2], 0.907787681f) ));
+    CHECK(( math::IsEqual(a[3], 0.840335846f) ));
+    CHECK(( math::IsEqual(a[4], -0.518706977f) ));
+    CHECK(( math::IsEqual(a[5], 0.155653641f) ));
+    CHECK(( math::IsEqual(a[6], 0.518314958f) ));
+    CHECK(( math::IsEqual(a[7], 0.755769789f) ));
+    CHECK(( math::IsEqual(a[8], -0.395894319f) ));
 
     // Multiplying any vector with an orthonormal matrix should yield a vector
     // with the same length as the original vector
@@ -200,7 +207,7 @@ namespace TestingMatrix3
                    g_defaultRNG.GetRandomFloat()), vecRes;
       tl_float vecLength = vecRot.Length();
       a.Mul(vecRot, vecRes);
-      CHECK( math::Approx(vecLength, vecRes.Length(), prec) == true);
+      CHECK( math::ApproxRelative(vecLength, vecRes.Length(), 0.01f) );
     }
 
   }

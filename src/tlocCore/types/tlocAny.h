@@ -143,6 +143,11 @@ namespace tloc { namespace core { namespace types {
     void Assign(const this_type& a_other);
 
     template <typename T>
+    void Update(const T& a_other);
+    template <typename T>
+    void UpdateOrAssign(const T& a_other);
+
+    template <typename T>
     this_type& operator= (const T& a_other);
     this_type& operator= (const this_type& a_other);
 

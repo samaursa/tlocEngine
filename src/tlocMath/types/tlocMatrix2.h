@@ -99,7 +99,6 @@ namespace tloc { namespace math { namespace types {
 
   typedef Matrix_T<f32, 2>      Mat2f32;
   typedef Matrix_T<f64, 2>      Mat2f64;
-  typedef Matrix_T<f128, 2>     Mat2f128;
   typedef Matrix_T<tl_float, 2> Mat2f;
 
   // -----------------------------------------------------------------------
@@ -107,11 +106,9 @@ namespace tloc { namespace math { namespace types {
 
   TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f32 TLOC_COMMA 2>);
   TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f64 TLOC_COMMA 2>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_T<f128 TLOC_COMMA 2>);
 
   TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f32 TLOC_COMMA 2 TLOC_COMMA  Mat2f32>);
   TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f64 TLOC_COMMA 2 TLOC_COMMA  Mat2f64>);
-  TLOC_EXTERN_TEMPLATE_CLASS(Matrix_TI<f128 TLOC_COMMA 2 TLOC_COMMA  Mat2f128>);
 
 };};};
 

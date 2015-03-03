@@ -565,6 +565,7 @@ namespace tloc { namespace graphics { namespace gl {
           break;
         }
       case GL_SAMPLER_2D:
+      case GL_SAMPLER_3D:
       case GL_SAMPLER_2D_SHADOW:
         {
           using namespace texture_units;

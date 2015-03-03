@@ -23,8 +23,8 @@ namespace tloc { namespace graphics { namespace media {
       class External {};
     };
 
-    class dim_2d {};
-    class dim_3d {};
+    typedef gfx_t::Dimension2       dim_2d;
+    typedef gfx_t::Dimension3       dim_3d;
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -95,14 +95,14 @@ namespace tloc { namespace graphics { namespace media {
 
   public:
     typedef T_ColorType                                   value_type;
+    typedef T_Dim                                         dimension_type;
     typedef p_image::storage::Internal                    storage_type;
 
-    typedef ImageBase_TI<T_Dim>                           base_type;
-    typedef Image_TI<T_Dim, value_type, storage_type>     this_type;
+    typedef ImageBase_TI<dimension_type>                           base_type;
+    typedef Image_TI<dimension_type, value_type, storage_type>     this_type;
 
     typedef typename base_type::size_type                 size_type;
     typedef typename base_type::error_type                error_type;
-    typedef typename base_type::dimension_type            dimension_type;
 
     typedef value_type                                    color_type;
     typedef typename color_type::value_type               color_value_type;
@@ -165,14 +165,14 @@ namespace tloc { namespace graphics { namespace media {
 
   public:
     typedef T_ColorType                                   value_type;
+    typedef T_Dim                                         dimension_type;
     typedef p_image::storage::External                    storage_type;
 
-    typedef ImageBase_TI<T_Dim>                           base_type;
-    typedef Image_TI<T_Dim, value_type, storage_type>     this_type;
+    typedef ImageBase_TI<dimension_type>                           base_type;
+    typedef Image_TI<dimension_type, value_type, storage_type>     this_type;
 
     typedef typename base_type::size_type                 size_type;
     typedef typename base_type::error_type                error_type;
-    typedef typename base_type::dimension_type            dimension_type;
 
     typedef value_type                                    color_type;
     typedef typename color_type::value_type               color_value_type;

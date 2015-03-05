@@ -87,7 +87,7 @@ namespace tloc { namespace graphics { namespace gl {
     const T&  GetValueAs() const;
 
     template <typename T>
-    const core::smart_ptr::VirtualPtr<T> GetValueAsArrayPtr() const;
+    const core::smart_ptr::VirtualPtr<T> GetValueAsPtr() const;
 
     template <typename T>
     derived_type& SetValueAs(const T& a_value);
@@ -115,7 +115,7 @@ namespace tloc { namespace graphics { namespace gl {
     void          Reset();
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
-    TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isArrayPtr);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isPtr);
 
   protected:
     ShaderVariable_TI();
@@ -146,7 +146,7 @@ namespace tloc { namespace graphics { namespace gl {
 
   private:
     bool          m_isArray;
-    bool          m_isArrayPtr;
+    bool          m_isPtr;
   };
 
   //------------------------------------------------------------------------
@@ -166,7 +166,7 @@ namespace tloc { namespace graphics { namespace gl {
   const T& ShaderVariable_TI<T_Derived>::
     GetValueAs() const
   {
-    TLOC_ASSERT(!m_isArrayPtr, "Variable is shared - use GetValueAsShared<>()");
+    TLOC_ASSERT(!m_isPtr, "Variable is shared - use GetValueAsShared<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return DoGetValueRef().template Cast<T>();
@@ -176,10 +176,10 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T>
   const core::smart_ptr::VirtualPtr<T>
     ShaderVariable_TI<T_Derived>::
-    GetValueAsArrayPtr() const
+    GetValueAsPtr() const
   {
     using core::smart_ptr::VirtualPtr;
-    TLOC_ASSERT(m_isArrayPtr, "Variable is NOT shared - use GetValueAs<>()");
+    TLOC_ASSERT(m_isPtr, "Variable is NOT shared - use GetValueAs<>()");
 
     static_cast<derived_type const*>(this)->template DoCheckTypeCompatibility<T>();
     return  DoGetValueRef().template Cast<VirtualPtr<T> >();

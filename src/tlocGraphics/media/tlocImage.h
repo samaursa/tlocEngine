@@ -357,7 +357,7 @@ namespace tloc { namespace graphics { namespace media {
     {
       for (size_type x = 0; x < imgDim[0]; ++x)
       {
-        SetPixel(x + a_x, y + a_y, z + a_z, a_image.GetPixel(x, y));
+        SetPixel(x + a_x, y + a_y, a_z, a_image.GetPixel(x, y));
       }
     }
   }

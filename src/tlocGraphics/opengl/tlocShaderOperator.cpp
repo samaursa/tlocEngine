@@ -133,7 +133,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             data_type f =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform1f(a_info.m_location, f);
           }
@@ -144,7 +144,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             data_type const * faraw = reinterpret_cast<data_type const*>(&(fa[0]));
@@ -161,7 +161,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform2f(a_info.m_location, v[0], v[1]);
           }
@@ -173,7 +173,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -194,7 +194,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform3f(a_info.m_location, v[0], v[1], v[2]);
           }
@@ -205,7 +205,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -226,7 +226,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& v =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform4f(a_info.m_location, v[0], v[1], v[2], v[3]);
           }
@@ -237,7 +237,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -258,7 +258,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             data_type i =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform1i(a_info.m_location, i);
           }
@@ -269,7 +269,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -289,7 +289,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform2i(a_info.m_location, t[0], t[1]);
           }
@@ -300,7 +300,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -321,7 +321,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform3i(a_info.m_location, t[0], t[1], t[2]);
           }
@@ -332,7 +332,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -354,7 +354,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform4i(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
@@ -365,7 +365,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -388,7 +388,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             data_type i =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform1ui(a_info.m_location, i);
           }
@@ -399,7 +399,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -419,7 +419,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform2ui(a_info.m_location, t[0], t[1]);
           }
@@ -430,7 +430,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -451,7 +451,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform3ui(a_info.m_location, t[0], t[1], t[2]);
           }
@@ -462,7 +462,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -484,7 +484,7 @@ namespace tloc { namespace graphics { namespace gl {
           {
             const data_type& t =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<data_type>()
+              ? *a_uniform.GetValueAsPtr<data_type>()
               : a_uniform.GetValueAs<data_type>();
             glUniform4ui(a_info.m_location, t[0], t[1], t[2], t[3]);
           }
@@ -495,7 +495,7 @@ namespace tloc { namespace graphics { namespace gl {
 
             array_type const & fa =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<array_type>()
+              ? *a_uniform.GetValueAsPtr<array_type>()
               : a_uniform.GetValueAs<array_type>();
 
             if (fa.size() > 0)
@@ -521,7 +521,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           const Mat2f32& m =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<Mat2f32>()
+              ? *a_uniform.GetValueAsPtr<Mat2f32>()
               : a_uniform.GetValueAs<Mat2f32>();
 
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
@@ -539,7 +539,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           const Mat3f32& m =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<Mat3f32>()
+              ? *a_uniform.GetValueAsPtr<Mat3f32>()
               : a_uniform.GetValueAs<Mat3f32>();
 
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
@@ -557,7 +557,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           const Mat4f32& m =
               isShared
-              ? *a_uniform.GetValueAsArrayPtr<Mat4f32>()
+              ? *a_uniform.GetValueAsPtr<Mat4f32>()
               : a_uniform.GetValueAs<Mat4f32>();
 
           data_type const * faraw = reinterpret_cast<data_type const*>(&(m[0]));
@@ -565,15 +565,32 @@ namespace tloc { namespace graphics { namespace gl {
           break;
         }
       case GL_SAMPLER_2D:
-      case GL_SAMPLER_3D:
-      case GL_SAMPLER_2D_SHADOW:
         {
           using namespace texture_units;
 
-          const TextureObject& m =
-            isShared
-            ? *a_uniform.GetValueAsArrayPtr<TextureObject>()
+          const auto& m = isShared
+            ? *a_uniform.GetValueAsPtr<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
+
+          GLint texImgUnit;
+          if (m.HasReservedTextureUnit())
+          { texImgUnit = m.GetReservedTexImageUnit(); }
+          else
+          { image_units::GetNext(texImgUnit); }
+
+          image_units::Activate(texImgUnit);
+          m.Bind();
+          glUniform1i(a_info.m_location,
+                      FromTextureImageUnit(texImgUnit));
+          break;
+        }
+      case GL_SAMPLER_3D:
+        {
+          using namespace texture_units;
+
+          const auto& m = isShared
+            ? *a_uniform.GetValueAsPtr<TextureObject3D>()
+            : a_uniform.GetValueAs<TextureObject3D>();
 
           GLint texImgUnit;
           if (m.HasReservedTextureUnit())

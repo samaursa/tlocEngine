@@ -7,6 +7,7 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/tlocArgs.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -74,9 +75,12 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     enum { k_size = T_Size };
+    enum { k_channels = k_size };
 
   public:
     typedef T                                             value_type;
+    typedef core_sptr::VirtualPtr<value_type>             value_type_ptr;
+    typedef core_sptr::VirtualPtr<const value_type>       const_value_type_ptr;
     typedef Color_TI<value_type, k_size>                  this_type;
     typedef core_ds::Tuple<value_type, k_size>            color_type;
     typedef typename color_type::size_type                size_type;
@@ -100,6 +104,9 @@ namespace tloc { namespace graphics { namespace types {
 
     template <typename T_ColorFormat, typename T_VectorType>
     void          GetAs(T_VectorType& a_vec) const;
+
+    value_type_ptr          get();
+    const_value_type_ptr    get() const;
 
     value_type&       operator[](tl_int a_index);
     const value_type& operator[](tl_int a_index) const;

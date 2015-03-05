@@ -819,6 +819,9 @@ using namespace tloc::gfx_gl::f_texture_object;
 template TextureObject::error_type TextureObject::Initialize(const _imageType_&);\
 template TextureObject::error_type TextureObject::Update(const _imageType_&) const;\
 \
+template TextureObject3D::error_type TextureObject3D::Initialize(const _imageType_&);\
+template TextureObject3D::error_type TextureObject3D::Update(const _imageType_&) const;\
+\
 template TextureObjectShadow::error_type TextureObjectShadow::Initialize(const _imageType_&);\
 template TextureObjectShadow::error_type TextureObjectShadow::Update(const _imageType_&) const;\
 \

@@ -253,6 +253,32 @@ namespace tloc { namespace core { namespace data_structs {
     return result;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_size T_Size>
+  T
+    Sum(const Tuple<T, T_Size>& a_tuple)
+  {
+    T sum = 0;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { sum += a_tuple[i]; }
+
+    return sum;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_size T_Size>
+  T
+    Product(const Tuple<T, T_Size>& a_tuple)
+  {
+    T prod = 1;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { prod *= a_tuple[i]; }
+
+    return prod;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // MakeTuple
 

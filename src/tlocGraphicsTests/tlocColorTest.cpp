@@ -157,44 +157,30 @@ namespace TestingColor
       CHECK(f[2] == Approx(90.0f/255.0f));
       CHECK(f[3] == Approx(110.0f/255.0f));
 
-      //f += e;
-      //CHECK(f[0] == 75);
-      //CHECK(f[1] == 105);
-      //CHECK(f[2] == 135);
-      //CHECK(f[3] == 165);
+      f += e;
+      CHECK(f[0] == Approx(75.0f/255.0f));
+      CHECK(f[1] == Approx(105.0f/255.0f));
+      CHECK(f[2] == Approx(135.0f/255.0f));
+      CHECK(f[3] == Approx(165.0f/255.0f));
 
-      //f = e * e;
-      //// Note: The following calculations will overflow and wrap around
-      //CHECK(f[0] == (Color::value_type)(e[0] * e[0]) );
-      //CHECK(f[1] == (Color::value_type)(e[1] * e[1]) );
-      //CHECK(f[2] == (Color::value_type)(e[2] * e[2]) );
-      //CHECK(f[3] == (Color::value_type)(e[3] * e[3]) );
+      f = e - e;
+      CHECK(f[0] == Approx(0.0f));
+      CHECK(f[1] == Approx(0.0f));
+      CHECK(f[2] == Approx(0.0f));
+      CHECK(f[3] == Approx(0.0f));
 
-      //f = e;
-      //f *= e;
-      //CHECK(f[0] == (Color::value_type)(e[0] * e[0]) );
-      //CHECK(f[1] == (Color::value_type)(e[1] * e[1]) );
-      //CHECK(f[2] == (Color::value_type)(e[2] * e[2]) );
-      //CHECK(f[3] == (Color::value_type)(e[3] * e[3]) );
+      f = e;
+      f -= e;
+      CHECK(f[0] == Approx(0.0f));
+      CHECK(f[1] == Approx(0.0f));
+      CHECK(f[2] == Approx(0.0f));
+      CHECK(f[3] == Approx(0.0f));
 
-      //f = e - e;
-      //CHECK(f[0] == 0);
-      //CHECK(f[1] == 0);
-      //CHECK(f[2] == 0);
-      //CHECK(f[3] == 0);
-
-      //f = e;
-      //f -= e;
-      //CHECK(f[0] == 0);
-      //CHECK(f[1] == 0);
-      //CHECK(f[2] == 0);
-      //CHECK(f[3] == 0);
-
-      //CHECK(f != e);
-      //CHECK(e != f);
-      //f = e;
-      //CHECK(f == e);
-      //CHECK(e == f);
+      CHECK(f != e);
+      CHECK(e != f);
+      f = e;
+      CHECK(f == e);
+      CHECK(e == f);
     }
 
     SECTION("float color3", "")

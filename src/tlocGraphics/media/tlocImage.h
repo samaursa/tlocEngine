@@ -19,8 +19,11 @@ namespace tloc { namespace graphics { namespace media {
   {
     namespace storage 
     {
-      class Internal {};
-      class External {};
+      class Internal      {};
+      class External      {};
+
+      typedef type_true   const_storage;
+      typedef type_false  non_const_storage;
     };
 
     typedef gfx_t::Dimension2       dim_2d;
@@ -79,14 +82,20 @@ namespace tloc { namespace graphics { namespace media {
   // ///////////////////////////////////////////////////////////////////////
   // Image_TI<>
 
-  template <typename T_Dim, typename T_ColorType, typename T_StorageType>
-  class Image_TI;
+  // const storage only affects external storage type
+  template <typename T_Dim, typename T_ColorType, typename T_StorageType, 
+            bool T_Const = false>
+  class Image_TI
+  {
+    TLOC_STATIC_ASSERT( !(Loki::IsSameType<T_StorageType, p_image::storage::Internal>::value && T_Const == true),
+      Only_external_storage_type_can_be_const);
+  };
 
   // ///////////////////////////////////////////////////////////////////////
   // Image_TI<Internal>
 
   template <typename T_Dim, typename T_ColorType>
-  class Image_TI<T_Dim, T_ColorType, p_image::storage::Internal>
+  class Image_TI<T_Dim, T_ColorType, p_image::storage::Internal, false>
     : public ImageBase_TI<T_Dim>
   {
     TLOC_STATIC_ASSERT
@@ -98,8 +107,9 @@ namespace tloc { namespace graphics { namespace media {
     typedef T_Dim                                         dimension_type;
     typedef p_image::storage::Internal                    storage_type;
 
-    typedef ImageBase_TI<dimension_type>                           base_type;
-    typedef Image_TI<dimension_type, value_type, storage_type>     this_type;
+    typedef ImageBase_TI<dimension_type>                  base_type;
+    typedef Image_TI<dimension_type, value_type,
+                     storage_type, false>                 this_type;
 
     typedef typename base_type::size_type                 size_type;
     typedef typename base_type::error_type                error_type;
@@ -125,6 +135,7 @@ namespace tloc { namespace graphics { namespace media {
     bool              IsValid() const;
 
     const_color_type_ptr   get() const;
+    const_color_type_ptr   operator[](tl_int a_index) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
                                           GetPixels, m_pixels);
@@ -155,8 +166,8 @@ namespace tloc { namespace graphics { namespace media {
   // ///////////////////////////////////////////////////////////////////////
   // Image_TI<External>
 
-  template <typename T_Dim, typename T_ColorType>
-  class Image_TI<T_Dim, T_ColorType, p_image::storage::External>
+  template <typename T_Dim, typename T_ColorType, bool T_Const>
+  class Image_TI<T_Dim, T_ColorType, p_image::storage::External, T_Const>
     : public ImageBase_TI<T_Dim>
   {
     TLOC_STATIC_ASSERT
@@ -168,14 +179,23 @@ namespace tloc { namespace graphics { namespace media {
     typedef T_Dim                                         dimension_type;
     typedef p_image::storage::External                    storage_type;
 
-    typedef ImageBase_TI<dimension_type>                           base_type;
-    typedef Image_TI<dimension_type, value_type, storage_type>     this_type;
+    typedef ImageBase_TI<dimension_type>                  base_type;
+    typedef Image_TI<dimension_type, value_type, 
+                     storage_type, T_Const>               this_type;
 
     typedef typename base_type::size_type                 size_type;
     typedef typename base_type::error_type                error_type;
 
-    typedef value_type                                    color_type;
-    typedef typename color_type::value_type               color_value_type;
+    // const external storage can only work with const color type
+    typedef typename Loki::Select
+      <T_Const, const value_type, value_type>::Result     color_type;
+
+    // const external storage can only work with const color::value_type
+    typedef typename Loki::Select
+      <T_Const, 
+       const typename color_type::value_type, 
+       typename color_type::value_type>::Result           color_value_type;
+
     typedef typename
       core::containers::tl_array<color_type>::type        pixel_container_type;
 
@@ -193,6 +213,7 @@ namespace tloc { namespace graphics { namespace media {
     bool              IsValid() const;
 
     const_color_type_ptr   get() const;
+    const_color_type_ptr   operator[](tl_int a_index) const;
 
     TLOC_DECL_AND_DEF_GETTER(color_type_ptr, GetPixels, m_pixels);
     TLOC_DECL_AND_DEF_GETTER_DIRECT(color_type_ptr, GetPixels, m_pixels);
@@ -213,25 +234,26 @@ namespace tloc { namespace graphics { namespace media {
 
   template <typename T_Dim = p_image::dim_2d,
             typename T_ColorType = types::Color, 
-            typename T_StorageType = p_image::storage::Internal>
+            typename T_StorageType = p_image::storage::Internal,
+            bool T_Const = false>
   class Image_T;
 
   // -----------------------------------------------------------------------
   // Image_T<2D>
 
   template <typename T_ColorType, 
-            typename T_StorageType>
-  class Image_T<p_image::dim_2d, T_ColorType, T_StorageType>
-    : public Image_TI<p_image::dim_2d, T_ColorType, T_StorageType>
+            typename T_StorageType, bool T_Const>
+  class Image_T<p_image::dim_2d, T_ColorType, T_StorageType, T_Const>
+    : public Image_TI<p_image::dim_2d, T_ColorType, T_StorageType, T_Const>
   {
   public:
     typedef T_ColorType                                   value_type;
     typedef T_StorageType                                 storage_type;
 
     typedef Image_TI<p_image::dim_2d, 
-                     value_type, storage_type>            base_type;
+                     value_type, storage_type, T_Const>   base_type;
     typedef Image_T<p_image::dim_2d, value_type, 
-                    storage_type>                         this_type;
+                    storage_type, T_Const>                this_type;
 
     typedef typename base_type::color_type                color_type;
     typedef typename base_type::size_type                 size_type;
@@ -264,24 +286,27 @@ namespace tloc { namespace graphics { namespace media {
   // Image_T<3D>
 
   template <typename T_ColorType, 
-            typename T_StorageType>
-  class Image_T<p_image::dim_3d, T_ColorType, T_StorageType>
-    : public Image_TI<p_image::dim_3d, T_ColorType, T_StorageType>
+            typename T_StorageType, bool T_Const>
+  class Image_T<p_image::dim_3d, T_ColorType, T_StorageType, T_Const>
+    : public Image_TI<p_image::dim_3d, T_ColorType, T_StorageType, T_Const>
   {
   public:
     typedef T_ColorType                                   value_type;
     typedef T_StorageType                                 storage_type;
 
     typedef Image_TI<p_image::dim_3d, 
-                     value_type, storage_type>            base_type;
+                     value_type, storage_type, T_Const>   base_type;
     typedef Image_T<p_image::dim_3d, value_type, 
-                    storage_type>                         this_type;
+                    storage_type, T_Const>                this_type;
+    typedef Image_T<p_image::dim_2d, value_type,
+                    p_image::storage::External, true>     image_2d_type;
 
     typedef typename base_type::color_type                color_type;
     typedef typename base_type::size_type                 size_type;
     typedef typename base_type::dimension_type            dimension_type;
 
     typedef core_sptr::SharedPtr<this_type>               image_sptr;
+    typedef core_sptr::SharedPtr<image_2d_type>           image_2d_sptr;
 
   public:
     Image_T();
@@ -293,6 +318,11 @@ namespace tloc { namespace graphics { namespace media {
     const color_type& GetPixel(size_type a_x, size_type a_y, size_type a_z) const;
     image_sptr        GetImage(size_type a_x, size_type a_y, size_type a_z,
                                dimension_type a_dimToGet) const;
+    image_2d_sptr     GetImage(size_type a_z) const;
+
+    template <typename T_Storage>
+    void              SetImage(size_type a_x, size_type a_y, size_type a_z, 
+                               const Image_T<p_image::dim_2d, value_type, T_Storage>& a_image);
 
     using base_type::Load;
     using base_type::Create;
@@ -303,6 +333,34 @@ namespace tloc { namespace graphics { namespace media {
     using base_type::GetPixels;
     using base_type::IsValid;
   };
+
+  // -----------------------------------------------------------------------
+  // template definitions
+
+  template <typename T_ColorType, typename T_StorageType, bool T_Const>
+  template <typename T_Storage>
+  void
+    Image_T<p_image::dim_3d, T_ColorType, T_StorageType, T_Const>::
+    SetImage(size_type a_x, size_type a_y, size_type a_z, 
+             const Image_T<p_image::dim_2d, value_type, T_Storage>& a_image)
+  {
+    const auto imgDim = a_image.GetDimensions();
+
+    TLOC_ASSERT(imgDim[0] + a_x <= this->GetDimensions()[0], 
+                "Incoming image does not fit in X");
+    TLOC_ASSERT(imgDim[1] + a_y <= this->GetDimensions()[1], 
+                "Incoming image does not fit in Y");
+    TLOC_ASSERT(a_z <= this->GetDimensions()[2], 
+                "Incoming image does not fit in Z");
+
+    for (size_type y = 0; y < imgDim[1]; ++y)
+    {
+      for (size_type x = 0; x < imgDim[0]; ++x)
+      {
+        SetPixel(x + a_x, y + a_y, z + a_z, a_image.GetPixel(x, y));
+      }
+    }
+  }
 
   // -----------------------------------------------------------------------
   // typedefs
@@ -349,6 +407,27 @@ namespace tloc { namespace graphics { namespace media {
   typedef Image_T<p_image::dim_2d, gfx_t::color_f32_r, 
                   p_image::storage::External>                image_stream_f32_r;
 
+  typedef Image_T<p_image::dim_2d, gfx_t::color_rgba, 
+                  p_image::storage::External, true>          image_stream_const_rgba;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_rgb, 
+                  p_image::storage::External, true>          image_stream_const_rgb;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_rg, 
+                  p_image::storage::External, true>          image_stream_const_rg;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_r, 
+                  p_image::storage::External, true>          image_stream_const_r;
+
+  typedef Image_T<p_image::dim_2d, gfx_t::color_u16_rgba, 
+                  p_image::storage::External, true>          image_stream_u16_const_rgba;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_u16_rgb, 
+                  p_image::storage::External, true>          image_stream_u16_const_rgb;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_u16_rg, 
+                  p_image::storage::External, true>          image_stream_u16_const_rg;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_u16_r, 
+                  p_image::storage::External, true>          image_stream_u16_const_r;
+
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_r, 
+                  p_image::storage::External, true>          image_stream_f32_const_r;
+
   // -----------------------------------------------------------------------
   // 3D
 
@@ -391,6 +470,27 @@ namespace tloc { namespace graphics { namespace media {
   typedef Image_T<p_image::dim_3d, gfx_t::color_f32_r,
                   p_image::storage::External>               image_3d_stream_f32_r;
 
+  typedef Image_T<p_image::dim_3d, gfx_t::color_rgba,
+                  p_image::storage::External, true>         image_3d_stream_const_rgba;
+  typedef Image_T<p_image::dim_3d, gfx_t::color_rgb,
+                  p_image::storage::External, true>         image_3d_stream_const_rgb;
+  typedef Image_T<p_image::dim_3d, gfx_t::color_rg,
+                  p_image::storage::External, true>         image_3d_stream_const_rg;
+  typedef Image_T<p_image::dim_3d, gfx_t::color_r,
+                  p_image::storage::External, true>         image_3d_stream_const_r;
+
+  typedef Image_T<p_image::dim_3d, gfx_t::color_u16_rgba,
+                  p_image::storage::External, true>         image_3d_stream_u16_const_rgba;
+  typedef Image_T<p_image::dim_3d, gfx_t::color_u16_rgb,
+                  p_image::storage::External, true>         image_3d_stream_u16_const_rgb;
+  typedef Image_T<p_image::dim_3d, gfx_t::color_u16_rg, 
+                  p_image::storage::External, true>         image_3d_stream_u16_const_rg;
+  typedef Image_T<p_image::dim_3d, gfx_t::color_u16_r, 
+                  p_image::storage::External, true>         const_jimage_3d_stream_u16_r;
+
+  typedef Image_T<p_image::dim_3d, gfx_t::color_f32_r,
+                  p_image::storage::External, true>         image_3d_stream_f32_const_r;
+
   // -----------------------------------------------------------------------
   // extern template
 
@@ -425,54 +525,72 @@ namespace tloc { namespace graphics { namespace media {
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgba, image_rgba);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_rgba, image_stream_rgba);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_const_rgba, image_stream_const_rgba);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgba, image_rgba);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_rgba, image_stream_rgba);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_const_rgba, image_stream_const_rgba);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rgb, image_rgb);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_rgb, image_stream_rgb);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_const_rgb, image_stream_const_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rgb, image_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_rgb, image_stream_rgb);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_const_rgb, image_stream_const_rgb);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_rg, image_rg);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_rg, image_stream_rg);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_const_rg, image_stream_const_rg);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_rg, image_rg);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_rg, image_stream_rg);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_const_rg, image_stream_const_rg);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_r, image_r);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_r, image_stream_r);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_const_r, image_stream_const_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_r, image_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_r, image_stream_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_const_r, image_stream_const_r);
 
   // ```````````````````````````````````````````````````````````````````````
   // u16 images
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rgba, image_u16_rgba);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_rgba, image_stream_u16_rgba);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_const_rgba, image_stream_u16_const_rgba);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rgba, image_u16_rgba);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_rgba, image_stream_u16_rgba);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_const_rgba, image_stream_u16_const_rgba);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rgb, image_u16_rgb);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_rgb, image_stream_u16_rgb);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_const_rgb, image_stream_u16_const_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rgb, image_u16_rgb);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_rgb, image_stream_u16_rgb);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_const_rgb, image_stream_u16_const_rgb);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_rg, image_u16_rg);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_rg, image_stream_u16_rg);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_const_rg, image_stream_u16_const_rg);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_rg, image_u16_rg);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_rg, image_stream_u16_rg);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_const_rg, image_stream_u16_const_rg);
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_u16_r, image_u16_r);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_r, image_stream_u16_r);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_u16_const_r, image_stream_u16_const_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_u16_r, image_u16_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_r, image_stream_u16_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_u16_const_r, image_stream_u16_const_r);
 
   // ```````````````````````````````````````````````````````````````````````
   // special images
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_f32_r, image_f32_r);
   TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_f32_r, image_stream_f32_r);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(image_stream_f32_const_r, image_stream_f32_const_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_f32_r, image_f32_r);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_f32_r, image_stream_f32_r);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(image_stream_f32_const_r, image_stream_f32_const_r);
 
 };};};
 
@@ -487,53 +605,71 @@ TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::Image);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_rgba);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_rgba);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_const_rgba);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_rgba);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_rgba);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_const_rgba);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_rgb);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_rgb);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_const_rgb);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_rgb);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_rgb);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_const_rgb);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_rg);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_rg);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_const_rg);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_rg);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_rg);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_const_rg);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_r);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_r);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_const_r);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_r);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_r);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_const_r);
 
 // -----------------------------------------------------------------------
 // extern template
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_u16_rgba);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_rgba);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_const_rgba);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_u16_rgba);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_rgba);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_const_rgba);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_u16_rgb);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_rgb);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_const_rgb);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_u16_rgb);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_rgb);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_const_rgb);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_u16_rg);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_rg);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_const_rg);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_u16_rg);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_rg);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_const_rg);
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_u16_r);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_r);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_u16_const_r);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_u16_r);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_r);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_u16_const_r);
 
 // -----------------------------------------------------------------------
 // extern template
 
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_f32_r);
 TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_f32_r);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_med::image_stream_f32_const_r);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_f32_r);
 TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_f32_r);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT(tloc::gfx_med::image_stream_f32_const_r);
 
 #endif

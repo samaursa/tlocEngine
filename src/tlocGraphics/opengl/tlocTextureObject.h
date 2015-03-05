@@ -409,6 +409,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject, texture_object);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject, texture_object);
 
+  typedef TextureObject_T<p_texture_object::target::Tex3D>        TextureObject3D;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject3D, texture_object_3d);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject3D, texture_object_3d);
+
   typedef TextureObject_T<p_texture_object::target::Tex2DShadow>  TextureObjectShadow;
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObjectShadow, texture_object_shadow);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectShadow, texture_object_shadow);

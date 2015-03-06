@@ -249,7 +249,7 @@ namespace tloc { namespace core { namespace component_system {
 
     // keep similar components together
     using algos::component::comparison::component_type::LessThan_Deref;
-    core::sort(cl.begin(), cl.end(), LessThan_Deref());
+    core::sort(cl.begin(), cl.end(), LessThan_Deref(), sort_insertionsort());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

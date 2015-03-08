@@ -20,3 +20,10 @@ using namespace tloc;
 #include <tlocCore/types/tlocStrongType.inl.h>
 TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(math_t::Vector_T<f32 TLOC_COMMA 3>, 0);
 TLOC_EXPLICITLY_INSTANTIATE_STRONG_TYPE(math_t::Vector_T<f64 TLOC_COMMA 3>, 0);
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Mat3f32);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(Mat3f64);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Mat3f32);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Mat3f64);

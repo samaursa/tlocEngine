@@ -48,18 +48,18 @@ namespace TestingUniformVariable
       Array<f32> array(1, 1.0f);
       u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
       CHECK(u.IsArray());
-      CHECK_FALSE(u.IsArrayPtr());
+      CHECK_FALSE(u.IsPtr());
 
       gl::Uniform uCopy(u);
       CHECK( uCopy.IsArray());
-      CHECK_FALSE( uCopy.IsArrayPtr());
+      CHECK_FALSE( uCopy.IsPtr());
       CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( uCopy.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
 
       gl::Uniform uCopy2;
       uCopy2 = u;
       CHECK( uCopy2.IsArray());
-      CHECK_FALSE( uCopy2.IsArrayPtr());
+      CHECK_FALSE( uCopy2.IsPtr());
       CHECK( u.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
       CHECK( uCopy2.GetValueAs<Array<f32> >()[0] == Approx(1.0f) );
 
@@ -77,20 +77,20 @@ namespace TestingUniformVariable
       gl::Uniform u;
       u.SetValueAs(sp.get(), gl::p_shader_variable_ti::Pointer());
       CHECK(u.IsArray());
-      CHECK(u.IsArrayPtr());
+      CHECK(u.IsPtr());
 
       gl::Uniform uCopy(u);
       CHECK(uCopy.IsArray());
-      CHECK(uCopy.IsArrayPtr());
-      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
-      CHECK( (*uCopy.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK(uCopy.IsPtr());
+      CHECK( (*u.GetValueAsPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK( (*uCopy.GetValueAsPtr<Array<f32> >())[0] == Approx(1.0f) );
 
       gl::Uniform uCopy2;
       uCopy2 = u;
       CHECK(uCopy2.IsArray());
-      CHECK(uCopy2.IsArrayPtr());
-      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
-      CHECK( (*uCopy2.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK(uCopy2.IsPtr());
+      CHECK( (*u.GetValueAsPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK( (*uCopy2.GetValueAsPtr<Array<f32> >())[0] == Approx(1.0f) );
 
     }
   }
@@ -141,19 +141,19 @@ namespace TestingUniformVariable
       u.SetValueAs(array, gl::p_shader_variable_ti::CopyArray() );
       u.SetName("TestVar");
       CHECK(u.IsArray());
-      CHECK_FALSE(u.IsArrayPtr());
+      CHECK_FALSE(u.IsPtr());
 
       u.Reset();
       CHECK_FALSE(u.IsValidType());
       CHECK_FALSE(u.IsArray());
-      CHECK_FALSE(u.IsArrayPtr());
+      CHECK_FALSE(u.IsPtr());
       CHECK(u.GetName().length() == 0);
 
       Array<s32> array2(2, 2);
       u.SetValueAs(array2, gl::p_shader_variable_ti::CopyArray() );
       u.SetName("TestVar2");
       CHECK(u.IsArray());
-      CHECK_FALSE(u.IsArrayPtr());
+      CHECK_FALSE(u.IsPtr());
 
       CHECK(u.GetValueAs<Array<s32> >()[0] == 2);
       CHECK(u.GetValueAs<Array<s32> >()[1] == 2);
@@ -174,21 +174,21 @@ namespace TestingUniformVariable
       u.SetValueAs(f32Array.get(), gl::p_shader_variable_ti::Pointer() );
       u.SetName("TestVar");
       CHECK(u.IsArray());
-      CHECK(u.IsArrayPtr());
+      CHECK(u.IsPtr());
 
       u.Reset();
       CHECK_FALSE(u.IsValidType());
       CHECK_FALSE(u.IsArray());
-      CHECK_FALSE(u.IsArrayPtr());
+      CHECK_FALSE(u.IsPtr());
       CHECK(u.GetName().length() == 0);
 
       u.SetValueAs(s32Array.get(), gl::p_shader_variable_ti::Pointer() );
       u.SetName("TestVar2");
       CHECK(u.IsArray());
-      CHECK(u.IsArrayPtr());
+      CHECK(u.IsPtr());
 
-      CHECK(u.GetValueAsArrayPtr<array_s32_vso::pointer::value_type>()->at(0) == 2);
-      CHECK(u.GetValueAsArrayPtr<array_s32_vso::pointer::value_type>()->at(1) == 2);
+      CHECK(u.GetValueAsPtr<array_s32_vso::pointer::value_type>()->at(0) == 2);
+      CHECK(u.GetValueAsPtr<array_s32_vso::pointer::value_type>()->at(1) == 2);
     }
   }
 
@@ -380,7 +380,7 @@ namespace TestingUniformVariable
 
       gl::Uniform u;
       u.SetValueAs(sp.get());
-      CHECK( *u.GetValueAsArrayPtr<f32>() == Approx(1.0f) );
+      CHECK( *u.GetValueAsPtr<f32>() == Approx(1.0f) );
     }
   }
 
@@ -505,7 +505,7 @@ namespace TestingUniformVariable
 
       gl::Uniform u;
       u.SetValueAs(sp.get(), gl::p_shader_variable_ti::Pointer());
-      CHECK( (*u.GetValueAsArrayPtr<Array<f32> >())[0] == Approx(1.0f) );
+      CHECK( (*u.GetValueAsPtr<Array<f32> >())[0] == Approx(1.0f) );
     }
   }
 };

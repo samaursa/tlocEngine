@@ -121,7 +121,7 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace core;
 
       bool isArray = a_uniform.IsArray();
-      bool isShared = a_uniform.IsArrayPtr();
+      bool isShared = a_uniform.IsPtr();
 
       switch(a_info.m_type)
       {
@@ -571,6 +571,26 @@ namespace tloc { namespace graphics { namespace gl {
           const auto& m = isShared
             ? *a_uniform.GetValueAsPtr<TextureObject>()
             : a_uniform.GetValueAs<TextureObject>();
+
+          GLint texImgUnit;
+          if (m.HasReservedTextureUnit())
+          { texImgUnit = m.GetReservedTexImageUnit(); }
+          else
+          { image_units::GetNext(texImgUnit); }
+
+          image_units::Activate(texImgUnit);
+          m.Bind();
+          glUniform1i(a_info.m_location,
+                      FromTextureImageUnit(texImgUnit));
+          break;
+        }
+      case GL_SAMPLER_2D_SHADOW:
+        {
+          using namespace texture_units;
+
+          const auto& m = isShared
+            ? *a_uniform.GetValueAsPtr<TextureObjectShadow>()
+            : a_uniform.GetValueAs<TextureObjectShadow>();
 
           GLint texImgUnit;
           if (m.HasReservedTextureUnit())

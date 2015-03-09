@@ -130,6 +130,28 @@ namespace tloc { namespace graphics { namespace gl {
       struct EightBytes     { static const value_type s_glParamName; };
     };
 
+    namespace compare_mode
+    {
+      typedef gfx_t::gl_int             value_type;
+
+      struct None           { static const value_type s_glParamName; };
+      struct RefToTexture   { static const value_type s_glParamName; };
+    };
+
+    namespace compare_function
+    {
+      typedef gfx_t::gl_int             value_type;
+
+      struct LessEqual      { static const value_type s_glParamName; };
+      struct GreaterEqual   { static const value_type s_glParamName; };
+      struct Less           { static const value_type s_glParamName; };
+      struct Greater        { static const value_type s_glParamName; };
+      struct Equal          { static const value_type s_glParamName; };
+      struct NotEqual       { static const value_type s_glParamName; };
+      struct Always         { static const value_type s_glParamName; };
+      struct Never          { static const value_type s_glParamName; };
+    };
+
     // ///////////////////////////////////////////////////////////////////////
     // Image Params
 
@@ -145,6 +167,9 @@ namespace tloc { namespace graphics { namespace gl {
       typedef p_texture_object::format::value_type          format_value_type;
       typedef p_texture_object::type::value_type            type_value_type;
       typedef p_texture_object::alignment::value_type       alignment_value_type;
+
+      typedef p_texture_object::compare_mode::value_type     compare_mode_value_type;
+      typedef p_texture_object::compare_function::value_type compare_func_value_type;
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -297,6 +322,36 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+      template <typename T_CompareMode>
+      this_type&
+        CompareMode()
+      {
+        using namespace p_texture_object::compare_mode;
+
+        tloc::type_traits::AssertTypeIsSupported<T_CompareMode,
+          None, RefToTexture>();
+
+        m_compareMode = T_CompareMode::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_CompareFunction>
+      this_type&
+        CompareFunction()
+      {
+        using namespace p_texture_object::compare_function;
+
+        tloc::type_traits::AssertTypeIsSupported<T_CompareFunction,
+          LessEqual, GreaterEqual, Less, Greater, Equal, NotEqual, Always, Never>();
+
+        m_compareFunc = T_CompareFunction::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
       template <typename U_Target>
       void  TextureType();
 
@@ -317,6 +372,8 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (size_type, GetFormatChannels, m_formatChannels);
       TLOC_DECL_AND_DEF_GETTER (type_value_type, GetType, m_type);
       TLOC_DECL_AND_DEF_GETTER (alignment_value_type, GetAlignment, m_alignment);
+      TLOC_DECL_AND_DEF_GETTER (compare_mode_value_type, GetCompareMode, m_compareMode);
+      TLOC_DECL_AND_DEF_GETTER (compare_func_value_type, GetCompareFunction, m_compareFunc);
       TLOC_DECL_AND_DEF_GETTER (bool, IsAutoGenMipMaps, m_autoGenMipMaps);
 
     private:
@@ -331,6 +388,8 @@ namespace tloc { namespace graphics { namespace gl {
       size_type                   m_formatChannels;
       type_value_type             m_type;
       alignment_value_type        m_alignment;
+      compare_mode_value_type     m_compareMode;
+      compare_func_value_type     m_compareFunc;
       bool                        m_autoGenMipMaps;
     };
   };

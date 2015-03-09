@@ -76,12 +76,14 @@ namespace tloc { namespace graphics { namespace gl {
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL
 
-    typedef wrap_technique::value_type  wvt;
-    typedef filter::value_type          fvt;
-    typedef format::value_type          formvt;
-    typedef internal_format::value_type ifvt;
-    typedef type::value_type            tvt;
-    typedef alignment::value_type       avt;
+    typedef wrap_technique::value_type    wvt;
+    typedef filter::value_type            fvt;
+    typedef format::value_type            formvt;
+    typedef internal_format::value_type   ifvt;
+    typedef type::value_type              tvt;
+    typedef alignment::value_type         avt;
+    typedef compare_mode::value_type      cmvt;
+    typedef compare_function::value_type  cfvt;
 
     const wvt wrap_technique::ClampToEdge::s_glParamName       = GL_CLAMP_TO_EDGE;
     const wvt wrap_technique::ClampToBorder::s_glParamName     = GL_CLAMP_TO_BORDER;
@@ -161,6 +163,18 @@ namespace tloc { namespace graphics { namespace gl {
     const avt  alignment::TwoBytes::s_glParamName             = 2;
     const avt  alignment::FourBytes::s_glParamName            = 4;
     const avt  alignment::EightBytes::s_glParamName           = 8;
+
+    const cmvt compare_mode::None::s_glParamName              = GL_NONE;
+    const cmvt compare_mode::RefToTexture::s_glParamName      = GL_COMPARE_REF_TO_TEXTURE;
+
+    const cfvt compare_function::LessEqual::s_glParamName     = GL_LEQUAL;
+    const cfvt compare_function::GreaterEqual::s_glParamName  = GL_GEQUAL;
+    const cfvt compare_function::Less::s_glParamName          = GL_LESS;
+    const cfvt compare_function::Greater::s_glParamName       = GL_GREATER;
+    const cfvt compare_function::Equal::s_glParamName         = GL_EQUAL;
+    const cfvt compare_function::NotEqual::s_glParamName      = GL_NOTEQUAL;
+    const cfvt compare_function::Always::s_glParamName        = GL_ALWAYS;
+    const cfvt compare_function::Never::s_glParamName         = GL_NEVER;
 
 #elif defined (TLOC_OS_IPHONE) // TODO: Change to TLOC_GFX_PLATFORM_GL_ES
 
@@ -283,6 +297,8 @@ namespace tloc { namespace graphics { namespace gl {
       Format<format::Auto>();
       Type<type::Auto>();
       Alignment<alignment::Auto>();
+      CompareMode<compare_mode::None>();
+      CompareFunction<compare_function::LessEqual>();
     }
 
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -688,8 +704,7 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     UpdateParameters() const
   {
-    const p_texture_object::target::value_type 
-      texType = GetTargetType();
+    const auto texType = GetTargetType();
 
     glTexParameteri(texType, GL_TEXTURE_WRAP_S, m_params.GetWrap_S());
     glTexParameteri(texType, GL_TEXTURE_WRAP_T, m_params.GetWrap_T());
@@ -699,6 +714,10 @@ namespace tloc { namespace graphics { namespace gl {
 
     glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, m_params.GetMagFilter());
     glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, m_params.GetMinFilter());
+
+    glTexParameteri(texType, GL_TEXTURE_COMPARE_MODE, m_params.GetCompareMode());
+    glTexParameteri(texType, GL_TEXTURE_COMPARE_FUNC, m_params.GetCompareFunction());
+
     TLOC_ASSERT(gl::Error().Succeeded(), "Error in glTexParameteri()");
   }
 

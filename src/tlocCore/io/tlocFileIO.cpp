@@ -320,7 +320,10 @@ namespace tloc { namespace core { namespace io {
       if (err.Failed())
       { return TLOC_ERROR(common_error_types::error_file_not_found); }
 
-      f.GetContents(a_contentOut);
+      err = f.GetContents(a_contentOut);
+      if (err.Failed())
+      { return TLOC_ERROR(common_error_types::error_file_read); }
+
       f.Close();
 
       return err;

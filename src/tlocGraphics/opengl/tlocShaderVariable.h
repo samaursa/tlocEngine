@@ -115,7 +115,7 @@ namespace tloc { namespace graphics { namespace gl {
     void          Reset();
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsArray, m_isArray);
-    TLOC_DECL_AND_DEF_GETTER(bool, IsArrayPtr, m_isPtr);
+    TLOC_DECL_AND_DEF_GETTER(bool, IsPtr, m_isPtr);
 
   protected:
     ShaderVariable_TI();

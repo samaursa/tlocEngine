@@ -337,6 +337,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   typedef tloc::core_sptr::UniquePtr<_type_>  _typedef_##_uptr;\
   typedef tloc::core_sptr::UniquePtr<const _type_>  const_##_typedef_##_uptr
 
+#define TLOC_TYPEDEF_THIS_TYPE_UNIQUE_PTR()\
+  typedef tloc::core_sptr::UniquePtr<this_type>  this_type_uptr;\
+  typedef tloc::core_sptr::UniquePtr<const this_type>  const_this_type_uptr
+
 #define TLOC_EXTERN_TEMPLATE_UNIQUE_PTR(_type_)\
   TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::UniquePtr<_type_>);\
   TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::UniquePtr<const _type_>)

@@ -308,6 +308,33 @@ namespace tloc { namespace graphics { namespace gl {
       AutoGenerateMipMaps(bool a_autoGenMipMaps)
     { m_autoGenMipMaps = a_autoGenMipMaps; }
 
+    // -----------------------------------------------------------------------
+
+    Params 
+      GetDepthParams()
+    {
+      gfx_gl::TextureObject::Params rttToParams;
+      rttToParams
+        .InternalFormat<gfx_gl::p_texture_object::internal_format::DepthComponent>()
+        .Format<gfx_gl::p_texture_object::format::DepthComponent>();
+
+      return rttToParams;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    Params 
+      GetShadowParams()
+    {
+      gfx_gl::TextureObject::Params rttToParams;
+      rttToParams
+        .InternalFormat<gfx_gl::p_texture_object::internal_format::DepthComponent>()
+        .Format<gfx_gl::p_texture_object::format::DepthComponent>()
+        .CompareMode<gfx_gl::p_texture_object::compare_mode::RefToTexture>()
+        .CompareFunction<gfx_gl::p_texture_object::compare_function::LessEqual>();
+
+      return rttToParams;
+    }
   };
 
   namespace {

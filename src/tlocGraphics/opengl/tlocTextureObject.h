@@ -392,11 +392,10 @@ namespace tloc { namespace graphics { namespace gl {
       compare_func_value_type     m_compareFunc;
       bool                        m_autoGenMipMaps;
     };
+
+    Params GetDepthParams();
+    Params GetShadowParams();
   };
-
-  // -----------------------------------------------------------------------
-  // Params template definitions
-
 
   // ///////////////////////////////////////////////////////////////////////
   // TextureObject

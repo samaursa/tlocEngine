@@ -677,6 +677,24 @@ typedef tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
   tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail, \
   tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>  _typedef_##_vso
 
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type>  this_type_vso
+
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type, \
+  tloc::core_sptr::p_virtual_stack_object::copy_ctor::Available, \
+  tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>  this_type_vso
+
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type, \
+  tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail, \
+  tloc::core_sptr::p_virtual_stack_object::default_ctor::Available>  this_type_vso
+
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type, \
+  tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail, \
+  tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>  this_type_vso
+
 // -----------------------------------------------------------------------
 // extern template
 

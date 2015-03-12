@@ -1,6 +1,8 @@
 set(TLOC_GRAPHICS 
   tlocBinPacker2D.h
   tlocBinPacker2D.cpp
+  tlocRtt.h
+  tlocRtt.cpp
   tlocDepVersionCheck.cpp 
   tlocGraphicsBase.h 
   tlocGraphicsBase.cpp

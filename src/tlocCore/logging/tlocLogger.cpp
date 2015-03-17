@@ -102,9 +102,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(BufferArg a_string)
+    operator<<(BufferArg a_string) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -119,9 +119,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(BufferArgW a_string)
+    operator<<(BufferArgW a_string) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -136,9 +136,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(tl_int a_value)
+    operator<<(tl_int a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -153,9 +153,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(tl_long a_value)
+    operator<<(tl_long a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -170,9 +170,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(char8 a_value)
+    operator<<(char8 a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -187,9 +187,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(char32 a_value)
+    operator<<(char32 a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -204,9 +204,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(tl_uint a_value)
+    operator<<(tl_uint a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -221,9 +221,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(tl_ulong a_value)
+    operator<<(tl_ulong a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -238,9 +238,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(tl_float a_value)
+    operator<<(tl_float a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -255,9 +255,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(tl_double a_value)
+    operator<<(tl_double a_value) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -272,9 +272,9 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_LOG_TEMPS>
-  TLOC_LOG_TYPE::this_type&
+  TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(core_utils::MemoryAddress a_memAddress)
+    operator<<(core_utils::MemoryAddress a_memAddress) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -282,6 +282,40 @@ namespace tloc { namespace core { namespace logging {
     if (m_logger->IsDisabled() == false &&
         m_logger->CanDisplaySeverity(GetSeverity()) )
     { base_type::operator<<(a_memAddress); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type_cref
+    Log_T<TLOC_LOG_PARAMS>::
+    put(char8 a_value) const
+  {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::put(a_value); }
+
+    return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_LOG_TEMPS>
+  TLOC_LOG_TYPE::this_type_cref
+    Log_T<TLOC_LOG_PARAMS>::
+    write(const char8* a_string, tl_int a_size) const
+  {
+    DoBreakOnSeverity(*this, *m_logger, 
+                      core_cfg::BuildConfig::build_config_type());
+
+    if (m_logger->IsDisabled() == false &&
+        m_logger->CanDisplaySeverity(GetSeverity()) )
+    { base_type::write(a_string, a_size); }
 
     return *this;
   }

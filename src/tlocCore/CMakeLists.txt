@@ -389,6 +389,11 @@ set(3RD_PARTY_FILE_WATCHER
   ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherImpl.h
   )
 
+set(3RD_PARTY_OPTION_PARSER_PATH ${SOLUTION_PATH}/src/3rdParty/Core/CL/)
+set(3RD_PARTY_OPTION_PARSER
+  ${3RD_PARTY_OPTION_PARSER_PATH}/include/optionparser.h
+  )
+
 if(WIN32)
   set(3RD_PARTY_FILE_WATCHER
     ${3RD_PARTY_FILE_WATCHER}
@@ -416,6 +421,7 @@ endif()
 include_directories(
   ../3rdParty/
   ../3rdParty/Core/FileWatcher/include/
+  ../3rdParty/Core/CL/include/
 )
 
 add_library(tlocCore STATIC
@@ -442,6 +448,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_TYPES}
   ${TLOC_ENGINE_CORE_UTILITIES}
   ${3RD_PARTY_FILE_WATCHER}
+  ${3RD_PARTY_OPTION_PARSER}
 )
 
 add_dependencies(tlocCore
@@ -473,5 +480,6 @@ source_group(time FILES ${TLOC_ENGINE_CORE_TIME})
 source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
 source_group(3rd_party/FileWatcher FILES ${3RD_PARTY_FILE_WATCHER})
+source_group(3rd_party/OptionParser FILES ${3RD_PARTY_OPTION_PARSER})
 
 tloc_install_library(tlocCore "")

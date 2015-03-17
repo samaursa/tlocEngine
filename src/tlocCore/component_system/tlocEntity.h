@@ -265,8 +265,8 @@ namespace tloc { namespace core {
   namespace logging {
 
     template <typename T_Logger, typename T_BuildConfig>
-    Log_T<T_Logger, T_BuildConfig>&
-      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+    const Log_T<T_Logger, T_BuildConfig>&
+      operator << (const Log_T<T_Logger, T_BuildConfig>& a_log,
                    const core_cs::Entity& a_entity)
     {
       a_log << "(" << a_entity.GetDebugName() << ")[" 

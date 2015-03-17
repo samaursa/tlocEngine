@@ -391,8 +391,8 @@ namespace tloc { namespace core {
   namespace logging {
 
     template <typename T_Logger, typename T_BuildConfig, typename T, tl_size T_Size>
-    Log_T<T_Logger, T_BuildConfig>&
-      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+    const Log_T<T_Logger, T_BuildConfig>&
+      operator << (const Log_T<T_Logger, T_BuildConfig>& a_log,
                    const core_ds::Tuple<T, T_Size>& a_tuple)
     {
       for (tl_size i = 0; i < T_Size - 1; ++i)

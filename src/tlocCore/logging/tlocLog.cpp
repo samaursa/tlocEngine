@@ -68,9 +68,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(BufferArg a_string)
+    operator<<(BufferArg a_string) const
   {
     m_finalString += a_string;
     return *this;
@@ -78,9 +78,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(BufferArgW a_string)
+    operator<<(BufferArgW a_string) const
   {
     m_finalString += core_str::CharWideToAscii(a_string.GetPtr());
     return *this;
@@ -88,9 +88,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(char8 a_char)
+    operator<<(char8 a_char) const
   {
     m_finalString += a_char;
     return *this;
@@ -98,9 +98,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(char32 a_wchar)
+    operator<<(char32 a_wchar) const
   {
     m_finalString += core_str::CharWideToAscii(a_wchar);
     return *this;
@@ -108,9 +108,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(tl_int a_value)
+    operator<<(tl_int a_value) const
   {
     m_finalString += core_str::Format("%i", a_value);
     return *this;
@@ -118,9 +118,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(tl_long a_value)
+    operator<<(tl_long a_value) const
   {
     m_finalString += core_str::Format("%il", a_value);
     return *this;
@@ -128,9 +128,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(tl_uint a_value)
+    operator<<(tl_uint a_value) const
   {
     m_finalString += core_str::Format("%u", a_value);
     return *this;
@@ -138,9 +138,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(tl_ulong a_value)
+    operator<<(tl_ulong a_value) const
   {
     m_finalString += core_str::Format("%ul", a_value);
     return *this;
@@ -148,9 +148,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(tl_float a_value)
+    operator<<(tl_float a_value) const
   {
     m_finalString += core_str::Format("%f", a_value);
     return *this;
@@ -158,9 +158,9 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(tl_double a_value)
+    operator<<(tl_double a_value) const
   {
     m_finalString += core_str::Format("%f", a_value);
     return *this;
@@ -168,12 +168,29 @@ namespace tloc { namespace core { namespace logging {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  Log_I::this_type&
+  Log_I::this_type_cref
     Log_I::
-    operator<<(core_utils::MemoryAddress a_memAddress)
+    operator<<(core_utils::MemoryAddress a_memAddress) const
   {
     m_finalString += core_str::Format("%p", a_memAddress);
     return *this;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type_cref
+    Log_I::
+    put(char8 a_value) const
+  { return operator << (a_value); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Log_I::this_type_cref
+    Log_I::
+    write(const char8* a_string, tl_int a_size) const
+  { 
+    m_finalString.append(a_string, a_size);
+    return *this; 
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

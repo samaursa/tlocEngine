@@ -29,6 +29,7 @@ namespace tloc { namespace core { namespace logging {
   {
   public:
     typedef Log_I                                   this_type;
+    typedef const this_type&                        this_type_cref;
     typedef f32                                     time_type;
     typedef core_str::String                        str_type;
 
@@ -49,17 +50,21 @@ namespace tloc { namespace core { namespace logging {
     Log_I();
     Log_I(const this_type& a_other);
 
-    this_type& operator << (BufferArg  a_string);
-    this_type& operator << (BufferArgW a_string);
-    this_type& operator << (char8     a_value);
-    this_type& operator << (char32    a_value);
-    this_type& operator << (tl_int    a_value);
-    this_type& operator << (tl_long   a_value);
-    this_type& operator << (tl_uint   a_value);
-    this_type& operator << (tl_ulong  a_value);
-    this_type& operator << (tl_float  a_value);
-    this_type& operator << (tl_double a_value);
-    this_type& operator << (core_utils::MemoryAddress a_memAddress);
+    this_type_cref operator << (BufferArg  a_string) const;
+    this_type_cref operator << (BufferArgW a_string) const;
+    this_type_cref operator << (char8     a_value) const;
+    this_type_cref operator << (char32    a_value) const;
+    this_type_cref operator << (tl_int    a_value) const;
+    this_type_cref operator << (tl_long   a_value) const;
+    this_type_cref operator << (tl_uint   a_value) const;
+    this_type_cref operator << (tl_ulong  a_value) const;
+    this_type_cref operator << (tl_float  a_value) const;
+    this_type_cref operator << (tl_double a_value) const;
+    this_type_cref operator << (core_utils::MemoryAddress a_memAddress) const;
+
+    // compatibility with streams
+    this_type_cref put(char8 a_value) const;
+    this_type_cref write(const char8* a_string, tl_int a_size) const;
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT
       (str_type, GetFinalString, m_finalString);
@@ -78,7 +83,7 @@ namespace tloc { namespace core { namespace logging {
           const tl_ulong a_lineNumber);
 
   protected:
-    str_type          m_finalString;
+    mutable str_type  m_finalString;
     time_type         m_time;
     const char*       m_fileName;
     tl_ulong          m_lineNumber;
@@ -106,6 +111,7 @@ namespace tloc { namespace core { namespace logging {
   public:
     typedef Log_I                                     base_type;
     typedef Log_T<T_Logger, T_BuildConfig>            this_type;
+    typedef const this_type&                          this_type_cref;
     typedef base_type::severity_type                  severity_type;
 
   public:
@@ -113,17 +119,21 @@ namespace tloc { namespace core { namespace logging {
           BufferArg a_fileName, const tl_ulong a_lineNumber);
     ~Log_T();
 
-    this_type& operator << (BufferArg  a_string);
-    this_type& operator << (BufferArgW a_string);
-    this_type& operator << (char8     a_value);
-    this_type& operator << (char32    a_value);
-    this_type& operator << (tl_int    a_value);
-    this_type& operator << (tl_long   a_value);
-    this_type& operator << (tl_uint   a_value);
-    this_type& operator << (tl_ulong  a_value);
-    this_type& operator << (tl_float  a_value);
-    this_type& operator << (tl_double a_value);
-    this_type& operator << (core_utils::MemoryAddress a_memAddress);
+    this_type_cref operator << (BufferArg  a_string) const;
+    this_type_cref operator << (BufferArgW a_string) const;
+    this_type_cref operator << (char8     a_value) const;
+    this_type_cref operator << (char32    a_value) const;
+    this_type_cref operator << (tl_int    a_value) const;
+    this_type_cref operator << (tl_long   a_value) const;
+    this_type_cref operator << (tl_uint   a_value) const;
+    this_type_cref operator << (tl_ulong  a_value) const;
+    this_type_cref operator << (tl_float  a_value) const;
+    this_type_cref operator << (tl_double a_value) const;
+    this_type_cref operator << (core_utils::MemoryAddress a_memAddress) const;
+
+    // compatibility with streams
+    this_type_cref put(char8 a_value) const;
+    this_type_cref write(const char8* a_string, tl_int a_size) const;
 
   private:
     T_Logger* m_logger;
@@ -150,6 +160,7 @@ namespace tloc { namespace core { namespace logging {
     typedef Log_I                                     base_type;
     typedef Log_T<T_Logger, 
                   core_cfg::p_build_config::Release>  this_type;
+    typedef const this_type&                          this_type_cref;
     typedef base_type::severity_type                  severity_type;
 
   public:
@@ -157,17 +168,21 @@ namespace tloc { namespace core { namespace logging {
           BufferArg , const tl_ulong ) {}
     ~Log_T() {}
 
-    this_type& operator << (BufferArg  )  { return *this; }
-    this_type& operator << (BufferArgW )  { return *this; }
-    this_type& operator << (char8      )  { return *this; }
-    this_type& operator << (char32     )  { return *this; }
-    this_type& operator << (tl_int     )  { return *this; }
-    this_type& operator << (tl_long    )  { return *this; }
-    this_type& operator << (tl_uint    )  { return *this; }
-    this_type& operator << (tl_ulong   )  { return *this; }
-    this_type& operator << (tl_float   )  { return *this; }
-    this_type& operator << (tl_double  )  { return *this; }
-    this_type& operator << (core_utils::MemoryAddress ) { return *this; }
+    this_type_cref operator << (BufferArg  )  const { return *this; }
+    this_type_cref operator << (BufferArgW )  const { return *this; }
+    this_type_cref operator << (char8      )  const { return *this; }
+    this_type_cref operator << (char32     )  const { return *this; }
+    this_type_cref operator << (tl_int     )  const { return *this; }
+    this_type_cref operator << (tl_long    )  const { return *this; }
+    this_type_cref operator << (tl_uint    )  const { return *this; }
+    this_type_cref operator << (tl_ulong   )  const { return *this; }
+    this_type_cref operator << (tl_float   )  const { return *this; }
+    this_type_cref operator << (tl_double  )  const { return *this; }
+    this_type_cref operator << (core_utils::MemoryAddress ) const { return *this; }
+
+    // compatibility with streams
+    this_type_cref put(char8 )                   const  { return *this; }
+    this_type_cref write(const char8* , tl_int ) const  { return *this; }
   };
 
 };};};

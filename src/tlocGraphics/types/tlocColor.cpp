@@ -620,10 +620,13 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator ==(const this_type& a_other) const
   {
-    return ( math::IsEqualAbsolute(m_color[0], a_other[0]) &&
-             math::IsEqualAbsolute(m_color[1], a_other[1]) &&
-             math::IsEqualAbsolute(m_color[2], a_other[2]) &&
-             math::IsEqualAbsolute(m_color[3], a_other[3]) );
+    for (tl_int i = 0; i < T_Size; ++i)
+    {
+      if (math::IsEqualAbsolute(m_color[i], a_other[i]) == false)
+      { return false; }
+    }
+
+    return true;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

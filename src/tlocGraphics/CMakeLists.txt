@@ -41,6 +41,11 @@ set(TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG
     ${3RD_PARTY_PATH}/lodepng/lodepng.c
     )
 
+set(TLOC_GRAPHICS_3RD_PARTY_IMAGES_JPEG
+    ${3RD_PARTY_PATH}/nanojpeg/ujpeg.h
+    ${3RD_PARTY_PATH}/nanojpeg/ujpeg.c
+    )
+
 set(TLOC_GRAPHICS_APPLICATION 
   )
 
@@ -295,6 +300,7 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_GLEW}
   ${TLOC_GRAPHICS_3RD_PARTY_GLEXT}
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
+  ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_JPEG}
   ${TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK}
   )
 
@@ -317,9 +323,10 @@ source_group(types            FILES ${TLOC_GRAPHICS_TYPES})
 source_group(view             FILES ${TLOC_GRAPHICS_VIEW_PROJECTION})
 source_group(window           FILES ${TLOC_GRAPHICS_WINDOW})
 
-source_group(3rd_party/compression    FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION})
-source_group(3rd_party/glew           FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
-source_group(3rd_party/glext          FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
-source_group(3rd_party/images/lodepng FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
+source_group(3rd_party/compression      FILES ${TLOC_GRAPHICS_3RD_PARTY_COMPRESSION})
+source_group(3rd_party/glew             FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEW})
+source_group(3rd_party/glext            FILES ${TLOC_GRAPHICS_3RD_PARTY_GLEXT})
+source_group(3rd_party/images/lodepng   FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG})
+source_group(3rd_party/images/nanojpeg  FILES ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_JPEG})
 
 tloc_install_library(tlocGraphics "")

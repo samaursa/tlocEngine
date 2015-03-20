@@ -13,6 +13,7 @@
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/dispatch/tlocTemplateDispatchDefaults.h>
 #include <tlocCore/dispatch/tlocEvent.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocGraphics/window/tlocGraphicsModes.h>
 #include <tlocGraphics/window/tlocWindowSettings.h>
@@ -398,11 +399,17 @@ namespace tloc { namespace graphics { namespace win {
 
   typedef Window_T<>    Window;
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Window, window);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(Window, window);
+
   // -----------------------------------------------------------------------
   // extern template
 
   TLOC_EXTERN_TEMPLATE_CLASS(Window_T<>);
 
 };};};
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::gfx_win::Window);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(tloc::gfx_win::Window);
 
 #endif

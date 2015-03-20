@@ -17,7 +17,65 @@
 
 namespace tloc { namespace input { namespace hid {
 
+  ///-------------------------------------------------------------------------
+  /// This class is for convenience. You do NOT need to inherit from a callback
+  /// class to enable callbacks to work on your class
+  ///-------------------------------------------------------------------------
+
+  struct JoystickListener
+  {
+  public:
+    typedef core_dispatch::Event                    event_type;
+
+  public:
+    event_type 
+      OnJoystickButtonPress(const tl_size , 
+                            const JoystickEvent& , 
+                            tl_int ) const
+    { return core_dispatch::f_event::Continue(); }
+
+    event_type 
+      OnJoystickButtonRelease(const tl_size , 
+                              const JoystickEvent& , 
+                              tl_int ) const
+    { return core_dispatch::f_event::Continue(); }
+    
+    event_type 
+      OnJoystickAxisChange(const tl_size , 
+                           const JoystickEvent& , 
+                           tl_int , 
+                           JoystickEvent::axis_type ,
+                           JoystickEvent::axis_type_norm ) 
+    { return core_dispatch::f_event::Continue(); }
+
+    event_type 
+      OnJoystickSliderChange(const tl_size , 
+                             const JoystickEvent& , 
+                             tl_int , 
+                             JoystickEvent::slider_type )
+    { return core_dispatch::f_event::Continue(); }
+
+    event_type
+      OnJoystickPOVChange(const tl_size , 
+                          const JoystickEvent& , 
+                          tl_int , 
+                          JoystickEvent::pov_type )
+    { return core_dispatch::f_event::Continue(); }
+
+  protected:
+    JoystickListener() { }
+    ~JoystickListener() { }
+  };
+
   template <typename T_Policy, typename T_Platform>   class Joystick_T;
+
+  ///-------------------------------------------------------------------------
+  /// This class itself is for internal use only.
+  ///
+  /// If a class is registered with Joystick to receive callbacks, this class
+  /// defines the function signature of the callbacks (Note that the callbacks
+  /// in your class need not be virtual)
+  ///-------------------------------------------------------------------------
 
   namespace priv {
 

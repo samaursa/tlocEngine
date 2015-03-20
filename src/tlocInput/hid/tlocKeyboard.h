@@ -38,7 +38,7 @@ namespace tloc { namespace input { namespace hid {
 
   protected:
     KeyboardListener() { }
-    virtual ~KeyboardListener() { }
+    ~KeyboardListener() { }
   };
 
   ///-------------------------------------------------------------------------

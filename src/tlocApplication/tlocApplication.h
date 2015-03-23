@@ -55,7 +55,7 @@ namespace tloc {
 
     // infinite loop that will return only if Quit() is called (externally or
     // internally)
-    void        GameLoop();
+    void        Run();
     void        Update();
     void        Render();
 
@@ -84,40 +84,40 @@ namespace tloc {
     virtual void        Post_Finalize();
 
   private:
-    error_type    DoInitializePlatform();
-    error_type    DoCreateWindow(gfx_t::Dimension2 a_winDim);
-    error_type    DoCreateScene(const ecs_ptr& a_scene);
-    error_type    DoCreateCamera(const entity_ptr& a_camera);
+    error_type          DoInitializePlatform();
+    error_type          DoCreateWindow(gfx_t::Dimension2 a_winDim);
+    error_type          DoCreateScene(const ecs_ptr& a_scene);
+    error_type          DoCreateCamera(const entity_ptr& a_camera);
 
   private:
-    bool              m_quit;
-    core_str::String  m_appName;
+    bool                m_quit;
+    core_str::String    m_appName;
 
-    sec_type          m_updateDeltaT;
-    sec_type          m_renderDeltaT;
+    sec_type            m_updateDeltaT;
+    sec_type            m_renderDeltaT;
 
-    sec_type          m_currentUpdateFrameTime;
-    sec_type          m_updateFrameTimeAccum;
+    sec_type            m_currentUpdateFrameTime;
+    sec_type            m_updateFrameTimeAccum;
 
-    sec_type          m_currentRenderFrameTime;
-    sec_type          m_renderFrameTimeAccum;
+    sec_type            m_currentRenderFrameTime;
+    sec_type            m_renderFrameTimeAccum;
 
-    sec_type          m_updateFrameTime;
-    sec_type          m_renderFrameTime;
+    sec_type            m_updateFrameTime;
+    sec_type            m_renderFrameTime;
 
-    timer_type        m_updateTimer;
-    timer_type        m_renderTimer;
+    timer_type          m_updateTimer;
+    timer_type          m_renderTimer;
 
-    window_ptr        m_window;
-    renderer_ptr      m_renderer;
-    ecs_ptr           m_scene;
-    entity_ptr        m_camera;
+    window_ptr          m_window;
+    renderer_ptr        m_renderer;
+    ecs_ptr             m_scene;
+    entity_ptr          m_camera;
 
-    input_mgr_ptr     m_inputMgr;
-    keyboard_ptr      m_keyboard;
-    mouse_ptr         m_mouse;
-    touch_surface_ptr m_touchSurface;
-    joystick_cont     m_joysticks;
+    input_mgr_ptr       m_inputMgr;
+    keyboard_ptr        m_keyboard;
+    mouse_ptr           m_mouse;
+    touch_surface_ptr   m_touchSurface;
+    joystick_cont       m_joysticks;
 
   public:
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetUpdateDeltaT, m_updateDeltaT);
@@ -138,8 +138,8 @@ namespace tloc {
 
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_joysticks, m_joysticks);
   };
-  TLOC_DEF_TYPE(Application);
-
 };
+
+TLOC_DEF_TYPE(tloc::Application);
 
 #endif

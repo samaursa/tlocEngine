@@ -1,6 +1,10 @@
-#ifndef _TLOC_CORE_RESOURCES_RESOURCE_H_
-#define _TLOC_CORE_RESOURCES_RESOURCE_H_
+#ifndef _TLOC_ANIMATION_RESOURCES_RESOURCE_H_
+#define _TLOC_ANIMATION_RESOURCES_RESOURCE_H_
 
+#include <tlocAnimation/tlocAnimationBase.h>
+
+#include <tlocCore/types/tlocAny.h>
+#include <tlocCore/io/tlocPath.h>
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>
@@ -37,6 +41,16 @@ namespace tloc { namespace core { namespace resources {
   private:
     ucid_type               m_ucid;
     path_type               m_path;
+
+  };
+
+  // -----------------------------------------------------------------------
+
+  namespace f_resources {
+
+    core_t::Any
+      LoadImage(const core_io::Path& a_path);
+
 
   };
 

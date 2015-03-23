@@ -68,7 +68,8 @@ namespace TestingAnyType
       CHECK(a.IsEmpty());
       a.Assign((tl_int)1);
       CHECK_FALSE(a.IsEmpty());
-      a.IsSameType(tl_int());
+      CHECK(a.IsSameType(tl_int()));
+      CHECK(a.IsSameType<tl_int>());
 
       a.Reset();
       CHECK(a.IsEmpty());

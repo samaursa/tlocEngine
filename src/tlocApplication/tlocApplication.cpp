@@ -23,9 +23,15 @@ namespace tloc {
                 const renderer_ptr& a_renderer, 
                 const input_mgr_ptr& a_inputMgr)
                 : m_quit(false)
+                , m_appName(a_appName)
                 , m_updateDeltaT(g_updateDeltaT)
                 , m_renderDeltaT(g_renderDeltaT)
-                , m_appName(a_appName)
+                , m_currentUpdateFrameTime(0.0f)
+                , m_updateFrameTimeAccum(0.0f)
+                , m_currentRenderFrameTime(0.0f)
+                , m_renderFrameTimeAccum(0.0f)
+                , m_updateFrameTime(0.0f)
+                , m_renderFrameTime(0.0f)
                 , m_window(a_window)
                 , m_renderer(a_renderer)
                 , m_inputMgr(a_inputMgr)
@@ -117,7 +123,7 @@ namespace tloc {
 
   void 
     Application::
-    GameLoop()
+    Run()
   {
     timer_type  t;
     {
@@ -137,7 +143,7 @@ namespace tloc {
   void 
     Application::
     Pre_Update(sec_type )
-  { }
+  { m_scene->Update(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -167,9 +173,8 @@ namespace tloc {
 
   void 
     Application::
-    Post_Update(sec_type )
-  { 
-  }
+    Post_Update(sec_type a_deltaT)
+  { m_scene->Process(a_deltaT); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -177,7 +182,7 @@ namespace tloc {
     Application::
     Render()
   {
-    auto newTime = m_updateFrameTime + m_renderTimer.ElapsedSeconds();
+    auto newTime = m_renderTimer.ElapsedSeconds();
     auto frameTime = newTime - m_currentUpdateFrameTime;
 
     m_currentRenderFrameTime = newTime;
@@ -231,6 +236,8 @@ namespace tloc {
   {
     if (a_event.m_type == gfx_win::WindowEvent::close)
     { Quit(); }
+
+    return core_dispatch::f_event::Continue();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

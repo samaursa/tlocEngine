@@ -233,17 +233,6 @@ set(TLOC_ENGINE_CORE_PLATFORM
     platform/tlocPlatformDefines.h
     platform/tlocPlatformSpecificIncludes.h
 )
-set(TLOC_ENGINE_CORE_RESOURCES
-    resources/tloc_resources.h
-    resources/tloc_resources.inl.h
-    resources/tloc_resources.opt.inl.h
-    resources/tloc_resources.cpp
-    resources/tlocResource.h
-    resources/tlocResource.cpp
-    resources/tlocResourceFactory.h
-    resources/tlocResourceFactory.inl.h
-    resources/tlocResourceFactory.cpp
-)
 set(TLOC_ENGINE_CORE_RNG
     rng/tloc_rng.h
     rng/tloc_rng.inl.h
@@ -439,7 +428,6 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_MEMORY}
   ${TLOC_ENGINE_CORE_PARSERS}
   ${TLOC_ENGINE_CORE_PLATFORM}
-  ${TLOC_ENGINE_CORE_RESOURCES}
   ${TLOC_ENGINE_CORE_RNG}
   ${TLOC_ENGINE_CORE_SMART_PTR}
   ${TLOC_ENGINE_CORE_STRING}
@@ -471,7 +459,6 @@ source_group(logger FILES ${TLOC_ENGINE_CORE_LOGGER})
 source_group(memory FILES ${TLOC_ENGINE_CORE_MEMORY})
 source_group(parsers FILES ${TLOC_ENGINE_CORE_PARSERS})
 source_group(platform FILES ${TLOC_ENGINE_CORE_PLATFORM})
-source_group(resources FILES ${TLOC_ENGINE_CORE_RESOURCES})
 source_group(rng FILES ${TLOC_ENGINE_CORE_RNG})
 source_group(smart_ptr FILES ${TLOC_ENGINE_CORE_SMART_PTR})
 source_group(string FILES ${TLOC_ENGINE_CORE_STRING})

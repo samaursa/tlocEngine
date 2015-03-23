@@ -12,10 +12,14 @@ namespace tloc {
 
   namespace application
   {
+    namespace resources {};
   };
 
   // ///////////////////////////////////////////////////////////////////////
   // Namespace aliases here
+
+  namespace app           = application;
+  namespace app_res       = app::resources;
 
 };
 

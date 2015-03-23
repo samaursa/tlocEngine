@@ -5,4 +5,6 @@
 #error "Must include header before including the inline file"
 #endif
 
+#include <tlocApplication/resources/tloc_resources.inl.h>
+
 #endif

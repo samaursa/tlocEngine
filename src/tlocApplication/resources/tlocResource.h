@@ -12,7 +12,9 @@
 #include <tlocCore/io/tlocPath.h>
 #include <tlocCore/tlocUCID.h>
 
-namespace tloc { namespace core { namespace resources {
+#include <tlocGraphics/opengl/tlocTextureObject.h>
+
+namespace tloc { namespace application { namespace resources {
 
   // ///////////////////////////////////////////////////////////////////////
   // Resource_I
@@ -46,12 +48,10 @@ namespace tloc { namespace core { namespace resources {
 
   // -----------------------------------------------------------------------
 
-  namespace f_resources {
+  namespace f_resource {
 
-    core_t::Any
-      LoadImage(const core_io::Path& a_path);
-
-
+    gfx_gl::texture_object_sptr
+      LoadImageAsTextureObject(const core_io::Path& a_imagePath);
   };
 
 };};};

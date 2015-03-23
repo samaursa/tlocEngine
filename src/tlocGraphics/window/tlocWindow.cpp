@@ -45,8 +45,11 @@ namespace tloc { namespace graphics { namespace win {
   Window_T<WINDOW_PARAMS>::
     ~Window_T()
   {
-    Close();
-    delete m_impl;
+    if (IsValid())
+    {
+      Close();
+      delete m_impl;
+    }
   }
 
   template <WINDOW_TEMP>

@@ -3,4 +3,8 @@
 
 #include <tlocApplication/tlocApplicationBase.h>
 
+#include <tlocApplication/resources/tloc_resources.h>
+
+#include <tlocApplication/tlocApplication.h>
+
 #endif

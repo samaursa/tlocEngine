@@ -3,6 +3,7 @@
 
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
+#include <tlocCore/configs/tlocBuildConfig.h>
 
 namespace tloc { namespace core { namespace types {
 
@@ -124,7 +125,27 @@ namespace tloc { namespace core { namespace types {
   //////////////////////////////////////////////////////////////////////////
   // Any Class
 
+  template <typename T_Config>
+  class Any_TI
+  {
+  protected:
+    void DoSetDebugName(const char* a_debugName)
+    { m_debugName = a_debugName; }
+
+  protected:
+    const char* m_debugName;
+  };
+
+  template <>
+  class Any_TI<core_cfg::p_build_config::Release>
+  {
+  protected:
+    void DoSetDebugName(const char* )
+    { }
+  };
+
   class Any
+    : Any_TI<core_cfg::BuildConfig::build_config_type>
   {
   public:
     typedef Any         this_type;
@@ -162,6 +183,9 @@ namespace tloc { namespace core { namespace types {
     bool IsEmpty() const;
     void Reset();
     bool IsSameType(const this_type& a_other) const;
+
+    template <typename T>
+    bool IsSameType() const;
 
   private:
 

@@ -1,4 +1,4 @@
-set(TLOC_ANIMATION
+set(TLOC_ENGINE_APPLICATION
   tlocApplicationBase.h 
   tlocApplicationBase.cpp
   tloc_application.cpp 
@@ -8,6 +8,17 @@ set(TLOC_ANIMATION
   tlocApplication.h
   tlocApplication.cpp
   )
+set(TLOC_ENGINE_APPLICATION_RESOURCES
+    resources/tloc_resources.h
+    resources/tloc_resources.inl.h
+    resources/tloc_resources.opt.inl.h
+    resources/tloc_resources.cpp
+    resources/tlocResource.h
+    resources/tlocResource.cpp
+    resources/tlocResourceFactory.h
+    resources/tlocResourceFactory.inl.h
+    resources/tlocResourceFactory.cpp
+)
 
 #-------------------------------------------
 # Project setup
@@ -17,7 +28,8 @@ include_directories(
   )
 
 add_library(tlocApplication STATIC
-  ${TLOC_ANIMATION}
+  ${TLOC_ENGINE_APPLICATION}
+  ${TLOC_ENGINE_APPLICATION_RESOURCES}
   )
 
 add_dependencies(tlocApplication
@@ -32,6 +44,6 @@ add_dependencies(tlocApplication
 set_platform_specific_properties(tlocApplication)
 
 # Filters to organize the source files
-# source_group(core             FILES ${TLOC_PREFAB_CORE})
+source_group(resources             FILES ${TLOC_ENGINE_APPLICATION_RESOURCES})
 
 tloc_install_library(tlocApplication "")

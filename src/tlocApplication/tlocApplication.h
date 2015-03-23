@@ -39,6 +39,10 @@ namespace tloc {
     typedef core_cs::entity_vptr                  entity_ptr;
     typedef core_cs::ecs_sptr                     ecs_ptr;
 
+    typedef core_time::Timer                      timer_type;
+    typedef timer_type::sec_type                  sec_type;
+    typedef f32                                   real_type;
+
   public:
     Application(BufferArg a_appName,
                 const window_ptr&    a_window = nullptr,
@@ -49,12 +53,60 @@ namespace tloc {
                            const ecs_ptr& a_scene = nullptr,
                            const entity_ptr& a_camera = nullptr);
 
+    // infinite loop that will return only if Quit() is called (externally or
+    // internally)
+    void        GameLoop();
+    void        Update();
+    void        Render();
+
+    // all destruction code goes here
+    void        Finalize();
+
+    // will trigger the end of the main loop and call Finalize()
+    void        Quit();
+
     event_type  OnWindowEvent(const gfx_win::WindowEvent&);
+
+  protected:
+
+    virtual error_type  Pre_Initialize(gfx_t::Dimension2 a_winDim,
+                                         const ecs_ptr& a_scene,
+                                         const entity_ptr& a_camera);
+    virtual error_type  Post_Initialize();
+
+    virtual void        Pre_Update(sec_type a_deltaT);
+    virtual void        Post_Update(sec_type a_deltaT);
+
+    virtual void        Pre_Render(sec_type a_deltaT);
+    virtual void        Post_Render(sec_type a_deltaT);
+
+    virtual void        Pre_Finalize();
+    virtual void        Post_Finalize();
+
+  private:
+    error_type    DoInitializePlatform();
+    error_type    DoCreateWindow(gfx_t::Dimension2 a_winDim);
+    error_type    DoCreateScene(const ecs_ptr& a_scene);
+    error_type    DoCreateCamera(const entity_ptr& a_camera);
 
   private:
     bool              m_quit;
-
     core_str::String  m_appName;
+
+    sec_type          m_updateDeltaT;
+    sec_type          m_renderDeltaT;
+
+    sec_type          m_currentUpdateFrameTime;
+    sec_type          m_updateFrameTimeAccum;
+
+    sec_type          m_currentRenderFrameTime;
+    sec_type          m_renderFrameTimeAccum;
+
+    sec_type          m_updateFrameTime;
+    sec_type          m_renderFrameTime;
+
+    timer_type        m_updateTimer;
+    timer_type        m_renderTimer;
 
     window_ptr        m_window;
     renderer_ptr      m_renderer;
@@ -68,6 +120,12 @@ namespace tloc {
     joystick_cont     m_joysticks;
 
   public:
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetUpdateDeltaT, m_updateDeltaT);
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetRenderDeltaT, m_renderDeltaT);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_AUTO(SetUpdateDeltaT, m_updateDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_AUTO(SetRenderDeltaT, m_renderDeltaT);
+
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetWindow, m_window);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetScene, m_scene);

@@ -30,14 +30,14 @@ namespace TestingImageLoader
   TEST_CASE("Graphics/media/ImageLoaderPng/Load", "")
   {
     media::ImageLoaderPng  png;
-    core::io::Path path(g_png_test_1_path.c_str());
+    core::io::Path path(g_png_test_1_path);
     CHECK(png.Load(path) == common_error_types::error_success);
   }
 
   TEST_CASE("Graphics/media/ImageLoaderPng/GetImage/png_test_1", "")
   {
     media::ImageLoaderPng png;
-    core::io::Path path(g_png_test_1_path.c_str());
+    core::io::Path path(g_png_test_1_path);
     REQUIRE(png.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;
@@ -59,7 +59,7 @@ namespace TestingImageLoader
   TEST_CASE("Graphics/media/ImageLoaderPng/GetImage/png_test_2", "")
   {
     media::ImageLoaderPng png;
-    core::io::Path path(g_png_test_2_path.c_str());
+    core::io::Path path(g_png_test_2_path);
     REQUIRE(png.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;
@@ -81,14 +81,14 @@ namespace TestingImageLoader
   TEST_CASE("Graphics/media/ImageLoaderJpeg/Load", "")
   {
     media::ImageLoaderJpeg  jpg;
-    core::io::Path path(g_jpeg_test_1_path.c_str());
+    core::io::Path path(g_jpeg_test_1_path);
     CHECK(jpg.Load(path) == common_error_types::error_success);
   }
 
   TEST_CASE("Graphics/media/ImageLoaderJpeg/GetImage/jpeg_test_1", "")
   {
     media::ImageLoaderJpeg jpg;
-    core::io::Path path(g_jpeg_test_1_path.c_str());
+    core::io::Path path(g_jpeg_test_1_path);
     REQUIRE(jpg.Load(path) == common_error_types::error_success);
 
     bool testPassed = true;
@@ -108,6 +108,19 @@ namespace TestingImageLoader
       }
     }
     CHECK(testPassed);
+  }
+
+  TEST_CASE("Graphics/media/f_image_loader/LoadImage", "")
+  {
+    auto_cref imgPNG = 
+      gfx_med::f_image_loader::LoadImage(core_io::Path(g_png_test_1_path));
+    CHECK(imgPNG.second == gfx_med::f_image_loader::k_image_png);
+    imgPNG.first.Cast<gfx_med::image_sptr>();
+
+    auto_cref imgJpeg = 
+      gfx_med::f_image_loader::LoadImage(core_io::Path(g_jpeg_test_1_path));
+    CHECK(imgJpeg.second == gfx_med::f_image_loader::k_image_jpeg);
+    imgJpeg.first.Cast<gfx_med::image_rgb_sptr>();
   }
 
   // NOTE: Color jpg is hard to test because of lossiness
@@ -514,5 +527,4 @@ namespace TestingImageLoader
       color_rgb_type(0, 0, 64), color_rgb_type(128, 128, 128),
     },
   };
-
 };

@@ -172,6 +172,37 @@ namespace tloc { namespace graphics { namespace media {
       return err;
     }
 
+    core::Pair<core_t::Any, image_type>
+      LoadImage(const core_io::Path& a_imagePath)
+    {
+      auto_cref ext = a_imagePath.GetExtension();
+      if (ext.compare("jpg") == 0 || ext.compare("jpeg") == 0)
+      {
+        ImageLoaderJpeg il;
+        auto err = il.Load(a_imagePath);
+        if (err == ErrorSuccess)
+        { return core::MakePair(il.GetImage(), k_image_jpeg); }
+
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Error loading JPEG image: " << err;
+      }
+      else if (ext.compare("png") == 0)
+      {
+        ImageLoaderPng il;
+        auto err = il.Load(a_imagePath);
+        if (err == ErrorSuccess)
+        { return core::MakePair(il.GetImage(), k_image_png); }
+
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Error loading PNG image: " << err;
+      }
+      else
+      {
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Unsupported image type: " <<
+          a_imagePath;
+      }
+
+      return core::MakePair(core_t::Any(), k_image_unsupported);
+    }
+
   };
 
 };};};

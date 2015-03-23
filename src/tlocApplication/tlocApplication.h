@@ -50,8 +50,7 @@ namespace tloc {
                 const input_mgr_ptr& a_inputMgr = nullptr);
 
     error_type  Initialize(gfx_t::Dimension2 a_winDim,
-                           const ecs_ptr& a_scene = nullptr,
-                           const entity_ptr& a_camera = nullptr);
+                           const ecs_ptr& a_scene = nullptr);
 
     // infinite loop that will return only if Quit() is called (externally or
     // internally)
@@ -59,10 +58,11 @@ namespace tloc {
     void        Update();
     void        Render();
 
-    // all destruction code goes here
+    // all destruction code goes here - this is called after the main loop
+    // has ended
     void        Finalize();
 
-    // will trigger the end of the main loop and call Finalize()
+    // will trigger the end of the main loop
     void        Quit();
 
     event_type  OnWindowEvent(const gfx_win::WindowEvent&);
@@ -70,28 +70,30 @@ namespace tloc {
   protected:
 
     virtual error_type  Pre_Initialize(gfx_t::Dimension2 a_winDim,
-                                         const ecs_ptr& a_scene,
-                                         const entity_ptr& a_camera);
+                                       const ecs_ptr& a_scene);
     virtual error_type  Post_Initialize();
 
     virtual void        Pre_Update(sec_type a_deltaT);
+    virtual void        DoUpdate(sec_type a_deltaT);
     virtual void        Post_Update(sec_type a_deltaT);
 
     virtual void        Pre_Render(sec_type a_deltaT);
+    virtual void        DoRender(sec_type a_deltaT);
     virtual void        Post_Render(sec_type a_deltaT);
 
     virtual void        Pre_Finalize();
     virtual void        Post_Finalize();
 
   private:
-    error_type          DoInitializePlatform();
     error_type          DoCreateWindow(gfx_t::Dimension2 a_winDim);
+    error_type          DoInitializePlatform();
+    error_type          DoInitializeRenderer();
+    error_type          DoInitializeInput();
     error_type          DoCreateScene(const ecs_ptr& a_scene);
-    error_type          DoCreateCamera(const entity_ptr& a_camera);
 
   private:
-    bool                m_quit;
-    core_str::String    m_appName;
+    core_utils::Checkpoints m_flags;
+    core_str::String        m_appName;
 
     sec_type            m_updateDeltaT;
     sec_type            m_renderDeltaT;
@@ -111,7 +113,6 @@ namespace tloc {
     window_ptr          m_window;
     renderer_ptr        m_renderer;
     ecs_ptr             m_scene;
-    entity_ptr          m_camera;
 
     input_mgr_ptr       m_inputMgr;
     keyboard_ptr        m_keyboard;
@@ -129,7 +130,6 @@ namespace tloc {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetWindow, m_window);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetRenderer, m_renderer);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetScene, m_scene);
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetCamera, m_camera);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetInputMgr, m_inputMgr);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetKeyboard, m_keyboard);

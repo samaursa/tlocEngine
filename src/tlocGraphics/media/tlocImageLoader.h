@@ -5,6 +5,7 @@
 
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/io/tlocPath.h>
+#include <tlocCore/types/tlocAny.h>
 
 #include <tlocGraphics/media/tlocImage.h>
 
@@ -98,6 +99,21 @@ namespace tloc { namespace graphics { namespace media {
     core_err::Error
       SaveImage(const Image& a_imgToWrite, 
                 const core_io::Path& a_path);
+
+    enum 
+    {
+      k_image_unsupported = 0,
+      k_image_jpeg,
+      k_image_png
+    }; typedef tl_int     image_type;
+
+    // Unsupported image type will result in an empty Any
+    // 
+    // Supported types:
+    // PNG  = Image (4 channels)
+    // JPEG = image_rgb (3 channels)
+    core::Pair<core_t::Any, image_type>
+      LoadImage(const core_io::Path&  a_imagePath);
 
   };
 

@@ -6,6 +6,7 @@
 #include <tlocCore/types/tlocConditionalType.h>
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
+#include <tlocMath/types/tlocMatrix3.h>
 #include <tlocMath/types/tlocMatrix4.h>
 #include <tlocGraphics/types/tlocColor.h>
 
@@ -30,18 +31,28 @@ namespace tloc { namespace graphics { namespace types {
     };
 
     template <typename T>
-    class VertexOrientation_T
+    class VertexTBN_T
       : public T
     {
     public:
       typedef T                                     value_type;
+      typedef typename value_type::vec_type         vec_type;
 
     public:
       const value_type& GetOrientation() const
       { return *this; }
 
-      void SetOrientation(const value_type& a_position)
-      { *this = static_cast<const VertexOrientation_T<T>&>(a_position); }
+      void SetTBN(const value_type& a_position)
+      { *this = static_cast<const VertexTBN_T<T>&>(a_position); }
+
+      void SetNormal(const vec_type& a_normal)
+      { this->SetCol(2, a_normal); }
+
+      void SetBiNormal(const vec_type& a_biNormal)
+      { this->SetCol(1, a_biNormal); }
+
+      void SetTangent(const vec_type& a_tangent)
+      { this->SetCol(0, a_tangent); }
     };
 
     template <typename T>
@@ -107,7 +118,8 @@ namespace tloc { namespace graphics { namespace types {
     typedef VertexPos_T<math::types::Vec2f32>             VertexPos2f;
     typedef VertexPos_T<math::types::Vec3f32>             VertexPos3f;
 
-    typedef VertexOrientation_T<math::types::Mat4f32>     VertexOri4f;
+    typedef VertexTBN_T<math::types::Mat3f32>             VertexTBN;
+    typedef VertexTBN_T<math::types::Mat4f32>             VertexOri4f;
 
     typedef VertexNorm_T<math::types::Vec2f32>            VertexNorm2f;
     typedef VertexNorm_T<math::types::Vec3f32>            VertexNorm3f;
@@ -178,6 +190,9 @@ namespace tloc { namespace graphics { namespace types {
   typedef Vertex3_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::TexCoord>                    Vert2fpnt;
+  typedef Vertex3_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::TexCoord,
+                    p_vertex_t::VertexTBN>                   Vert2fptm;
   typedef Vertex4_T<p_vertex_t::VertexPos2f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::TexCoord,
@@ -186,6 +201,10 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert2fpnct;
+  typedef Vertex4_T<p_vertex_t::VertexPos2f,
+                    p_vertex_t::VertexCol,
+                    p_vertex_t::TexCoord,
+                    p_vertex_t::VertexTBN>                   Vert2fpctm;
 
   //````````````````````````````````````````````````````````````````````````
   // 3D
@@ -202,6 +221,9 @@ namespace tloc { namespace graphics { namespace types {
   typedef Vertex3_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::TexCoord>                    Vert3fpnt;
+  typedef Vertex3_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::TexCoord,
+                    p_vertex_t::VertexTBN>                   Vert3fptm;
   typedef Vertex4_T<p_vertex_t::VertexPos3f,
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::TexCoord,
@@ -210,7 +232,12 @@ namespace tloc { namespace graphics { namespace types {
                     p_vertex_t::VertexNorm3f,
                     p_vertex_t::VertexCol,
                     p_vertex_t::TexCoord>                    Vert3fpnct;
+  typedef Vertex4_T<p_vertex_t::VertexPos3f,
+                    p_vertex_t::VertexCol,
+                    p_vertex_t::TexCoord,
+                    p_vertex_t::VertexTBN>                   Vert3fpctm;
 
+  typedef Vertex1_T<p_vertex_t::VertexTBN>                   Vert3TBN;
   typedef Vertex1_T<p_vertex_t::VertexOri4f>                 Vert4fo;
 
   // -----------------------------------------------------------------------

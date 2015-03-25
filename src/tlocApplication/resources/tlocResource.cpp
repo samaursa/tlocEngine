@@ -37,17 +37,18 @@ namespace tloc { namespace application { namespace resources {
       using namespace gfx_med::f_image_loader;
 
       auto img = LoadImage(a_imagePath);
-      if (img.second != k_image_unsupported)
-      {
-        auto toPtr = core_sptr::MakeShared<gfx_gl::TextureObject>();
 
-        if (img.second == k_image_png)
-        { toPtr->Initialize(img.first.Cast<gfx_med::Image>()); }
-        else if (img.second == k_image_jpeg)
-        { toPtr->Initialize(img.first.Cast<gfx_med::image_rgb>()); }
-      }
+      if (img.second == k_image_unsupported)
+      { return nullptr; }
 
-      return nullptr;
+      auto toPtr = core_sptr::MakeShared<gfx_gl::TextureObject>();
+
+      if (img.second == k_image_png)
+      { toPtr->Initialize(*img.first.Cast<gfx_med::image_sptr>()); }
+      else if (img.second == k_image_jpeg)
+      { toPtr->Initialize(*img.first.Cast<gfx_med::image_rgb_sptr>()); }
+
+      return toPtr;
     }
 
   };

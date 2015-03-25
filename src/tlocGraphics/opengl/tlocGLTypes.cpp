@@ -128,6 +128,7 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpnto>,    TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F_ORIENTATION);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnto>,    TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F_ORIENTATION);
 
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3TBN>,      GL_FLOAT_MAT3);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert4fo>,       GL_FLOAT_MAT4);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL

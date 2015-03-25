@@ -343,6 +343,7 @@ namespace tloc { namespace graphics { namespace win {
 
     TLOC_DECL_AND_DEF_GETTER(bool, IsMouseVisible, m_mouseVisible);
     TLOC_DECL_AND_DEF_GETTER(bool, IsMouseConfined, m_mouseConfined);
+    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(WindowSettings, GetSettings, m_windowSettings);
 
   private:
     typedef tloc::type_true   IsWindowHandle;
@@ -357,6 +358,7 @@ namespace tloc { namespace graphics { namespace win {
 
     void DoCreateImpl();
 
+    WindowSettings                          m_windowSettings;
     impl_type*                              m_impl;
     core::containers::Queue<WindowEvent>    m_events;
     bool                                    m_mouseVisible;

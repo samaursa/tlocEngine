@@ -64,6 +64,7 @@ namespace tloc {
 
     // will trigger the end of the main loop
     void        Quit();
+    void        SetAppendFPSToTitle(bool a_append = true);
 
     event_type  OnWindowEvent(const gfx_win::WindowEvent&);
 
@@ -90,6 +91,7 @@ namespace tloc {
     error_type          DoInitializeRenderer();
     error_type          DoInitializeInput();
     error_type          DoCreateScene(const ecs_ptr& a_scene);
+    void                DoAppendTitleWithFPS(bool a_append);
 
   private:
     core_utils::Checkpoints m_flags;
@@ -98,10 +100,7 @@ namespace tloc {
     sec_type            m_updateDeltaT;
     sec_type            m_renderDeltaT;
 
-    sec_type            m_currentUpdateFrameTime;
     sec_type            m_updateFrameTimeAccum;
-
-    sec_type            m_currentRenderFrameTime;
     sec_type            m_renderFrameTimeAccum;
 
     sec_type            m_updateFrameTime;
@@ -120,6 +119,8 @@ namespace tloc {
     touch_surface_ptr   m_touchSurface;
     joystick_cont       m_joysticks;
 
+    sec_type            m_fpsOutput;
+
   public:
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetUpdateDeltaT, m_updateDeltaT);
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetRenderDeltaT, m_renderDeltaT);
@@ -135,6 +136,8 @@ namespace tloc {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetKeyboard, m_keyboard);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetMouse, m_mouse);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetTouchSurface, m_touchSurface);
+
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetFPSOutput, m_fpsOutput);
 
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_joysticks, m_joysticks);
   };

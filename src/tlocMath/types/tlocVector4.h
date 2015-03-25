@@ -5,6 +5,7 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocMath/types/tlocVector.h>
 #include <tlocMath/types/tlocVector2.h>
@@ -79,6 +80,14 @@ namespace tloc { namespace math { namespace types {
   typedef Vector_T<f64, 4>  Vec4f64;
 
   typedef Vector_T<tl_float, 4> Vec4f;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Vec4f32, vec4_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Vec4f64, vec4_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Vec4f, vec4_f);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Vec4f32, vec4_f32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Vec4f64, vec4_f64);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Vec4f, vec4_f);
 
   //------------------------------------------------------------------------
   // Static const definitions

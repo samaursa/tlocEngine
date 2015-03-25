@@ -4,6 +4,8 @@
 
 #include <tlocMath/tlocMathBase.h>
 
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
+
 #include <tlocMath/types/tlocVector4.h>
 #include <tlocMath/types/tlocMatrix.h>
 
@@ -125,6 +127,14 @@ namespace tloc { namespace math { namespace types {
   typedef Matrix_T<f64, 4>  Mat4f64;
 
   typedef Matrix_T<tl_float, 4> Mat4f;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Mat4f32, mat4_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Mat4f64, mat4_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Mat4f, mat4_f);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mat4f32, mat4_f32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mat4f64, mat4_f64);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mat4f, mat4_f);
 
   // -----------------------------------------------------------------------
   // extern template

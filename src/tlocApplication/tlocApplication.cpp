@@ -8,13 +8,14 @@ namespace tloc {
 
   namespace {
 
-    const Application::sec_type       g_updateDeltaT = 0.1f;
+    const Application::sec_type       g_updateDeltaT = 0.01f;
     const Application::sec_type       g_renderDeltaT = 1.0f/60.0f;
 
     enum {
 
       k_app_quit = 0,
       k_app_initialized,
+      k_app_fps_in_title,
 
       k_app_count
     };
@@ -33,21 +34,22 @@ namespace tloc {
                 , m_appName(a_appName)
                 , m_updateDeltaT(g_updateDeltaT)
                 , m_renderDeltaT(g_renderDeltaT)
-                , m_currentUpdateFrameTime(0.0f)
                 , m_updateFrameTimeAccum(0.0f)
-                , m_currentRenderFrameTime(0.0f)
                 , m_renderFrameTimeAccum(0.0f)
                 , m_updateFrameTime(0.0f)
                 , m_renderFrameTime(0.0f)
                 , m_window(a_window)
                 , m_renderer(a_renderer)
                 , m_inputMgr(a_inputMgr)
+                , m_fpsOutput(0.0f)
   {
     if (m_window == nullptr)
     {
       m_window = core_sptr::MakeShared<gfx_win::Window>();
       m_window->Register(this);
     }
+
+    SetAppendFPSToTitle();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -73,9 +75,20 @@ namespace tloc {
     TLOC_ERROR_RETURN_IF_FAILED(DoCreateWindow(a_winDim));
     TLOC_ERROR_RETURN_IF_FAILED(DoInitializePlatform());
     TLOC_ERROR_RETURN_IF_FAILED(DoInitializeRenderer());
+    TLOC_ERROR_RETURN_IF_FAILED(DoInitializeInput());
     TLOC_ERROR_RETURN_IF_FAILED(DoCreateScene(a_scene));
 
     return Post_Initialize();
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Application::
+    Post_Initialize() -> error_type
+  { 
+    GetScene()->Initialize();
+    return ErrorSuccess;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -91,6 +104,8 @@ namespace tloc {
       while(win->GetEvent(evt))
       { }
 
+      m_inputMgr->Update();
+
       timer_type  t;
       {
         Update();
@@ -102,6 +117,13 @@ namespace tloc {
         Render();
       }
       m_renderFrameTime = t.ElapsedSeconds();
+
+      // weighted FPS calculation
+      const auto totalFrameTime = m_updateFrameTime + m_renderFrameTime;
+      const auto frameFPS = 1.0f/totalFrameTime;
+      m_fpsOutput = 0.5f * m_fpsOutput + 0.5f * frameFPS;
+
+      DoAppendTitleWithFPS(m_flags.IsMarked(k_app_fps_in_title));
     }
 
     Finalize();
@@ -112,14 +134,16 @@ namespace tloc {
   void 
     Application::
     Pre_Update(sec_type )
-  { m_scene->Update(); }
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void 
     Application::
     DoUpdate(sec_type )
-  { }
+  { 
+    m_scene->Update();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -127,13 +151,10 @@ namespace tloc {
     Application::
     Update()
   {
-    auto newTime = m_updateTimer.ElapsedSeconds();
-    auto frameTime = newTime - m_currentUpdateFrameTime;
+    auto frameTime    = m_updateTimer.ElapsedSeconds();
 
-    if (m_currentUpdateFrameTime > 0.25f)
+    if (frameTime > 0.25f)
     { frameTime = 0.25f; }
-
-    m_currentUpdateFrameTime = newTime;
 
     m_updateFrameTimeAccum += frameTime;
 
@@ -144,14 +165,16 @@ namespace tloc {
       Post_Update(m_updateDeltaT);
       m_updateFrameTimeAccum -= m_updateDeltaT;
     }
+
+    m_updateTimer.Reset();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void 
     Application::
-    Post_Update(sec_type a_deltaT)
-  { m_scene->Process(a_deltaT); }
+    Post_Update(sec_type )
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -164,8 +187,10 @@ namespace tloc {
 
   void 
     Application::
-    DoRender(sec_type )
+    DoRender(sec_type a_deltaT)
   { 
+    m_scene->Process(a_deltaT);
+
     GetRenderer()->ApplyRenderSettings();
     GetRenderer()->Render();
   }
@@ -176,10 +201,7 @@ namespace tloc {
     Application::
     Render()
   {
-    auto newTime = m_renderTimer.ElapsedSeconds();
-    auto frameTime = newTime - m_currentUpdateFrameTime;
-
-    m_currentRenderFrameTime = newTime;
+    auto frameTime = m_renderTimer.ElapsedSeconds();
 
     m_renderFrameTimeAccum += frameTime;
 
@@ -197,6 +219,8 @@ namespace tloc {
       DoRender(prevFrameTimeAccum);
       Post_Render(prevFrameTimeAccum);
     }
+
+    m_renderTimer.Reset();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -223,6 +247,14 @@ namespace tloc {
   {
     Pre_Finalize();
     {
+      m_renderer.reset();
+
+      m_touchSurface.reset();
+      m_mouse.reset();
+      m_keyboard.reset();
+      m_inputMgr.reset();
+
+      m_scene.reset();
       GetWindow()->Close();
     }
     Post_Finalize();
@@ -244,6 +276,13 @@ namespace tloc {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  void
+    Application::
+    SetAppendFPSToTitle(bool a_append)
+  { m_flags[k_app_fps_in_title] = a_append; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   auto
     Application::
     OnWindowEvent(const gfx_win::WindowEvent& a_event) -> event_type
@@ -253,13 +292,6 @@ namespace tloc {
 
     return core_dispatch::f_event::Continue();
   }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  auto
-    Application::
-    Post_Initialize() -> error_type
-  { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -303,7 +335,7 @@ namespace tloc {
 
       using namespace gfx_rend::p_renderer;
       gfx_rend::Renderer::Params  p(m_renderer->GetParams());
-      p.SetClearColor(gfx_t::Color(0.0f, 0.0f, 0.0f, 1.0f))
+      p.SetClearColor(gfx_t::Color(0.1f, 0.1f, 0.1f, 1.0f))
        .Enable<enable_disable::CullFace>()
        .Cull<cull_face::Back>()
        .Enable<enable_disable::DepthTest>()
@@ -371,6 +403,18 @@ namespace tloc {
     { m_scene = core_sptr::MakeShared<core_cs::ECS>(); }
 
     return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  void
+    Application::
+    DoAppendTitleWithFPS(bool a_append)
+  {
+    if (a_append == false) { return; }
+
+    auto_cref newTitle = core_str::Format("%.2f FPS", GetFPSOutput());
+    GetWindow()->SetTitle(newTitle);
   }
 
 };

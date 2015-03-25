@@ -5,7 +5,7 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/types/tlocStrongType.h>
-#include <tlocCore/smart_ptr/tlocVirtualStackObject.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocMatrix.h>
 
@@ -173,6 +173,10 @@ namespace tloc { namespace math { namespace types {
   typedef Matrix_T<f64, 3>  Mat3f64;
 
   typedef Matrix_T<tl_float, 3> Mat3f;
+
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Mat3f32, mat3_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Mat3f64, mat3_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Mat3f, mat3_f);
 
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mat3f32, mat3_f32);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Mat3f64, mat3_f64);

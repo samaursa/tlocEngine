@@ -51,7 +51,9 @@ namespace tloc { namespace application { namespace resources {
   namespace f_resource {
 
     gfx_gl::texture_object_sptr
-      LoadImageAsTextureObject(const core_io::Path& a_imagePath);
+      LoadImageAsTextureObject(const core_io::Path& a_imagePath, 
+                               const gfx_gl::TextureObject::Params& a_params = 
+                               gfx_gl::TextureObject::Params());
   };
 
 };};};

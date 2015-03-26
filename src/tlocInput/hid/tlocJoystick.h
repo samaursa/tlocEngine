@@ -28,19 +28,19 @@ namespace tloc { namespace input { namespace hid {
     typedef core_dispatch::Event                    event_type;
 
   public:
-    event_type 
+    virtual event_type 
       OnJoystickButtonPress(const tl_size , 
                             const JoystickEvent& , 
-                            tl_int ) const
+                            tl_int )
     { return core_dispatch::f_event::Continue(); }
 
-    event_type 
+    virtual event_type 
       OnJoystickButtonRelease(const tl_size , 
                               const JoystickEvent& , 
-                              tl_int ) const
+                              tl_int )
     { return core_dispatch::f_event::Continue(); }
     
-    event_type 
+    virtual event_type 
       OnJoystickAxisChange(const tl_size , 
                            const JoystickEvent& , 
                            tl_int , 
@@ -48,14 +48,14 @@ namespace tloc { namespace input { namespace hid {
                            JoystickEvent::axis_type_norm ) 
     { return core_dispatch::f_event::Continue(); }
 
-    event_type 
+    virtual event_type 
       OnJoystickSliderChange(const tl_size , 
                              const JoystickEvent& , 
                              tl_int , 
                              JoystickEvent::slider_type )
     { return core_dispatch::f_event::Continue(); }
 
-    event_type
+    virtual event_type
       OnJoystickPOVChange(const tl_size , 
                           const JoystickEvent& , 
                           tl_int , 

@@ -104,8 +104,6 @@ namespace tloc {
       while(win->GetEvent(evt))
       { }
 
-      m_inputMgr->Update();
-
       timer_type  t;
       {
         Update();
@@ -142,6 +140,7 @@ namespace tloc {
     Application::
     DoUpdate(sec_type )
   { 
+    m_inputMgr->Update();
     m_scene->Update();
   }
 

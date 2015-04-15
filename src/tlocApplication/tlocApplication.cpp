@@ -56,7 +56,8 @@ namespace tloc {
 
   auto
     Application::
-    Pre_Initialize(gfx_t::Dimension2, const ecs_ptr&) -> error_type
+    Pre_Initialize(const graphics_mode& , const window_settings& , 
+                   const ecs_ptr&) -> error_type
   { return ErrorSuccess; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -66,13 +67,25 @@ namespace tloc {
     Initialize(gfx_t::Dimension2 a_winDim,
                const ecs_ptr& a_scene) -> error_type
   {
+    return Initialize(graphics_mode::Properties(a_winDim), 
+                      window_settings(m_appName), a_scene);
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Application::
+    Initialize(const graphics_mode& a_mode,
+               const window_settings& a_settings,
+               const ecs_ptr& a_scene) -> error_type
+  {
     TLOC_ASSERT(m_flags.IsUnMarked(k_app_initialized), 
                 "Application already initialized");
     m_flags.Mark(k_app_initialized);
 
-    TLOC_ERROR_RETURN_IF_FAILED(Pre_Initialize(a_winDim, a_scene));
+    TLOC_ERROR_RETURN_IF_FAILED(Pre_Initialize(a_mode, a_settings, a_scene));
 
-    TLOC_ERROR_RETURN_IF_FAILED(DoCreateWindow(a_winDim));
+    TLOC_ERROR_RETURN_IF_FAILED(DoCreateWindow(a_mode, a_settings));
     TLOC_ERROR_RETURN_IF_FAILED(DoInitializePlatform());
     TLOC_ERROR_RETURN_IF_FAILED(DoInitializeRenderer());
     TLOC_ERROR_RETURN_IF_FAILED(DoInitializeInput());
@@ -296,11 +309,11 @@ namespace tloc {
 
   auto
     Application::
-    DoCreateWindow(gfx_t::Dimension2 a_winDim) -> error_type
+    DoCreateWindow(const graphics_mode& a_mode, 
+                   const window_settings& a_settings) -> error_type
   {
     using namespace gfx_win;
-    m_window->Create(Window::graphics_mode::Properties(a_winDim[0], a_winDim[1]),
-                     WindowSettings(m_appName));
+    m_window->Create(a_mode, a_settings);
 
     return ErrorSuccess;
   }

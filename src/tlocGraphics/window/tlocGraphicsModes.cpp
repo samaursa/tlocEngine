@@ -40,6 +40,17 @@ namespace tloc { namespace graphics { namespace win {
 
   //------------------------------------------------------------------------
   // Properties
+  
+  template <GRAPHICS_MODES_TEMP>
+  GraphicsMode<GRAPHICS_MODES_PARAMS>::Properties::
+    Properties(gfx_t::Dimension2 a_dim,
+               size_type a_bitsPerPixel, size_type a_frequency)
+               : m_width(a_dim[0])
+               , m_height(a_dim[1])
+               , m_bitsPerPixel(a_bitsPerPixel)
+               , m_frequency(a_frequency)
+  {
+  }
 
   template <GRAPHICS_MODES_TEMP>
   GraphicsMode<GRAPHICS_MODES_PARAMS>::Properties::

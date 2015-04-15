@@ -37,6 +37,7 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tlocDebugFileAndLine.h
     base_classes/tlocDebugFileAndLine.cpp
     base_classes/tlocInitializeAndDestroy.h
+    base_classes/tlocNoCtorDtor.h
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h
     base_classes/tlocPlatformImplBase.h

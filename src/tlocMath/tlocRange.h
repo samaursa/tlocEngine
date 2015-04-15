@@ -145,6 +145,8 @@ namespace tloc { namespace math {
 
     value_type front() const;
     value_type back() const;
+    // back() - front()
+    value_type difference() const;
 
     const_iterator         begin() const;
     const_reverse_iterator rbegin() const;
@@ -154,9 +156,9 @@ namespace tloc { namespace math {
     ///-------------------------------------------------------------------------
     /// @brief Returns range size including stepsize (end - begin) / stepSize
     ///-------------------------------------------------------------------------
-    size_type size() const;
-    size_type capacity() const;
-    bool      empty() const;
+    size_type   size() const;
+    size_type   capacity() const;
+    bool        empty() const;
 
     TLOC_DECL_AND_DEF_GETTER(value_type, GetStepSize, m_stepSize);
     TLOC_DECL_AND_DEF_GETTER(value_type, GetElementCount, m_elementCount);

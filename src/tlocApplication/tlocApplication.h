@@ -25,6 +25,8 @@ namespace tloc {
   {
   public:
     typedef gfx_win::window_sptr                  window_ptr;
+    typedef gfx_win::GraphicsMode<>               graphics_mode;
+    typedef gfx_win::WindowSettings               window_settings;
     typedef gfx_rend::renderer_sptr               renderer_ptr;
     typedef input::input_mgr_b_ptr                input_mgr_ptr;
     typedef input_hid::keyboard_b_vptr            keyboard_ptr;
@@ -52,6 +54,10 @@ namespace tloc {
     error_type  Initialize(gfx_t::Dimension2 a_winDim,
                            const ecs_ptr& a_scene = nullptr);
 
+    error_type  Initialize(const gfx_win::GraphicsMode<>& a_mode,
+                           const gfx_win::WindowSettings& a_settings,
+                           const ecs_ptr& a_scene = nullptr);
+
     // infinite loop that will return only if Quit() is called (externally or
     // internally)
     void        Run();
@@ -70,7 +76,8 @@ namespace tloc {
 
   protected:
 
-    virtual error_type  Pre_Initialize(gfx_t::Dimension2 a_winDim,
+    virtual error_type  Pre_Initialize(const graphics_mode& a_mode, 
+                                       const window_settings& a_settings, 
                                        const ecs_ptr& a_scene);
     virtual error_type  Post_Initialize();
 
@@ -86,7 +93,8 @@ namespace tloc {
     virtual void        Post_Finalize();
 
   private:
-    error_type          DoCreateWindow(gfx_t::Dimension2 a_winDim);
+    error_type          DoCreateWindow(const graphics_mode& a_mode, 
+                                       const window_settings& a_settings);
     error_type          DoInitializePlatform();
     error_type          DoInitializeRenderer();
     error_type          DoInitializeInput();

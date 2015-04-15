@@ -404,6 +404,17 @@ namespace tloc { namespace core {
 
   };
 
+  template <typename T, tl_size T_Size, typename T2>
+  core_ds::Tuple<T, T_Size>
+    Clamp(const core_ds::Tuple<T, T_Size>& a_tup, T2 a_low, T2 a_high)
+  {
+    core_ds::Tuple<T, T_Size> temp;
+    for (tl_size i = 0; i < T_Size; ++i)
+    { temp[i] = core::Clamp(a_tup[i], a_low, a_high); }
+
+    return temp;
+  }
+
 };};
 
 #endif

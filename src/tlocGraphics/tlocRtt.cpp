@@ -44,27 +44,28 @@ namespace tloc { namespace graphics {
   template <TLOC_RTT_TEMPS>
   auto
     Rtt_T<TLOC_RTT_PARAMS>::
-    AddColorAttachment(tl_int a_attachmentIndex) -> to_ptr
+    AddColorAttachment(tl_int a_attachmentIndex, 
+                       const to_params& a_toParams) -> to_ptr
   { 
     switch(a_attachmentIndex)
     {
-    case 0:   return AddColorAttachment<0, gfx_t::Color>();
-    case 1:   return AddColorAttachment<1, gfx_t::Color>();
-    case 2:   return AddColorAttachment<2, gfx_t::Color>();
-    case 3:   return AddColorAttachment<3, gfx_t::Color>();
-    case 4:   return AddColorAttachment<4, gfx_t::Color>();
-    case 5:   return AddColorAttachment<5, gfx_t::Color>();
-    case 6:   return AddColorAttachment<6, gfx_t::Color>();
-    case 7:   return AddColorAttachment<7, gfx_t::Color>();
-    case 8:   return AddColorAttachment<8, gfx_t::Color>();
-    case 9:   return AddColorAttachment<9, gfx_t::Color>();
-    case 10:  return AddColorAttachment<10, gfx_t::Color>();
-    case 11:  return AddColorAttachment<11, gfx_t::Color>();
-    case 12:  return AddColorAttachment<12, gfx_t::Color>();
-    case 13:  return AddColorAttachment<13, gfx_t::Color>();
-    case 14:  return AddColorAttachment<14, gfx_t::Color>();
-    case 15:  return AddColorAttachment<15, gfx_t::Color>();
-    default:  return AddColorAttachment<0, gfx_t::Color>();
+    case 0:   return AddColorAttachment<0, gfx_t::Color>(a_toParams);
+    case 1:   return AddColorAttachment<1, gfx_t::Color>(a_toParams);
+    case 2:   return AddColorAttachment<2, gfx_t::Color>(a_toParams);
+    case 3:   return AddColorAttachment<3, gfx_t::Color>(a_toParams);
+    case 4:   return AddColorAttachment<4, gfx_t::Color>(a_toParams);
+    case 5:   return AddColorAttachment<5, gfx_t::Color>(a_toParams);
+    case 6:   return AddColorAttachment<6, gfx_t::Color>(a_toParams);
+    case 7:   return AddColorAttachment<7, gfx_t::Color>(a_toParams);
+    case 8:   return AddColorAttachment<8, gfx_t::Color>(a_toParams);
+    case 9:   return AddColorAttachment<9, gfx_t::Color>(a_toParams);
+    case 10:  return AddColorAttachment<10, gfx_t::Color>(a_toParams);
+    case 11:  return AddColorAttachment<11, gfx_t::Color>(a_toParams);
+    case 12:  return AddColorAttachment<12, gfx_t::Color>(a_toParams);
+    case 13:  return AddColorAttachment<13, gfx_t::Color>(a_toParams);
+    case 14:  return AddColorAttachment<14, gfx_t::Color>(a_toParams);
+    case 15:  return AddColorAttachment<15, gfx_t::Color>(a_toParams);
+    default:  return AddColorAttachment<0, gfx_t::Color>(a_toParams);
     }
   }
 
@@ -96,3 +97,14 @@ namespace tloc { namespace graphics {
   template class Rtt_T<f64>;
 
 };};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+using namespace tloc::graphics;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rtt);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rtt_depth32);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Rtt_depth64);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Rtt);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Rtt_depth32);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(Rtt_depth64);

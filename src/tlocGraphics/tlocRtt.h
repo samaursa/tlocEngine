@@ -3,7 +3,9 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/containers/tlocArray.h>
 #include <tlocCore/types/tlocAny.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 #include <tlocGraphics/renderer/tlocRenderer.h>
 #include <tlocGraphics/opengl/tlocTextureObject.h>
@@ -16,6 +18,8 @@ namespace tloc { namespace graphics {
   {
   public:
     typedef T_DepthPrecision                        depth_precision;
+    typedef Rtt_T<depth_precision>                  this_type;
+
     typedef gfx_rend::Renderer_T<depth_precision>   renderer_type;
     typedef typename renderer_type::this_type_sptr  renderer_ptr;
     typedef gfx_gl::framebuffer_object_sptr         fbo_ptr;
@@ -36,7 +40,8 @@ namespace tloc { namespace graphics {
 
     template <tl_int T_AttachmentIndex, typename T_ColorType>
     to_ptr  AddColorAttachment(const to_params& a_toParams = to_params());
-    to_ptr  AddColorAttachment(tl_int a_attachmentIndex);
+    to_ptr  AddColorAttachment(tl_int a_attachmentIndex, 
+                               const to_params& a_toParams = to_params());
 
     template <typename T_Target, typename T_ColorType>
     core_sptr::SharedPtr<gfx_gl::TextureObject_T<T_Target>>
@@ -57,6 +62,10 @@ namespace tloc { namespace graphics {
 
     buffer_type     m_depthBuffer;
     color_buffers   m_colorBuffers;
+
+  public:
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetDepthBuffer, m_depthBuffer);
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_color_buffers, m_colorBuffers);
   };
 
   template <typename T_DepthPrecision>
@@ -117,6 +126,22 @@ namespace tloc { namespace graphics {
   typedef Rtt_T<f32>                                      Rtt_depth32;
   typedef Rtt_T<f64>                                      Rtt_depth64;
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rtt, rtt);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rtt_depth32, rtt_depth32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Rtt_depth64, rtt_depth64);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Rtt, rtt);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Rtt_depth32, rtt_depth32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR(Rtt_depth64, rtt_depth64);
+
 };};;
+
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::graphics::Rtt);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::graphics::Rtt_depth32);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::graphics::Rtt_depth64);
+
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::graphics::Rtt);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::graphics::Rtt_depth32);
+TLOC_EXTERN_TEMPLATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(tloc::graphics::Rtt_depth64);
 
 #endif

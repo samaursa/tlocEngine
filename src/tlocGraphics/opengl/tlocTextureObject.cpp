@@ -3,6 +3,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/smart_ptr/tlocSharedPtr.h>
 
 #include <tlocGraphics/opengl/tlocOpenGL.h>
 #include <tlocGraphics/opengl/tlocOpenGLIncludes.h>
@@ -394,6 +395,18 @@ namespace tloc { namespace graphics { namespace gl {
     { return p_texture_object::internal_format::Red::s_glParamName; }
 
     gfx_t::gl_int
+      DoGetInternalImageFormat(gfx_t::color_f32_rgba)
+    { return p_texture_object::internal_format::RGBA::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetInternalImageFormat(gfx_t::color_f32_rgb)
+    { return p_texture_object::internal_format::RGB::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetInternalImageFormat(gfx_t::color_f32_rg)
+    { return p_texture_object::internal_format::RG::s_glParamName; }
+
+    gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_f32_r)
     { return p_texture_object::internal_format::DepthComponent::s_glParamName; }
 
@@ -433,6 +446,18 @@ namespace tloc { namespace graphics { namespace gl {
     { return p_texture_object::format::Red::s_glParamName; }
 
     gfx_t::gl_int
+      DoGetImageFormat(gfx_t::color_f32_rgba)
+    { return p_texture_object::format::RGBA::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetImageFormat(gfx_t::color_f32_rgb)
+    { return p_texture_object::format::RGB::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetImageFormat(gfx_t::color_f32_rg)
+    { return p_texture_object::format::RG::s_glParamName; }
+
+    gfx_t::gl_int
       DoGetImageFormat(gfx_t::color_f32_r)
     { return p_texture_object::format::DepthComponent::s_glParamName; }
 
@@ -462,6 +487,15 @@ namespace tloc { namespace graphics { namespace gl {
 
     tl_size
       DoGetImageFormatChannels(gfx_t::color_u16_r) { return 1; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_f32_rgba) { return 4; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_f32_rgb) { return 3; }
+
+    tl_size
+      DoGetImageFormatChannels(gfx_t::color_f32_rg) { return 2; }
 
     tl_size
       DoGetImageFormatChannels(gfx_t::color_f32_r) { return 1; }
@@ -502,6 +536,18 @@ namespace tloc { namespace graphics { namespace gl {
     { return p_texture_object::type::UnsignedShort::s_glParamName; }
 
     gfx_t::gl_int
+      DoGetImageType(gfx_t::color_f32_rgba)
+    { return p_texture_object::type::Float::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetImageType(gfx_t::color_f32_rgb)
+    { return p_texture_object::type::Float::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetImageType(gfx_t::color_f32_rg)
+    { return p_texture_object::type::Float::s_glParamName; }
+
+    gfx_t::gl_int
       DoGetImageType(gfx_t::color_f32_r)
     { return p_texture_object::type::Float::s_glParamName; }
 
@@ -539,6 +585,18 @@ namespace tloc { namespace graphics { namespace gl {
     gfx_t::gl_int
       DoGetAlignment(gfx_t::color_u16_r)
     { return p_texture_object::alignment::TwoBytes::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetAlignment(gfx_t::color_f32_rgba)
+    { return p_texture_object::alignment::FourBytes::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetAlignment(gfx_t::color_f32_rgb)
+    { return p_texture_object::alignment::FourBytes::s_glParamName; }
+
+    gfx_t::gl_int
+      DoGetAlignment(gfx_t::color_f32_rg)
+    { return p_texture_object::alignment::FourBytes::s_glParamName; }
 
     gfx_t::gl_int
       DoGetAlignment(gfx_t::color_f32_r)
@@ -727,6 +785,31 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TEXTURE_OBJECT_TEMPS>
+  template <typename T_Dim, typename T_ColorType>
+  core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, T_ColorType>>
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
+    GetImage() const
+  {
+    typedef gfx_med::Image_T<T_Dim, T_ColorType>        image_type;
+    typedef typename image_type::pixel_container_type   pix_cont_type;
+    typedef typename image_type::color_type             color_type;
+
+    const auto out_texFormat  = DoGetImageFormat(color_type());
+    const auto out_texType    = DoGetImageType(color_type());
+
+    auto imgPtr = core_sptr::MakeShared<image_type>();
+    imgPtr->Create(GetDimensions(), typename color_type::COLOR_RED);
+
+    Bind();
+    glGetTexImage(GetTargetType(), 0, out_texFormat, out_texType, &*imgPtr->get() );
+    TLOC_ASSERT(gl::Error().Succeeded(), "Error in glGetTexImage()");
+
+    return imgPtr;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   void
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     UpdateParameters() const
@@ -857,6 +940,7 @@ namespace tloc { namespace graphics { namespace gl {
 // -----------------------------------------------------------------------
 // explicit instantiations for
 
+using namespace tloc::core_sptr;
 using namespace tloc::gfx_gl;
 using namespace tloc::gfx_med;
 using namespace tloc::gfx_gl::f_texture_object;
@@ -873,6 +957,21 @@ template TextureObjectShadow::error_type TextureObjectShadow::Update(const _imag
 \
 bool GL_TexImage(const _imageType_&)
 
+template SharedPtr<image_rgba>      TextureObject::GetImage() const;
+template SharedPtr<image_rgb>       TextureObject::GetImage() const;
+template SharedPtr<image_rg>        TextureObject::GetImage() const;
+template SharedPtr<image_r>         TextureObject::GetImage() const;
+
+template SharedPtr<image_u16_rgba>  TextureObject::GetImage() const;
+template SharedPtr<image_u16_rgb>   TextureObject::GetImage() const;
+template SharedPtr<image_u16_rg>    TextureObject::GetImage() const;
+template SharedPtr<image_u16_r>     TextureObject::GetImage() const;
+
+template SharedPtr<image_f32_rgba>  TextureObject::GetImage() const;
+template SharedPtr<image_f32_rgb>   TextureObject::GetImage() const;
+template SharedPtr<image_f32_rg>    TextureObject::GetImage() const;
+template SharedPtr<image_f32_r>     TextureObject::GetImage() const;
+
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(Image);
 
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_rgb);
@@ -884,6 +983,9 @@ TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_rgb);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_rg);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_u16_r);
 
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_rg);
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_f32_r);
 
 TLOC_EXPLICITLY_INSTANTIATE_IMAGE(image_stream_rgba);

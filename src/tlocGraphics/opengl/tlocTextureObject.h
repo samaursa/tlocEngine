@@ -436,6 +436,10 @@ namespace tloc { namespace graphics { namespace gl {
     template <typename T_Dim, typename T_ColorType, typename T_Storage>
     error_type  Update(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image) const;
 
+    template <typename T_Dim, typename T_ColorType>
+    core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, T_ColorType>> 
+      GetImage() const;
+
     error_type  Bind() const;
 
     void        UpdateParameters() const;

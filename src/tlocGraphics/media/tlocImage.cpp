@@ -244,22 +244,34 @@ namespace tloc { namespace graphics { namespace media {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_IMAGE_INTERNAL_TEMPS>
-  TLOC_IMAGE_INTERNAL_TYPE::const_color_type_ptr
+  TLOC_IMAGE_INTERNAL_TYPE::color_type_ptr
     Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
-    get() const
-  {
-    return const_color_type_ptr(&*m_pixels.begin());
-  }
+    get()
+  { return color_type_ptr(&*m_pixels.begin()); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_IMAGE_INTERNAL_TEMPS>
   TLOC_IMAGE_INTERNAL_TYPE::const_color_type_ptr
     Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
+    get() const
+  { return const_color_type_ptr(&*m_pixels.begin()); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_INTERNAL_TEMPS>
+  TLOC_IMAGE_INTERNAL_TYPE::color_type&
+    Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
+    operator[](tl_int a_index)
+  { return m_pixels[a_index]; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_INTERNAL_TEMPS>
+  TLOC_IMAGE_INTERNAL_TYPE::color_type
+    Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
     operator[](tl_int a_index) const
-  {
-    return const_color_type_ptr(&m_pixels[a_index]);
-  }
+  { return m_pixels[a_index]; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -268,6 +280,14 @@ namespace tloc { namespace graphics { namespace media {
     Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
     DoSet(tl_int a_index, const color_type& a_color)
   { m_pixels[a_index] = a_color; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_INTERNAL_TEMPS>
+  TLOC_IMAGE_INTERNAL_TYPE::color_type&
+    Image_TI<TLOC_IMAGE_INTERNAL_PARAMS>::
+    DoGet(tl_int a_index)
+  { return m_pixels[a_index]; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -358,21 +378,39 @@ namespace tloc { namespace graphics { namespace media {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_IMAGE_EXTERNAL_TEMPS>
-  TLOC_IMAGE_EXTERNAL_TYPE::const_color_type_ptr
+  TLOC_IMAGE_EXTERNAL_TYPE::color_type_ptr
     Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
-    get() const
-  {
-    return m_pixels;
-  }
+    get()
+  { return m_pixels; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_IMAGE_EXTERNAL_TEMPS>
   TLOC_IMAGE_EXTERNAL_TYPE::const_color_type_ptr
     Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
+    get() const
+  { return m_pixels; }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_EXTERNAL_TEMPS>
+  TLOC_IMAGE_EXTERNAL_TYPE::color_type&
+    Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
+    operator[](tl_int a_index)
+  { 
+    TLOC_ASSERT( (size_type)a_index < (GetWidth() * GetHeight()), "Index out of bounds");
+    return m_pixels.get()[a_index];
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_EXTERNAL_TEMPS>
+  TLOC_IMAGE_EXTERNAL_TYPE::color_type
+    Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
     operator[](tl_int a_index) const
   {
-    return const_color_type_ptr( &m_pixels.get()[a_index] );
+    TLOC_ASSERT( (size_type)a_index < (GetWidth() * GetHeight()), "Index out of bounds");
+    return m_pixels.get()[a_index];
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -397,6 +435,14 @@ namespace tloc { namespace graphics { namespace media {
     Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
     DoSet(tl_int a_index, const color_type& a_color)
   { DoDoSet(m_pixels, a_index, a_color, Loki::Int2Type<T_Const>()); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_IMAGE_EXTERNAL_TEMPS>
+  TLOC_IMAGE_EXTERNAL_TYPE::color_type&
+    Image_TI<TLOC_IMAGE_EXTERNAL_PARAMS>::
+    DoGet(tl_int a_index)
+  { return m_pixels.get()[a_index]; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -590,7 +636,7 @@ namespace tloc { namespace graphics { namespace media {
     const auto index = core_utils::GetIndex(dim, core_ds::MakeTuple(0u, 0u, a_z));
 
     auto img = core_sptr::MakeShared<image_2d_type>();
-    img->Load( this->operator[](index)->get(), 
+    img->Load( this->operator[](index).get(), 
                core_ds::MakeTuple(dim[0], dim[1]), color_type::k_channels);
 
     return img;
@@ -622,6 +668,9 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_rgb);
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_rg);
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_u16_r);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_f32_rgba);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_f32_rgb);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_f32_rg);
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_2d, color_f32_r);
 
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, Color);
@@ -632,6 +681,9 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_rgb);
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_rg);
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_u16_r);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_f32_rgba);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_f32_rgb);
+  TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_f32_rg);
   TLOC_EXPLICITLY_INSTANTIATE_IMAGE(dim_3d, color_f32_r);
 
 };};};
@@ -657,6 +709,9 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_rgb::color_type_ptr);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_rg::color_type_ptr);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_u16_r::color_type_ptr);
 
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_f32_rgba::color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_f32_rgb::color_type_ptr);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_f32_rg::color_type_ptr);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_f32_r::color_type_ptr);
 
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(image_rgba::const_color_type_ptr);
@@ -740,12 +795,37 @@ TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_u16_r);
 // ```````````````````````````````````````````````````````````````````````
 // special images
 
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_f32_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_f32_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_f32_rg);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_f32_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_rg);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_const_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_const_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_const_rg);
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(image_stream_f32_const_r);
 
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_f32_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_f32_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_f32_rg);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_f32_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_rg);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_r);
+
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_const_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_const_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_const_rg);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(image_stream_f32_const_r);
 
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_f32_rgba);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_f32_rgb);
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_f32_rgb);
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY(color_f32_r);

@@ -9,6 +9,7 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 
 #include <tlocGraphics/types/tlocColor.h>
 #include <tlocGraphics/types/tlocDimension.h>
@@ -134,17 +135,18 @@ namespace tloc { namespace graphics { namespace media {
                                  const color_type& a_color);
     bool              IsValid() const;
 
+    color_type_ptr         get();
     const_color_type_ptr   get() const;
-    const_color_type_ptr   operator[](tl_int a_index) const;
 
-    TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(pixel_container_type,
-                                          GetPixels, m_pixels);
+    color_type&            operator[](tl_int a_index);
+    color_type             operator[](tl_int a_index) const;
 
   protected:
     Image_TI();
     ~Image_TI();
 
     void              DoSet(tl_int a_index, const color_type& a_color);
+    color_type&       DoGet(tl_int a_index);
     const color_type& DoGet(tl_int a_index) const;
 
   private:
@@ -161,6 +163,9 @@ namespace tloc { namespace graphics { namespace media {
 
   private:
     pixel_container_type    m_pixels;
+
+  public:
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_pixels, m_pixels);
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -212,17 +217,18 @@ namespace tloc { namespace graphics { namespace media {
                                  const color_type& a_color);
     bool              IsValid() const;
 
+    color_type_ptr         get();
     const_color_type_ptr   get() const;
-    const_color_type_ptr   operator[](tl_int a_index) const;
 
-    TLOC_DECL_AND_DEF_GETTER(color_type_ptr, GetPixels, m_pixels);
-    TLOC_DECL_AND_DEF_GETTER_DIRECT(color_type_ptr, GetPixels, m_pixels);
+    color_type&            operator[](tl_int a_index);
+    color_type             operator[](tl_int a_index) const;
 
   protected:
     Image_TI();
     ~Image_TI();
 
     void              DoSet(tl_int a_index, const color_type& a_color);
+    color_type&       DoGet(tl_int a_index);
     const color_type& DoGet(tl_int a_index) const;
 
   private:
@@ -278,7 +284,6 @@ namespace tloc { namespace graphics { namespace media {
     using base_type::GetWidth;
     using base_type::GetHeight;
     using base_type::GetDimensions;
-    using base_type::GetPixels;
     using base_type::IsValid;
   };
 
@@ -330,7 +335,6 @@ namespace tloc { namespace graphics { namespace media {
     using base_type::GetWidth;
     using base_type::GetHeight;
     using base_type::GetDimensions;
-    using base_type::GetPixels;
     using base_type::IsValid;
   };
 
@@ -381,6 +385,9 @@ namespace tloc { namespace graphics { namespace media {
   typedef Image_T<p_image::dim_2d, gfx_t::color_u16_rg>     image_u16_rg;
   typedef Image_T<p_image::dim_2d, gfx_t::color_u16_r>      image_u16_r;
 
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rgba>   image_f32_rgba;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rgb>    image_f32_rgb;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rg>     image_f32_rg;
   typedef Image_T<p_image::dim_2d, gfx_t::color_f32_r>      image_f32_r;
 
   TLOC_TYPEDEF_ALL_SMART_PTRS(Image, image);
@@ -404,6 +411,12 @@ namespace tloc { namespace graphics { namespace media {
   typedef Image_T<p_image::dim_2d, gfx_t::color_u16_r, 
                   p_image::storage::External>                image_stream_u16_r;
 
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rgba, 
+                  p_image::storage::External>                image_stream_f32_rgba;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rgb, 
+                  p_image::storage::External>                image_stream_f32_rgb;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rg, 
+                  p_image::storage::External>                image_stream_f32_rg;
   typedef Image_T<p_image::dim_2d, gfx_t::color_f32_r, 
                   p_image::storage::External>                image_stream_f32_r;
 
@@ -425,6 +438,12 @@ namespace tloc { namespace graphics { namespace media {
   typedef Image_T<p_image::dim_2d, gfx_t::color_u16_r, 
                   p_image::storage::External, true>          image_stream_u16_const_r;
 
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rgba, 
+                  p_image::storage::External, true>          image_stream_f32_const_rgba;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rgb, 
+                  p_image::storage::External, true>          image_stream_f32_const_rgb;
+  typedef Image_T<p_image::dim_2d, gfx_t::color_f32_rg, 
+                  p_image::storage::External, true>          image_stream_f32_const_rg;
   typedef Image_T<p_image::dim_2d, gfx_t::color_f32_r, 
                   p_image::storage::External, true>          image_stream_f32_const_r;
 

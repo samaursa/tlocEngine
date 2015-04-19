@@ -467,6 +467,11 @@ namespace tloc { namespace graphics { namespace media {
     : base_type()
   { }
 
+  template <TLOC_IMAGE_TEMPS>
+  void
+    Image_T<TLOC_IMAGE_PARAMS>::
+    SetPixel(dimension_type a_dim, const color_type& a_color)
+  { SetPixel(a_dim[0], a_dim[1], a_color); }
 
   template <TLOC_IMAGE_TEMPS>
   void
@@ -477,6 +482,12 @@ namespace tloc { namespace graphics { namespace media {
                                         core_ds::MakeTuple(a_x, a_y));
     this->DoSet(index, a_color);
   }
+
+  template <TLOC_IMAGE_TEMPS>
+  void
+    Image_T<TLOC_IMAGE_PARAMS>::
+    SetImage(dimension_type a_dim, const this_type& a_image)
+  { SetImage(a_dim[0], a_dim[1], a_image); }
 
   template <TLOC_IMAGE_TEMPS>
   void
@@ -502,12 +513,24 @@ namespace tloc { namespace graphics { namespace media {
   template <TLOC_IMAGE_TEMPS>
   const TLOC_IMAGE_TYPE::color_type&
     Image_T<TLOC_IMAGE_PARAMS>::
+    GetPixel(dimension_type a_dim) const
+  { return GetPixel(a_dim[0], a_dim[1]); }
+
+  template <TLOC_IMAGE_TEMPS>
+  const TLOC_IMAGE_TYPE::color_type&
+    Image_T<TLOC_IMAGE_PARAMS>::
     GetPixel(size_type a_x, size_type a_y) const
   {
     tl_int index = core_utils::GetIndex(this->GetDimensions(), 
                                         core_ds::MakeTuple(a_x, a_y));
     return this->DoGet(index);
   }
+
+  template <TLOC_IMAGE_TEMPS>
+  TLOC_IMAGE_TYPE::image_sptr
+    Image_T<TLOC_IMAGE_PARAMS>::
+    GetImage(dimension_type a_dim, dimension_type a_dimToGet) const
+  { return GetImage(a_dim[0], a_dim[1], a_dimToGet); }
 
   template <TLOC_IMAGE_TEMPS>
   TLOC_IMAGE_TYPE::image_sptr
@@ -548,6 +571,12 @@ namespace tloc { namespace graphics { namespace media {
     : base_type()
   { }
 
+  template <TLOC_IMAGE_3D_TEMPS>
+  void
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    SetPixel(dimension_type a_dim,
+             const color_type& a_color)
+  { SetPixel(a_dim[0], a_dim[1], a_dim[2], a_color); }
 
   template <TLOC_IMAGE_3D_TEMPS>
   void
@@ -559,6 +588,12 @@ namespace tloc { namespace graphics { namespace media {
                                         core_ds::MakeTuple(a_x, a_y, a_z));
     this->DoSet(index, a_color);
   }
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  void
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    SetImage(dimension_type a_dim, const this_type& a_image)
+  { SetImage(a_dim[0], a_dim[1], a_dim[2], a_image); }
 
   template <TLOC_IMAGE_3D_TEMPS>
   void
@@ -590,12 +625,24 @@ namespace tloc { namespace graphics { namespace media {
   template <TLOC_IMAGE_3D_TEMPS>
   const TLOC_IMAGE_3D_TYPE::color_type&
     Image_T<TLOC_IMAGE_3D_PARAMS>::
+    GetPixel(dimension_type a_dim) const
+  { return GetPixel(a_dim[0], a_dim[1], a_dim[2]); }
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  const TLOC_IMAGE_3D_TYPE::color_type&
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
     GetPixel(size_type a_x, size_type a_y, size_type a_z) const
   {
     tl_int index = core_utils::GetIndex(this->GetDimensions(), 
                                         core_ds::MakeTuple(a_x, a_y, a_z));
     return this->DoGet(index);
   }
+
+  template <TLOC_IMAGE_3D_TEMPS>
+  TLOC_IMAGE_3D_TYPE::image_sptr
+    Image_T<TLOC_IMAGE_3D_PARAMS>::
+    GetImage(dimension_type a_dim, dimension_type a_dimToGet) const
+  { return GetImage(a_dim[0], a_dim[1], a_dim[2], a_dimToGet); }
 
   template <TLOC_IMAGE_3D_TEMPS>
   TLOC_IMAGE_3D_TYPE::image_sptr

@@ -24,6 +24,14 @@ namespace TestingColor
       CHECK(c[1] == 127);
       CHECK(c[2] == 127);
       CHECK(c[3] == 255);
+      {
+        color_f32_rgba cf32(c);
+        // precision loss accounts for the large epsilon value
+        CHECK(math::ApproxAbsolute(cf32[0], 0.5f, 0.01f));
+        CHECK(math::ApproxAbsolute(cf32[1], 0.5f, 0.01f));
+        CHECK(math::ApproxAbsolute(cf32[2], 0.5f, 0.01f));
+        CHECK(math::ApproxAbsolute(cf32[3], 1.0f, 0.01f));
+      }
 
       c = Color(25, 35, 45, 55);
       CHECK(c[0] == 25);
@@ -345,5 +353,25 @@ namespace TestingColor
         CHECK_COLOR_4(c2, 1, 2, 3, 4);
       }
     }
+  }
+
+  TEST_CASE("Graphics/types/Color/Encode_Decode", "")
+  {
+    using namespace math;
+
+    Color           c(128, 128, 128, 128);
+    math_t::Vec4f   v(-2.0f, 5.0f, 1.0f, 1.0f);
+
+    auto_cref range = MakeRangef<f32, p_range::Inclusive>().Get(-2.0f, 5.0f);
+
+    auto col = f_color::Encode(v, range);
+    CHECK(col[0] >= 0.0f); CHECK(col[0] <= 1.0f);
+    CHECK(col[1] >= 0.0f); CHECK(col[1] <= 1.0f);
+    CHECK(col[2] >= 0.0f); CHECK(col[2] <= 1.0f);
+    CHECK(col[3] >= 0.0f); CHECK(col[3] <= 1.0f);
+
+    auto vec = f_color::Decode(col, range);
+
+    CHECK(vec == v);
   }
 };

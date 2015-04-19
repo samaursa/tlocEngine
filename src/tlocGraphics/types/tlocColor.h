@@ -92,6 +92,9 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI();
 
     template <typename U>
+    Color_TI(const Color_TI<U, T_Size>& a_other);
+
+    template <typename U>
     explicit Color_TI(const core_ds::Tuple<U, k_size>& a_colorByChannels);
 
     template <typename U>
@@ -148,6 +151,16 @@ namespace tloc { namespace graphics { namespace types {
 
   // -----------------------------------------------------------------------
   // Template definitions
+
+  template <typename T, tl_int T_Size>
+  template <typename U>
+  Color_TI<T, T_Size>::
+    Color_TI(const Color_TI<U, T_Size>& a_other)
+  {
+    SetAs(a_other.Get());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, tl_int T_Size>
   template <typename U>
@@ -674,20 +687,41 @@ namespace tloc { namespace graphics { namespace types {
   {
     template <typename T, tl_size T_Size>
     gfx_t::Color_T<T, T_Size>
-      Encode(const math_t::Vector_T<T, T_Size>& a_vec, 
-             math::Range_T<T> a_minMax)
+      Encode(const math_t::Vector_T<T, T_Size>& a_vec,
+      math::Range_T<T> a_minMax)
     {
       TLOC_STATIC_ASSERT_IS_FLOAT(T);
 
       typedef gfx_t::Color_T<T, T_Size>       color_type;
-      typedef math_t::<T, T_Size>             vec_type;
+      typedef math_t::Vector_T<T, T_Size>     vec_type;
 
-      vec_type norm(a_minMax.front());
-      core::Clamp(norm, a_minMax.front(), a_minMax.front());
+      vec_type norm(0 - a_minMax.front());
+      vec_type clampedVec = core::Clamp(a_vec, a_minMax.front(), a_minMax.back());
 
-      norm = (norm + a_vec)/a_minMax.difference();
+      norm = ( norm + clampedVec ) / a_minMax.difference();
 
-      color_type c(norm);
+      return color_type(norm);
+    }
+
+    // -----------------------------------------------------------------------
+
+    template <typename T, tl_size T_Size>
+    math_t::Vector_T<T, T_Size>
+      Decode(const gfx_t::Color_T<T, T_Size>& a_color,
+      math::Range_T<T> a_range)
+    {
+      TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
+      typedef gfx_t::Color_T<T, T_Size>       color_type;
+      typedef math_t::Vector_T<T, T_Size>     vec_type;
+
+      const auto diff = a_range.difference();
+      const auto diffVec = vec_type(0 - a_range.front());
+
+      auto ret = a_color.GetAs<p_color::format::RGBA, vec_type>();
+      ret = ( ret * diff ) - diffVec;
+
+      return ret;
     }
   };
 

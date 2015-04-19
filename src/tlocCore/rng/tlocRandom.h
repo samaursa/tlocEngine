@@ -47,7 +47,8 @@ namespace tloc { namespace core { namespace rng {
     ///                as long as T_Generator supports it.
     ///-------------------------------------------------------------------------
     template <typename T_Seed>
-    void SetSeed(const T_Seed& a_seed) { m_rng.SetSeed(a_seed); }
+    void SetSeed(const T_Seed& a_seed) 
+    { m_rng.SetSeed(a_seed); }
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -57,21 +58,24 @@ namespace tloc { namespace core { namespace rng {
     /// @return The seed.
     ///-------------------------------------------------------------------------
     template <typename T_Seed>
-    const T_Seed& GetSeed() const { return m_rng.GetSeed(); }
+    const T_Seed& GetSeed() const 
+    { return m_rng.GetSeed(); }
 
     ///-------------------------------------------------------------------------
     /// @brief The random integer is greater or equal to 0.
     ///
     /// @return The random integer.
     ///-------------------------------------------------------------------------
-    const int_type GetRandomInteger() { return m_rng.GetRandomInteger(); }
+    const int_type GetRandomInteger() const 
+    { return m_rng.GetRandomInteger(); }
 
     ///-------------------------------------------------------------------------
     /// @brief The random real number with the range [0, 1).
     ///
     /// @return The random float.
     ///-------------------------------------------------------------------------
-    const real_type GetRandomFloat() { return m_rng.GetRandomFloat(); }
+    const real_type GetRandomFloat() const 
+    { return m_rng.GetRandomFloat(); }
 
     ///-------------------------------------------------------------------------
     /// @brief Gets a random integer between [0, a_max)
@@ -80,7 +84,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return The random integer.
     ///-------------------------------------------------------------------------
-    const int_type GetRandomInteger(const int_type& a_max)
+    int_type GetRandomInteger(int_type a_max) const
     { return GetRandomInteger(0, a_max); }
 
     ///-------------------------------------------------------------------------
@@ -90,7 +94,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return The random float.
     ///-------------------------------------------------------------------------
-    const real_type GetRandomFloat(const real_type& a_max)
+    real_type GetRandomFloat(real_type a_max) const
     { return GetRandomFloat(0, a_max); }
 
     ///-------------------------------------------------------------------------
@@ -101,7 +105,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return Random number between the min and max range.
     ///-------------------------------------------------------------------------
-    const int_type GetRandomInteger(const int_type& a_min, const int_type& a_max)
+    int_type GetRandomInteger(int_type a_min, int_type a_max) const
     { return m_rng.GetRandomInteger(a_min, a_max); }
 
     ///-------------------------------------------------------------------------
@@ -112,8 +116,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return Random number between min and max range.
     ///-------------------------------------------------------------------------
-    const real_type GetRandomFloat(const real_type& a_min,
-                                   const real_type& a_max)
+    const real_type GetRandomFloat(real_type a_min, real_type a_max) const
     { return m_rng.GetRandomFloat(a_min, a_max); }
 
   private:

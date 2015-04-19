@@ -130,7 +130,8 @@ namespace tloc { namespace graphics { namespace media {
                            size_type a_channels);
     error_type        Load(const pixel_container_type& a_buffer,
                            dimension_type a_dim);
-    error_type        Create(dimension_type a_dim, const color_type& a_color);
+    error_type        Create(dimension_type a_dim, 
+                             const color_type& a_color = color_type::COLOR_BLACK);
     error_type        AddPadding(dimension_type a_padding,
                                  const color_type& a_color);
     bool              IsValid() const;
@@ -212,7 +213,8 @@ namespace tloc { namespace graphics { namespace media {
   public:
     error_type        Load(color_ptr a_buffer, dimension_type a_dim,
                            size_type a_channels);
-    error_type        Create(dimension_type a_dim, const color_type& a_color);
+    error_type        Create(dimension_type a_dim, 
+                             const color_type& a_color = color_type::COLOR_BLACK);
     error_type        AddPadding(dimension_type a_padding,
                                  const color_type& a_color);
     bool              IsValid() const;
@@ -270,11 +272,21 @@ namespace tloc { namespace graphics { namespace media {
   public:
     Image_T();
 
+    void              SetPixel(dimension_type a_dim,
+                               const color_type& a_color);
     void              SetPixel(size_type a_x, size_type a_y,
                                const color_type& a_color);
+
+    void              SetImage(dimension_type a_dim,
+                               const this_type& a_image);
     void              SetImage(size_type a_x, size_type a_y,
                                const this_type& a_image);
+
+    const color_type& GetPixel(dimension_type a_dim) const;
     const color_type& GetPixel(size_type a_x, size_type a_y) const;
+
+    image_sptr        GetImage(dimension_type a_dim,
+                               dimension_type a_dimToGet) const;
     image_sptr        GetImage(size_type a_x, size_type a_y,
                                dimension_type a_dimToGet) const;
 
@@ -316,14 +328,29 @@ namespace tloc { namespace graphics { namespace media {
   public:
     Image_T();
 
+    void              SetPixel(dimension_type a_dim,
+                               const color_type& a_color);
     void              SetPixel(size_type a_x, size_type a_y, size_type a_z,
                                const color_type& a_color);
+
+    void              SetImage(dimension_type a_dim,
+                               const this_type& a_image);
     void              SetImage(size_type a_x, size_type a_y, size_type a_z,
                                const this_type& a_image);
+
+    const color_type& GetPixel(dimension_type a_dim) const;
     const color_type& GetPixel(size_type a_x, size_type a_y, size_type a_z) const;
+
+    image_sptr        GetImage(dimension_type a_dim,
+                               dimension_type a_dimToGet) const;
     image_sptr        GetImage(size_type a_x, size_type a_y, size_type a_z,
                                dimension_type a_dimToGet) const;
+
     image_2d_sptr     GetImage(size_type a_z) const;
+
+    template <typename T_Storage>
+    void              SetImage(dimension_type a_dim,
+                               const Image_T<p_image::dim_2d, value_type, T_Storage>& a_image);
 
     template <typename T_Storage>
     void              SetImage(size_type a_x, size_type a_y, size_type a_z, 
@@ -340,6 +367,16 @@ namespace tloc { namespace graphics { namespace media {
 
   // -----------------------------------------------------------------------
   // template definitions
+
+  template <typename T_ColorType, typename T_StorageType, bool T_Const>
+  template <typename T_Storage>
+  void
+    Image_T<p_image::dim_3d, T_ColorType, T_StorageType, T_Const>::
+    SetImage(dimension_type a_dim,
+             const Image_T<p_image::dim_2d, value_type, T_Storage>& a_image)
+  { SetImage(a_dim[0], a_dim[1], a_dim[2], a_image); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_ColorType, typename T_StorageType, bool T_Const>
   template <typename T_Storage>

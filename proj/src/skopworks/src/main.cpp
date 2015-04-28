@@ -2,6 +2,7 @@
 #include <tlocGraphics/tloc_graphics.h>
 #include <tlocMath/tloc_math.h>
 #include <tlocPrefab/tloc_prefab.h>
+#include <tlocApplication/tloc_application.h>
 
 #include <gameAssetsPath.h>
 
@@ -21,107 +22,61 @@ namespace {
     core_str::String shaderPathFS("/shaders/tlocOneTextureFS_gl_es_2_0.glsl");
 #endif
 
+  const core_str::String g_assetsPath(GetAssetsPath());
+
 };
 
 // ///////////////////////////////////////////////////////////////////////
-// WindowCallback handler
+// Demo app
 
-class WindowCallback
+class Demo 
+  : public Application
 {
 public:
-  WindowCallback()
-    : m_endProgram(false)
+  Demo()
+    : Application("2LoC Engine")
   { }
 
-  core_dispatch::Event 
-    OnWindowEvent(const gfx_win::WindowEvent& a_event)
+private:
+  error_type Post_Initialize() override
   {
-    if (a_event.m_type == gfx_win::WindowEvent::close)
-    { m_endProgram = true; }
+    auto& scene = GetScene();
+    scene->AddSystem<gfx_cs::MaterialSystem>();
+    auto meshSys = scene->AddSystem<gfx_cs::MeshRenderSystem>();
+    meshSys->SetRenderer(GetRenderer());
 
-    return core_dispatch::f_event::Continue();
+    //------------------------------------------------------------------------
+
+    auto_cref to = app::resources::f_resource::LoadImageAsTextureObject
+      (core_io::Path(g_assetsPath + "/images/engine_logo.png"));
+
+    gfx_gl::uniform_vso  u_to;
+    u_to->SetName("s_texture").SetValueAs(*to);
+
+    //------------------------------------------------------------------------
+
+    math_t::Rectf_c rect(math_t::Rectf_c::width(1.0f * 2.0f),
+                         math_t::Rectf_c::height(GetWindow()->GetAspectRatio().Get() * 2.0f));
+
+    core_cs::entity_vptr q = scene->CreatePrefab<pref_gfx::Quad>()
+      .Dimensions(rect).Create();
+
+    scene->CreatePrefab<pref_gfx::Material>()
+      .AssetsPath(GetAssetsPath())
+      .AddUniform(u_to.get())
+      .Add(q, core_io::Path(shaderPathVS), core_io::Path(shaderPathFS));
+
+    return Application::Post_Initialize();
   }
-
-  bool  m_endProgram;
 };
-TLOC_DEF_TYPE(WindowCallback);
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-int TLOC_MAIN(int argc, char *argv[])
+int TLOC_MAIN(int , char *[])
 {
-  TLOC_UNUSED_2(argc, argv);
-
-  gfx_win::Window win;
-  WindowCallback  winCallback;
-
-  win.Register(&winCallback);
-  win.Create( gfx_win::Window::graphics_mode::Properties(1024, 768),
-    gfx_win::WindowSettings("2LoC Engine") );
-
-  // -----------------------------------------------------------------------
-  // Initialize OpenGL for the current platform
-
-  if (gfx_gl::InitializePlatform() != ErrorSuccess)
-  { 
-    TLOC_LOG_GFX_ERR() << "Renderer failed to initialize"; 
-    return 1;
-  }
-
-  core_cs::ECS scene;
-  scene.AddSystem<gfx_cs::MaterialSystem>();
-  auto meshSys = scene.AddSystem<gfx_cs::MeshRenderSystem>();
-  meshSys->SetRenderer(win.GetRenderer());
-
-  //------------------------------------------------------------------------
-
-  gfx_med::ImageLoaderPng png;
-  core_io::Path path( (core_str::String(GetAssetsPath()) +
-    "/images/engine_logo.png").c_str() );
-
-  if (png.Load(path) != ErrorSuccess)
-  { TLOC_ASSERT_FALSE("Image did not load!"); }
-
-  // gl::Uniform supports quite a few types, including a TextureObject
-  gfx_gl::texture_object_vso to;
-  to->Initialize(*png.GetImage());
-
-  gfx_gl::uniform_vso  u_to;
-  u_to->SetName("s_texture").SetValueAs(*to);
-
-  //------------------------------------------------------------------------
-
-  math_t::Rectf_c rect(math_t::Rectf_c::width(1.0f * 1.5f),
-                       math_t::Rectf_c::height(win.GetAspectRatio().Get() * 1.5f ) );
-
-  core_cs::entity_vptr q = scene.CreatePrefab<pref_gfx::Quad>()
-    .Dimensions(rect).Create();
-
-  scene.CreatePrefab<pref_gfx::Material>()
-    .AssetsPath(GetAssetsPath())
-    .AddUniform(u_to.get())
-    .Add(q, core_io::Path(shaderPathVS), core_io::Path(shaderPathFS));
-
-  //------------------------------------------------------------------------
-
-  scene.Initialize();
-
-  //------------------------------------------------------------------------
-  // Main loop
-  auto renderer = win.GetRenderer();
-  while (win.IsValid() && !winCallback.m_endProgram)
-  {
-    gfx_win::WindowEvent  evt;
-    while (win.GetEvent(evt))
-    { }
-
-    // Finally, process the fan
-    renderer->ApplyRenderSettings();
-    scene.Process();
-    renderer->Render();
-
-    win.SwapBuffers();
-  }
+  Demo demo;
+  demo.Initialize(core_ds::MakeTuple(800, 600));
+  demo.Run();
 
   //------------------------------------------------------------------------
   // Exiting

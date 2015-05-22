@@ -55,6 +55,7 @@ namespace tloc { namespace core { namespace types {
     {
       m_policy->Delete(&m_object);
       m_policy = p_any::GetPolicy<p_any::detail::Empty>();
+      m_object = nullptr;
     }
   }
 

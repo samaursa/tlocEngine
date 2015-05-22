@@ -37,6 +37,7 @@ set(TLOC_ENGINE_CORE_BASE_CLASSES
     base_classes/tlocDebugFileAndLine.h
     base_classes/tlocDebugFileAndLine.cpp
     base_classes/tlocInitializeAndDestroy.h
+    base_classes/tlocNoCtorDtor.h
     base_classes/tlocNonCopyable.h
     base_classes/tlocNonNewable.h
     base_classes/tlocPlatformImplBase.h
@@ -120,6 +121,9 @@ set(TLOC_ENGINE_CORE_CONTAINERS
     containers/tlocQueue.h
     containers/tlocQueue.inl.h
     containers/tlocQueue.cpp
+    containers/tlocSet.h
+    containers/tlocSet.inl.h
+    containers/tlocSet.cpp
     containers/tlocStack.h
     containers/tlocStack.inl.h
     containers/tlocStack.cpp
@@ -229,17 +233,6 @@ set(TLOC_ENGINE_CORE_PLATFORM
     platform/tlocPlatform.cpp
     platform/tlocPlatformDefines.h
     platform/tlocPlatformSpecificIncludes.h
-)
-set(TLOC_ENGINE_CORE_RESOURCES
-    resources/tloc_resources.h
-    resources/tloc_resources.inl.h
-    resources/tloc_resources.opt.inl.h
-    resources/tloc_resources.cpp
-    resources/tlocResource.h
-    resources/tlocResource.cpp
-    resources/tlocResourceFactory.h
-    resources/tlocResourceFactory.inl.h
-    resources/tlocResourceFactory.cpp
 )
 set(TLOC_ENGINE_CORE_RNG
     rng/tloc_rng.h
@@ -386,6 +379,11 @@ set(3RD_PARTY_FILE_WATCHER
   ${3RD_PARTY_FILE_WATCHER_PATH}/include/FileWatcherImpl.h
   )
 
+set(3RD_PARTY_OPTION_PARSER_PATH ${SOLUTION_PATH}/src/3rdParty/Core/CL/)
+set(3RD_PARTY_OPTION_PARSER
+  ${3RD_PARTY_OPTION_PARSER_PATH}/include/optionparser.h
+  )
+
 if(WIN32)
   set(3RD_PARTY_FILE_WATCHER
     ${3RD_PARTY_FILE_WATCHER}
@@ -413,6 +411,7 @@ endif()
 include_directories(
   ../3rdParty/
   ../3rdParty/Core/FileWatcher/include/
+  ../3rdParty/Core/CL/include/
 )
 
 add_library(tlocCore STATIC
@@ -430,7 +429,6 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_MEMORY}
   ${TLOC_ENGINE_CORE_PARSERS}
   ${TLOC_ENGINE_CORE_PLATFORM}
-  ${TLOC_ENGINE_CORE_RESOURCES}
   ${TLOC_ENGINE_CORE_RNG}
   ${TLOC_ENGINE_CORE_SMART_PTR}
   ${TLOC_ENGINE_CORE_STRING}
@@ -439,6 +437,7 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_TYPES}
   ${TLOC_ENGINE_CORE_UTILITIES}
   ${3RD_PARTY_FILE_WATCHER}
+  ${3RD_PARTY_OPTION_PARSER}
 )
 
 add_dependencies(tlocCore
@@ -461,7 +460,6 @@ source_group(logger FILES ${TLOC_ENGINE_CORE_LOGGER})
 source_group(memory FILES ${TLOC_ENGINE_CORE_MEMORY})
 source_group(parsers FILES ${TLOC_ENGINE_CORE_PARSERS})
 source_group(platform FILES ${TLOC_ENGINE_CORE_PLATFORM})
-source_group(resources FILES ${TLOC_ENGINE_CORE_RESOURCES})
 source_group(rng FILES ${TLOC_ENGINE_CORE_RNG})
 source_group(smart_ptr FILES ${TLOC_ENGINE_CORE_SMART_PTR})
 source_group(string FILES ${TLOC_ENGINE_CORE_STRING})
@@ -470,5 +468,6 @@ source_group(time FILES ${TLOC_ENGINE_CORE_TIME})
 source_group(types FILES ${TLOC_ENGINE_CORE_TYPES})
 source_group(utilities FILES ${TLOC_ENGINE_CORE_UTILITIES})
 source_group(3rd_party/FileWatcher FILES ${3RD_PARTY_FILE_WATCHER})
+source_group(3rd_party/OptionParser FILES ${3RD_PARTY_OPTION_PARSER})
 
 tloc_install_library(tlocCore "")

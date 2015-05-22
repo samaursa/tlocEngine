@@ -253,6 +253,32 @@ namespace tloc { namespace core { namespace data_structs {
     return result;
   }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_size T_Size>
+  T
+    Sum(const Tuple<T, T_Size>& a_tuple)
+  {
+    T sum = 0;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { sum += a_tuple[i]; }
+
+    return sum;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T, tl_size T_Size>
+  T
+    Product(const Tuple<T, T_Size>& a_tuple)
+  {
+    T prod = 1;
+    for (tl_int i = 0; i < T_Size; ++i)
+    { prod *= a_tuple[i]; }
+
+    return prod;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // MakeTuple
 
@@ -365,8 +391,8 @@ namespace tloc { namespace core {
   namespace logging {
 
     template <typename T_Logger, typename T_BuildConfig, typename T, tl_size T_Size>
-    Log_T<T_Logger, T_BuildConfig>&
-      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+    const Log_T<T_Logger, T_BuildConfig>&
+      operator << (const Log_T<T_Logger, T_BuildConfig>& a_log,
                    const core_ds::Tuple<T, T_Size>& a_tuple)
     {
       for (tl_size i = 0; i < T_Size - 1; ++i)
@@ -377,6 +403,29 @@ namespace tloc { namespace core {
     }
 
   };
+
+  template <typename T, tl_size T_Size, typename T2>
+  core_ds::Tuple<T, T_Size>
+    Clamp(const core_ds::Tuple<T, T_Size>& a_tup, T2 a_low, T2 a_high)
+  {
+    core_ds::Tuple<T, T_Size> temp;
+    for (tl_size i = 0; i < T_Size; ++i)
+    { temp[i] = core::Clamp(a_tup[i], a_low, a_high); }
+
+    return temp;
+  }
+
+  template <typename T, tl_size T_Size, typename T2, typename T_BinaryPred>
+  core_ds::Tuple<T, T_Size>
+    Clamp(const core_ds::Tuple<T, T_Size>& a_tup, T2 a_low, T2 a_high, 
+          T_BinaryPred a_pred)
+  {
+    core_ds::Tuple<T, T_Size> temp;
+    for (tl_size i = 0; i < T_Size; ++i)
+    { temp[i] = core::Clamp(a_tup[i], a_low, a_high, a_pred); }
+
+    return temp;
+  }
 
 };};
 

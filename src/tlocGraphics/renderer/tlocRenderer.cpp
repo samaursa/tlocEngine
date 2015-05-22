@@ -137,6 +137,113 @@ namespace tloc { namespace graphics { namespace renderer {
 
     };
 
+    // ///////////////////////////////////////////////////////////////////////
+    // Renderer_T<>Params
+
+    Params::
+      Params()
+      : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
+      , m_pointSize(1.0f)
+      , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
+      , m_clearBits(0)
+      , m_faceToCull(GL_NONE)
+      , m_polyMode(p_renderer::polygon_mode::Fill::s_glParamName)
+    {
+      using namespace p_renderer;
+
+      SetDepthFunction<depth_function::Less>();
+      SetBlendFunction<blend_function::One, blend_function::Zero>();
+
+      GLint viewDim[4];
+      glGetIntegerv(GL_VIEWPORT, viewDim);
+      TLOC_ASSERT(gl::Error().Succeeded(), "Failed to get viewport dimensions");
+      m_dim[0] = viewDim[2];
+      m_dim[1] = viewDim[3];
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    Params::
+      Params(dimension_type a_dim)
+      : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
+      , m_dim(a_dim)
+      , m_clearBits(0)
+    {
+      using namespace p_renderer;
+
+      SetDepthFunction<depth_function::Less>();
+      SetBlendFunction<blend_function::One, blend_function::Zero>();
+    }
+
+    // -----------------------------------------------------------------------
+
+    Params  GetParamsCommon(Params::fbo_sptr a_fbo,
+                            gfx_t::Dimension2 a_dim,
+                            const gfx_t::Color& a_clearColor)
+    {
+      gfx_rend::Renderer::Params pRtt;
+      pRtt.SetFBO(a_fbo);
+      pRtt.AddClearBit<clear::ColorBufferBit>()
+          .AddClearBit<clear::DepthBufferBit>() 
+          .Disable<enable_disable::CullFace>()
+          .Enable<enable_disable::DepthTest>() 
+          .SetClearColor(a_clearColor) 
+          .SetDimensions(a_dim);
+
+      return pRtt;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    Params  GetParamsCommonNoDepth(Params::fbo_sptr a_fbo,
+                                   gfx_t::Dimension2 a_dim,
+                                   const gfx_t::Color& a_clearColor)
+    {
+      gfx_rend::Renderer::Params pRtt;
+      pRtt.SetFBO(a_fbo);
+      pRtt.AddClearBit<clear::ColorBufferBit>()
+          .AddClearBit<clear::DepthBufferBit>() 
+          .Disable<enable_disable::DepthTest>() 
+          .Disable<enable_disable::CullFace>() 
+          .SetClearColor(a_clearColor) 
+          .SetDimensions(a_dim);
+
+      return pRtt;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    Params  GetParamsCommonNoDepthNoColorClear
+      (Params::fbo_sptr a_fbo, gfx_t::Dimension2 a_dim)
+    {
+      gfx_rend::Renderer::Params pRtt;
+      pRtt.SetFBO(a_fbo);
+      pRtt.AddClearBit<clear::DepthBufferBit>() 
+          .Disable<enable_disable::DepthTest>() 
+          .Disable<enable_disable::CullFace>() 
+          .SetDimensions(a_dim);
+
+      return pRtt;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    Params  GetParamsShadow(Params::fbo_sptr a_fbo, gfx_t::Dimension2 a_dim, 
+                            const gfx_t::Color& a_clearColor)
+    {
+      gfx_rend::Renderer::Params pRtt;
+      pRtt.SetFBO(a_fbo);
+      pRtt.AddClearBit<clear::ColorBufferBit>()
+          .AddClearBit<clear::DepthBufferBit>() 
+          .Enable<enable_disable::DepthTest>()
+          .Enable<enable_disable::CullFace>()
+          .Cull<cull_face::Front>()
+          .SetClearColor(a_clearColor) 
+          .SetDimensions(a_dim);
+
+      return pRtt;
+    }
+
   };
 
   //------------------------------------------------------------------------
@@ -145,46 +252,6 @@ namespace tloc { namespace graphics { namespace renderer {
 #define RENDERER_TEMPS  typename T_DepthPrecision
 #define RENDERER_PARAMS T_DepthPrecision
 #define RENDERER_TYPE   typename Renderer_T<RENDERER_PARAMS>
-
-  // ///////////////////////////////////////////////////////////////////////
-  // Renderer_T<>Params
-
-  template <RENDERER_TEMPS>
-  Renderer_T<RENDERER_PARAMS>::Params::
-    Params()
-    : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
-    , m_pointSize(1.0f)
-    , m_dim(core_ds::Variadic<dimension_type::value_type, 2>(0, 0))
-    , m_clearBits(0)
-    , m_faceToCull(GL_NONE)
-    , m_polyMode(p_renderer::polygon_mode::Fill::s_glParamName)
-  {
-    using namespace p_renderer;
-
-    SetDepthFunction<depth_function::Less>();
-    SetBlendFunction<blend_function::One, blend_function::Zero>();
-
-    GLint viewDim[4];
-    glGetIntegerv(GL_VIEWPORT, viewDim);
-    TLOC_ASSERT(gl::Error().Succeeded(), "Failed to get viewport dimensions");
-    m_dim[0] = viewDim[2];
-    m_dim[1] = viewDim[3];
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <RENDERER_TEMPS>
-  Renderer_T<RENDERER_PARAMS>::Params::
-    Params(dimension_type a_dim)
-    : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
-    , m_dim(a_dim)
-    , m_clearBits(0)
-  {
-    using namespace p_renderer;
-
-    SetDepthFunction<depth_function::Less>();
-    SetBlendFunction<blend_function::One, blend_function::Zero>();
-  }
 
   // ///////////////////////////////////////////////////////////////////////
   // Renderer_T<>::RenderOneFrame
@@ -271,8 +338,8 @@ namespace tloc { namespace graphics { namespace renderer {
     glPointSize(m_params.GetPointSize());
     TLOC_ASSERT(gl::Error().Succeeded(), "glPointSize returned an error");
 
-    for (enable_cont::const_iterator itr = m_params.GetFeaturesToEnable().begin(),
-      itrEnd = m_params.GetFeaturesToEnable().end(); itr != itrEnd; ++itr)
+    for (auto itr = m_params.GetFeaturesToEnable().begin(), 
+              itrEnd = m_params.GetFeaturesToEnable().end(); itr != itrEnd; ++itr)
     {
       if (*itr == p_renderer::enable_disable::CullFace::s_glParamName)
       {
@@ -291,14 +358,14 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_ASSERT(gl::Error().Succeeded(), "glEnable returned an error");
     }
 
-    for (enable_cont::const_iterator itr = m_params.GetFeaturesToDisable().begin(),
-      itrEnd = m_params.GetFeaturesToDisable().end(); itr != itrEnd; ++itr)
+    for (auto itr = m_params.GetFeaturesToDisable().begin(), 
+              itrEnd = m_params.GetFeaturesToDisable().end(); itr != itrEnd; ++itr)
     {
       glDisable(*itr);
       TLOC_ASSERT(gl::Error().Succeeded(), "glDisable returned an error");
     }
 
-    clear_value_type clearBits = m_params.GetClearBits();
+    auto clearBits = m_params.GetClearBits();
     if (clearBits != -1)
     {
       glClear(m_params.GetClearBits());

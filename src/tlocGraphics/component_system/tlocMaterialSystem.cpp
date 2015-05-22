@@ -195,7 +195,6 @@ namespace tloc { namespace graphics { namespace component_system {
 
       if (matPtr->GetVertexSource().empty() || matPtr->GetFragmentSource().empty())
       { 
-        matPtr->SetVertexSource(m_vsSource);
         *matPtr->GetShaderProg() = *m_defaultMaterial->GetShaderProg();
         return ErrorSuccess;
       }
@@ -204,18 +203,20 @@ namespace tloc { namespace graphics { namespace component_system {
       const auto& currFSContents = matPtr->GetFragmentSource();
 
       core_io::FileContents vs, fs;
+      auto vsError = ErrorSuccess;
+      auto fsError = ErrorSuccess;
       {
         using namespace core_io;
-        auto err =
+        vsError =
           f_file_io::OpenAndGetContents<p_file_io::Ascii>(matPtr->GetVertexPath(), vs);
-        TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(err != ErrorSuccess) 
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(vsError != ErrorSuccess) 
           << "Failed to open shader: " << matPtr->GetVertexPath();
       }
       {
         using namespace core_io;
-        auto err =
+        auto fsError =
           f_file_io::OpenAndGetContents<p_file_io::Ascii>(matPtr->GetFragmentPath(), fs);
-        TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(err != ErrorSuccess)
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(fsError != ErrorSuccess)
           << "Failed to open shader: " << matPtr->GetFragmentPath();
       }
 
@@ -223,8 +224,9 @@ namespace tloc { namespace graphics { namespace component_system {
           currFSContents != fs.GetContents() ||
           matPtr->GetShaderProg()->IsLinked() == false)
       {
-        matPtr->SetVertexSource(vs);
-        matPtr->SetFragmentSource(fs);
+        if (vsError == ErrorSuccess) { matPtr->SetVertexSource(vs); }
+        if (fsError == ErrorSuccess) { matPtr->SetFragmentSource(fs); }
+
         *matPtr->GetShaderProg() = gfx_gl::ShaderProgram();
         matPtr->SetUpdateRequired(true);
 

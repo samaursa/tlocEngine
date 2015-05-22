@@ -7,6 +7,7 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/string/tlocString.h>
 
 #ifndef TLOC_DISABLE_ASSERT_ANY
 # define TLOC_ASSERT_ANY(_Expression, _Msg) TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
@@ -151,6 +152,12 @@ namespace tloc { namespace core { namespace types {
       return &policyForT;
     };
 
+    template <typename T>
+    const char* GetDebugName()
+    {
+      return DoGetTypeAsString<T>();
+    };
+
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -172,6 +179,7 @@ namespace tloc { namespace core { namespace types {
     Assign(const T& a_other)
   {
     Reset();
+    DoSetDebugName(p_any::GetDebugName<T>());
     m_policy = p_any::GetPolicy<T>();
     m_policy->Copy(&a_other, &m_object);
   }
@@ -237,13 +245,19 @@ namespace tloc { namespace core { namespace types {
     Any::
     Cast() const
   {
-    // Can't do this check - static variable address is not shared across
-    // multple binaries (i.e. lib and exe)
     TLOC_ASSERT_ANY(m_policy == p_any::GetPolicy<T>(),
                     "Type T does not match the original type");
     T const * ret = reinterpret_cast<T const*>(m_policy->GetValue(&m_object));
     return *ret;
   }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T>
+  bool
+    Any::
+    IsSameType() const
+  { return m_policy == p_any::GetPolicy<T>(); }
 
 };};};
 

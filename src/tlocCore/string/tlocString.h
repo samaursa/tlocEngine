@@ -767,4 +767,44 @@ namespace tloc { namespace core {
 
 };};
 
+namespace tloc {
+
+  // WARNING: This is an expensive call that is highly dependent on the compiler.
+  //          Use sparingly and ideally for debugging purposes only. 
+  template <typename T_Type>
+  const char*
+    DoGetTypeAsString()
+  {
+    typedef core_str::String      string_type;
+
+    static string_type typeName;
+    if (typeName.size() > 0) { return typeName.c_str(); }
+
+    const string_type funcName = TLOC_FUNCTION_NAME;
+
+    // different compilers have different ways of printing the function
+    if (funcName.find("__cdecl") != string_type::npos) // MSVC
+    {
+      auto startIndex = funcName.find_first_of("<") + 1;
+      auto endIndex   = funcName.find_last_of(">", startIndex);
+
+      typeName = funcName.substr(startIndex, endIndex - startIndex);
+    }
+    // GCC and Clang
+    else if (funcName.find("T_Type =") != string_type::npos) // GCC
+    {
+      auto startIndex = funcName.find_first_of("= ") + 1;
+      auto endIndex   = funcName.find_first_of("]", startIndex);
+
+      typeName = funcName.substr(startIndex, endIndex - startIndex);
+    }
+    else
+    {
+      typeName = "N/A";
+    }
+
+    return typeName.c_str();
+  };
+};
+
 #endif

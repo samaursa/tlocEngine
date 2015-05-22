@@ -612,6 +612,34 @@ namespace TestingAlgorithms
     CHECK(retValue == false);
   }
 
+  TEST_CASE("Core/Algorithms/equal_range", "")
+  {
+    tl_int ints[] = {10, 20, 30, 30, 20, 10, 10, 20};
+    core_conts::Array<tl_int> v(ints, ints+8);
+
+    sort_all(v); // 10 10 10 20 20 20 30 30
+
+    SECTION("iterators", "")
+    {
+      auto bounds = equal_range(v.begin(), v.end(), 20);
+      REQUIRE(bounds.first != v.end());
+      REQUIRE(bounds.second != v.end());
+      CHECK(*bounds.first == 20);
+      CHECK(*bounds.second == 30);
+      CHECK(distance(bounds.first, bounds.second) == 3);
+    }
+
+    SECTION("collection", "")
+    {
+      auto bounds = equal_range_all(v, 20);
+      REQUIRE(bounds.first != v.end());
+      REQUIRE(bounds.second != v.end());
+      CHECK(*bounds.first == 20);
+      CHECK(*bounds.second == 30);
+      CHECK(distance(bounds.first, bounds.second) == 3);
+    }
+  }
+
   TEST_CASE("Core/Algorithms/RandomShuffle", "")
   {
     TL_NESTED_FUNC_BEGIN(getRandom) tl_size getRandom(tl_size a_num)
@@ -653,6 +681,79 @@ namespace TestingAlgorithms
       CHECK(notShuffled == false);
     }
 
+  }
+
+  TEST_CASE("Core/Algorithms/binary_search", "")
+  {
+    tl_int ints[] = {1, 2, 3, 4, 5, 4, 3, 2, 1};
+    core_conts::Array<tl_int> v(ints, ints + 9);
+
+    sort(v.begin(), v.end());
+
+    CHECK(binary_search(v.begin(), v.end(), 3));
+    CHECK(binary_search_all(v, 3));
+    CHECK_FALSE(binary_search(v.begin(), v.end(), 9));
+    CHECK_FALSE(binary_search_all(v, 9));
+  }
+
+  TEST_CASE("Core/Algorithms/min_element", "")
+  {
+    tl_int ints[] = {3, 7, 2, 5, 6, 4, 9};
+    core_conts::Array<tl_int> v(ints, ints + 7);
+
+    SECTION("iterator", "")
+    {
+      auto itr = min_element(v.begin(), v.end());
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 2);
+
+      v.erase(find_all(v, 2));
+      itr = min_element(v.begin(), v.end());
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 3);
+    }
+
+    SECTION("collection", "")
+    {
+      auto itr = min_element_all(v);
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 2);
+
+      v.erase(find_all(v, 2));
+      itr = min_element_all(v);
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 3);
+    }
+  }
+  
+  TEST_CASE("Core/Algorithms/max_element", "")
+  {
+    tl_int ints[] = {3, 7, 2, 5, 6, 4, 9};
+    core_conts::Array<tl_int> v(ints, ints + 7);
+
+    SECTION("iterator", "")
+    {
+      auto itr = max_element(v.begin(), v.end());
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 9);
+
+      v.erase(find_all(v, 9));
+      itr = max_element(v.begin(), v.end());
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 7);
+    }
+
+    SECTION("collection", "")
+    {
+      auto itr = max_element_all(v);
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 9);
+
+      v.erase(find_all(v, 9));
+      itr = max_element_all(v);
+      REQUIRE(itr != v.end());
+      CHECK(*itr == 7);
+    }
   }
 
   TEST_CASE("Core/Algorithms/Search", "")
@@ -935,6 +1036,20 @@ namespace TestingAlgorithms
     low = lower_bound (v.begin(), v.end(), 20); //          ^
 
     CHECK( distance(v.begin(), low) == 3);
+  }
+
+  TEST_CASE("Core/Algorithsm/upper_bound", "")
+  {
+    s32 myints[] = { 10, 20, 30, 30, 20, 10, 10, 20 };
+    Array<s32> v(myints, myints + 8);           // 10 20 30 30 20 10 10 20
+
+    sort(v.begin(), v.end());                // 10 10 10 20 20 20 30 30
+
+    auto low = lower_bound(v.begin(), v.end(), 20); //          ^
+    auto up = upper_bound(v.begin(), v.end(), 20); //          ^
+
+    CHECK(distance(v.begin(), low) == 3);
+    CHECK(distance(v.begin(), up) == 6);
   }
 
   template <typename T_SortType>

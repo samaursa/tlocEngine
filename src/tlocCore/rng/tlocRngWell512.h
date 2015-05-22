@@ -48,14 +48,12 @@ namespace tloc { namespace core { namespace rng {
     ///-------------------------------------------------------------------------
     const Params&   GetSeed() const;
 
-    const int_type  GetRandomInteger() ;
-    const real_type GetRandomFloat() ;
-    const int_type  GetRandomInteger(const int_type& a_min,
-                                     const int_type& a_max);
-    const real_type GetRandomFloat(const real_type& a_min,
-                                   const real_type& a_max);
+    const int_type  GetRandomInteger() const;
+    const real_type GetRandomFloat() const;
+    const int_type  GetRandomInteger(int_type a_min, int_type a_max) const;
+    const real_type GetRandomFloat(real_type a_min, real_type a_max) const;
 
-    Params          m_params;
+    mutable Params          m_params;
   };
 
 };};};

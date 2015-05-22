@@ -1,6 +1,10 @@
-#ifndef _TLOC_CORE_RESOURCES_RESOURCE_H_
-#define _TLOC_CORE_RESOURCES_RESOURCE_H_
+#ifndef _TLOC_ANIMATION_RESOURCES_RESOURCE_H_
+#define _TLOC_ANIMATION_RESOURCES_RESOURCE_H_
 
+#include <tlocAnimation/tlocAnimationBase.h>
+
+#include <tlocCore/types/tlocAny.h>
+#include <tlocCore/io/tlocPath.h>
 #include <tlocCore/tlocFunctional.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/string/tlocString.h>
@@ -8,7 +12,9 @@
 #include <tlocCore/io/tlocPath.h>
 #include <tlocCore/tlocUCID.h>
 
-namespace tloc { namespace core { namespace resources {
+#include <tlocGraphics/opengl/tlocTextureObject.h>
+
+namespace tloc { namespace application { namespace resources {
 
   // ///////////////////////////////////////////////////////////////////////
   // Resource_I
@@ -38,6 +44,16 @@ namespace tloc { namespace core { namespace resources {
     ucid_type               m_ucid;
     path_type               m_path;
 
+  };
+
+  // -----------------------------------------------------------------------
+
+  namespace f_resource {
+
+    gfx_gl::texture_object_sptr
+      LoadImageAsTextureObject(const core_io::Path& a_imagePath, 
+                               const gfx_gl::TextureObject::Params& a_params = 
+                               gfx_gl::TextureObject::Params());
   };
 
 };};};

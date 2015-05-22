@@ -11,4 +11,6 @@
 #include <tlocGraphics/types/tloc_types.h>
 #include <tlocGraphics/window/tloc_window.h>
 
+#include <tlocGraphics/tlocRtt.h>
+
 #endif

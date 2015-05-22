@@ -7,10 +7,12 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/tlocArgs.h>
+#include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
 #include <tlocMath/types/tlocVector4.h>
+#include <tlocMath/tlocRange.h>
 
 namespace tloc { namespace graphics { namespace types {
 
@@ -74,9 +76,12 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     enum { k_size = T_Size };
+    enum { k_channels = k_size };
 
   public:
     typedef T                                             value_type;
+    typedef core_sptr::VirtualPtr<value_type>             value_type_ptr;
+    typedef core_sptr::VirtualPtr<const value_type>       const_value_type_ptr;
     typedef Color_TI<value_type, k_size>                  this_type;
     typedef core_ds::Tuple<value_type, k_size>            color_type;
     typedef typename color_type::size_type                size_type;
@@ -85,6 +90,9 @@ namespace tloc { namespace graphics { namespace types {
 
   public:
     Color_TI();
+
+    template <typename U>
+    Color_TI(const Color_TI<U, T_Size>& a_other);
 
     template <typename U>
     explicit Color_TI(const core_ds::Tuple<U, k_size>& a_colorByChannels);
@@ -100,6 +108,9 @@ namespace tloc { namespace graphics { namespace types {
 
     template <typename T_ColorFormat, typename T_VectorType>
     void          GetAs(T_VectorType& a_vec) const;
+
+    value_type_ptr          get();
+    const_value_type_ptr    get() const;
 
     value_type&       operator[](tl_int a_index);
     const value_type& operator[](tl_int a_index) const;
@@ -140,6 +151,16 @@ namespace tloc { namespace graphics { namespace types {
 
   // -----------------------------------------------------------------------
   // Template definitions
+
+  template <typename T, tl_int T_Size>
+  template <typename U>
+  Color_TI<T, T_Size>::
+    Color_TI(const Color_TI<U, T_Size>& a_other)
+  {
+    SetAs(a_other.Get());
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T, tl_int T_Size>
   template <typename U>
@@ -659,6 +680,50 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 2>);
   TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 3>);
   TLOC_EXTERN_TEMPLATE_CLASS(Color_TI<f32 TLOC_COMMA 4>);
+
+  // -----------------------------------------------------------------------
+
+  namespace f_color
+  {
+    template <typename T, tl_size T_Size>
+    gfx_t::Color_T<T, T_Size>
+      Encode(const math_t::Vector_T<T, T_Size>& a_vec,
+      math::Range_T<T> a_minMax)
+    {
+      TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
+      typedef gfx_t::Color_T<T, T_Size>       color_type;
+      typedef math_t::Vector_T<T, T_Size>     vec_type;
+
+      vec_type norm(0 - a_minMax.front());
+      vec_type clampedVec = core::Clamp(a_vec, a_minMax.front(), a_minMax.back());
+
+      norm = ( norm + clampedVec ) / a_minMax.difference();
+
+      return color_type(norm);
+    }
+
+    // -----------------------------------------------------------------------
+
+    template <typename T, tl_size T_Size>
+    math_t::Vector_T<T, T_Size>
+      Decode(const gfx_t::Color_T<T, T_Size>& a_color,
+      math::Range_T<T> a_range)
+    {
+      TLOC_STATIC_ASSERT_IS_FLOAT(T);
+
+      typedef gfx_t::Color_T<T, T_Size>       color_type;
+      typedef math_t::Vector_T<T, T_Size>     vec_type;
+
+      const auto diff = a_range.difference();
+      const auto diffVec = vec_type(0 - a_range.front());
+
+      auto ret = a_color.GetAs<p_color::format::RGBA, vec_type>();
+      ret = ( ret * diff ) - diffVec;
+
+      return ret;
+    }
+  };
 
 };};};
 

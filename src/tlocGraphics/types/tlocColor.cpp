@@ -438,6 +438,22 @@ namespace tloc { namespace graphics { namespace types {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::value_type_ptr
+    Color_TI<TLOC_COLOR_PARAMS>::
+    get()
+  { return value_type_ptr(&m_color[0]); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
+  TLOC_COLOR_TYPE::const_value_type_ptr
+    Color_TI<TLOC_COLOR_PARAMS>::
+    get() const
+  { return const_value_type_ptr(&m_color[0]); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_COLOR_TEMPS>
   TLOC_COLOR_TYPE::value_type&
     Color_TI<TLOC_COLOR_PARAMS>::
     operator[](tl_int a_index)
@@ -604,10 +620,13 @@ namespace tloc { namespace graphics { namespace types {
     Color_TI<TLOC_COLOR_PARAMS>::
     operator ==(const this_type& a_other) const
   {
-    return ( m_color[0] == a_other[0] &&
-             m_color[1] == a_other[1] &&
-             m_color[2] == a_other[2] &&
-             m_color[3] == a_other[3] );
+    for (tl_int i = 0; i < T_Size; ++i)
+    {
+      if (math::IsEqualAbsolute(m_color[i], a_other[i]) == false)
+      { return false; }
+    }
+
+    return true;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

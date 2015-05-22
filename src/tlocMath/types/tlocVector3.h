@@ -5,6 +5,7 @@
 #include <tlocMath/tlocMathBase.h>
 
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocMath/tlocMath.h>
 #include <tlocMath/types/tlocVector.h>
@@ -87,6 +88,14 @@ namespace tloc { namespace math { namespace types {
 
   typedef Vector_T<tl_float, 3> Vec3f;
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Vec3f32, vec3_f32);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Vec3f64, vec3_f64);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(Vec3f, vec3_f);
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Vec3f32, vec3_f32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Vec3f64, vec3_f64);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Vec3f, vec3_f);
+
   //------------------------------------------------------------------------
   // Static const definitions
   template <typename T>
@@ -122,8 +131,8 @@ namespace tloc { namespace core {
   namespace logging {
 
     template <typename T_Logger, typename T_BuildConfig, typename T>
-    Log_T<T_Logger, T_BuildConfig>&
-      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+    const Log_T<T_Logger, T_BuildConfig>&
+      operator << (const Log_T<T_Logger, T_BuildConfig>& a_log,
                    const math_t::Vector_T<T, 3>& a_vec)
     {
       a_log << a_vec[0] << ", " << a_vec[1] << ", " << a_vec[2];

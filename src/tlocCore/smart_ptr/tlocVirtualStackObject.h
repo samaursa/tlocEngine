@@ -677,6 +677,24 @@ typedef tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
   tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail, \
   tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>  _typedef_##_vso
 
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type>  this_type_vso
+
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT_NO_DEF_CTOR()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type, \
+  tloc::core_sptr::p_virtual_stack_object::copy_ctor::Available, \
+  tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>  this_type_vso
+
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type, \
+  tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail, \
+  tloc::core_sptr::p_virtual_stack_object::default_ctor::Available>  this_type_vso
+
+#define TLOC_TYPEDEF_THIS_TYPE_VIRTUAL_STACK_OBJECT_NO_COPY_NO_DEF_CTOR()\
+typedef tloc::core_sptr::VirtualStackObjectBase_TI<this_type, \
+  tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail, \
+  tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>  this_type_vso
+
 // -----------------------------------------------------------------------
 // extern template
 
@@ -697,5 +715,30 @@ typedef tloc::core_sptr::VirtualStackObjectBase_TI<_type_, \
   TLOC_EXTERN_TEMPLATE_CLASS(tloc::core_sptr::VirtualStackObjectBase_TI<_type_ TLOC_COMMA \
     tloc::core_sptr::p_virtual_stack_object::copy_ctor::NotAvail TLOC_COMMA\
     tloc::core_sptr::p_virtual_stack_object::default_ctor::NotAvail>)
+
+namespace tloc {
+
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(char8, char8);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(char32, char32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ushort, ushort);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(s8, s8);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(s16, s16);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(s32, s32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(s64, s64);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(uchar8, uchar8);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(u8, u8);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(u16, u16);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(u32, u32);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(u64, u64);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_long, tl_long);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_ulong, tl_ulong);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_size, tl_size);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_uintptr, tl_uintptr);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_ptrdiff, tl_ptrdiff);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_float, tl_float);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_int, tl_int);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(tl_double, tl_double);
+
+};
 
 #endif

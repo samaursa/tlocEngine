@@ -24,6 +24,7 @@ set(TLOC_ENGINE_LIBRARIES
   tlocPhysics
   tlocAnimation
   tlocPrefab
+  tlocApplication
   )
 
 if (TLOC_PLATFORM_WIN32)

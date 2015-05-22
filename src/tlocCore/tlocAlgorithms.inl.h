@@ -15,6 +15,8 @@
 #include <tlocCore/rng/tlocRandom.h>
 #include <tlocCore/tlocFunctional.h>
 
+#include <algorithm>
+
 namespace tloc { namespace core {
 
   // TODO: Make all find functions specialized for char* and use memcmp
@@ -592,6 +594,40 @@ namespace tloc { namespace core {
     return true;
   }
 
+  template <typename T_ForwardIterator, typename T>
+  Pair<T_ForwardIterator, T_ForwardIterator>
+    equal_range(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                const T& a_value)
+  {
+    T_ForwardIterator itr = lower_bound(a_first, a_last, a_value);
+    return MakePair(itr, upper_bound(itr, a_last, a_value));
+  }
+
+  template <typename T_ForwardIterator, typename T, typename T_Compare>
+  Pair<T_ForwardIterator, T_ForwardIterator>
+    equal_range(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                const T& a_value, T_Compare a_comp)
+  {
+    T_ForwardIterator itr = lower_bound(a_first, a_last, a_value, a_comp);
+    return MakePair(itr, upper_bound(itr, a_last, a_value, a_comp));
+  }
+
+  template <typename T_Container, typename T>
+  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container), 
+       TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)>
+    equal_range_all(T_Container& a_cont, const T& a_value)
+  {
+    return equal_range(a_cont.begin(), a_cont.end(), a_value);
+  }
+
+  template <typename T_Container, typename T, typename T_Compare>
+  Pair<TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container), 
+       TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)>
+    equal_range_all(T_Container& a_cont, const T& a_value, T_Compare a_comp)
+  {
+    return equal_range(a_cont.begin(), a_cont.end(), a_value, a_comp);
+  }
+
   template <typename T_RandomAccessContainer>
   void
     random_shuffle_all(T_RandomAccessContainer& a_toShuffle)
@@ -639,6 +675,122 @@ namespace tloc { namespace core {
     {
       swap(a_first[i], a_first[a_rng(static_cast<tl_size>(i) + 1)]);
     }
+  }
+
+  template <typename T_ForwardIterator, typename T>
+  bool 
+    binary_search(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                  const T& a_value)
+  {
+    return binary_search(a_first, a_last, a_value, less<T>());
+  }
+
+  template <typename T_ForwardIterator, typename T, typename T_Compare>
+  bool 
+    binary_search(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                  const T& a_value, T_Compare a_compare)
+  {
+    a_first = lower_bound(a_first, a_last, a_value, a_compare);
+
+    if (a_first == a_last)
+    { return false; }
+
+    // avoid using the equality operator
+    return !(a_value < *a_first);
+  }
+
+  template <typename T_Container, typename T>
+  bool 
+    binary_search_all(T_Container& a_toSearch,
+                      const T& a_value)
+  {
+    return binary_search(a_toSearch.begin(), a_toSearch.end(), a_value);
+  }
+
+  template <typename T_Container, typename T, typename T_Compare>
+  bool 
+    binary_search_all(T_Container& a_toSearch,
+                      const T& a_value, T_Compare a_compare)
+  {
+    return binary_search(a_toSearch.begin(), a_toSearch.end(), a_value, a_compare);
+  }
+
+  template <typename T_ForwardIterator>
+  T_ForwardIterator
+    min_element(T_ForwardIterator a_first, T_ForwardIterator a_last)
+  {
+    typedef typename PointeeType<T_ForwardIterator>::value_type value_type;
+    return min_element(a_first, a_last, less<value_type>());
+  }
+
+  template <typename T_ForwardIterator, typename T_Compare>
+  T_ForwardIterator
+    min_element(T_ForwardIterator a_first, T_ForwardIterator a_last, 
+                T_Compare a_comp)
+  {
+    if (a_first == a_last) { return a_last; }
+    T_ForwardIterator smallest = a_first;
+
+    while (++a_first != a_last)
+    {
+      if (a_comp(*a_first, *smallest))
+      { smallest = a_first; }
+    }
+
+    return smallest;
+  }
+
+  template <typename T_Container>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    min_element_all(T_Container& a_cont)
+  {
+    return min_element(a_cont.begin(), a_cont.end());
+  }
+
+  template <typename T_Container, typename T_Compare>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    min_element_all(T_Container& a_cont, T_Compare a_comp)
+  {
+    return min_element(a_cont.begin(), a_cont.end(), a_comp);
+  }
+
+  template <typename T_ForwardIterator>
+  T_ForwardIterator
+    max_element(T_ForwardIterator a_first, T_ForwardIterator a_last)
+  {
+    typedef typename PointeeType<T_ForwardIterator>::value_type value_type;
+    return max_element(a_first, a_last, less<value_type>());
+  }
+
+  template <typename T_ForwardIterator, typename T_Compare>
+  T_ForwardIterator
+    max_element(T_ForwardIterator a_first, T_ForwardIterator a_last, 
+                T_Compare a_comp)
+  {
+    if (a_first == a_last) { return a_last; }
+    T_ForwardIterator largest = a_first;
+
+    while (++a_first != a_last)
+    {
+      if (a_comp(*largest, *a_first))
+      { largest = a_first; }
+    }
+
+    return largest;
+  }
+
+  template <typename T_Container>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    max_element_all(T_Container& a_cont)
+  {
+    return max_element(a_cont.begin(), a_cont.end());
+  }
+
+  template <typename T_Container, typename T_Compare>
+  TLOC_TYPE_TRAITS_CONTAINER_ITERATOR_SELECT(T_Container)
+    max_element_all(T_Container& a_cont, T_Compare a_comp)
+  {
+    return max_element(a_cont.begin(), a_cont.end(), a_comp);
   }
 
   template <typename T_Container1, typename T_Container2>
@@ -1116,6 +1268,29 @@ namespace tloc { namespace core {
     detail::DoSortWithAlgorithm(a_first, a_last, a_sortAlg, a_comp);
   }
 
+  template <typename T_Container>
+  void
+    sort_all(T_Container& a_toSort)
+  {
+    sort(a_toSort.begin(), a_toSort.end());
+  }
+
+  template <typename T_Container, typename T_Compare_or_SortAlgorithm>
+  void
+    sort_all(T_Container& a_toSort,
+         T_Compare_or_SortAlgorithm a_comp)
+  {
+    sort(a_toSort.begin(), a_toSort.end(), a_comp);
+  }
+
+  template <typename T_Container, typename T_SortAlgorithm,
+            typename T_Compare>
+  void
+    sort_all(T_Container a_toSort, T_Compare a_comp, T_SortAlgorithm a_sortAlgo)
+  {
+    sort(a_toSort.begin(), a_toSort.end(), a_comp, a_sortAlgo);
+  }
+
   //------------------------------------------------------------------------
   // Min / Max
 
@@ -1301,6 +1476,59 @@ namespace tloc { namespace core {
       {
         a_first = ++itr;
         count -= step - 1;
+      }
+      else
+      {
+        count = step;
+      }
+    }
+
+    return a_first;
+  }
+
+  template <typename T_Container, typename T>
+  typename T_Container::iterator
+    upper_bound_all(T_Container& a_toSearch, T const & a_value)
+  {
+    return upper_bound(a_toSearch.begin(), a_toSearch.end(), a_value);
+  }
+
+  template <typename T_Container, typename T, typename T_BinaryPred>
+  typename T_Container::iterator
+    upper_bound_all(T_Container& a_toSearch, T const & a_value,
+                    T_BinaryPred a_pred)
+  {
+    return upper_bound(a_toSearch.begin(), a_toSearch.end(), a_value, a_pred);
+  }
+
+  template <typename T_ForwardIterator, typename T>
+  T_ForwardIterator
+    upper_bound(T_ForwardIterator a_first,
+                T_ForwardIterator a_last, T const & a_value)
+  {
+    return upper_bound(a_first, a_last, a_value, less<T>());
+  }
+
+  template <typename T_ForwardIterator, typename T, typename T_BinaryPred>
+  T_ForwardIterator
+    upper_bound(T_ForwardIterator a_first, T_ForwardIterator a_last,
+                T const& a_value, T_BinaryPred a_comp)
+  {
+    T_ForwardIterator itr;
+    typename iterator_traits<T_ForwardIterator>::difference_type count, step;
+
+    count = distance(a_first, a_last);
+
+    while (count > 0)
+    {
+      itr = a_first;
+      step = count / 2;
+      advance(itr, step);
+
+      if (!a_comp(a_value, *itr))
+      {
+        a_first = ++itr;
+        count -= step + 1;
       }
       else
       {

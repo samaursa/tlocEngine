@@ -35,7 +35,8 @@ namespace tloc { namespace graphics { namespace win {
   template <WINDOW_TEMP>
   Window_T<WINDOW_PARAMS>::
     Window_T()
-    : m_impl(nullptr)
+    : m_windowSettings("No Title")
+    , m_impl(nullptr)
     , m_mouseVisible(true)
     , m_mouseConfined(false)
   {
@@ -45,8 +46,11 @@ namespace tloc { namespace graphics { namespace win {
   Window_T<WINDOW_PARAMS>::
     ~Window_T()
   {
-    Close();
-    delete m_impl;
+    if (IsValid())
+    {
+      Close();
+      delete m_impl;
+    }
   }
 
   template <WINDOW_TEMP>
@@ -63,6 +67,7 @@ namespace tloc { namespace graphics { namespace win {
     DoCreate(window_handle_type a_ptr, const WindowSettings& a_settings,
              IsWindowHandle)
   {
+    m_windowSettings = a_settings;
     DoCreateImpl();
     m_impl->Create(a_ptr, a_settings);
   }
@@ -96,6 +101,7 @@ namespace tloc { namespace graphics { namespace win {
 
 
   {
+    m_windowSettings = a_settings;
     DoCreateImpl();
     m_impl->Create(a_mode, a_settings);
     DoSetupRenderer();
@@ -296,6 +302,7 @@ namespace tloc { namespace graphics { namespace win {
     SetTitle(BufferArg a_title)
   {
     VALIDATE_WINDOW();
+    m_windowSettings.SetTitle(a_title);
     m_impl->SetTitle(a_title);
   }
 
@@ -372,3 +379,9 @@ namespace tloc { namespace graphics { namespace win {
   };
 
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+using namespace tloc::gfx_win;
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(Window);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(Window);

@@ -80,7 +80,7 @@ namespace tloc { namespace graphics { namespace gl {
   ShaderVariable_TI<SHADER_VARIABLE_PARAMS>::ShaderVariable_TI()
     : base_type()
     , m_isArray(false)
-    , m_isArrayPtr(false)
+    , m_isPtr(false)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -90,7 +90,7 @@ namespace tloc { namespace graphics { namespace gl {
     ShaderVariable_TI(const this_type& a_other)
     : base_type(a_other)
     , m_isArray(a_other.m_isArray)
-    , m_isArrayPtr(a_other.m_isArrayPtr)
+    , m_isPtr(a_other.m_isPtr)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -110,7 +110,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     base_type::swap(a_other);
     swap(m_isArray, a_other.m_isArray);
-    swap(m_isArrayPtr, a_other.m_isArrayPtr);
+    swap(m_isPtr, a_other.m_isPtr);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -139,7 +139,7 @@ namespace tloc { namespace graphics { namespace gl {
       "Cannot change uniform TYPE after construction");
     DoSetType(type_to_gl::Get<T>());
     DoGetValueRef().UpdateOrAssign(a_value);
-    m_isArrayPtr = true;
+    m_isPtr = true;
     return *(static_cast<derived_type*>(this));
   }
 
@@ -188,7 +188,7 @@ namespace tloc { namespace graphics { namespace gl {
       "Cannot change uniform TYPE after construction");
     DoSetType(type_to_gl::Get<T>());
     m_isArray = true;
-    m_isArrayPtr = true;
+    m_isPtr = true;
     DoGetValueRef().UpdateOrAssign(a_array);
     return *(static_cast<derived_type*>(this));
   }
@@ -230,7 +230,7 @@ namespace tloc { namespace graphics { namespace gl {
   {
     DoSetType(GL_NONE);
     m_isArray     = false;
-    m_isArrayPtr  = false;
+    m_isPtr  = false;
 
     DoGetValueRef().Reset();
     SetName("");
@@ -261,6 +261,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,             Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,             Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,       Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject3D,       Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObjectShadow, Uniform);
 
 #if defined (TLOC_OS_WIN) // TODO: Change to TLOC_GFX_PLATFORM_GL

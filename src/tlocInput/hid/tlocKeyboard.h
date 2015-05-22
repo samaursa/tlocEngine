@@ -30,15 +30,15 @@ namespace tloc { namespace input { namespace hid {
     typedef core_dispatch::Event                        event_type;
 
   public:
-    event_type OnKeyPress(const tl_size, const KeyboardEvent& ) const 
+    virtual event_type OnKeyPress(const tl_size, const KeyboardEvent& )
     { return core_dispatch::f_event::Continue(); }
 
-    event_type OnKeyRelease(const tl_size, const KeyboardEvent& ) const
+    virtual event_type OnKeyRelease(const tl_size, const KeyboardEvent& )
     { return core_dispatch::f_event::Continue(); }
 
   protected:
     KeyboardListener() { }
-    virtual ~KeyboardListener() { }
+    ~KeyboardListener() { }
   };
 
   ///-------------------------------------------------------------------------

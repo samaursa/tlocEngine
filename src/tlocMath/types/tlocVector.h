@@ -287,4 +287,31 @@ namespace tloc { namespace math { namespace types {
 
 };};};
 
+namespace tloc { namespace core { 
+
+  template <typename T, tl_size T_Size, typename T2>
+  math_t::Vector_T<T, T_Size>
+    Clamp(const math_t::Vector_T<T, T_Size>& a_tup, T2 a_low, T2 a_high)
+  {
+    math_t::Vector_T<T, T_Size> temp;
+    for (tl_size i = 0; i < T_Size; ++i)
+    { temp[i] = core::Clamp(a_tup[i], a_low, a_high); }
+
+    return temp;
+  }
+
+  template <typename T, tl_size T_Size, typename T2, typename T_BinaryPred>
+  math_t::Vector_T<T, T_Size>
+    Clamp(const math_t::Vector_T<T, T_Size>& a_tup, T2 a_low, T2 a_high, 
+          T_BinaryPred a_pred)
+  {
+    math_t::Vector_T<T, T_Size> temp;
+    for (tl_size i = 0; i < T_Size; ++i)
+    { temp[i] = core::Clamp(a_tup[i], a_low, a_high, a_pred); }
+
+    return temp;
+  }
+
+};};
+
 #endif

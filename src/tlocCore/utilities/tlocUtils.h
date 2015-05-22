@@ -62,8 +62,22 @@ namespace tloc { namespace core { namespace utils {
 
 #define TLOC_DECL_AND_DEF_GETTER_DIRECT(_type_, _name_, _var_)\
   TLOC_DECL_GETTER_DIRECT(_type_, _name_) { return _var_; }
+
 #define TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(_type_, _name_, _var_)\
   TLOC_DECL_GETTER_CONST_DIRECT(_type_, _name_) { return (_var_); }
+
+
+#define TLOC_DECL_AND_DEF_GETTER_AUTO(_name_, _var_)\
+  auto _name_() const -> decltype(_var_) { return _var_; }
+
+#define TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(_name_, _var_)\
+  auto _name_() -> decltype(_var_) { return _var_; }
+
+#define TLOC_DECL_AND_DEF_GETTER_DIRECT_AUTO(_name_, _var_)\
+  auto _name_() -> decltype(_var_)& { return _var_; }
+
+#define TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(_name_, _var_)\
+  auto _name_() -> const decltype(_var_)& { return _var_; }
 
   //------------------------------------------------------------------------
   // Setters
@@ -91,6 +105,18 @@ namespace tloc { namespace core { namespace utils {
 
 #define TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(_type_, _name_, _var_)\
   TLOC_DECL_SETTER_BY_VALUE_CHAIN(_type_, _name_) { _var_ = a_in; return *this; }
+
+#define TLOC_DECL_AND_DEF_SETTER_AUTO(_name_, _var_)\
+  TLOC_DECL_SETTER(decltype(_var_), _name_) { _var_ = a_in; }
+
+#define TLOC_DECL_AND_DEF_SETTER_BY_VALUE_AUTO(_name_, _var_)\
+  TLOC_DECL_SETTER_BY_VALUE(decltype(_var_), _name_) { _var_ = a_in; }
+
+#define TLOC_DECL_AND_DEF_SETTER_CHAIN_AUTO(_name_, _var_)\
+  TLOC_DECL_SETTER_CHAIN(decltype(_var_), _name_) { _var_ = a_in; return *this; }
+
+#define TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(_name_, _var_)\
+  TLOC_DECL_SETTER_BY_VALUE_CHAIN(decltype(_var_), _name_) { _var_ = a_in; return *this; }
 
   // -----------------------------------------------------------------------
   // For parameters

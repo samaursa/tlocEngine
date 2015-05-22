@@ -57,4 +57,12 @@
 # define TLOC_OS_WIN
 #endif
 
+#if defined (TLOC_COMPILER_VISUAL_CPP)
+# define TLOC_FUNCTION_NAME __FUNCSIG__
+#elif defined (TLOC_COMPILER_GCC)
+# define TLOC_FUNCTION_NAME __PRETTY_FUNCTION__
+#elif defined (TLOC_COMPILER_CLANG)
+# define TLOC_FUNCTION_NAME __PRETTY_FUNCTION__
+#endif
+
 #endif

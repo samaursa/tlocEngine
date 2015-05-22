@@ -1,6 +1,7 @@
 // Put this here first to avoid abs function ambiguity problems
 #include <3rdParty/Graphics/lodepng/lodepng.h>
 #include <3rdParty/Graphics/lodepng/lodepng.c>
+#include <3rdParty/Graphics/nanojpeg/ujpeg.h>
 
 #include "tlocImageLoader.h"
 
@@ -33,8 +34,8 @@ namespace tloc { namespace graphics { namespace media {
     }
   };
 
-#define IMAGE_LOADER_TEMP   typename T_DerivedClass
-#define IMAGE_LOADER_PARAMS T_DerivedClass
+#define IMAGE_LOADER_TEMP   typename T_DerivedClass, tl_int T_Channels
+#define IMAGE_LOADER_PARAMS T_DerivedClass, T_Channels
 #define IMAGE_LOADER_TYPE typename ImageLoader_TI<IMAGE_LOADER_PARAMS>
 
   template <IMAGE_LOADER_TEMP>
@@ -56,7 +57,9 @@ namespace tloc { namespace graphics { namespace media {
   //------------------------------------------------------------------------
   // ImageLoaderPng
 
-  ImageLoaderPng::error_type ImageLoaderPng::DoLoad(const path_type& a_path)
+  ImageLoaderPng::error_type 
+    ImageLoaderPng::
+    DoLoad(const path_type& a_path)
   {
     String fileCont;
 
@@ -76,14 +79,13 @@ namespace tloc { namespace graphics { namespace media {
 
     if (lodePngErr)
     {
-      TLOC_LOG_GFX_ERR() << "lodepng_decode32 failed: " 
-                         << lodepng_error_text(lodePngErr);
+      TLOC_LOG_GFX_ERR_FILENAME_ONLY() 
+        << "lodepng_decode32 failed: " << lodepng_error_text(lodePngErr);
       res = TLOC_ERROR(graphics::error::error_image_decoding);
     }
     else
     {
-      dimention_type dim =
-        core_ds::Variadic<dimention_type::value_type, 2>(width, height);
+      dimention_type dim = core_ds::MakeTuple(width, height);
       res = DoLoadImageFromMemory(imgPtr, dim, 4);
     }
 
@@ -93,9 +95,52 @@ namespace tloc { namespace graphics { namespace media {
   }
 
   //------------------------------------------------------------------------
+  // ImageLoaderPng
+
+  ImageLoaderJpeg::error_type 
+    ImageLoaderJpeg::
+    DoLoad(const path_type& a_path)
+  {
+    String fileCont;
+
+    error_type res = DoLoadFromFile(a_path, fileCont);
+
+    if (res == common_error_types::error_failure)
+    { return res; }
+
+    uJPEG decoder;
+    decoder.decode(fileCont.c_str(), fileCont.length());
+
+    if (decoder.isValid() == false)
+    {
+      TLOC_LOG_GFX_ERR_FILENAME_ONLY() 
+        << "nanojpeg decoder failed: " << decoder.getError();
+      res = TLOC_ERROR(graphics::error::error_image_decoding);
+    }
+    else
+    {
+      core_sptr::VirtualPtr<const uchar8> imgPtr(decoder.getImage());
+
+      dimension_type dim = 
+        core_ds::MakeTuple(decoder.getWidth(), decoder.getHeight());
+
+      if (decoder.isColor())
+      { res = DoLoadImageFromMemory(imgPtr, dim, 3); }
+      else
+      { 
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Monochromatic JPEGs not suported";
+        res = TLOC_ERROR(gfx_err::error_image_invalid_channels);
+      }
+    }
+
+    return res;
+  }
+
+  //------------------------------------------------------------------------
   // Explicit instantiation for ImageLoader
 
-  template class ImageLoader_TI<ImageLoaderPng>;
+  template class ImageLoader_TI<ImageLoaderPng, 4>;
+  template class ImageLoader_TI<ImageLoaderJpeg, 3>;
 
   // -----------------------------------------------------------------------
 
@@ -125,6 +170,37 @@ namespace tloc { namespace graphics { namespace media {
       { err = file.Write((char8*)encodedBuffer, outSize); }
 
       return err;
+    }
+
+    core::Pair<core_t::Any, image_type>
+      LoadImage(const core_io::Path& a_imagePath)
+    {
+      auto_cref ext = a_imagePath.GetExtension();
+      if (ext.compare("jpg") == 0 || ext.compare("jpeg") == 0)
+      {
+        ImageLoaderJpeg il;
+        auto err = il.Load(a_imagePath);
+        if (err == ErrorSuccess)
+        { return core::MakePair(il.GetImage(), k_image_jpeg); }
+
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Error loading JPEG image: " << err;
+      }
+      else if (ext.compare("png") == 0)
+      {
+        ImageLoaderPng il;
+        auto err = il.Load(a_imagePath);
+        if (err == ErrorSuccess)
+        { return core::MakePair(il.GetImage(), k_image_png); }
+
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Error loading PNG image: " << err;
+      }
+      else
+      {
+        TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Unsupported image type: " <<
+          a_imagePath;
+      }
+
+      return core::MakePair(core_t::Any(), k_image_unsupported);
     }
 
   };

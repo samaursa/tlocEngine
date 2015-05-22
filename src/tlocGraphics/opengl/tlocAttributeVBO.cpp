@@ -281,6 +281,23 @@ namespace tloc { namespace graphics { namespace gl {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     stride_info_cont
+      DoGetStrideInfo(const core_conts::Array<gfx_t::Vert3TBN>&)
+    {
+      stride_info_cont si;
+      si.push_back(stride_info()
+                   .NumElements(3)
+                   .TotalElements(9)
+                   .StrideInBytes(sizeof(real_type) * 9)
+                   .DataStartIndex(0)
+                   .GLType(type_to_gl::Get<Array<Vert3TBN::attrib_1_type::value_type> >())
+                   );
+
+      return si;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    stride_info_cont
       DoGetStrideInfo(const core_conts::Array<gfx_t::Vert4fo>&)
     {
       stride_info_cont si;
@@ -1066,6 +1083,7 @@ TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpnct);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert2fpnto);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3fpnto);
 
+TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert3TBN);
 TLOC_EXPLICITLY_INSTANTIATE_VBO_DODATA_ALL_TARGETS(gfx_t::Vert4fo);
 
 #include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>

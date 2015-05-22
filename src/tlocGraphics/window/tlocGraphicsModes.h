@@ -2,6 +2,7 @@
 #define TLOC_GRAPHICS_MODES_H
 
 #include <tlocGraphics/tlocGraphicsBase.h>
+#include <tlocGraphics/types/tlocDimension.h>
 
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/types/tlocTypes.h>
@@ -23,6 +24,9 @@ namespace tloc { namespace graphics { namespace win {
     struct Properties
     {
       typedef typename GraphicsMode::size_type  size_type;
+
+      Properties(gfx_t::Dimension2 a_dim,
+                 size_type a_bitsPerPixel = 32, size_type a_frequency = 60);
 
       Properties(size_type a_width, size_type a_height,
                  size_type a_bitsPerPixel = 32, size_type a_frequency = 60);

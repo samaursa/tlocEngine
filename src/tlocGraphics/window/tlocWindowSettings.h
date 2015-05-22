@@ -3,6 +3,7 @@
 
 #include <tlocGraphics/tlocGraphicsBase.h>
 
+#include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/string/tlocString.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 #include <tlocCore/utilities/tlocUtils.h>
@@ -42,7 +43,7 @@ namespace tloc { namespace graphics { namespace win {
     TLOC_DECL_AND_DEF_GETTER(style_type, GetStyleBits, m_styleBits);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(string_type, GetTitle, m_title);
-    TLOC_DECL_AND_DEF_SETTER_CHAIN(string_type, SetTitle, m_title);
+    TLOC_DECL_AND_DEF_SETTER_CHAIN(BufferArg, SetTitle, m_title);
 
     TLOC_DECL_AND_DEF_GETTER(depth_bits_type, GetDepthBits, m_depthBits);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN(depth_bits_type, SetDepthBits, m_depthBits);

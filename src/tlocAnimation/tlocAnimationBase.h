@@ -15,6 +15,7 @@ namespace tloc {
     namespace component_system {};
     namespace error            {};
     namespace types            {};
+    namespace resources        {};
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -24,6 +25,7 @@ namespace tloc {
   namespace anim_cs       = animation::component_system;
   namespace anim_err      = animation::error;
   namespace anim_t        = animation::types;
+  namespace anim_res      = animation::resources;
 
 };
 

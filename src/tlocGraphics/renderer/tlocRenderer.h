@@ -103,52 +103,34 @@ namespace tloc { namespace graphics { namespace renderer {
       struct Fill                     { static const value_type s_glParamName; };
     };
 
-  };
+    // ///////////////////////////////////////////////////////////////////////
+    // Params
 
-  // ///////////////////////////////////////////////////////////////////////
-  // Renderer_T<>
-
-  template <typename T_DepthPrecision = f32>
-  class Renderer_T
-  {
-  public:
-    typedef Renderer_T<T_DepthPrecision>              this_type;
-
-    typedef gfx_t::Color                              color_type;
-    typedef gfx_t::gl_float                           point_size;
-    typedef p_renderer::depth_function::value_type    depth_function_value_type;
-    typedef p_renderer::blend_function::value_type    blend_function_value_type;
-    typedef p_renderer::enable_disable::value_type    enable_value_type;
-    typedef p_renderer::enable_disable::value_type    disable_value_type;
-    typedef p_renderer::clear::value_type             clear_value_type;
-    typedef p_renderer::cull_face::value_type         cull_face_value_type;
-    typedef p_renderer::polygon_mode::value_type      polygon_mode;
-    typedef core::Pair<blend_function_value_type,
-                       blend_function_value_type>     blend_pair_type;
-
-    typedef core_conts::tl_array
-            <enable_value_type>::type                 enable_cont;
-    typedef core_conts::tl_array
-            <disable_value_type>::type                disable_cont;
-
-    typedef T_DepthPrecision                          depth_value_type;
-    typedef s32                                       stencil_value_type;
-
-    typedef gl::FramebufferObject                     fbo_type;
-    typedef fbo_type::bind_uptr                       fbo_bind_ptr;
-    typedef gl::framebuffer_object_sptr               fbo_sptr;
-    typedef fbo_type::dimension_type                  dimension_type;
-    typedef core_err::Error                           error_type;
-
-    typedef RenderPass                                render_pass;
-    typedef render_pass::command_type                 command_type;
-    typedef render_pass::size_type                    size_type;
-
-  public:
     struct Params
     {
     public:
-      typedef Params                                  this_type;
+      typedef gfx_t::Color                              color_type;
+      typedef gfx_t::gl_float                           point_size;
+      typedef Params                                    this_type;
+
+      typedef gl::FramebufferObject                     fbo_type;
+      typedef gl::framebuffer_object_sptr               fbo_sptr;
+      typedef fbo_type::dimension_type                  dimension_type;
+      typedef p_renderer::depth_function::value_type    depth_function_value_type;
+
+      typedef p_renderer::blend_function::value_type    blend_function_value_type;
+      typedef p_renderer::enable_disable::value_type    enable_value_type;
+      typedef p_renderer::enable_disable::value_type    disable_value_type;
+      typedef p_renderer::clear::value_type             clear_value_type;
+      typedef p_renderer::cull_face::value_type         cull_face_value_type;
+      typedef p_renderer::polygon_mode::value_type      polygon_mode;
+      typedef core::Pair<blend_function_value_type,
+                         blend_function_value_type>     blend_pair_type;
+
+      typedef core_conts::tl_array
+              <enable_value_type>::type                 enable_cont;
+      typedef core_conts::tl_array
+              <disable_value_type>::type                disable_cont;
 
     public:
       Params();
@@ -219,6 +201,210 @@ namespace tloc { namespace graphics { namespace renderer {
       polygon_mode                m_polyMode;
     };
 
+    // Parameters for the most common renderer which includes depth and color
+    // clearing as well as face culling
+    Params  GetParamsCommon(Params::fbo_sptr a_fbo,
+                            gfx_t::Dimension2 a_dim,
+                            const gfx_t::Color& a_clearColor = gfx_t::Color::COLOR_WHITE);
+
+    // Parameters for the most common renderer which includes color clearing 
+    // as well as face culling
+    Params  GetParamsCommonNoDepth(Params::fbo_sptr a_fbo,
+                                   gfx_t::Dimension2 a_dim,
+                                   const gfx_t::Color& a_clearColor = gfx_t::Color::COLOR_WHITE);
+
+    Params  GetParamsCommonNoDepthNoColorClear(Params::fbo_sptr a_fbo, gfx_t::Dimension2 a_dim);
+
+    // Parameters for the most common depth shadow renderer
+    Params  GetParamsShadow(Params::fbo_sptr a_fbo, gfx_t::Dimension2 a_dim, 
+                            const gfx_t::Color& a_clearColor = gfx_t::Color::COLOR_WHITE);
+
+    // -----------------------------------------------------------------------
+    // template definitions
+
+    template <typename T_DepthFunction>
+    auto
+      Params::
+      SetDepthFunction() -> this_type&
+    {
+      using namespace p_renderer::depth_function;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_DepthFunction,
+        Never, Less, Equal, LessEqual, Greater, NotEqual, GreaterEqual,
+        Always>();
+
+      m_depthFunction = T_DepthFunction::s_glParamName;
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Source, typename T_Destination>
+    auto
+      Params::
+      SetBlendFunction() -> this_type&
+    {
+      using namespace p_renderer::blend_function;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_Source,
+        Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
+        OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
+        DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
+        OneMinusConstantColor, ConstantAlpha,
+        OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
+        OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_Destination,
+        Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
+        OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
+        DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
+        OneMinusConstantColor, ConstantAlpha,
+        OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
+        OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
+
+      m_blendFunction.first = T_Source::s_glParamName;
+      m_blendFunction.second = T_Destination::s_glParamName;
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Enable>
+    auto
+      Params::
+      Enable() -> this_type&
+    {
+      using namespace p_renderer::enable_disable;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_Enable,
+        Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
+
+      auto itrFound = core::find_all(m_disableFeatures, T_Enable::s_glParamName);
+      if (itrFound != m_disableFeatures.end())
+      { m_disableFeatures.erase(itrFound); }
+
+      m_enableFeatures.push_back(T_Enable::s_glParamName);
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Enable>
+    auto
+      Params::
+      Disable() -> this_type&
+    {
+      using namespace p_renderer::enable_disable;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_Enable,
+        Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
+
+      auto itrFound = core::find_all(m_enableFeatures, T_Enable::s_glParamName);
+      if (itrFound != m_enableFeatures.end())
+      { m_enableFeatures.erase(itrFound); }
+
+      m_disableFeatures.push_back(T_Enable::s_glParamName);
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_ClearValue>
+    auto
+      Params::
+      AddClearBit() -> this_type&
+    {
+      using namespace p_renderer::clear;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_ClearValue,
+         ColorBufferBit, DepthBufferBit, StencilBufferBit>();
+
+      m_clearBits |= T_ClearValue::s_glParamName;
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_ClearValue>
+    auto
+      Params::
+      RemoveClearBit() -> this_type&
+    {
+      using namespace p_renderer::clear;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_ClearValue,
+         ColorBufferBit, DepthBufferBit, StencilBufferBit>();
+
+      if (m_clearBits & T_ClearValue::s_glParamName)
+      { m_clearBits ^= T_ClearValue::s_glParamName; }
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Face> 
+    auto
+      Params::
+      Cull() -> this_type&
+    {
+      using namespace p_renderer::cull_face;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_Face,
+         Front, Back, FrontAndBack>();
+
+      m_faceToCull = T_Face::s_glParamName;
+      return *this;
+    }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    template <typename T_Mode> 
+    auto
+      Params::
+      PolygonMode() -> this_type&
+    {
+      using namespace p_renderer::polygon_mode;
+
+      tloc::type_traits::AssertTypeIsSupported
+        <T_Mode,
+         Point, Line, Fill>();
+
+      m_polyMode = T_Mode::s_glParamName;
+      return *this;
+    }
+
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // Renderer_T<>
+
+  template <typename T_DepthPrecision = f32>
+  class Renderer_T
+  {
+  public:
+    typedef Renderer_T<T_DepthPrecision>              this_type;
+
+    typedef p_renderer::Params                        Params;
+
+    typedef Params::fbo_type                          fbo_type;
+    typedef fbo_type::dimension_type                  dimension_type;
+    typedef fbo_type::bind_uptr                       fbo_bind_ptr;
+    typedef core_err::Error                           error_type;
+
+    typedef RenderPass                                render_pass;
+    typedef render_pass::command_type                 command_type;
+    typedef render_pass::size_type                    size_type;
+
+    TLOC_TYPEDEF_THIS_TYPE_ALL_SMART_PTRS();
+
   public:
     struct RenderOneFrame
       : core_bclass::NonCopyable_I
@@ -260,176 +446,6 @@ namespace tloc { namespace graphics { namespace renderer {
   void swap(typename Renderer_T<T_DepthPrecision>::RenderOneFrame& a,
             typename Renderer_T<T_DepthPrecision>::RenderOneFrame& b)
   { a.swap(b); }
-
-  // -----------------------------------------------------------------------
-  // template definitions
-
-  template <typename T_DepthPrecision>
-  template <typename T_DepthFunction>
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    SetDepthFunction()
-  {
-    using namespace p_renderer::depth_function;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_DepthFunction,
-      Never, Less, Equal, LessEqual, Greater, NotEqual, GreaterEqual,
-      Always>();
-
-    m_depthFunction = T_DepthFunction::s_glParamName;
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_Source, typename T_Destination>
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    SetBlendFunction()
-  {
-    using namespace p_renderer::blend_function;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Source,
-      Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
-      OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
-      DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
-      OneMinusConstantColor, ConstantAlpha,
-      OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
-      OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Destination,
-      Zero, One, SourceColor, OneMinusSourceColor, DestinationColor,
-      OneMinusDestinationColor, SourceAlpha, OneMinusSourceAlpha,
-      DestinationAlpha, OneMinusDestinationAlpha, ConstantColor,
-      OneMinusConstantColor, ConstantAlpha,
-      OneMinusConstantAlpha, SourceAlphaSaturate, Source1Color,
-      OneMinusSource1Color, Source1Alpha, OneMinusSourceAlpha>();
-
-    m_blendFunction.first = T_Source::s_glParamName;
-    m_blendFunction.second = T_Destination::s_glParamName;
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_Enable>
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    Enable()
-  {
-    using namespace p_renderer::enable_disable;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Enable,
-      Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
-
-    auto itrFound = core::find_all(m_disableFeatures, T_Enable::s_glParamName);
-    if (itrFound != m_disableFeatures.end())
-    { m_disableFeatures.erase(itrFound); }
-
-    m_enableFeatures.push_back(T_Enable::s_glParamName);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_Enable>
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    Disable()
-  {
-    using namespace p_renderer::enable_disable;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Enable,
-      Blend, DepthTest, CullFace, LineSmooth, PolygonSmooth>();
-
-    auto itrFound = core::find_all(m_enableFeatures, T_Enable::s_glParamName);
-    if (itrFound != m_enableFeatures.end())
-    { m_enableFeatures.erase(itrFound); }
-
-    m_disableFeatures.push_back(T_Enable::s_glParamName);
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_ClearValue>
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    AddClearBit()
-  {
-    using namespace p_renderer::clear;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_ClearValue,
-       ColorBufferBit, DepthBufferBit, StencilBufferBit>();
-
-    m_clearBits |= T_ClearValue::s_glParamName;
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_ClearValue>
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    RemoveClearBit()
-  {
-    using namespace p_renderer::clear;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_ClearValue,
-       ColorBufferBit, DepthBufferBit, StencilBufferBit>();
-
-    if (m_clearBits & T_ClearValue::s_glParamName)
-    { m_clearBits ^= T_ClearValue::s_glParamName; }
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_Face> 
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    Cull()
-  {
-    using namespace p_renderer::cull_face;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Face,
-       Front, Back, FrontAndBack>();
-
-    m_faceToCull = T_Face::s_glParamName;
-    return *this;
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T_DepthPrecision>
-  template <typename T_Mode> 
-  typename Renderer_T<T_DepthPrecision>::Params::this_type&
-    Renderer_T<T_DepthPrecision>::Params::
-    PolygonMode()
-  {
-    using namespace p_renderer::polygon_mode;
-
-    tloc::type_traits::AssertTypeIsSupported
-      <T_Mode,
-       Point, Line, Fill>();
-
-    m_polyMode = T_Mode::s_glParamName;
-    return *this;
-  }
 
   // -----------------------------------------------------------------------
   // typedefs

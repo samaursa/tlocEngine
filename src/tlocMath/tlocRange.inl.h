@@ -407,6 +407,14 @@ namespace tloc { namespace math {
   }
 
   template <RANGE_T_TEMP>
+  RANGE_T_TYPE::value_type
+    Range_T<RANGE_T_PARAMS>::
+    difference() const
+  {
+    return back() - front();
+  }
+
+  template <RANGE_T_TEMP>
   RANGE_T_TYPE::const_iterator
     Range_T<RANGE_T_PARAMS>::
     begin() const

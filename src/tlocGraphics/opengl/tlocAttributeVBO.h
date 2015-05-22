@@ -167,7 +167,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
 
-          gfx_t::Vert4fo
+          gfx_t::Vert3TBN, gfx_t::Vert4fo
          >();
     }
     
@@ -191,7 +191,7 @@ namespace tloc { namespace graphics { namespace gl {
 
           gfx_t::Vert2fpnto, gfx_t::Vert3fpnto,
 
-          gfx_t::Vert4fo
+          gfx_t::Vert3TBN, gfx_t::Vert4fo
          >();
     }
   }

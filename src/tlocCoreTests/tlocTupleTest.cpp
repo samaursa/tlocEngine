@@ -204,4 +204,11 @@ namespace TestingTuple
     CHECK_TUP(resDiv, 1.0f, 3.0f, 5.0f, 1.0f);
     CHECK_TUP(resDiv2, 5.0f / 2.0f, -2.0f / 2.0f, 8.0f / 2.0f, 2.0f / 2.0f);
   }
+
+  TEST_CASE("Core/DataStructures/Tuple/Clamp", "")
+  {
+    Tuple4f tup   = core_ds::MakeTuple(-5.0f, 3.0f, 7.0f, 1.0f);
+    auto tup2 = core::Clamp(tup, 0.0f, 5.0f);
+    CHECK_TUP(tup2, 0.0f, 3.0f, 5.0f, 1.0f);
+  }
 };

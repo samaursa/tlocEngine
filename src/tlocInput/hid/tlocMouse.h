@@ -32,25 +32,25 @@ namespace tloc { namespace input { namespace hid {
     typedef core_dispatch::Event                        event_type;
 
   public:
-    event_type
+    virtual event_type
       OnMouseButtonPress(const tl_size ,
                          const MouseEvent& ,
-                         const MouseEvent::button_code_type ) const
+                         const MouseEvent::button_code_type )
     { return core_dispatch::f_event::Continue(); }
 
-    event_type
+    virtual event_type
       OnMouseButtonRelease(const tl_size ,
                            const MouseEvent& ,
-                           const MouseEvent::button_code_type ) const
+                           const MouseEvent::button_code_type )
     { return core_dispatch::f_event::Continue(); }
 
-    event_type
-      OnMouseMove(const tl_size , const MouseEvent& ) const
+    virtual event_type
+      OnMouseMove(const tl_size , const MouseEvent& )
     { return core_dispatch::f_event::Continue(); }
 
   protected:
     MouseListener() { }
-    virtual ~MouseListener() { }
+    ~MouseListener() { }
   };
 
   ///-------------------------------------------------------------------------

@@ -9,6 +9,9 @@
 
 namespace tloc { namespace graphics { namespace gl {
 
+  template <typename T_Target>
+  class TextureObject_T;
+
   namespace p_texture_object {
 
     typedef tl_size                           size_type;
@@ -126,22 +129,37 @@ namespace tloc { namespace graphics { namespace gl {
       struct FourBytes      { static const value_type s_glParamName; };
       struct EightBytes     { static const value_type s_glParamName; };
     };
-  };
 
-  // ///////////////////////////////////////////////////////////////////////
-  // TextureObject
+    namespace compare_mode
+    {
+      typedef gfx_t::gl_int             value_type;
 
-  template <typename T_Target>
-  class TextureObject_T
-    : public Object_T<TextureObject_T<T_Target>, p_object::OnlyID>
-  {
-  public:
+      struct None           { static const value_type s_glParamName; };
+      struct RefToTexture   { static const value_type s_glParamName; };
+    };
+
+    namespace compare_function
+    {
+      typedef gfx_t::gl_int             value_type;
+
+      struct LessEqual      { static const value_type s_glParamName; };
+      struct GreaterEqual   { static const value_type s_glParamName; };
+      struct Less           { static const value_type s_glParamName; };
+      struct Greater        { static const value_type s_glParamName; };
+      struct Equal          { static const value_type s_glParamName; };
+      struct NotEqual       { static const value_type s_glParamName; };
+      struct Always         { static const value_type s_glParamName; };
+      struct Never          { static const value_type s_glParamName; };
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+    // Image Params
+
     struct Params
     {
-      template <typename U_Target> friend class TextureObject_T;
+      template <typename T_Target> friend class TextureObject_T;
 
       typedef Params                                        this_type;
-      typedef typename TextureObject_T<T_Target>::size_type size_type;
       typedef p_texture_object::target::value_type          texture_type;
       typedef p_texture_object::wrap_technique::value_type  wrap_value_type;
       typedef p_texture_object::filter::value_type          filter_value_type;
@@ -149,6 +167,9 @@ namespace tloc { namespace graphics { namespace gl {
       typedef p_texture_object::format::value_type          format_value_type;
       typedef p_texture_object::type::value_type            type_value_type;
       typedef p_texture_object::alignment::value_type       alignment_value_type;
+
+      typedef p_texture_object::compare_mode::value_type     compare_mode_value_type;
+      typedef p_texture_object::compare_function::value_type compare_func_value_type;
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -183,6 +204,22 @@ namespace tloc { namespace graphics { namespace gl {
           Repeat, MirrorClampToEdge>();
 
         m_wrap_t = T_WrapTechnique::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_WrapTechnique>
+      this_type&
+        Wrap_R()
+      {
+        using namespace p_texture_object::wrap_technique;
+
+        tloc::type_traits::AssertTypeIsSupported<T_WrapTechnique,
+          ClampToEdge, ClampToBorder, MirroredRepeat,
+          Repeat, MirrorClampToEdge>();
+
+        m_wrap_r = T_WrapTechnique::s_glParamName;
         return *this;
       }
 
@@ -223,7 +260,7 @@ namespace tloc { namespace graphics { namespace gl {
       this_type&
         InternalFormat()
       {
-        using namespace p_texture_object::internal_format;
+        using namespace internal_format;
 
         tloc::type_traits::AssertTypeIsSupported<T_InternalFormat,
           Auto, Red, RG, RGB, RGBA, DepthComponent, DepthStencil>();
@@ -285,6 +322,36 @@ namespace tloc { namespace graphics { namespace gl {
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+      template <typename T_CompareMode>
+      this_type&
+        CompareMode()
+      {
+        using namespace p_texture_object::compare_mode;
+
+        tloc::type_traits::AssertTypeIsSupported<T_CompareMode,
+          None, RefToTexture>();
+
+        m_compareMode = T_CompareMode::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+      template <typename T_CompareFunction>
+      this_type&
+        CompareFunction()
+      {
+        using namespace p_texture_object::compare_function;
+
+        tloc::type_traits::AssertTypeIsSupported<T_CompareFunction,
+          LessEqual, GreaterEqual, Less, Greater, Equal, NotEqual, Always, Never>();
+
+        m_compareFunc = T_CompareFunction::s_glParamName;
+        return *this;
+      }
+
+      // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
       template <typename U_Target>
       void  TextureType();
 
@@ -296,6 +363,7 @@ namespace tloc { namespace graphics { namespace gl {
 
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_S, m_wrap_s);
       TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_T, m_wrap_t);
+      TLOC_DECL_AND_DEF_GETTER (wrap_value_type, GetWrap_R, m_wrap_r);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMinFilter, m_minFilter);
       TLOC_DECL_AND_DEF_GETTER (filter_value_type, GetMagFilter, m_magFilter);
       TLOC_DECL_AND_DEF_GETTER (internal_format_value_type, GetInternalFormat, m_internalFormat);
@@ -304,11 +372,14 @@ namespace tloc { namespace graphics { namespace gl {
       TLOC_DECL_AND_DEF_GETTER (size_type, GetFormatChannels, m_formatChannels);
       TLOC_DECL_AND_DEF_GETTER (type_value_type, GetType, m_type);
       TLOC_DECL_AND_DEF_GETTER (alignment_value_type, GetAlignment, m_alignment);
+      TLOC_DECL_AND_DEF_GETTER (compare_mode_value_type, GetCompareMode, m_compareMode);
+      TLOC_DECL_AND_DEF_GETTER (compare_func_value_type, GetCompareFunction, m_compareFunc);
       TLOC_DECL_AND_DEF_GETTER (bool, IsAutoGenMipMaps, m_autoGenMipMaps);
 
     private:
       wrap_value_type             m_wrap_s;
       wrap_value_type             m_wrap_t;
+      wrap_value_type             m_wrap_r;
       filter_value_type           m_minFilter;
       filter_value_type           m_magFilter;
       internal_format_value_type  m_internalFormat;
@@ -317,8 +388,25 @@ namespace tloc { namespace graphics { namespace gl {
       size_type                   m_formatChannels;
       type_value_type             m_type;
       alignment_value_type        m_alignment;
+      compare_mode_value_type     m_compareMode;
+      compare_func_value_type     m_compareFunc;
       bool                        m_autoGenMipMaps;
     };
+
+    Params GetDepthParams();
+    Params GetShadowParams();
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
+  // TextureObject
+
+  template <typename T_Target>
+  class TextureObject_T
+    : public Object_T<TextureObject_T<T_Target>, p_object::OnlyID>
+  {
+  public:
+    // Params moved to p_texture_object
+    typedef p_texture_object::Params                      Params;
 
   public:
     template <typename T> friend class ObjectRefCounted;
@@ -343,10 +431,14 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject_T(const Params& a_params = Params());
     ~TextureObject_T();
 
-    template <typename T_ColorType, typename T_Storage>
-    error_type  Initialize(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image);
-    template <typename T_ColorType, typename T_Storage>
-    error_type  Update(const gfx_med::Image_T<T_ColorType, T_Storage>& a_image) const;
+    template <typename T_Dim, typename T_ColorType, typename T_Storage>
+    error_type  Initialize(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image);
+    template <typename T_Dim, typename T_ColorType, typename T_Storage>
+    error_type  Update(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image) const;
+
+    template <typename T_Dim, typename T_ColorType>
+    core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, T_ColorType>> 
+      GetImage() const;
 
     error_type  Bind() const;
 
@@ -379,6 +471,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject, texture_object);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject, texture_object);
 
+  typedef TextureObject_T<p_texture_object::target::Tex3D>        TextureObject3D;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject3D, texture_object_3d);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject3D, texture_object_3d);
+
   typedef TextureObject_T<p_texture_object::target::Tex2DShadow>  TextureObjectShadow;
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObjectShadow, texture_object_shadow);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectShadow, texture_object_shadow);
@@ -388,6 +484,32 @@ namespace tloc { namespace graphics { namespace gl {
 
   TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex2D>);
   TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex2DShadow>);
+
+  // -----------------------------------------------------------------------
+
+  namespace f_texture_object {
+
+    // calls one of the other two GL_TexImage overloads
+    template <typename T_Dim, typename T_ColorType, typename T_Storage>
+    bool GL_TexImage(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image);
+
+    // does NOT call glPixelStore
+    using namespace p_texture_object;
+    bool GL_TexImage(target::value_type           a_target,
+                     internal_format::value_type  a_internalFormat,
+                     gfx_t::Dimension2            a_dim,
+                     format::value_type           a_format,
+                     type::value_type             a_type,
+                     void*                        a_data);
+
+    // does NOT call glPixelStore
+    bool GL_TexImage(target::value_type           a_target,
+                     internal_format::value_type  a_internalFormat,
+                     gfx_t::Dimension3            a_dim,
+                     format::value_type           a_format,
+                     type::value_type             a_type,
+                     void*                        a_data);
+  };
 
 };};};
 

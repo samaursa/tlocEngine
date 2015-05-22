@@ -84,8 +84,8 @@ namespace tloc { namespace core {
   namespace logging {
 
     template <typename T_Logger, typename T_BuildConfig, typename T>
-    Log_T<T_Logger, T_BuildConfig>&
-      operator << (Log_T<T_Logger, T_BuildConfig>& a_log,
+    const Log_T<T_Logger, T_BuildConfig>&
+      operator << (const Log_T<T_Logger, T_BuildConfig>& a_log,
                    const math_t::Plane_T<T>& a_plane)
     {
       a_log << "orig: [" << a_plane.GetOrigin() << "] dir: [" 

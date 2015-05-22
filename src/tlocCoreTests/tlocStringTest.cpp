@@ -969,4 +969,10 @@ namespace TestingStrings
 
     CHECK(largeFormattedString.compare(veryLongString) == 0);
   }
+
+  TEST_CASE("Core/Types/DoGetTypeAsString", "")
+  {
+    CHECK(core_str::StrCmp(DoGetTypeAsString<tl_int>(), ("int")) == 0);
+    CHECK(core_str::StrCmp(DoGetTypeAsString<tl_float>(), ("float")) == 0);
+  }
 };

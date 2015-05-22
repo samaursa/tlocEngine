@@ -179,8 +179,8 @@ namespace TestingImage
       Image img;
       img.Load(pixelCont, core_ds::MakeTuple(2, 1));
 
-      CHECK(img.GetPixels()[0] == c1);
-      CHECK(img.GetPixels()[1] == c2);
+      CHECK(img[0] == c1);
+      CHECK(img[1] == c2);
     }
   }
 
@@ -194,10 +194,10 @@ namespace TestingImage
     CHECK(img.GetWidth() == 2);
     CHECK(img.GetHeight() == 2);
 
-    CHECK(img.GetPixels()[0] == c1);
-    CHECK(img.GetPixels()[1] == c1);
-    CHECK(img.GetPixels()[2] == c1);
-    CHECK(img.GetPixels()[3] == c1);
+    CHECK(img[0] == c1);
+    CHECK(img[1] == c1);
+    CHECK(img[2] == c1);
+    CHECK(img[3] == c1);
   }
 
   TEST_CASE("tloc/graphics/Image/AddPadding", "")
@@ -219,25 +219,25 @@ namespace TestingImage
       CHECK(img.GetWidth() == 4);
       CHECK(img.GetHeight() == 4);
 
-      CHECK(img.GetPixels()[0] == c2);
-      CHECK(img.GetPixels()[1] == c2);
-      CHECK(img.GetPixels()[2] == c2);
-      CHECK(img.GetPixels()[3] == c2);
+      CHECK(img[0] == c2);
+      CHECK(img[1] == c2);
+      CHECK(img[2] == c2);
+      CHECK(img[3] == c2);
 
-      CHECK(img.GetPixels()[4] == c2);
-      CHECK(img.GetPixels()[5] == c1);
-      CHECK(img.GetPixels()[6] == c1);
-      CHECK(img.GetPixels()[7] == c2);
+      CHECK(img[4] == c2);
+      CHECK(img[5] == c1);
+      CHECK(img[6] == c1);
+      CHECK(img[7] == c2);
 
-      CHECK(img.GetPixels()[8] == c2);
-      CHECK(img.GetPixels()[9] == c1);
-      CHECK(img.GetPixels()[10] == c1);
-      CHECK(img.GetPixels()[11] == c2);
+      CHECK(img[8] == c2);
+      CHECK(img[9] == c1);
+      CHECK(img[10] == c1);
+      CHECK(img[11] == c2);
 
-      CHECK(img.GetPixels()[12] == c2);
-      CHECK(img.GetPixels()[13] == c2);
-      CHECK(img.GetPixels()[14] == c2);
-      CHECK(img.GetPixels()[15] == c2);
+      CHECK(img[12] == c2);
+      CHECK(img[13] == c2);
+      CHECK(img[14] == c2);
+      CHECK(img[15] == c2);
     }
 
     SECTION("0x1 Padding", "")
@@ -254,17 +254,17 @@ namespace TestingImage
       CHECK(img.GetWidth() == 2);
       CHECK(img.GetHeight() == 4);
 
-      CHECK(img.GetPixels()[0] == c2);
-      CHECK(img.GetPixels()[1] == c2);
+      CHECK(img[0] == c2);
+      CHECK(img[1] == c2);
 
-      CHECK(img.GetPixels()[2] == c1);
-      CHECK(img.GetPixels()[3] == c1);
+      CHECK(img[2] == c1);
+      CHECK(img[3] == c1);
 
-      CHECK(img.GetPixels()[4] == c1);
-      CHECK(img.GetPixels()[5] == c1);
+      CHECK(img[4] == c1);
+      CHECK(img[5] == c1);
 
-      CHECK(img.GetPixels()[6] == c2);
-      CHECK(img.GetPixels()[7] == c2);
+      CHECK(img[6] == c2);
+      CHECK(img[7] == c2);
     }
 
     SECTION("1x0 Padding", "")
@@ -281,15 +281,15 @@ namespace TestingImage
       CHECK(img.GetWidth() == 4);
       CHECK(img.GetHeight() == 2);
 
-      CHECK(img.GetPixels()[0] == c2);
-      CHECK(img.GetPixels()[1] == c1);
-      CHECK(img.GetPixels()[2] == c1);
-      CHECK(img.GetPixels()[3] == c2);
+      CHECK(img[0] == c2);
+      CHECK(img[1] == c1);
+      CHECK(img[2] == c1);
+      CHECK(img[3] == c2);
 
-      CHECK(img.GetPixels()[4] == c2);
-      CHECK(img.GetPixels()[5] == c1);
-      CHECK(img.GetPixels()[6] == c1);
-      CHECK(img.GetPixels()[7] == c2);
+      CHECK(img[4] == c2);
+      CHECK(img[5] == c1);
+      CHECK(img[6] == c1);
+      CHECK(img[7] == c2);
     }
 
     SECTION("2x2 Padding", "")
@@ -395,7 +395,7 @@ namespace TestingImage
         REQUIRE(img2->GetDimensions() == img.GetDimensions());
         for (tl_size i = 0; i < img.GetWidth() * img.GetHeight(); ++i)
         {
-          CHECK(img2->GetPixels()[i] == img.GetPixels()[i]);
+          CHECK( (*img2)[i] == img[i]);
         }
       }
 
@@ -414,7 +414,7 @@ namespace TestingImage
 
       for (tl_size i = 0; i < img.GetWidth() * img.GetHeight(); ++i)
       {
-        CHECK(img.GetPixels()[i] == c4);
+        CHECK(img[i] == c4);
       }
     }
 

@@ -4,6 +4,8 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 
+#include <3rdParty/Graphics/RectangleBinPack/GuillotineBinPack.h>
+
 namespace tloc { namespace math { namespace optimize {
 
   BinPacker2D::dim_type
@@ -186,7 +188,7 @@ namespace tloc { namespace math { namespace optimize {
     using namespace math_t::algos::rectangle::compare;
 
     core::sort(sortedPairs.begin(), sortedPairs.end(),
-      CompareBinary<WidthBinary<Less> >());
+      CompareBinary<WidthBinary<Less> >(), core::sort_insertionsort());
 
     rect_user_cont::iterator itr;
     rect_user_cont::iterator itrEnd;

@@ -34,6 +34,15 @@ namespace tloc {
   namespace gfx_win      = graphics::win;
 };
 
+namespace tl_gfx          = tloc::graphics;
+namespace tl_gfx_cs       = tloc::graphics::component_system;
+namespace tl_gfx_err      = tloc::graphics::error;
+namespace tl_gfx_med      = tloc::graphics::media;
+namespace tl_gfx_gl       = tloc::graphics::gl;
+namespace tl_gfx_rend     = tloc::graphics::renderer;
+namespace tl_gfx_t        = tloc::graphics::types;
+namespace tl_gfx_win      = tloc::graphics::win;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

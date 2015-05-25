@@ -65,6 +65,26 @@ namespace tloc {
 
 };
 
+namespace tl_core_bclass   = tloc::core::base_classes;
+namespace tl_core_cs       = tloc::core::component_system;
+namespace tl_core_cfg      = tloc::core::configs;
+namespace tl_core_conts    = tloc::core::containers;
+namespace tl_core_ds       = tloc::core::data_structs;
+namespace tl_core_dispatch = tloc::core::dispatch;
+namespace tl_core_err      = tloc::core::error;
+namespace tl_core_log      = tloc::core::logging;
+namespace tl_core_io       = tloc::core::io;
+namespace tl_core_mem      = tloc::core::memory;
+namespace tl_core_parse    = tloc::core::parsers;
+namespace tl_core_plat     = tloc::core::platform;
+namespace tl_core_rng      = tloc::core::rng;
+namespace tl_core_sptr     = tloc::core::smart_ptr;
+namespace tl_core_str      = tloc::core::string;
+namespace tl_core_threads  = tloc::core::threads;
+namespace tl_core_time     = tloc::core::time;
+namespace tl_core_t        = tloc::core::types;
+namespace tl_core_utils    = tloc::core::utils;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

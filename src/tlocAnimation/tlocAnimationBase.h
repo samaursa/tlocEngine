@@ -29,6 +29,12 @@ namespace tloc {
 
 };
 
+namespace tl_anim          = tloc::animation;
+namespace tl_anim_cs       = tloc::animation::component_system;
+namespace tl_anim_err      = tloc::animation::error;
+namespace tl_anim_t        = tloc::animation::types;
+namespace tl_anim_res      = tloc::animation::resources;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

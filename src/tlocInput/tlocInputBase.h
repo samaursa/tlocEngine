@@ -24,6 +24,9 @@ namespace tloc {
 
 };
 
+namespace tl_input_hid = tloc::input::hid;
+namespace tl_input_cs  = tloc::input::component_system;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

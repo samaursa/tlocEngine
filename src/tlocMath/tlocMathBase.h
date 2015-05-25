@@ -30,6 +30,12 @@ namespace tloc {
 
 };
 
+namespace tl_math_cs    = tloc::math::component_system;
+namespace tl_math_stat  = tloc::math::statistics;
+namespace tl_math_t     = tloc::math::types;
+namespace tl_math_utils = tloc::math::utils;
+namespace tl_math_proj  = tloc::math::proj;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

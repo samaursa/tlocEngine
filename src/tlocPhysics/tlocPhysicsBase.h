@@ -26,6 +26,10 @@ namespace tloc {
 
 };
 
+namespace tl_phys_box2d = tloc::physics::box2d;
+namespace tl_phys_cs    = tloc::physics::component_system;
+namespace tl_phys_err   = tloc::physics::error;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

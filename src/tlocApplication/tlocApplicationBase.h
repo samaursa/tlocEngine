@@ -23,6 +23,9 @@ namespace tloc {
 
 };
 
+namespace tl_app           = tloc::application;
+namespace tl_app_res       = tloc::app::resources;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

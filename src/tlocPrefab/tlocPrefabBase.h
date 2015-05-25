@@ -81,6 +81,13 @@ namespace tloc {
 
 };
 
+namespace tl_pref_core   = tloc::prefab::core;
+namespace tl_pref_math   = tloc::prefab::math;
+namespace tl_pref_gfx    = tloc::prefab::graphics;
+namespace tl_pref_input  = tloc::prefab::input;
+namespace tl_pref_phys   = tloc::prefab::physics;
+namespace tl_pref_anim   = tloc::prefab::animation;
+
 #include <tlocCore/logging/tlocLoggerHelper.h>
 
 TLOC_FORWARD_DECLARE_LOGGER_CONSOLE_IMMEDIATE_DEFAULT();

@@ -50,6 +50,7 @@ namespace TestingLogging
     {
       lcfi.SetDisable(false);
       lcfi.SetSeverity(Log::k_warning);
+      lcfi.SetSeverity<p_log::severity::Warning>();
 
       TLOC_LOG_INFO(&lcfi) << "Should NOT display";
       TLOC_LOG_DEBUG(&lcfi) << "Should NOT display";

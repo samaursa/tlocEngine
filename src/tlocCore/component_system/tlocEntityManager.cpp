@@ -136,7 +136,7 @@ namespace tloc { namespace core { namespace component_system {
   }
 
   EntityManager::entity_ptr EntityManager::
-    GetEntity(tloc::tl_int a_index)
+    GetEntity(tl_int a_index)
   {
     TLOC_ASSERT(a_index < (tl_int)m_entities.size(), "Index out of range!");
     return ToVirtualPtr(m_entities[a_index]);

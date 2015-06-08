@@ -11,35 +11,35 @@ struct ObjectDefaultCtor
 
 struct Object1Param
 {
-  Object1Param(tloc::tl_int a)
+  Object1Param(tl_int a)
     : m_a(a)
   { }
 
-  tloc::tl_int m_a;
+  tl_int m_a;
 };
 
 struct Object2Param
 {
-  Object2Param(tloc::tl_int a, tloc::tl_float b)
+  Object2Param(tl_int a, tl_float b)
     : m_a(a)
     , m_b(b)
   { }
 
-  tloc::tl_int    m_a;
-  tloc::tl_float  m_b;
+  tl_int    m_a;
+  tl_float  m_b;
 };
 
 struct Object3Param
 {
-  Object3Param(tloc::tl_int a, tloc::tl_float b, tloc::tl_double c)
+  Object3Param(tl_int a, tl_float b, tl_double c)
     : m_a(a)
     , m_b(b)
     , m_c(c)
   { }
 
-  tloc::tl_int    m_a;
-  tloc::tl_float  m_b;
-  tloc::tl_double m_c;
+  tl_int    m_a;
+  tl_float  m_b;
+  tl_double m_c;
 };
 
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>

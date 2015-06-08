@@ -333,7 +333,7 @@ namespace tloc { namespace core { namespace string {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   StringW
-    CharAsciiToWide(const String a_in)
+    CharAsciiToWide(const String& a_in)
   {
     const StringW::size_type length = a_in.length();
     char32* buffer = new char32[length + 1];
@@ -345,7 +345,7 @@ namespace tloc { namespace core { namespace string {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   String
-    CharWideToAscii(const StringW a_in)
+    CharWideToAscii(const StringW& a_in)
   {
     const String::size_type length = a_in.length();
     char8* buffer = new char[length + 1];

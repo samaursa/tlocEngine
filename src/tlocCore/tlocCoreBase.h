@@ -65,6 +65,7 @@ namespace tloc {
 
 };
 
+namespace tl_core          = tloc::core;
 namespace tl_core_bclass   = tloc::core::base_classes;
 namespace tl_core_cs       = tloc::core::component_system;
 namespace tl_core_cfg      = tloc::core::configs;

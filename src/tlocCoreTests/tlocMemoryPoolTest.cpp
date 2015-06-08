@@ -10,7 +10,7 @@
 #include <tlocCore/memory/tlocMemoryPool.inl.h>
 
 // testing explicit instantiation
-TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_USING_WRAPPER(tloc::tl_int, 100);
+TLOC_EXPLICITLY_INSTANTIATE_MEM_POOL_USING_WRAPPER(tl_int, 100);
 
 namespace TestingMemoryPool
 {

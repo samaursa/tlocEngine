@@ -4,10 +4,10 @@ if(${SOLUTION_NAME} STREQUAL "solution")
 endif()
 
 set(SOLUTION_EXECUTABLE_PROJECTS "skopworks;")
-#list(APPEND USER_EXECUTABLE_PROJECTS "nextExeProject;")
+#list(APPEND SOLUTION_EXECUTABLE_PROJECTS "nextExeProject;")
 
 set(SOLUTION_LIBRARY_PROJECTS "skopworksLib;")
-#list(APPEND USER_LIBRARY_PROJECTS "nextLibraryProject;")
+#list(APPEND SOLUTION_LIBRARY_PROJECTS "nextLibraryProject;")
 
 set(SOLUTION_TEST_PROJECTS "skopworksTest;")
-#list(APPEND USER_TEST_PROJECTS "nextTestProject;")
+#list(APPEND SOLUTION_TEST_PROJECTS "nextTestProject;")

@@ -8,7 +8,7 @@
 #include <tlocCore/containers/tlocList.inl.h>
 
 // testing explicit instantiation macros
-TLOC_EXPLICITLY_INSTANTIATE_LIST(tloc::tl_int);
+TLOC_EXPLICITLY_INSTANTIATE_LIST(tl_int);
 
 namespace TestingList
 {

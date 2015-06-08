@@ -54,7 +54,7 @@ namespace {
 
 #define FT_NOERRORDEF_(_type_, _number_, _str_)
 #define FT_ERRORDEF_(_type_, _number_, _str_) \
-  tloc::tl_int _type_ = DoAddFreeTypeError(_number_, _str_);
+  tl_int _type_ = DoAddFreeTypeError(_number_, _str_);
 
 #include <FreeType/fterrdef.h>
 

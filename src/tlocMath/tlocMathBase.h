@@ -30,6 +30,7 @@ namespace tloc {
 
 };
 
+namespace tl_math       = tloc::math;
 namespace tl_math_cs    = tloc::math::component_system;
 namespace tl_math_stat  = tloc::math::statistics;
 namespace tl_math_t     = tloc::math::types;

@@ -81,6 +81,7 @@ namespace tloc {
 
 };
 
+namespace tl_pref        = tloc::prefab;
 namespace tl_pref_core   = tloc::prefab::core;
 namespace tl_pref_math   = tloc::prefab::math;
 namespace tl_pref_gfx    = tloc::prefab::graphics;

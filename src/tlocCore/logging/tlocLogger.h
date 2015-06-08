@@ -130,6 +130,10 @@ namespace tloc { namespace core { namespace logging {
 
     bool       CanDisplaySeverity(severity_type a_severity) const;
 
+    template <typename T_Severity>
+    void SetSeverity()
+    { SetSeverity(T_Severity::k_value); }
+
     TLOC_DECL_AND_DEF_GETTER(severity_type, GetSeverity, m_severity);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE(severity_type, SetSeverity, m_severity);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(str_type, GetName, m_name);

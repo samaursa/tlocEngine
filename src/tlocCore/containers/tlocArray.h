@@ -377,7 +377,7 @@ namespace tloc { namespace core { namespace containers {
   TLOC_EXTERN_TEMPLATE_ARRAY(tloc::f32);
   TLOC_EXTERN_TEMPLATE_ARRAY(tloc::f64);
 
-  TLOC_EXTERN_TEMPLATE_ARRAY(tloc::tl_ulong);
+  TLOC_EXTERN_TEMPLATE_ARRAY(tl_ulong);
 
 };};};
 

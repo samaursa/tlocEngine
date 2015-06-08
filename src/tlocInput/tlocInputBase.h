@@ -24,6 +24,7 @@ namespace tloc {
 
 };
 
+namespace tl_input     = tloc::input;
 namespace tl_input_hid = tloc::input::hid;
 namespace tl_input_cs  = tloc::input::component_system;
 

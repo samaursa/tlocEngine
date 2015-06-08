@@ -174,7 +174,7 @@ namespace tloc { namespace core { namespace component_system {
               bool a_processManually)
   { 
     core_sptr::UniquePtr<T_System> sys = 
-      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), a_param.m_arg1);
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), a_param.Arg1());
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -195,7 +195,7 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2);
+      a_param.Arg1(), a_param.Arg2());
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -216,7 +216,7 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2, a_param.m_arg3);
+      a_param.Arg1(), a_param.Arg2(), a_param.Arg3());
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -237,7 +237,7 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, a_param.m_arg4);
+      a_param.Arg1(), a_param.Arg2(), a_param.Arg3(), a_param.Arg4());
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -258,8 +258,8 @@ namespace tloc { namespace core { namespace component_system {
   { 
     core_sptr::UniquePtr<T_System> sys = 
       core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), 
-      a_param.m_arg1, a_param.m_arg2, a_param.m_arg3, a_param.m_arg4,
-      a_param.m_arg5);
+      a_param.Arg1(), a_param.Arg2(), a_param.Arg3(), a_param.Arg4(),
+      a_param.Arg5());
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 
@@ -296,7 +296,7 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
     CreatePrefab(const Args<T1>& a_param)
   { 
-    T_Prefab pref(m_entMgr.get(), m_compPoolMgr.get(), a_param.m_arg1);
+    T_Prefab pref(m_entMgr.get(), m_compPoolMgr.get(), a_param.Arg1());
     return pref;
   }
 
@@ -309,7 +309,7 @@ namespace tloc { namespace core { namespace component_system {
     CreatePrefab(const Args<T1, T2>& a_param)
   { 
     T_Prefab pref(m_entMgr.get(), m_compPoolMgr.get(), 
-                  a_param.m_arg1, a_param.m_args2);
+                  a_param.Arg1(), a_param.Args()2);
     return pref;
   }
 
@@ -322,7 +322,7 @@ namespace tloc { namespace core { namespace component_system {
     CreatePrefab(const Args<T1, T2, T3>& a_param)
   { 
     T_Prefab pref(m_entMgr.get(), m_compPoolMgr.get(), 
-                  a_param.m_arg1, a_param.m_args2, a_param.m_arg3);
+                  a_param.Arg1(), a_param.Args()2, a_param.Arg3());
     return pref;
   }
 
@@ -335,8 +335,8 @@ namespace tloc { namespace core { namespace component_system {
     CreatePrefab(const Args<T1, T2, T3, T4>& a_param)
   { 
     T_Prefab pref(m_entMgr.get(), m_compPoolMgr.get(), 
-                  a_param.m_arg1, a_param.m_args2, a_param.m_arg3, 
-                  a_param.m_arg4);
+                  a_param.Arg1(), a_param.Args()2, a_param.Arg3(), 
+                  a_param.Arg4());
     return pref;
   }
 
@@ -349,8 +349,8 @@ namespace tloc { namespace core { namespace component_system {
     CreatePrefab(const Args<T1, T2, T3, T4, T5>& a_param)
   { 
     T_Prefab pref(m_entMgr.get(), m_compPoolMgr.get(), 
-                  a_param.m_arg1, a_param.m_args2, a_param.m_arg3, 
-                  a_param.m_arg4, a_param.m_arg5);
+                  a_param.Arg1(), a_param.Args()2, a_param.Arg3(), 
+                  a_param.Arg4(), a_param.Arg5());
     return pref;
   }
 

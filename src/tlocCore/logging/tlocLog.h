@@ -14,6 +14,7 @@ namespace tloc { namespace core { namespace logging {
   {
     namespace severity
     {
+      struct All     { enum {k_value = 0}; };
       struct Info    { enum {k_value = 0}; };
       struct Success { enum {k_value = 1}; };
       struct Debug   { enum {k_value = 2}; };
@@ -35,7 +36,8 @@ namespace tloc { namespace core { namespace logging {
 
     enum
     {
-      k_info = p_log::severity::Info::k_value,
+      k_all   = p_log::severity::Info::k_value,
+      k_info  = p_log::severity::Info::k_value,
       k_success,
       k_debug,
       k_warning,

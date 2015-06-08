@@ -86,8 +86,8 @@
 
 namespace {
 
-  const tloc::tl_int g_numAxis = 24;
-  const tloc::tl_int g_numSliders = 4;
+  const tl_int g_numAxis = 24;
+  const tl_int g_numSliders = 4;
 
 };
 

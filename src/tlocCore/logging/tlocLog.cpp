@@ -6,8 +6,8 @@
 
 namespace {
 
-  static const tloc::tl_int   g_initialBufferSize = 128;
-  static const tloc::tl_ulong s_invalidLoggerLineNumber = 0;
+  static const tl_int   g_initialBufferSize = 128;
+  static const tl_ulong s_invalidLoggerLineNumber = 0;
 
 };
 

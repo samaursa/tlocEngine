@@ -70,26 +70,26 @@ namespace tloc
   typedef TLOC_U_INT32_TYPE  u32;
   typedef TLOC_U_INT64_TYPE  u64;
 
-  typedef long                 tl_long;
-  typedef unsigned long        tl_ulong;
-  typedef TLOC_SIZE_TYPE       tl_size;
-  typedef TLOC_U_INT_PTR_TYPE  tl_uintptr; // Guaranteed to hold a native pointer
-  typedef TLOC_PTR_DIFF_TYPE   tl_ptrdiff;
+  typedef long                 tloc_long;
+  typedef unsigned long        tloc_ulong;
+  typedef TLOC_SIZE_TYPE       tloc_size;
+  typedef TLOC_U_INT_PTR_TYPE  tloc_uintptr; // Guaranteed to hold a native pointer
+  typedef TLOC_PTR_DIFF_TYPE   tloc_ptrdiff;
 
   //------------------------------------------------------------------------
   // The following types are useful when you want the best type size depending
   // on the platform itself
 
 #if defined(_WIN64) || defined(__LP64__)
-  typedef int               tl_int;
-  typedef unsigned int      tl_uint;
-  typedef float             tl_float;
-  typedef double            tl_double;
+  typedef int               tloc_int;
+  typedef unsigned int      tloc_uint;
+  typedef float             tloc_float;
+  typedef double            tloc_double;
 #elif defined(WIN32) || defined(_WIN32) || ( defined(__APPLE__) && !defined(__LP64__) )
-  typedef int               tl_int;
-  typedef unsigned int      tl_uint;
-  typedef float             tl_float;
-  typedef double            tl_double;
+  typedef int               tloc_int;
+  typedef unsigned int      tloc_uint;
+  typedef float             tloc_float;
+  typedef double            tloc_double;
 #else
 # error WIP
 #endif
@@ -143,5 +143,34 @@ namespace tloc
   };
 
 };
+
+typedef tloc::char8         tl_char8;
+typedef tloc::char32        tl_char32;
+
+typedef unsigned short      tl_ushort;
+
+typedef tloc::s8            tl_s8;
+typedef tloc::s16           tl_s16;
+typedef tloc::s32           tl_s32;
+typedef tloc::s64           tl_s64;
+typedef tloc::f32           tl_f32;
+typedef tloc::f64           tl_f64;
+
+typedef tloc::uchar8        tl_uchar8;
+typedef tloc::u8            tl_u8;
+typedef tloc::u16           tl_u16;
+typedef tloc::u32           tl_u32;
+typedef tloc::u64           tl_u64;
+
+typedef tloc::tloc_long     tl_long;
+typedef tloc::tloc_ulong    tl_ulong;
+typedef tloc::tloc_size     tl_size;
+typedef tloc::tloc_uintptr  tl_uintptr;
+typedef tloc::tloc_ptrdiff  tl_ptrdiff;
+
+typedef tloc::tloc_int      tl_int;
+typedef tloc::tloc_uint     tl_uint;
+typedef tloc::tloc_float    tl_float;
+typedef tloc::tloc_double   tl_double;
 
 #endif

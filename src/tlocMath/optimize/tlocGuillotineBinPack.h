@@ -39,9 +39,11 @@ namespace tloc { namespace math { namespace optimize {
   {
   public:
     typedef GuillotineBinPack                                 this_type;
+    typedef BinPackAlgorithm_I                                base_type;
 
   public:
-    GuillotineBinPack();
+    explicit
+    GuillotineBinPack(rect_type a_bin);
 
     case_type Insert(case_type a_case) override;
     real_type OccupancyRatio() const override;
@@ -49,13 +51,37 @@ namespace tloc { namespace math { namespace optimize {
     void      MergeFreeList();
 
   private:
-    void      DoSplitFreeRectAlongAxis(const case_type& a_freeCase, 
-                                       const case_type& a_placedRect,
-                                       bool a_splitHorizontal);
+    tl_int      DoScoreByHeuristic(const case_type& a_newCase,
+                                   const case_type& a_freeCase,
+                                   tl_int a_freeRectChoiceHeuristic) const;
+    tl_int      DoScoreBestAreaFit(const case_type& a_case,
+                                   const case_type& a_freeCase) const;
+    tl_int      DoScoreBestShortSideFit(const case_type& a_case,
+                                        const case_type& a_freeCase) const;
+    tl_int      DoScoreBestLongSideFit(const case_type& a_case,
+                                       const case_type& a_freeCase) const;
+    tl_int      DoScoreWorstAreaFit(const case_type& a_case,
+                                    const case_type& a_freeCase) const;
+    tl_int      DoScoreWorstShortSideFit(const case_type& a_case,
+                                         const case_type& a_freeCase) const;
+    tl_int      DoScoreWorstLongSideFit(const case_type& a_case,
+                                        const case_type& a_freeCase) const;
+
+    case_type   DoFindPositionForNewNode(const case_type& a_newCase, 
+                                         tl_int a_freeRectChoiceHeuristic,
+                                         tl_size& a_nodeIndexOut) const;
+
+    void        DoSplitFreeRectByHeuristic(const case_type& a_freeRect,
+                                           const case_type& a_placedRect,
+                                           tl_int a_splitMethod);
+
+    void        DoSplitFreeRectAlongAxis(const case_type& a_freeCase, 
+                                         const case_type& a_placedRect,
+                                         bool a_splitHorizontal);
 
   private:
     tl_int m_freeRectChoice;
-    tl_int m_split;
+    tl_int m_splitMethod;
     bool   m_mergeOnInsert;
 
   public:
@@ -79,7 +105,7 @@ namespace tloc { namespace math { namespace optimize {
         ShorterLeftoverAxis, LongerLeftoverAxis, MinimizeArea, MaximizeArea, 
         ShorterAxis, LongerAxis>();
 
-      m_split = T_Heuristic::k_value;
+      m_splitMethod = T_Heuristic::k_value;
       return *this;
     }
 

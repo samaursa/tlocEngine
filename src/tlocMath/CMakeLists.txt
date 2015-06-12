@@ -44,6 +44,7 @@ set(TLOC_MATH_OPTIMIZE
   optimize/tlocBin.h
   optimize/tlocBin.cpp
   optimize/tlocBinPackAlgorithms.h
+  optimize/tlocBinPackAlgorithms.cpp
   optimize/tlocBinPacker2D.h
   optimize/tlocBinPacker2D.cpp
   optimize/tlocGuillotineBinPack.h

@@ -12,6 +12,7 @@ namespace tloc { namespace math { namespace optimize {
     typedef Bin                                                 bin_type;
     typedef bin_type::case_type                                 case_type;
     typedef bin_type::case_cont                                 case_cont;
+    typedef case_type::rect_type                                rect_type;
     typedef f32                                                 real_type;
 
   public:
@@ -19,12 +20,17 @@ namespace tloc { namespace math { namespace optimize {
     virtual real_type OccupancyRatio() const = 0;
 
   protected:
-    BinPackAlgorithm_I();
+    explicit 
+    BinPackAlgorithm_I(rect_type a_bin);
     ~BinPackAlgorithm_I();
 
   protected:
     case_cont       m_usedCases;
     case_cont       m_freeCases;
+    rect_type       m_bin;
+
+  public:
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetBinRectangle, m_bin);
 
   };
 

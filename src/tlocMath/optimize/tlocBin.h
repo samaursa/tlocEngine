@@ -25,6 +25,12 @@ namespace tloc { namespace math { namespace optimize {
     user_type   m_data;
 
   public:
+    Case();
+    explicit 
+    Case(rect_type a_rectangle);
+    Case(rect_type a_rectangle, user_type a_data);
+
+  public:
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetRectangle, m_rectangle);
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetData, m_data);
 

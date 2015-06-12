@@ -5,6 +5,27 @@ namespace tloc { namespace math { namespace optimize {
   // ///////////////////////////////////////////////////////////////////////
   // Case
 
+  Case::
+    Case()
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Case::
+    Case(rect_type a_rectangle)
+    : m_rectangle(a_rectangle)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  Case::
+    Case(rect_type a_rectangle, user_type a_data)
+    : m_rectangle(a_rectangle)
+    , m_data(a_data)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   auto
     Case::
     GetX() const -> value_type

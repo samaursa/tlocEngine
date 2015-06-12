@@ -8,54 +8,103 @@
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
 
 #include <tlocMath/types/tlocRectangle.h>
+#include <tlocMath/optimize/tlocBin.h>
 
 namespace tloc { namespace math { namespace optimize {
 
-  class BinPacker2D;
-
-  class Bin
-  {
-    friend class BinPacker2D;
-
-  public:
-    typedef math_t::Rects_bl                              rect_type;
-    typedef rect_type::point_type                         dim_type;
-
-    typedef core_t::Any                                   user_type;
-    typedef core::Pair<rect_type, user_type>              rect_user_pair;
-
-    typedef core_conts::Array<rect_user_pair>             rect_user_cont;
-    typedef rect_user_cont::iterator                      iterator;
-    typedef rect_user_cont::const_iterator                const_iterator;
-
-    typedef core_err::Error                               error_type;
-
-    typedef core_t::StrongType_T<bool, 0>                 constant_dimension;
-
-  public:
-    Bin();
-    Bin(dim_type a_startingDimensions);
-
-    void            Add(const rect_user_pair& a_pair);
-
-    const_iterator  begin() const;
-    const_iterator  end() const;
-
-    TLOC_DECL_AND_DEF_GETTER(dim_type, GetBinDimensions, m_bimDimensions);
-
-  private:
-    dim_type            m_bimDimensions;
-    rect_user_cont      m_bin;
-  };
-
-  // -----------------------------------------------------------------------
-  // typedefs
-
-  TLOC_TYPEDEF_ALL_SMART_PTRS(Bin, bin);
-  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(Bin, bin);
-
   // ///////////////////////////////////////////////////////////////////////
   // BinPacker2D
+
+  namespace p_bin_packer_2d {
+
+    namespace heuristic {
+
+      namespace guillotine {
+
+        namespace free_rect_choice {
+
+          struct BestAreaFit          { enum { k_value = 0 }; };
+          struct BestShortSideFit     { enum { k_value = 1 }; };
+          struct BestLongSideFit      { enum { k_value = 2 }; };
+          struct WorstAreaFit         { enum { k_value = 3 }; };
+          struct WorstShortSideFit    { enum { k_value = 4 }; };
+          struct WorstLongSideFit     { enum { k_value = 5 }; };
+
+        };
+
+        namespace split {
+
+          struct ShorterLeftoverAxis  { enum { k_value = 0 }; };
+          struct LongerLeftoverAxis   { enum { k_value = 1 }; };
+          struct MinimizeArea         { enum { k_value = 2 }; };
+          struct MaximizeArea         { enum { k_value = 3 }; };
+          struct ShorterAxis          { enum { k_value = 4 }; };
+          struct LongerAxis           { enum { k_value = 5 }; };
+
+        };
+
+      };
+    };
+
+    namespace algo {
+
+      class Guillotine     
+      { 
+      public:
+        typedef Guillotine                    this_type;
+
+      public:
+        Guillotine() 
+        : m_freeRectChoice(heuristic::guillotine::free_rect_choice::BestAreaFit::k_value)
+        , m_split(heuristic::guillotine::split::ShorterLeftoverAxis::k_value)
+        { }
+
+        template <typename T_Heuristic>
+        this_type& FreeRectChoice()
+        {
+          using namespace heuristic::guillotine::free_rect_choice;
+          type_traits::AssertTypeIsSupported<T_Heuristic,
+            BestAreaFit, BestShortSideFit, BestLongSideFit, WorstAreaFit, 
+            WorstShortSideFit, WorstLongSideFit>();
+
+          m_freeRectChoice = T_Heuristic::k_value;
+        }
+
+        template <typename T_Heuristic>
+        this_type& Split()
+        {
+          using namespace heuristic::guillotine::split;
+          type_traits::AssertTypeIsSupported<T_Heuristic,
+            ShorterLeftoverAxis, LongerLeftoverAxis, MinimizeArea, MaximizeArea, 
+            ShorterAxis, LongerAxis>();
+
+          m_split = T_Heuristic::k_value;
+        }
+
+      private:
+        tl_int m_freeRectChoice;
+        tl_int m_split;
+
+      public:
+        TLOC_DECL_AND_DEF_GETTER_AUTO(GetFreeRectChoice, m_freeRectChoice);
+        TLOC_DECL_AND_DEF_GETTER_AUTO(GetSplit, m_split);
+      };
+
+      class MaxRectangles  
+      { 
+      };
+
+      class Shelf          
+      { 
+      };
+
+      class Skyline        
+      { 
+      };
+
+    };
+
+  };
 
   class BinPacker2D
   {
@@ -66,24 +115,25 @@ namespace tloc { namespace math { namespace optimize {
     typedef bin_ptr::value_type                           bin_type;
 
     typedef bin_type::rect_type                           rect_type;
+    typedef bin_type::case_type                           case_type;
     typedef rect_type::dim_type                           dim_type;
-    typedef bin_type::rect_user_cont                      rect_user_cont;
+    typedef bin_type::case_cont                           case_cont;
 
-    typedef core_conts::Array<rect_type>                  rect_cont;
     typedef core_err::Error                               error_type;
+    typedef f32                                           real_type;
 
   public:
     BinPacker2D(bin_ptr a_ptr);
 
-    error_type      Process();
-    error_type      Process(dim_type a_maxDimensions);
+    template <typename T_PackingAlgorithm>
+    error_type      Process(T_PackingAlgorithm a_algo = 
+                            p_bin_packer_2d::algo::Guillotine());
 
-    TLOC_DECL_AND_DEF_GETTER(dim_type, GetPackedBinDimensions, 
-                             m_packedBinDimensions);
+    template <typename T_PackingAlgorithm>
+    error_type      Process(dim_type a_maxDimensions, 
+                            T_PackingAlgorithm a_algo = 
+                            p_bin_packer_2d::algo::Guillotine());
 
-    static TLOC_DECL_AND_DEF_GETTER_NON_CONST( dim_type, 
-                                               GetMaxDimensions, 
-                                               s_maxDimensions );
   private:
     error_type      DoProcess(dim_type a_maxDimensions = s_maxDimensions);
 
@@ -91,11 +141,11 @@ namespace tloc { namespace math { namespace optimize {
     dim_type            m_packedBinDimensions;
     bin_ptr             m_bin;
 
-    rect_user_cont      m_packedPairs;
-    rect_user_cont      m_leftOverPair;
-    rect_cont           m_freeRects;
-
     static dim_type     s_maxDimensions;
+
+  public:
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetPackedBinDimensions, m_packedBinDimensions);
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetMaxDimensions, s_maxDimensions);
 
   };
 

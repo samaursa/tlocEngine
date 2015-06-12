@@ -42,6 +42,7 @@ namespace tloc {
                 , m_renderer(a_renderer)
                 , m_inputMgr(a_inputMgr)
                 , m_fpsOutput(0.0f)
+                , m_fpsOutputCap(1000.0f)
   {
     if (m_window == nullptr)
     {
@@ -133,6 +134,7 @@ namespace tloc {
       const auto totalFrameTime = m_updateFrameTime + m_renderFrameTime;
       const auto frameFPS = 1.0f/totalFrameTime;
       m_fpsOutput = 0.5f * m_fpsOutput + 0.5f * frameFPS;
+      m_fpsOutput = core::Clamp(m_fpsOutput, 0.0, m_fpsOutputCap);
 
       DoAppendTitleWithFPS(m_flags.IsMarked(k_app_fps_in_title));
     }

@@ -24,6 +24,7 @@ namespace tloc {
     , public input_hid::JoystickListener
   {
   public:
+    typedef Application                           this_type;
     typedef gfx_win::window_sptr                  window_ptr;
     typedef gfx_win::GraphicsMode<>               graphics_mode;
     typedef gfx_win::WindowSettings               window_settings;
@@ -128,13 +129,14 @@ namespace tloc {
     joystick_cont       m_joysticks;
 
     sec_type            m_fpsOutput;
+    sec_type            m_fpsOutputCap;
 
   public:
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetUpdateDeltaT, m_updateDeltaT);
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetRenderDeltaT, m_renderDeltaT);
 
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_AUTO(SetUpdateDeltaT, m_updateDeltaT);
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_AUTO(SetRenderDeltaT, m_renderDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetUpdateDeltaT, m_updateDeltaT);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetRenderDeltaT, m_renderDeltaT);
 
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetWindow, m_window);
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetRenderer, m_renderer);
@@ -146,6 +148,8 @@ namespace tloc {
     TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT_AUTO(GetTouchSurface, m_touchSurface);
 
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetFPSOutput, m_fpsOutput);
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetFPSOutputCap, m_fpsOutputCap);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetFPSCap, m_fpsOutputCap);
 
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_joysticks, m_joysticks);
   };

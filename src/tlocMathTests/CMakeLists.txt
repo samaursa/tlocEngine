@@ -1,6 +1,7 @@
 set(TLOC_TESTS_MATH
   main.cpp
   tlocAngleTest.cpp
+  tlocBinPacker2DTest.cpp
   tlocCircleTest.cpp
   tlocContiguityTest.cpp
   tlocCuboidTest.cpp

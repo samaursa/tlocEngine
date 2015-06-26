@@ -3,8 +3,8 @@
 namespace tloc { namespace math { namespace optimize {
 
   BinPackAlgorithm_I::
-    BinPackAlgorithm_I(rect_type a_bin)
-    : m_bin(a_bin)
+    BinPackAlgorithm_I(dim_type a_binDim)
+    : m_binDim(a_binDim)
   { }
 
 };};};

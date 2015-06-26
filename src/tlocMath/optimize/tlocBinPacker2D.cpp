@@ -4,12 +4,11 @@
 #include <tlocCore/tlocAlgorithms.inl.h>
 #include <tlocCore/data_structures/tlocTuple.h>
 
+#include <tlocMath/error/tlocErrorTypes.h>
+
 #include <3rdParty/Graphics/RectangleBinPack/GuillotineBinPack.h>
 
 namespace tloc { namespace math { namespace optimize {
-
-  BinPacker2D::dim_type
-    BinPacker2D::s_maxDimensions = core_ds::MakeTuple(8192, 8192);
 
   // ///////////////////////////////////////////////////////////////////////
   // BinPacker2D
@@ -62,25 +61,43 @@ namespace tloc { namespace math { namespace optimize {
     : m_bin(a_ptr)
   { }
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_PackingAlgorithm>
   BinPacker2D::error_type
     BinPacker2D::
-    Process(T_PackingAlgorithm a_algo)
-  {
-    return Process<T_PackingAlgorithm>(this_type::GetMaxDimensions());
-  }
+    Process()
+  { return DoProcess<T_PackingAlgorithm>(); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_PackingAlgorithm>
   BinPacker2D::error_type
     BinPacker2D::
-    Process(dim_type a_maxDimensions, T_PackingAlgorithm a_algo)
+    DoProcess()
   {
+    typedef T_PackingAlgorithm            packing_algo;
+
+    packing_algo pa(m_bin->GetBinDimensions());
+
+    for (auto itr = m_bin->m_cases.begin(), itrEnd = m_bin->m_cases.end();
+         itr != itrEnd; ++itr)
+    {
+      case_type packedCase = pa.Insert(*itr);
+      if (packedCase.IsValid())
+      { *itr = packedCase; }
+      else
+      { return TLOC_ERROR(math_err::error_exceeded_size_limit); }
+    }
+
     return ErrorSuccess;
   }
+
+  // -----------------------------------------------------------------------
+  // explicit instantiation
+
+  template BinPacker2D::error_type BinPacker2D::Process<GuillotineBinPack>();
+  template BinPacker2D::error_type BinPacker2D::DoProcess<GuillotineBinPack>();
 
 };};};
 

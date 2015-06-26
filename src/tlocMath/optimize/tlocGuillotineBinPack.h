@@ -43,7 +43,7 @@ namespace tloc { namespace math { namespace optimize {
 
   public:
     explicit
-    GuillotineBinPack(rect_type a_bin);
+    GuillotineBinPack(dim_type a_binDim);
 
     case_type Insert(case_type a_case) override;
     real_type OccupancyRatio() const override;

@@ -49,6 +49,8 @@ namespace tloc { namespace math { namespace optimize {
     this_type&  SetWidth(value_type a_x);
     this_type&  SetHeight(value_type a_y);
 
+    bool        IsValid() const;
+
   };
 
   class Bin
@@ -73,23 +75,32 @@ namespace tloc { namespace math { namespace optimize {
 
   public:
     Bin();
-    Bin(dim_type a_startingDimensions);
+    Bin(dim_type a_dim);
+
+    dim_type        Expand();
 
     void            push_back(const case_type& a_case);
 
-    const_iterator  begin() const;
-    const_iterator  end() const;
-
-    TLOC_DECL_AND_DEF_GETTER(dim_type, GetBinDimensions, m_bimDimensions);
 
   private:
-    dim_type            m_bimDimensions;
+    dim_type            m_binDim;
     case_cont           m_cases;
     case_cont           m_packedCases;
+    bool                m_autoExpand;
+    bool                m_powerOfTwo;
 
   public:
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_packed, m_packedCases);
     TLOC_DECL_AND_DEF_CONTAINER_CONST_METHODS(, m_cases);
+
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetAutoExpand, m_autoExpand);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetPowerOfTwo, m_powerOfTwo);
+
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetBinDimensions, m_binDim);
+    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetBinDimensions, m_binDim);
+
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetAutoExpand, m_autoExpand);
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetPowerOfTwo, m_powerOfTwo);
   };
 
   // -----------------------------------------------------------------------

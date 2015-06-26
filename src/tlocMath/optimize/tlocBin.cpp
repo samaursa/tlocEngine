@@ -86,19 +86,28 @@ namespace tloc { namespace math { namespace optimize {
     SetHeight(value_type a_y) -> this_type&
   { m_rectangle.SetHeight(a_y); return *this; }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  bool
+    Case::
+    IsValid() const
+  { return GetRectangle().IsValid(); }
+
   // ///////////////////////////////////////////////////////////////////////
   // Bin
 
   Bin::
     Bin()
-    : m_bimDimensions(core_ds::MakeTuple(32, 32))
+    : m_binDim(core_ds::MakeTuple(32, 32))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Bin::
-    Bin(dim_type a_startingDimension)
-    : m_bimDimensions(a_startingDimension)
+    Bin(dim_type a_dim)
+    : m_binDim(a_dim)
+    , m_autoExpand(true)
+    , m_powerOfTwo(true)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

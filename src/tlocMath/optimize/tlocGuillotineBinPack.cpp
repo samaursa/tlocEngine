@@ -6,8 +6,8 @@ namespace tloc { namespace math { namespace optimize {
   // GuillotineBinPack
 
   GuillotineBinPack::
-    GuillotineBinPack(rect_type a_bin)
-    : base_type(a_bin)
+    GuillotineBinPack(dim_type a_binDim)
+    : base_type(a_binDim)
     , m_freeRectChoice(p_guillotine_bin_pack::free_rect_choice::BestAreaFit::k_value) 
     , m_splitMethod(p_guillotine_bin_pack::split::ShorterLeftoverAxis::k_value) 
     , m_mergeOnInsert(false)
@@ -100,7 +100,7 @@ namespace tloc { namespace math { namespace optimize {
     { usedSurfaceArea += itr->GetRectangle().GetArea(); }
 
     return core_utils::CastNumber<real_type>(usedSurfaceArea) / 
-            GetBinRectangle().GetArea();
+            GetBinDimensions()[0] * GetBinDimensions()[1];
   }
   
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

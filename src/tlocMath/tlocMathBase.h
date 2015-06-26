@@ -12,6 +12,7 @@ namespace tloc {
 
   namespace math
   {
+    namespace error            {};
     namespace component_system {};
     namespace statistics       {};
     namespace types            {};
@@ -22,6 +23,7 @@ namespace tloc {
   //////////////////////////////////////////////////////////////////////////
   // Namespace aliases here
 
+  namespace math_err   = math::error;
   namespace math_cs    = math::component_system;
   namespace math_stat  = math::statistics;
   namespace math_t     = math::types;
@@ -31,6 +33,7 @@ namespace tloc {
 };
 
 namespace tl_math       = tloc::math;
+namespace tl_math_err   = tloc::math::error;
 namespace tl_math_cs    = tloc::math::component_system;
 namespace tl_math_stat  = tloc::math::statistics;
 namespace tl_math_t     = tloc::math::types;

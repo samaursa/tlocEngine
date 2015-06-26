@@ -40,10 +40,10 @@ namespace tloc { namespace math { namespace optimize {
     const_iterator  begin() const;
     const_iterator  end() const;
 
-    TLOC_DECL_AND_DEF_GETTER(dim_type, GetBinDimensions, m_bimDimensions);
+    TLOC_DECL_AND_DEF_GETTER(dim_type, GetBinDimensions, m_binDim);
 
   private:
-    dim_type            m_bimDimensions;
+    dim_type            m_binDim;
     rect_user_cont      m_bin;
   };
 

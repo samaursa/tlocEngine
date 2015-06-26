@@ -51,6 +51,13 @@ set(TLOC_MATH_OPTIMIZE
   optimize/tlocGuillotineBinPack.cpp
 )
 
+set(TLOC_MATH_ERROR
+  error/tloc_error.cpp
+  error/tloc_error.h
+  error/tloc_error.inl.h
+  error/tlocErrorTypes.h
+  )
+
 set(TLOC_MATH_TYPES 
   types/tlocAngle.cpp 
   types/tlocAngle.h 
@@ -134,6 +141,7 @@ add_library(tlocMath STATIC
   ${TLOC_MATH_COMPONENT_SYSTEM}
   ${TLOC_MATH_STATISTICS}
   ${TLOC_MATH_OPTIMIZE}
+  ${TLOC_MATH_ERROR}
   ${TLOC_MATH_TYPES}
   ${TLOC_MATH_UTILITIES}
   ${TLOC_MATH_PROJECTION}
@@ -149,6 +157,7 @@ set_platform_specific_properties(tlocMath)
 source_group(component_system FILES ${TLOC_MATH_COMPONENT_SYSTEM})
 source_group(statistics       FILES ${TLOC_MATH_STATISTICS})
 source_group(optimize         FILES ${TLOC_MATH_OPTIMIZE})
+source_group(error            FILES ${TLOC_MATH_ERROR})
 source_group(types            FILES ${TLOC_MATH_TYPES})
 source_group(utilities        FILES ${TLOC_MATH_UTILITIES})
 source_group(projection       FILES ${TLOC_MATH_PROJECTION})

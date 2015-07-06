@@ -146,6 +146,45 @@ namespace tloc { namespace core { namespace utils {
   TLOC_DECL_AND_DEF_GETTER_CONST_DIRECT(_type_, _name_, _var_)
 
   // -----------------------------------------------------------------------
+  // expose typedefs
+
+#define TLOC_EXPOSE_TYPEDEFS(_type_, _typedef_)\
+  typedef _type_::_typedef_              _typedef_
+
+#define TLOC_EXPOSE_TYPEDEFS_2(_type_, _typedef1_, _typedef2_)\
+  typedef _type_::_typedef1_              _typedef1_;\
+  typedef _type_::_typedef2_              _typedef2_
+
+#define TLOC_EXPOSE_TYPEDEFS_3(_type_, _typedef1_, _typedef2_, _typedef3_)\
+  typedef _type_::_typedef1_              _typedef1_;\
+  typedef _type_::_typedef2_              _typedef2_;\
+  typedef _type_::_typedef3_              _typedef3_
+
+#define TLOC_EXPOSE_TYPEDEFS_4(_type_, _typedef1_, _typedef2_, _typedef3_, _typedef4_)\
+  typedef _type_::_typedef1_              _typedef1_;\
+  typedef _type_::_typedef2_              _typedef2_;\
+  typedef _type_::_typedef3_              _typedef3_;\
+  typedef _type_::_typedef4_              _typedef4_
+
+#define TLOC_EXPOSE_TYPEDEFS_T(_type_, _typedef_)\
+  typedef _typename_ _type_::_typedef_              _typedef_
+
+#define TLOC_EXPOSE_TYPEDEFS_T_2(_type_, _typedef1_, _typedef2_)\
+  typedef _typename_ _type_::_typedef1_              _typedef1_;\
+  typedef _typename_ _type_::_typedef2_              _typedef2_
+
+#define TLOC_EXPOSE_TYPEDEFS_T_3(_type_, _typedef1_, _typedef2_, _typedef3_)\
+  typedef _typename_ _type_::_typedef1_              _typedef1_;\
+  typedef _typename_ _type_::_typedef2_              _typedef2_;\
+  typedef _typename_ _type_::_typedef3_              _typedef3_
+
+#define TLOC_EXPOSE_TYPEDEFS_T_4(_type_, _typedef1_, _typedef2_, _typedef3_, _typedef4_)\
+  typedef _typename_ _type_::_typedef1_              _typedef1_;\
+  typedef _typename_ _type_::_typedef2_              _typedef2_;\
+  typedef _typename_ _type_::_typedef3_              _typedef3_;\
+  typedef _typename_ _type_::_typedef4_              _typedef4_
+
+  // -----------------------------------------------------------------------
   // Enum counter.
   //
   // This class is useful to count enums that are bit shifted, where a 'count'

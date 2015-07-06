@@ -11,7 +11,11 @@ namespace tloc { namespace math { namespace optimize {
     , m_freeRectChoice(p_guillotine_bin_pack::free_rect_choice::BestAreaFit::k_value) 
     , m_splitMethod(p_guillotine_bin_pack::split::ShorterLeftoverAxis::k_value) 
     , m_mergeOnInsert(false)
-  { }
+  { 
+    TLOC_EXPOSE_TYPEDEFS_2(rect_type, width, height);
+    auto r = rect_type(width(a_binDim[0]), height(a_binDim[1]));
+    m_freeCases.push_back(case_type(r));
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

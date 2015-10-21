@@ -87,6 +87,7 @@ include_directories(
   ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
+tloc_add_definitions_strict()
 add_library(tlocPrefab STATIC
   ${TLOC_PREFAB}
   ${TLOC_PREFAB_CORE}

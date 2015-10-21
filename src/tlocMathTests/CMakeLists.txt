@@ -32,6 +32,7 @@ set(TLOC_TESTS_MATH
 
 set(TLOC_CURRENT_EXEC_NAME tlocMathTests)
 
+tloc_add_definitions()
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}
   ${TLOC_TESTS_MATH}

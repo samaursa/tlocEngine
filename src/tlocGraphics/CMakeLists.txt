@@ -285,6 +285,7 @@ include_directories(
   ${TLOC_ENGINE_PATH}/src/3rdParty/Graphics/glext/
 )
 
+tloc_add_definitions_strict()
 add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS}
   ${TLOC_GRAPHICS_APPLICATION}

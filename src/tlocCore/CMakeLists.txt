@@ -414,6 +414,7 @@ include_directories(
   ../3rdParty/Core/CL/include/
 )
 
+tloc_add_definitions_strict()
 add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE}
   ${TLOC_ENGINE_CORE_BASE_CLASSES}

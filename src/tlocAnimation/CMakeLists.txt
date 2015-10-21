@@ -37,6 +37,7 @@ set(TLOC_GRAPHICS_TYPES
 #-------------------------------------------
 # Project setup
 
+tloc_add_definitions_strict()
 add_library(tlocAnimation STATIC
   ${TLOC_ANIMATION}
   ${TLOC_ANIMATION_COMPONENT_SYSTEM}

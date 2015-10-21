@@ -241,8 +241,8 @@ namespace
       auto itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys1.get());
       CHECK(itrSysInfo.first != itrSysInfo.second);
 
-      dummy_sys2_vso sys2(MakeArgs(eventMgr.get(), entMgr.get()));
-      itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys2.get());
+      dummy_sys2_vso sys3(MakeArgs(eventMgr.get(), entMgr.get()));
+      itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys3.get());
       CHECK(itrSysInfo.first == itrSysInfo.second);
     }
   }

@@ -90,6 +90,7 @@ endif()
 #-------------------------------------------
 # Project setup
 
+tloc_add_definitions_strict()
 add_library(tlocInput STATIC
   ${TLOC_INPUT}
   ${TLOC_INPUT_HID}

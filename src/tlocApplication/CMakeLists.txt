@@ -27,6 +27,7 @@ include_directories(
   ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
   )
 
+tloc_add_definitions_strict()
 add_library(tlocApplication STATIC
   ${TLOC_ENGINE_APPLICATION}
   ${TLOC_ENGINE_APPLICATION_RESOURCES}

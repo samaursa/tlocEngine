@@ -134,11 +134,11 @@ namespace tloc { namespace graphics { namespace renderer {
       // prepare and enable uniforms/attributes
       auto vao = command.GetVAO();
 
-      for (auto itr = command.begin_so(), itrEnd = command.end_so(); 
-           itr != itrEnd; ++itr)
+      for (auto itr2 = command.begin_so(), itrEnd2 = command.end_so(); 
+           itr2 != itrEnd2; ++itr2)
       {
-        DoPrepAndEnableUniforms(*itr, *currShader);
-        DoPrepAndEnableAttributeVBOs(*itr, *currShader, *vao);
+        DoPrepAndEnableUniforms(*itr2, *currShader);
+        DoPrepAndEnableAttributeVBOs(*itr2, *currShader, *vao);
       }
 
       if (vao)

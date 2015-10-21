@@ -32,7 +32,7 @@ namespace tloc { namespace graphics { namespace win {
     typedef p_window_settings::style::value_type  style_type;
     typedef u32                                   depth_bits_type;
     typedef u32                                   stencil_bits_type;
-    typedef u32                                   anti_alias_type;
+    typedef s32                                   anti_alias_type;
 
   public:
     WindowSettings(string_type a_title);

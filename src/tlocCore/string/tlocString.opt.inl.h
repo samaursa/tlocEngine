@@ -284,18 +284,18 @@ namespace tloc { namespace core { namespace string {
 
       if (cap > 0)
       {
-        const size_type oldSize = size();
+        const size_type l_oldSize = size();
 
         m_begin = DoReAllocate(cap + 1); // +1 for the trailing 0
 
-        if (cap < oldSize)
+        if (cap < l_oldSize)
         {
           m_end = m_begin + cap; // cap is an index and capacity starts from 0
                                  // so no +1 here
         }
         else
         {
-          m_end = m_begin + oldSize;
+          m_end = m_begin + l_oldSize;
         }
 
         *m_end = 0;

@@ -162,11 +162,13 @@ namespace tloc { namespace core { namespace component_system {
         const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
 
         // does the event have the component we are interested in?
-        auto itr = core::find_all(m_compRegistry.m_registeredComps, 
-                                  entEvent.GetComponent()->GetInfo());
+        {
+          auto itr = core::find_all(m_compRegistry.m_registeredComps,
+                                    entEvent.GetComponent()->GetInfo());
 
-        if (itr == m_compRegistry.m_registeredComps.end())
-        { break; }
+          if (itr == m_compRegistry.m_registeredComps.end())
+          { break; }
+        }
 
         entity_vptr ent = entEvent.GetEntity();
 

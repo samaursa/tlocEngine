@@ -77,7 +77,6 @@ namespace tloc { namespace graphics { namespace media {
 
     typedef Image::size_type          size_type;
     typedef Image::dimension_type     dim_type;
-    typedef sprite_info_ul::pos_type  pos_type;
 
     m_cachedParams = a_params;
 
@@ -152,7 +151,8 @@ namespace tloc { namespace graphics { namespace media {
         (a_characters[intI], imgCoord, charImages[intI]->GetDimensions());
       spriteInfo.push_back(si);
 
-      spriteSheet->SetImage(imgCoord[0], imgCoord[1], *charImages[intI]);
+      spriteSheet->SetImage((size_type)imgCoord[0], (size_type)imgCoord[1], 
+                            *charImages[intI]);
     }
 
     core::for_each_all(spriteInfo, 

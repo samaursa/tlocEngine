@@ -58,6 +58,7 @@ include_directories(
   ${TLOC_DEP_INSTALL_PATH}/include/Box2D/
 )
 
+tloc_add_definitions_strict()
 add_library(tlocPhysics STATIC
   ${TLOC_PHYSICS}
   ${TLOC_PHYSICS_BOX2D}

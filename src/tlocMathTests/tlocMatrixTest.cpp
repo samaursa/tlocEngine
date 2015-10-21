@@ -82,7 +82,7 @@ namespace TestingMatrix
   TEST_CASE_METHOD(Matrix3Fixture, "Core/DataStructures/Matrix/General",
     "Test general/basic functionality")
   {
-    Matrix_TI<tl_float, 3> e(1);
+    e = Matrix_TI<tl_float, 3>(1);
     CHECK_MATRIX3F(e, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
     Matrix_TI<tl_float, 3> f(e);

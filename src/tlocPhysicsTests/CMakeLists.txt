@@ -18,6 +18,7 @@ link_directories(
   ${TLOC_DEP_INSTALL_PATH}/lib/
   )
 
+tloc_add_definitions()
 add_executable(${TLOC_CURRENT_EXEC_NAME}
   ${TLOC_APP_TYPE}
   ${TLOC_TESTS_PHYSICS}

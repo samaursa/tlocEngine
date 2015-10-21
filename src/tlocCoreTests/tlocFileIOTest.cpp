@@ -53,9 +53,11 @@ namespace TestingFileIO
     CHECK(fileReader.Open() == common_error_types::error_success);
     CHECK(fileReader.IsOpen());
 
-    String fileContents;
-    fileReader.GetContents(fileContents);
-    CHECK(fileContents.compare(sentence) == 0);
+    {
+      String fileContents;
+      fileReader.GetContents(fileContents);
+      CHECK(fileContents.compare(sentence) == 0);
+    }
 
     core_io::FileContents fc;
     fileReader.GetContents(fc);

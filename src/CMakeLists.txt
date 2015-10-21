@@ -59,8 +59,6 @@ endfunction()
 # Start generating libraries, projects and tests
 # -----------------------------------------------------------------------------
 
-tloc_add_definitions_strict()
-
 message("")
 message(STATUS "-- Libraries --")
 foreach(lib ${SOLUTION_LIBRARY_PROJECTS})
@@ -100,8 +98,6 @@ message(STATUS "-- Executables -- DONE")
 # -----------------------------------------------------------------------------
 
 if(TLOC_INCLUDE_TESTS)
-  tloc_add_definitions()
-
   message("")
   message(STATUS "-- Tests --")
   foreach(test ${SOLUTION_TEST_PROJECTS})

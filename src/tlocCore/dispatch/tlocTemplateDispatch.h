@@ -120,11 +120,11 @@ namespace tloc { namespace core { namespace dispatch {
     {
       TLOC_STATIC_ASSERT_IS_POINTER(T_Ptr);
 
-      typedef typename Loki::TypeTraits<T_Ptr>::PointeeType value_type;
-      typedef T_CallbackGroupT<value_type>         callback_type;
-      typedef typename container_type::iterator    itr_type;
+      typedef typename Loki::TypeTraits<T_Ptr>::PointeeType vt;
+      typedef T_CallbackGroupT<vt>                          callback_type;
+      typedef typename container_type::iterator             itr_type;
 
-      const char* type_string = tl_type_to_string<value_type>().value();
+      const char* type_string = tl_type_to_string<vt>().value();
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),
@@ -164,11 +164,11 @@ namespace tloc { namespace core { namespace dispatch {
     {
       TLOC_STATIC_ASSERT_IS_POINTER(T_Ptr);
 
-      typedef typename Loki::TypeTraits<T_Ptr>::PointeeType value_type;
-      typedef T_CallbackGroupT<value_type>         callback_type;
-      typedef typename container_type::iterator    itr_type;
+      typedef typename Loki::TypeTraits<T_Ptr>::PointeeType vt;
+      typedef T_CallbackGroupT<vt>                          callback_type;
+      typedef typename container_type::iterator             itr_type;
 
-      const char* type_string = tl_type_to_string<value_type>().value();
+      const char* type_string = tl_type_to_string<vt>().value();
 
       // Find the callback with the given type if it already exists
       for (itr_type itr = m_allObservers.begin(),

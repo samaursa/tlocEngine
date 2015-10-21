@@ -111,9 +111,11 @@ namespace TestingEntity
     // because end_components() would return an end+1 when empty and GetComponent<>
     // uses end_components()
     core_cs::const_entity_vptr eConst = e.get();
-    auto itr    = eConst->begin_components<Component1>();
-    auto itrEnd = eConst->end_components<Component1>();
-    CHECK(itr == itrEnd);
+    {
+      auto itr = eConst->begin_components<Component1>();
+      auto itrEnd = eConst->end_components<Component1>();
+      CHECK(itr == itrEnd);
+    }
 
     TLOC_TEST_ASSERT
     { e->GetComponent<Component1>(); }

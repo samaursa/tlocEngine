@@ -136,6 +136,7 @@ set(TLOC_MATH_PROJECTION
 #-------------------------------------------
 # Project setup
 
+tloc_add_definitions_strict()
 add_library(tlocMath STATIC
   ${TLOC_MATH}
   ${TLOC_MATH_COMPONENT_SYSTEM}

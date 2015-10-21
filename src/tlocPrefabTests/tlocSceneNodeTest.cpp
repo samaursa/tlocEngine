@@ -102,7 +102,7 @@ namespace
       entity_ptr dummyEnt = entMgr->CreateEntity();
 
       math_cs::transform_sptr t = core_sptr::MakeShared<math_cs::Transform>();
-      gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
+      sn = core_sptr::MakeShared<gfx_cs::SceneNode>();
 
       entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, t).Orphan(true));
       entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, sn));
@@ -118,7 +118,7 @@ namespace
       entity_ptr dummyEnt2 = entMgr->CreateEntity();
 
       math_cs::transform_sptr t = core_sptr::MakeShared<math_cs::Transform>();
-      gfx_cs::scene_node_sptr sn = core_sptr::MakeShared<gfx_cs::SceneNode>(dummyEnt2);
+      sn = core_sptr::MakeShared<gfx_cs::SceneNode>(dummyEnt2);
 
       entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, t).Orphan(true));
       entMgr->InsertComponent(core_cs::EntityManager::Params(dummyEnt, sn));

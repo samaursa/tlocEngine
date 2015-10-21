@@ -63,7 +63,7 @@ namespace TestingMatrix2
     CHECK_MATRIX2F(a, 1, 4, 2, 5);
     CHECK_MATRIX2F(b, 1, 2, 4, 5);
 
-    Mat2f e(a);
+    e = Mat2f(a);
     CHECK_MATRIX2F(e, 1, 4, 2, 5);
     Mat2f g(10);
     CHECK_MATRIX2F(g, 10, 10, 10, 10);

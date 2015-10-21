@@ -277,14 +277,14 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(a_inputType);
 
-    typedef p_hid::Keyboard       keyboard_type;
-    typedef p_hid::Mouse          mouse_type;
-    typedef p_hid::Joystick       joystick_type;
-    typedef p_hid::TouchSurface   touch_surface_type;
+    typedef p_hid::Keyboard       hid_keyboard_type;
+    typedef p_hid::Mouse          hid_mouse_type;
+    typedef p_hid::Joystick       hid_joystick_type;
+    typedef p_hid::TouchSurface   hid_touch_surface_type;
 
     switch(a_inputType)
     {
-    case keyboard_type::m_index:
+    case hid_keyboard_type::m_index:
       {
         typedef hid::Keyboard<policy_type>            keyboard_type;
         typedef core_sptr::VirtualPtr<keyboard_type>  keyboard_ptr;
@@ -300,7 +300,7 @@ namespace tloc { namespace input { namespace priv {
         }
         break;
       }
-    case mouse_type::m_index:
+    case hid_mouse_type::m_index:
       {
         typedef hid::Mouse<policy_type>               mouse_type;
         typedef core_sptr::VirtualPtr<mouse_type>     mouse_ptr;
@@ -316,7 +316,7 @@ namespace tloc { namespace input { namespace priv {
         }
         break;
       }
-    case joystick_type::m_index:
+    case hid_joystick_type::m_index:
       {
         typedef hid::Joystick_T<policy_type>            joystick_type;
         typedef core_sptr::VirtualPtr<joystick_type>    joystick_ptr;
@@ -333,7 +333,7 @@ namespace tloc { namespace input { namespace priv {
 
         break;
       }
-    case touch_surface_type::m_index:
+    case hid_touch_surface_type::m_index:
       {
         break;
       }
@@ -348,14 +348,14 @@ namespace tloc { namespace input { namespace priv {
   {
     ASSERT_INPUT_TYPE(a_inputType);
 
-    typedef p_hid::Keyboard       keyboard_type;
-    typedef p_hid::Mouse          mouse_type;
-    typedef p_hid::Joystick       joystick_type;
-    typedef p_hid::TouchSurface   touch_surface_type;
+    typedef p_hid::Keyboard       hid_keyboard_type;
+    typedef p_hid::Mouse          hid_mouse_type;
+    typedef p_hid::Joystick       hid_joystick_type;
+    typedef p_hid::TouchSurface   hid_touch_surface_type;
 
     switch(a_inputType)
     {
-    case keyboard_type::m_index:
+    case hid_keyboard_type::m_index:
       {
         typedef hid::Keyboard<policy_type>            keyboard_type;
         typedef core_sptr::VirtualPtr<keyboard_type>  keyboard_ptr;
@@ -371,7 +371,7 @@ namespace tloc { namespace input { namespace priv {
         }
         break;
       }
-    case mouse_type::m_index:
+    case hid_mouse_type::m_index:
       {
         typedef hid::Mouse<policy_type>               mouse_type;
         typedef core_sptr::VirtualPtr<mouse_type>     mouse_ptr;
@@ -387,7 +387,7 @@ namespace tloc { namespace input { namespace priv {
         }
         break;
       }
-    case joystick_type::m_index:
+    case hid_joystick_type::m_index:
       {
         typedef hid::Joystick_T<policy_type>            joystick_type;
         typedef core_sptr::VirtualPtr<joystick_type>    joystick_ptr;
@@ -404,7 +404,7 @@ namespace tloc { namespace input { namespace priv {
 
         break;
       }
-    case touch_surface_type::m_index:
+    case hid_touch_surface_type::m_index:
       {
         break;
       }

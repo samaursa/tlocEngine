@@ -548,10 +548,10 @@ namespace TestingHashtable
     typedef HashtableFixture::HT
       <
         bucket_holder_type, void*, false, false
-      >::type doubly_nohash_nounique;
+      >::type d_nohash_nounique;
 
-    typedef Hashtable<doubly_nohash_nounique> ht_type;
-    typedef ht_type::iterator                 ht_itr_type;
+    typedef Hashtable<d_nohash_nounique>        ht_type;
+    typedef ht_type::iterator                   ht_itr_type;
 
     ht_type voidTable;
 
@@ -590,9 +590,9 @@ namespace TestingHashtable
     typedef HashtableFixture::HT
       <
         bucket_holder_type, core_str::String, false, false
-      >::type doubly_nohash_nounique;
+      >::type d_nohash_nounique;
 
-    typedef Hashtable<doubly_nohash_nounique> ht_type;
+    typedef Hashtable<d_nohash_nounique>      ht_type;
     typedef ht_type::iterator                 ht_itr_type;
 
     ht_type stringTable;

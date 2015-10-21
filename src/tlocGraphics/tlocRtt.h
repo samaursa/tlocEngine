@@ -99,9 +99,9 @@ namespace tloc { namespace graphics {
     Rtt_T<T_DepthPrecision>::
     AddDepthAttachment(const to_params& a_toParams)
   {
-    typedef gfx_gl::TextureObject_T<T_Target>       to_type;
+    typedef gfx_gl::TextureObject_T<T_Target>       l_to_type;
 
-    auto rttTo = core_sptr::MakeShared<to_type>(a_toParams);
+    auto rttTo = core_sptr::MakeShared<l_to_type>(a_toParams);
     {
       using namespace gfx_med;
 

@@ -214,7 +214,7 @@ namespace tloc { namespace graphics { namespace component_system {
       }
       {
         using namespace core_io;
-        auto fsError =
+        fsError =
           f_file_io::OpenAndGetContents<p_file_io::Ascii>(matPtr->GetFragmentPath(), fs);
         TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(fsError != ErrorSuccess)
           << "Failed to open shader: " << matPtr->GetFragmentPath();

@@ -1,6 +1,8 @@
 #ifndef _TLOC_CORE_ASSERT_CUSTOM_BREAK_H_
 #define _TLOC_CORE_ASSERT_CUSTOM_BREAK_H_
 
+#include <tlocCore/platform/tlocPlatformDefines.h>
+
 namespace tloc { namespace core { namespace assert {
   
   // ///////////////////////////////////////////////////////////////////////
@@ -11,8 +13,8 @@ namespace tloc { namespace core { namespace assert {
   // problematic when we want to test our assertions. For this reason the
   // following macro is provided (which is not used in C++03 as it does not
   // have a noexcept() decoration)
-  
-#if !defined TLOC_RELEASE && !defined TLOC_CXX03 && !defined TLOC_COMPILER_VISUAL_CPP
+
+#if !defined TLOC_RELEASE && !defined TLOC_CXX03 && !defined TLOC_COMPILER_VISUAL_CPP || defined TLOC_COMPILER_VISUAL_CPP_2015
 #define TLOC_DTOR_ASSERT noexcept(false)
 #else
 #define TLOC_DTOR_ASSERT

@@ -1,6 +1,4 @@
 set(TLOC_GRAPHICS 
-  tlocBinPacker2D.h
-  tlocBinPacker2D.cpp
   tlocRtt.h
   tlocRtt.cpp
   tlocDepVersionCheck.cpp 
@@ -302,7 +300,6 @@ add_library(tlocGraphics STATIC
   ${TLOC_GRAPHICS_3RD_PARTY_GLEXT}
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_PNG}
   ${TLOC_GRAPHICS_3RD_PARTY_IMAGES_JPEG}
-  ${TLOC_GRAPHICS_3RD_PARTY_RECTANGLE_BIN_PACK}
   )
 
 add_dependencies(tlocGraphics

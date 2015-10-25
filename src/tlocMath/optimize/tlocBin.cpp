@@ -118,6 +118,7 @@ namespace tloc { namespace math { namespace optimize {
     Bin::
     push_back(const case_type& a_case)
   {
+    TLOC_ASSERT(a_case.GetRectangle().IsValid(), "The case rectangle is invalid");
     m_cases.push_back(a_case);
   }
 

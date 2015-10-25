@@ -9,6 +9,8 @@
 #include <tlocMath/optimize/tlocBin.h>
 #include <tlocMath/optimize/tlocBinPacker2D.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace media {
 
   namespace {
@@ -39,6 +41,23 @@ namespace tloc { namespace graphics { namespace media {
     , m_paddingColor(gfx_t::Color::COLOR_BLACK)
   { }
 
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    Font::Params::PaddingDim(const dim_type& a_dim)
+    -> this_type&
+  {
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(a_dim[0] == 0 || a_dim[1] == 0)
+      << "Padding dimension a_dim(" << a_dim << ") cannot be 0 in x or y";
+
+    m_paddingDim = a_dim;
+
+    if (m_paddingDim[0] == 0) { m_paddingDim[0] = 1; }
+    if (m_paddingDim[1] == 0) { m_paddingDim[1] = 1; }
+
+    return *this;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // Font
 
@@ -63,8 +82,8 @@ namespace tloc { namespace graphics { namespace media {
     GetCharImage(tl_ulong a_char, const Params& a_params) const
   {
     AssertIsInitialized();
-    m_ft->SetCurrentSize(a_params.m_fontSize.GetHeightInPixels());
-    return m_ft->GetGlyphImage(a_char, a_params.m_fontColor, a_params.m_bgColor);
+    m_ft->SetCurrentSize(a_params.FontSize().GetHeightInPixels());
+    return m_ft->GetGlyphImage(a_char, a_params.FontColor(), a_params.BgColor());
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -73,6 +92,12 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     GenerateGlyphCache(BufferArgW a_characters, const Params& a_params)
   {
+    struct GlyphData
+    {
+      image_sptr              m_img;
+      BufferArgW::value_type  m_char;
+    };
+
     TLOC_ASSERT(m_flags.IsUnMarked(k_font_cache_generated), 
                 "Font cache already generated for this Font");
 
@@ -86,36 +111,34 @@ namespace tloc { namespace graphics { namespace media {
     StringW str = a_characters.GetPtr();
     const StringW::size_type strLength = str.length();
 
-    core_conts::Array<image_sptr>                      charImages;
     sprite_sheet_ul_uptr::value_type::sprite_info_cont spriteInfo;
 
-    charImages.reserve(strLength);
     spriteInfo.reserve(strLength);
+
+    // prepare bins from the glyphs
+    math_opt::bin_vso glyphBin(MakeArgs(core_ds::MakeTuple(32, 32)));
+    glyphBin->SetAutoExpand(true).SetPowerOfTwo(true);
+
+    TLOC_EXPOSE_TYPEDEFS_2(math_opt::Bin, case_type, rect_type);
+    TLOC_EXPOSE_TYPEDEFS_2(rect_type, width, height);
 
     for (size_type i = 0; i < strLength; ++i)
     {
       DoCacheGlyphMetrics(str.at(i), m_cachedParams);
-      charImages.push_back(GetCharImage(str.at(i), m_cachedParams) );
-      charImages.back()->AddPadding(m_cachedParams.m_paddingDim, 
-                                    m_cachedParams.m_paddingColor);
+
+      GlyphData gd;
+      gd.m_img = GetCharImage(str.at(i), m_cachedParams);
+
+      gd.m_img->AddPadding(m_cachedParams.PaddingDim(), 
+                          m_cachedParams.PaddingColor());
+      gd.m_char = a_characters[i];
+
+      rect_type r(width(gd.m_img->GetWidth()), height(gd.m_img->GetHeight()));
+      glyphBin->push_back(case_type(r).SetData(gd));
     }
 
-    TLOC_ASSERT(charImages.size() == strLength && 
-                charImages.size() == m_metrics.size(), 
+    TLOC_ASSERT(glyphBin->size() == strLength && glyphBin->size() == m_metrics.size(), 
                 "Expected container sizes to match");
-
-    // prepare bins from the glyphs
-    TLOC_EXPOSE_TYPEDEFS_2(math_opt::Bin, case_type, rect_type);
-    TLOC_EXPOSE_TYPEDEFS_2(rect_type, width, height);
-
-    math_opt::bin_vso glyphBin(MakeArgs(core_ds::MakeTuple(32, 32)));
-    glyphBin->SetAutoExpand(true).SetPowerOfTwo(true);
-
-    core::for_each_all(charImages, [&] (const image_sptr& a_charImg)
-    {
-      rect_type r(width(a_charImg->GetWidth()), height(a_charImg->GetHeight()));
-      glyphBin->push_back(case_type(r).SetData(a_charImg));
-    });
 
     math_opt::BinPacker2D bp(glyphBin.get());
     {
@@ -124,25 +147,27 @@ namespace tloc { namespace graphics { namespace media {
     }
 
     auto spriteSheet = core_sptr::MakeShared<Image>();
-    spriteSheet->Create(glyphBin->GetBinDimensions());
+    spriteSheet->Create(glyphBin->GetBinDimensions(), m_cachedParams.BgColor());
 
+    tl_int counter = 0;
     core::for_each(glyphBin->begin_packed(), glyphBin->end_packed(), 
                    [&](const case_type& a_case)
     {
-      auto imgData = a_case.GetData().Cast<image_sptr>();
-      const auto& pos     = a_case.GetRectangle().GetPosition();
-      const auto& dim     = a_case.GetRectangle().GetDimensions();
+      auto gd   = a_case.GetData().Cast<GlyphData>();
+      auto pos  = a_case.GetRectangle().GetPosition();
+      auto dim  = a_case.GetRectangle().GetDimensions();
       
-      sprite_info_ul si(imgData, pos, dim);
+      sprite_info_ul si(gd.m_char, pos, dim);
       spriteInfo.push_back(si);
-      spriteSheet->SetImage(pos, *imgData);
+      spriteSheet->SetImage(pos, *gd.m_img);
+      ++counter;
     });
 
-    core::for_each_all(spriteInfo, 
+    core::for_each_all(spriteInfo,
                        algos::transform::sprite_info::
-                       ComputeTexCoords(spriteSheet->GetDimensions()) );
+                       ComputeTexCoords(spriteSheet->GetDimensions()));
 
-    TLOC_ASSERT(spriteInfo.size() == charImages.size(), 
+    TLOC_ASSERT(spriteInfo.size() == glyphBin->size_packed(), 
                 "Container size mismatch - expected container sizes to be the "
                 "same");
 
@@ -227,7 +252,7 @@ namespace tloc { namespace graphics { namespace media {
     Font::
     DoCacheGlyphMetrics(tl_ulong a_char, const Params& a_params)
   {
-    m_ft->SetCurrentSize(a_params.m_fontSize.GetHeightInPixels());
+    m_ft->SetCurrentSize(a_params.FontSize().GetHeightInPixels());
     free_type::FreeTypeGlyph ftg = m_ft->LoadGlyph(a_char);
 
     FT_Glyph_Metrics ftMetrics = ftg.GetGlyphSlot()->metrics;

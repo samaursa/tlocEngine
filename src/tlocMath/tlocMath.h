@@ -172,7 +172,12 @@ namespace tloc {
     // taken from http://www.musicdsp.org/showone.php?id=249
     s32  FastSignInt(const f32& aRealIn);
 
-    //------------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    // From http://graphics.stanford.edu/~seander/bithacks.html
+
+    u32 RoundUpPowOfTwo(u32 v);
+
+    // -----------------------------------------------------------------------
     // Simple Interpolations
 
     // Simple linear interpolation between two values.

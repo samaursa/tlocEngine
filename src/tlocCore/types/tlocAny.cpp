@@ -11,7 +11,8 @@ namespace tloc { namespace core { namespace types {
   { }
 
   Any::Any( const this_type& a_other )
-    : m_policy(p_any::GetPolicy<p_any::detail::Empty>())
+    : base_type(a_other)
+    , m_policy(p_any::GetPolicy<p_any::detail::Empty>())
     , m_object(nullptr)
   {
     Assign(a_other);
@@ -23,9 +24,9 @@ namespace tloc { namespace core { namespace types {
   }
 
   Any::this_type&
-    Any::operator=(const this_type& a_other)
+    Any::operator=(this_type a_other)
   {
-    Assign(a_other);
+    swap(a_other);
     return *this;
   }
 
@@ -39,6 +40,7 @@ namespace tloc { namespace core { namespace types {
   Any::this_type&
     Any::swap( this_type& a_other )
   {
+    base_type::swap(a_other);
     core::swap(m_policy, a_other.m_policy);
     core::swap(m_object, a_other.m_object);
     return *this;

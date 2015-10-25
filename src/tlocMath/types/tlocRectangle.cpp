@@ -123,6 +123,15 @@ namespace tloc { namespace math { namespace types {
 
   template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
   RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
+    RectangleBase_TI(height a_h, width a_w, position a_pos)
+    : m_dimensions( MakeTuple( a_w.m_value, a_h.m_value ) )
+    , m_position(a_pos)
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RECTANGLE_BASE_BOTTOM_LEFT_TEMP>
+  RectangleBase_TI<TLOC_RECTANGLE_BASE_BOTTOM_LEFT_PARAMS>::
     RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b)
     : m_dimensions( MakeTuple( a_r - a_l,
                                a_t - a_b ) )

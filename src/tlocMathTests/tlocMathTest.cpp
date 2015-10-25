@@ -71,6 +71,14 @@ namespace TestingTlocMath
     CHECK(val == 0);
   }
 
+  TEST_CASE("Math/RoundUpPowerOfTwo", "")
+  {
+    CHECK(math::RoundUpPowOfTwo(1) == 2);
+    CHECK(math::RoundUpPowOfTwo(7) == 8);
+    CHECK(math::RoundUpPowOfTwo(99) == 128);
+    CHECK(math::RoundUpPowOfTwo(2047) == 2048);
+  }
+
   TEST_CASE("Math/Lerp", "")
   {
     f32 value1 = 0.0f;

@@ -99,6 +99,8 @@ namespace tloc { namespace math { namespace optimize {
   Bin::
     Bin()
     : m_binDim(core_ds::MakeTuple(32, 32))
+    , m_autoExpand(true)
+    , m_powerOfTwo(true)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

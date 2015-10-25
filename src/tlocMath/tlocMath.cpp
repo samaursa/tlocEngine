@@ -65,6 +65,20 @@ namespace tloc
       if (((s32&)aRealIn & 0x7FFFFFF)==0) return 0;
       return (signed ((s32&)aRealIn & 0x80000000) >> 31) | 1;
     }
+
+    // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    u32 RoundUpPowOfTwo(u32 v)
+    {
+      v--;
+      v |= v >> 1;
+      v |= v >> 2;
+      v |= v >> 4;
+      v |= v >> 8;
+      v |= v >> 16;
+      v++;
+      return v;
+    }
   };
 
   //------------------------------------------------------------------------

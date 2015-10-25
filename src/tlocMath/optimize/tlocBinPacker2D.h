@@ -19,6 +19,7 @@ namespace tloc { namespace math { namespace optimize {
   class BinPacker2D
   {
   public:
+  public:
     typedef BinPacker2D                                   this_type;
 
     typedef bin_vptr                                      bin_ptr;
@@ -38,9 +39,12 @@ namespace tloc { namespace math { namespace optimize {
     template <typename T_PackingAlgorithm = GuillotineBinPack>
     error_type      Process();
 
+    template <typename T_PackingAlgorithm, typename T_PackingAlgoParams>
+    error_type      Process(T_PackingAlgoParams a_params);
+
   private:
-    template <typename T_PackingAlgorithm = GuillotineBinPack>
-    error_type      DoProcess();
+    template <typename T_PackingAlgorithm, typename T_PackingAlgoParams>
+    error_type      DoProcess(T_PackingAlgoParams a_params);
 
   private:
     bin_ptr             m_bin;

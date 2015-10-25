@@ -59,6 +59,8 @@ namespace tloc { namespace math { namespace types {
 
   protected:
     RectangleBase_TI();
+    RectangleBase_TI( height a_h, width a_w,
+                      position a_pos = position( point_type( 0 ) ) );
     RectangleBase_TI( width a_w, height a_h,
                       position a_pos = position( point_type( 0 ) ) );
     RectangleBase_TI(left a_l, right a_r, top a_t, bottom a_b);

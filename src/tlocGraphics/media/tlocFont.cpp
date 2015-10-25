@@ -3,8 +3,11 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/utilities/tlocType.h>
+#include <tlocCore/tlocAlgorithms.h>
 
 #include <tlocGraphics/media/tlocFreeType.h>
+#include <tlocMath/optimize/tlocBin.h>
+#include <tlocMath/optimize/tlocBinPacker2D.h>
 
 namespace tloc { namespace graphics { namespace media {
 
@@ -83,34 +86,11 @@ namespace tloc { namespace graphics { namespace media {
     StringW str = a_characters.GetPtr();
     const StringW::size_type strLength = str.length();
 
-    // minimum cells, in RECTANGULAR formation, required to store these
-    // characters
-    size_type numRows = 1;
-    size_type numCols = 1;
-    for (size_type i = 1; i < g_maxCharactersCache; ++i)
-    {
-      if ( (i * i) > strLength )
-      {
-        numRows = i;
-        for (size_type j = i; j > 0; --j)
-        {
-          if ( (i * j) < strLength )
-          { break; }
-          else
-          { numCols = j; }
-        }
-
-        break;
-      }
-    }
-
     core_conts::Array<image_sptr>                      charImages;
     sprite_sheet_ul_uptr::value_type::sprite_info_cont spriteInfo;
 
     charImages.reserve(strLength);
     spriteInfo.reserve(strLength);
-
-    dim_type maxDim(0);
 
     for (size_type i = 0; i < strLength; ++i)
     {
@@ -118,42 +98,45 @@ namespace tloc { namespace graphics { namespace media {
       charImages.push_back(GetCharImage(str.at(i), m_cachedParams) );
       charImages.back()->AddPadding(m_cachedParams.m_paddingDim, 
                                     m_cachedParams.m_paddingColor);
-      dim_type currDim = charImages.back()->GetDimensions();
-
-      maxDim[0] = core::tlMax(maxDim[0], currDim[0]);
-      maxDim[1] = core::tlMax(maxDim[1], currDim[1]);
     }
 
     TLOC_ASSERT(charImages.size() == strLength && 
                 charImages.size() == m_metrics.size(), 
                 "Expected container sizes to match");
-    TLOC_ASSERT(charImages.size() <= numRows * numCols, 
-                "Number of character images must not exceed number of rows/cols "
-                "available");
 
-    image_sptr spriteSheet = core_sptr::MakeShared<Image>();
+    // prepare bins from the glyphs
+    TLOC_EXPOSE_TYPEDEFS_2(math_opt::Bin, case_type, rect_type);
+    TLOC_EXPOSE_TYPEDEFS_2(rect_type, width, height);
 
-    spriteSheet->
-      Create(core_ds::MakeTuple(maxDim[0] * numCols, maxDim[1] * numRows),
-             m_cachedParams.m_bgColor);
+    math_opt::bin_vso glyphBin(MakeArgs(core_ds::MakeTuple(32, 32)));
+    glyphBin->SetAutoExpand(true).SetPowerOfTwo(true);
 
-    for (size_type i = 0; i < charImages.size(); ++i)
+    core::for_each_all(charImages, [&] (const image_sptr& a_charImg)
     {
-      tl_int intI = core_utils::CastNumber<tl_int>(i);
+      rect_type r(width(a_charImg->GetWidth()), height(a_charImg->GetHeight()));
+      glyphBin->push_back(case_type(r).SetData(a_charImg));
+    });
 
-      core_ds::Tuple2u coord =
-        core_utils::GetCoord(core_ds::MakeTuple(numCols, numRows), i);
-
-      const pos_type imgCoord = 
-        core_ds::MakeTuple(maxDim[0] * coord[0], maxDim[1] * coord[1]);
-
-      sprite_info_ul si
-        (a_characters[intI], imgCoord, charImages[intI]->GetDimensions());
-      spriteInfo.push_back(si);
-
-      spriteSheet->SetImage((size_type)imgCoord[0], (size_type)imgCoord[1], 
-                            *charImages[intI]);
+    math_opt::BinPacker2D bp(glyphBin.get());
+    {
+      // has to succeed due to auto expansion
+      bp.Process<math_opt::GuillotineBinPack>();
     }
+
+    auto spriteSheet = core_sptr::MakeShared<Image>();
+    spriteSheet->Create(glyphBin->GetBinDimensions());
+
+    core::for_each(glyphBin->begin_packed(), glyphBin->end_packed(), 
+                   [&](const case_type& a_case)
+    {
+      auto imgData = a_case.GetData().Cast<image_sptr>();
+      const auto& pos     = a_case.GetRectangle().GetPosition();
+      const auto& dim     = a_case.GetRectangle().GetDimensions();
+      
+      sprite_info_ul si(imgData, pos, dim);
+      spriteInfo.push_back(si);
+      spriteSheet->SetImage(pos, *imgData);
+    });
 
     core::for_each_all(spriteInfo, 
                        algos::transform::sprite_info::

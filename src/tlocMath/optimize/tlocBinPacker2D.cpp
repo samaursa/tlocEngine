@@ -67,28 +67,83 @@ namespace tloc { namespace math { namespace optimize {
   BinPacker2D::error_type
     BinPacker2D::
     Process()
-  { return DoProcess<T_PackingAlgorithm>(); }
+  { return DoProcess<T_PackingAlgorithm>(nullptr); }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <typename T_PackingAlgorithm, typename T_PackingAlgoParams>
+  BinPacker2D::error_type
+    BinPacker2D::
+    Process(T_PackingAlgoParams a_params)
+  { return DoProcess<T_PackingAlgorithm>(a_params); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <typename T_PackingAlgorithm>
+  T_PackingAlgorithm 
+    DoCreatePackingAlgo(Bin::dim_type a_dim, std::nullptr_t)
+  { return T_PackingAlgorithm(a_dim); }
+
+  template <typename T_PackingAlgorithm, typename T_PackingAlgoParams>
+  T_PackingAlgorithm 
+    DoCreatePackingAlgo(Bin::dim_type a_dim, T_PackingAlgoParams a_params)
+  { return T_PackingAlgorithm(a_dim, a_params); }
+
+  template <typename T_PackingAlgorithm, typename T_PackingAlgoParams>
   BinPacker2D::error_type
     BinPacker2D::
-    DoProcess()
+    DoProcess(T_PackingAlgoParams a_params)
   {
     typedef T_PackingAlgorithm            packing_algo;
 
-    packing_algo pa(m_bin->GetBinDimensions());
+    auto tempBin = m_bin;
 
-    for (auto itr = m_bin->m_cases.begin(), itrEnd = m_bin->m_cases.end();
-         itr != itrEnd; ++itr)
+    auto binDim = tempBin->GetBinDimensions();
+    packing_algo pa = DoCreatePackingAlgo<packing_algo>(binDim, a_params);
+
+    auto itr = tempBin->m_cases.begin();
+    auto itrEnd = tempBin->m_cases.end();
+    while (itr != itrEnd)
     {
       case_type packedCase = pa.Insert(*itr);
       if (packedCase.IsValid())
-      { m_bin->m_packedCases.push_back(packedCase); }
+      { 
+        tempBin->m_packedCases.push_back(packedCase);
+        ++itr;
+      }
       else
-      { return TLOC_ERROR(math_err::error_exceeded_size_limit); }
+      { 
+        if (tempBin->GetAutoExpand() == false)
+        { return TLOC_ERROR(math_err::error_exceeded_size_limit); }
+
+        if (tempBin->GetPowerOfTwo())
+        { 
+          if (binDim[0] < binDim[1])
+          { 
+            binDim[0] += itr->GetRectangle().GetDimensions()[0];
+            binDim[0] = math::RoundUpPowOfTwo(binDim[0]);
+          }
+          else
+          { 
+            binDim[1] += itr->GetRectangle().GetDimensions()[1];
+            binDim[1] = math::RoundUpPowOfTwo(binDim[1]);
+          }
+        }
+        else
+        {
+          const auto rectDim = itr->GetRectangle().GetDimensions();
+          binDim = core_ds::Add(binDim, rectDim);
+        }
+
+        tempBin->SetBinDimensions(binDim);
+        tempBin->m_packedCases.clear();
+        pa = packing_algo(binDim);
+
+        itr = m_bin->m_cases.begin();
+      }
     }
+
+    m_bin = tempBin;
 
     return ErrorSuccess;
   }
@@ -97,7 +152,10 @@ namespace tloc { namespace math { namespace optimize {
   // explicit instantiation
 
   template BinPacker2D::error_type BinPacker2D::Process<GuillotineBinPack>();
-  template BinPacker2D::error_type BinPacker2D::DoProcess<GuillotineBinPack>();
+  template BinPacker2D::error_type BinPacker2D::Process
+    <GuillotineBinPack, p_guillotine_bin_pack::Params>(p_guillotine_bin_pack::Params);
+  template BinPacker2D::error_type BinPacker2D::DoProcess
+    <GuillotineBinPack, p_guillotine_bin_pack::Params>(p_guillotine_bin_pack::Params);
 
 };};};
 

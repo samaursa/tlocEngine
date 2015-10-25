@@ -85,7 +85,7 @@ namespace tloc { namespace math { namespace optimize {
     {
       case_type packedCase = pa.Insert(*itr);
       if (packedCase.IsValid())
-      { *itr = packedCase; }
+      { m_bin->m_packedCases.push_back(packedCase); }
       else
       { return TLOC_ERROR(math_err::error_exceeded_size_limit); }
     }

@@ -18,6 +18,7 @@ namespace tloc {
     namespace types            {};
     namespace utils            {};
     namespace proj             {};
+    namespace optimize         {};
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -29,6 +30,7 @@ namespace tloc {
   namespace math_t     = math::types;
   namespace math_utils = math::utils;
   namespace math_proj  = math::proj;
+  namespace math_opt   = math::optimize;
 
 };
 
@@ -39,6 +41,7 @@ namespace tl_math_stat  = tloc::math::statistics;
 namespace tl_math_t     = tloc::math::types;
 namespace tl_math_utils = tloc::math::utils;
 namespace tl_math_proj  = tloc::math::proj;
+namespace tl_math_opt   = tloc::math::optimize;
 
 #include <tlocCore/logging/tlocLoggerHelper.h>
 

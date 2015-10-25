@@ -3,14 +3,27 @@
 namespace tloc { namespace math { namespace optimize {
 
   // ///////////////////////////////////////////////////////////////////////
+  // Params
+
+  namespace p_guillotine_bin_pack {
+
+    Params::Params()
+      : m_mergeOnInsert(true)
+      , m_allowRotation(false)
+    { 
+      FreeRectChoice<free_rect_choice::BestAreaFit>();
+      Split<split::MinimizeArea>();
+    }
+
+  };
+
+  // ///////////////////////////////////////////////////////////////////////
   // GuillotineBinPack
 
   GuillotineBinPack::
-    GuillotineBinPack(dim_type a_binDim)
+    GuillotineBinPack(dim_type a_binDim, params_type a_params)
     : base_type(a_binDim)
-    , m_freeRectChoice(p_guillotine_bin_pack::free_rect_choice::BestAreaFit::k_value) 
-    , m_splitMethod(p_guillotine_bin_pack::split::ShorterLeftoverAxis::k_value) 
-    , m_mergeOnInsert(false)
+    , m_params(a_params)
   { 
     TLOC_EXPOSE_TYPEDEFS_2(rect_type, width, height);
     auto r = rect_type(width(a_binDim[0]), height(a_binDim[1]));
@@ -24,16 +37,18 @@ namespace tloc { namespace math { namespace optimize {
     Insert(case_type a_case) -> case_type
   {
     tl_size freeNodeIndex = 0;
-    case_type newCase = DoFindPositionForNewNode(a_case, m_freeRectChoice, freeNodeIndex);
+    case_type newCase = DoFindPositionForNewNode
+      (a_case, m_params.GetFreeRectChoice(), freeNodeIndex);
 
     // could not find enough space
     if (newCase.GetHeight() == 0)
     { return newCase; }
 
-    DoSplitFreeRectByHeuristic(m_freeCases[freeNodeIndex], newCase, m_splitMethod);
+    DoSplitFreeRectByHeuristic(m_freeCases[freeNodeIndex], newCase, 
+                               m_params.GetSplitMethod());
     m_freeCases.erase(m_freeCases.begin() + freeNodeIndex);
 
-    if (m_mergeOnInsert) { MergeFreeList(); }
+    if (m_params.IsMergeOnInsert()) { MergeFreeList(); }
 
     m_usedCases.push_back(newCase);
 
@@ -52,15 +67,18 @@ namespace tloc { namespace math { namespace optimize {
       auto rect_i = m_freeCases[i].GetRectangle();
       auto rect_j = m_freeCases[j].GetRectangle();
       
-      auto i_coord = rect_i.GetCoord_TopLeft();
-      auto j_coord = rect_j.GetCoord_TopLeft();
+      auto i_coord = rect_i.GetPosition();
+      auto j_coord = rect_j.GetPosition();
 
       if (rect_i.GetWidth() == rect_j.GetWidth() && i_coord[0] == j_coord[0])
       {
         if (i_coord[1] == j_coord[1] + rect_j.GetHeight())
         {
           i_coord[1] -= rect_j.GetHeight();
+
+          rect_i.SetPosition(i_coord);
           rect_i.SetHeight(rect_i.GetHeight() + rect_j.GetHeight());
+
           m_freeCases[i].SetRectangle(rect_i);
           m_freeCases.erase(m_freeCases.begin() + j);
           --j;
@@ -78,13 +96,16 @@ namespace tloc { namespace math { namespace optimize {
         if (i_coord[0] == j_coord[0] + rect_j.GetWidth())
         {
           i_coord[0] -= rect_j.GetWidth();
+          rect_i.SetPosition(i_coord);
           rect_i.SetWidth(rect_i.GetWidth() + rect_j.GetWidth());
+          m_freeCases[i].SetRectangle(rect_i);
           m_freeCases.erase(m_freeCases.begin() + j);
           --j;
         }
         else if (i_coord[0] + rect_i.GetWidth() == j_coord[0])
         {
           rect_i.SetWidth(rect_i.GetWidth() + rect_j.GetWidth());
+          m_freeCases[i].SetRectangle(rect_i);
           m_freeCases.erase(m_freeCases.begin() + j);
           --j;
         }
@@ -198,6 +219,7 @@ namespace tloc { namespace math { namespace optimize {
                              tl_size& a_nodeIndexOut) const -> case_type
   {
     case_type bestNode;
+    bestNode.SetData(a_newCase.GetData());
 
     tl_int bestScore = NumericLimits_T<tl_int>::max();
 
@@ -215,7 +237,8 @@ namespace tloc { namespace math { namespace optimize {
         a_nodeIndexOut = i;
         break;
       }
-      else if (a_newCase.GetHeight() == m_freeCases[i].GetWidth() &&
+      else if (m_params.IsRotationAllowed() &&
+               a_newCase.GetHeight() == m_freeCases[i].GetWidth() &&
                a_newCase.GetWidth() == m_freeCases[i].GetHeight())
       {
         bestNode.SetX(m_freeCases[i].GetX());
@@ -241,7 +264,8 @@ namespace tloc { namespace math { namespace optimize {
           a_nodeIndexOut = i;
         }
       }
-      else if (a_newCase.GetHeight() <= m_freeCases[i].GetWidth() &&
+      else if (m_params.IsRotationAllowed() &&
+               a_newCase.GetHeight() <= m_freeCases[i].GetWidth() &&
                a_newCase.GetWidth() <= m_freeCases[i].GetHeight())
       {
         tl_int score = DoScoreByHeuristic(a_newCase, m_freeCases[i],

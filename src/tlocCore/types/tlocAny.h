@@ -128,7 +128,16 @@ namespace tloc { namespace core { namespace types {
   template <typename T_Config>
   class Any_TI
   {
+  public:
+    typedef Any_TI<T_Config>          this_type;
+
   protected:
+    Any_TI() : m_debugName("UNASSIGNED") { }
+    Any_TI(const this_type& a_other) : m_debugName(a_other.m_debugName) { }
+
+    this_type& operator=(this_type a_other) { swap(a_other); return *this; }
+    void swap(this_type& a_other) { core::swap(m_debugName, a_other.m_debugName); }
+
     void DoSetDebugName(const char* a_debugName)
     { m_debugName = a_debugName; }
 
@@ -139,7 +148,16 @@ namespace tloc { namespace core { namespace types {
   template <>
   class Any_TI<core_cfg::p_build_config::Release>
   {
+  public:
+    typedef Any_TI<core_cfg::p_build_config::Release>          this_type;
+
   protected:
+
+    Any_TI(const this_type& ) { }
+
+    this_type& operator=(this_type ) { }
+    void swap(this_type& ) { }
+
     void DoSetDebugName(const char* )
     { }
   };
@@ -148,7 +166,8 @@ namespace tloc { namespace core { namespace types {
     : Any_TI<core_cfg::BuildConfig::build_config_type>
   {
   public:
-    typedef Any         this_type;
+    typedef Any                                               this_type;
+    typedef Any_TI<core_cfg::BuildConfig::build_config_type>  base_type;
 
   public:
     Any();
@@ -170,7 +189,7 @@ namespace tloc { namespace core { namespace types {
 
     template <typename T>
     this_type& operator= (const T& a_other);
-    this_type& operator= (const this_type& a_other);
+    this_type& operator= (this_type a_other);
 
     this_type& swap(this_type& a_other);
 

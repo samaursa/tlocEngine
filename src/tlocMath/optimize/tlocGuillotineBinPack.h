@@ -29,6 +29,54 @@ namespace tloc { namespace math { namespace optimize {
 
     };
 
+    struct Params
+    {
+    public:
+      typedef Params      this_type;
+
+    private:
+      tl_int  m_freeRectChoice;
+      tl_int  m_splitMethod;
+      bool    m_mergeOnInsert;
+      bool    m_allowRotation;
+
+    public:
+      Params();
+
+      template <typename T_Heuristic>
+      this_type& FreeRectChoice()
+      {
+        using namespace free_rect_choice;
+        type_traits::AssertTypeIsSupported<T_Heuristic,
+          BestAreaFit, BestShortSideFit, BestLongSideFit, WorstAreaFit,
+          WorstShortSideFit, WorstLongSideFit>();
+
+        m_freeRectChoice = T_Heuristic::k_value;
+        return *this;
+      }
+
+      template <typename T_Heuristic>
+      this_type& Split()
+      {
+        using namespace split;
+        type_traits::AssertTypeIsSupported<T_Heuristic,
+          ShorterLeftoverAxis, LongerLeftoverAxis, MinimizeArea, MaximizeArea,
+          ShorterAxis, LongerAxis>();
+
+        m_splitMethod = T_Heuristic::k_value;
+        return *this;
+      }
+
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(MergeOnInsert, m_mergeOnInsert);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(AllowRotation, m_allowRotation);
+
+      TLOC_DECL_AND_DEF_GETTER_AUTO(GetFreeRectChoice, m_freeRectChoice);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(GetSplitMethod, m_splitMethod);
+
+      TLOC_DECL_AND_DEF_GETTER_AUTO(IsMergeOnInsert, m_mergeOnInsert);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(IsRotationAllowed, m_allowRotation);
+    };
+
   };
 
   // This algorithm is a port of the packer written (or compiled?) by Jukka 
@@ -40,10 +88,11 @@ namespace tloc { namespace math { namespace optimize {
   public:
     typedef GuillotineBinPack                                 this_type;
     typedef BinPackAlgorithm_I                                base_type;
+    typedef p_guillotine_bin_pack::Params                     params_type;
 
   public:
     explicit
-    GuillotineBinPack(dim_type a_binDim);
+    GuillotineBinPack(dim_type a_binDim, params_type a_params = params_type());
 
     case_type Insert(case_type a_case) override;
     real_type OccupancyRatio() const override;
@@ -80,36 +129,7 @@ namespace tloc { namespace math { namespace optimize {
                                          bool a_splitHorizontal);
 
   private:
-    tl_int m_freeRectChoice;
-    tl_int m_splitMethod;
-    bool   m_mergeOnInsert;
-
-  public:
-    template <typename T_Heuristic>
-    this_type& FreeRectChoice()
-    {
-      using namespace heuristic::guillotine::free_rect_choice;
-      type_traits::AssertTypeIsSupported<T_Heuristic,
-        BestAreaFit, BestShortSideFit, BestLongSideFit, WorstAreaFit, 
-        WorstShortSideFit, WorstLongSideFit>();
-
-      m_freeRectChoice = T_Heuristic::k_value;
-      return *this;
-    }
-
-    template <typename T_Heuristic>
-    this_type& Split()
-    {
-      using namespace heuristic::guillotine::split;
-      type_traits::AssertTypeIsSupported<T_Heuristic,
-        ShorterLeftoverAxis, LongerLeftoverAxis, MinimizeArea, MaximizeArea, 
-        ShorterAxis, LongerAxis>();
-
-      m_splitMethod = T_Heuristic::k_value;
-      return *this;
-    }
-
-    TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(MergeOnInsert, m_mergeOnInsert);
+    params_type m_params;
   };
 
 };};};

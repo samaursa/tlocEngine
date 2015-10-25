@@ -100,11 +100,25 @@ namespace tloc { namespace graphics { namespace media {
 
       explicit Params(font_size_type a_fontSize);
 
-      TLOC_DECL_PARAM_VAR(font_size_type, FontSize, m_fontSize);
-      TLOC_DECL_PARAM_VAR(gfx_t::Color, FontColor, m_fontColor);
-      TLOC_DECL_PARAM_VAR(gfx_t::Color, BgColor, m_bgColor);
-      TLOC_DECL_PARAM_VAR(dim_type, PaddingDim, m_paddingDim);
-      TLOC_DECL_PARAM_VAR(gfx_t::Color, PaddingColor, m_paddingColor);
+    private:
+      font_size_type m_fontSize;
+      gfx_t::Color   m_fontColor;
+      gfx_t::Color   m_bgColor;
+      dim_type       m_paddingDim;
+      gfx_t::Color   m_paddingColor;
+
+    public:
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(FontSize, m_fontSize);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(FontColor, m_fontColor);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(BgColor, m_bgColor);
+      TLOC_DECL_SETTER_CHAIN(dim_type, PaddingDim);
+      TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(PaddingColor, m_paddingColor);
+
+      TLOC_DECL_AND_DEF_GETTER_AUTO(FontSize, m_fontSize);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(FontColor, m_fontColor);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(BgColor, m_bgColor);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(PaddingDim, m_paddingDim);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(PaddingColor, m_paddingColor);
     };
 
   public:

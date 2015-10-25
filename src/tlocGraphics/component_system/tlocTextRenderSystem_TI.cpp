@@ -103,12 +103,12 @@ namespace tloc { namespace graphics { namespace component_system {
       // at bottom left). The minHeight is the absolute minimum which is just 
       // the position (i.e. bottom left of the quad)
       const auto& newPos = t->GetPosition();
-      const auto& actualHeight = q.GetHeight() - (fontParams.m_paddingDim[1]);
+      const auto& actualHeight = q.GetHeight() - (fontParams.PaddingDim()[1]);
 
       if (maxHeight < newPos[1] + actualHeight)
       { maxHeight = newPos[1] + actualHeight; }
-      else if (minHeight > newPos[1] + (fontParams.m_paddingDim[1]) )
-      { minHeight = newPos[1] + (fontParams.m_paddingDim[1]); }
+      else if (minHeight > newPos[1] + (fontParams.PaddingDim()[1]) )
+      { minHeight = newPos[1] + (fontParams.PaddingDim()[1]); }
 
       ++count;
     }
@@ -301,7 +301,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
       const math_t::Vec2f dim = itr->m_dim.ConvertTo<math_t::Vec2f>();
       const math_t::Vec2f padDim = 
-        font->GetCachedParams().m_paddingDim.template ConvertTo<math_t::Vec2f>();
+        font->GetCachedParams().PaddingDim().template ConvertTo<math_t::Vec2f>();
       const math_t::Vec2f finalDim = dim + (padDim * 2);
 
       using math_t::Rectf_bl;
@@ -394,7 +394,7 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef gfx_med::Font::Params               Params;
 
     Params fParams = a_entText->GetFont()->GetCachedParams();
-    math_t::Vec3f padDim = fParams.m_paddingDim
+    math_t::Vec3f padDim = fParams.PaddingDim()
       .ConvertTo<math_t::Vec3f, core_ds::p_tuple::overflow_zero>();
 
     math_t::Vec2f horBearing =
@@ -402,7 +402,7 @@ namespace tloc { namespace graphics { namespace component_system {
 
     using math_cs::transform_sptr;
 
-    const real_type yPos = (fParams.m_fontSize.GetHeightInPixels() + 
+    const real_type yPos = (fParams.FontSize().GetHeightInPixels() + 
                             a_entText->GetVerticalKerning()) * a_lineNumber;
 
     a_entPos->SetPosition

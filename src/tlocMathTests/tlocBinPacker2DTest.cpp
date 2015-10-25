@@ -14,6 +14,21 @@ namespace BinPacker2D
     typedef Bin::rect_type              rect_type;
     TLOC_EXPOSE_TYPEDEFS_2(rect_type, width, height);
 
+    SECTION("Assertion tests", "")
+    {
+      bin_vso b(MakeArgs(core_ds::MakeTuple(2, 2)));
+
+      TLOC_TEST_ASSERT
+      {
+        b->push_back(case_type(rect_type(width(1), height(0))));
+      } TLOC_TEST_ASSERT_CHECK();
+      
+      TLOC_TEST_ASSERT
+      {
+        b->push_back(case_type(rect_type(width(0), height(1)) ));
+      } TLOC_TEST_ASSERT_CHECK();
+    }
+
     SECTION("Small bin test", "")
     {
       bin_vso b(MakeArgs(core_ds::MakeTuple(2, 2)));

@@ -105,6 +105,8 @@ namespace tloc { namespace math { namespace optimize {
     auto itrEnd = tempBin->m_cases.end();
     while (itr != itrEnd)
     {
+      TLOC_ASSERT(itr->GetRectangle().IsValid(), "The case rectangle is invalid");
+
       case_type packedCase = pa.Insert(*itr);
       if (packedCase.IsValid())
       { 

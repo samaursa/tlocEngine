@@ -26,8 +26,8 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
-    VirtualStackObjectBase_TI()
-    : m_value(new value_type())
+    VirtualStackObjectBase_TI(this_type& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -487,13 +487,6 @@ namespace tloc { namespace core { namespace smart_ptr {
 #define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS   typename T
 #define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS  T, p_virtual_stack_object::copy_ctor::Available, p_virtual_stack_object::default_ctor::Available, core_cfg::p_build_config::Release
 #define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
-  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
-    VirtualStackObjectBase_TI()
-  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

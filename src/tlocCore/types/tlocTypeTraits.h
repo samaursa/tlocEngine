@@ -326,6 +326,14 @@ namespace tloc
     return static_cast<typename RemoveReference<T>::type&&>( arg );
   }
 
+  // -----------------------------------------------------------------------
+  // std::forward
+
+  template <typename T>
+  T&& 
+    Forward(typename RemoveReference<T>::type& a_arg)
+  { return (static_cast<T&&>(a_arg)); }
+
 };
 
 //------------------------------------------------------------------------

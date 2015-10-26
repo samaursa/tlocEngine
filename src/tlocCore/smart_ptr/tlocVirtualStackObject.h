@@ -9,6 +9,12 @@
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
 #include <tlocCore/base_classes/tlocPolicyBase.h>
+#include <tlocCore/types/tlocTypeTraits.h>
+
+#ifdef TLOC_COMPILER_VISUAL_CPP
+// muiltiple copy ctors are intentional
+#pragma warning(disable:4521) 
+#endif
 
 namespace tloc { namespace core { namespace smart_ptr {
 
@@ -53,33 +59,12 @@ private:
     typedef UniquePtr<value_type>                             value_type_uptr;
 
   public:
-    VirtualStackObjectBase_TI();
-
-    template <typename T1>
-    explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(New<value_type>(a_param))
+    template <typename... T_Args>
+    VirtualStackObjectBase_TI(T_Args&&... a_args)
+      : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
-    template <typename T1, typename T2>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4, typename T5>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
+    VirtualStackObjectBase_TI(this_type& a_other);
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
@@ -193,29 +178,10 @@ private:
     typedef UniquePtr<value_type>                             value_type_uptr;
 
   public:
-    template <typename T1>
-    explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
 
-    template <typename T1, typename T2>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4, typename T5>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(New<value_type>(a_param))
+    template <typename... T_Args>
+    VirtualStackObjectBase_TI(T_Args&&... a_args)
+      : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
     VirtualStackObjectBase_TI(const this_type& a_other);
@@ -273,33 +239,14 @@ private:
     typedef core::smart_ptr::VirtualPtr<value_type>               pointer;
     typedef core::smart_ptr::VirtualPtr<const value_type>         const_pointer;
 
-private:
+  private:
     typedef UniquePtr<value_type>                             value_type_uptr;
 
   public:
-    template <typename T1>
-    explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
 
-    template <typename T1, typename T2>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(New<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4, typename T5>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(New<value_type>(a_param))
+    template <typename... T_Args>
+    VirtualStackObjectBase_TI(T_Args&&... a_args)
+      : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
     ~VirtualStackObjectBase_TI();
@@ -347,31 +294,9 @@ private:
     typedef core::smart_ptr::VirtualPtr<const value_type>         const_pointer;
 
   public:
-    VirtualStackObjectBase_TI();
-
-    template <typename T1>
-    explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4, typename T5>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+    template <typename... T_Args>
+    VirtualStackObjectBase_TI(T_Args&&... a_args)
+      : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
     VirtualStackObjectBase_TI(const this_type& a_other);
@@ -471,29 +396,10 @@ private:
     typedef core::smart_ptr::VirtualPtr<const value_type>         const_pointer;
 
   public:
-    template <typename T1>
-    explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4, typename T5>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(MakeOnStack<value_type>(a_param))
+    
+    template <typename... T_Args>
+    VirtualStackObjectBase_TI(T_Args&&... a_args)
+      : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
     VirtualStackObjectBase_TI(const this_type& a_other);
@@ -549,30 +455,10 @@ private:
     typedef core::smart_ptr::VirtualPtr<const value_type>         const_pointer;
 
   public:
-    template <typename T1>
-    explicit VirtualStackObjectBase_TI(const Args<T1>& a_param)
-      : m_value(a_param.Arg1())
-    { }
 
-    template <typename T1, typename T2>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2>& a_param)
-      : m_value(a_param.Arg1(), a_param.Arg2())
-    { }
-
-    template <typename T1, typename T2, typename T3>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3>& a_param)
-      : m_value(a_param.Arg1(), a_param.Arg2(), a_param.Arg3())
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4>& a_param)
-      : m_value(a_param.Arg1(), a_param.Arg2(), a_param.Arg3(), a_param.Arg4())
-    { }
-
-    template <typename T1, typename T2, typename T3, typename T4, typename T5>
-    explicit VirtualStackObjectBase_TI(const Args<T1, T2, T3, T4, T5>& a_param)
-      : m_value(a_param.Arg1(), a_param.Arg2(), a_param.Arg3(), 
-                a_param.Arg4(), a_param.Arg5())
+    template <typename... T_Args>
+    VirtualStackObjectBase_TI(T_Args&&... a_args)
+      : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
     ~VirtualStackObjectBase_TI();

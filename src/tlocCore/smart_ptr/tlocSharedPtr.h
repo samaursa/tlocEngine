@@ -289,98 +289,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   // ///////////////////////////////////////////////////////////////////////
   // MakeShared
 
-  template <typename T>
+  template <typename T, typename... T_Args>
   SharedPtr<T>
-    MakeShared()
-  { return SharedPtr<T>(new T()); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1>
-  SharedPtr<T>
-    MakeShared(P1&& a)
-  { return SharedPtr<T>(new T(a)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b)
-  { return SharedPtr<T>(new T(a, b)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c)
-  { return SharedPtr<T>(new T(a, b, c)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d)
-  { return SharedPtr<T>(new T(a, b, c, d)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e)
-  { return SharedPtr<T>(new T(a, b, c, d, e)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f)
-  { return SharedPtr<T>(new T(a, b, c, d, e, f)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g)
-  { return SharedPtr<T>(new T(a, b, c, d, e, f, g)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7, typename P8>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h)
-  { return SharedPtr<T>(new T(a, b, c, d, e, f, g, h)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7, typename P8,
-            typename P9>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i)
-  { return SharedPtr<T>(new T(a, b, c, d, e, f, g, h, i)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7, typename P8,
-            typename P9, typename P10>
-  SharedPtr<T>
-    MakeShared(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i, P10&& j)
-  { return SharedPtr<T>(new T(a, b, c, d, e, f, g, h, i, j)); }
+    MakeShared(T_Args&&... a_args)
+  { return SharedPtr<T>(new T(Forward<T_Args>(a_args)...)); }
 
 };};};
 

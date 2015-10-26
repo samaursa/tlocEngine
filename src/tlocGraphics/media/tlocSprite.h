@@ -56,6 +56,13 @@ namespace tloc { namespace graphics { namespace media {
   TLOC_EXTERN_TEMPLATE_CLASS(SpriteInfo_T<core_str::String>);
   TLOC_EXTERN_TEMPLATE_CLASS(SpriteInfo_T<tl_ulong>);
 
+  // -----------------------------------------------------------------------
+  
+  namespace f_sprite_sheet
+  {
+    template <typename T_ typename T_NameType
+  };
+
 
 };};};
 

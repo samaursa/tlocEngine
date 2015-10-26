@@ -5,7 +5,6 @@
 #include <tlocCore/tlocCoreBase.h>
 
 #include <tlocCore/tlocAssert.h>
-#include <tlocCore/tlocArgs.h>
 #include <tlocCore/tlocConsole.h>
 #include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/tlocFunctional.h>

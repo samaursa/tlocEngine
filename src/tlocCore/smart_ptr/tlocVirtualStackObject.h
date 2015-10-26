@@ -2,7 +2,6 @@
 #ifndef _TLOC_CORE_SMART_PTR_VIRTUAL_STACK_OBJECT_H_
 #define _TLOC_CORE_SMART_PTR_VIRTUAL_STACK_OBJECT_H_
 
-#include <tlocCore/tlocArgs.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
 #include <tlocCore/configs/tlocBuildConfig.h>

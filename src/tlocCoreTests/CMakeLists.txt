@@ -3,7 +3,6 @@ set(TLOC_TESTS_CORE
   tlocAlgorithmsTest.cpp
   tlocAllocatorsTest.cpp
   tlocAnyTest.cpp
-  tlocArgsTest.cpp
   tlocArrayFixedTest.cpp
   tlocArrayTest.cpp
   tlocAssertTest.cpp

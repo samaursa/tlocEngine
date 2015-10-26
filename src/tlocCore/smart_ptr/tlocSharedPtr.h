@@ -7,7 +7,6 @@
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/smart_ptr/tlocSmartPtr.h>
 #include <tlocCore/memory/tlocAllocators.h>
-#include <tlocCore/tlocArgs.h>
 
 namespace tloc { namespace core { namespace smart_ptr {
 

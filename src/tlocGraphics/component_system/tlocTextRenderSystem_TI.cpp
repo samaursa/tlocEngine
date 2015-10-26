@@ -37,10 +37,10 @@ namespace tloc { namespace graphics { namespace component_system {
                         BufferArg a_debugName)
     : base_type(a_eventMgr, a_entityMgr,
                 register_type().Add<text_type>(), a_debugName)
-    , m_textEntityMgr( MakeArgs(m_textEventMgr.get()) )
-    , m_textSceneGraphSys( MakeArgs(m_textEventMgr.get(), m_textEntityMgr.get()) )
-    , m_textMeshRenderSys( MakeArgs(m_textEventMgr.get(), m_textEntityMgr.get()) )
-    , m_textAnimSys( MakeArgs(m_textEventMgr.get(), m_textEntityMgr.get()) )
+    , m_textEntityMgr(m_textEventMgr.get())
+    , m_textSceneGraphSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textMeshRenderSys(m_textEventMgr.get(), m_textEntityMgr.get())
+    , m_textAnimSys(m_textEventMgr.get(), m_textEntityMgr.get())
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

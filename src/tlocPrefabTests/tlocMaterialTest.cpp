@@ -35,9 +35,9 @@ namespace
   {
     core_cs::component_pool_mgr_vso compMgr;
     core_cs::event_manager_vso      evtMgr;
-    core_cs::entity_manager_vso     entMgr(MakeArgs(evtMgr.get()));
+    core_cs::entity_manager_vso     entMgr(evtMgr.get());
 
-    system_vso                      system(MakeArgs(evtMgr.get(), entMgr.get()) );
+    system_vso                      system(evtMgr.get(), entMgr.get());
     TLOC_UNUSED(system);
 
     // -----------------------------------------------------------------------

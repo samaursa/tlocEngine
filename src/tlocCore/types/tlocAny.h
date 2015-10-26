@@ -153,6 +153,7 @@ namespace tloc { namespace core { namespace types {
 
   protected:
 
+    Any_TI() { }
     Any_TI(const this_type& ) { }
 
     this_type& operator=(this_type ) { }

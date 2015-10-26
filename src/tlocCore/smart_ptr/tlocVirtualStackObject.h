@@ -59,11 +59,13 @@ private:
     typedef UniquePtr<value_type>                             value_type_uptr;
 
   public:
+
     template <typename... T_Args>
     VirtualStackObjectBase_TI(T_Args&&... a_args)
       : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
+    VirtualStackObjectBase_TI(this_type&& a_other);
     VirtualStackObjectBase_TI(this_type& a_other);
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
@@ -184,6 +186,8 @@ private:
       : m_value(new value_type(Forward<T_Args>(a_args)...))
     { }
 
+    VirtualStackObjectBase_TI(this_type& a_other);
+    VirtualStackObjectBase_TI(this_type&& a_other);
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
@@ -296,9 +300,11 @@ private:
   public:
     template <typename... T_Args>
     VirtualStackObjectBase_TI(T_Args&&... a_args)
-      : m_value(new value_type(Forward<T_Args>(a_args)...))
+      : m_value(Forward<T_Args>(a_args)...)
     { }
 
+    VirtualStackObjectBase_TI(this_type&& a_other);
+    VirtualStackObjectBase_TI(this_type& a_other);
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
@@ -399,9 +405,11 @@ private:
     
     template <typename... T_Args>
     VirtualStackObjectBase_TI(T_Args&&... a_args)
-      : m_value(new value_type(Forward<T_Args>(a_args)...))
+      : m_value(Forward<T_Args>(a_args)...)
     { }
 
+    VirtualStackObjectBase_TI(this_type&& a_other);
+    VirtualStackObjectBase_TI(this_type& a_other);
     VirtualStackObjectBase_TI(const this_type& a_other);
     ~VirtualStackObjectBase_TI();
 
@@ -458,7 +466,7 @@ private:
 
     template <typename... T_Args>
     VirtualStackObjectBase_TI(T_Args&&... a_args)
-      : m_value(new value_type(Forward<T_Args>(a_args)...))
+      : m_value(Forward<T_Args>(a_args)...)
     { }
 
     ~VirtualStackObjectBase_TI();

@@ -8,7 +8,7 @@ namespace tloc { namespace core { namespace component_system {
   ECS::
    ECS(BufferArg a_debugName)
    : core_bclass::DebugName(a_debugName)
-   , m_entMgr(MakeArgs(m_eventMgr.get()))
+   , m_entMgr(m_eventMgr.get())
    , m_autoRecycleUnusedComponents(true)
    , m_autoRecycleDeltaT(0.5)
   { }

@@ -26,6 +26,14 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
+    VirtualStackObjectBase_TI(this_type&& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_PARAMS>::
     VirtualStackObjectBase_TI(this_type& a_other)
     : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
   { }
@@ -266,6 +274,22 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(this_type&& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(this_type& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_NO_DEFAULT_PARAMS>::
     VirtualStackObjectBase_TI(const this_type& a_other)
     : m_value(new value_type(*a_other.m_value))
   { }
@@ -492,6 +516,22 @@ namespace tloc { namespace core { namespace smart_ptr {
 
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    VirtualStackObjectBase_TI(this_type&& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
+    VirtualStackObjectBase_TI(this_type& a_other)
+    : VirtualStackObjectBase_TI(const_cast<this_type&>(a_other))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     VirtualStackObjectBase_TI(const this_type& a_other)
     : m_value(a_other.m_value)
   { }
@@ -696,6 +736,22 @@ namespace tloc { namespace core { namespace smart_ptr {
 #define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS   typename T
 #define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS  T, p_virtual_stack_object::copy_ctor::Available, p_virtual_stack_object::default_ctor::NotAvail, core_cfg::p_build_config::Release
 #define TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TYPE    typename VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(this_type&& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
+  { }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_TEMPS>
+  VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_NO_DEFAULT_PARAMS>::
+    VirtualStackObjectBase_TI(this_type& a_other)
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
+  { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

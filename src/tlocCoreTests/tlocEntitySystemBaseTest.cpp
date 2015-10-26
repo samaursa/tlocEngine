@@ -180,7 +180,7 @@ namespace TestingEntitySystemBase
     e2_c = MakeShared<EmptyComponent2>();
 
     core_cs::event_manager_vso      evtMgr;
-    core_cs::entity_manager_vso     entMgr( MakeArgs(evtMgr.get()) );
+    core_cs::entity_manager_vso     entMgr(evtMgr.get());
 
     EntSys e(evtMgr.get(), entMgr.get());
     CHECK(e.GetNumEntities() == 0);

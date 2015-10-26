@@ -238,98 +238,10 @@ namespace tloc { namespace core { namespace smart_ptr {
   // ///////////////////////////////////////////////////////////////////////
   // MakeUnique
 
-  template <typename T>
+  template <typename T, typename... T_Args>
   UniquePtr<T>
-    MakeUnique()
-  { return UniquePtr<T>(new T()); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1>
-  UniquePtr<T>
-    MakeUnique(P1&& a)
-  { return UniquePtr<T>(new T(a)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b)
-  { return UniquePtr<T>(new T(a, b)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c)
-  { return UniquePtr<T>(new T(a, b, c)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d)
-  { return UniquePtr<T>(new T(a, b, c, d)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e)
-  { return UniquePtr<T>(new T(a, b, c, d, e)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f)
-  { return UniquePtr<T>(new T(a, b, c, d, e, f)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g)
-  { return UniquePtr<T>(new T(a, b, c, d, e, f, g)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7, typename P8>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h)
-  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7, typename P8,
-            typename P9>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i)
-  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i)); }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <typename T, 
-            typename P1, typename P2, typename P3, typename P4,
-            typename P5, typename P6, typename P7, typename P8,
-            typename P9, typename P10>
-  UniquePtr<T>
-    MakeUnique(P1&& a, P2&& b, P3&& c, P4&& d, P5&& e, P6&& f, P7&& g, P8&& h, P9&& i, P10&& j)
-  { return UniquePtr<T>(new T(a, b, c, d, e, f, g, h, i, j)); }
+    MakeUnique(T_Args&&... a_args)
+  { return UniquePtr<T>(new T(Forward<T_Args>(a_args)...)); }
 
 };};};
 

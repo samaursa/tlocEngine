@@ -142,7 +142,7 @@ namespace TestingRigidBodySystem
     physicsMgr.Register(&myWorldContactCallback);
 
     event_manager_vso evntMgr;
-    entity_manager_vso entityMgr( MakeArgs(evntMgr.get()) );
+    entity_manager_vso entityMgr(evntMgr.get());
 
     SharedPtr<transform_type> transformComponent = 
       MakeShared<transform_type>();

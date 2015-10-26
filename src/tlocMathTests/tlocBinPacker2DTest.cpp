@@ -16,7 +16,7 @@ namespace BinPacker2D
 
     SECTION("Assertion tests", "")
     {
-      bin_vso b(MakeArgs(core_ds::MakeTuple(2, 2)));
+      bin_vso b(core_ds::MakeTuple(2, 2));
 
       TLOC_TEST_ASSERT
       {
@@ -31,7 +31,7 @@ namespace BinPacker2D
 
     SECTION("Small bin test", "")
     {
-      bin_vso b(MakeArgs(core_ds::MakeTuple(2, 2)));
+      bin_vso b(core_ds::MakeTuple(2, 2));
       b->push_back(case_type(rect_type(width(1), height(1)) ));
       b->push_back(case_type(rect_type(width(1), height(1)) ));
       b->push_back(case_type(rect_type(width(1), height(1)) ));
@@ -45,7 +45,7 @@ namespace BinPacker2D
 
     SECTION("Small bin not large enough", "")
     {
-      bin_vso b(MakeArgs(core_ds::MakeTuple(2, 2)));
+      bin_vso b(core_ds::MakeTuple(2, 2));
       b->SetAutoExpand(false);
       b->push_back(case_type(rect_type(width(2), height(2)) ));
       b->push_back(case_type(rect_type(width(1), height(1)) ));
@@ -58,7 +58,7 @@ namespace BinPacker2D
 
     SECTION("Large bin not large enough - rotation NOT ALLOWED", "")
     {
-      bin_vso b(MakeArgs(core_ds::MakeTuple(10, 10)));
+      bin_vso b(core_ds::MakeTuple(10, 10));
       b->SetAutoExpand(false);
       b->push_back(case_type(rect_type(width(6), height(10)) ));
       b->push_back(case_type(rect_type(width(10), height(1)) ));
@@ -71,7 +71,7 @@ namespace BinPacker2D
 
     SECTION("Large bin not large enough - rotation ALLOWED", "")
     {
-      bin_vso b(MakeArgs(core_ds::MakeTuple(10, 10)));
+      bin_vso b(core_ds::MakeTuple(10, 10));
       b->SetAutoExpand(false);
       b->push_back(case_type(rect_type(width(6), height(10)) ));
       b->push_back(case_type(rect_type(width(10), height(1)) ));
@@ -90,7 +90,7 @@ namespace BinPacker2D
     {
       const tl_int binWidth = 10;
       const tl_int binHeight = 10;
-      bin_vso b(MakeArgs(core_ds::MakeTuple(binWidth, binHeight)));
+      bin_vso b(core_ds::MakeTuple(binWidth, binHeight));
 
       SECTION("Few rectangles to pack", "")
       {

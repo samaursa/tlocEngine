@@ -177,7 +177,7 @@ namespace TestingEntityManager
       // -----------------------------------------------------------------------
       // enable disable entity
 
-      core_cs::entity_vso badEnt(MakeArgs(0, entity_manager_vptr(&eMgr)) );
+      core_cs::entity_vso badEnt(0, entity_manager_vptr(&eMgr) );
 
       TLOC_TEST_ASSERT
       { eMgr.DeactivateEntity(badEnt.get()); }

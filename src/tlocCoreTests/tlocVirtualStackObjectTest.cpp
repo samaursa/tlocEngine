@@ -10,6 +10,7 @@
 #include <tlocCore/containers/tloc_containers.h>
 #include <tlocCore/containers/tloc_containers.inl.h>
 
+#include <array>
 
 using namespace tloc;
 using namespace core_sptr;
@@ -326,9 +327,10 @@ namespace TestingVirtualStackObject {
 
   TEST_CASE("core/smart_ptr/VirtualStackObject/algorithms", "")
   {
-    //SECTION("Compare::VirtualPtr", "")
+#ifndef TLOC_COMPILER_VISUAL_CPP_2013
+    SECTION("Compare::VirtualPtr", "")
     {
-      core_conts::ArrayFixed<int_vso, 100> int_array;
+      core_conts::ArrayFixed<int_vso, 9> int_array;
 
       typedef core_conts::Array<int_vso>      int_vso_cont;
 
@@ -353,5 +355,6 @@ namespace TestingVirtualStackObject {
           MakeWithVirtualPtr(temp.get()) );
 
     }
+#endif
   }
 }

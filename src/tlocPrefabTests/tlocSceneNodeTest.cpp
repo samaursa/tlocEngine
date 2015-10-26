@@ -18,14 +18,14 @@ namespace
   {
     core_cs::component_pool_mgr_vso compMgr;
     core_cs::event_manager_vso      evtMgr;
-    core_cs::entity_manager_vso     entMgr(MakeArgs(evtMgr.get()));
+    core_cs::entity_manager_vso     entMgr(evtMgr.get());
 
-    system_vso                      system(MakeArgs(evtMgr.get(), entMgr.get()) );
+    system_vso                      system(evtMgr.get(), entMgr.get());
     TLOC_UNUSED(system);
     
     //SECTION("Construct", "")
     {
-      core_cs::entity_vso ent(MakeArgs(0, nullptr));
+      core_cs::entity_vso ent(0, nullptr);
 
       component_ptr ptr = pref_gfx::SceneNode(entMgr.get(), compMgr.get())
         .Construct(ent.get());

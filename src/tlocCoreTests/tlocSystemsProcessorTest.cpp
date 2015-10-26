@@ -161,10 +161,10 @@ namespace
   TEST_CASE("core/component_system/SystemsProcessor/", "")
   {
     core_cs::event_manager_vso          eventMgr;
-    core_cs::entity_manager_vso         entMgr(MakeArgs(eventMgr.get()));
+    core_cs::entity_manager_vso         entMgr(eventMgr.get());
 
-    dummy_sys1_vso sys1( MakeArgs(eventMgr.get(), entMgr.get()) );
-    dummy_sys2_vso sys2( MakeArgs(eventMgr.get(), entMgr.get()) );
+    dummy_sys1_vso sys1( eventMgr.get(), entMgr.get() );
+    dummy_sys2_vso sys2( eventMgr.get(), entMgr.get() );
 
     auto dummyComp1 = core_sptr::MakeShared<DummyComp1>();
     auto dummyComp2 = core_sptr::MakeShared<DummyComp2>();
@@ -241,7 +241,7 @@ namespace
       auto itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys1.get());
       CHECK(itrSysInfo.first != itrSysInfo.second);
 
-      dummy_sys2_vso sys3(MakeArgs(eventMgr.get(), entMgr.get()));
+      dummy_sys2_vso sys3(eventMgr.get(), entMgr.get());
       itrSysInfo = f_systems_processor::GetSystemInfo(sp, sys3.get());
       CHECK(itrSysInfo.first == itrSysInfo.second);
     }

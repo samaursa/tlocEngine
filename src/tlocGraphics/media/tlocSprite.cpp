@@ -16,8 +16,6 @@ namespace tloc { namespace graphics { namespace media {
     SpriteSheet_T()
   { }
 
-  std::make_shared
-
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_SPRITE_SHEET_TEMPS>

@@ -1043,7 +1043,7 @@ namespace tloc { namespace graphics { namespace gl {
                                    core_cfg::BuildConfig::build_config_type()))
       << "Adding Uniform will invalidate previous Uniform pointers";
 
-    m_uniforms.push_back(core::MakePair(uniform_vso(MakeArgs(a_uniform)),
+    m_uniforms.push_back(core::MakePair(uniform_vso(a_uniform),
                                         index_cont_1(1, -1)) );
     m_flags.Unmark(k_uniformsCached);
 
@@ -1066,7 +1066,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     index_cont indexCont(a_vbo.size_names(), -1);
 
-    m_VBOs.push_back(core::MakePair(vbo_vso(MakeArgs(a_vbo)), indexCont) );
+    m_VBOs.push_back(core::MakePair(vbo_vso(a_vbo), indexCont) );
     m_flags.Unmark(k_attributeVBOsCached);
 
     return m_VBOs.back().first.get();

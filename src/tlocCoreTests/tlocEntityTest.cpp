@@ -94,7 +94,7 @@ namespace TestingEntity
 
   TEST_CASE("Core/component_system/entity/entity", "")
   {
-    entity_mock_vso e( MakeArgs(0) );
+    entity_mock_vso e(0);
 
     CHECK(e->GetID() == 0);
     CHECK(e->GetComponentGroupList().size() == (tl_size)component_group::k_count);

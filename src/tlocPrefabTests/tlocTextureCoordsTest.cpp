@@ -14,7 +14,7 @@ namespace
   {
     core_cs::component_pool_mgr_vso compMgr;
     core_cs::event_manager_vso      evtMgr;
-    core_cs::entity_manager_vso     entMgr(MakeArgs(evtMgr.get()));
+    core_cs::entity_manager_vso     entMgr(evtMgr.get());
 
     //SECTION("Construct", "")
     {

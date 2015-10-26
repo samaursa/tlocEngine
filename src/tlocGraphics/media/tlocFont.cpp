@@ -116,7 +116,7 @@ namespace tloc { namespace graphics { namespace media {
     spriteInfo.reserve(strLength);
 
     // prepare bins from the glyphs
-    math_opt::bin_vso glyphBin(MakeArgs(core_ds::MakeTuple(32, 32)));
+    math_opt::bin_vso glyphBin(core_ds::MakeTuple(32, 32));
     glyphBin->SetAutoExpand(true).SetPowerOfTwo(true);
 
     TLOC_EXPOSE_TYPEDEFS_2(math_opt::Bin, case_type, rect_type);
@@ -171,7 +171,7 @@ namespace tloc { namespace graphics { namespace media {
                 "Container size mismatch - expected container sizes to be the "
                 "same");
 
-    sprite_sheet_ul_vso ss( MakeArgs(spriteSheet, spriteInfo) );
+    sprite_sheet_ul_vso ss(spriteSheet, spriteInfo);
     m_spriteSheet = ss;
 
     m_flags.Mark(k_font_cache_generated);

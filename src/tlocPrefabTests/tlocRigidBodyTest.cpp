@@ -21,13 +21,13 @@ namespace
   {
     core_cs::component_pool_mgr_vso compMgr;
     core_cs::event_manager_vso      evtMgr;
-    core_cs::entity_manager_vso     entMgr(MakeArgs(evtMgr.get()));
+    core_cs::entity_manager_vso     entMgr(evtMgr.get());
 
     phys_box2d::PhysicsManager::vec_type g(0, -2.0f);
     phys_box2d::PhysicsManager  physMgr;
     physMgr.Initialize(phys_box2d::PhysicsManager::gravity(g));
 
-    system_vso                      system(MakeArgs(evtMgr.get(), entMgr.get(), &physMgr.GetWorld()) );
+    system_vso                      system(evtMgr.get(), entMgr.get(), &physMgr.GetWorld());
     TLOC_UNUSED(system);
 
     //SECTION("Construct", "")

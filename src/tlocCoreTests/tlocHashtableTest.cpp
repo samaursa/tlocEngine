@@ -347,7 +347,7 @@ namespace TestingHashtable
       }
 
       CHECK(h.count(5) == (Loki::IsSameType<typename T_HashT::unique_keys,
-        type_true>::value ? 1 : 10));
+        std::true_type>::value ? 1 : 10));
     }
   }
 
@@ -415,7 +415,7 @@ namespace TestingHashtable
       for (u32 i = 0; i < 10; ++i)
       {
         CHECK(h.count(i) == (Loki::IsSameType<typename T_HashT::unique_keys,
-          type_true>::value ? 1 : numOfInserts));
+          std::true_type>::value ? 1 : numOfInserts));
       }
     }
 
@@ -440,7 +440,7 @@ namespace TestingHashtable
       }
 
       CHECK(count == (Loki::IsSameType<typename T_HashT::unique_keys,
-          type_true>::value ? 1 : 3));
+          std::true_type>::value ? 1 : 3));
     }
   }
 

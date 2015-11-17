@@ -53,7 +53,7 @@ namespace tloc { namespace core { namespace logging {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Log_I::
-    Log_I(severity_type a_severity, BufferArg a_fileName,
+    Log_I(severity_type a_severity, buffer_arg a_fileName,
           const tl_ulong a_lineNumber)
     : m_fileName(a_fileName)
     , m_lineNumber(a_lineNumber)
@@ -62,7 +62,7 @@ namespace tloc { namespace core { namespace logging {
     m_finalString.reserve(g_initialBufferSize);
 
     using namespace core_time;
-    m_time = core_utils::CastNumber<time_type>
+    m_time = core_utils::cast_number<time_type>
       (GetProgramTime().ElapsedSeconds());
   }
 
@@ -70,7 +70,7 @@ namespace tloc { namespace core { namespace logging {
 
   Log_I::this_type_cref
     Log_I::
-    operator<<(BufferArg a_string) const
+    operator<<(buffer_arg a_string) const
   {
     m_finalString += a_string;
     return *this;

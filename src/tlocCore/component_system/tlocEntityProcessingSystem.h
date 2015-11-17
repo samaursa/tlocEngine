@@ -26,7 +26,7 @@ namespace tloc { namespace core { namespace component_system {
     EntityProcessingSystem(event_manager_ptr a_eventMgr,
                            entity_manager_ptr a_entityMgr,
                            register_type a_compsToRegister, 
-                           BufferArg a_debugName);
+                           buffer_arg a_debugName);
 
   protected: // Initialization
     virtual error_type Pre_Initialize();

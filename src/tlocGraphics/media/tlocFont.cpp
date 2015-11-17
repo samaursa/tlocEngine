@@ -137,7 +137,7 @@ namespace tloc { namespace graphics { namespace media {
       glyphBin->push_back(case_type(r).SetData(gd));
     }
 
-    TLOC_ASSERT(glyphBin->size() == strLength && glyphBin->size() == m_metrics.size(), 
+    TLOC_ASSERT(glyphBin->size() == strLength && glyphBin->size() == m_cachedMetrics.size(), 
                 "Expected container sizes to match");
 
     math_opt::BinPacker2D bp(glyphBin.get());
@@ -171,8 +171,7 @@ namespace tloc { namespace graphics { namespace media {
                 "Container size mismatch - expected container sizes to be the "
                 "same");
 
-    sprite_sheet_ul_vso ss(spriteSheet, spriteInfo);
-    m_spriteSheet = ss;
+    m_spriteSheet = sprite_sheet_ul_vso(spriteSheet, spriteInfo);
 
     m_flags.Mark(k_font_cache_generated);
 
@@ -195,26 +194,16 @@ namespace tloc { namespace graphics { namespace media {
 
   Font::const_glyph_metrics_iterator
     Font::
-    GetGlyphMetric(tl_ulong a_char) const
+    GetGlyphMetric(tl_ulong a_char, const Params& a_params) const
   {
-    return core::find_if_all(m_metrics, 
-                             algos::compare::glyph_metrics::CharCode(a_char));
-  }
+    auto itr = core::find_if_all(m_cachedMetrics, 
+                                 algos::compare::glyph_metrics::CharCode(a_char));
 
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    if (itr == m_cachedMetrics.end())
+    { DoCacheGlyphMetrics(a_char, a_params); }
+    else { return itr; }
 
-  Font::const_glyph_metrics_iterator
-    Font::begin_glyph_metrics() const
-  {
-    return m_metrics.begin();
-  }
-
-  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  Font::const_glyph_metrics_iterator
-    Font::end_glyph_metrics() const
-  {
-    return m_metrics.end();
+    return GetGlyphMetric(a_char, a_params);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -250,7 +239,7 @@ namespace tloc { namespace graphics { namespace media {
 
   void
     Font::
-    DoCacheGlyphMetrics(tl_ulong a_char, const Params& a_params)
+    DoCacheGlyphMetrics(tl_ulong a_char, const Params& a_params) const
   {
     m_ft->SetCurrentSize(a_params.FontSize().GetHeightInPixels());
     free_type::FreeTypeGlyph ftg = m_ft->LoadGlyph(a_char);
@@ -267,7 +256,7 @@ namespace tloc { namespace graphics { namespace media {
            .HoriAdvance( ftMetrics.horiAdvance * s )
            .VertAdvance( ftMetrics.vertAdvance * s );
 
-    m_metrics.push_back(metrics);
+    m_cachedMetrics.push_back(metrics);
   }
 
 };};};

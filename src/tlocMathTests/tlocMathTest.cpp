@@ -148,8 +148,8 @@ namespace TestingTlocMath
       CHECK(math::Approx(0.0f, 0.0f, 1) );
       CHECK(math::Approx(-0.0f, +0.0f, 1) );
 
-      const auto f32_eps = NumericLimits_T<f32>::epsilon();
-      const auto s32_eps = NumericLimits_T<s32>::epsilon();
+      const auto f32_eps = std::numeric_limits<f32>::epsilon();
+      const auto s32_eps = std::numeric_limits<s32>::epsilon();
 
       CHECK(math::ApproxAbsolute(1, 1, s32_eps) );
       CHECK(math::ApproxAbsolute(1.0f, 1.0f, f32_eps) );

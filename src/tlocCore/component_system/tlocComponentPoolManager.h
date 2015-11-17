@@ -19,7 +19,7 @@ namespace tloc { namespace core { namespace component_system {
   // ComponentPool_I
 
   class ComponentPool_I
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     typedef ComponentPool_I                         this_type;
@@ -120,7 +120,7 @@ namespace tloc { namespace core { namespace component_system {
   };
 
   class ComponentPoolManager
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     typedef ComponentPool_I                             component_pool_type;

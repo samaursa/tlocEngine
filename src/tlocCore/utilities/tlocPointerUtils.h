@@ -46,8 +46,8 @@ namespace tloc { namespace core { namespace utils {
   bool IsSamePointer(T a_ptr1, U a_ptr2)
   {
     // Perform some checks
-    typedef type_true   valid_type;
-    typedef type_false  invalid_type;
+    typedef std::true_type   valid_type;
+    typedef std::false_type  invalid_type;
 
     typedef typename Loki::Select< (Loki::TypeTraits<T>::isUnsignedInt||
       Loki::TypeTraits<T>::isPointer), valid_type, invalid_type>::Result  T_type;

@@ -9,52 +9,37 @@
 
 namespace tloc { namespace core { namespace io {
 
-  class Path
+  class path
   {
   public:
-    typedef Path                  this_type;
-    typedef string::String        string_type;
+    typedef path                  this_type;
+    typedef std::string           string_type;
 
   public:
-    Path(const BufferArg& a_path);
+    path(const buffer_arg& a_path);
 
-    const this_type& GetFileName(string_type& a_out) const;
-    const this_type& GetFileNameWithoutExtension(string_type& a_out) const;
-    const this_type& GetExtension(string_type& a_out) const;
-    const this_type& GetPathWithoutFileName(string_type& a_out) const;
+    const this_type& get_file_name(string_type& a_out) const;
+    const this_type& get_file_name_without_extension(string_type& a_out) const;
+    const this_type& get_extension(string_type& a_out) const;
+    const this_type& get_path_without_file_name(string_type& a_out) const;
 
-    string_type GetFileName() const;
-    string_type GetFileNameWithoutExtension() const;
-    string_type GetExtension() const;
-    string_type GetPathWithoutFileName() const;
+    string_type get_file_name() const;
+    string_type get_file_name_without_extension() const;
+    string_type get_extension() const;
+    string_type get_path_without_file_name() const;
 
-    ///-------------------------------------------------------------------------
-    /// @brief Queries if the file in the path exists.
-    ///
-    /// @return ascii, binary or none if the file does not exist
-    ///-------------------------------------------------------------------------
-    bool FileExists() const;
+    bool file_exists() const;
+    bool folder_exists() const;
+    bool has_file_name() const;
 
-    ///-------------------------------------------------------------------------
-    /// @brief
-    /// Queries if the path folder exists
-    ///
-    /// @note False may be returned if the folder exists but is not
-    /// accessible.
-    ///
-    /// @return true if it succeeds, false if it fails.
-    ///-------------------------------------------------------------------------
-    bool FolderExists() const;
-    bool HasFilename() const;
-
-    TLOC_DECL_AND_DEF_GETTER(const char*, GetPath, m_path.c_str());
-    this_type& SetPath(const BufferArg& a_path);
+    TLOC_DECL_AND_DEF_GETTER(const char*, get_path, m_path.c_str());
+    this_type& set_path(const buffer_arg& a_path);
 
     bool operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);
 
   private:
-    void DoFixPath();
+    void do_fix_path();
 
     string_type m_path;
   };
@@ -70,16 +55,16 @@ namespace tloc { namespace core {
     template <typename T_Logger, typename T_BuildConfig>
     const Log_T<T_Logger, T_BuildConfig>&
       operator << (const Log_T<T_Logger, T_BuildConfig>& a_log,
-                   const core_io::Path& a_path)
+                   const core_io::path& a_path)
     {
-      if (a_path.HasFilename())
+      if (a_path.has_file_name())
       {
-        a_log << a_path.GetFileName() << "(" 
-          << a_path.GetPathWithoutFileName() << ")";
+        a_log << a_path.get_file_name() << "(" 
+          << a_path.get_path_without_file_name() << ")";
       }
       else
       {
-        a_log << a_path.GetPath();
+        a_log << a_path.get_path();
       }
       return a_log;
     }

@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace base_classes {
   ///-------------------------------------------------------------------------
   template <class T_ParentClass>
   class ImplBase
-    : public NonCopyable_I
+    : public non_copyable_i
   {
   public:
     typedef T_ParentClass                             parent_type;

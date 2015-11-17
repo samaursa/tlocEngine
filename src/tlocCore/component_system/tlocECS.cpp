@@ -6,7 +6,7 @@ namespace tloc { namespace core { namespace component_system {
   // ECS
 
   ECS::
-   ECS(BufferArg a_debugName)
+   ECS(buffer_arg a_debugName)
    : core_bclass::DebugName(a_debugName)
    , m_entMgr(m_eventMgr.get())
    , m_autoRecycleUnusedComponents(true)

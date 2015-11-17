@@ -82,17 +82,11 @@
 #if defined(TLOC_COMPILER_VISUAL_CPP)
   //------------------------------------------------------------------------
   // Check for exception handling
-# if defined(_CPPUNWIND)
-#   define TLOC_CPPUNWIND_ENABLED
-#   define TLOC_THROW() throw
-# else
-#   define TLOC_THROW()
-# endif
+# define TLOC_CPPUNWIND_ENABLED
+# define TLOC_THROW() throw
   //------------------------------------------------------------------------
   // Check for RTTI
-# if defined(_CPPRTTI)
-#   define TLOC_RTTI_ENABLED
-# endif
+# define TLOC_RTTI_ENABLED
   //------------------------------------------------------------------------
   // Optimizations
 # ifndef TLOC_DEBUG
@@ -105,14 +99,10 @@
 #elif defined (__GNUC__) || defined(__clang__)
   //------------------------------------------------------------------------
   // Check for exception handling
-# if defined (__EXCEPTIONS)
-#   define TLOC_CPPUNWIND_ENABLED
-# endif
+# define TLOC_CPPUNWIND_ENABLED
   //------------------------------------------------------------------------
   // Check for RTTI
-# if defined (__GXX_RTTI)
-#   define TLOC_RTTI_ENABLED
-# endif
+# define TLOC_RTTI_ENABLED
 
 #else
   // unsupported compiler
@@ -139,24 +129,6 @@
 // some compilers don't support the feature directly
 #ifdef TLOC_COMPILER_VISUAL_CPP_2010
 #  define override 
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-// Exceptions
-
-#ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
-# if defined (TLOC_CPPUNWIND_ENABLED) && !defined (TLOC_ENABLE_CPPUNWIND)
-#   error "Exception handling must be disabled for this project."
-# endif
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-// RTTI
-
-#ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
-# if defined (TLOC_RTTI_ENABLED) && !defined (TLOC_ENABLE_CPPRTTI)
-#   error "RTTI must be disabled for this project."
-# endif
 #endif
 
 //////////////////////////////////////////////////////////////////////////

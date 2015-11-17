@@ -656,7 +656,7 @@ namespace tloc { namespace core {
     for (i = rangeSize - 1; i > 0; --i)
     {
       swap(a_first[i],
-        a_first[rng::g_defaultRNG.GetRandomInteger
+        a_first[rng::g_defaultRNG.get_random_int
         (static_cast<int_type>(i) + 1)]);
     }
   }
@@ -1837,7 +1837,7 @@ namespace tloc { namespace core {
       { return; }
 
       const tl_ptrdiff randomPiv =
-        rng::g_defaultRNG.GetRandomInteger(0, (rng::rng_default::int_type)size);
+        rng::g_defaultRNG.get_random_int(0, (rng::rng_default::int_type)size);
 
       T_InputIterator randItr = a_first;
       tloc::core::advance(randItr, randomPiv);

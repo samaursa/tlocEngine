@@ -24,7 +24,7 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Entity::
-    Entity(entity_id a_id, BufferArg a_debugName, ent_mgr_ptr a_entMgr)
+    Entity(entity_id a_id, buffer_arg a_debugName, ent_mgr_ptr a_entMgr)
     : base_type(a_debugName)
     , m_id(a_id)
     , m_index(size_type() - 1)
@@ -67,7 +67,7 @@ namespace tloc { namespace core { namespace component_system {
 
     const auto numComponents = core::distance(itr, itrEnd);
     TLOC_UNUSED_RELEASE(numComponents);
-    TLOC_ASSERT(a_index < core_utils::CastNumber<size_type>(numComponents), 
+    TLOC_ASSERT(a_index < core_utils::cast_number<size_type>(numComponents), 
                 "Component at index does not exist in this entity");
 
     core::advance(itr, a_index);

@@ -19,6 +19,8 @@
 #include <tlocGraphics/component_system/tlocStaticText.h>
 #include <tlocGraphics/component_system/tlocDynamicText.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace component_system {
 
   using namespace core_ds;
@@ -279,9 +281,13 @@ namespace tloc { namespace graphics { namespace component_system {
       gfx_med::Font::const_glyph_metrics_iterator 
         itr = font->GetGlyphMetric(text[i]);
 
-      TLOC_LOG_GFX_WARN_IF(itr == font->end_glyph_metrics())
-        << "Glyph metrics not found for (" << text[i] << ")"
-        << " - symbol does not exist in the glyph cache";
+      if (itr == font->end_glyph_metrics())
+      { 
+        TLOC_LOG_GFX_WARN_FILENAME_ONLY()
+          << "Glyph metrics not found for (" << text[i] << ")"
+          << " - symbol does not exist in the glyph cache";
+        continue; 
+      }
 
       // -----------------------------------------------------------------------
       // grab the sprite info

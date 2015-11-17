@@ -17,7 +17,7 @@ namespace tloc { namespace core { namespace component_system {
   ///-------------------------------------------------------------------------
   template <typename T, typename T_ItrType = Entity::const_component_iterator>
   class ComponentMapper
-    : core_bclass::NonCopyable_I
+    : core_bclass::non_copyable_i
   {
   public:
     typedef T_ItrType                                   itr_type;

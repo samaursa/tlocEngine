@@ -4,6 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/tlocAlgorithms.h>
 #include <memory.h>
+#include <initializer_list>
 
 namespace tloc { namespace core { namespace data_structs {
 
@@ -32,16 +33,13 @@ namespace tloc { namespace core { namespace data_structs {
   public:
     // Empty default constructor
     Tuple();
-    Tuple(const Tuple<T, T_Size>& aTuple);
+    Tuple(const this_type& aTuple);
 
     template <typename T_TupleType>
-    Tuple(const Tuple<T_TupleType, T_Size>& aTuple);
+    Tuple(const Tuple<T_TupleType, k_size>& aTuple);
 
     template <typename T_ArrayType>
-    Tuple(const T_ArrayType (&aArray)[T_Size]);
-
-    template <template <class, class> class T_Variadic>
-    Tuple(const T_Variadic<T, tl_size>& a_vars);
+    Tuple(const T_ArrayType (&aArray)[k_size]);
 
     explicit Tuple(const T& aValue);
 
@@ -110,15 +108,15 @@ namespace tloc { namespace core { namespace data_structs {
   private:
 
     template <typename T_ArrayType>
-    void DoSet(const T_ArrayType (&aArray)[T_Size], type_false);
-    void DoSet(const T (&aArray)[T_Size], type_true);
+    void DoSet(const T_ArrayType (&aArray)[T_Size], std::false_type);
+    void DoSet(const T (&aArray)[T_Size], std::true_type);
 
     template <typename T_TupleType>
-    void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false);
-    void DoSet(const this_type& aTuple, type_true);
+    void DoSet(const Tuple<T_TupleType, T_Size>& aTuple, std::false_type);
+    void DoSet(const this_type& aTuple, std::true_type);
 
-    typedef type_true     incoming_bigger;
-    typedef type_false    incoming_smaller;
+    typedef std::true_type incoming_bigger;
+    typedef std::false_type incoming_smaller;
 
     template <typename T_OtherTuple, typename T_Policy>
     void DoConvertFrom(const T_OtherTuple& a_other,

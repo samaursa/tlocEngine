@@ -65,17 +65,17 @@ namespace tloc { namespace core { namespace utils {
   // Array size counter (raw and complex)
 
   template <typename T, tl_size T_Size>
-  tl_size ArraySize(T (&)[T_Size]) { return T_Size; }
+  tl_size array_size(T (&)[T_Size]) { return T_Size; }
 
   template <typename T, tl_size T_Size>
-  tl_size ArraySize(const T (&)[T_Size]) { return T_Size; }
+  tl_size array_size(const T (&)[T_Size]) { return T_Size; }
 
   template <typename T_Container>
-  typename T_Container::size_type ArraySize(T_Container& a_container)
+  typename T_Container::size_type array_size(T_Container& a_container)
   { return a_container.size(); }
 
   template <typename T_Container>
-  typename T_Container::size_type ArraySize(const T_Container& a_container)
+  typename T_Container::size_type array_size(const T_Container& a_container)
   { return a_container.size(); }
 
   // -----------------------------------------------------------------------
@@ -86,7 +86,7 @@ namespace tloc { namespace core { namespace utils {
 
   template <tl_int T_SizeX  , tl_int T_SizeY,
             tl_int T_CoordX = -1, tl_int T_CoordY = -1>
-  struct Index2D
+  struct index_2d
   {
     TLOC_STATIC_ASSERT(T_CoordX < T_SizeX, Index_is_out_of_bounds);
     TLOC_STATIC_ASSERT(T_CoordY < T_SizeY, Index_is_out_of_bounds);
@@ -95,9 +95,9 @@ namespace tloc { namespace core { namespace utils {
   };
 
   template <tl_int T_SizeX, tl_int T_SizeY>
-  struct Index2D<T_SizeX, T_SizeY, -1, -1>
+  struct index_2d<T_SizeX, T_SizeY, -1, -1>
   {
-    static tl_int Get(tl_int x, tl_int y)
+    static tl_int get(tl_int x, tl_int y)
     {
       TLOC_ASSERT(x < T_SizeX, "Index x is out of bounds");
       TLOC_ASSERT(y < T_SizeY, "Index y is out of bounds");
@@ -114,7 +114,7 @@ namespace tloc { namespace core { namespace utils {
     TLOC_ASSERT(a_coord[0] < a_gridSize[0], "Index x is out of bounds");
     TLOC_ASSERT(a_coord[1] < a_gridSize[1], "Index y is out of bounds");
 
-    return core_utils::CastNumber<tl_int>
+    return core_utils::cast_number<tl_int>
       (a_coord[0] + a_gridSize[0] * a_coord[1]);
   }
 
@@ -155,7 +155,7 @@ namespace tloc { namespace core { namespace utils {
     TLOC_ASSERT(a_coord[2] < a_gridSize[2], "Index y is out of bounds");
 
     return core_utils::
-      CastNumber<tl_int>(a_coord[0] +
+      cast_number<tl_int>(a_coord[0] +
                          a_gridSize[0] * a_coord[1] +
                          a_gridSize[0] * a_gridSize[1] * a_coord[2]);
   }

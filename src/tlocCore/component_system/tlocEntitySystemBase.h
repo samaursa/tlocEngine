@@ -17,7 +17,7 @@ namespace tloc { namespace core { namespace component_system {
 
   class EntitySystemBase
     : public EventListener
-    , public core_bclass::NonCopyable_I
+    , public core_bclass::non_copyable_i
     , public core_bclass::DebugName
   {
   public:
@@ -96,7 +96,7 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase(event_manager_ptr a_eventMgr,
                      entity_manager_ptr a_entityMgr,
                      register_type a_compsToRegister, 
-                     BufferArg a_debugName);
+                     buffer_arg a_debugName);
 
     ///-------------------------------------------------------------------------
     /// @brief Called before DoInitializeEntity is called

@@ -67,7 +67,7 @@ namespace tloc { namespace core { namespace component_system {
     Exists(component_type a_number)
   {
     size_type cIndex =
-      core_utils::CastNumber<size_type>(a_number);
+      core_utils::cast_number<size_type>(a_number);
     size_type s = size();
 
     if (s == 0 ||  cIndex >= s)

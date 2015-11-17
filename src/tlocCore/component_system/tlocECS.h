@@ -34,7 +34,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef core_conts::Array<entity_system_base_uptr>  systems_cont;
 
   public:
-    ECS(BufferArg a_debugName = "ECS");
+    ECS(buffer_arg a_debugName = "ECS");
     virtual ~ECS();
 
   public: // system construction - no need to pass in event and entity managers. 

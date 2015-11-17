@@ -395,8 +395,8 @@ recycle_test_finished:
     CHECK(indexed::m_dtorCount == indexed::m_ctorCount);
   }
 
-  typedef type_true           dynamic_pool_type;
-  typedef type_false          static_pool_type;
+  typedef std::true_type           dynamic_pool_type;
+  typedef std::false_type          static_pool_type;
 
   template <typename T_PoolType>
   void TestGrowthHelper(T_PoolType& a_pool, dynamic_pool_type)

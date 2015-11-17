@@ -17,7 +17,7 @@ namespace tloc { namespace core { namespace utils {
   ///                 looking for is not supported.
   ///-------------------------------------------------------------------------
   template <typename T_ReturnType, typename T_ToCast>
-  T_ReturnType CastTo32(T_ToCast a_value);
+  T_ReturnType cast_to_32(T_ToCast a_value);
 
   ///-------------------------------------------------------------------------
   /// @brief
@@ -27,7 +27,7 @@ namespace tloc { namespace core { namespace utils {
   /// @param  a_value The casted value
   ///-------------------------------------------------------------------------
   template <typename T_ReturnType, typename T_ToCast>
-  T_ReturnType CastNumber(T_ToCast a_value);
+  T_ReturnType cast_number(T_ToCast a_value);
 
 };};};
 

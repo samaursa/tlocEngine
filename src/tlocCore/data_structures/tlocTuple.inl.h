@@ -6,11 +6,11 @@
 #endif
 
 #include "tlocTuple.h"
-#include <tlocCore/tlocAlgorithms.h>
-#include <tlocCore/tlocAlgorithms.inl.h>
-#include <tlocCore/tlocAlgorithms.inl.h>
-#include <tlocCore/types/tlocTypeTraits.h>
+#include <tlocCore/tlocAssert.h>
 #include <tlocCore/utilities/tlocType.h>
+#include <algorithm>
+
+#include <type_traits>
 
 namespace tloc { namespace core { namespace data_structs {
 
@@ -46,7 +46,7 @@ namespace tloc { namespace core { namespace data_structs {
   template <TUPLE_TEMP>
   template <typename T_TupleType>
   TL_FI Tuple<TUPLE_PARAMS>::
-    Tuple(const Tuple<T_TupleType, T_Size>& aTuple)
+    Tuple(const Tuple<T_TupleType, k_size>& aTuple)
   { Set(aTuple); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -54,20 +54,8 @@ namespace tloc { namespace core { namespace data_structs {
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
   TL_FI Tuple<TUPLE_PARAMS>::
-    Tuple(const T_ArrayType (&aArray)[T_Size])
+    Tuple(const T_ArrayType (&aArray)[k_size])
   { Set(aArray); }
-
-  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-  template <TUPLE_TEMP>
-  template <template <class, class> class T_Variadic>
-  TL_FI Tuple<TUPLE_PARAMS>::
-    Tuple(const T_Variadic<T, tl_size>& a_vars)
-  {
-    TLOC_STATIC_ASSERT( (T_Variadic<T, tl_size>::size == k_size),
-      Size_mismatch_between_variadic_and_tuple);
-    operator=(static_cast<Tuple<T, T_Size> >(a_vars));
-  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -83,7 +71,7 @@ namespace tloc { namespace core { namespace data_structs {
   TL_FI T& Tuple<TUPLE_PARAMS>::
     operator [](size_type aIndex)
   {
-    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+    TLOC_ASSERT(aIndex < T_Size, "Index is out of bounds!");
 
     return m_values[aIndex];
   }
@@ -94,7 +82,7 @@ namespace tloc { namespace core { namespace data_structs {
   TL_FI const T& Tuple<TUPLE_PARAMS>::
     operator [](size_type aIndex) const
   {
-    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+    TLOC_ASSERT(aIndex < T_Size, "Index is out of bounds!");
     return m_values[aIndex];
   }
 
@@ -104,7 +92,7 @@ namespace tloc { namespace core { namespace data_structs {
   TL_FI T& Tuple<TUPLE_PARAMS>::
     Get(tl_size aIndex)
   {
-    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+    TLOC_ASSERT(aIndex < T_Size, "Index is out of bounds!");
     return m_values[aIndex];
   }
 
@@ -114,7 +102,7 @@ namespace tloc { namespace core { namespace data_structs {
   TL_FI const T& Tuple<TUPLE_PARAMS>::
     Get(tl_size aIndex) const
   {
-    TLOC_ASSERT_LOW_LEVEL(aIndex < T_Size, "Index is out of bounds!");
+    TLOC_ASSERT(aIndex < T_Size, "Index is out of bounds!");
     return m_values[aIndex];
   }
 
@@ -158,12 +146,8 @@ namespace tloc { namespace core { namespace data_structs {
   TL_FI T_OtherTuple Tuple<TUPLE_PARAMS>::
     ConvertTo() const
   {
-    type_traits::AssertTypeIsSupported
-      <
-        T_Policy,
-        p_tuple::overflow_one,
-        p_tuple::overflow_zero
-      >();
+    TLOC_STATIC_ASSERT_SUPPORTED(T_Policy, 
+                                 p_tuple::overflow_one, p_tuple::overflow_zero);
 
     T_OtherTuple toRet;
     toRet.ConvertFrom(*this, T_Policy());
@@ -173,8 +157,8 @@ namespace tloc { namespace core { namespace data_structs {
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   namespace {
-    typedef type_true       typesAreSame;
-    typedef type_false      typesAreDifferent;
+    typedef std::true_type       typesAreSame;
+    typedef std::false_type      typesAreDifferent;
 
     template <typename T_OtherType, typename T_ValueType,
               tl_size T_Size>
@@ -193,7 +177,7 @@ namespace tloc { namespace core { namespace data_structs {
       for(tl_int i = 0; i < T_Size; ++i)
       {
         temp[i] = core_utils::
-          CastNumber<T_OtherType, T_ValueType>(a_tuple[i]);
+          cast_number<T_OtherType, T_ValueType>(a_tuple[i]);
       }
 
       return temp;
@@ -207,12 +191,12 @@ namespace tloc { namespace core { namespace data_structs {
     Tuple<TUPLE_PARAMS>::
     Cast() const
   {
-    typedef typename T_TupleType::value_type                other_value_type;
-    typedef Loki::IsSameType<value_type, other_value_type>  type_result;
-    typedef Loki::Int2Type<type_result::value>              types_same_or_not;
+    typedef typename T_TupleType::value_type                  other_value_type;
+    typedef std::is_same<value_type, other_value_type>        type_result;
+    typedef std::integral_constant<bool, type_result::value>  types_same_or_not;
 
     TLOC_STATIC_ASSERT((T_TupleType::k_size == k_size),
-                        Tuple_sizes_must_be_same);
+                        "Tuple sizes must be the same");
 
     return DoCast<other_value_type, value_type, T_Size>
       (*this, types_same_or_not());
@@ -236,8 +220,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     Set(const Tuple<T_TupleType, T_Size>& aTuple)
   {
-    typedef typename Loki::Int2Type< Loki::IsSameType<T, T_TupleType>::value > is_same_type;
-    DoSet(aTuple, is_same_type());
+    DoSet(aTuple, std::is_same<T, T_TupleType>::type());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -247,8 +230,7 @@ namespace tloc { namespace core { namespace data_structs {
   void Tuple<TUPLE_PARAMS>::
     Set(const T_ArrayType (&aArray)[T_Size])
   {
-    typedef typename Loki::Int2Type< Loki::IsSameType<T, T_ArrayType>::value > is_same_type;
-    DoSet(aArray, is_same_type());
+    DoSet(aArray, std::is_same<T, T_ArrayType>::type());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -270,7 +252,7 @@ namespace tloc { namespace core { namespace data_structs {
                   incoming_bigger)
   {
     for (tl_int i = 0; i < k_size; ++i)
-    { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
+    { m_values[i] = core_utils::cast_number<value_type>(a_other[i]); }
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -282,7 +264,7 @@ namespace tloc { namespace core { namespace data_structs {
                   incoming_smaller)
   {
     for (tl_int i = 0; i < T_OtherTuple::k_size; ++i)
-    { m_values[i] = core_utils::CastNumber<value_type>(a_other[i]); }
+    { m_values[i] = core_utils::cast_number<value_type>(a_other[i]); }
 
     DoFillRemaining<T_OtherTuple::k_size>(T_Policy());
   }
@@ -323,7 +305,7 @@ namespace tloc { namespace core { namespace data_structs {
     ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other)
   {
     DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, p_tuple::overflow_one>
-      (a_other, Loki::Int2Type< (k_size < T_TupleSize) >());
+      (a_other, type_traits::bool_constant<k_size < T_TupleSize>());
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -334,16 +316,11 @@ namespace tloc { namespace core { namespace data_structs {
     ConvertFrom(const Tuple<T_OtherValueType, T_TupleSize>& a_other,
                 T_Policy)
   {
-    type_traits::AssertTypeIsSupported
-      <
-        T_Policy,
-        p_tuple::overflow_one,
-        p_tuple::overflow_same,
-        p_tuple::overflow_zero
-      >();
+    TLOC_STATIC_ASSERT_SUPPORTED (T_Policy, 
+      p_tuple::overflow_one, p_tuple::overflow_same, p_tuple::overflow_zero);
 
     DoConvertFrom<Tuple<T_OtherValueType, T_TupleSize>, T_Policy>
-      (a_other, Loki::Int2Type< (k_size < T_TupleSize) >());
+      (a_other, type_traits::bool_constant<k_size < T_TupleSize>());
   }
 
   //------------------------------------------------------------------------
@@ -371,7 +348,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   void Tuple<TUPLE_PARAMS>::
-    DoSet(const T (&aArray)[T_Size], type_true)
+    DoSet(const T (&aArray)[T_Size], std::true_type)
   { core_mem::MemCopy(m_values, aArray, T_Size); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -379,7 +356,7 @@ namespace tloc { namespace core { namespace data_structs {
   template <TUPLE_TEMP>
   template <typename T_ArrayType>
   void Tuple<TUPLE_PARAMS>::
-    DoSet(const T_ArrayType (&aArray)[T_Size], type_false)
+    DoSet(const T_ArrayType (&aArray)[T_Size], std::false_type)
   {
     TLOC_STATIC_ASSERT(sizeof(T) == sizeof(T_ArrayType),
       Array_type_must_be_the_same_size_as_the_tuple_type);
@@ -392,7 +369,7 @@ namespace tloc { namespace core { namespace data_structs {
 
   template <TUPLE_TEMP>
   void Tuple<TUPLE_PARAMS>::
-    DoSet(const this_type& aTuple, type_true)
+    DoSet(const this_type& aTuple, std::true_type)
   { core_mem::MemCopy(m_values, aTuple.data(), T_Size); }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -400,10 +377,10 @@ namespace tloc { namespace core { namespace data_structs {
   template <TUPLE_TEMP>
   template <typename T_TupleType>
   void Tuple<TUPLE_PARAMS>::
-    DoSet(const Tuple<T_TupleType, T_Size>& aTuple, type_false)
+    DoSet(const Tuple<T_TupleType, T_Size>& aTuple, std::false_type)
   {
     ITERATE_TUPLE
-    { m_values[i] = core_utils::CastNumber<value_type>(aTuple[i]); }
+    { m_values[i] = core_utils::cast_number<value_type>(aTuple[i]); }
   }
 
 };};};

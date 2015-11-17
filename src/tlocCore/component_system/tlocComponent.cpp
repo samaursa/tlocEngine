@@ -46,7 +46,7 @@ namespace tloc { namespace core { namespace component_system {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   Component::
-    Component(info_type a_compInfo, BufferArg a_debugName)
+    Component(info_type a_compInfo, buffer_arg a_debugName)
     : base_type(a_debugName)
     , m_compInfo(a_compInfo)
     , m_updateRequired(true)

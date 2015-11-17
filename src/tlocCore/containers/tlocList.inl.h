@@ -1136,7 +1136,7 @@ namespace tloc { namespace core { namespace containers {
                                        const T_Integer& aValueCopy, is_arith)
   {
     DoAssignValues(static_cast<size_type>(aNumTimes),
-                   core_utils::CastNumber<value_type>(aValueCopy));
+                   core_utils::cast_number<value_type>(aValueCopy));
   }
 
   template <LIST_TEMP_TYPES>

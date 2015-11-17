@@ -32,7 +32,7 @@ namespace tloc { namespace core {
   {
     typedef T                                         value_type;
     typedef ConditionalType<value_type, false, true>  this_type;
-    typedef type_false                                declare_value_type;
+    typedef std::false_type                           declare_value_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);
@@ -96,7 +96,7 @@ namespace tloc { namespace core {
   {
     typedef T                                   value_type;
     typedef ConditionalType<value_type, true>   this_type;
-    typedef type_true                           declare_value_type;
+    typedef std::true_type                      declare_value_type;
 
     TL_FI ConditionalType();
     TL_FI ConditionalType(const T& aValue);

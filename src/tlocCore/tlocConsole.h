@@ -33,9 +33,9 @@ namespace tloc { namespace console {
     };
   };
 
-  void SetConsoleColor(tl_int a_textCol, tl_int a_bgColor);
-  void WriteToConsole(const char8* a_formattedText);
-  bool WriteToIDEConsole(const char8* a_formattedText);
+  void set_console_color(tl_int a_textCol, tl_int a_bgColor);
+  void write_to_console(const char8* a_formattedText);
+  bool write_to_ide_console(const char8* a_formattedText);
 
 };};
 

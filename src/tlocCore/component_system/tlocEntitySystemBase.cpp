@@ -36,7 +36,7 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase(event_manager_ptr a_eventMgr, 
                      entity_manager_ptr a_entityMgr, 
                      register_type a_compsToRegister,
-                     BufferArg a_debugName)
+                     buffer_arg a_debugName)
     : core_bclass::DebugName(a_debugName)
     , m_compRegistry(a_compsToRegister)
     , m_eventMgr(a_eventMgr)

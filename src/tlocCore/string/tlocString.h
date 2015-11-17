@@ -5,7 +5,6 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.h>
-#include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocCore/tlocFunctional.h>

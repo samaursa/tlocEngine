@@ -26,11 +26,11 @@ namespace tloc { namespace core { namespace base_classes {
   public:
     DebugFileAndLine_T(TLOC_FILE_AND_LINE_ARGS);
 
-    TLOC_DECL_AND_DEF_GETTER(BufferArg, GetFileName, m_fileName);
+    TLOC_DECL_AND_DEF_GETTER(buffer_arg, GetFileName, m_fileName);
     TLOC_DECL_AND_DEF_GETTER(tl_int, GetLineNumber, m_lineNumber);
 
   private:
-    BufferArg   m_fileName;
+    buffer_arg   m_fileName;
     tl_int      m_lineNumber;
   };
 

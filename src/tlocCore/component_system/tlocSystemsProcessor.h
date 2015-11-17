@@ -49,7 +49,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef sys_info_cont::const_iterator             const_sys_info_iterator;
 
   public:
-    SystemsProcessor(BufferArg a_debugName = "SystemsProcessor");
+    SystemsProcessor(buffer_arg a_debugName = "SystemsProcessor");
 
     this_type&  Add(processing_system_ptr a_system, 
                     time_type a_updateDeltaT = 1.0/60.0);

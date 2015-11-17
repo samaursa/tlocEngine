@@ -789,17 +789,17 @@ namespace tloc { namespace core {
 
   namespace detail
   {
-    typedef	type_false IsComplexItr;
-    typedef	type_true	 IsRawItr;
+    typedef std::false_type	IsComplexItr;
+    typedef	std::true_type  IsRawItr;
 
-    typedef	type_false IsNotArith;
-    typedef	type_true	 IsArith;
+    typedef	std::false_type IsNotArith;
+    typedef	std::true_type  IsArith;
 
-    typedef	type_false IsNotChar;
-    typedef	type_true	 IsChar;
+    typedef	std::false_type IsNotChar;
+    typedef	std::true_type  IsChar;
 
-    typedef type_true  IsSortingAlgorithm;
-    typedef type_false IsCompareFunctionObject;
+    typedef std::true_type  IsSortingAlgorithm;
+    typedef std::false_type IsCompareFunctionObject;
 
     // ------------------------------------------------------------------------
     //  Range verification helpers: for raw iterators we check the range, for

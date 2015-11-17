@@ -62,7 +62,7 @@ namespace tloc { namespace core { namespace memory {
             tl_uint T_Capacity = 0,
             class T_PolicyIndexing = p_memory_pool_index::indexing::Wrapper>
   class MemoryPoolIndexed
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     enum { k_capacity = T_Capacity };
@@ -100,8 +100,8 @@ namespace tloc { namespace core { namespace memory {
                             T_Capacity,
                             policy_allocation_type>     this_type;
 
-    typedef type_false                                 fixed_container_selected;
-    typedef type_true                                  dynamic_container_selected;
+    typedef std::false_type                                 fixed_container_selected;
+    typedef std::true_type                                  dynamic_container_selected;
 
     typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
     typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
@@ -240,7 +240,7 @@ namespace tloc { namespace core { namespace memory {
 
     // Used for selecting functions wrt the container type
     typedef typename Loki::Select<pool_size_type::value == 0,
-      type_true, type_false>::Result
+      std::true_type, std::false_type>::Result
                                                         container_dynamic_type;
 
   protected:

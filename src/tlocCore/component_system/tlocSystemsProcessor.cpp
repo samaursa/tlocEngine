@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace component_system {
   // SystemsProcessor
 
   SystemsProcessor::
-    SystemsProcessor(BufferArg a_debugName)
+    SystemsProcessor(buffer_arg a_debugName)
     : core_bclass::DebugName(a_debugName)
   { }
 

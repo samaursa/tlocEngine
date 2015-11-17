@@ -31,9 +31,9 @@ namespace tloc { namespace core { namespace logging {
         typedef Log_I::severity_type                      severity_type;
 
       public:
-        Console(BufferArg a_loggerName);
+        Console(buffer_arg a_loggerName);
 
-        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
+        void DoWrite(buffer_arg a_formattedLog, severity_type a_severity) const;
       };
 
       // usually for outputting to a window other than the console
@@ -43,9 +43,9 @@ namespace tloc { namespace core { namespace logging {
         typedef Log_I::severity_type                      severity_type;
 
       public:
-        Output(BufferArg a_loggerName);
+        Output(buffer_arg a_loggerName);
 
-        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
+        void DoWrite(buffer_arg a_formattedLog, severity_type a_severity) const;
       };
 
       class File
@@ -54,9 +54,9 @@ namespace tloc { namespace core { namespace logging {
         typedef Log_I::severity_type                      severity_type;
 
       public:
-        File(BufferArg a_fileName);
+        File(buffer_arg a_fileName);
 
-        void DoWrite(BufferArg a_formattedLog, severity_type a_severity) const;
+        void DoWrite(buffer_arg a_formattedLog, severity_type a_severity) const;
 
         mutable core_io::FileIO_AppendA m_file;
       };
@@ -70,7 +70,7 @@ namespace tloc { namespace core { namespace logging {
         typedef core_str::String                      str_type;
 
       public:
-        Default(BufferArg a_loggerName);
+        Default(buffer_arg a_loggerName);
 
         str_type DoFormat(const Log_I& a_log) const;
 
@@ -89,7 +89,7 @@ namespace tloc { namespace core { namespace logging {
   class Logger_T
     : public T_WritePolicy
     , public T_FormatPolicy
-    , public core_bclass::NonCopyable_I
+    , public core_bclass::non_copyable_i
   {
     TLOC_STATIC_ASSERT(
       (Loki::IsSameType<T_WritePolicy, p_logger::write_policy::Console>::value ||

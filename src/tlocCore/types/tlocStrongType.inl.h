@@ -17,8 +17,8 @@ namespace tloc { namespace core { namespace types {
 
   namespace 
   {
-    typedef type_true   simple_type;
-    typedef type_false  complex_type;
+    typedef std::true_type   simple_type;
+    typedef std::false_type  complex_type;
 
     template <typename T_ReturnType, typename T_TypeIn>
     T_ReturnType DoGetValue(T_TypeIn a_type, simple_type)

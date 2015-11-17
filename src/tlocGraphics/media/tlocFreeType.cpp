@@ -106,16 +106,19 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
   // FreeType
 
   FreeType::
-    FreeType()
+    FreeType(const data_type& a_data)
     : m_library(nullptr)
-  { }
+    , m_rawData(a_data)
+  { 
+    DoInitialize();
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   FreeType::
     ~FreeType()
   {
-    base_type::Destroy();
+    DoDestroy();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -124,8 +127,6 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     FreeType::
     SetCurrentSize(ft_ushort a_charSize) const
   {
-    AssertIsInitialized();
-
     const ft_ushort currentSize = m_face->size->metrics.x_ppem;
 
     if (currentSize != a_charSize)
@@ -174,8 +175,6 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     FreeType::
     LoadGlyph(ft_ulong a_charCode) const
   {
-    AssertIsInitialized();
-
     FT_Error err = FT_Load_Char(m_face, a_charCode, FT_LOAD_RENDER);
 
     if (err)
@@ -200,8 +199,6 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
                   gfx_t::Color a_fontColor,
                   gfx_t::Color a_backgroundColor) const
   {
-    AssertIsInitialized();
-
     // scaling setup
     math::range_s32 r0to256 = math::Range0to256<s32, math::p_range::Inclusive>();
     math::range_f32 r0to1 = math::Range0to1<f32, math::p_range::Inclusive>();
@@ -238,7 +235,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
   FreeType::error_type
     FreeType::
-    DoInitialize(const data_type& a_data)
+    DoInitialize()
   {
     FT_Error error = FT_Init_FreeType( &m_library );
     if ( error )
@@ -252,11 +249,10 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
 
     // FT_New_Memory_Face expects us to not deallocate the raw data, so we
     // need to make a copy of it.
-    m_rawData = a_data;
     const FT_Byte* rawData =
       reinterpret_cast<const FT_Byte*>( m_rawData.begin() );
 
-    error = FT_New_Memory_Face( m_library, rawData, a_data.size(), 0, &m_face );
+    error = FT_New_Memory_Face( m_library, rawData, m_rawData.size(), 0, &m_face );
 
     if ( error )
     {

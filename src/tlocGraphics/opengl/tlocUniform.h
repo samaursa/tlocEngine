@@ -48,8 +48,8 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace math::types;
       using namespace graphics::types;
 
-      tloc::type_traits::AssertTypeIsSupported
-        <T,
+      static_assert(type_traits::is_any<
+         T, 
          f32,
          Vec2f32, Vec3f32, Vec4f32,
          s32,
@@ -85,8 +85,8 @@ namespace tloc { namespace graphics { namespace gl {
          Array<Vert3fpt>,
          Array<Vert3fpnc>,
          Array<Vert3fpnt>,
-         Array<Vert3fpnct>
-        >();
+         Array<Vert3fpnct
+         >::value, "Type passed is not supported");
     }
 
     template <typename T>
@@ -96,8 +96,8 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace math::types;
       using namespace graphics::types;
 
-      type_traits::AssertTypeIsSupported
-        <T,
+      static_assert(type_traits::is_any<
+         T, 
          f32,
          Vec2f32, Vec3f32, Vec4f32,
          s32,
@@ -107,8 +107,8 @@ namespace tloc { namespace graphics { namespace gl {
          Mat2f32, Mat3f32, Mat4f32,
          TextureObject,
          TextureObject3D,
-         TextureObjectShadow
-        >();
+         TextureObjectShadow>::
+        >::value, "Type passed is not supported");
     }
 
     template <typename T>
@@ -119,8 +119,8 @@ namespace tloc { namespace graphics { namespace gl {
       using namespace math::types;
       using namespace graphics::types;
 
-      tloc::type_traits::AssertTypeIsSupported
-        <Array<T>,
+      static_assert(type_traits::is_any<
+         Array<T>, 
          Array<f32>,
          Array<Vec2f32>,
          Array<Vec3f32>,
@@ -136,7 +136,7 @@ namespace tloc { namespace graphics { namespace gl {
          Array<Mat2f32>,
          Array<Mat3f32>,
          Array<Mat4f32>
-        >();
+        >::value, "Type passed is not supported");
     }
 
   };

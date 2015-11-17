@@ -374,8 +374,8 @@ namespace tloc { namespace core { namespace data_structs {
 
   namespace
   {
-    typedef type_true       typesAreSame;
-    typedef type_false      typesAreDifferent;
+    typedef std::true_type       typesAreSame;
+    typedef std::false_type      typesAreDifferent;
 
     template <typename T_OtherType, typename T_ValueType,
               tl_size T_Rows, tl_size T_Cols>
@@ -394,7 +394,7 @@ namespace tloc { namespace core { namespace data_structs {
       for(tl_size i = 0; i < T_Rows * T_Cols; ++i)
       {
         temp[i] = core_utils::
-          CastNumber<T_OtherType, T_ValueType>(a_table[i]);
+          cast_number<T_OtherType, T_ValueType>(a_table[i]);
       }
 
       return temp;

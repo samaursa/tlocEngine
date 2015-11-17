@@ -16,11 +16,11 @@ set(TLOC_ENGINE_CORE
     tlocCoreBase.cpp
     tlocCoreIncludes.h
     tlocDepVersionCheck.cpp
+    tlocException.h
+    tlocException.cpp
     tlocFunctional.h
     tlocFunctional.cpp
     tlocNoOpt.h
-    tlocPair.h
-    tlocPair.inl.h
     tlocStaticAssert.h
     tlocUCID.h
     tlocUCID.cpp
@@ -90,42 +90,6 @@ set(TLOC_ENGINE_CORE_CONFIGS
     configs/tlocBuildConfig.cpp
     configs/tlocBuildConfigDefines.h
 )
-set(TLOC_ENGINE_CORE_CONTAINERS
-    containers/tloc_containers.h
-    containers/tloc_containers.inl.h
-    containers/tloc_containers.opt.inl.h
-    containers/tloc_containers.cpp
-    containers/tlocArray.h
-    containers/tlocArray.inl.h
-    containers/tlocArray.cpp
-    containers/tlocArrayFixed.h
-    containers/tlocArrayFixed.inl.h
-    containers/tlocArrayFixed.cpp
-    containers/tlocContainers.h
-    containers/tlocContainers.inl.h
-    containers/tlocContainerTraits.h
-    containers/tlocForwardList.h
-    containers/tlocForwardList.inl.h
-    containers/tlocForwardList.cpp
-    containers/tlocHashmap.h
-    containers/tlocHashmap.inl.h
-    containers/tlocHashmap.cpp
-    containers/tlocHashtable.h
-    containers/tlocHashtable.inl.h
-    containers/tlocHashtable.cpp
-    containers/tlocList.h
-    containers/tlocList.inl.h
-    containers/tlocList.cpp
-    containers/tlocQueue.h
-    containers/tlocQueue.inl.h
-    containers/tlocQueue.cpp
-    containers/tlocSet.h
-    containers/tlocSet.inl.h
-    containers/tlocSet.cpp
-    containers/tlocStack.h
-    containers/tlocStack.inl.h
-    containers/tlocStack.cpp
-)
 set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tloc_data_structures.h
     data_structures/tloc_data_structures.inl.h
@@ -142,10 +106,6 @@ set(TLOC_ENGINE_CORE_DATA_STRUCTURES
     data_structures/tlocTuple.h
     data_structures/tlocTuple.inl.h
     data_structures/tlocTuple.cpp
-    data_structures/tlocVariadic.h
-    data_structures/tlocVariadic.inl.h
-    data_structures/tlocVariadic.cpp
-    data_structures/tlocVariadicTypedefMacros.h
 )
 set(TLOC_ENGINE_CORE_DISPATCH
     dispatch/tloc_dispatch.h
@@ -263,16 +223,6 @@ set(TLOC_ENGINE_CORE_SMART_PTR
     smart_ptr/tlocVirtualStackObject.h
     smart_ptr/tlocVirtualStackObject.inl.h
     smart_ptr/tlocVirtualStackObject.cpp
-)
-set(TLOC_ENGINE_CORE_STRING
-    string/tloc_string.h
-    string/tloc_string.inl.h
-    string/tloc_string.opt.inl.h
-    string/tloc_string.cpp
-    string/tlocString.h
-    string/tlocString.inl.h
-    string/tlocString.opt.inl.h
-    string/tlocString.cpp
 )
 set(TLOC_ENGINE_CORE_THREADS
     threads/tloc_threads.h
@@ -418,7 +368,6 @@ add_library(tlocCore STATIC
   ${TLOC_ENGINE_CORE_BASE_CLASSES}
   ${TLOC_ENGINE_CORE_COMPONENT_SYSTEM}
   ${TLOC_ENGINE_CORE_CONFIGS}
-  ${TLOC_ENGINE_CORE_CONTAINERS}
   ${TLOC_ENGINE_CORE_DATA_STRUCTURES}
   ${TLOC_ENGINE_CORE_DISPATCH}
   ${TLOC_ENGINE_CORE_ERROR}
@@ -449,7 +398,6 @@ set_platform_specific_properties(tlocCore)
 source_group(base_classes FILES ${TLOC_ENGINE_CORE_BASE_CLASSES})
 source_group(component_system FILES ${TLOC_ENGINE_CORE_COMPONENT_SYSTEM})
 source_group(configs FILES ${TLOC_ENGINE_CORE_CONFIGS})
-source_group(core_containers FILES ${TLOC_ENGINE_CORE_CONTAINERS})
 source_group(data_structures FILES ${TLOC_ENGINE_CORE_DATA_STRUCTURES})
 source_group(dispatch FILES ${TLOC_ENGINE_CORE_DISPATCH})
 source_group(error FILES ${TLOC_ENGINE_CORE_ERROR})

@@ -10,50 +10,50 @@ namespace tloc{ namespace core { namespace base_classes {
   // DebugName<>
 
   template <typename T_BuildConfig = core_cfg::BuildConfig::build_config_type>
-  class DebugName_TI
+  class debug_name_ti
   {
   public:
-    typedef core_str::String                string_type;
+    typedef std::string                     string_type;
 
   protected:
-    DebugName_TI(BufferArg a_name);
-    ~DebugName_TI();
+    debug_name_ti(buffer_arg a_name);
+    ~debug_name_ti();
     
-    void          SetDebugName(BufferArg a_name);
-    const char*   GetDebugName() const;
+    void          set_debug_name(buffer_arg a_name);
+    const char*   get_debug_name() const;
 
   private:
-    core_str::String m_name;
+    string_type m_name;
   };
 
   // ///////////////////////////////////////////////////////////////////////
   // DebugName<Release>
 
   template <>
-  class DebugName_TI<core_cfg::p_build_config::Release>
+  class debug_name_ti<core_cfg::p_build_config::Release>
   {
   public:
-    typedef core_str::String                string_type;
+    typedef std::string                     string_type;
 
   protected:
-    DebugName_TI(BufferArg );
-    ~DebugName_TI();
+    debug_name_ti(buffer_arg );
+    ~debug_name_ti();
     
-    void          SetDebugName(BufferArg );
-    const char*   GetDebugName() const;
+    void          set_debug_name(buffer_arg );
+    const char*   get_debug_name() const;
   };
 
   // -----------------------------------------------------------------------
   // typedef
 
-  typedef DebugName_TI<>                              DebugName;
+  typedef debug_name_ti<>                              DebugName;
 
   // -----------------------------------------------------------------------
   // extern template
 
-  TLOC_EXTERN_TEMPLATE_CLASS(DebugName_TI<core_cfg::p_build_config::Debug>);
-  TLOC_EXTERN_TEMPLATE_CLASS(DebugName_TI<core_cfg::p_build_config::Release_DebugInfo>);
-  TLOC_EXTERN_TEMPLATE_CLASS(DebugName_TI<core_cfg::p_build_config::Release>);
+  TLOC_EXTERN_TEMPLATE_CLASS(debug_name_ti<core_cfg::p_build_config::Debug>);
+  TLOC_EXTERN_TEMPLATE_CLASS(debug_name_ti<core_cfg::p_build_config::Release_DebugInfo>);
+  TLOC_EXTERN_TEMPLATE_CLASS(debug_name_ti<core_cfg::p_build_config::Release>);
 
 };};};
 

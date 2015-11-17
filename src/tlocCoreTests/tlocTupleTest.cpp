@@ -1,8 +1,5 @@
 #include "tlocTestCommon.h"
 
-#include <tlocCore/tlocAlgorithms.h>
-#include "tlocCore/tlocAlgorithms.inl.h"
-
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 

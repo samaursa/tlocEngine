@@ -15,36 +15,36 @@ namespace {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void DoWrite(tloc::BufferArg a_formattedLog, severity_type a_severity)
+  void DoWrite(tloc::buffer_arg a_formattedLog, severity_type a_severity)
   {
     using namespace tloc::console;
 
     switch(a_severity)
     {
     case Log_I::k_info:
-      SetConsoleColor(p_color::gray, p_color::black);
+      set_console_color(p_color::gray, p_color::black);
       break;
     case Log_I::k_success:
-      SetConsoleColor(p_color::green, p_color::black);
+      set_console_color(p_color::green, p_color::black);
       break;
     case Log_I::k_debug:
-      SetConsoleColor(p_color::white, p_color::black);
+      set_console_color(p_color::white, p_color::black);
       break;
     case Log_I::k_warning:
-      SetConsoleColor(p_color::yellow, p_color::black);
+      set_console_color(p_color::yellow, p_color::black);
       break;
     case Log_I::k_error:
-      SetConsoleColor(p_color::red, p_color::black);
+      set_console_color(p_color::red, p_color::black);
       break;
     default:
-      SetConsoleColor(p_color::dark_white, p_color::black);
+      set_console_color(p_color::dark_white, p_color::black);
       break;
     }
 
     WriteToConsole(a_formattedLog);
 
     // reset the color (although we don't know what the original colors were)
-    SetConsoleColor(p_color::dark_white, p_color::black);
+    set_console_color(p_color::dark_white, p_color::black);
   }
   
 };
@@ -54,7 +54,7 @@ namespace tloc { namespace core { namespace logging {
   // -----------------------------------------------------------------------
 
   void
-    WriteToConsole(tloc::BufferArg a_formattedLog, severity_type a_severity)
+    WriteToConsole(tloc::buffer_arg a_formattedLog, severity_type a_severity)
   { DoWrite(a_formattedLog, a_severity); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -83,7 +83,7 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOG_TEMPS>
   Log_T<TLOC_LOG_PARAMS>::
     Log_T(T_Logger* a_logger, severity_type a_severity,
-          BufferArg a_fileName, const tl_ulong a_lineNumber)
+          buffer_arg a_fileName, const tl_ulong a_lineNumber)
     : base_type(a_severity, a_fileName, a_lineNumber)
     , m_logger(a_logger)
   { }
@@ -104,7 +104,7 @@ namespace tloc { namespace core { namespace logging {
   template <TLOC_LOG_TEMPS>
   TLOC_LOG_TYPE::this_type_cref
     Log_T<TLOC_LOG_PARAMS>::
-    operator<<(BufferArg a_string) const
+    operator<<(buffer_arg a_string) const
   {
     DoBreakOnSeverity(*this, *m_logger, 
                       core_cfg::BuildConfig::build_config_type());
@@ -330,14 +330,14 @@ namespace tloc { namespace core { namespace logging {
       // console
 
       Console::
-        Console(BufferArg)
+        Console(buffer_arg)
       { }
 
       // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       void
         Console::
-        DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
+        DoWrite(buffer_arg a_formattedLog, severity_type a_severity) const
       {
         ::DoWrite(a_formattedLog, a_severity);
       }
@@ -346,14 +346,14 @@ namespace tloc { namespace core { namespace logging {
       // Output
 
       Output::
-        Output(BufferArg)
+        Output(buffer_arg)
       { }
 
       void
         Output::
-        DoWrite(BufferArg a_formattedLog, severity_type a_severity) const
+        DoWrite(buffer_arg a_formattedLog, severity_type a_severity) const
       {
-        if (console::WriteToIDEConsole(a_formattedLog) == false)
+        if (console::write_to_ide_console(a_formattedLog) == false)
         { ::DoWrite(a_formattedLog, a_severity); }
       }
 
@@ -361,8 +361,8 @@ namespace tloc { namespace core { namespace logging {
       // file
 
       File::
-        File(BufferArg a_fileName)
-        : m_file(core_io::Path(a_fileName))
+        File(buffer_arg a_fileName)
+        : m_file(core_io::path(a_fileName))
       {
       }
 
@@ -370,11 +370,11 @@ namespace tloc { namespace core { namespace logging {
 
       void
         File::
-        DoWrite(BufferArg a_formattedLog, severity_type ) const
+        DoWrite(buffer_arg a_formattedLog, severity_type ) const
       {
-        m_file.Open();
-        m_file.Write(a_formattedLog);
-        m_file.Close();
+        m_file.open();
+        m_file.write(a_formattedLog);
+        m_file.close();
       }
     };
 
@@ -384,7 +384,7 @@ namespace tloc { namespace core { namespace logging {
       // Default
 
       Default::
-        Default(BufferArg a_loggerName)
+        Default(buffer_arg a_loggerName)
         : m_loggerName(a_loggerName)
       { }
 

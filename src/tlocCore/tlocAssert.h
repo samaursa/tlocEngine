@@ -75,33 +75,6 @@ namespace tloc { namespace core { namespace assert {
 # define TLOC_ASSERT_WIP() \
   TLOC_ASSERT_FALSE("This function is unfinished (Work in progress)!")
 
-# define TLOC_ASSERT_LOW_LEVEL_FALSE(_Msg) \
-  TLOC_ASSERT_LOW_LEVEL(tloc::core::assert::AlwaysReturnFalse(), _Msg)
-
-//------------------------------------------------------------------------
-// Low level assertions
-// Define TLOC_ENABLE_ASSERT_LOW_LEVEL in your project to catch low level asserts
-// e.g. out of bounds access. These asserts are in areas that can be potentially
-// performance sensitive (e.g. vector/matrix accessors).
-
-#ifndef TLOC_DISABLE_ASSERT_LOW_LEVEL
-# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_LOW_LEVEL(_Expression, _Msg)
-#endif
-
-//------------------------------------------------------------------------
-// Container assertions
-// Define TLOC_DISABLE_ASSERT_CONTAINERS in your project to disable assertions
-// for containers. These asserts are on by default in all configurations except
-// release WITHOUT debug info
-
-#if !defined(TLOC_DISABLE_ASSERT_CONTAINERS) && !defined(TLOC_RELEASE) && !defined(TLOC_RELEASE_DLL)
-# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg) TLOC_ASSERT(_Expression, _Msg)
-#else
-# define TLOC_ASSERT_CONTAINERS(_Expression, _Msg)
-#endif
-
 #endif
 
 // Other common asserts

@@ -12,32 +12,32 @@ namespace tloc{ namespace core { namespace base_classes {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_DEBUG_NAME_TEMPS>
-  DebugName_TI<TLOC_DEBUG_NAME_PARAMS>::
-    DebugName_TI(BufferArg  a_name)
+  debug_name_ti<TLOC_DEBUG_NAME_PARAMS>::
+    debug_name_ti(buffer_arg  a_name)
     : m_name(a_name)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_DEBUG_NAME_TEMPS>
-  DebugName_TI<TLOC_DEBUG_NAME_PARAMS>::
-    ~DebugName_TI()
+  debug_name_ti<TLOC_DEBUG_NAME_PARAMS>::
+    ~debug_name_ti()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_DEBUG_NAME_TEMPS>
   void
-  DebugName_TI<TLOC_DEBUG_NAME_PARAMS>::
-    SetDebugName(BufferArg a_name)
+  debug_name_ti<TLOC_DEBUG_NAME_PARAMS>::
+    set_debug_name(buffer_arg a_name)
   { m_name = a_name; }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_DEBUG_NAME_TEMPS>
   const char*
-    DebugName_TI<TLOC_DEBUG_NAME_PARAMS>::
-    GetDebugName() const
+    debug_name_ti<TLOC_DEBUG_NAME_PARAMS>::
+    get_debug_name() const
   { return m_name.c_str(); }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -47,35 +47,35 @@ namespace tloc{ namespace core { namespace base_classes {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  DebugName_TI<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
-    DebugName_TI(BufferArg )
+  debug_name_ti<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
+    debug_name_ti(buffer_arg )
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  DebugName_TI<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
-    ~DebugName_TI()
+  debug_name_ti<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
+    ~debug_name_ti()
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    DebugName_TI<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
-    SetDebugName(BufferArg)
+    debug_name_ti<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
+    set_debug_name(buffer_arg)
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   const char*
-    DebugName_TI<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
-    GetDebugName() const
+    debug_name_ti<TLOC_DEBUG_NAME_RELEASE_PARAMS>::
+    get_debug_name() const
   { return "No name assigned - RELEASE CONFIG"; }
 
 
   // -----------------------------------------------------------------------
   // explicit instantiations
 
-  template class DebugName_TI<core_cfg::p_build_config::Debug>;
-  template class DebugName_TI<core_cfg::p_build_config::Release_DebugInfo>;
+  template class debug_name_ti<core_cfg::p_build_config::Debug>;
+  template class debug_name_ti<core_cfg::p_build_config::Release_DebugInfo>;
 
 };};};

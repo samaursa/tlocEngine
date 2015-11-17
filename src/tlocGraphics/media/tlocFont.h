@@ -65,33 +65,8 @@ namespace tloc { namespace graphics { namespace media {
   // ///////////////////////////////////////////////////////////////////////
   // Font
 
-  class Font
-    : public core_bclass::InitializeAndDestroy_TI<Font,
-             core_bclass::p_initialize_and_destroy::OneParam>
-    , core_bclass::NonCopyable_I
+  namespace p_font
   {
-    TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(Font);
-
-  public:
-    typedef Font                                          this_type;
-    typedef core_bclass::
-      InitializeAndDestroy_TI<this_type,
-      core_bclass::p_initialize_and_destroy::OneParam>    base_type;
-
-    typedef core_sptr::UniquePtr<free_type::FreeType>     ft_ptr;
-    typedef core_str::String                              data_type;
-    typedef core_ds::Tuple2f                              pos_type;
-
-    typedef image_sptr                                    image_ptr;
-    typedef sprite_sheet_ul_vso                           sprite_sheet_type;
-    typedef const_sprite_sheet_ul_vptr                    const_sprite_sheet_ptr;
-
-    typedef GlyphMetrics                                  glyph_metrics;
-    typedef core_conts::Array<glyph_metrics>              glyph_metrics_cont;
-    typedef glyph_metrics_cont::iterator                  glyph_metrics_iterator;
-    typedef glyph_metrics_cont::const_iterator            const_glyph_metrics_iterator;
-
-  public:
     struct Params
     {
       typedef Params                                      this_type;
@@ -120,27 +95,57 @@ namespace tloc { namespace graphics { namespace media {
       TLOC_DECL_AND_DEF_GETTER_AUTO(PaddingDim, m_paddingDim);
       TLOC_DECL_AND_DEF_GETTER_AUTO(PaddingColor, m_paddingColor);
     };
+  };
+
+  class Font
+    : public core_bclass::InitializeAndDestroy_TI<Font,
+             core_bclass::p_initialize_and_destroy::OneParam>
+    , core_bclass::NonCopyable_I
+  {
+    TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(Font);
 
   public:
-    Font();
+    typedef Font                                          this_type;
+    typedef core_bclass::
+      InitializeAndDestroy_TI<this_type,
+      core_bclass::p_initialize_and_destroy::OneParam>    base_type;
+
+    typedef core_sptr::UniquePtr<free_type::FreeType>     ft_ptr;
+    typedef core_str::String                              data_type;
+    typedef core_ds::Tuple2f                              pos_type;
+
+    typedef image_sptr                                    image_ptr;
+    typedef sprite_sheet_ul_vso                           sprite_sheet_type;
+    typedef const_sprite_sheet_ul_vptr                    const_sprite_sheet_ptr;
+
+    typedef GlyphMetrics                                  glyph_metrics;
+    typedef core_conts::Array<glyph_metrics>              glyph_metrics_cont;
+    typedef glyph_metrics_cont::iterator                  glyph_metrics_iterator;
+    typedef glyph_metrics_cont::const_iterator            const_glyph_metrics_iterator;
+
+    typedef p_font::Params                                params_type;
+
+  public:
+
+  public:
+    Font(const params_type& a_params);
     ~Font();
 
     image_ptr               GetCharImage(tl_ulong a_char, 
-                                         const Params& a_params) const;
+                                         const params_type& a_params) const;
     const_sprite_sheet_ptr  GenerateGlyphCache(BufferArgW a_characters,
-                                               const Params& a_params);
+                                               const params_type& a_params);
 
     pos_type                GetKerning(tl_ulong a_leftChar, tl_ulong a_char) const;
 
-    const_glyph_metrics_iterator  GetGlyphMetric(tl_ulong a_char) const;
-    const_glyph_metrics_iterator  begin_glyph_metrics() const;
-    const_glyph_metrics_iterator  end_glyph_metrics() const;
+    const_glyph_metrics_iterator  GetGlyphMetric(tl_ulong a_char,
+                                                 const params_type& a_params) const;
 
     bool                          IsCached() const;
 
     TLOC_DECL_AND_DEF_GETTER(const_sprite_sheet_ptr, GetSpriteSheetPtr, 
                              m_spriteSheet.get());
-    TLOC_DECL_AND_DEF_GETTER(Params, GetCachedParams, m_cachedParams);
+    TLOC_DECL_AND_DEF_GETTER(params_type, GetCachedParams, m_cachedParams);
 
     TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
 
@@ -153,14 +158,18 @@ namespace tloc { namespace graphics { namespace media {
     error_type    Destroy(); // intentionally not defined
 
     void          DoCacheGlyphMetrics(tl_ulong a_char, 
-                                      const Params& a_params);
+                                      const params_type& a_params) const;
 
   private:
     ft_ptr                    m_ft;
-    Params                    m_cachedParams;
-    glyph_metrics_cont        m_metrics;
+    params_type               m_cachedParams;
     sprite_sheet_ul_vso       m_spriteSheet;
     core_utils::Checkpoints   m_flags;
+
+    mutable glyph_metrics_cont  m_cachedMetrics;
+
+  public:
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_glyph_metrics, m_cachedMetrics);
   };
 
   // -----------------------------------------------------------------------

@@ -7,6 +7,7 @@
 #include <tlocCore/data_structures/tlocTuple.h>
 #include <tlocCore/utilities/tlocUtils.h>
 #include <tlocCore/smart_ptr/tlocVirtualPtr.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 #include <tlocMath/types/tlocVector2.h>
 #include <tlocMath/types/tlocVector3.h>
@@ -208,10 +209,9 @@ namespace tloc { namespace graphics { namespace types {
     TLOC_STATIC_ASSERT( (T_VectorType::k_size == k_size),
       Selected_vector_cannot_contain_color_type);
 
-    type_traits::AssertTypeIsSupported
-      <T_VectorType,
+    TLOC_STATIC_ASSERT_SUPPORTED(T_VectorType, T_VectorType,
       core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
-      math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32>();
+      math_t::Vec2f32, math_t::Vec3f32, math_t::Vec4f32);
 
     T_VectorType v;
     GetAs<T_ColorFormat>(v);
@@ -228,15 +228,16 @@ namespace tloc { namespace graphics { namespace types {
     using tloc::math::types::Vec4f32;
     using tloc::math::types::Vec4f64;
 
-    tloc::type_traits::AssertTypeIsSupported
-      <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>();
+    static_assert(type_traits::is_any
+                  <T_ColorFormat, RGBA, ABGR, ARGB, BGRA>::value, 
+                  "Unsupported color format");
 
-    tloc::type_traits::AssertTypeIsSupported
-      <T_VectorType,
-      core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>,
-      core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>,
-      math_t::Vector_T<f32, k_size>, math_t::Vector_T<f64, k_size> 
-      >();
+    static_assert(type_traits::is_any,
+                  <T_VectorType, 
+                  core_ds::Tuple<u8, k_size>, core_ds::Tuple<u16, k_size>, 
+                  core_ds::Tuple<f32, k_size>, core_ds::Tuple<f64, k_size>, 
+                  math_t::Vector_T<f32, k_size>, math_t::Vector_T<f64, k_size>
+                  >::value, "Unsupported vector type");
 
     DoGetAs<T_ColorFormat>(a_vec);
   }

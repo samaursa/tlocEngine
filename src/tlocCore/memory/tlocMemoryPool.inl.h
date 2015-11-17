@@ -37,8 +37,8 @@ namespace tloc { namespace core { namespace memory {
 
   namespace {
 
-    typedef type_false                        fixed_container_selected;
-    typedef type_true                         dynamic_container_selected;
+    typedef std::false_type                        fixed_container_selected;
+    typedef std::true_type                         dynamic_container_selected;
 
     typedef p_memory_pool_index::allocation::On_Stack  allocation_on_stack;
     typedef p_memory_pool_index::allocation::On_Heap   allocation_on_heap;
@@ -159,7 +159,7 @@ namespace tloc { namespace core { namespace memory {
         advance(startingPos, prevSize);
 
         DoInitializeRange(startingPos, m_allElements.end(),
-                          core_utils::CastNumber<index_type>(prevSize),
+                          core_utils::cast_number<index_type>(prevSize),
                           a_allocPolicy, a_selValueType);
 
         return true;
@@ -187,7 +187,7 @@ namespace tloc { namespace core { namespace memory {
       advance(startingPos, prevSize);
 
       DoInitializeRange(startingPos, m_allElements.end(),
-                        core_utils::CastNumber<index_type>(prevSize),
+                        core_utils::cast_number<index_type>(prevSize),
                         a_allocPolicy, a_selValueType);
       return true;
     }
@@ -231,7 +231,7 @@ namespace tloc { namespace core { namespace memory {
       DoExpand(m_allElements, a_size, container_dynamic_type(),
         policy_allocation_type(), selected_value_type());
       m_numAvail =
-        core_utils::CastNumber<index_type>(m_allElements.size() - m_numRemaining);
+        core_utils::cast_number<index_type>(m_allElements.size() - m_numRemaining);
     }
   }
 
@@ -256,7 +256,7 @@ namespace tloc { namespace core { namespace memory {
     if (DoExpand(m_allElements, prevSize * 2, container_dynamic_type(),
                        policy_allocation_type(), selected_value_type()) )
     {
-      m_numAvail = core_utils::CastNumber<index_type>(GetTotal() - prevSize);
+      m_numAvail = core_utils::cast_number<index_type>(GetTotal() - prevSize);
 
       return GetNext();
     }
@@ -346,7 +346,7 @@ namespace tloc { namespace core { namespace memory {
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::operator [](index_type a_index) const
   {
     TLOC_ASSERT_LOW_LEVEL
-      (a_index < core_utils::CastNumber<index_type>(GetTotal() - GetAvail()),
+      (a_index < core_utils::cast_number<index_type>(GetTotal() - GetAvail()),
        "Index trying to access unavailable element!");
 
     return m_allElements[a_index];
@@ -431,7 +431,7 @@ namespace tloc { namespace core { namespace memory {
   MEMORY_POOL_INDEX_TYPE::index_type
     MemoryPoolIndexed<MEMORY_POOL_INDEX_PARAMS>::DoGetAvailIndex() const
   {
-    return core_utils::CastNumber<index_type>(m_allElements.size() - m_numAvail);
+    return core_utils::cast_number<index_type>(m_allElements.size() - m_numAvail);
   }
 
 };};};

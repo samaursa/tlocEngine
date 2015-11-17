@@ -6,13 +6,13 @@
 
 namespace tloc { namespace core { namespace base_classes {
 
-  class NonNewable_I
+  class non_newable_i
   {
-  private:
-    void* operator new(tl_size);
-    void* operator new(tl_size, void*);
-    void* operator new[](tl_size);
-    void* operator new[](tl_size, void*);
+  public:
+    void* operator new(tl_size) = delete;
+    void* operator new(tl_size, void*) = delete;
+    void* operator new[](tl_size) = delete;
+    void* operator new[](tl_size, void*) = delete;
   };
 
 };};};

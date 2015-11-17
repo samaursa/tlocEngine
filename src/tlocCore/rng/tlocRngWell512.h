@@ -12,15 +12,15 @@ namespace tloc { namespace core { namespace rng {
   // by Mattias Gustavsson with the algorithm Well512 taken from
   // http://www.iro.umontreal.ca/~panneton/WELLRNG.html
 
-  class RngWell512
+  class rng_well_512
   {
-    template <typename T_Generator> friend class RNG_T;
+    template <typename T_Generator> friend class rng_t;
 
   private:
 
     typedef   u32           int_type;
     typedef   f32           real_type;
-    typedef   RngWell512    rng_type;
+    typedef   rng_well_512    rng_type;
 
     struct Params
     {
@@ -30,7 +30,7 @@ namespace tloc { namespace core { namespace rng {
       int_type  m_state[16];
     };
 
-    RngWell512();
+    rng_well_512();
 
     ///-------------------------------------------------------------------------
     /// @brief
@@ -39,19 +39,19 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @param  a_seed POD containing a seed, index and states
     ///-------------------------------------------------------------------------
-    void            SetSeed(const Params& a_seed);
+    void            set_seed(const Params& a_seed);
 
     ///-------------------------------------------------------------------------
     /// @brief Gets the seed POD.
     ///
     /// @return The seed POD.
     ///-------------------------------------------------------------------------
-    const Params&   GetSeed() const;
+    const Params&   get_seed() const;
 
-    const int_type  GetRandomInteger() const;
-    const real_type GetRandomFloat() const;
-    const int_type  GetRandomInteger(int_type a_min, int_type a_max) const;
-    const real_type GetRandomFloat(real_type a_min, real_type a_max) const;
+    const int_type  get_random_int() const;
+    const real_type get_random_real() const;
+    const int_type  get_random_int(int_type a_min, int_type a_max) const;
+    const real_type get_random_real(real_type a_min, real_type a_max) const;
 
     mutable Params          m_params;
   };

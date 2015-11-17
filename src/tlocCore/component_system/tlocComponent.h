@@ -58,7 +58,7 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
     Component();
-    explicit Component(info_type a_type, BufferArg a_debugName);
+    explicit Component(info_type a_type, buffer_arg a_debugName);
     Component(const this_type& a_other);
     virtual  ~Component();
 
@@ -78,8 +78,8 @@ namespace tloc { namespace core { namespace component_system {
 
     TLOC_DECL_AND_DEF_SETTER(bool, SetUpdateRequired, m_updateRequired);
 
-    using base_type::GetDebugName;
-    using base_type::SetDebugName;
+    using base_type::get_debug_name;
+    using base_type::set_debug_name;
 
   protected:
     // Only EntityManager is allowed to change this
@@ -118,7 +118,7 @@ namespace tloc { namespace core { namespace component_system {
     typedef base_type::component_type             component_type;
     typedef utils::GroupID<T_Component>           group_id_base_type;
 
-    explicit Component_T(BufferArg a_debugName)
+    explicit Component_T(buffer_arg a_debugName)
       : base_type(info_type()
                     .GroupIndex(k_component_group)
                     .Type(k_component_type), 

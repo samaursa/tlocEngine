@@ -13,13 +13,13 @@
 
 namespace tloc { namespace core { namespace rng {
 
-  template <typename T_Generator> class RNG_T;
+  template <typename T_Generator> class rng_t;
 
   //////////////////////////////////////////////////////////////////////////
   // Supported RNG Types
 
   // Supported RNG types
-  typedef RNG_T<RngWell512> rng_well_512;
+  typedef rng_t<rng_well_512> rng_well_512;
 
   // Default RNG type
   typedef rng_well_512      rng_default;
@@ -31,7 +31,7 @@ namespace tloc { namespace core { namespace rng {
   /// @brief Random number generator template class. The class requires an RNG that has the following functions at least.
   ///-------------------------------------------------------------------------
   template <typename T_Generator>
-  class RNG_T
+  class rng_t
   {
   public:
 
@@ -47,7 +47,7 @@ namespace tloc { namespace core { namespace rng {
     ///                as long as T_Generator supports it.
     ///-------------------------------------------------------------------------
     template <typename T_Seed>
-    void SetSeed(const T_Seed& a_seed) 
+    void set_seed(const T_Seed& a_seed) 
     { m_rng.SetSeed(a_seed); }
 
     ///-------------------------------------------------------------------------
@@ -58,7 +58,7 @@ namespace tloc { namespace core { namespace rng {
     /// @return The seed.
     ///-------------------------------------------------------------------------
     template <typename T_Seed>
-    const T_Seed& GetSeed() const 
+    const T_Seed& get_seed() const 
     { return m_rng.GetSeed(); }
 
     ///-------------------------------------------------------------------------
@@ -66,7 +66,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return The random integer.
     ///-------------------------------------------------------------------------
-    const int_type GetRandomInteger() const 
+    const int_type get_random_int() const 
     { return m_rng.GetRandomInteger(); }
 
     ///-------------------------------------------------------------------------
@@ -74,7 +74,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return The random float.
     ///-------------------------------------------------------------------------
-    const real_type GetRandomFloat() const 
+    const real_type get_random_real() const 
     { return m_rng.GetRandomFloat(); }
 
     ///-------------------------------------------------------------------------
@@ -84,8 +84,8 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return The random integer.
     ///-------------------------------------------------------------------------
-    int_type GetRandomInteger(int_type a_max) const
-    { return GetRandomInteger(0, a_max); }
+    int_type get_random_int(int_type a_max) const
+    { return get_random_int(0, a_max); }
 
     ///-------------------------------------------------------------------------
     /// @brief Gets a random float between [0, a_max)
@@ -94,8 +94,8 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return The random float.
     ///-------------------------------------------------------------------------
-    real_type GetRandomFloat(real_type a_max) const
-    { return GetRandomFloat(0, a_max); }
+    real_type get_random_real(real_type a_max) const
+    { return get_random_real(0, a_max); }
 
     ///-------------------------------------------------------------------------
     /// @brief Generates a random integer between [min, max).
@@ -105,7 +105,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return Random number between the min and max range.
     ///-------------------------------------------------------------------------
-    int_type GetRandomInteger(int_type a_min, int_type a_max) const
+    int_type get_random_int(int_type a_min, int_type a_max) const
     { return m_rng.GetRandomInteger(a_min, a_max); }
 
     ///-------------------------------------------------------------------------
@@ -116,7 +116,7 @@ namespace tloc { namespace core { namespace rng {
     ///
     /// @return Random number between min and max range.
     ///-------------------------------------------------------------------------
-    const real_type GetRandomFloat(real_type a_min, real_type a_max) const
+    const real_type get_random_real(real_type a_min, real_type a_max) const
     { return m_rng.GetRandomFloat(a_min, a_max); }
 
   private:
@@ -128,7 +128,7 @@ namespace tloc { namespace core { namespace rng {
   // -----------------------------------------------------------------------
   // extern template
 
-  TLOC_EXTERN_TEMPLATE_CLASS(RNG_T<RngWell512>);
+  TLOC_EXTERN_TEMPLATE_CLASS(rng_t<rng_well_512>);
 
 };};};
 

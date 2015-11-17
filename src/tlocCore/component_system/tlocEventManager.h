@@ -14,7 +14,7 @@
 namespace tloc { namespace core { namespace component_system {
 
   class EventManager
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     typedef events::value_type                    event_type;

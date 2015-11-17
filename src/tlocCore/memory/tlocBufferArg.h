@@ -4,7 +4,7 @@
 #include <tlocCore/tlocCoreBase.h>
 #include <tlocCore/types/tlocBasicTypes.h>
 #include <tlocCore/types/tlocTypeTraits.h>
-#include <tlocCore/string/tlocString.h>
+#include <string>
 
 namespace tloc { namespace core { namespace memory {
 
@@ -12,19 +12,16 @@ namespace tloc { namespace core { namespace memory {
   /// @brief Meant to be used only as a function argument.
   ///-------------------------------------------------------------------------
   template <typename T_Char = char8>
-  class BufferArg_T
+  class buffer_arg_t
   {
-    TLOC_STATIC_ASSERT(
-      (Loki::IsSameType<T_Char, char8>::value ||
-      Loki::IsSameType<T_Char, char32>::value),
-      Buffer_arg_only_supports_char_types);
+    TLOC_STATIC_ASSERT_SUPPORTED(T_Char, char8, char32);
 
   public:
-    typedef T_Char            value_type;
-    typedef value_type        char_type;
-    typedef tl_size           size_type;
+    typedef T_Char                        value_type;
+    typedef value_type                    char_type;
+    typedef tl_size                       size_type;
 
-    typedef string::StringBase<char_type> string_type;
+    typedef std::basic_string<char_type>  string_type;
 
   public:
 
@@ -33,31 +30,31 @@ namespace tloc { namespace core { namespace memory {
     /// Assumes a_buffer is NULL terminated. Call IsValid() to check if
     /// it is.
     ///-------------------------------------------------------------------------
-    BufferArg_T(const char_type* a_buffer);
-    BufferArg_T(const char_type* a_buffer, size_type a_end);
+    buffer_arg_t(const char_type* a_buffer);
+    buffer_arg_t(const char_type* a_buffer, size_type a_end);
 
-    BufferArg_T(const string_type& a_string);
+    buffer_arg_t(const string_type& a_string);
 
     ///-------------------------------------------------------------------------
     /// @brief
     /// A buffer is valid if doesn't exceed a_maximumValidBufferSize iff
     /// m_size == 0. If m_size != 0, buffer is always valid.
     ///-------------------------------------------------------------------------
-    bool IsValid() const;
+    bool is_valid() const;
 
     ///-------------------------------------------------------------------------
     /// @brief Same as IsValid() except with a user specified maximum size
     ///-------------------------------------------------------------------------
-    bool IsValid(size_type a_maximumSize) const;
+    bool is_valid(size_type a_maximumSize) const;
 
     const char_type operator[](tl_int a_index) const;
 
     operator char_type const *() const;
 
-    const char_type*  GetPtr() const;
-    size_type         GetSize() const;
+    const char_type*  get_ptr() const;
+    size_type         get_size() const;
 
-    static size_type   GetMaxAllowedBuffSize();
+    static size_type   get_max_allowed_buff_size();
 
   private:
     const char_type* m_buffer;
@@ -68,8 +65,8 @@ namespace tloc { namespace core { namespace memory {
 
 namespace tloc
 {
-  typedef core::memory::BufferArg_T<>       BufferArg;
-  typedef core::memory::BufferArg_T<char32> BufferArgW;
+  typedef core::memory::buffer_arg_t<>       buffer_arg;
+  typedef core::memory::buffer_arg_t<char32> BufferArgW;
 };
 
 namespace tloc { namespace core { namespace memory {
@@ -77,19 +74,19 @@ namespace tloc { namespace core { namespace memory {
   // Added these overloaded functions because implicit template type conversion
   // is not allowed for template functions
 
-  TL_I tl_size StrLen(BufferArg a_charBuff)
-  { return core_str::StrLen(a_charBuff.GetPtr()); }
+  TL_I tl_size strlen(buffer_arg a_charBuff)
+  { return std::strlen(a_charBuff.get_ptr()); }
 
   template <typename T_Char>
-  tl_int StrCmp(const T_Char* a_ptr, BufferArg a_charBuff)
-  { return core_str::StrCmp(a_ptr, a_charBuff.GetPtr()); }
+  tl_int strcmp(const T_Char* a_ptr, buffer_arg a_charBuff)
+  { return std::strcmp(a_ptr, a_charBuff.get_ptr()); }
 
   template <typename T_Char>
-  tl_int StrCmp(BufferArg a_charBuff, const T_Char* a_ptr)
-  { return core_str::StrCmp(a_charBuff.GetPtr(), a_ptr); }
+  tl_int strcmp(buffer_arg a_charBuff, const T_Char* a_ptr)
+  { return std::strcmp(a_charBuff.get_ptr(), a_ptr); }
 
-  TL_I tl_int StrCmp(BufferArg a_charBuff1, BufferArg a_charBuff2)
-  { return core_str::StrCmp(a_charBuff1.GetPtr(), a_charBuff2.GetPtr()); }
+  TL_I tl_int strcmp(buffer_arg a_charBuff1, buffer_arg a_charBuff2)
+  { return std::strcmp(a_charBuff1.get_ptr(), a_charBuff2.get_ptr()); }
 
 };};};
 

@@ -322,8 +322,8 @@ namespace tloc { namespace core { namespace containers {
     typedef ConditionalType<size_type, true>  size_stored;
     typedef ConditionalType<size_type, false> size_not_stored;
 
-    typedef type_true       is_arith;
-    typedef type_false      is_not_arith;
+    typedef std::true_type       is_arith;
+    typedef std::false_type      is_not_arith;
 
     void DoInit();
     void DoClear();

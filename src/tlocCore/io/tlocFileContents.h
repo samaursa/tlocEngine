@@ -12,7 +12,7 @@ namespace tloc { namespace core { namespace io {
   {
   public:
     typedef core_str::String                        string_type;
-    typedef core_io::Path                           path_type;
+    typedef core_io::path                           path_type;
     typedef FileContents                            this_type;
 
   public:

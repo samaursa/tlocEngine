@@ -1180,13 +1180,13 @@ namespace tloc { namespace core {
     operator()(const core_str::String& a_value) const
   {
     tl_uint valueLength =
-      core_utils::CastNumber<tl_uint>(a_value.size());
+      core_utils::cast_number<tl_uint>(a_value.size());
 
     // using 32-bit hash for now
     u32 hash;
     MurmurHash3_x86_32(a_value.c_str(), valueLength, 35, &hash);
 
-    return core_utils::CastNumber<tl_size>(hash);
+    return core_utils::cast_number<tl_size>(hash);
   }
 
 };};

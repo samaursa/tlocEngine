@@ -59,7 +59,7 @@ namespace tloc { namespace console {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    SetConsoleColor(tl_int a_textCol, tl_int a_bgColor)
+    set_console_color(tl_int a_textCol, tl_int a_bgColor)
   {
     DoSetConsoleColor(a_textCol, a_bgColor, 
                       core_plat::PlatformInfo::platform_type());
@@ -68,13 +68,13 @@ namespace tloc { namespace console {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   void
-    WriteToConsole(const char8* a_formattedText)
+    write_to_console(const char8* a_formattedText)
   { printf("%s", a_formattedText); }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    WriteToIDEConsole(const char8* a_formattedText)
+    write_to_ide_console(const char8* a_formattedText)
   { 
     return DoWriteToIDEConsole(a_formattedText, 
                                core_plat::PlatformInfo::platform_type());

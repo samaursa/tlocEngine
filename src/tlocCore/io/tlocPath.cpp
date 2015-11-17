@@ -24,18 +24,18 @@ namespace tloc { namespace core { namespace io {
   // ///////////////////////////////////////////////////////////////////////
   // Path
 
-  Path::
-    Path(const BufferArg& a_path) : m_path(a_path)
+  path::
+    path(const buffer_arg& a_path) : m_path(a_path)
   {
     TLOC_LOG_CORE_WARN_IF(m_path.empty()) << "Path is empty";
-    DoFixPath();
+    do_fix_path();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetFileName(String& a_out) const -> const this_type&
+    path::
+    get_file_name(String& a_out) const -> const this_type&
   {
     tl_size pos = m_path.find_last_of(g_pathSlash);
     if (pos != String::npos)
@@ -47,10 +47,10 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetFileNameWithoutExtension(String& a_out) const -> const this_type&
+    path::
+    get_file_name_without_extension(String& a_out) const -> const this_type&
   {
-    GetFileName(a_out);
+    get_file_name(a_out);
     tl_size pos = a_out.find_last_of(g_extension);
     if (pos != String::npos)
     { a_out = a_out.substr(0, pos); }
@@ -61,8 +61,8 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetExtension(String& a_out) const -> const this_type&
+    path::
+    get_extension(String& a_out) const -> const this_type&
   {
     tl_size pos = m_path.find_last_of(g_extension);
     if (pos != String::npos)
@@ -74,8 +74,8 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetPathWithoutFileName(String& a_out) const -> const this_type&
+    path::
+    get_path_without_file_name(String& a_out) const -> const this_type&
   {
     tl_size pos = m_path.find_last_of(g_pathSlash);
     a_out = m_path.substr(0, pos);
@@ -86,55 +86,55 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetFileName() const -> string_type
+    path::
+    get_file_name() const -> string_type
   {
     string_type toRet;
-    GetFileName(toRet);
+    get_file_name(toRet);
     return toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetFileNameWithoutExtension() const -> string_type
+    path::
+    get_file_name_without_extension() const -> string_type
   {
     string_type toRet;
-    GetFileNameWithoutExtension(toRet);
+    get_file_name_without_extension(toRet);
     return toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetExtension() const -> string_type
+    path::
+    get_extension() const -> string_type
   {
     string_type toRet;
-    GetExtension(toRet);
+    get_extension(toRet);
     return toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    GetPathWithoutFileName() const -> string_type
+    path::
+    get_path_without_file_name() const -> string_type
   {
     string_type toRet;
-    GetPathWithoutFileName(toRet);
+    get_path_without_file_name(toRet);
     return toRet;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Path::
-    FileExists() const
+    path::
+    file_exists() const
   {
-    FileIO_ReadA fileChecker = FileIO_ReadA(core_io::Path(m_path));
-    if (fileChecker.Open() == tloc::common_error_types::error_success)
+    FileIO_ReadA fileChecker = FileIO_ReadA(core_io::path(m_path));
+    if (fileChecker.open() == tloc::common_error_types::error_success)
     { return true; }
 
     return false;
@@ -143,17 +143,17 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Path::
-    FolderExists() const
+    path::
+    folder_exists() const
   {
     String tempFileName = m_path + "/temp.temp";
-    Path tempPath(tempFileName);
+    path tempPath(tempFileName);
 
     FileIO_WriteA tempFile(tempPath);
-    if (tempFile.Open() == tloc::common_error_types::error_success)
+    if (tempFile.open() == tloc::common_error_types::error_success)
     {
-      tempFile.Close();
-      if (tempFile.Delete() == tloc::common_error_types::error_failure)
+      tempFile.close();
+      if (tempFile.delete() == tloc::common_error_types::error_failure)
       {
         TLOC_LOG_CORE_WARN() << "Could not erase temporary file: " << tempFileName;
       }
@@ -167,8 +167,8 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Path::
-    HasFilename() const
+    path::
+    has_file_name() const
   {
     tl_size pos = m_path.find_last_of(g_pathSlash);
     pos = m_path.find(g_extension, pos);
@@ -182,11 +182,11 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   auto
-    Path::
-    SetPath(const BufferArg& a_path) -> this_type&
+    path::
+    set_path(const buffer_arg& a_path) -> this_type&
   {
     m_path = a_path;
-    DoFixPath();
+    do_fix_path();
 
     return *this;
   }
@@ -194,7 +194,7 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   bool
-    Path::
+    path::
     operator==(const this_type& a_other) const
   { return m_path == a_other.m_path; }
 
@@ -202,8 +202,8 @@ namespace tloc { namespace core { namespace io {
   // Helpers
 
   void
-    Path::
-    DoFixPath()
+    path::
+    do_fix_path()
   {
     String oldPath(m_path);
     m_path.clear();

@@ -103,7 +103,7 @@ private:
                                   p_virtual_stack_object::copy_ctor::NotAvail,
                                   p_virtual_stack_object::default_ctor::Available,
                                   T_BuildConfig>
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     typedef T                                                 value_type;
@@ -224,7 +224,7 @@ private:
                                   p_virtual_stack_object::copy_ctor::NotAvail,
                                   p_virtual_stack_object::default_ctor::NotAvail,
                                   T_BuildConfig>
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     typedef T                                                 value_type;
@@ -443,7 +443,7 @@ private:
                                   p_virtual_stack_object::copy_ctor::NotAvail,
                                   p_virtual_stack_object::default_ctor::NotAvail,
                                   core_cfg::p_build_config::Release>
-    : public core_bclass::NonCopyable_I
+    : public core_bclass::non_copyable_i
   {
   public:
     typedef T                                                 value_type;

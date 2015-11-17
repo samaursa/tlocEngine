@@ -52,7 +52,7 @@ namespace tloc { namespace core { namespace logging {
     Log_I();
     Log_I(const this_type& a_other);
 
-    this_type_cref operator << (BufferArg  a_string) const;
+    this_type_cref operator << (buffer_arg  a_string) const;
     this_type_cref operator << (BufferArgW a_string) const;
     this_type_cref operator << (char8     a_value) const;
     this_type_cref operator << (char32    a_value) const;
@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace logging {
     void       swap(this_type& a_other);
 
   protected:
-    Log_I(severity_type a_severity, BufferArg a_fileName,
+    Log_I(severity_type a_severity, buffer_arg a_fileName,
           const tl_ulong a_lineNumber);
 
   protected:
@@ -118,10 +118,10 @@ namespace tloc { namespace core { namespace logging {
 
   public:
     Log_T(T_Logger* a_logger, severity_type a_severity,
-          BufferArg a_fileName, const tl_ulong a_lineNumber);
+          buffer_arg a_fileName, const tl_ulong a_lineNumber);
     ~Log_T();
 
-    this_type_cref operator << (BufferArg  a_string) const;
+    this_type_cref operator << (buffer_arg  a_string) const;
     this_type_cref operator << (BufferArgW a_string) const;
     this_type_cref operator << (char8     a_value) const;
     this_type_cref operator << (char32    a_value) const;
@@ -147,7 +147,7 @@ namespace tloc { namespace core { namespace logging {
   template <typename T_Logger>
   Log_T<T_Logger>
     MakeLog(T_Logger* a_logger, Log_I::severity_type a_severity,
-            BufferArg a_fileName, const tl_ulong a_lineNumber)
+            buffer_arg a_fileName, const tl_ulong a_lineNumber)
   {
     return Log_T<T_Logger>(a_logger, a_severity, a_fileName, a_lineNumber);
   }
@@ -167,10 +167,10 @@ namespace tloc { namespace core { namespace logging {
 
   public:
     Log_T(T_Logger* , severity_type ,
-          BufferArg , const tl_ulong ) {}
+          buffer_arg , const tl_ulong ) {}
     ~Log_T() {}
 
-    this_type_cref operator << (BufferArg  )  const { return *this; }
+    this_type_cref operator << (buffer_arg  )  const { return *this; }
     this_type_cref operator << (BufferArgW )  const { return *this; }
     this_type_cref operator << (char8      )  const { return *this; }
     this_type_cref operator << (char32     )  const { return *this; }

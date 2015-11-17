@@ -22,51 +22,51 @@ namespace tloc { namespace core { namespace io {
     // run-time that we used incorrect file access parameters)
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read, p_file_io::Ascii)
+                 p_file_io::read, p_file_io::ascii)
     { return fopen(a_fileName, "r"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read, p_file_io::Binary)
+                 p_file_io::read, p_file_io::binary)
     { return fopen(a_fileName, "rb"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Write, p_file_io::Ascii)
+                 p_file_io::write, p_file_io::ascii)
     { return fopen(a_fileName, "w"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Write, p_file_io::Binary)
+                 p_file_io::write, p_file_io::binary)
     { return fopen(a_fileName, "wb"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Append, p_file_io::Ascii)
+                 p_file_io::append, p_file_io::ascii)
     { return fopen(a_fileName, "a"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Append, p_file_io::Binary)
+                 p_file_io::append, p_file_io::binary)
     { return fopen(a_fileName, "ab"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read_And_Write, p_file_io::Ascii)
+                 p_file_io::read_and_write, p_file_io::ascii)
     { return fopen(a_fileName, "r+"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read_And_Write, p_file_io::Binary)
+                 p_file_io::read_and_write, p_file_io::binary)
     { return fopen(a_fileName, "r+b"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read_And_Write_Empty, p_file_io::Ascii)
+                 p_file_io::read_and_write_empty, p_file_io::ascii)
     { return fopen(a_fileName, "w+"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read_And_Write_Empty, p_file_io::Binary)
+                 p_file_io::read_and_write_empty, p_file_io::binary)
     { return fopen(a_fileName, "w+b"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read_And_Append, p_file_io::Ascii)
+                 p_file_io::read_and_append, p_file_io::ascii)
     { return fopen(a_fileName, "a+"); }
 
     FILE* DoOpen(const char* a_fileName,
-                 p_file_io::Read_And_Append, p_file_io::Binary)
+                 p_file_io::read_and_append, p_file_io::binary)
     { return fopen(a_fileName, "a+b"); }
   };
 
@@ -80,18 +80,18 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <FILE_IO_TEMP>
-  FileIO_T<FILE_IO_PARAMS>::
-    FileIO_T(const Path& a_path)
+  file_io_t<FILE_IO_PARAMS>::
+    file_io_t(const path& a_path)
     : m_file(nullptr), m_filePath(a_path)
   {
-    TLOC_ASSERT(m_filePath.HasFilename(), "Path does not contain a filename!");
+    TLOC_ASSERT(m_filePath.has_file_name(), "Path does not contain a filename!");
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <FILE_IO_TEMP>
-  FileIO_T<FILE_IO_PARAMS>::
-    FileIO_T(const this_type& a_other)
+  file_io_t<FILE_IO_PARAMS>::
+    file_io_t(const this_type& a_other)
     : m_file(nullptr)
     , m_filePath(a_other.m_filePath)
   { }
@@ -99,8 +99,8 @@ namespace tloc { namespace core { namespace io {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <FILE_IO_TEMP>
-  FileIO_T<FILE_IO_PARAMS>::
-    ~FileIO_T()
+  file_io_t<FILE_IO_PARAMS>::
+    ~file_io_t()
   {
     DoClose();
   }
@@ -109,7 +109,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::this_type&
-    FileIO_T<FILE_IO_PARAMS>::
+    file_io_t<FILE_IO_PARAMS>::
     operator=(this_type a_other)
   {
     swap(a_other);
@@ -125,13 +125,13 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    Open() /* const */
+    file_io_t<FILE_IO_PARAMS>::
+    open() /* const */
   {
-    if (m_filePath.HasFilename() == false)
+    if (m_filePath.has_file_name() == false)
     { return TLOC_ERROR(common_error_types::error_path_incorrect); }
 
-    m_file = detail::DoOpen(m_filePath.GetPath(), access_policy_type(),
+    m_file = detail::DoOpen(m_filePath.get_path(), access_policy_type(),
                             file_format_type());
     if (m_file)
     {
@@ -145,8 +145,8 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   bool
-    FileIO_T<FILE_IO_PARAMS>::
-    IsOpen() const
+    file_io_t<FILE_IO_PARAMS>::
+    is_open() const
   {
     return m_file != nullptr;
   }
@@ -155,8 +155,8 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    Close()
+    file_io_t<FILE_IO_PARAMS>::
+    close()
   {
     return DoClose();
   }
@@ -166,10 +166,10 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    Delete() /* const */
+    file_io_t<FILE_IO_PARAMS>::
+    delete() /* const */
   {
-    if (::remove(m_filePath.GetPath()) == 0)
+    if (::remove(m_filePath.get_path()) == 0)
     { return ErrorSuccess; }
     else
     { return ErrorFailure; }
@@ -179,10 +179,10 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    Write(BufferArg a_string) const
+    file_io_t<FILE_IO_PARAMS>::
+    write(buffer_arg a_string) const
   {
-    TLOC_ASSERT(IsOpen(), "Attempting to write/append to a file that is not open");
+    TLOC_ASSERT(is_open(), "Attempting to write/append to a file that is not open");
 
     if (fprintf(m_file, "%s", a_string.GetPtr()) >= 0)
     { return ErrorSuccess; }
@@ -194,10 +194,10 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    Write(BufferArg a_string, tl_size a_buffSize) const
+    file_io_t<FILE_IO_PARAMS>::
+    write(buffer_arg a_string, tl_size a_buffSize) const
   {
-    TLOC_ASSERT(IsOpen(), "Attempting to write/append to a file that is not open");
+    TLOC_ASSERT(is_open(), "Attempting to write/append to a file that is not open");
 
     if (fwrite((char*)a_string.GetPtr(), 1, a_buffSize, m_file) != a_buffSize)
     {
@@ -211,8 +211,8 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    GetContents(String& a_out) const
+    file_io_t<FILE_IO_PARAMS>::
+    get_contents(String& a_out) const
   {
     TLOC_ASSERT(m_file, "No file to read - did you forget to call Open()?");
 
@@ -243,11 +243,11 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
-    GetContents(FileContents& a_out) const
+    file_io_t<FILE_IO_PARAMS>::
+    get_contents(FileContents& a_out) const
   {
     string_type contents;
-    auto err = GetContents(contents);
+    auto err = get_contents(contents);
 
     a_out = FileContents(m_filePath, contents);
     return err;
@@ -257,7 +257,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   void
-    FileIO_T<FILE_IO_PARAMS>::
+    file_io_t<FILE_IO_PARAMS>::
     swap(this_type& a_other)
   {
     using core::swap;
@@ -269,7 +269,7 @@ namespace tloc { namespace core { namespace io {
 
   template <FILE_IO_TEMP>
   FILE_IO_TYPE::error_type
-    FileIO_T<FILE_IO_PARAMS>::
+    file_io_t<FILE_IO_PARAMS>::
     DoClose()
   {
     if (m_file)
@@ -287,44 +287,44 @@ namespace tloc { namespace core { namespace io {
   //------------------------------------------------------------------------
   // Force Instantiate
 
-  template class FileIO_T<p_file_io::Read, p_file_io::Ascii>;
-  template class FileIO_T<p_file_io::Append, p_file_io::Ascii>;
-  template class FileIO_T<p_file_io::Write, p_file_io::Ascii>;
-  template class FileIO_T<p_file_io::Read_And_Write, p_file_io::Ascii>;
-  template class FileIO_T<p_file_io::Read_And_Write_Empty, p_file_io::Ascii>;
-  template class FileIO_T<p_file_io::Read_And_Append, p_file_io::Ascii>;
+  template class file_io_t<p_file_io::read, p_file_io::ascii>;
+  template class file_io_t<p_file_io::append, p_file_io::ascii>;
+  template class file_io_t<p_file_io::write, p_file_io::ascii>;
+  template class file_io_t<p_file_io::read_and_write, p_file_io::ascii>;
+  template class file_io_t<p_file_io::read_and_write_empty, p_file_io::ascii>;
+  template class file_io_t<p_file_io::read_and_append, p_file_io::ascii>;
 
-  template class FileIO_T<p_file_io::Read, p_file_io::Binary>;
-  template class FileIO_T<p_file_io::Append, p_file_io::Binary>;
-  template class FileIO_T<p_file_io::Write, p_file_io::Binary>;
-  template class FileIO_T<p_file_io::Read_And_Write, p_file_io::Binary>;
-  template class FileIO_T<p_file_io::Read_And_Write_Empty, p_file_io::Binary>;
-  template class FileIO_T<p_file_io::Read_And_Append, p_file_io::Binary>;
+  template class file_io_t<p_file_io::read, p_file_io::binary>;
+  template class file_io_t<p_file_io::append, p_file_io::binary>;
+  template class file_io_t<p_file_io::write, p_file_io::binary>;
+  template class file_io_t<p_file_io::read_and_write, p_file_io::binary>;
+  template class file_io_t<p_file_io::read_and_write_empty, p_file_io::binary>;
+  template class file_io_t<p_file_io::read_and_append, p_file_io::binary>;
 
   // ///////////////////////////////////////////////////////////////////////
 
   namespace f_file_io {
 
     template <typename T_FileFormat>
-    typename FileIO_T<p_file_io::Read, T_FileFormat>::error_type
-      OpenAndGetContents(const core_io::Path& a_filePath, 
+    typename file_io_t<p_file_io::read, T_FileFormat>::error_type
+      OpenAndGetContents(const core_io::path& a_filePath, 
                          core_io::FileContents& a_contentOut)
     {
-      typedef FileIO_T<p_file_io::Read, T_FileFormat>       file_io_type;
+      typedef file_io_t<p_file_io::read, T_FileFormat>       file_io_type;
 
       file_io_type f(a_filePath);
 
       core_err::Error err = ErrorSuccess;
-      err = f.Open();
+      err = f.open();
 
       if (err.Failed())
       { return TLOC_ERROR(common_error_types::error_file_not_found); }
 
-      err = f.GetContents(a_contentOut);
+      err = f.get_contents(a_contentOut);
       if (err.Failed())
       { return TLOC_ERROR(common_error_types::error_file_read); }
 
-      f.Close();
+      f.close();
 
       return err;
     }
@@ -336,8 +336,8 @@ namespace tloc { namespace core { namespace io {
   template FileIO_T<p_file_io::Read, _fileFormat_>::error_type\
   OpenAndGetContents<_fileFormat_>(const core_io::Path&, core_io::FileContents&)
 
-    TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::Ascii);
-    TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::Binary);
+    TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::ascii);
+    TLOC_EXPLICITLY_INSTANTIATE_FILE_IO_OPEN_AND_GET_CONTENTS(p_file_io::binary);
 
   };
 

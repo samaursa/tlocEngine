@@ -330,7 +330,7 @@ namespace tloc { namespace core { namespace containers {
   class HashCode { };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, type_false> : public HashCodeBase<T_Policy>
+  class HashCode<T_Policy, std::false_type> : public HashCodeBase<T_Policy>
   {
   public:
     typedef HashCodeBase<T_Policy>                base_type;
@@ -361,7 +361,7 @@ namespace tloc { namespace core { namespace containers {
   };
 
   template <typename T_Policy>
-  class HashCode<T_Policy, type_true> : public HashCodeBase<T_Policy>
+  class HashCode<T_Policy, std::true_type> : public HashCodeBase<T_Policy>
   {
   public:
     typedef HashCodeBase<T_Policy>  base_type;
@@ -490,13 +490,13 @@ namespace tloc { namespace core { namespace containers {
     typedef typename policy_type::unique_keys        unique_keys;
     typedef typename
       Loki::Select< Loki::IsSameType<unique_keys,
-                    type_true>::value,
+                    std::true_type>::value,
                     Pair<iterator, bool>,
                     iterator >::Result               insert_return_type;
 
     typedef typename
       Loki::Select< Loki::IsSameType<unique_keys,
-      type_true>::value, use_first<insert_return_type>,
+      std::true_type>::value, use_first<insert_return_type>,
       use_self<insert_return_type> >::Result            insert_return_selector;
 
     typedef typename buckets_array_type::iterator       local_iterator;
@@ -701,8 +701,8 @@ namespace tloc { namespace core { namespace containers {
     // Insert helpers
 
     /// Used by DoInsertValue()
-    typedef type_true  keys_are_unique;
-    typedef type_false keys_are_not_unique;
+    typedef std::true_type  keys_are_unique;
+    typedef std::false_type keys_are_not_unique;
 
     Pair<iterator, bool>  DoInsertValue(const value_type& a_value,
                                               keys_are_unique);

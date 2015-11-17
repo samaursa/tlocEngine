@@ -8,15 +8,13 @@
 
 namespace tloc { namespace core { namespace base_classes {
 
-  class NonCopyable_I
+  class non_copyable_i
   {
   public:
-    NonCopyable_I() {}
+    non_copyable_i() {}
 
-  private:
-
-    NonCopyable_I(const NonCopyable_I& a_other);
-    NonCopyable_I& operator= (const NonCopyable_I& a_other);
+    non_copyable_i(const non_copyable_i& a_other) = delete;
+    non_copyable_i& operator= (const non_copyable_i& a_other) = delete;
   };
 
 };};};

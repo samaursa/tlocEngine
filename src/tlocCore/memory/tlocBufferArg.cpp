@@ -8,14 +8,14 @@ namespace tloc { namespace core { namespace memory {
 #define TLOC_BUFFER_ARG_PARAMS  T_Char
 #define TLOC_BUFFER_ARG_TYPE    typename BufferArg_T<TLOC_BUFFER_ARG_PARAMS>
 
-  tloc::BufferArg::size_type const s_maximumValidBufferSize = 2048;
+  tloc::buffer_arg::size_type const s_maximumValidBufferSize = 2048;
 
   // ///////////////////////////////////////////////////////////////////////
   // BufferArg
 
   template <TLOC_BUFFER_ARG_TEMPS>
-  BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    BufferArg_T(const char_type* a_buffer)
+  buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    buffer_arg_t(const char_type* a_buffer)
     : m_buffer(a_buffer), m_end(nullptr)
   {
   }
@@ -23,8 +23,8 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_BUFFER_ARG_TEMPS>
-  BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    BufferArg_T(const char_type* a_buffer, size_type a_end)
+  buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    buffer_arg_t(const char_type* a_buffer, size_type a_end)
     : m_buffer(a_buffer), m_end(a_buffer + a_end)
   {
   }
@@ -32,8 +32,8 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_BUFFER_ARG_TEMPS>
-  BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    BufferArg_T(const string_type& a_string)
+  buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    buffer_arg_t(const string_type& a_string)
     : m_buffer(a_string.begin()), m_end(a_string.end())
   {
   }
@@ -42,18 +42,18 @@ namespace tloc { namespace core { namespace memory {
 
   template <TLOC_BUFFER_ARG_TEMPS>
   bool
-    BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    IsValid() const
+    buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    is_valid() const
   {
-    return IsValid(s_maximumValidBufferSize);
+    return is_valid(s_maximumValidBufferSize);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_BUFFER_ARG_TEMPS>
   bool
-    BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    IsValid(size_type a_maximumSize) const
+    buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    is_valid(size_type a_maximumSize) const
   {
     if (m_end)
     { return true; }
@@ -70,7 +70,7 @@ namespace tloc { namespace core { namespace memory {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TLOC_BUFFER_ARG_TEMPS>
-  BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
+  buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
     operator const TLOC_BUFFER_ARG_TYPE::char_type *() const
   {
     return m_buffer;
@@ -80,10 +80,10 @@ namespace tloc { namespace core { namespace memory {
 
   template <TLOC_BUFFER_ARG_TEMPS>
   const TLOC_BUFFER_ARG_TYPE::char_type
-    BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
+    buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
     operator [](tl_int a_index) const
   {
-    TLOC_ASSERT_LOW_LEVEL(IsValid(), "Index out of bounds!");
+    TLOC_ASSERT_LOW_LEVEL(is_valid(), "Index out of bounds!");
     return m_buffer[a_index];
   }
 
@@ -91,8 +91,8 @@ namespace tloc { namespace core { namespace memory {
 
   template <TLOC_BUFFER_ARG_TEMPS>
   const TLOC_BUFFER_ARG_TYPE::char_type*
-    BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    GetPtr() const
+    buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    get_ptr() const
   {
     TLOC_ASSERT(m_end == TLOC_NULL || *m_end == '\0', "BufferArg::m_end is not NULL nor is it '\0'"); // if m_end is not NULL, then GetPtr() is undefined
     return m_buffer;
@@ -102,8 +102,8 @@ namespace tloc { namespace core { namespace memory {
 
   template <TLOC_BUFFER_ARG_TEMPS>
   TLOC_BUFFER_ARG_TYPE::size_type
-    BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    GetSize() const
+    buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    get_size() const
   {
     return m_end - m_buffer;
   }
@@ -112,8 +112,8 @@ namespace tloc { namespace core { namespace memory {
 
   template <TLOC_BUFFER_ARG_TEMPS>
   TLOC_BUFFER_ARG_TYPE::size_type
-    BufferArg_T<TLOC_BUFFER_ARG_PARAMS>::
-    GetMaxAllowedBuffSize()
+    buffer_arg_t<TLOC_BUFFER_ARG_PARAMS>::
+    get_max_allowed_buff_size()
   {
     return s_maximumValidBufferSize;
   }
@@ -121,6 +121,6 @@ namespace tloc { namespace core { namespace memory {
   //------------------------------------------------------------------------
   // Explicit Instantiations
 
-  template class BufferArg_T<char8>;
-  template class BufferArg_T<char32>;
+  template class buffer_arg_t<char8>;
+  template class buffer_arg_t<char32>;
 };};};

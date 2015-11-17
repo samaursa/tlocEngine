@@ -12,6 +12,4 @@
 
 #include <tlocCore/data_structures/tlocTuple.inl.h>
 
-#include <tlocCore/data_structures/tlocVariadic.inl.h>
-
 #endif

@@ -56,8 +56,8 @@ namespace tloc { namespace core { namespace containers {
     typedef tloc::core::reverse_iterator<const_iterator>  const_reverse_iterator;
 
   private:
-    typedef type_true                                     array_simple_type;
-    typedef type_false                                    array_complex_type;
+    typedef std::true_type                                array_simple_type;
+    typedef std::false_type                               array_complex_type;
 
   public:
     //------------------------------------------------------------------------
@@ -267,8 +267,8 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // assign() helpers
 
-    typedef type_true   is_arith_t;
-    typedef type_false  is_not_arith_t;
+    typedef std::true_type    is_arith_t;
+    typedef std::false_type   is_not_arith_t;
 
     // This is the assign() selector, which is invoked with type-traits
     template <typename T_Number>
@@ -295,8 +295,8 @@ namespace tloc { namespace core { namespace containers {
                                          size_type a_numElemsToInsert,
                                          const_reference a_value);
 
-    typedef type_true   is_integral_t;
-    typedef type_false  is_not_integral_t;
+    typedef std::true_type   is_integral_t;
+    typedef std::false_type  is_not_integral_t;
 
     // This is the insert selector, which is invoked with type-traits
     template <typename T_Number>

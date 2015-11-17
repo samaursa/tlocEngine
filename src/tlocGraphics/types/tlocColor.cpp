@@ -18,8 +18,8 @@ namespace tloc { namespace graphics { namespace types {
 
     typedef u32               int_color_type;
 
-    typedef type_true         byte_type_true;
-    typedef type_false        real_type_true;
+    typedef std::true_type         byte_type_true;
+    typedef std::false_type        real_type_true;
 
 
     using namespace p_color::channel;

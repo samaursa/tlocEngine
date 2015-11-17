@@ -20,14 +20,14 @@ namespace tloc { namespace core { namespace component_system {
 
   class Entity
     : public base_classes::DebugName
-    , public core_bclass::NonCopyable_I
+    , public core_bclass::non_copyable_i
   {
   public:
     friend class EntityManager;
     typedef core_sptr::VirtualPtr<EntityManager>        ent_mgr_ptr;
 
     typedef Entity                                      this_type;
-    typedef base_classes::DebugName_TI
+    typedef base_classes::debug_name_ti
       <core_cfg::BuildConfig::build_config_type>        base_type;
 
     typedef Component::info_type                        component_info_type;
@@ -51,7 +51,7 @@ namespace tloc { namespace core { namespace component_system {
 
   public:
     Entity(entity_id  a_id, ent_mgr_ptr a_entMgr);
-    Entity(entity_id  a_id, BufferArg a_debugName, ent_mgr_ptr a_entMgr);
+    Entity(entity_id  a_id, buffer_arg a_debugName, ent_mgr_ptr a_entMgr);
 
     bool                      operator==(const this_type& a_other) const;
     TLOC_DECLARE_OPERATOR_NOT_EQUAL(this_type);

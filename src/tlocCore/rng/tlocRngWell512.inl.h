@@ -5,19 +5,20 @@
 #include <tlocCore/tlocAssert.h>
 
 #include <time.h>
+#include <stdexcept>
 
 namespace tloc { namespace core { namespace rng {
 
-  TL_I RngWell512::RngWell512()
+  TL_I rng_well_512::rng_well_512()
   {
     Params defaultParams;
     defaultParams.m_seed	= (int_type)::time(nullptr);
     defaultParams.m_index	= 0;
 
-    SetSeed(defaultParams);
+    set_seed(defaultParams);
   }
 
-  TL_I void RngWell512::SetSeed(const Params& a_seed)
+  TL_I void rng_well_512::set_seed(const Params& a_seed)
   {
     m_params = a_seed;
 
@@ -29,12 +30,12 @@ namespace tloc { namespace core { namespace rng {
     }
   }
 
-  TL_I const RngWell512::Params& RngWell512::GetSeed() const
+  TL_I const rng_well_512::Params& rng_well_512::get_seed() const
   {
     return m_params;
   }
 
-  TL_I const RngWell512::int_type RngWell512::GetRandomInteger() const
+  TL_I const rng_well_512::int_type rng_well_512::get_random_int() const
   {
     u32 a = m_params.m_state[m_params.m_index];
     u32 c = m_params.m_state[(m_params.m_index+13)&15];
@@ -49,28 +50,28 @@ namespace tloc { namespace core { namespace rng {
     return m_params.m_state[m_params.m_index];
   }
 
-  TL_I const RngWell512::real_type RngWell512::GetRandomFloat() const
+  TL_I const rng_well_512::real_type rng_well_512::get_random_real() const
   {
     // Get a random integer, and divide by 2^32
-    return (GetRandomInteger()/4294967296.0f);
+    return (get_random_int()/4294967296.0f);
   }
 
-  TL_I const RngWell512::int_type
-    RngWell512::GetRandomInteger(int_type a_min, int_type a_max) const
+  TL_I const rng_well_512::int_type
+    rng_well_512::get_random_int(int_type a_min, int_type a_max) const
   {
-    TLOC_ASSERT_LOW_LEVEL(a_max >= a_min, "Range max is smaller than min!");
+    if (a_max >= a_min) { throw std::out_of_range("Range max is smaller than min"); }
 
     const int_type range = a_max - a_min;
-    return (int_type)((real_type)range * (real_type)(GetRandomFloat()) ) + a_min;
+    return (int_type)((real_type)range * (real_type)(get_random_real()) ) + a_min;
   }
 
-  TL_I const RngWell512::real_type
-    RngWell512::GetRandomFloat(real_type a_min, real_type a_max) const
+  TL_I const rng_well_512::real_type
+    rng_well_512::get_random_real(real_type a_min, real_type a_max) const
   {
-    TLOC_ASSERT_LOW_LEVEL(a_max >= a_min, "Range max is smaller than min!");
+    if (a_max >= a_min) { throw std::out_of_range("Range max is smaller than min"); }
 
     const real_type range = a_max - a_min;
-    return (range * (real_type)(GetRandomFloat()) ) + a_min;
+    return (range * (real_type)(get_random_real()) ) + a_min;
   }
 
 };};};

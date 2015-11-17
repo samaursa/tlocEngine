@@ -11,6 +11,7 @@
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/types/tlocTypes.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
+#include <tlocCore/types/tlocTypeTraits.h>
 
 namespace tloc {
 
@@ -31,8 +32,8 @@ namespace tloc {
 
     namespace priv {
 
-      typedef type_true   IsFloat;
-      typedef type_false  IsNotFloat;
+      typedef std::true_type     IsFloat;
+      typedef std::false_type    IsNotFloat;
 
       template <typename T>
       T DoRemainder(T a_num1, T a_num2, IsFloat)
@@ -63,10 +64,10 @@ namespace tloc {
       TL_I bool DoApprox(f32 a_num1, f32 a_num2, tl_int a_maxUlps, IsFloat)
       {
         // extremely small numbers are set to 0
-        if (ApproxAbsolute(a_num1, 0.0f, NumericLimits_T<f32>::epsilon()))
+        if (ApproxAbsolute(a_num1, 0.0f, std::numeric_limits<f32>::epsilon()))
         { a_num1 = 0.0f; }
 
-        if (ApproxAbsolute(a_num2, 0.0f, NumericLimits_T<f32>::epsilon()))
+        if (ApproxAbsolute(a_num2, 0.0f, std::numeric_limits<f32>::epsilon()))
         { a_num2 = 0.0f; }
 
         // implementation and explanation:
@@ -95,10 +96,10 @@ namespace tloc {
       TL_I bool DoApprox(f64 a_num1, f64 a_num2, tl_int a_maxUlps, IsFloat)
       {
         // extremely small numbers are set to 0
-        if (ApproxAbsolute(a_num1, 0.0, NumericLimits_T<f64>::epsilon()))
+        if (ApproxAbsolute(a_num1, 0.0, std::numeric_limits<f64>::epsilon()))
         { a_num1 = 0.0f; }
 
-        if (ApproxAbsolute(a_num2, 0.0, NumericLimits_T<f64>::epsilon()))
+        if (ApproxAbsolute(a_num2, 0.0, std::numeric_limits<f64>::epsilon()))
         { a_num2 = 0.0f; }
 
         // implementation and explanation:
@@ -175,8 +176,8 @@ namespace tloc {
       bool DoApproxAbsolute(T a_num1, T a_num2, T, IsNotFloat)
       { return a_num1 == a_num2; }
 
-      typedef type_true   IsUnsigned;
-      typedef type_false  IsSigned;
+      typedef std::true_type   IsUnsigned;
+      typedef std::false_type  IsSigned;
 
       template <typename T>
       T DoAbs(T a_value, IsSigned)
@@ -226,18 +227,14 @@ namespace tloc {
     T Abs(T a_value)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isUnsignedInt> s_or_u;
-
-      return priv::DoAbs(a_value, s_or_u());
+      return priv::DoAbs(a_value, std::is_unsigned<T>::type());
     }
 
     template <typename T>
     T Remainder(T a_numerator, T a_denominator)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
-
-      return priv::DoRemainder(a_numerator, a_denominator, float_or_not());
+      return priv::DoRemainder(a_numerator, a_denominator, std::is_floating_point<T>::type());
     }
 
     template <typename T>
@@ -251,27 +248,21 @@ namespace tloc {
     bool Approx(T a_num1, T a_num2, tl_int a_maxUnitsInLastPlace)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
-
-      return priv::DoApprox(a_num1, a_num2, a_maxUnitsInLastPlace, float_or_not());
+      return priv::DoApprox(a_num1, a_num2, a_maxUnitsInLastPlace, std::is_floating_point<T>::type());
     }
 
     template <typename T>
     bool ApproxRelative(T a_num1, T a_num2, T a_epsilon)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
-
-      return priv::DoApproxRelative(a_num1, a_num2, a_epsilon, float_or_not());
+      return priv::DoApproxRelative(a_num1, a_num2, a_epsilon, std::is_floating_point<T>::type());
     }
 
     template <typename T>
     bool ApproxAbsolute(T a_num1, T a_num2, T a_epsilon)
     {
       TLOC_STATIC_ASSERT_IS_ARITH(T);
-      typedef Loki::Int2Type< Loki::TypeTraits<T>::isFloat> float_or_not;
-
-      return priv::DoApproxAbsolute(a_num1, a_num2, a_epsilon, float_or_not());
+      return priv::DoApproxAbsolute(a_num1, a_num2, a_epsilon, std::is_floating_point<T>::type());
     }
 
     template <typename T>
@@ -280,11 +271,11 @@ namespace tloc {
 
     template <typename T>
     bool IsEqualRelative(T a_num1, T a_num2)
-    { return ApproxRelative(a_num1, a_num2, NumericLimits_T<T>::epsilon() ); }
+    { return ApproxRelative(a_num1, a_num2, std::numeric_limits<T>::epsilon() ); }
 
     template <typename T>
     bool IsEqualAbsolute(T a_num1, T a_num2)
-    { return ApproxAbsolute(a_num1, a_num2, NumericLimits_T<T>::epsilon() ); }
+    { return ApproxAbsolute(a_num1, a_num2, std::numeric_limits<T>::epsilon() ); }
 
     template <typename T>
     bool IsEqualToZero(T a_num1)

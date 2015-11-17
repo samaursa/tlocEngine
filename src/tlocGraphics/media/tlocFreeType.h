@@ -38,9 +38,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
   };
 
   class FreeType
-    : core_bclass::InitializeAndDestroy_TI<FreeType,
-        core_bclass::p_initialize_and_destroy::OneParam>
-    , core_bclass::NonCopyable_I
+    : core_bclass::NonCopyable_I
   {
     TLOC_DECLARE_FRIEND_INITIALIZE_AND_DESTROY_ONE_PARAM(FreeType);
 
@@ -65,7 +63,7 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
     typedef image_sptr                            image_ptr;
 
   public:
-    FreeType();
+    FreeType(const data_type& a_data);
     ~FreeType();
 
     bool          SetCurrentSize(ft_ushort a_charSize) const;
@@ -76,11 +74,9 @@ namespace tloc { namespace graphics { namespace media { namespace free_type {
                                 gfx_t::Color a_fontColor = gfx_t::Color::COLOR_WHITE, 
                                 gfx_t::Color a_backgroundColor = gfx_t::Color::COLOR_BLACK) const;
 
-    TLOC_USING_INITIALIZE_AND_DESTROY_METHODS();
-
   protected:
 
-    error_type    DoInitialize(const data_type& a_data);
+    error_type    DoInitialize();
     error_type    DoDestroy();
 
   private:

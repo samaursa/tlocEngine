@@ -8,13 +8,12 @@
 #include <tlocCore/tlocConsole.h>
 #include <tlocCore/tlocStaticAssert.h>
 #include <tlocCore/tlocFunctional.h>
-#include <tlocCore/tlocPair.h>
 #include <tlocCore/tlocAlgorithms.h>
+#include <tlocCore/tlocException.h>
 
 #include <tlocCore/base_classes/tloc_base_classes.h>
 #include <tlocCore/component_system/tloc_component_system.h>
 #include <tlocCore/configs/tloc_configs.h>
-#include <tlocCore/containers/tloc_containers.h>
 #include <tlocCore/data_structures/tloc_data_structures.h>
 #include <tlocCore/dispatch/tloc_dispatch.h>
 #include <tlocCore/error/tloc_error.h>
@@ -25,7 +24,6 @@
 #include <tlocCore/platform/tloc_platform.h>
 #include <tlocCore/rng/tloc_rng.h>
 #include <tlocCore/smart_ptr/tloc_smart_ptr.h>
-#include <tlocCore/string/tloc_string.h>
 #include <tlocCore/threads/tloc_threads.h>
 #include <tlocCore/time/tloc_time.h>
 #include <tlocCore/types/tloc_types.h>

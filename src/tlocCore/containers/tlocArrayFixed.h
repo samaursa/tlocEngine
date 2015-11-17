@@ -160,8 +160,8 @@ namespace tloc { namespace core { namespace containers {
     //------------------------------------------------------------------------
     // assign() helpers
 
-    typedef type_true is_arith_t;
-    typedef type_false is_not_arith_t;
+    typedef std::true_type is_arith_t;
+    typedef std::false_type is_not_arith_t;
 
     template <typename T_Number>
     void             DoAssign(T_Number a_repetitionNum,
@@ -185,8 +185,8 @@ namespace tloc { namespace core { namespace containers {
                                          size_type a_numElemsToInsert,
                                          const value_type& a_value);
 
-    typedef type_true   is_integral_t;
-    typedef type_false  is_not_integral_t;
+    typedef std::true_type   is_integral_t;
+    typedef std::false_type  is_not_integral_t;
 
     template <typename T_Number>
     void             DoInsert(iterator a_position, T_Number a_n,

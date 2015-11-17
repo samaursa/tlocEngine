@@ -23,8 +23,8 @@ namespace tloc { namespace graphics { namespace media {
       class Internal      {};
       class External      {};
 
-      typedef type_true   const_storage;
-      typedef type_false  non_const_storage;
+      typedef std::true_type   const_storage;
+      typedef std::false_type  non_const_storage;
     };
 
     typedef gfx_t::Dimension2       dim_2d;

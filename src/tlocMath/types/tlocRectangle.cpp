@@ -15,8 +15,8 @@ namespace tloc { namespace math { namespace types {
 
   using core_ds::MakeTuple;
 
-  typedef type_true                   IsFloat;
-  typedef type_false                  IsNotFloat;
+  typedef std::true_type                   IsFloat;
+  typedef std::false_type                  IsNotFloat;
 
   namespace priv {
 

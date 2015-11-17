@@ -94,54 +94,6 @@ namespace tloc
 # error WIP
 #endif
 
-  //////////////////////////////////////////////////////////////////////////
-  // Numerical limits
-
-#define TL_NUM_CHAR_BITS          CHAR_BIT
-#define TL_SCHAR_MIN              SCHAR_MIN
-#define TL_SCHAR_MAX              SCHAR_MAX
-#define TL_UCHAR_MIN              0
-#define TL_UCHAR_MAX              UCHAR_MAX
-
-#define TL_CHAR_MIN               CHAR_MIN
-#define TL_CHAR_MAX               CHAR_MAX
-
-#define TL_WCHAR_MAX_NUM_BYTES    MB_LEN_MAX
-#define TL_SHORT_MIN              SHRT_MIN
-#define TL_SHORT_MAX              SHRT_MAX
-#define TL_USHORT_MIN             0
-#define TL_USHORT_MAX             USHRT_MAX
-
-#define TL_INT_MIN                INT_MIN
-#define TL_INT_MAX                INT_MAX
-#define TL_UINT_MIN               0
-#define TL_UINT_MAX               UINT_MAX
-
-#define TL_LONG_MIN               LONG_MIN
-#define TL_LONG_MAX               LONG_MAX
-#define TL_ULONG_MIN              0
-#define TL_ULONG_MAX              ULONG_MAX
-
-#define TL_LLONG_MIN              LLONG_MIN
-#define TL_LLONG_MAX              LLONG_MAX
-#define TL_ULLONG_MIN             0
-#define TL_ULLONG_MAX             ULLONG_MAX
-
-  // ///////////////////////////////////////////////////////////////////////
-  // NumericLimits_T
-
-  template <typename T>
-  class NumericLimits_T
-  {
-  public:
-    typedef T                             value_type;
-
-  public:
-    static  value_type        min();
-    static  value_type        max();
-    static  value_type        epsilon();
-  };
-
 };
 
 typedef tloc::char8         tl_char8;

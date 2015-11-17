@@ -54,8 +54,8 @@ namespace tloc { namespace math { namespace types {
     TLOC_DECLARE_OPERATORS(this_type);
 
   protected:
-    typedef type_true     fundamental_type;
-    typedef type_false    angle_type;
+    typedef std::true_type  fundamental_type;
+    typedef std::false_type angle_type;
 
     void DoSetAngleCtor(value_type, fundamental_type);
     template <typename T_AngleType>

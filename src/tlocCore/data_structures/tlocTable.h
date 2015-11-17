@@ -124,8 +124,8 @@ namespace tloc { namespace core { namespace data_structs {
     bool operator != (const Table& aTable);
 
   private:
-    typedef type_true     incoming_cols_bigger;
-    typedef type_false    incoming_cols_smaller;
+    typedef std::true_type     incoming_cols_bigger;
+    typedef std::false_type    incoming_cols_smaller;
 
     template <typename T_OtherTable, typename T_Policy>
     void DoConvertFrom(const T_OtherTable& a_other, incoming_cols_bigger);

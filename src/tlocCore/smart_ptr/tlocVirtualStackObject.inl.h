@@ -525,7 +525,7 @@ namespace tloc { namespace core { namespace smart_ptr {
   template <TLOC_VIRTUAL_STACK_OBJECT_RELEASE_TEMPS>
   VirtualStackObjectBase_TI<TLOC_VIRTUAL_STACK_OBJECT_RELEASE_PARAMS>::
     VirtualStackObjectBase_TI(this_type& a_other)
-    : VirtualStackObjectBase_TI(const_cast<this_type&>(a_other))
+    : VirtualStackObjectBase_TI(const_cast<const this_type&>(a_other))
   { }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

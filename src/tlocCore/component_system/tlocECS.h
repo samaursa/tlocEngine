@@ -41,13 +41,12 @@ namespace tloc { namespace core { namespace component_system {
           // that is done automatically
 
     template <typename T_System>
-    core_sptr::VirtualPtr<T_System> 
-      AddSystem(time_type a_deltaT = 1.0/60.0, bool a_processManually = false);
+    core_sptr::VirtualPtr<T_System>
+      AddSystem(time_type a_deltaT = 1.0 / 60.0, bool a_processManually = false);
 
     template <typename T_System, typename... T_Args>
     core_sptr::VirtualPtr<T_System> 
-      AddSystem(T_Args&&... a_args, time_type a_deltaT = 1.0/60.0, 
-                bool a_processManually = false);
+      AddSystem(time_type a_deltaT, bool a_processManually, T_Args&&... a_args);
 
     template <typename T_ComponentPtr>
     void 
@@ -119,10 +118,10 @@ namespace tloc { namespace core { namespace component_system {
   template <typename T_System, typename... T_Args>
   core_sptr::VirtualPtr<T_System> 
     ECS::
-    AddSystem(T_Args&&... a_args, time_type a_deltaT, bool a_processManually)
+    AddSystem(time_type a_deltaT, bool a_processManually, T_Args&&... a_args)
   { 
     core_sptr::UniquePtr<T_System> sys = 
-      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), Forward(a_args)...);
+      core_sptr::MakeUnique<T_System>(m_eventMgr.get(), m_entMgr.get(), Forward<T_Args>(a_args)...);
 
     auto sysPtr = core_sptr::ToVirtualPtr(sys);
 

@@ -120,11 +120,11 @@ namespace
     typedef core_cs::EntityProcessingSystem      base_type;
 
   public:
-    DummySys2(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr)
+    DummySys2(event_manager_ptr a_eventMgr, entity_manager_ptr a_entityMgr, int a_dummyArg)
       : base_type(a_eventMgr, a_entityMgr, register_type().Add<DummyComp2>(), 
                   "DummySys2")
       , m_flags(k_count)
-    { }
+    { TLOC_UNUSED(a_dummyArg); }
 
     virtual error_type Pre_Initialize() 
     { 
@@ -162,7 +162,7 @@ namespace
   {
     ECS ecs;
     auto sys1 = ecs.AddSystem<DummySys1>();
-    auto sys2 = ecs.AddSystem<DummySys2>();
+    auto sys2 = ecs.AddSystem<DummySys2>(1.0/60.0, false, 5);
 
     auto dummyComp1 = core_sptr::MakeShared<DummyComp1>();
     auto dummyComp2 = core_sptr::MakeShared<DummyComp2>();

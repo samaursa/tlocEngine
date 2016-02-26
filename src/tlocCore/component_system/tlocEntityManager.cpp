@@ -123,7 +123,8 @@ namespace tloc { namespace core { namespace component_system {
                                           ToVirtualPtr(a_entity)) );
   }
 
-  void EntityManager::
+  void 
+    EntityManager::
     DestroyEntity(entity_ptr a_entity)
   {
     TLOC_ASSERT(find_all(m_entities, a_entity) != m_entities.end(),
@@ -133,6 +134,16 @@ namespace tloc { namespace core { namespace component_system {
 
     m_eventMgr->DispatchNow(EntityEvent(entity_events::destroy_entity, 
                                         ToVirtualPtr(a_entity)) );
+  }
+
+  void
+    EntityManager::
+    DestroyAllEntities()
+  {
+    for_each_all(m_entities, [this](const entity_uptr& a_ent)
+    { 
+      if (a_ent) { DestroyEntity(core_sptr::ToVirtualPtr(a_ent)); }
+    });
   }
 
   EntityManager::entity_ptr EntityManager::

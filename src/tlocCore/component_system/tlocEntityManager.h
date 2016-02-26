@@ -21,7 +21,7 @@ namespace tloc { namespace core { namespace component_system {
   public:
     typedef Entity                                entity_type;
     typedef entity_vptr                           entity_ptr;
-    typedef entity_uptr                           entity_vptr;
+    typedef entity_uptr                           entity_uptr;
     typedef const_entity_vptr                     const_entity_ptr;
     typedef component_sptr                        component_ptr_type;
 
@@ -81,6 +81,7 @@ namespace tloc { namespace core { namespace component_system {
     void              DeactivateEntity(const_entity_ptr a_entity) const;
     void              ActivateEntity(const_entity_ptr a_entity) const;
     void              DestroyEntity(entity_ptr a_entity);
+    void              DestroyAllEntities();
     entity_ptr        GetEntity(tl_int a_index);
 
     void              InsertComponent(const Params& a_params);

@@ -154,6 +154,14 @@ namespace TestingEntityManager
       eMgr.DestroyEntity(newEnt);
       CHECK(entTrack->m_entEventCounter == 0);
 
+      eMgr.CreateEntity();
+      eMgr.CreateEntity();
+      eMgr.CreateEntity();
+      CHECK(entTrack->m_entEventCounter == 3);
+
+      eMgr.DestroyAllEntities();
+      CHECK(entTrack->m_entEventCounter == 0);
+
       eMgr.Update();
       eMgr.Update(); // second update required because entity destruction is delayed by one frame
 

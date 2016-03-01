@@ -244,7 +244,7 @@ const char8* GetErrorString(GLenum a_errorCode)
 
   auto
     Error::
-    GetError() -> value_type
+    GetError() const -> value_type
   {
     m_lastError = DoGetOpenGLError(core_cfg::BuildConfig::build_config_type());
 
@@ -264,10 +264,21 @@ const char8* GetErrorString(GLenum a_errorCode)
   template <typename T_String>
   void 
     Error::
-    GetLastErrorAsString(T_String& a_out)
+    GetLastErrorAsString(T_String& a_out) const
   {
     const char* myError = GetErrorString(m_lastError);
     if (myError) { a_out = myError; }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  const char*
+    Error::
+    GetLastErrorAsString() const
+  {
+    const char* myError = GetErrorString(m_lastError);
+    if (myError) { return myError; }
+    else { return "NO ERROR"; }
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -280,7 +291,7 @@ const char8* GetErrorString(GLenum a_errorCode)
   //------------------------------------------------------------------------
   // Explicit Instantiation
 
-  template void Error::GetLastErrorAsString(core::string::String&);
-  template void Error::GetLastErrorAsString(const char*&);
+  template void Error::GetLastErrorAsString(core::string::String&) const;
+  template void Error::GetLastErrorAsString(const char*&) const;
 
 };};};

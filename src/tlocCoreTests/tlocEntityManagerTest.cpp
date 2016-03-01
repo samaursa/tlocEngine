@@ -141,6 +141,8 @@ namespace TestingEntityManager
 
       EntityManager   eMgr(evtMgr.get());
 
+      eMgr.DestroyAllEntities();
+
       EntityManager::entity_ptr newEnt = eMgr.CreateEntity();
       CHECK( (newEnt != nullptr) );
       CHECK(entTrack->m_entEventCounter == 1);

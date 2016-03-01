@@ -10,6 +10,8 @@
 
 #include <tlocPrefab/graphics/tlocMaterial.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace {
 
 #ifdef TLOC_OS_WIN
@@ -248,6 +250,7 @@ namespace tloc { namespace graphics { namespace component_system {
                    core_utils::CastNumber<gfx_t::gl_sizei>(m_lineList.size()));
 
       gl::Error err; TLOC_UNUSED(err);
+      TLOC_LOG_GFX_ERR_FILENAME_ONLY_IF(gl::Error().Failed()) << err;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

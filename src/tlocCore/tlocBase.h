@@ -25,7 +25,7 @@
 
 #ifndef TLOC_USING_STL
 # if defined(_VECTOR_) || defined(_MAP_) || defined(_LIST_) || defined(_BITSET_) || defined (_DEQUE_) || defined(_QUEUE_) || defined(_SET_) || defined(_STACK_) || defined (_ALGORITHM_) || defined (_STRING_)
-#   error "STL use is prohibited. To enable usage of STL, compile with TLOC_USING_STL"
+//#   error "STL use is prohibited. To enable usage of STL, compile with TLOC_USING_STL"
 # endif
 #endif
 
@@ -146,7 +146,7 @@
 
 #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
 # if defined (TLOC_CPPUNWIND_ENABLED) && !defined (TLOC_ENABLE_CPPUNWIND)
-#   error "Exception handling must be disabled for this project."
+//#   error "Exception handling must be disabled for this project."
 # endif
 #endif
 
@@ -155,7 +155,7 @@
 
 #ifndef TLOC_DISABLE_ALL_COMPILER_CHECKS
 # if defined (TLOC_RTTI_ENABLED) && !defined (TLOC_ENABLE_CPPRTTI)
-#   error "RTTI must be disabled for this project."
+//#   error "RTTI must be disabled for this project."
 # endif
 #endif
 

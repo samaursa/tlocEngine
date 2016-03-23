@@ -14,14 +14,14 @@ namespace tloc { namespace core { namespace rng {
 
   class RngWell512
   {
-    template <typename T_Generator> friend class RNG_T;
-
   private:
+    template <typename T_Generator> friend class RNG_T;
 
     typedef   u32           int_type;
     typedef   f32           real_type;
     typedef   RngWell512    rng_type;
 
+  public:
     struct Params
     {
       int_type  m_seed;
@@ -30,6 +30,7 @@ namespace tloc { namespace core { namespace rng {
       int_type  m_state[16];
     };
 
+  private:
     RngWell512();
 
     ///-------------------------------------------------------------------------

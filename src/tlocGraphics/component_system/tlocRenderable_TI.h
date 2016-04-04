@@ -52,6 +52,7 @@ namespace tloc { namespace graphics { namespace component_system {
         k_vertexNormal,
         k_vertexColor,
         k_texCoordPrefix,
+        k_tbn,
 
         k_count
 

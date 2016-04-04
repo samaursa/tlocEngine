@@ -264,6 +264,9 @@ namespace tloc { namespace graphics { namespace types {
 
 #define TLOC_GL_ORIENTATION4F                             0x11
 
+#define TLOC_GL_POSITION3F_TEXTURE2F_TBN                  0x12
+
+
   namespace f_vertex {
 
     // ///////////////////////////////////////////////////////////////////////

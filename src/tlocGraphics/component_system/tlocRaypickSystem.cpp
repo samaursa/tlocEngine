@@ -197,6 +197,8 @@ namespace tloc { namespace graphics { namespace component_system {
         if (bb2d->GetIsCircular())
         {
           const auto& bounds = bb2d->GetCircularBounds();
+          if (bounds.IsValid() == false) { continue; }
+
           if (bounds.Intersects(ray))
           { 
             if (r->GetIsDistanceChecked())
@@ -223,6 +225,8 @@ namespace tloc { namespace graphics { namespace component_system {
         else
         {
           const auto& bounds = bb2d->GetBounds();
+          if (bounds.IsValid() == false) { continue; }
+
           if (bounds.Intersects(ray).first)
           { 
             if (r->GetIsDistanceChecked())
@@ -250,6 +254,8 @@ namespace tloc { namespace graphics { namespace component_system {
       else
       {
         const auto& bounds = bb3d->GetBounds();
+        if (bounds.IsValid() == false) { continue; }
+
         if (bounds.Intersects(ray))
         { 
           if (r->GetIsDistanceChecked())

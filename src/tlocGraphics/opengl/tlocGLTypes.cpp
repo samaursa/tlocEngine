@@ -107,6 +107,7 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpt,      TLOC_GL_POSITION3F_COLOR4F);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnc,     TLOC_GL_POSITION3F_NORMAL3F_COLOR4F);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnt,     TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fptm,     TLOC_GL_POSITION3F_TEXTURE2F_TBN);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnct,    TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F);
 
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fp>,       GL_FLOAT_VEC2);
@@ -123,6 +124,7 @@ namespace tloc { namespace graphics { namespace types {
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpc>,      TLOC_GL_POSITION3F_COLOR4F);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnc>,     TLOC_GL_POSITION3F_NORMAL3F_COLOR4F);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnt>,     TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F);
+  TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fptm>,     TLOC_GL_POSITION3F_TEXTURE2F_TBN);
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert3fpnct>,    TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F);
 
   TLOC_DECL_TL_TO_GL(Array<gfx_t::Vert2fpnto>,    TLOC_GL_POSITION2F_NORMAL3F_TEXTURE2F_ORIENTATION);

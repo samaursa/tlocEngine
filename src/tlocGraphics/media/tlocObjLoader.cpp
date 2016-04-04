@@ -37,7 +37,7 @@ namespace tloc { namespace graphics { namespace media {
   {
     m_objects.clear();
     m_vertices.m_pos.clear();
-    m_vertices.m_norms.clear();
+    m_vertices.m_tbn.clear();
     m_vertices.m_tcoords.clear();
 
     typedef core_conts::Array<core_str::String>     string_array;
@@ -161,7 +161,7 @@ namespace tloc { namespace graphics { namespace media {
           goto RETURN_ERROR;
         }
 
-        math_t::Vec3f32 norm;
+        norm_type norm;
         for (int i = 0; begin != end; ++i, ++begin)
         {
           if (core_str::IsRealNumber(begin->c_str()) == false)
@@ -173,7 +173,8 @@ namespace tloc { namespace graphics { namespace media {
           norm[i] = core_utils::CastNumber<f32>( atof(begin->c_str()) );
         }
 
-        m_vertices.m_norms.push_back(norm);
+        tbn_type tbn; tbn.SetCol(2, norm);
+        m_vertices.m_tbn.push_back(tbn);
         normalsRecorded = true;
       }
       else if (begin->compare("f") == 0)
@@ -362,7 +363,7 @@ RETURN_ERROR:
     ObjLoader::
     begin_norms() const
   {
-    return m_vertices.m_norms.begin();
+    return m_vertices.m_tbn.begin();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -371,7 +372,7 @@ RETURN_ERROR:
     ObjLoader::
     end_norms() const
   {
-    return m_vertices.m_norms.end();
+    return m_vertices.m_tbn.end();
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -425,20 +426,62 @@ RETURN_ERROR:
       vert_type newVert;
       pos_type  pos = m_vertices.m_pos[currGroup.m_posIndices[i] - 1];
 
-      norm_type norm;
+      tbn_type tbn;
       tcoord_type tcoord;
 
       if (normIndexEmpty == false)
-      { norm = m_vertices.m_norms[currGroup.m_normIndices[i] - 1]; }
+      { tbn = m_vertices.m_tbn[currGroup.m_normIndices[i] - 1]; }
 
       if (tcoordIndexEmpty == false)
       { tcoord = m_vertices.m_tcoords[currGroup.m_tcoordIndices[i] - 1]; }
 
       newVert.SetPosition(pos);
-      newVert.SetNormal(norm);
       newVert.SetTexCoord(tcoord);
+      newVert.SetTBN(tbn);
 
       a_vertsOut.push_back(newVert);
+    }
+
+    // TODO: should be calculating this when we first parse the OBJ file
+    // breakdown of the formula taken from http://gamedev.stackexchange.com/a/68617
+    for (size_type i = 0; i < a_vertsOut.size(); i = i+3)
+    {
+      const auto i1 = i, i2 = i+1, i3 = i+2;
+
+      const auto& v1 = a_vertsOut[i1].GetPosition();
+      const auto& v2 = a_vertsOut[i2].GetPosition();
+      const auto& v3 = a_vertsOut[i3].GetPosition();
+
+      const auto& w1 = a_vertsOut[i1].GetTexCoord();
+      const auto& w2 = a_vertsOut[i2].GetTexCoord();
+      const auto& w3 = a_vertsOut[i3].GetTexCoord();
+
+      float x1 = v2[0] - v1[0];
+      float x2 = v3[0] - v1[0];
+      float y1 = v2[1] - v1[1];
+      float y2 = v3[1] - v1[1];
+      float z1 = v2[2] - v1[2];
+      float z2 = v3[2] - v1[2];
+
+      float s1 = w2[0] - w1[0];
+      float s2 = w3[0] - w1[0];
+      float t1 = w2[1] - w1[1];
+      float t2 = w3[1] - w1[1];
+
+      typedef vert_type::attrib_3_type::vec_type  vec_type;
+
+      float r = 1.0F / ( s1 * t2 - s2 * t1 );
+      vec_type sdir(( t2 * x1 - t1 * x2 ) * r, ( t2 * y1 - t1 * y2 ) * r,
+                    ( t2 * z1 - t1 * z2 ) * r);
+      vec_type tdir(( s1 * x2 - s2 * x1 ) * r, ( s1 * y2 - s2 * y1 ) * r,
+                    ( s1 * z2 - s2 * z1 ) * r);
+
+      sdir.Normalize();
+      tdir.Normalize();
+
+      a_vertsOut[i].SetBiNormal(sdir);
+      a_vertsOut[i].SetTangent(tdir);
+      a_vertsOut[i].SetTBN(a_vertsOut[i].Orthonormalize());
     }
 
     return ErrorSuccess;

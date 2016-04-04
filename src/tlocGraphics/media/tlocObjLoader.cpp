@@ -479,9 +479,25 @@ RETURN_ERROR:
       sdir.Normalize();
       tdir.Normalize();
 
+      // Gram-Schmidt orthogonalize
+      const auto& n = a_vertsOut[i].GetCol(2).ConvertTo<vec_type>();
+      const auto& t = sdir;
+
+      sdir = ( t - n * n.Dot(t) );
+      sdir.Normalize();
+
+      // Calculate handedness
+      
+      sdir = sdir * ((n.Cross(t).Dot(tdir) < 0.0f) ? -1.0f : 1.0f);
+
       a_vertsOut[i].SetBiNormal(sdir);
       a_vertsOut[i].SetTangent(tdir);
-      a_vertsOut[i].SetTBN(a_vertsOut[i].Orthonormalize());
+
+      a_vertsOut[i+1].SetBiNormal(sdir);
+      a_vertsOut[i+1].SetTangent(tdir);
+
+      a_vertsOut[i+2].SetBiNormal(sdir);
+      a_vertsOut[i+2].SetTangent(tdir);
     }
 
     return ErrorSuccess;

@@ -24,13 +24,14 @@ namespace tloc { namespace graphics { namespace media {
     typedef u32                                   index_type;
     typedef math_t::Vec3f32                       pos_type;
     typedef math_t::Vec3f32                       norm_type;
+    typedef math_t::Mat3f32                       tbn_type;
     typedef math_t::Vec2f32                       tcoord_type;
 
     typedef tl_size                               size_type;
 
     typedef core_conts::Array<u32>                cont_index_type;
     typedef core_conts::Array<pos_type>           cont_pos_type;
-    typedef core_conts::Array<norm_type>          cont_norm_type;
+    typedef core_conts::Array<tbn_type>           cont_tbn_type;
     typedef core_conts::Array<tcoord_type>        cont_tcoord_type;
 
   public:
@@ -51,8 +52,8 @@ namespace tloc { namespace graphics { namespace media {
       Vertices() { }
 
       cont_pos_type     m_pos;
-      cont_norm_type    m_norms;
       cont_tcoord_type  m_tcoords;
+      cont_tbn_type     m_tbn;
     };
 
   public:
@@ -61,12 +62,12 @@ namespace tloc { namespace graphics { namespace media {
     typedef cont_obj_groups::const_iterator       const_iterator;
     typedef cont_pos_type::iterator               iterator_pos;
     typedef cont_pos_type::const_iterator         const_iterator_pos;
-    typedef cont_norm_type::iterator              iterator_norm;
-    typedef cont_norm_type::const_iterator        const_iterator_norm;
+    typedef cont_tbn_type::iterator               iterator_norm;
+    typedef cont_tbn_type::const_iterator         const_iterator_norm;
     typedef cont_tcoord_type::iterator            iterator_tcoord;
     typedef cont_tcoord_type::const_iterator      const_iterator_tcoord;
 
-    typedef gfx_t::Vert3fpnt                      vert_type;
+    typedef gfx_t::Vert3fptm                      vert_type;
     typedef core_conts::Array<vert_type>          vert_cont_type;
 
   public:
@@ -100,7 +101,7 @@ namespace tloc { namespace graphics { namespace media {
     TLOC_DECL_AND_DEF_GETTER(cont_pos_type::size_type, GetNumPositions,
                              m_vertices.m_pos.size());
     TLOC_DECL_AND_DEF_GETTER(cont_pos_type::size_type, GetNumNormals,
-                             m_vertices.m_norms.size());
+                             m_vertices.m_tbn.size());
     TLOC_DECL_AND_DEF_GETTER(cont_pos_type::size_type, GetNumTCoords,
                              m_vertices.m_tcoords.size());
 

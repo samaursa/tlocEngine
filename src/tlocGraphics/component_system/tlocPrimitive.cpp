@@ -31,7 +31,7 @@ namespace tloc { namespace graphics { namespace component_system {
   // explicit instantiations
 
   typedef Primitive_I                                   this_type;
-  typedef gfx_t::Vert3fp                                vert_type;
+  typedef gfx_t::Vert3fptm                              vert_type;
   typedef core_conts::Array<vert_type>                  cont_type;
   typedef core_conts::Array<vert_type>::iterator        itr_type;
   typedef core_conts::Array<vert_type>::const_iterator  const_itr_type;

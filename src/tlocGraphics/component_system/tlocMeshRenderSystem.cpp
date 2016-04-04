@@ -135,6 +135,12 @@ namespace tloc { namespace graphics { namespace component_system {
           a_vbo.SetValueAs<T_Target, T_Usage>(arr);
           break;
         }
+        case(TLOC_GL_POSITION3F_TEXTURE2F_TBN):
+        {
+          auto& arr = a_mesh.GetVertices<gfx_t::Vert3fptm>();
+          a_vbo.SetValueAs<T_Target, T_Usage>(arr);
+          break;
+        }
         case(TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F):
         {
           auto& arr = a_mesh.GetVertices<gfx_t::Vert3fpnct>();
@@ -215,6 +221,17 @@ namespace tloc { namespace graphics { namespace component_system {
           }
           {
             a_vbo.AddName(texCoordName);
+          }
+          break;
+        }
+        case(TLOC_GL_POSITION3F_TEXTURE2F_TBN):
+        {
+          {
+            a_vbo.AddName(texCoordName);
+          }
+          {
+            auto& name = a_mesh.GetAttributeName<attributes::k_tbn>();
+            a_vbo.AddName(name);
           }
           break;
         }

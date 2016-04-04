@@ -34,6 +34,7 @@ namespace tloc { namespace graphics { namespace component_system {
       "a_vertNorm",
       "a_vertCol",
       "a_vertTexCoord",
+      "a_vertTBN",
     };
 
   };

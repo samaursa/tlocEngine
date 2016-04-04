@@ -186,6 +186,19 @@ namespace tloc { namespace graphics { namespace types {
             { return VertexAttribPointerInfo(2, 8, 6); }
           }
         }
+        case TLOC_GL_POSITION3F_TEXTURE2F_TBN:
+        {
+          TLOC_ASSERT(a_interleaveIndex <= 2, "Type has 3 interleaving types");
+          switch(a_interleaveIndex)
+          {
+            case 0: // POSITION3F
+            { return VertexAttribPointerInfo(3, 14, 0); }
+            case 1: // TEXTURE2F
+            { return VertexAttribPointerInfo(2, 14, 3); }
+            case 2: // MATRIX3F
+            { return VertexAttribPointerInfo(3, 14, 5); }
+          }
+        }
         case TLOC_GL_POSITION3F_NORMAL3F_COLOR4F_TEXTURE2F:
         {
           switch(a_interleaveIndex)

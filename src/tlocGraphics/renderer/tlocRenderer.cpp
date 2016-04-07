@@ -168,6 +168,7 @@ namespace tloc { namespace graphics { namespace renderer {
       : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
       , m_dim(a_dim)
       , m_clearBits(0)
+      , m_depthWrite(true)
     {
       using namespace p_renderer;
 
@@ -328,6 +329,7 @@ namespace tloc { namespace graphics { namespace renderer {
     glViewport(0, 0, CastNumber<GLsizei>(dim[0]), CastNumber<GLsizei>(dim[1]) );
 
     glClearColor(col[0], col[1], col[2], col[3]);
+    glDepthMask(m_params.GetDepthWrite() ? GL_TRUE : GL_FALSE);
     glDepthFunc(m_params.GetDepthFunction());
     TLOC_ASSERT(gl::Error().Succeeded(), "glDepthFunc returned an error");
     glBlendFunc(m_params.GetBlendFunction().first,

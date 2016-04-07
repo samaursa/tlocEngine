@@ -419,6 +419,7 @@ namespace tloc { namespace graphics { namespace gl {
     typedef typename base_type::error_type                error_type;
     typedef typename base_type::size_type                 size_type;
     typedef s32                                           texture_image_unit_type;
+    typedef s32                                           cube_map_type;
     typedef p_texture_object::target::value_type          target_value_type;
     typedef types::Dimension2u32                          dimension_type;
 
@@ -433,8 +434,17 @@ namespace tloc { namespace graphics { namespace gl {
 
     template <typename T_Dim, typename T_ColorType, typename T_Storage>
     error_type  Initialize(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image);
+
+    template <typename T_Dim, typename T_ColorType, typename T_Storage>
+    error_type  Initialize(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
+                           T_ColorType, T_Storage>, 6>& a_skyBoxImages);
+
     template <typename T_Dim, typename T_ColorType, typename T_Storage>
     error_type  Update(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image) const;
+
+    template <typename T_Dim, typename T_ColorType, typename T_Storage>
+    error_type  Update(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
+                       T_ColorType, T_Storage>, 6>& a_image) const;
 
     template <typename T_Dim, typename T_ColorType>
     core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, T_ColorType>> 
@@ -462,6 +472,7 @@ namespace tloc { namespace graphics { namespace gl {
     Params                    m_params;
     dimension_type            m_dim;
     texture_image_unit_type   m_reservedTexImageUnit;
+    mutable cube_map_type     m_currentCubeMapTarget;
   };
 
   //------------------------------------------------------------------------

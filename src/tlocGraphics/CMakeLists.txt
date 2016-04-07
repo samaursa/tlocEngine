@@ -95,6 +95,10 @@ set(TLOC_GRAPHICS_COMPONENT_SYSTEM
   component_system/tlocRenderable_TI.cpp
   component_system/tlocSceneGraphSystem.h
   component_system/tlocSceneGraphSystem.cpp
+  component_system/tlocSkyBox.h
+  component_system/tlocSkyBox.cpp
+  component_system/tlocSkyBoxRenderSystem.h
+  component_system/tlocSkyBoxRenderSystem.cpp
   component_system/tlocStaticText.h
   component_system/tlocStaticText.cpp
   component_system/tlocStaticTextRenderSystem.h

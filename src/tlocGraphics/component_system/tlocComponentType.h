@@ -36,6 +36,8 @@ namespace tloc { namespace graphics { namespace component_system {
 
       k_raypick,
 
+      k_skybox,
+
       k_count
     }; typedef tl_int value_type;
   };

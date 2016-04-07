@@ -37,6 +37,8 @@ set(TLOC_PREFAB_GRAPHICS
   graphics/tlocRaypick.cpp
   graphics/tlocSceneNode.h
   graphics/tlocSceneNode.cpp
+  graphics/tlocSkyBox.h
+  graphics/tlocSkyBox.cpp
   graphics/tlocSprite.h
   graphics/tlocSprite.cpp
   graphics/tlocStaticText.h

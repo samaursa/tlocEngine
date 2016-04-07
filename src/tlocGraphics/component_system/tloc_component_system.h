@@ -16,6 +16,7 @@
 #include <tlocGraphics/component_system/tlocRaypick.h>
 #include <tlocGraphics/component_system/tlocRenderable_TI.h>
 #include <tlocGraphics/component_system/tlocSceneNode.h>
+#include <tlocGraphics/component_system/tlocSkyBox.h>
 #include <tlocGraphics/component_system/tlocStaticText.h>
 #include <tlocGraphics/component_system/tlocTextureAnimator.h>
 #include <tlocGraphics/component_system/tlocTextureCoords.h>
@@ -33,6 +34,7 @@
 #include <tlocGraphics/component_system/tlocRaypickSystem.h>
 #include <tlocGraphics/component_system/tlocRenderSystem.h>
 #include <tlocGraphics/component_system/tlocSceneGraphSystem.h>
+#include <tlocGraphics/component_system/tlocSkyBoxRenderSystem.h>
 #include <tlocGraphics/component_system/tlocStaticTextRenderSystem.h>
 #include <tlocGraphics/component_system/tlocTextureAnimatorSystem.h>
 #include <tlocGraphics/component_system/tlocMeshRenderSystem.h>

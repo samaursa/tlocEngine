@@ -14,6 +14,7 @@
 #include <tlocPrefab/graphics/tlocQuad.h>
 #include <tlocPrefab/graphics/tlocRaypick.h>
 #include <tlocPrefab/graphics/tlocSceneNode.h>
+#include <tlocPrefab/graphics/tlocSkyBox.h>
 #include <tlocPrefab/graphics/tlocSprite.h>
 #include <tlocPrefab/graphics/tlocStaticText.h>
 #include <tlocPrefab/graphics/tlocTextureCoords.h>

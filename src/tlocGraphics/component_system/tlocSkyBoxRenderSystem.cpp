@@ -20,31 +20,31 @@ namespace tloc { namespace graphics { namespace component_system {
   namespace {
 
     const char* vsSource = 
-      " #version 330 core                                         \
-        in vec3 a_vertPos;                                        \
-        out vec3 TexCoords;                                       \
-                                                                  \
-        uniform mat4 u_proj;                                      \
-        uniform mat4 u_view;                                      \
-                                                                  \
-        void main()                                               \
-        {                                                         \
-          gl_Position = u_proj * u_view * vec4(a_vertPos, 1.0);   \
-          gl_Position = pos.xyww;                                 \
-          TexCoords = position;                                   \
-        } ";
+      "#version 330 core                                         \n\
+       in vec3 a_vertPos;                                        \n\
+       out vec3 TexCoords;                                       \n\
+                                                                  \n\
+       uniform mat4 u_proj;                                      \n\
+       uniform mat4 u_view;                                      \n\
+                                                                  \n\
+       void main()                                               \n\
+       {                                                         \n\
+         vec4 pos = u_proj * u_view * vec4(a_vertPos, 1.0);   \n\
+         gl_Position = pos.xyww;                                 \n\
+         TexCoords = a_vertPos;                                   \n\
+       } ";
 
     const char* fsSource = 
-      " #version 330 core                                         \
-        in vec3 TexCoords;                                        \
-        out vec4 color;                                           \
-                                                                  \
-        uniform samplerCube skybox;                               \
-                                                                  \
-        void main()                                               \
-        {                                                         \
-          color = texture(skybox, TexCoords);                     \
-        }";
+      "#version 330 core                                         \n\
+       in vec3 TexCoords;                                        \n\
+       out vec4 color;                                           \n\
+                                                                  \n\
+       uniform samplerCube skybox;                               \n\
+                                                                  \n\
+       void main()                                               \n\
+       {                                                         \n\
+         color = texture(skybox, TexCoords);                     \n\
+       }";
   };
 
   // ///////////////////////////////////////////////////////////////////////
@@ -57,7 +57,6 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_scene(core_sptr::MakeUnique<core_cs::ECS>("SkyBox Scene"))
   { 
     m_scene->AddSystem<gfx_cs::MaterialSystem>();
-    m_scene->AddSystem<gfx_cs::CameraSystem>();
     m_meshSys = m_scene->AddSystem<gfx_cs::MeshRenderSystem>();
   }
 
@@ -124,6 +123,7 @@ namespace tloc { namespace graphics { namespace component_system {
     }
 
     auto meshEnt = m_scene->CreatePrefab<pref_gfx::Mesh>().Create(cubeVerts);
+    meshEnt->GetComponent<gfx_cs::Mesh>()->SetEnableUniform<gfx_cs::p_renderable::uniforms::k_modelMatrix>(false);
 
     auto vertShader = core_io::FileContents(core_io::Path
         ("hard_coded_skybox_shader/skybox_shader_vs.glsl"), vsSource);
@@ -136,6 +136,19 @@ namespace tloc { namespace graphics { namespace component_system {
     auto matPtr = meshEnt->GetComponent<gfx_cs::Material>();
     matPtr->SetEnableUniform<gfx_cs::p_material::uniforms::k_viewMatrix>();
     matPtr->SetEnableUniform<gfx_cs::p_material::uniforms::k_projectionMatrix>();
+
+    matPtr->SetEnableUniform<gfx_cs::p_material::uniforms::k_viewProjectionMatrix>(false);
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  auto
+    SkyBoxRenderSystem::
+    Post_Initialize() -> error_type
+  { 
+    m_scene->Initialize();
 
     return ErrorSuccess;
   }
@@ -158,6 +171,8 @@ namespace tloc { namespace graphics { namespace component_system {
     
     auto newParams = paramsBak;
     newParams.SetDepthFunction<gfx_rend::p_renderer::depth_function::LessEqual>();
+    newParams.RemoveClearBit<gfx_rend::p_renderer::clear::ColorBufferBit>();
+    newParams.RemoveClearBit<gfx_rend::p_renderer::clear::DepthBufferBit>();
     m_renderer->SetParams(newParams);
 
     m_scene->Process();
@@ -184,6 +199,7 @@ namespace tloc { namespace graphics { namespace component_system {
     SetRenderer(renderer_ptr a_renderer)
   {
     m_meshSys->SetRenderer(a_renderer);
+    m_renderer = a_renderer;
   }
 
 };};};
@@ -195,5 +211,5 @@ namespace tloc { namespace graphics { namespace component_system {
 
 using namespace tloc::gfx_cs;
 
-TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(CameraSystem);
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(CameraSystem);
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(SkyBoxRenderSystem);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR_NO_DEF_CTOR(SkyBoxRenderSystem);

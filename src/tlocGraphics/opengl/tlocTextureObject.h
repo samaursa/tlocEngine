@@ -436,15 +436,15 @@ namespace tloc { namespace graphics { namespace gl {
     error_type  Initialize(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image);
 
     template <typename T_Dim, typename T_ColorType, typename T_Storage>
-    error_type  Initialize(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
-                           T_ColorType, T_Storage>, 6>& a_skyBoxImages);
+    error_type  Initialize(const core_conts::ArrayFixed<core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, 
+                           T_ColorType, T_Storage>>, 6>& a_skyBoxImages);
 
     template <typename T_Dim, typename T_ColorType, typename T_Storage>
     error_type  Update(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image) const;
 
     template <typename T_Dim, typename T_ColorType, typename T_Storage>
-    error_type  Update(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
-                       T_ColorType, T_Storage>, 6>& a_image) const;
+    error_type  Update(const core_conts::ArrayFixed<core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, 
+                       T_ColorType, T_Storage>>, 6>& a_image) const;
 
     template <typename T_Dim, typename T_ColorType>
     core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, T_ColorType>> 

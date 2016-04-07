@@ -124,8 +124,9 @@ namespace tloc { namespace graphics { namespace component_system {
       cubeVerts.push_back(vert);
     }
 
-    auto meshEnt = m_scene->CreatePrefab<pref_gfx::Mesh>().Create(cubeVerts);
-    meshEnt->GetComponent<gfx_cs::Mesh>()->SetEnableUniform<gfx_cs::p_renderable::uniforms::k_modelMatrix>(false);
+    sb->m_skyBox = m_scene->CreatePrefab<pref_gfx::Mesh>().Create(cubeVerts);
+    sb->GetSkyBoxEntity()->GetComponent<gfx_cs::Mesh>()->
+      SetEnableUniform<gfx_cs::p_renderable::uniforms::k_modelMatrix>(false);
 
     auto vertShader = core_io::FileContents(core_io::Path
         ("hard_coded_skybox_shader/skybox_shader_vs.glsl"), vsSource);
@@ -138,9 +139,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
     m_scene->CreatePrefab<pref_gfx::Material>()
       .AddUniform(u_skybox.get())
-      .Add(meshEnt, vertShader, fragShader);
+      .Add(sb->GetSkyBoxEntity(), vertShader, fragShader);
 
-    auto matPtr = meshEnt->GetComponent<gfx_cs::Material>();
+    auto matPtr = sb->GetSkyBoxEntity()->GetComponent<gfx_cs::Material>();
     matPtr->SetEnableUniform<gfx_cs::p_material::uniforms::k_viewMatrix>();
     matPtr->SetEnableUniform<gfx_cs::p_material::uniforms::k_projectionMatrix>();
 

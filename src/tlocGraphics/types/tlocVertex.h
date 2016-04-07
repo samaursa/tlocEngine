@@ -42,6 +42,15 @@ namespace tloc { namespace graphics { namespace types {
       const value_type& GetOrientation() const
       { return *this; }
 
+      vec_type GetNormal() const
+      { return this->GetCol(2); }
+
+      vec_type GetBiNormal() const
+      { return this->GetCol(1); }
+
+      vec_type GetTangent() const
+      { return this->GetCol(0); }
+
       void SetTBN(const value_type& a_position)
       { *this = static_cast<const VertexTBN_T<T>&>(a_position); }
 

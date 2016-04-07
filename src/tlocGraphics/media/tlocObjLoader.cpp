@@ -442,62 +442,65 @@ RETURN_ERROR:
       a_vertsOut.push_back(newVert);
     }
 
+    typedef vert_type::attrib_3_type::vec_type  vec_type;
+
     // TODO: should be calculating this when we first parse the OBJ file
     // breakdown of the formula taken from http://gamedev.stackexchange.com/a/68617
     for (size_type i = 0; i < a_vertsOut.size(); i = i+3)
     {
-      const auto i1 = i, i2 = i+1, i3 = i+2;
+        auto i1 = i, i2 = i+1, i3 = i+2;
 
-      const auto& v1 = a_vertsOut[i1].GetPosition();
-      const auto& v2 = a_vertsOut[i2].GetPosition();
-      const auto& v3 = a_vertsOut[i3].GetPosition();
+        const auto& v1 = a_vertsOut[i1].GetPosition();
+        const auto& v2 = a_vertsOut[i2].GetPosition();
+        const auto& v3 = a_vertsOut[i3].GetPosition();
 
-      const auto& w1 = a_vertsOut[i1].GetTexCoord();
-      const auto& w2 = a_vertsOut[i2].GetTexCoord();
-      const auto& w3 = a_vertsOut[i3].GetTexCoord();
+        const auto& w1 = a_vertsOut[i1].GetTexCoord();
+        const auto& w2 = a_vertsOut[i2].GetTexCoord();
+        const auto& w3 = a_vertsOut[i3].GetTexCoord();
 
-      float x1 = v2[0] - v1[0];
-      float x2 = v3[0] - v1[0];
-      float y1 = v2[1] - v1[1];
-      float y2 = v3[1] - v1[1];
-      float z1 = v2[2] - v1[2];
-      float z2 = v3[2] - v1[2];
+        float x1 = v2[0] - v1[0];
+        float x2 = v3[0] - v1[0];
+        float y1 = v2[1] - v1[1];
+        float y2 = v3[1] - v1[1];
+        float z1 = v2[2] - v1[2];
+        float z2 = v3[2] - v1[2];
 
-      float s1 = w2[0] - w1[0];
-      float s2 = w3[0] - w1[0];
-      float t1 = w2[1] - w1[1];
-      float t2 = w3[1] - w1[1];
+        float s1 = w2[0] - w1[0];
+        float s2 = w3[0] - w1[0];
+        float t1 = w2[1] - w1[1];
+        float t2 = w3[1] - w1[1];
 
-      typedef vert_type::attrib_3_type::vec_type  vec_type;
+        float r = 1.0f / ( s1 * t2 - s2 * t1 );
+        vec_type sdir(( t2 * x1 - t1 * x2 ) * r, ( t2 * y1 - t1 * y2 ) * r,
+                      ( t2 * z1 - t1 * z2 ) * r);
+        vec_type tdir(( s1 * x2 - s2 * x1 ) * r, ( s1 * y2 - s2 * y1 ) * r,
+                      ( s1 * z2 - s2 * z1 ) * r);
 
-      float r = 1.0F / ( s1 * t2 - s2 * t1 );
-      vec_type sdir(( t2 * x1 - t1 * x2 ) * r, ( t2 * y1 - t1 * y2 ) * r,
-                    ( t2 * z1 - t1 * z2 ) * r);
-      vec_type tdir(( s1 * x2 - s2 * x1 ) * r, ( s1 * y2 - s2 * y1 ) * r,
-                    ( s1 * z2 - s2 * z1 ) * r);
+        for (int j = 0; j < 3; ++j)
+        {
+          int ij = i + j;
+          a_vertsOut[ij].SetTangent(a_vertsOut[ij].GetTangent() + sdir);
+          a_vertsOut[ij].SetBiNormal(a_vertsOut[ij].GetBiNormal() + tdir);
+        }
+    }
 
-      sdir.Normalize();
-      tdir.Normalize();
+    for (size_type i = 0; i < a_vertsOut.size(); i++)
+    {
+      auto t = a_vertsOut[i].GetTangent();
+      auto b = a_vertsOut[i].GetBiNormal();
+      auto n = a_vertsOut[i].GetNormal();
 
       // Gram-Schmidt orthogonalize
-      const auto& n = a_vertsOut[i].GetCol(2).ConvertTo<vec_type>();
-      const auto& t = sdir;
-
-      sdir = ( t - n * n.Dot(t) );
-      sdir.Normalize();
+      auto newT = ( t - n * n.Dot(t) );
+      newT.Normalize();
 
       // Calculate handedness
-      
-      sdir = sdir * ((n.Cross(t).Dot(tdir) < 0.0f) ? -1.0f : 1.0f);
+      auto handedness = ( n.Cross(newT).Dot(b) < 0.0f ) ? -1.0f : 1.0f;
 
-      a_vertsOut[i].SetBiNormal(sdir);
-      a_vertsOut[i].SetTangent(tdir);
+      auto newB = n.Cross(newT) * handedness;
 
-      a_vertsOut[i+1].SetBiNormal(sdir);
-      a_vertsOut[i+1].SetTangent(tdir);
-
-      a_vertsOut[i+2].SetBiNormal(sdir);
-      a_vertsOut[i+2].SetTangent(tdir);
+      a_vertsOut[i].SetTangent(newT);
+      a_vertsOut[i].SetBiNormal(newB);
     }
 
     return ErrorSuccess;

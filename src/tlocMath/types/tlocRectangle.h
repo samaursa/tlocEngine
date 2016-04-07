@@ -213,7 +213,7 @@ namespace tloc { namespace math { namespace types {
     ///-------------------------------------------------------------------------
     bool        IsValid() const;
 
-    bool        Contains(const point_type& a_xyPoint);
+    bool        Contains(const point_type& a_xyPoint) const;
     bool        Contains(const this_type& a_other) const;
     bool        Fits(const this_type& a_other) const;
 

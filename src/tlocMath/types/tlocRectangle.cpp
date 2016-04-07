@@ -475,7 +475,7 @@ namespace tloc { namespace math { namespace types {
   template <TLOC_RECTANGLE_TI_TEMP>
   bool
     Rectangle_TI<TLOC_RECTANGLE_TI_PARAMS>::
-    Contains(const point_type &a_xyPoint)
+    Contains(const point_type &a_xyPoint) const
   {
     return (a_xyPoint[0] >= GetValue<left>()    ) &&
            (a_xyPoint[0] <= GetValue<right>()   ) &&

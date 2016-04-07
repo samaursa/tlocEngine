@@ -486,6 +486,10 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject3D, texture_object_3d);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject3D, texture_object_3d);
 
+  typedef TextureObject_T<p_texture_object::target::TexCubeMap>   TextureObjectCubeMap;
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject3D, texture_object_cube_map);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectCubeMap, texture_object_cube_map);
+
   typedef TextureObject_T<p_texture_object::target::Tex2DShadow>  TextureObjectShadow;
   TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObjectShadow, texture_object_shadow);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectShadow, texture_object_shadow);
@@ -494,6 +498,8 @@ namespace tloc { namespace graphics { namespace gl {
   // extern template
 
   TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex2D>);
+  TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex3D>);
+  TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::TexCubeMap>);
   TLOC_EXTERN_TEMPLATE_CLASS(TextureObject_T<p_texture_object::target::Tex2DShadow>);
 
   // -----------------------------------------------------------------------

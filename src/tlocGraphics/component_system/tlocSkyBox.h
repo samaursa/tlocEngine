@@ -28,13 +28,16 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef SkyBox                                      this_type;
     typedef core_cs::Component_T
       <this_type, k_component_group, k_component_type>  base_type;
-    typedef gfx_gl::TextureObject                       tex_obj_type;
+    typedef gfx_gl::TextureObjectCubeMap                tex_obj_type;
 
   public:
     SkyBox(tex_obj_type a_cubeMap);
 
   private:
     tex_obj_type m_cubeMap;
+
+  public:
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetCubeMap, m_cubeMap);
   };
 
   //------------------------------------------------------------------------

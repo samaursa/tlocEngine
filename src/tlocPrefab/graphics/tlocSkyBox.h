@@ -19,7 +19,7 @@ namespace tloc { namespace prefab { namespace graphics {
     typedef SkyBox                                      this_type;
     typedef Prefab_TI<this_type, component_type>        base_type;
 
-    typedef gfx_gl::TextureObject                       tex_obj_type;
+    typedef gfx_gl::TextureObjectCubeMap                tex_obj_type;
 
   public:
     SkyBox(entity_mgr_ptr a_entMgr, comp_pool_mgr_ptr a_poolMgr);

@@ -31,6 +31,7 @@ namespace tloc {
         SkyBoxRenderSystem(event_manager_ptr, entity_manager_ptr);
 
         virtual error_type InitializeEntity(entity_ptr) override;
+        virtual error_type Post_Initialize() override;
 
         virtual void       ProcessEntity(entity_ptr, f64 a_deltaT) override;
         virtual void       Post_ProcessActiveEntities(f64 a_delttaT) override;

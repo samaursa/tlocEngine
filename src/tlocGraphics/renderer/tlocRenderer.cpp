@@ -368,7 +368,7 @@ namespace tloc { namespace graphics { namespace renderer {
     }
 
     auto clearBits = m_params.GetClearBits();
-    if (clearBits != -1)
+    if (clearBits != -1 && clearBits != 0)
     {
       glClear(m_params.GetClearBits());
       TLOC_ASSERT(gl::Error().Succeeded(), "glClear returned an error");

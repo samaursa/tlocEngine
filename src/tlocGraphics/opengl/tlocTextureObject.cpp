@@ -717,21 +717,21 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T_Dim, typename T_ColorType, typename T_Storage>
   TEXTURE_OBJECT_TYPE::error_type
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
-    Initialize(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
-               T_ColorType, T_Storage>, 6>& a_skyBoxImages)
+    Initialize(const core_conts::ArrayFixed<core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, 
+               T_ColorType, T_Storage>>, 6>& a_skyBoxImages)
   {
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-    this->Initialize(a_skyBoxImages[0]);
+    this->Initialize(*a_skyBoxImages[0]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-    this->Initialize(a_skyBoxImages[1]);
+    this->Initialize(*a_skyBoxImages[1]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-    this->Initialize(a_skyBoxImages[2]);
+    this->Initialize(*a_skyBoxImages[2]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-    this->Initialize(a_skyBoxImages[3]);
+    this->Initialize(*a_skyBoxImages[3]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-    this->Initialize(a_skyBoxImages[4]);
+    this->Initialize(*a_skyBoxImages[4]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-    this->Initialize(a_skyBoxImages[5]);
+    this->Initialize(*a_skyBoxImages[5]);
 
     return ErrorSuccess;
   }
@@ -818,21 +818,21 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T_Dim, typename T_ColorType, typename T_Storage>
   TEXTURE_OBJECT_TYPE::error_type
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
-    Update(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
-           T_ColorType, T_Storage>, 6>& a_skyBoxImages) const
+    Update(const core_conts::ArrayFixed<core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, 
+           T_ColorType, T_Storage>>, 6>& a_skyBoxImages) const
   {
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-    Update(a_skyBoxImages[0]);
+    Update(*a_skyBoxImages[0]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-    Update(a_skyBoxImages[1]);
+    Update(*a_skyBoxImages[1]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-    Update(a_skyBoxImages[2]);
+    Update(*a_skyBoxImages[2]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-    Update(a_skyBoxImages[3]);
+    Update(*a_skyBoxImages[3]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-    Update(a_skyBoxImages[4]);
+    Update(*a_skyBoxImages[4]);
     m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-    Update(a_skyBoxImages[5]);
+    Update(*a_skyBoxImages[5]);
 
     return ErrorSuccess;
   }
@@ -1015,8 +1015,8 @@ template TextureObject3D::error_type TextureObject3D::Update(const _imageType_&)
 template TextureObjectShadow::error_type TextureObjectShadow::Initialize(const _imageType_&);\
 template TextureObjectShadow::error_type TextureObjectShadow::Update(const _imageType_&) const;\
 \
-template TextureObjectShadow::error_type TextureObjectShadow::Initialize(const ArrayFixed<_imageType_, 6>&);\
-template TextureObjectShadow::error_type TextureObjectShadow::Update(const ArrayFixed<_imageType_, 6>&) const;\
+template TextureObject::error_type TextureObject::Initialize(const ArrayFixed<SharedPtr<_imageType_>, 6>&);\
+template TextureObject::error_type TextureObject::Update(const ArrayFixed<SharedPtr<_imageType_>, 6>&) const;\
 \
 bool GL_TexImage(const _imageType_&);\
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(_imageType_, 6)

@@ -620,6 +620,7 @@ namespace tloc { namespace graphics { namespace gl {
     , m_dim(0)
     , m_reservedTexImageUnit(-1)
   {
+
     object_handle handle;
     glGenTextures(1, &handle);
     SetHandle(handle);
@@ -673,7 +674,7 @@ namespace tloc { namespace graphics { namespace gl {
 
     const gl_int target = GetTargetType();
     TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
-      (target != p_texture_object::target::Tex3D::s_glParamName && 
+      (target != p_texture_object::target::TexCubeMap::s_glParamName && 
        target != DoGetTarget(a_image)) <<
       "TextureObject_T<>::target_type is different than incoming image";
 
@@ -765,7 +766,9 @@ namespace tloc { namespace graphics { namespace gl {
     // -----------------------------------------------------------------------
     // issue warnings for inconsistencies in image type
 
-    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(DoGetTarget(a_image) != target)
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
+      (GetTargetType() != p_texture_object::target::TexCubeMap::s_glParamName && 
+       target != DoGetTarget(a_image))
       << "TextureObject initialized with different TARGET than "
       << "incoming image. Use Initialize() for a different image type.";
 
@@ -799,7 +802,8 @@ namespace tloc { namespace graphics { namespace gl {
 
     if (res == false) { return ErrorFailure; }
 
-    if (m_params.IsAutoGenMipMaps())
+    if (m_params.IsAutoGenMipMaps() && 
+        GetTargetType() != p_texture_object::target::TexCubeMap::s_glParamName)
     {
       glGenerateMipmap(target);
       TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(gl::Error().Failed())
@@ -989,6 +993,7 @@ namespace tloc { namespace graphics { namespace gl {
   using namespace p_texture_object::target;
 
   template class TextureObject_T<Tex2D>;
+  template class TextureObject_T<TexCubeMap>;
   template class TextureObject_T<Tex3D>;
   template class TextureObject_T<Tex2DShadow>;
 
@@ -1009,6 +1014,9 @@ using namespace tloc::gfx_gl::f_texture_object;
 template TextureObject::error_type TextureObject::Initialize(const _imageType_&);\
 template TextureObject::error_type TextureObject::Update(const _imageType_&) const;\
 \
+template TextureObjectCubeMap::error_type TextureObjectCubeMap::Initialize(const _imageType_&);\
+template TextureObjectCubeMap::error_type TextureObjectCubeMap::Update(const _imageType_&) const;\
+\
 template TextureObject3D::error_type TextureObject3D::Initialize(const _imageType_&);\
 template TextureObject3D::error_type TextureObject3D::Update(const _imageType_&) const;\
 \
@@ -1017,6 +1025,9 @@ template TextureObjectShadow::error_type TextureObjectShadow::Update(const _imag
 \
 template TextureObject::error_type TextureObject::Initialize(const ArrayFixed<SharedPtr<_imageType_>, 6>&);\
 template TextureObject::error_type TextureObject::Update(const ArrayFixed<SharedPtr<_imageType_>, 6>&) const;\
+\
+template TextureObjectCubeMap::error_type TextureObjectCubeMap::Initialize(const ArrayFixed<SharedPtr<_imageType_>, 6>&);\
+template TextureObjectCubeMap::error_type TextureObjectCubeMap::Update(const ArrayFixed<SharedPtr<_imageType_>, 6>&) const;\
 \
 bool GL_TexImage(const _imageType_&);\
 TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(_imageType_, 6)
@@ -1101,6 +1112,9 @@ TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject);
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObject3D);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject3D);
+
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObjectCubeMap);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectCubeMap);
 
 TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(TextureObjectShadow);
 TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectShadow);

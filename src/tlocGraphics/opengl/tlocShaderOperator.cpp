@@ -584,6 +584,26 @@ namespace tloc { namespace graphics { namespace gl {
                       FromTextureImageUnit(texImgUnit));
           break;
         }
+      case GL_SAMPLER_CUBE:
+        {
+          using namespace texture_units;
+
+          const auto& m = isShared
+            ? *a_uniform.GetValueAsPtr<TextureObjectCubeMap>()
+            : a_uniform.GetValueAs<TextureObjectCubeMap>();
+
+          GLint texImgUnit;
+          if (m.HasReservedTextureUnit())
+          { texImgUnit = m.GetReservedTexImageUnit(); }
+          else
+          { image_units::GetNext(texImgUnit); }
+
+          image_units::Activate(texImgUnit);
+          m.Bind();
+          glUniform1i(a_info.m_location,
+                      FromTextureImageUnit(texImgUnit));
+          break;
+        }
       case GL_SAMPLER_2D_SHADOW:
         {
           using namespace texture_units;

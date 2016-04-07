@@ -261,6 +261,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat3f32,             Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(Mat4f32,             Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject,       Uniform);
+  TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObjectCubeMap,  Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObject3D,       Uniform);
   TLOC_SHADER_VARIABLE_DO_SET_VALUE_AS(TextureObjectShadow, Uniform);
 

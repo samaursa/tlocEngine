@@ -89,6 +89,7 @@ namespace tloc { namespace graphics { namespace types {
 
   TLOC_DECL_TL_TO_GL(TextureObject, GL_SAMPLER_2D);
   TLOC_DECL_TL_TO_GL(TextureObject3D, GL_SAMPLER_3D);
+  TLOC_DECL_TL_TO_GL(TextureObjectCubeMap, GL_SAMPLER_CUBE);
 
   // -----------------------------------------------------------------------
   // 2LoC types

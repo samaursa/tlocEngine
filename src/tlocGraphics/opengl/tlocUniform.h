@@ -58,6 +58,7 @@ namespace tloc { namespace graphics { namespace gl {
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
          TextureObject,
+         TextureObjectCubeMap,
          TextureObject3D,
          TextureObjectShadow,
          Array<f32>,
@@ -106,6 +107,7 @@ namespace tloc { namespace graphics { namespace gl {
          Tuple2u32, Tuple3u32, Tuple4u32,
          Mat2f32, Mat3f32, Mat4f32,
          TextureObject,
+         TextureObjectCubeMap,
          TextureObject3D,
          TextureObjectShadow
         >();

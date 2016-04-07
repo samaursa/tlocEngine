@@ -187,6 +187,9 @@ namespace tloc { namespace graphics { namespace renderer {
       TLOC_DECL_AND_DEF_GETTER(dimension_type, GetDimensions, m_dim);
       TLOC_DECL_AND_DEF_SETTER_CHAIN(dimension_type, SetDimensions, m_dim);
 
+      TLOC_DECL_AND_DEF_GETTER(bool, GetDepthWrite, m_depthWrite);
+      TLOC_DECL_AND_DEF_SETTER_CHAIN(bool, SetDepthWrite, m_depthWrite);
+
     private:
       color_type                  m_clearColor;
       point_size                  m_pointSize;
@@ -199,6 +202,7 @@ namespace tloc { namespace graphics { namespace renderer {
       clear_value_type            m_clearBits;
       cull_face_value_type        m_faceToCull;
       polygon_mode                m_polyMode;
+      bool                        m_depthWrite;
     };
 
     // Parameters for the most common renderer which includes depth and color

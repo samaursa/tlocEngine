@@ -672,7 +672,9 @@ namespace tloc { namespace graphics { namespace gl {
     m_dim[1] = core_utils::CastNumber<dimension_type::value_type>(a_image.GetDimensions()[1]);
 
     const gl_int target = GetTargetType();
-    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF(target != DoGetTarget(a_image)) <<
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY_IF
+      (target != p_texture_object::target::Tex3D::s_glParamName && 
+       target != DoGetTarget(a_image)) <<
       "TextureObject_T<>::target_type is different than incoming image";
 
     const gl_int internalFormat = 
@@ -715,6 +717,31 @@ namespace tloc { namespace graphics { namespace gl {
   template <typename T_Dim, typename T_ColorType, typename T_Storage>
   TEXTURE_OBJECT_TYPE::error_type
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
+    Initialize(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
+               T_ColorType, T_Storage>, 6>& a_skyBoxImages)
+  {
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+    this->Initialize(a_skyBoxImages[0]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+    this->Initialize(a_skyBoxImages[1]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+    this->Initialize(a_skyBoxImages[2]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+    this->Initialize(a_skyBoxImages[3]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+    this->Initialize(a_skyBoxImages[4]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+    this->Initialize(a_skyBoxImages[5]);
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
+  template <typename T_Dim, typename T_ColorType, typename T_Storage>
+  TEXTURE_OBJECT_TYPE::error_type
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     Update(const gfx_med::Image_T<T_Dim, T_ColorType, T_Storage>& a_image) const
   {
     TLOC_ASSERT(a_image.GetWidth() == m_dim[0] && 
@@ -726,7 +753,10 @@ namespace tloc { namespace graphics { namespace gl {
     typedef typename image_type::pixel_container_type           pix_cont_type;
     typedef typename image_type::color_type                     color_type;
 
-    const gl_int target         = GetTargetType();
+    using p_texture_object::target::TexCubeMap;
+    const gl_int target         = GetTargetType() == TexCubeMap::s_glParamName
+                                  ? m_currentCubeMapTarget 
+                                  : GetTargetType();
     const gl_int internalFormat = m_params.GetInternalFormat();
     const gl_int format         = m_params.GetFormat();
     const gl_int type           = m_params.GetType();
@@ -785,6 +815,31 @@ namespace tloc { namespace graphics { namespace gl {
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   template <TEXTURE_OBJECT_TEMPS>
+  template <typename T_Dim, typename T_ColorType, typename T_Storage>
+  TEXTURE_OBJECT_TYPE::error_type
+    TextureObject_T<TEXTURE_OBJECT_PARAMS>::
+    Update(const core_conts::ArrayFixed<gfx_med::Image_T<T_Dim, 
+           T_ColorType, T_Storage>, 6>& a_skyBoxImages) const
+  {
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+    Update(a_skyBoxImages[0]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+    Update(a_skyBoxImages[1]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+    Update(a_skyBoxImages[2]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+    Update(a_skyBoxImages[3]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+    Update(a_skyBoxImages[4]);
+    m_currentCubeMapTarget = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+    Update(a_skyBoxImages[5]);
+
+    return ErrorSuccess;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TEXTURE_OBJECT_TEMPS>
   template <typename T_Dim, typename T_ColorType>
   core_sptr::SharedPtr<gfx_med::Image_T<T_Dim, T_ColorType>>
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
@@ -814,6 +869,8 @@ namespace tloc { namespace graphics { namespace gl {
     TextureObject_T<TEXTURE_OBJECT_PARAMS>::
     UpdateParameters() const
   {
+    Bind();
+
     const auto texType = GetTargetType();
 
     glTexParameteri(texType, GL_TEXTURE_WRAP_S, m_params.GetWrap_S());
@@ -940,10 +997,13 @@ namespace tloc { namespace graphics { namespace gl {
 // -----------------------------------------------------------------------
 // explicit instantiations for
 
+using namespace tloc::core_conts;
 using namespace tloc::core_sptr;
 using namespace tloc::gfx_gl;
 using namespace tloc::gfx_med;
 using namespace tloc::gfx_gl::f_texture_object;
+
+#include <tlocCore/containers/tlocArrayFixed.inl.h>
 
 #define TLOC_EXPLICITLY_INSTANTIATE_IMAGE(_imageType_)\
 template TextureObject::error_type TextureObject::Initialize(const _imageType_&);\
@@ -955,7 +1015,11 @@ template TextureObject3D::error_type TextureObject3D::Update(const _imageType_&)
 template TextureObjectShadow::error_type TextureObjectShadow::Initialize(const _imageType_&);\
 template TextureObjectShadow::error_type TextureObjectShadow::Update(const _imageType_&) const;\
 \
-bool GL_TexImage(const _imageType_&)
+template TextureObjectShadow::error_type TextureObjectShadow::Initialize(const ArrayFixed<_imageType_, 6>&);\
+template TextureObjectShadow::error_type TextureObjectShadow::Update(const ArrayFixed<_imageType_, 6>&) const;\
+\
+bool GL_TexImage(const _imageType_&);\
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(_imageType_, 6)
 
 template SharedPtr<image_rgba>      TextureObject::GetImage() const;
 template SharedPtr<image_rgb>       TextureObject::GetImage() const;

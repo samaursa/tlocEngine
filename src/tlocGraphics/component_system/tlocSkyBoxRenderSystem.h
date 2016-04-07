@@ -43,6 +43,7 @@ namespace tloc {
         ecs_ptr            m_scene;
         mesh_sys_ptr       m_meshSys;
         renderer_ptr       m_renderer;
+
       };
 
       // -----------------------------------------------------------------------

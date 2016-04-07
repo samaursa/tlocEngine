@@ -29,15 +29,19 @@ namespace tloc { namespace graphics { namespace component_system {
     typedef core_cs::Component_T
       <this_type, k_component_group, k_component_type>  base_type;
     typedef gfx_gl::TextureObjectCubeMap                tex_obj_type;
+    typedef core_cs::entity_vptr                        entity_ptr;
 
   public:
     SkyBox(tex_obj_type a_cubeMap);
 
   private:
-    tex_obj_type m_cubeMap;
+    tex_obj_type  m_cubeMap;
+    entity_ptr    m_skyBox;
 
   public:
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetCubeMap, m_cubeMap);
+    TLOC_DECL_AND_DEF_GETTER_AUTO(GetSkyBoxEntity, m_skyBox);
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetSkyBoxEntity, m_skyBox);
   };
 
   //------------------------------------------------------------------------

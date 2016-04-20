@@ -47,6 +47,8 @@ namespace tloc { namespace prefab { namespace graphics {
     TLOC_DECL_PARAM_VAR(cuboid_type, Dimensions, m_cuboid);
     TLOC_DECL_AND_DEF_GETTER(bool, IsNormalsEnabled, T_Normals);
     TLOC_DECL_AND_DEF_GETTER(bool, IsTexCoordsEnabled, T_TexCoords);
+    TLOC_DECL_PARAM_VAR(bool, BoundingBox, m_boundingBox);
+    TLOC_DECL_PARAM_VAR(bool, Raypick, m_raypick);
 
   private:
     using base_type::m_entMgr;

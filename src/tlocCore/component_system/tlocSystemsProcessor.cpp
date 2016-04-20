@@ -2,6 +2,7 @@
 
 #include <tlocCore/tlocAlgorithms.h>
 #include <tlocCore/tlocAlgorithms.inl.h>
+#include <tlocCore/time/tlocTime.h>
 #include <tlocMath/tlocMath.h>
 
 namespace tloc { namespace core { namespace component_system {
@@ -11,8 +12,8 @@ namespace tloc { namespace core { namespace component_system {
 
   SystemsProcessor::SystemInfo::
     SystemInfo()
-    : m_updateDeltaT(0.0)
-    , m_accumulatedTime(0.0)
+    : m_timeToInitialize(0.0)
+    , m_timeToProcessLastFrame(0.0)
     , m_updatedSinceLastFrame(false)
   {
   }
@@ -29,11 +30,10 @@ namespace tloc { namespace core { namespace component_system {
 
   SystemsProcessor::this_type&
     SystemsProcessor::
-    Add(processing_system_ptr a_system, time_type a_updateDeltaT)
+    Add(processing_system_ptr a_system)
   {
     SystemInfo si;
     si.m_system = a_system;
-    si.m_updateDeltaT = a_updateDeltaT;
 
     m_systemsToProcess.push_back(si);
     return *this;
@@ -41,39 +41,52 @@ namespace tloc { namespace core { namespace component_system {
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     SystemsProcessor::
-    Initialize()
+    Initialize() -> time_type
   { 
-    core::for_each_all(m_systemsToProcess, 
-                       algos::systems_processor::Initialize_FromSystemInfo()); 
+    core_time::Timer t;
+    auto totalTime = t.ElapsedSeconds();
+
+    for (auto itr = m_systemsToProcess.begin(), itrEnd = m_systemsToProcess.end();
+         itr != itrEnd; ++itr)
+    {
+      t.Reset();
+      itr->GetSystem()->Initialize();
+      const auto elapsed = t.ElapsedSeconds();
+
+      itr->m_timeToInitialize = elapsed;
+      totalTime += elapsed;
+    }
+
+    return totalTime;
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  void
+  auto
     SystemsProcessor::
-    Process(time_type a_deltaT)
+    Process(time_type a_deltaT) -> time_type
   { 
+    core_time::Timer t;
+    auto totalTime = time_type();
+
     for (auto itr = m_systemsToProcess.begin(), itrEnd = m_systemsToProcess.end();
          itr != itrEnd; ++itr)
     {
       auto& si = *itr;
-      si.m_accumulatedTime += a_deltaT;
-      si.m_updatedSinceLastFrame = false;
 
-      if (math::IsEqualToZero(si.m_updateDeltaT))
-      { continue; }
-      else
-      {
-        while (si.m_updateDeltaT <= si.m_accumulatedTime)
-        {
-          si.m_system->ProcessActiveEntities(si.m_updateDeltaT);
-          si.m_accumulatedTime -= si.m_updateDeltaT;
-          si.m_updatedSinceLastFrame = true;
-        }
-      }
+      t.Reset();
+
+      si.m_system->ProcessActiveEntities(a_deltaT);
+      si.m_updatedSinceLastFrame = true;
+
+      const auto elapsed = t.ElapsedSeconds();
+      si.m_timeToProcessLastFrame = elapsed;
+      totalTime += elapsed;
     }
+
+    return totalTime;
   }
 
   // -----------------------------------------------------------------------

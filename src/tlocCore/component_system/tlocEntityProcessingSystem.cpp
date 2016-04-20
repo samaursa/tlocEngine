@@ -291,5 +291,5 @@ namespace tloc { namespace core { namespace component_system {
 
 };};};
 
-#include <tlocCore/smart_ptr/tlocVirtualPtr.inl.h>
-TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_PTR(tloc::core_cs::EntityProcessingSystem);
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tloc::core_cs::EntityProcessingSystem);

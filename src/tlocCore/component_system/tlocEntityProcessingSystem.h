@@ -84,7 +84,7 @@ namespace tloc { namespace core { namespace component_system {
     core_cs::entity_ptr_array     m_entsActivated;
     core_cs::entity_ptr_array     m_entsToShutdown;
 
-  protected:
+  public:
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToReInit, m_entsToReInit);
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToDeactivate, m_entsDeactivated);
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_entsToActivate, m_entsActivated);
@@ -94,13 +94,13 @@ namespace tloc { namespace core { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_VIRTUAL_PTR(EntityProcessingSystem, entity_processing_system);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EntityProcessingSystem, entity_processing_system);
 
 };};};
 
 // -----------------------------------------------------------------------
 // extern template
 
-TLOC_EXTERN_TEMPLATE_VIRTUAL_PTR(tloc::core_cs::EntityProcessingSystem);
+TLOC_EXTERN_TEMPLATE_ALL_SMART_PTRS(tloc::core_cs::EntityProcessingSystem);
 
 #endif

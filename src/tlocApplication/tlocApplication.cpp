@@ -8,7 +8,7 @@ namespace tloc {
 
   namespace {
 
-    const Application::sec_type       g_updateDeltaT = 0.01f;
+    const Application::sec_type       g_updateDeltaT = 1.0f/100.0f;
     const Application::sec_type       g_renderDeltaT = 1.0f/60.0f;
 
     enum {
@@ -49,6 +49,9 @@ namespace tloc {
       m_window = core_sptr::MakeShared<gfx_win::Window>();
       m_window->Register(this);
     }
+
+    m_updateGroup = GetScene()->GetOrCreateSystemsGroup("Update");
+    m_renderGroup = GetScene()->GetOrCreateSystemsGroup("Render");
 
     SetAppendFPSToTitle();
   }
@@ -101,7 +104,9 @@ namespace tloc {
     Application::
     Post_Initialize() -> error_type
   { 
-    GetScene()->Initialize();
+    TLOC_LOG_APP_DEBUG_FILENAME_ONLY() << "Scene initialization time (s): " 
+      << GetScene()->InitializeAll();
+
     return ErrorSuccess;
   }
 
@@ -118,23 +123,16 @@ namespace tloc {
       while(win->GetEvent(evt))
       { }
 
-      timer_type  t;
-      {
-        Update();
-      }
-      m_updateFrameTime = t.ElapsedSeconds();
-
-      t.Reset();
-      {
-        Render();
-      }
-      m_renderFrameTime = t.ElapsedSeconds();
-
+      m_updateFrameTime = 0.0;
+      Update();
+      Render();
+      
       // weighted FPS calculation
       const auto totalFrameTime = m_updateFrameTime + m_renderFrameTime;
       const auto frameFPS = 1.0f/totalFrameTime;
       m_fpsOutput = 0.5f * m_fpsOutput + 0.5f * frameFPS;
       m_fpsOutput = core::Clamp(m_fpsOutput, 0.0, m_fpsOutputCap);
+      m_fpsOutput = m_updateFrameTime;
 
       DoAppendTitleWithFPS(m_flags.IsMarked(k_app_fps_in_title));
     }
@@ -153,10 +151,10 @@ namespace tloc {
 
   void 
     Application::
-    DoUpdate(sec_type )
+    DoUpdate(sec_type a_deltaT)
   { 
     m_inputMgr->Update();
-    m_scene->Update();
+    m_updateGroup->GetSystemsProcessor()->Process(a_deltaT);
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -167,17 +165,22 @@ namespace tloc {
   {
     auto frameTime    = m_updateTimer.ElapsedSeconds();
 
-    if (frameTime > 0.25f)
-    { frameTime = 0.25f; }
+    if (frameTime > 0.30f)
+    { frameTime = 0.30f; }
 
     m_updateFrameTimeAccum += frameTime;
 
     while (m_updateFrameTimeAccum >= m_updateDeltaT)
     {
+
+      m_updateTimer.Reset();
+
       Pre_Update(m_updateDeltaT);
       DoUpdate(m_updateDeltaT);
       Post_Update(m_updateDeltaT);
+
       m_updateFrameTimeAccum -= m_updateDeltaT;
+      m_updateFrameTime = m_updateTimer.ElapsedSeconds();
     }
 
     m_updateTimer.Reset();
@@ -187,8 +190,10 @@ namespace tloc {
 
   void 
     Application::
-    Post_Update(sec_type )
-  { }
+    Post_Update(sec_type a_deltaT)
+  { 
+    m_scene->Update(a_deltaT);
+  }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -203,7 +208,7 @@ namespace tloc {
     Application::
     DoRender(sec_type a_deltaT)
   { 
-    m_scene->Process(a_deltaT);
+    m_renderGroup->GetSystemsProcessor()->Process(a_deltaT);
 
     GetRenderer()->ApplyRenderSettings();
     GetRenderer()->Render();
@@ -232,6 +237,7 @@ namespace tloc {
       Pre_Render(prevFrameTimeAccum);
       DoRender(prevFrameTimeAccum);
       Post_Render(prevFrameTimeAccum);
+      m_renderFrameTime = m_renderTimer.ElapsedSeconds();
     }
 
     m_renderTimer.Reset();
@@ -241,8 +247,9 @@ namespace tloc {
 
   void 
     Application::
-    Post_Render(sec_type )
+    Post_Render(sec_type a_deltaT)
   { 
+    m_scene->Update(a_deltaT);
     GetWindow()->SwapBuffers();
   }
 

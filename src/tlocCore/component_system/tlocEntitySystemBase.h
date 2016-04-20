@@ -8,6 +8,7 @@
 #include <tlocCore/component_system/tlocEntityManager.h>
 #include <tlocCore/error/tlocError.h>
 #include <tlocCore/utilities/tlocCheckpoints.h>
+#include <tlocCore/utilities/tlocContainerUtils.h>
 #include <tlocCore/containers/tlocContainers.h>
 #include <tlocCore/data_structures/tlocVariadic.h>
 #include <tlocCore/base_classes/tlocNonCopyable.h>
@@ -204,6 +205,8 @@ namespace tloc { namespace core { namespace component_system {
 
     core_utils::Checkpoints m_flags;
 
+  public:
+    TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_active_entities, m_activeEntities);
   };
 
   // -----------------------------------------------------------------------
@@ -222,8 +225,7 @@ namespace tloc { namespace core { namespace component_system {
   // -----------------------------------------------------------------------
   // typedefs
 
-  TLOC_TYPEDEF_VIRTUAL_PTR(EntitySystemBase, entity_system_base);
-  TLOC_TYPEDEF_UNIQUE_PTR(EntitySystemBase, entity_system_base);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(EntitySystemBase, entity_system_base);
 
   namespace algos { namespace entity_system  {
 

@@ -24,23 +24,25 @@ namespace tloc { namespace core { namespace component_system {
   public:
     struct SystemInfo
     {
+    public:
       friend class SystemsProcessor;
+
+      typedef SystemInfo                              this_type;
 
     public:
       SystemInfo();
 
-      TLOC_DECL_AND_DEF_GETTER(processing_system_ptr, GetSystem, m_system);
-      TLOC_DECL_AND_DEF_GETTER(time_type, GetUpdateDeltaT, m_updateDeltaT);
-      TLOC_DECL_AND_DEF_GETTER(time_type, GetIsUpdatedSinceLastFrame, 
-                               m_updatedSinceLastFrame);
-
-      TLOC_DECL_AND_DEF_SETTER(time_type, SetUpdateDeltaT, m_updateDeltaT);
-
     private:
       processing_system_ptr             m_system;
-      time_type                         m_updateDeltaT;
-      time_type                         m_accumulatedTime;
+      time_type                         m_timeToInitialize;
+      time_type                         m_timeToProcessLastFrame;
       bool                              m_updatedSinceLastFrame;
+
+    public:
+      TLOC_DECL_AND_DEF_GETTER_AUTO(GetSystem, m_system);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(GetTimeToInitialize, m_timeToInitialize);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(GetTimeToProcessLastFrame, m_timeToProcessLastFrame);
+      TLOC_DECL_AND_DEF_GETTER_AUTO(GetIsUpdatedSinceLastFrame, m_updatedSinceLastFrame);
     };
 
   public:
@@ -51,11 +53,10 @@ namespace tloc { namespace core { namespace component_system {
   public:
     SystemsProcessor(BufferArg a_debugName = "SystemsProcessor");
 
-    this_type&  Add(processing_system_ptr a_system, 
-                    time_type a_updateDeltaT = 1.0/60.0);
+    this_type&  Add(processing_system_ptr a_system);
 
-    void        Initialize();
-    void        Process(time_type a_deltaT = 1.0/60.0);
+    time_type   Initialize();
+    time_type   Process(time_type a_deltaT);
 
   private:
     sys_info_cont  m_systemsToProcess;

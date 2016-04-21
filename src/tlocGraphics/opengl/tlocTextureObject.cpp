@@ -136,6 +136,17 @@ namespace tloc { namespace graphics { namespace gl {
     const ifvt internal_format::RG::s_glParamName             = GL_RG;
     const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
     const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
+
+    const ifvt internal_format::Red16::s_glParamName          = GL_R16;
+    const ifvt internal_format::RG16::s_glParamName           = GL_RG16;
+    const ifvt internal_format::RGB16::s_glParamName          = GL_RGB16;
+    const ifvt internal_format::RGBA16::s_glParamName         = GL_RGBA16;
+
+    const ifvt internal_format::Red32::s_glParamName          = GL_R32F;
+    const ifvt internal_format::RG32::s_glParamName           = GL_RG32F;
+    const ifvt internal_format::RGB32::s_glParamName          = GL_RGB32F;
+    const ifvt internal_format::RGBA32::s_glParamName         = GL_RGBA32F;
+
     const ifvt internal_format::DepthComponent::s_glParamName = GL_DEPTH_COMPONENT;
     const ifvt internal_format::DepthStencil::s_glParamName   = GL_DEPTH_STENCIL;
 
@@ -144,6 +155,17 @@ namespace tloc { namespace graphics { namespace gl {
     const size_type internal_format::RG::s_glChannels             = 2;
     const size_type internal_format::RGB::s_glChannels            = 3;
     const size_type internal_format::RGBA::s_glChannels           = 4;
+
+    const size_type internal_format::Red16::s_glChannels          = 1;
+    const size_type internal_format::RG16::s_glChannels           = 2;
+    const size_type internal_format::RGB16::s_glChannels          = 3;
+    const size_type internal_format::RGBA16::s_glChannels         = 4;
+
+    const size_type internal_format::Red32::s_glChannels          = 1;
+    const size_type internal_format::RG32::s_glChannels           = 2;
+    const size_type internal_format::RGB32::s_glChannels          = 3;
+    const size_type internal_format::RGBA32::s_glChannels         = 4;
+
     const size_type internal_format::DepthComponent::s_glChannels = 1;
     const size_type internal_format::DepthStencil::s_glChannels   = 1;
 
@@ -380,31 +402,31 @@ namespace tloc { namespace graphics { namespace gl {
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_u16_rgba)
-    { return p_texture_object::internal_format::RGBA::s_glParamName; }
+    { return p_texture_object::internal_format::RGBA16::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_u16_rgb)
-    { return p_texture_object::internal_format::RGB::s_glParamName; }
+    { return p_texture_object::internal_format::RGB16::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_u16_rg)
-    { return p_texture_object::internal_format::RG::s_glParamName; }
+    { return p_texture_object::internal_format::RG16::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_u16_r)
-    { return p_texture_object::internal_format::Red::s_glParamName; }
+    { return p_texture_object::internal_format::Red16::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_f32_rgba)
-    { return p_texture_object::internal_format::RGBA::s_glParamName; }
+    { return p_texture_object::internal_format::RGBA32::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_f32_rgb)
-    { return p_texture_object::internal_format::RGB::s_glParamName; }
+    { return p_texture_object::internal_format::RGB32::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_f32_rg)
-    { return p_texture_object::internal_format::RG::s_glParamName; }
+    { return p_texture_object::internal_format::RG32::s_glParamName; }
 
     gfx_t::gl_int
       DoGetInternalImageFormat(gfx_t::color_f32_r)

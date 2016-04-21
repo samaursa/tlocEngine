@@ -74,6 +74,35 @@ namespace tloc { namespace graphics {
   template <TLOC_RTT_TEMPS>
   auto
     Rtt_T<TLOC_RTT_PARAMS>::
+    AddColorAttachment(tl_int a_attachmentIndex, to_ptr a_to) -> to_ptr
+  { 
+    switch(a_attachmentIndex)
+    {
+    case 0:   return AddColorAttachment<0>(a_to);
+    case 1:   return AddColorAttachment<1>(a_to);
+    case 2:   return AddColorAttachment<2>(a_to);
+    case 3:   return AddColorAttachment<3>(a_to);
+    case 4:   return AddColorAttachment<4>(a_to);
+    case 5:   return AddColorAttachment<5>(a_to);
+    case 6:   return AddColorAttachment<6>(a_to);
+    case 7:   return AddColorAttachment<7>(a_to);
+    case 8:   return AddColorAttachment<8>(a_to);
+    case 9:   return AddColorAttachment<9>(a_to);
+    case 10:  return AddColorAttachment<10>(a_to);
+    case 11:  return AddColorAttachment<11>(a_to);
+    case 12:  return AddColorAttachment<12>(a_to);
+    case 13:  return AddColorAttachment<13>(a_to);
+    case 14:  return AddColorAttachment<14>(a_to);
+    case 15:  return AddColorAttachment<15>(a_to);
+    default:  return AddColorAttachment<0>(a_to);
+    }
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  template <TLOC_RTT_TEMPS>
+  auto
+    Rtt_T<TLOC_RTT_PARAMS>::
     AddDepthAttachment() -> to_ptr
   { return AddDepthAttachment<gfx_gl::p_texture_object::target::Tex2D, 
                               gfx_t::color_f32_r>(); }

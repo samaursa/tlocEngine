@@ -520,7 +520,18 @@ namespace tloc { namespace graphics { namespace gl {
         TLOC_ASSERT(toFormat == Red::s_glParamName ||
                     toFormat == RG::s_glParamName ||
                     toFormat == RGB::s_glParamName ||
-                    toFormat == RGBA::s_glParamName,
+                    toFormat == RGBA::s_glParamName ||
+
+                    toFormat == Red16::s_glParamName ||
+                    toFormat == RG16::s_glParamName ||
+                    toFormat == RGB16::s_glParamName ||
+                    toFormat == RGBA16::s_glParamName ||
+
+                    toFormat == Red32::s_glParamName ||
+                    toFormat == RG32::s_glParamName ||
+                    toFormat == RGB32::s_glParamName ||
+                    toFormat == RGBA32::s_glParamName
+                    ,
                     "Incorrect internal format for specified attachment");
       }
       else if (a_attachment == p_fbo::attachment::Depth::s_glParamName)

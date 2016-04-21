@@ -56,8 +56,8 @@ namespace tloc { namespace graphics { namespace component_system {
                 "SkyBox")
     , m_scene(core_sptr::MakeUnique<core_cs::ECS>("SkyBox Scene"))
   { 
-    m_scene->AddSystem<gfx_cs::MaterialSystem>();
-    m_meshSys = m_scene->AddSystem<gfx_cs::MeshRenderSystem>();
+    m_scene->AddSystem<gfx_cs::MaterialSystem>("Render");
+    m_meshSys = m_scene->AddSystem<gfx_cs::MeshRenderSystem>("Render");
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -173,9 +173,9 @@ namespace tloc { namespace graphics { namespace component_system {
 
   void
     SkyBoxRenderSystem::
-    Post_ProcessActiveEntities(f64)
+    Post_ProcessActiveEntities(f64 a_deltaT)
   {
-    m_scene->Process();
+    m_scene->Process(a_deltaT);
 
     m_renderer->ApplyRenderSettings();
     m_renderer->Render();

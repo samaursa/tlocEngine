@@ -41,7 +41,7 @@ namespace tloc {
     typedef core_err::Error                       error_type;
     typedef core_cs::entity_vptr                  entity_ptr;
     typedef core_cs::ecs_sptr                     ecs_ptr;
-    typedef core_cs::ECS::ecs_group_itr           ecs_group_itr;
+    typedef core_cs::ECS::ecs_group_vptr          ecs_group_ptr;
 
     typedef core_time::Timer                      timer_type;
     typedef timer_type::sec_type                  sec_type;
@@ -123,8 +123,8 @@ namespace tloc {
     renderer_ptr        m_renderer;
 
     ecs_ptr             m_scene;
-    ecs_group_itr       m_renderGroup;
-    ecs_group_itr       m_updateGroup;
+    ecs_group_ptr       m_renderGroup;
+    ecs_group_ptr       m_updateGroup;
 
     input_mgr_ptr       m_inputMgr;
     keyboard_ptr        m_keyboard;

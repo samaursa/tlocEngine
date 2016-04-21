@@ -50,9 +50,6 @@ namespace tloc {
       m_window->Register(this);
     }
 
-    m_updateGroup = GetScene()->GetOrCreateSystemsGroup("Update");
-    m_renderGroup = GetScene()->GetOrCreateSystemsGroup("Render");
-
     SetAppendFPSToTitle();
   }
 
@@ -105,7 +102,7 @@ namespace tloc {
     Post_Initialize() -> error_type
   { 
     TLOC_LOG_APP_DEBUG_FILENAME_ONLY() << "Scene initialization time (s): " 
-      << GetScene()->InitializeAll();
+      << GetScene()->Initialize();
 
     return ErrorSuccess;
   }
@@ -123,16 +120,15 @@ namespace tloc {
       while(win->GetEvent(evt))
       { }
 
-      m_updateFrameTime = 0.0;
       Update();
       Render();
       
       // weighted FPS calculation
       const auto totalFrameTime = m_updateFrameTime + m_renderFrameTime;
       const auto frameFPS = 1.0f/totalFrameTime;
-      m_fpsOutput = 0.5f * m_fpsOutput + 0.5f * frameFPS;
+      const auto alpha = 0.9f;
+      m_fpsOutput = alpha * m_fpsOutput + (1 - alpha) * frameFPS;
       m_fpsOutput = core::Clamp(m_fpsOutput, 0.0, m_fpsOutputCap);
-      m_fpsOutput = m_updateFrameTime;
 
       DoAppendTitleWithFPS(m_flags.IsMarked(k_app_fps_in_title));
     }
@@ -423,6 +419,9 @@ namespace tloc {
     if (m_scene == nullptr)
     { m_scene = core_sptr::MakeShared<core_cs::ECS>(); }
 
+    m_updateGroup = GetScene()->GetOrCreateSystemsGroup("Update");
+    m_renderGroup = GetScene()->GetOrCreateSystemsGroup("Render");
+
     return ErrorSuccess;
   }
 
@@ -434,7 +433,9 @@ namespace tloc {
   {
     if (a_append == false) { return; }
 
-    auto_cref newTitle = core_str::Format("%.2f FPS", GetFPSOutput());
+    auto_cref newTitle = 
+      core_str::Format("%.2f FPS (Update: %.5f sec, Render: %.5f sec)", 
+      GetFPSOutput(), m_updateFrameTime, m_renderFrameTime);
     GetWindow()->SetTitle(newTitle);
   }
 

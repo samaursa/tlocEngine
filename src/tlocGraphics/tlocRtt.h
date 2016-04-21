@@ -43,6 +43,10 @@ namespace tloc { namespace graphics {
     to_ptr  AddColorAttachment(tl_int a_attachmentIndex, 
                                const to_params& a_toParams = to_params());
 
+    template <tl_int T_AttachmentIndex>
+    to_ptr  AddColorAttachment(to_ptr a_textureObject);
+    to_ptr  AddColorAttachment(tl_int a_attachmentIndex, to_ptr a_textureObject);
+
     template <typename T_Target, typename T_ColorType>
     core_sptr::SharedPtr<gfx_gl::TextureObject_T<T_Target>>
       AddDepthAttachment(const to_params& a_toParams = 
@@ -85,12 +89,21 @@ namespace tloc { namespace graphics {
       rttTo->Initialize(rttImg);
     }
 
+    return AddColorAttachment<T_AttachmentIndex>(rttTo);
+  }
+
+  template <typename T_DepthPrecision>
+  template <tl_int T_AttachmentIndex>
+  auto
+    Rtt_T<T_DepthPrecision>::
+    AddColorAttachment(to_ptr a_to) -> to_ptr
+  {
     using namespace gfx_gl::p_framebuffer_object;
     m_fbo->Attach<target::DrawFramebuffer, 
-                  attachment::ColorAttachment<T_AttachmentIndex>>(*rttTo);
-    m_colorBuffers.push_back(rttTo);
+                  attachment::ColorAttachment<T_AttachmentIndex>>(*a_to);
+    m_colorBuffers.push_back(a_to);
 
-    return rttTo;
+    return a_to;
   }
 
   template <typename T_DepthPrecision>

@@ -100,10 +100,10 @@ namespace tloc { namespace graphics { namespace component_system {
     , m_fsSource(core_io::FileContents(core_io::Path
         ("hard_coded_default_shader/defaultFSBoundingBox.glsl"), fsSource))
   { 
-    m_matSys = m_scene->AddSystem<gfx_cs::MaterialSystem>();
+    m_matSys = m_scene->AddSystem<gfx_cs::MaterialSystem>("Render");
     m_matSys->SetDefaultShaders(m_vsSource, m_fsSource);
 
-    m_meshSys = m_scene->AddSystem<typename mesh_sys_ptr::value_type>();
+    m_meshSys = m_scene->AddSystem<typename mesh_sys_ptr::value_type>("Render");
   }
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -256,8 +256,8 @@ namespace tloc { namespace graphics { namespace component_system {
     BoundingBoxRenderSystem_T<TLOC_BOUNDING_BOX_RENDER_SYSTEM_PARAMS>::
     Pre_ProcessActiveEntities(f64 a_deltaT)
   { 
-    m_scene->Update();
-    m_scene->Process();
+    m_scene->Update(a_deltaT);
+    m_scene->Process(a_deltaT);
     base_type::Pre_ProcessActiveEntities(a_deltaT);
   }
 

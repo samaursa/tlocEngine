@@ -77,6 +77,17 @@ namespace tloc { namespace graphics { namespace gl {
       struct RG              { static const value_type s_glParamName; static const size_type s_glChannels; };
       struct RGB             { static const value_type s_glParamName; static const size_type s_glChannels; };
       struct RGBA            { static const value_type s_glParamName; static const size_type s_glChannels; };
+
+      struct Red16           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RG16            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGB16           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGBA16          { static const value_type s_glParamName; static const size_type s_glChannels; };
+
+      struct Red32           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RG32            { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGB32           { static const value_type s_glParamName; static const size_type s_glChannels; };
+      struct RGBA32          { static const value_type s_glParamName; static const size_type s_glChannels; };
+
       struct DepthComponent  { static const value_type s_glParamName; static const size_type s_glChannels; };
       struct DepthStencil    { static const value_type s_glParamName; static const size_type s_glChannels; };
     };

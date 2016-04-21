@@ -137,10 +137,10 @@ namespace tloc { namespace graphics { namespace gl {
     const ifvt internal_format::RGB::s_glParamName            = GL_RGB;
     const ifvt internal_format::RGBA::s_glParamName           = GL_RGBA;
 
-    const ifvt internal_format::Red16::s_glParamName          = GL_R16;
-    const ifvt internal_format::RG16::s_glParamName           = GL_RG16;
-    const ifvt internal_format::RGB16::s_glParamName          = GL_RGB16;
-    const ifvt internal_format::RGBA16::s_glParamName         = GL_RGBA16;
+    const ifvt internal_format::Red16::s_glParamName          = GL_R16F;
+    const ifvt internal_format::RG16::s_glParamName           = GL_RG16F;
+    const ifvt internal_format::RGB16::s_glParamName          = GL_RGB16F;
+    const ifvt internal_format::RGBA16::s_glParamName         = GL_RGBA16F;
 
     const ifvt internal_format::Red32::s_glParamName          = GL_R32F;
     const ifvt internal_format::RG32::s_glParamName           = GL_RG32F;

@@ -45,8 +45,8 @@ namespace tloc { namespace core {
                                      T_OutputIterator a_destRangeBegin,
                                      IsRawItr)
     {
-      typedef typename Loki::TypeTraits<T_OutputIterator>::PointeeType value_type;
-      return DoUninitializedCopyWithValueType<value_type>
+      typedef typename Loki::TypeTraits<T_OutputIterator>::PointeeType l_value_type;
+      return DoUninitializedCopyWithValueType<l_value_type>
         (a_rangeBegin, a_rangeEnd, a_destRangeBegin);
     }
 

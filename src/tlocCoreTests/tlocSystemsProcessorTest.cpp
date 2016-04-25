@@ -199,7 +199,7 @@ namespace
 
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
-      sp.Process();
+      sp.Process(1.0/60.0);
       CHECK(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK(sys2->m_flags.IsMarked(k_processingCalled));
     }
@@ -224,7 +224,7 @@ namespace
 
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
-      sp.Process();
+      sp.Process(1.0/60.0);
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK(sys2->m_flags.IsMarked(k_processingCalled));
 

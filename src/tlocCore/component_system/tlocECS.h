@@ -81,7 +81,7 @@ namespace tloc { namespace core { namespace component_system {
 
     template <typename T_System>
     core_sptr::VirtualPtr<T_System>
-      AddSystem(BufferArg groupName = "Default");
+      AddSystem(BufferArg groupName = s_defaultGroupName);
 
     template <typename T_System, typename... T_Args>
     core_sptr::VirtualPtr<T_System> 
@@ -106,9 +106,9 @@ namespace tloc { namespace core { namespace component_system {
 
     void        RecycleAllUnusedComponents();
 
-    ecs_group_vptr GetSystemsGroup(BufferArg a_groupName = "Default");
+    ecs_group_vptr GetSystemsGroup(BufferArg a_groupName = s_defaultGroupName);
     ecs_group_vptr CreateSystemsGroup(BufferArg a_groupName);
-    ecs_group_vptr GetOrCreateSystemsGroup(BufferArg a_groupName = "Default");
+    ecs_group_vptr GetOrCreateSystemsGroup(BufferArg a_groupName = s_defaultGroupName);
 
   private:
     component_pool_manager_vso  m_compPoolMgr;
@@ -121,13 +121,13 @@ namespace tloc { namespace core { namespace component_system {
 
     ecs_group_cont              m_systemsGroups;
 
+    static BufferArg            s_defaultGroupName;
+
   public:
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST
-      (event_manager_ptr, GetEventManager, m_eventMgr.get());
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST
-      (entity_manager_ptr, GetEntityManager, m_entMgr.get());
-    TLOC_DECL_AND_DEF_GETTER_NON_CONST
-      (component_pool_manager_ptr, GetComponentPoolManager, m_compPoolMgr.get());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetEventManager, m_eventMgr.get());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetEntityManager, m_entMgr.get());
+    TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetComponentPoolManager, m_compPoolMgr.get());
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetDefaultGroupName, s_defaultGroupName);
 
     TLOC_DECL_AND_DEF_GETTER_AUTO(SetRecycleDeltaT, m_autoRecycleDeltaT);
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetRecycleDeltaT, 

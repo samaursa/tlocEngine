@@ -25,6 +25,8 @@ namespace tloc { namespace core { namespace component_system {
 
   // ///////////////////////////////////////////////////////////////////////
 
+  BufferArg ECS::s_defaultGroupName = "Update";
+
   ECS::
    ECS(BufferArg a_debugName)
    : core_bclass::DebugName(a_debugName)

@@ -135,6 +135,9 @@ namespace tloc {
     sec_type            m_fpsOutput;
     sec_type            m_fpsOutputCap;
 
+    static BufferArg    s_updateGroupName;
+    static BufferArg    s_renderGroupName;
+
   public:
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetUpdateDeltaT, m_updateDeltaT);
     TLOC_DECL_AND_DEF_GETTER_AUTO(GetRenderDeltaT, m_renderDeltaT);
@@ -156,6 +159,9 @@ namespace tloc {
     TLOC_DECL_AND_DEF_SETTER_BY_VALUE_CHAIN_AUTO(SetFPSCap, m_fpsOutputCap);
 
     TLOC_DECL_AND_DEF_CONTAINER_ALL_METHODS(_joysticks, m_joysticks);
+
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetUpdateGroupName, s_updateGroupName);
+    static TLOC_DECL_AND_DEF_GETTER_NON_CONST_AUTO(GetRenderGroupName, s_renderGroupName);
   };
 };
 

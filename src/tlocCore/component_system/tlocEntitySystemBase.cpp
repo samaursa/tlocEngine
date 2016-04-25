@@ -2,6 +2,9 @@
 
 #include <tlocCore/tlocAssert.h>
 #include <tlocCore/data_structures/tlocVariadic.inl.h>
+#include <tlocCore/logging/tlocLogger.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
 
 namespace tloc { namespace core { namespace component_system {
 
@@ -68,8 +71,12 @@ namespace tloc { namespace core { namespace component_system {
     EntitySystemBase::
     Initialize()
   {
-    TLOC_ASSERT(m_flags.IsUnMarked(k_systemInitialized), 
-                "System already initialized");
+    if (m_flags.IsMarked(k_systemInitialized))
+    {
+      TLOC_LOG_CORE_INFO_FILENAME_ONLY_IF(m_flags.IsMarked(k_systemInitialized))
+        << "System (" << GetDebugName() << ") is already initialized";
+      return ErrorSuccess;
+    }
 
     m_flags.Mark(k_systemInitialized);
 

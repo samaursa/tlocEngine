@@ -211,7 +211,7 @@ namespace tloc { namespace core { namespace component_system {
 
     TLOC_DECL_ALGO_WITH_CTOR_UNARY(GroupName_T, BufferArg, const);
     TLOC_DEFINE_ALGO_WITH_CTOR_UNARY(GroupName_T, const)
-    { extract()(a).GetGroupName(); return true; }
+    { return StrCmp(extract()(a).GetGroupName(), m_value) == 0; }
 
     typedef GroupName_T<core::use_reference>   GroupName;
     typedef GroupName_T<core::use_pointee>     GroupName_Deref;

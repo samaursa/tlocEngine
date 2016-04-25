@@ -502,7 +502,7 @@ namespace tloc { namespace graphics { namespace gl {
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObject3D, texture_object_3d);
 
   typedef TextureObject_T<p_texture_object::target::TexCubeMap>   TextureObjectCubeMap;
-  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObject3D, texture_object_cube_map);
+  TLOC_TYPEDEF_ALL_SMART_PTRS(TextureObjectCubeMap, texture_object_cube_map);
   TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT_NO_COPY_CTOR(TextureObjectCubeMap, texture_object_cube_map);
 
   typedef TextureObject_T<p_texture_object::target::Tex2DShadow>  TextureObjectShadow;

@@ -25,6 +25,11 @@ namespace tloc { namespace core { namespace io {
   // Path
 
   Path::
+    Path()
+    : m_path("INVALID_PATH")
+  { }
+
+  Path::
     Path(const BufferArg& a_path) : m_path(a_path)
   {
     TLOC_LOG_CORE_WARN_IF(m_path.empty()) << "Path is empty";

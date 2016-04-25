@@ -70,8 +70,11 @@ namespace tloc
 
     u32 RoundUpPowOfTwo(u32 v)
     {
+      // edge cases
+      v += (v==0);
+      v += (v==0 || v==1); // for 0, we do v+= twice
+
       v--;
-      v += (v==0 || v==1);
       v |= v >> 1;
       v |= v >> 2;
       v |= v >> 4;

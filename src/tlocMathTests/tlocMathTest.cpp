@@ -73,6 +73,7 @@ namespace TestingTlocMath
 
   TEST_CASE("Math/RoundUpPowerOfTwo", "")
   {
+    CHECK(math::RoundUpPowOfTwo(0) == 2);
     CHECK(math::RoundUpPowOfTwo(1) == 2);
     CHECK(math::RoundUpPowOfTwo(7) == 8);
     CHECK(math::RoundUpPowOfTwo(99) == 128);

@@ -1,6 +1,10 @@
 #include "tlocResource.h"
 #include <tlocGraphics/media/tlocImageLoader.h>
 
+#include <tlocCore/logging/tlocLogger.h>
+
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace application { namespace resources {
 
   // ///////////////////////////////////////////////////////////////////////
@@ -52,6 +56,57 @@ namespace tloc { namespace application { namespace resources {
       return toPtr;
     }
 
+    gfx_gl::texture_object_cube_map_sptr
+      LoadImageAsTextureObjectCubeMap
+      (const core_conts::ArrayFixed<core_io::Path, 6>& a_imagePaths,
+       const gfx_gl::TextureObjectCubeMap::Params& a_params)
+    {
+      using namespace gfx_med::f_image_loader;
+
+      auto toPtr = core_sptr::MakeShared<gfx_gl::TextureObjectCubeMap>(a_params);
+
+      bool png = false, jpg = false;
+      for (const auto& p : a_imagePaths)
+      {
+        const auto& ext = p.GetExtension().to_lower();
+
+        if (ext == "png") { png = true; }
+        if (ext == "jpg" || ext == "jpeg") { jpg = true; }
+      }
+
+      if (png && jpg)
+      {
+        TLOC_LOG_APP_ERR_FILENAME_ONLY() << "Cannot mix PNG and JPEG files";
+        return nullptr;
+      }
+
+      core_conts::ArrayFixed<gfx_med::image_sptr, 6>      imagesPNG;
+      core_conts::ArrayFixed<gfx_med::image_rgb_sptr, 6>  imagesJPG;
+
+      for (int i = 0; i < 6; ++i)
+      {
+        auto img = LoadImage(a_imagePaths[i]);
+
+        if (img.second == k_image_unsupported)
+        { return nullptr; }
+
+        if (img.second == k_image_png)
+        { imagesPNG.push_back(img.first.Cast<gfx_med::image_sptr>()); }
+        else if (img.second == k_image_jpeg)
+        { imagesJPG.push_back(img.first.Cast<gfx_med::image_rgb_sptr>()); }
+      }
+
+      if (png)
+      { toPtr->Initialize(imagesPNG); }
+      else
+      { toPtr->Initialize(imagesJPG); }
+
+      return toPtr;
+    }
+
   };
 
 };};};
+
+#include <tlocCore/containers/tlocArrayFixed.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ARRAY_FIXED(tl_core_io::Path, 6);

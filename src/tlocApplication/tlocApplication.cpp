@@ -45,7 +45,8 @@ namespace tloc {
                 , m_renderer(a_renderer)
                 , m_inputMgr(a_inputMgr)
                 , m_fpsOutput(0.0f)
-                , m_fpsOutputCap(1000.0f)
+                , m_fpsOutputCap(10000.0f)
+                , m_fpsConfidence(0.99f)
   {
     if (m_window == nullptr)
     {
@@ -129,8 +130,7 @@ namespace tloc {
       // weighted FPS calculation
       const auto totalFrameTime = m_updateFrameTime + m_renderFrameTime;
       const auto frameFPS = 1.0f/totalFrameTime;
-      const auto alpha = 0.9f;
-      m_fpsOutput = alpha * m_fpsOutput + (1 - alpha) * frameFPS;
+      m_fpsOutput = m_fpsConfidence * m_fpsOutput + (1 - m_fpsConfidence) * frameFPS;
       m_fpsOutput = core::Clamp(m_fpsOutput, 0.0, m_fpsOutputCap);
 
       DoAppendTitleWithFPS(m_flags.IsMarked(k_app_fps_in_title));
@@ -179,7 +179,8 @@ namespace tloc {
       Post_Update(m_updateDeltaT);
 
       m_updateFrameTimeAccum -= m_updateDeltaT;
-      m_updateFrameTime = m_updateTimer.ElapsedSeconds();
+      m_updateFrameTime = m_fpsConfidence * m_updateFrameTime + 
+        (1 - m_fpsConfidence) * m_updateTimer.ElapsedSeconds();
     }
 
     m_updateTimer.Reset();
@@ -236,7 +237,8 @@ namespace tloc {
       Pre_Render(prevFrameTimeAccum);
       DoRender(prevFrameTimeAccum);
       Post_Render(prevFrameTimeAccum);
-      m_renderFrameTime = m_renderTimer.ElapsedSeconds();
+      m_renderFrameTime = m_fpsConfidence * m_renderFrameTime + 
+        (1 - m_fpsConfidence) * m_renderTimer.ElapsedSeconds();
     }
 
     m_renderTimer.Reset();

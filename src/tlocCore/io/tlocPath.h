@@ -16,6 +16,7 @@ namespace tloc { namespace core { namespace io {
     typedef string::String        string_type;
 
   public:
+    Path();
     Path(const BufferArg& a_path);
 
     const this_type& GetFileName(string_type& a_out) const;

@@ -1,6 +1,8 @@
 #ifndef _TLOC_ANIMATION_RESOURCES_RESOURCE_H_
 #define _TLOC_ANIMATION_RESOURCES_RESOURCE_H_
 
+#include <tlocApplication/tlocApplicationBase.h>
+
 #include <tlocAnimation/tlocAnimationBase.h>
 
 #include <tlocCore/types/tlocAny.h>
@@ -11,6 +13,7 @@
 #include <tlocCore/memory/tlocBufferArg.h>
 #include <tlocCore/io/tlocPath.h>
 #include <tlocCore/tlocUCID.h>
+#include <tlocCore/containers/tlocArrayFixed.h>
 
 #include <tlocGraphics/opengl/tlocTextureObject.h>
 
@@ -54,6 +57,13 @@ namespace tloc { namespace application { namespace resources {
       LoadImageAsTextureObject(const core_io::Path& a_imagePath, 
                                const gfx_gl::TextureObject::Params& a_params = 
                                gfx_gl::TextureObject::Params());
+
+    gfx_gl::texture_object_cube_map_sptr
+      LoadImageAsTextureObjectCubeMap
+      (const core_conts::ArrayFixed<core_io::Path, 6>& a_imagePaths,
+       const gfx_gl::TextureObject::Params& a_params = 
+       gfx_gl::TextureObject::Params());
+
   };
 
 };};};

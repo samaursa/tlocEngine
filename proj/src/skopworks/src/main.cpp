@@ -41,8 +41,8 @@ private:
   error_type Post_Initialize() override
   {
     auto& scene = GetScene();
-    scene->AddSystem<gfx_cs::MaterialSystem>();
-    auto meshSys = scene->AddSystem<gfx_cs::MeshRenderSystem>();
+    scene->AddSystem<gfx_cs::MaterialSystem>(GetRenderGroupName());
+    auto meshSys = scene->AddSystem<gfx_cs::MeshRenderSystem>(GetRenderGroupName());
     meshSys->SetRenderer(GetRenderer());
 
     //------------------------------------------------------------------------
@@ -55,8 +55,9 @@ private:
 
     //------------------------------------------------------------------------
 
-    math_t::Rectf_c rect(math_t::Rectf_c::width(1.0f * 2.0f),
-                         math_t::Rectf_c::height(GetWindow()->GetAspectRatio().Get() * 2.0f));
+    using math_t::Rectf_c;
+    const auto winAR = GetWindow()->GetAspectRatio().Get();
+    Rectf_c rect(Rectf_c::width(1.0f * 2.0f), Rectf_c::height(winAR * 2.0f));
 
     core_cs::entity_vptr q = scene->CreatePrefab<pref_gfx::Quad>()
       .Dimensions(rect).Create();

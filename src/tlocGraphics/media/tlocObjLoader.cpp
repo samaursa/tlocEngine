@@ -506,4 +506,32 @@ RETURN_ERROR:
     return ErrorSuccess;
   }
 
+  namespace f_obj_loader {
+
+    obj_loader_sptr
+      LoadObjFile (const core_io::Path& a_filePath)
+    {
+      core_io::FileIO_ReadA objFile(a_filePath);
+      if (objFile.Open() != ErrorSuccess)
+      { TLOC_LOG_GFX_ERR() << "Unable to open the .obj file."; return nullptr; }
+
+      core_str::String objFileContents;
+      objFile.GetContents(objFileContents);
+
+      auto objLoader = core_sptr::MakeShared<ObjLoader>();
+      if (objLoader->Init(objFileContents) != ErrorSuccess)
+      { TLOC_LOG_GFX_ERR() << "Parsing errors in .obj file."; return nullptr; }
+
+      if (objLoader->GetNumGroups() == 0)
+      { TLOC_LOG_GFX_ERR() << "Obj file does not have any objects."; return nullptr; }
+
+      return objLoader;
+    }
+
+  };
+
 };};};
+
+#include <tlocCore/smart_ptr/tloc_smart_ptr.inl.h>
+TLOC_EXPLICITLY_INSTANTIATE_ALL_SMART_PTRS(tl_gfx_med::ObjLoader);
+TLOC_EXPLICITLY_INSTANTIATE_VIRTUAL_STACK_OBJECT(tl_gfx_med::ObjLoader);

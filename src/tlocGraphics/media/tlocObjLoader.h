@@ -112,6 +112,16 @@ namespace tloc { namespace graphics { namespace media {
 
   };
 
+  TLOC_TYPEDEF_ALL_SMART_PTRS(ObjLoader, obj_loader);
+  TLOC_TYPEDEF_VIRTUAL_STACK_OBJECT(ObjLoader, obj_loader);
+
+  namespace f_obj_loader {
+
+    obj_loader_sptr
+      LoadObjFile (const core_io::Path& a_filePath);
+
+  };
+
 };};};
 
 #endif

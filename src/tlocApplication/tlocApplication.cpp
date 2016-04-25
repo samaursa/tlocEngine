@@ -25,6 +25,9 @@ namespace tloc {
   // ///////////////////////////////////////////////////////////////////////
   // Application
 
+  BufferArg Application::s_updateGroupName = "Update";
+  BufferArg Application::s_renderGroupName = "Render";
+
   Application::
     Application(BufferArg a_appName,
                 const window_ptr& a_window, 
@@ -419,8 +422,8 @@ namespace tloc {
     if (m_scene == nullptr)
     { m_scene = core_sptr::MakeShared<core_cs::ECS>(); }
 
-    m_updateGroup = GetScene()->GetOrCreateSystemsGroup("Update");
-    m_renderGroup = GetScene()->GetOrCreateSystemsGroup("Render");
+    m_updateGroup = GetScene()->GetOrCreateSystemsGroup(s_updateGroupName);
+    m_renderGroup = GetScene()->GetOrCreateSystemsGroup(s_renderGroupName);
 
     return ErrorSuccess;
   }

@@ -162,7 +162,7 @@ namespace
   {
     ECS ecs;
     auto sys1 = ecs.AddSystem<DummySys1>();
-    auto sys2 = ecs.AddSystem<DummySys2>(1.0/60.0, false, 5);
+    auto sys2 = ecs.AddSystem<DummySys2>(ECS::GetDefaultGroupName(), 5);
 
     auto dummyComp1 = core_sptr::MakeShared<DummyComp1>();
     auto dummyComp2 = core_sptr::MakeShared<DummyComp2>();
@@ -182,15 +182,15 @@ namespace
 
       ecs.Initialize();
 
-      REQUIRE(ecs.GetSystemsProcessor()->size_systems() == 2);
+      REQUIRE(ecs.GetSystemsGroup()->GetSystemsProcessor()->size_systems() == 2);
       CHECK(sys1->m_flags.IsMarked(k_initializeCalled));
       CHECK(sys2->m_flags.IsMarked(k_initializeCalled));
       CHECK_FALSE(sys1->m_flags.IsMarked(k_processingCalled));
       CHECK_FALSE(sys2->m_flags.IsMarked(k_processingCalled));
 
-      ecs.Process();
+      ecs.Process(1.0/60.0);
 
-      REQUIRE(ecs.GetSystemsProcessor()->size_systems() == 2);
+      REQUIRE(ecs.GetSystemsGroup()->GetSystemsProcessor()->size_systems() == 2);
       CHECK(sys1->m_flags.IsMarked(k_initializeCalled));
       CHECK(sys2->m_flags.IsMarked(k_initializeCalled));
       CHECK(sys1->m_flags.IsMarked(k_processingCalled));

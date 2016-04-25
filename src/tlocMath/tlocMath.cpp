@@ -71,6 +71,7 @@ namespace tloc
     u32 RoundUpPowOfTwo(u32 v)
     {
       v--;
+      v += (v==0 || v==1);
       v |= v >> 1;
       v |= v >> 2;
       v |= v >> 4;

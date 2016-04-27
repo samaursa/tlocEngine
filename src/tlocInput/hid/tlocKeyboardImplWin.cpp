@@ -182,7 +182,7 @@ namespace tloc { namespace input { namespace hid { namespace priv {
   bool KeyboardImpl<KEYBOARD_IMPL_PARAMS>::
     IsModifierDown(modifier_type a_modifier) const
   {
-    return (m_modifier & a_modifier) == a_modifier;
+    return (m_modifier & a_modifier) != 0;
   }
 
   template <KEYBOARD_IMPL_TEMP>

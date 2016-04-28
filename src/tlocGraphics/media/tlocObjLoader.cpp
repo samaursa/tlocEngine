@@ -5,6 +5,8 @@
 #include <tlocCore/string/tlocString.inl.h>
 #include <tlocCore/logging/tlocLogger.h>
 
+TLOC_DEFINE_THIS_FILE_NAME();
+
 namespace tloc { namespace graphics { namespace media {
 
   enum {
@@ -314,6 +316,23 @@ RETURN_ERROR:
 
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  auto
+    ObjLoader::
+    GetGroupIndex(BufferArg a_groupName) const -> size_type
+  {
+    int counter = 0;
+    for (const auto& obj : m_objects)
+    {
+      if (obj.m_name.compare(a_groupName) == 0) { return counter; } 
+      ++counter;
+    }
+
+    TLOC_LOG_GFX_WARN_FILENAME_ONLY() << "OBJ does not have a group named " << a_groupName;
+    return 0;
+  }
+
+  // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
   const ObjLoader::ObjGroup&
     ObjLoader::
     GetGroup(size_type a_groupIndex) const
@@ -513,17 +532,17 @@ RETURN_ERROR:
     {
       core_io::FileIO_ReadA objFile(a_filePath);
       if (objFile.Open() != ErrorSuccess)
-      { TLOC_LOG_GFX_ERR() << "Unable to open the .obj file."; return nullptr; }
+      { TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Unable to open the .obj file."; return nullptr; }
 
       core_str::String objFileContents;
       objFile.GetContents(objFileContents);
 
       auto objLoader = core_sptr::MakeShared<ObjLoader>();
       if (objLoader->Init(objFileContents) != ErrorSuccess)
-      { TLOC_LOG_GFX_ERR() << "Parsing errors in .obj file."; return nullptr; }
+      { TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Parsing errors in .obj file."; return nullptr; }
 
       if (objLoader->GetNumGroups() == 0)
-      { TLOC_LOG_GFX_ERR() << "Obj file does not have any objects."; return nullptr; }
+      { TLOC_LOG_GFX_ERR_FILENAME_ONLY() << "Obj file does not have any objects."; return nullptr; }
 
       return objLoader;
     }

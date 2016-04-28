@@ -208,6 +208,16 @@ namespace tloc { namespace core { namespace component_system {
     case entity_events::remove_component:
       {
         const auto& entEvent = a_event.GetAs<EntityComponentEvent>();
+
+        // does the event have the component we are interested in?
+        {
+          auto itr = core::find_all(m_compRegistry.m_registeredComps,
+                                    entEvent.GetComponent()->GetInfo());
+
+          if (itr == m_compRegistry.m_registeredComps.end())
+          { break; }
+        }
+
         entity_vptr ent = entEvent.GetEntity();
 
         for (auto itr = m_compRegistry.m_registeredComps.begin(), 

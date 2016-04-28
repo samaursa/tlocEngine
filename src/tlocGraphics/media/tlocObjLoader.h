@@ -79,6 +79,7 @@ namespace tloc { namespace graphics { namespace media {
     bool            IsInitialized() const;
     bool            IsValid() const;
 
+    size_type       GetGroupIndex(BufferArg a_groupName) const;
     const ObjGroup& GetGroup(size_type a_groupIndex) const;
 
     const_iterator          begin() const;

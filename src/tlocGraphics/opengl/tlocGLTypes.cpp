@@ -104,8 +104,8 @@ namespace tloc { namespace graphics { namespace types {
 
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fp,       GL_FLOAT_VEC3);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpn,      TLOC_GL_POSITION3F_NORMAL3F);
-  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpc,      TLOC_GL_POSITION3F_TEXTURE2F);
-  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpt,      TLOC_GL_POSITION3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpc,      TLOC_GL_POSITION3F_COLOR4F);
+  TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpt,      TLOC_GL_POSITION3F_TEXTURE2F);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnc,     TLOC_GL_POSITION3F_NORMAL3F_COLOR4F);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fpnt,     TLOC_GL_POSITION3F_NORMAL3F_TEXTURE2F);
   TLOC_DECL_TL_TO_GL(gfx_t::Vert3fptm,     TLOC_GL_POSITION3F_TEXTURE2F_TBN);
